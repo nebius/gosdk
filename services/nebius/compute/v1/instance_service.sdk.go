@@ -1,0 +1,231 @@
+package v1
+
+import (
+	context "context"
+	conn "github.com/nebius/gosdk/conn"
+	grpcheader "github.com/nebius/gosdk/fieldmask/grpcheader"
+	iface "github.com/nebius/gosdk/internal/iface"
+	iter "github.com/nebius/gosdk/iter"
+	operations "github.com/nebius/gosdk/operations"
+	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
+	v1 "github.com/nebius/gosdk/proto/nebius/compute/v1"
+	grpc "google.golang.org/grpc"
+	proto "google.golang.org/protobuf/proto"
+)
+
+func (s Services) Instance() InstanceService {
+	return NewInstanceService(s.sdk)
+}
+
+const InstanceServiceID conn.ServiceID = "nebius.compute.v1.InstanceService"
+
+type InstanceService interface {
+	Get(context.Context, *v1.GetInstanceRequest, ...grpc.CallOption) (*v1.Instance, error)
+	GetByName(context.Context, *v11.GetByNameRequest, ...grpc.CallOption) (*v1.Instance, error)
+	List(context.Context, *v1.ListInstancesRequest, ...grpc.CallOption) (*v1.ListInstancesResponse, error)
+	Filter(context.Context, *v1.ListInstancesRequest, ...grpc.CallOption) iter.Seq2[*v1.Instance, error]
+	Create(context.Context, *v1.CreateInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
+	Update(context.Context, *v1.UpdateInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
+	Delete(context.Context, *v1.DeleteInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
+	Start(context.Context, *v1.StartInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
+	Stop(context.Context, *v1.StopInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
+	ListOperationsByParent(context.Context, *v1.ListOperationsByParentRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
+	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
+	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
+}
+
+type instanceService struct {
+	sdk iface.SDK
+}
+
+func NewInstanceService(sdk iface.SDK) InstanceService {
+	return instanceService{
+		sdk: sdk,
+	}
+}
+
+func (s instanceService) Get(ctx context.Context, request *v1.GetInstanceRequest, opts ...grpc.CallOption) (*v1.Instance, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewInstanceServiceClient(con).Get(ctx, request, opts...)
+}
+
+func (s instanceService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (*v1.Instance, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewInstanceServiceClient(con).GetByName(ctx, request, opts...)
+}
+
+func (s instanceService) List(ctx context.Context, request *v1.ListInstancesRequest, opts ...grpc.CallOption) (*v1.ListInstancesResponse, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewInstanceServiceClient(con).List(ctx, request, opts...)
+}
+
+func (s instanceService) Filter(ctx context.Context, request *v1.ListInstancesRequest, opts ...grpc.CallOption) iter.Seq2[*v1.Instance, error] {
+	req := proto.Clone(request).(*v1.ListInstancesRequest)
+	return func(yield func(*v1.Instance, error) bool) {
+		for {
+			res, err := s.List(ctx, req, opts...)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range res.GetItems() {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if res.GetNextPageToken() == "" {
+				return
+			}
+
+			req.PageToken = res.GetNextPageToken()
+		}
+	}
+}
+
+func (s instanceService) Create(ctx context.Context, request *v1.CreateInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewInstanceServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s instanceService) Update(ctx context.Context, request *v1.UpdateInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewInstanceServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s instanceService) Delete(ctx context.Context, request *v1.DeleteInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewInstanceServiceClient(con).Delete(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s instanceService) Start(ctx context.Context, request *v1.StartInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewInstanceServiceClient(con).Start(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s instanceService) Stop(ctx context.Context, request *v1.StopInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewInstanceServiceClient(con).Stop(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s instanceService) ListOperationsByParent(ctx context.Context, request *v1.ListOperationsByParentRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewInstanceServiceClient(con).ListOperationsByParent(ctx, request, opts...)
+}
+
+func (s instanceService) GetOperation(ctx context.Context, request *v11.GetOperationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	client := v11.NewOperationServiceClient(con)
+	op, err := client.Get(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, client)
+}
+
+func (s instanceService) ListOperations(ctx context.Context, request *v11.ListOperationsRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v11.NewOperationServiceClient(con).List(ctx, request, opts...)
+}

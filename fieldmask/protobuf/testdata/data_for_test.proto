@@ -1,0 +1,293 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+import "nebius/annotations.proto";
+
+package nebius.testdata;
+
+// Just a simple Enum
+enum ABC {
+  ABC_UNDEFINED = 0;
+
+  ABC_A = 1;
+
+  ABC_B = 2;
+
+  ABC_C = 3;
+}
+
+// Same Enum but with aliases
+enum AliasedABC {
+  option allow_alias = true;
+
+  AABC_UNDEFINED = 0;
+
+  AABC_A = 1;
+
+  AABC_B = 2;
+
+  AABC_B2 = 2;
+
+  AABC_C = 3;
+}
+
+// This struct is recursive
+// TF does not support recursive structs
+// Possible solution:
+// * use serialized representation
+message RecursiveStruct {
+  string some_string = 1;
+
+  RecursiveStruct recursive = 2;
+}
+
+message TestSimple {
+  double test_double = 1;
+
+  float test_float = 2;
+
+  int32 test_int32 = 3;
+
+  int64 test_int64 = 4;
+
+  uint32 test_uint32 = 5;
+
+  uint64 test_uint64 = 6;
+
+  sint32 test_sint32 = 7;
+
+  sint64 test_sint64 = 8;
+
+  fixed32 test_fixed32 = 9;
+
+  fixed64 test_fixed64 = 10;
+
+  sfixed32 test_sfixed32 = 11;
+
+  sfixed64 test_sfixed64 = 12;
+
+  bool test_bool = 13;
+
+  string test_string = 14;
+
+  bytes test_bytes = 15;
+
+  ABC test_enum = 16;
+
+  AliasedABC test_aliased_enum = 17;
+}
+
+message TestRepeated {
+  repeated double test_double = 1;
+
+  repeated float test_float = 2;
+
+  repeated int32 test_int32 = 3;
+
+  repeated int64 test_int64 = 4;
+
+  repeated uint32 test_uint32 = 5;
+
+  repeated uint64 test_uint64 = 6;
+
+  repeated sint32 test_sint32 = 7;
+
+  repeated sint64 test_sint64 = 8;
+
+  repeated fixed32 test_fixed32 = 9;
+
+  repeated fixed64 test_fixed64 = 10;
+
+  repeated sfixed32 test_sfixed32 = 11;
+
+  repeated sfixed64 test_sfixed64 = 12;
+
+  repeated bool test_bool = 13;
+
+  repeated string test_string = 14;
+
+  repeated bytes test_bytes = 15;
+
+  repeated ABC test_enum = 16;
+
+  repeated AliasedABC test_aliased_enum = 17;
+}
+
+message TestStringMap {
+  map<string, double> test_double = 1;
+
+  map<string, float> test_float = 2;
+
+  map<string, int32> test_int32 = 3;
+
+  map<string, int64> test_int64 = 4;
+
+  map<string, uint32> test_uint32 = 5;
+
+  map<string, uint64> test_uint64 = 6;
+
+  map<string, sint32> test_sint32 = 7;
+
+  map<string, sint64> test_sint64 = 8;
+
+  map<string, fixed32> test_fixed32 = 9;
+
+  map<string, fixed64> test_fixed64 = 10;
+
+  map<string, sfixed32> test_sfixed32 = 11;
+
+  map<string, sfixed64> test_sfixed64 = 12;
+
+  map<string, bool> test_bool = 13;
+
+  map<string, string> test_string = 14;
+
+  map<string, bytes> test_bytes = 15;
+
+  map<string, ABC> test_enum = 16;
+
+  map<string, AliasedABC> test_aliased_enum = 17;
+}
+
+message NotAStringMap {
+  TestOptional test_int32 = 1;
+}
+
+message TestTypeMap {
+  map<int32, string> test_int32 = 3;
+
+  map<int64, string> test_int64 = 4;
+
+  map<uint32, string> test_uint32 = 5;
+
+  map<uint64, string> test_uint64 = 6;
+
+  map<sint32, string> test_sint32 = 7;
+
+  map<sint64, string> test_sint64 = 8;
+
+  map<fixed32, string> test_fixed32 = 9;
+
+  map<fixed64, string> test_fixed64 = 10;
+
+  map<sfixed32, string> test_sfixed32 = 11;
+
+  map<sfixed64, string> test_sfixed64 = 12;
+
+  map<bool, string> test_bool = 13;
+
+  map<string, string> test_string = 14;
+}
+
+message WrongTypeMap {
+  map<int32, int64> test_int32 = 1;
+}
+
+message TestOptional {
+  optional uint32 test_single = 1;
+
+  optional TestSimple test_struct = 2;
+}
+
+message TestOneOf {
+  oneof test_oneof {
+    uint32 test_uint32 = 1;
+
+    string test_string = 2;
+
+    TestSimple test_struct = 3;
+  }
+}
+
+message TestAnotherOneOf {
+  oneof test_another_oneof {
+    uint32 test_uint32 = 1;
+
+    uint64 test_uint64 = 2;
+  }
+}
+
+message TestStructs {
+  TestSimple test_struct = 1;
+
+  repeated TestSimple test_repeated = 2;
+
+  map<string, TestSimple> test_stringmap = 3;
+
+  map<int32, TestSimple> test_intmap = 4;
+}
+
+message TestX {
+  repeated TestY y = 1;
+}
+
+message TestY {
+  repeated TestZ z = 1;
+}
+
+message TestZ {
+  string a = 1;
+
+  string b = 2;
+}
+
+message TestA {
+  map<string, TestB> b = 1;
+}
+
+message TestB {
+  map<string, TestC> c = 1;
+}
+
+message TestC {
+  string x = 1;
+
+  string y = 2;
+}
+
+message TestWellKnown {
+  google.protobuf.Any test_any = 1;
+
+  google.protobuf.Timestamp test_ts = 2;
+
+  repeated google.protobuf.Any test_repeated_any = 3;
+
+  repeated google.protobuf.Timestamp test_repeated_ts = 4;
+}
+
+message TestRecursiveRepeated {
+  repeated RecursiveStruct field = 1;
+}
+
+message TestRecursiveMap {
+  map<string, RecursiveStruct> field = 1;
+}
+
+message TestRecursiveSingle {
+  RecursiveStruct field = 1;
+}
+
+message TestOutputOnly {
+  int32 i = 1 [(field_behavior) = OUTPUT_ONLY];
+
+  string s = 2 [(field_behavior) = OUTPUT_ONLY];
+
+  TestSimple msg = 3 [(field_behavior) = OUTPUT_ONLY];
+
+  map<string, int32> m = 4 [(field_behavior) = OUTPUT_ONLY];
+
+  repeated int32 r = 5 [(field_behavior) = OUTPUT_ONLY];
+}
+
+message TestImmutable {
+  int32 i = 1 [(field_behavior) = IMMUTABLE];
+
+  string s = 2 [(field_behavior) = IMMUTABLE];
+
+  TestSimple msg = 3 [(field_behavior) = IMMUTABLE];
+
+  map<string, int32> m = 4 [(field_behavior) = IMMUTABLE];
+
+  repeated int32 r = 5 [(field_behavior) = IMMUTABLE];
+}
