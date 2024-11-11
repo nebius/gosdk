@@ -58,6 +58,9 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		case optionResolvers:
 			customResolvers = append(customResolvers, o...)
 		case optionDomain:
+			if o == "" {
+				return nil, errors.New("empty domain provided")
+			}
 			domain = string(o)
 		case optionAddressTemplate:
 			customSubstitutions[o.find] = o.replace

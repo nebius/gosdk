@@ -1196,17 +1196,9 @@ func TestPatchWithResetMask(t *testing.T) {
 				M: map[string]int32{"bar": 7357},
 				R: []int32{1, -2, 3},
 			},
-			Mask:  mask.ParseMust("*.*.*"),
-			Patch: &testdata.TestImmutable{},
-			Result: &testdata.TestImmutable{
-				I: 42,
-				S: "foo",
-				Msg: &testdata.TestSimple{
-					TestInt64: 0x_F00D,
-				},
-				M: map[string]int32{"bar": 7357},
-				R: []int32{1, -2, 3},
-			},
+			Mask:   mask.ParseMust("*.*.*"),
+			Patch:  &testdata.TestImmutable{},
+			Result: &testdata.TestImmutable{},
 		},
 		{
 			Data: &testdata.TestOutputOnly{
@@ -1263,13 +1255,15 @@ func TestPatchWithResetMask(t *testing.T) {
 				},
 			},
 			Result: &testdata.TestImmutable{
-				I: 42,
-				S: "foo",
-				Msg: &testdata.TestSimple{
-					TestInt64: 0x_F00D,
+				I: 37,
+				S: "nope",
+				M: map[string]int32{
+					"baz": 0x_BAD,
 				},
-				M: map[string]int32{"bar": 7357},
-				R: []int32{1, -2, 3},
+				R: []int32{-1},
+				Msg: &testdata.TestSimple{
+					TestInt32: 0x_BAD_F00D,
+				},
 			},
 		},
 	}

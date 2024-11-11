@@ -2,6 +2,7 @@ package protobuf
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 
 	"google.golang.org/protobuf/proto"
@@ -30,27 +31,12 @@ func getAnnotation[T any](options proto.Message, xt protoreflect.ExtensionType) 
 	return ret, nil
 }
 
-func getFieldBehaviors(field protoreflect.FieldDescriptor) (map[nebius.FieldBehavior]struct{}, error) {
-	behavior, err := getAnnotation[[]nebius.FieldBehavior](field.Options(), nebius.E_FieldBehavior)
-	if err != nil {
-		return nil, fmt.Errorf("get extension: %w", err)
-	}
-	ret := make(map[nebius.FieldBehavior]struct{}, len(behavior))
-	for _, b := range behavior {
-		ret[b] = struct{}{}
-	}
-	return ret, nil
-}
-
 func preserveField(field protoreflect.FieldDescriptor) (bool, error) {
-	bb, err := getFieldBehaviors(field)
+	behaviors, err := getAnnotation[[]nebius.FieldBehavior](field.Options(), nebius.E_FieldBehavior)
 	if err != nil {
-		return false, fmt.Errorf("get field behaviors: %w", err)
+		return false, fmt.Errorf("get extension: %w", err)
 	}
-	_, immutable := bb[nebius.FieldBehavior_IMMUTABLE]
-	_, outputOnly := bb[nebius.FieldBehavior_OUTPUT_ONLY]
-
-	return immutable || outputOnly, nil
+	return slices.Contains(behaviors, nebius.FieldBehavior_OUTPUT_ONLY), nil
 }
 
 func recursivePatchWithResetMask( //nolint:funlen,gocognit,gocyclo,cyclop // TODO: split
