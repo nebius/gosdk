@@ -70,7 +70,7 @@ func (c *CachedServiceAccount) ServiceAccount(ctx context.Context) (ServiceAccou
 		return ServiceAccount{}, err
 	}
 
-	return res.(ServiceAccount), nil
+	return res.(ServiceAccount), nil //nolint:errcheck // ok to panic
 }
 
 type StaticServiceAccount ServiceAccount

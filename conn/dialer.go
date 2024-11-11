@@ -179,7 +179,7 @@ func (d *dialer) dial(ctx context.Context, address Address) (*grpc.ClientConn, e
 		return nil, err
 	}
 
-	return res.(*grpc.ClientConn), nil
+	return res.(*grpc.ClientConn), nil //nolint:errcheck // ok to panic
 }
 
 func (d *dialer) Close() error {

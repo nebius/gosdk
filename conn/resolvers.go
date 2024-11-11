@@ -19,11 +19,11 @@ func ContextWithResolver(ctx context.Context, resolver Resolver) context.Context
 }
 
 func ResolverFromContext(ctx context.Context) Resolver {
-	value := ctx.Value(resolverContextKey{})
-	if value == nil {
+	res, ok := ctx.Value(resolverContextKey{}).(Resolver)
+	if !ok {
 		return nil
 	}
-	return value.(Resolver)
+	return res
 }
 
 type ContextResolver struct {
@@ -185,7 +185,7 @@ func NewCachedResolver(logger *slog.Logger, next Resolver) *CachedResolver {
 
 func (r *CachedResolver) Resolve(ctx context.Context, id ServiceID) (Address, error) {
 	if value, ok := r.cache.Load(id); ok {
-		return value.(Address), nil
+		return value.(Address), nil //nolint:errcheck // ok to panic
 	}
 
 	log := r.logger.With(slog.String("service", string(id)))
