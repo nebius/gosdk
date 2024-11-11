@@ -199,7 +199,7 @@ func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool
 		return BearerToken{}, err
 	}
 
-	return res.(BearerToken), nil
+	return res.(BearerToken), nil //nolint:errcheck // ok to panic
 }
 
 type CachedBearerTokener struct {
@@ -268,5 +268,5 @@ func (c *CachedBearerTokener) requestToken(ctx context.Context) (BearerToken, er
 		return BearerToken{}, err
 	}
 
-	return res.(BearerToken), nil
+	return res.(BearerToken), nil //nolint:errcheck // ok to panic
 }
