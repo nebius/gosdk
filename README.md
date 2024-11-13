@@ -116,8 +116,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 [go-url]: /go.mod
 [go-latest-img]: https://img.shields.io/github/go-mod/go-version/nebius/gosdk?filename=.github%2Flatest-deps%2Fgo.mod&label=tested
 [go-latest-url]: /.github/latest-deps/go.mod
-[ci-img]: https://github.com/nebius/gosdk/actions/workflows/ci.yaml/badge.svg
-[ci-url]: https://github.com/nebius/gosdk/actions/workflows/ci.yaml
+[ci-img]: https://github.com/nebius/gosdk/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/nebius/gosdk/actions/workflows/ci.yml
 [license-img]: https://img.shields.io/github/license/nebius/gosdk.svg
 [license-url]: /LICENSE
 [godoc-img]: https://pkg.go.dev/badge/github.com/nebius/gosdk.svg
