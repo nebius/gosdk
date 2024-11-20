@@ -25,14 +25,14 @@ func NewTooManyRequests(se *common.ServiceError, detail *common.TooManyRequests)
 }
 
 func (e *TooManyRequests) Violation() string {
-	return e.violation.Violation
+	return e.violation.GetViolation()
 }
 
 func (e *TooManyRequests) Error() string {
 	return fmt.Sprintf(
 		"Too many requests %s: service %s: %s",
-		e.source.Code,
-		e.source.Service,
-		e.violation.Violation,
+		e.source.GetCode(),
+		e.source.GetService(),
+		e.violation.GetViolation(),
 	)
 }

@@ -25,18 +25,18 @@ func NewInternal(se *common.ServiceError, detail *common.InternalError) *Interna
 }
 
 func (e *Internal) RequestID() string {
-	return e.internal.RequestId
+	return e.internal.GetRequestId()
 }
 
 func (e *Internal) TraceID() string {
-	return e.internal.TraceId
+	return e.internal.GetTraceId()
 }
 
 func (e *Internal) Error() string {
 	return fmt.Sprintf(
 		"Internal error %s: service %s, request ID: %s, trace ID: %s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		e.RequestID(),
 		e.TraceID(),
 	)

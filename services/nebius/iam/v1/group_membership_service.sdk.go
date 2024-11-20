@@ -27,6 +27,7 @@ type GroupMembershipService interface {
 	Get(context.Context, *v1.GetGroupMembershipRequest, ...grpc.CallOption) (*v1.GroupMembership, error)
 	Delete(context.Context, *v1.DeleteGroupMembershipRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListMembers(context.Context, *v1.ListGroupMembershipsRequest, ...grpc.CallOption) (*v1.ListGroupMembershipsResponse, error)
+	ListMembersWithAttributes(context.Context, *v1.ListGroupMembershipsRequest, ...grpc.CallOption) (*v1.ListGroupMembershipsWithAttributesResponse, error)
 	ListMemberOf(context.Context, *v1.ListMemberOfRequest, ...grpc.CallOption) (*v1.ListMemberOfResponse, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
@@ -96,6 +97,18 @@ func (s groupMembershipService) ListMembers(ctx context.Context, request *v1.Lis
 		return nil, err
 	}
 	return v1.NewGroupMembershipServiceClient(con).ListMembers(ctx, request, opts...)
+}
+
+func (s groupMembershipService) ListMembersWithAttributes(ctx context.Context, request *v1.ListGroupMembershipsRequest, opts ...grpc.CallOption) (*v1.ListGroupMembershipsWithAttributesResponse, error) {
+	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewGroupMembershipServiceClient(con).ListMembersWithAttributes(ctx, request, opts...)
 }
 
 func (s groupMembershipService) ListMemberOf(ctx context.Context, request *v1.ListMemberOfRequest, opts ...grpc.CallOption) (*v1.ListMemberOfResponse, error) {

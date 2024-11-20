@@ -20,11 +20,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	GroupMembershipService_Create_FullMethodName       = "/nebius.iam.v1.GroupMembershipService/Create"
-	GroupMembershipService_Get_FullMethodName          = "/nebius.iam.v1.GroupMembershipService/Get"
-	GroupMembershipService_Delete_FullMethodName       = "/nebius.iam.v1.GroupMembershipService/Delete"
-	GroupMembershipService_ListMembers_FullMethodName  = "/nebius.iam.v1.GroupMembershipService/ListMembers"
-	GroupMembershipService_ListMemberOf_FullMethodName = "/nebius.iam.v1.GroupMembershipService/ListMemberOf"
+	GroupMembershipService_Create_FullMethodName                    = "/nebius.iam.v1.GroupMembershipService/Create"
+	GroupMembershipService_Get_FullMethodName                       = "/nebius.iam.v1.GroupMembershipService/Get"
+	GroupMembershipService_Delete_FullMethodName                    = "/nebius.iam.v1.GroupMembershipService/Delete"
+	GroupMembershipService_ListMembers_FullMethodName               = "/nebius.iam.v1.GroupMembershipService/ListMembers"
+	GroupMembershipService_ListMembersWithAttributes_FullMethodName = "/nebius.iam.v1.GroupMembershipService/ListMembersWithAttributes"
+	GroupMembershipService_ListMemberOf_FullMethodName              = "/nebius.iam.v1.GroupMembershipService/ListMemberOf"
 )
 
 // GroupMembershipServiceClient is the client API for GroupMembershipService service.
@@ -35,6 +36,7 @@ type GroupMembershipServiceClient interface {
 	Get(ctx context.Context, in *GetGroupMembershipRequest, opts ...grpc.CallOption) (*GroupMembership, error)
 	Delete(ctx context.Context, in *DeleteGroupMembershipRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	ListMembers(ctx context.Context, in *ListGroupMembershipsRequest, opts ...grpc.CallOption) (*ListGroupMembershipsResponse, error)
+	ListMembersWithAttributes(ctx context.Context, in *ListGroupMembershipsRequest, opts ...grpc.CallOption) (*ListGroupMembershipsWithAttributesResponse, error)
 	ListMemberOf(ctx context.Context, in *ListMemberOfRequest, opts ...grpc.CallOption) (*ListMemberOfResponse, error)
 }
 
@@ -82,6 +84,15 @@ func (c *groupMembershipServiceClient) ListMembers(ctx context.Context, in *List
 	return out, nil
 }
 
+func (c *groupMembershipServiceClient) ListMembersWithAttributes(ctx context.Context, in *ListGroupMembershipsRequest, opts ...grpc.CallOption) (*ListGroupMembershipsWithAttributesResponse, error) {
+	out := new(ListGroupMembershipsWithAttributesResponse)
+	err := c.cc.Invoke(ctx, GroupMembershipService_ListMembersWithAttributes_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *groupMembershipServiceClient) ListMemberOf(ctx context.Context, in *ListMemberOfRequest, opts ...grpc.CallOption) (*ListMemberOfResponse, error) {
 	out := new(ListMemberOfResponse)
 	err := c.cc.Invoke(ctx, GroupMembershipService_ListMemberOf_FullMethodName, in, out, opts...)
@@ -99,6 +110,7 @@ type GroupMembershipServiceServer interface {
 	Get(context.Context, *GetGroupMembershipRequest) (*GroupMembership, error)
 	Delete(context.Context, *DeleteGroupMembershipRequest) (*v1.Operation, error)
 	ListMembers(context.Context, *ListGroupMembershipsRequest) (*ListGroupMembershipsResponse, error)
+	ListMembersWithAttributes(context.Context, *ListGroupMembershipsRequest) (*ListGroupMembershipsWithAttributesResponse, error)
 	ListMemberOf(context.Context, *ListMemberOfRequest) (*ListMemberOfResponse, error)
 }
 
@@ -117,6 +129,9 @@ func (UnimplementedGroupMembershipServiceServer) Delete(context.Context, *Delete
 }
 func (UnimplementedGroupMembershipServiceServer) ListMembers(context.Context, *ListGroupMembershipsRequest) (*ListGroupMembershipsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMembers not implemented")
+}
+func (UnimplementedGroupMembershipServiceServer) ListMembersWithAttributes(context.Context, *ListGroupMembershipsRequest) (*ListGroupMembershipsWithAttributesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMembersWithAttributes not implemented")
 }
 func (UnimplementedGroupMembershipServiceServer) ListMemberOf(context.Context, *ListMemberOfRequest) (*ListMemberOfResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMemberOf not implemented")
@@ -205,6 +220,24 @@ func _GroupMembershipService_ListMembers_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GroupMembershipService_ListMembersWithAttributes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGroupMembershipsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupMembershipServiceServer).ListMembersWithAttributes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupMembershipService_ListMembersWithAttributes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupMembershipServiceServer).ListMembersWithAttributes(ctx, req.(*ListGroupMembershipsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _GroupMembershipService_ListMemberOf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListMemberOfRequest)
 	if err := dec(in); err != nil {
@@ -245,6 +278,10 @@ var GroupMembershipService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListMembers",
 			Handler:    _GroupMembershipService_ListMembers_Handler,
+		},
+		{
+			MethodName: "ListMembersWithAttributes",
+			Handler:    _GroupMembershipService_ListMembersWithAttributes_Handler,
 		},
 		{
 			MethodName: "ListMemberOf",

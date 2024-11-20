@@ -25,14 +25,14 @@ func NewResourceAlreadyExists(se *common.ServiceError, detail *common.ResourceAl
 }
 
 func (e *ResourceAlreadyExists) ResourceID() string {
-	return e.exists.ResourceId
+	return e.exists.GetResourceId()
 }
 
 func (e *ResourceAlreadyExists) Error() string {
 	return fmt.Sprintf(
 		"Resource already exists %s: service %s, resource ID: %s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		e.ResourceID(),
 	)
 }

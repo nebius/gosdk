@@ -25,14 +25,14 @@ func NewPermissionDenied(se *common.ServiceError, detail *common.PermissionDenie
 }
 
 func (e *PermissionDenied) ResourceID() string {
-	return e.denied.ResourceId
+	return e.denied.GetResourceId()
 }
 
 func (e *PermissionDenied) Error() string {
 	return fmt.Sprintf(
 		"Permission denied %s: service %s, resource ID: %s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		e.ResourceID(),
 	)
 }

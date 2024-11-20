@@ -25,18 +25,18 @@ func NewResourceConflict(se *common.ServiceError, detail *common.ResourceConflic
 }
 
 func (e *ResourceConflict) ResourceID() string {
-	return e.conflict.ResourceId
+	return e.conflict.GetResourceId()
 }
 
 func (e *ResourceConflict) Message() string {
-	return e.conflict.Message
+	return e.conflict.GetMessage()
 }
 
 func (e *ResourceConflict) Error() string {
 	return fmt.Sprintf(
 		"Resource conflict %s: service %s, resource ID %s: %s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		e.ResourceID(),
 		e.Message(),
 	)

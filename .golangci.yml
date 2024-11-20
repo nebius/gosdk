@@ -178,6 +178,13 @@ linters-settings:
     # Default: true
     strconcat: false
 
+  reassign:
+    # Patterns for global variable names that are checked for reassignment.
+    # See https://github.com/curioswitch/go-reassign#usage
+    # Default: ["EOF", "Err.*"]
+    patterns:
+      - ".*"
+
   rowserrcheck:
     # database/sql is always checked
     # Default: []
@@ -353,14 +360,6 @@ issues:
         - wrapcheck
 
     ## specific to gosdk
-    - path: "^services"
-      linters:
-        - dupl
-        - errcheck
-        - gochecknoinits
-        - goconst
-        - goimports
-        - lll
     - path: "^fieldmask"
       linters:
         - nestif
@@ -370,19 +369,10 @@ issues:
     - path: "^example_test.go$"
       linters:
         - testableexamples
-    - path: "^services"
-      text: "method \\S+Id should be \\S+ID"
-    - path: "^services"
-      source: 'const TokenExchangeServiceID conn.ServiceID = "nebius.iam.v1.TokenExchangeService"'
-    - path: "^services"
-      text: "SA1019: .+ is deprecated"
     - path: "operations/alphaops"
       text: "SA1019: .+ is deprecated"
     - path: "serviceerror"
       text: "the error type name .+ should conform to the `XxxError` format"
-    - path: "serviceerror"
-      linters:
-        - protogetter # TODO: fix
     - path: "fieldmask"
       linters:
         - nilnil # TODO: fix or ignore

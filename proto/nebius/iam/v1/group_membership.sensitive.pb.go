@@ -2,6 +2,12 @@
 
 package v1
 
+import (
+	proto "google.golang.org/protobuf/proto"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	slog "log/slog"
+)
+
 // func (x *GroupMembership) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GroupMembership) LogValue() slog.Value // is not generated as no sensitive fields found
 
@@ -10,3 +16,49 @@ package v1
 
 // func (x *GroupMembershipStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GroupMembershipStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// Sanitize mutates [GroupMembershipWithAttributes] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *GroupMembershipWithAttributes) Sanitize() {
+	if x == nil {
+		return
+	}
+	if o, ok := x.AttributesOptional.(*GroupMembershipWithAttributes_UserAttributes); ok && o != nil {
+		o.UserAttributes.Sanitize()
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [GroupMembershipWithAttributes].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *GroupMembershipWithAttributes
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [GroupMembershipWithAttributes], use the following code:
+//
+//	var original *GroupMembershipWithAttributes
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*GroupMembershipWithAttributes)
+func (x *GroupMembershipWithAttributes) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*GroupMembershipWithAttributes) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperGroupMembershipWithAttributes)(c))
+}
+
+// wrapperGroupMembershipWithAttributes is used to return [GroupMembershipWithAttributes] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperGroupMembershipWithAttributes GroupMembershipWithAttributes
+
+func (w *wrapperGroupMembershipWithAttributes) String() string {
+	return (*GroupMembershipWithAttributes)(w).String()
+}
+
+func (*wrapperGroupMembershipWithAttributes) ProtoMessage() {}
+
+func (w *wrapperGroupMembershipWithAttributes) ProtoReflect() protoreflect.Message {
+	return (*GroupMembershipWithAttributes)(w).ProtoReflect()
+}
