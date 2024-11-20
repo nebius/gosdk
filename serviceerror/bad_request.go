@@ -26,22 +26,22 @@ func NewBadRequest(se *common.ServiceError, br *common.BadRequest) *BadRequest {
 }
 
 func (e *BadRequest) Violations() []*common.BadRequest_Violation {
-	return e.badRequest.Violations
+	return e.badRequest.GetViolations()
 }
 
 func (e *BadRequest) Error() string {
-	violations := make([]string, 0, len(e.badRequest.Violations))
-	for _, violation := range e.badRequest.Violations {
+	violations := make([]string, 0, len(e.badRequest.GetViolations()))
+	for _, violation := range e.badRequest.GetViolations() {
 		violations = append(violations, fmt.Sprintf(
 			"  %s: %s",
-			violation.Field,
-			violation.Message,
+			violation.GetField(),
+			violation.GetMessage(),
 		))
 	}
 	return fmt.Sprintf(
 		"Bad Request %s: service %s, violations:\n%s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		strings.Join(violations, "\n"),
 	)
 }

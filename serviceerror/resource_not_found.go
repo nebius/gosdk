@@ -25,14 +25,14 @@ func NewResourceNotFound(se *common.ServiceError, detail *common.ResourceNotFoun
 }
 
 func (e *ResourceNotFound) ResourceID() string {
-	return e.notFound.ResourceId
+	return e.notFound.GetResourceId()
 }
 
 func (e *ResourceNotFound) Error() string {
 	return fmt.Sprintf(
 		"Resource not found %s: service %s, resource ID: %s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		e.ResourceID(),
 	)
 }

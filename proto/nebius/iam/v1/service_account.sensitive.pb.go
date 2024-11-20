@@ -10,3 +10,6 @@ package v1
 
 // func (x *ServiceAccountStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ServiceAccountStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ServiceAccountAttributes) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ServiceAccountAttributes) LogValue() slog.Value // is not generated as no sensitive fields found

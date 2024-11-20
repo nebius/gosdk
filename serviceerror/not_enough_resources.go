@@ -26,23 +26,23 @@ func NewNotEnoughResources(se *common.ServiceError, detail *common.NotEnoughReso
 }
 
 func (e *NotEnoughResources) Violations() []*common.NotEnoughResources_Violation {
-	return e.notEnoughResources.Violations
+	return e.notEnoughResources.GetViolations()
 }
 
 func (e *NotEnoughResources) Error() string {
-	violations := make([]string, 0, len(e.notEnoughResources.Violations))
-	for _, violation := range e.notEnoughResources.Violations {
+	violations := make([]string, 0, len(e.notEnoughResources.GetViolations()))
+	for _, violation := range e.notEnoughResources.GetViolations() {
 		violations = append(violations, fmt.Sprintf(
 			"  %s (requested %s): %s",
-			violation.ResourceType,
-			violation.Requested,
-			violation.Message,
+			violation.GetResourceType(),
+			violation.GetRequested(),
+			violation.GetMessage(),
 		))
 	}
 	return fmt.Sprintf(
 		"Not enough resources %s: service %s, violations:\n%s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		strings.Join(violations, "\n"),
 	)
 }

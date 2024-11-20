@@ -25,17 +25,17 @@ func NewOutOfRange(se *common.ServiceError, detail *common.OutOfRange) *OutOfRan
 }
 
 func (e *OutOfRange) Requested() string {
-	return e.outOfRange.Requested
+	return e.outOfRange.GetRequested()
 }
 func (e *OutOfRange) Limit() string {
-	return e.outOfRange.Limit
+	return e.outOfRange.GetLimit()
 }
 
 func (e *OutOfRange) Error() string {
 	return fmt.Sprintf(
 		"Out of range %s: service %s, requested: %s, limit: %s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		e.Requested(),
 		e.Limit(),
 	)

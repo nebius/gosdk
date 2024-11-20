@@ -98,3 +98,6 @@ func (w *wrapperClusterSpec) ProtoReflect() protoreflect.Message {
 
 // func (x *MlflowClusterStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *MlflowClusterStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *Endpoints) Sanitize()            // is not generated as no sensitive fields found
+// func (x *Endpoints) LogValue() slog.Value // is not generated as no sensitive fields found

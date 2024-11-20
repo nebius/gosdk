@@ -25,20 +25,20 @@ func NewOperationAborted(se *common.ServiceError, detail *common.OperationAborte
 }
 
 func (e *OperationAborted) ResourceID() string {
-	return e.aborted.ResourceId
+	return e.aborted.GetResourceId()
 }
 func (e *OperationAborted) AbortedOperationID() string {
-	return e.aborted.OperationId
+	return e.aborted.GetOperationId()
 }
 func (e *OperationAborted) NewOperationID() string {
-	return e.aborted.AbortedByOperationId
+	return e.aborted.GetAbortedByOperationId()
 }
 
 func (e *OperationAborted) Error() string {
 	return fmt.Sprintf(
 		"Operation aborted %s: service %s, resource: %s, aborted operation ID: %s, new operation ID: %s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		e.ResourceID(),
 		e.AbortedOperationID(),
 		e.NewOperationID(),

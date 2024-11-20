@@ -10,7 +10,7 @@ import (
 	"github.com/nebius/gosdk/conn"
 )
 
-//nolint:paralleltest,tparallel // tests operate with the global state
+//nolint:paralleltest,tparallel,reassign // tests operate with the global state
 func TestConventionResolver_positive(t *testing.T) {
 	t.Parallel()
 	tests := []struct {

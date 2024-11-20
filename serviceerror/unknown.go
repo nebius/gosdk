@@ -29,7 +29,7 @@ func (e *Unknown) IsUnknown() bool {
 func (e *Unknown) Error() string {
 	return fmt.Sprintf(
 		"Service %s error %s",
-		e.source.Service,
-		e.source.Code,
+		e.source.GetService(),
+		e.source.GetCode(),
 	)
 }

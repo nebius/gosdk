@@ -15,6 +15,37 @@ type ServiceError interface {
 	RetryType() common.ServiceError_RetryType
 }
 
+func ServiceErrorFromProto(serviceError *common.ServiceError) ServiceError { //nolint:revive,lll // don't want to name it FromProto
+	switch seDetails := serviceError.GetDetails().(type) {
+	case *common.ServiceError_BadRequest:
+		return NewBadRequest(serviceError, seDetails.BadRequest)
+	case *common.ServiceError_BadResourceState:
+		return NewBadResourceState(serviceError, seDetails.BadResourceState)
+	case *common.ServiceError_ResourceNotFound:
+		return NewResourceNotFound(serviceError, seDetails.ResourceNotFound)
+	case *common.ServiceError_ResourceAlreadyExists:
+		return NewResourceAlreadyExists(serviceError, seDetails.ResourceAlreadyExists)
+	case *common.ServiceError_OutOfRange:
+		return NewOutOfRange(serviceError, seDetails.OutOfRange)
+	case *common.ServiceError_PermissionDenied:
+		return NewPermissionDenied(serviceError, seDetails.PermissionDenied)
+	case *common.ServiceError_ResourceConflict:
+		return NewResourceConflict(serviceError, seDetails.ResourceConflict)
+	case *common.ServiceError_OperationAborted:
+		return NewOperationAborted(serviceError, seDetails.OperationAborted)
+	case *common.ServiceError_TooManyRequests:
+		return NewTooManyRequests(serviceError, seDetails.TooManyRequests)
+	case *common.ServiceError_QuotaFailure:
+		return NewQuotaFailure(serviceError, seDetails.QuotaFailure)
+	case *common.ServiceError_InternalError:
+		return NewInternal(serviceError, seDetails.InternalError)
+	case *common.ServiceError_NotEnoughResources:
+		return NewNotEnoughResources(serviceError, seDetails.NotEnoughResources)
+	default:
+		return NewUnknown(serviceError)
+	}
+}
+
 func ServiceErrorFromAny(detail *anypb.Any) (ServiceError, error) { //nolint:revive // don't want to name it FromAny
 	serviceError := &common.ServiceError{}
 	err := anypb.UnmarshalTo(
@@ -27,34 +58,8 @@ func ServiceErrorFromAny(detail *anypb.Any) (ServiceError, error) { //nolint:rev
 	if err != nil {
 		return nil, err
 	}
-	switch seDetails := serviceError.Details.(type) {
-	case *common.ServiceError_BadRequest:
-		return NewBadRequest(serviceError, seDetails.BadRequest), nil
-	case *common.ServiceError_BadResourceState:
-		return NewBadResourceState(serviceError, seDetails.BadResourceState), nil
-	case *common.ServiceError_ResourceNotFound:
-		return NewResourceNotFound(serviceError, seDetails.ResourceNotFound), nil
-	case *common.ServiceError_ResourceAlreadyExists:
-		return NewResourceAlreadyExists(serviceError, seDetails.ResourceAlreadyExists), nil
-	case *common.ServiceError_OutOfRange:
-		return NewOutOfRange(serviceError, seDetails.OutOfRange), nil
-	case *common.ServiceError_PermissionDenied:
-		return NewPermissionDenied(serviceError, seDetails.PermissionDenied), nil
-	case *common.ServiceError_ResourceConflict:
-		return NewResourceConflict(serviceError, seDetails.ResourceConflict), nil
-	case *common.ServiceError_OperationAborted:
-		return NewOperationAborted(serviceError, seDetails.OperationAborted), nil
-	case *common.ServiceError_TooManyRequests:
-		return NewTooManyRequests(serviceError, seDetails.TooManyRequests), nil
-	case *common.ServiceError_QuotaFailure:
-		return NewQuotaFailure(serviceError, seDetails.QuotaFailure), nil
-	case *common.ServiceError_InternalError:
-		return NewInternal(serviceError, seDetails.InternalError), nil
-	case *common.ServiceError_NotEnoughResources:
-		return NewNotEnoughResources(serviceError, seDetails.NotEnoughResources), nil
-	default:
-		return NewUnknown(serviceError), nil
-	}
+
+	return ServiceErrorFromProto(serviceError), nil
 }
 
 type commonServiceError struct {

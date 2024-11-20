@@ -38,7 +38,7 @@ func FromErrorAndAny(err error, details []*anypb.Any) error {
 	}
 	var serviceErrors []ServiceError
 	if stat, ok := status.FromError(err); ok {
-		serviceErrors = collectServiceErrors(stat.Proto().Details)
+		serviceErrors = collectServiceErrors(stat.Proto().GetDetails())
 	}
 	serviceErrors = append(serviceErrors, collectServiceErrors(details)...)
 

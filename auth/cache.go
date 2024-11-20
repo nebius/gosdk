@@ -105,7 +105,7 @@ func (c *CachedServiceTokener) Run(ctx context.Context) error { //nolint:gocogni
 					retry = c.initialRetry
 				} else {
 					mul := math.Pow(c.retryMultiplier, float64(retryCount))
-					retry = time.Duration(math.Max(float64(c.maxRetry), float64(c.initialRetry)*mul))
+					retry = time.Duration(math.Min(float64(c.maxRetry), float64(c.initialRetry)*mul))
 				}
 				c.logger.ErrorContext(
 					ctx,

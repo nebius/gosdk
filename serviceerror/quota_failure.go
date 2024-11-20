@@ -26,24 +26,24 @@ func NewQuotaFailure(se *common.ServiceError, detail *common.QuotaFailure) *Quot
 }
 
 func (e *QuotaFailure) Violations() []*common.QuotaFailure_Violation {
-	return e.failure.Violations
+	return e.failure.GetViolations()
 }
 
 func (e *QuotaFailure) Error() string {
-	violations := make([]string, 0, len(e.failure.Violations))
-	for _, violation := range e.failure.Violations {
+	violations := make([]string, 0, len(e.failure.GetViolations()))
+	for _, violation := range e.failure.GetViolations() {
 		violations = append(violations, fmt.Sprintf(
 			"  %s (limit %s, requested %s): %s",
-			violation.Quota,
-			violation.Limit,
-			violation.Requested,
-			violation.Message,
+			violation.GetQuota(),
+			violation.GetLimit(),
+			violation.GetRequested(),
+			violation.GetMessage(),
 		))
 	}
 	return fmt.Sprintf(
 		"Quota failure %s: service %s, violations:\n%s",
-		e.source.Code,
-		e.source.Service,
+		e.source.GetCode(),
+		e.source.GetService(),
 		strings.Join(violations, "\n"),
 	)
 }
