@@ -3,6 +3,7 @@
 package v1
 
 import (
+	tokensanitizer "github.com/nebius/gosdk/proto/tokensanitizer"
 	proto "google.golang.org/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	slog "log/slog"
@@ -10,17 +11,26 @@ import (
 
 // Sanitize mutates [ExchangeTokenRequest] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].
+// Fields with credentials are marked with [(nebius.credentials) = true].
 func (x *ExchangeTokenRequest) Sanitize() {
 	if x == nil {
 		return
 	}
-	x.SubjectToken = "***"
-	x.ActorToken = "***"
+	credsSanitizer := tokensanitizer.CredentialsSanitizer()
+	sanitizeCreds := func(s string) string {
+		if !credsSanitizer.IsSupported(s) {
+			return "**HIDDEN**"
+		}
+		return credsSanitizer.Sanitize(s)
+	}
+	x.SubjectToken = sanitizeCreds(x.SubjectToken)
+	x.ActorToken = sanitizeCreds(x.ActorToken)
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ExchangeTokenRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+// Signature is replaced by "**" in credentials.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -55,16 +65,25 @@ func (w *wrapperExchangeTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Sanitize mutates [CreateTokenResponse] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].
+// Fields with credentials are marked with [(nebius.credentials) = true].
 func (x *CreateTokenResponse) Sanitize() {
 	if x == nil {
 		return
 	}
-	x.AccessToken = "***"
+	credsSanitizer := tokensanitizer.CredentialsSanitizer()
+	sanitizeCreds := func(s string) string {
+		if !credsSanitizer.IsSupported(s) {
+			return "**HIDDEN**"
+		}
+		return credsSanitizer.Sanitize(s)
+	}
+	x.AccessToken = sanitizeCreds(x.AccessToken)
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [CreateTokenResponse].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+// Signature is replaced by "**" in credentials.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //

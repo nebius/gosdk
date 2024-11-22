@@ -30,7 +30,7 @@ func (x *GroupMembershipWithAttributes) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [GroupMembershipWithAttributes].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //

@@ -19,7 +19,7 @@ func (x *CreateNodeGroupRequest) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [CreateNodeGroupRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -71,7 +71,7 @@ func (x *ListNodeGroupsResponse) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ListNodeGroupsResponse].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -115,7 +115,7 @@ func (x *UpdateNodeGroupRequest) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [UpdateNodeGroupRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //

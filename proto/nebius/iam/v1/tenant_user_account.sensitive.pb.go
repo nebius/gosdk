@@ -19,7 +19,7 @@ func (x *TenantUserAccount) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [TenantUserAccount].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -66,7 +66,7 @@ func (x *TenantUserAccountWithAttributes) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [TenantUserAccountWithAttributes].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -105,21 +105,21 @@ func (x *UserAttributes) Sanitize() {
 	if x == nil {
 		return
 	}
-	x.Sub = proto.String("***")
-	x.Name = proto.String("***")
-	x.GivenName = proto.String("***")
-	x.FamilyName = proto.String("***")
-	x.PreferredUsername = proto.String("***")
-	x.Picture = proto.String("***")
-	x.Email = proto.String("***")
-	x.Zoneinfo = proto.String("***")
-	x.Locale = proto.String("***")
-	x.PhoneNumber = proto.String("***")
+	x.Sub = proto.String("**HIDDEN**")
+	x.Name = proto.String("**HIDDEN**")
+	x.GivenName = proto.String("**HIDDEN**")
+	x.FamilyName = proto.String("**HIDDEN**")
+	x.PreferredUsername = proto.String("**HIDDEN**")
+	x.Picture = proto.String("**HIDDEN**")
+	x.Email = proto.String("**HIDDEN**")
+	x.Zoneinfo = proto.String("**HIDDEN**")
+	x.Locale = proto.String("**HIDDEN**")
+	x.PhoneNumber = proto.String("**HIDDEN**")
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [UserAttributes].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -166,7 +166,7 @@ func (x *TenantUserAccountSpec) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [TenantUserAccountSpec].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -205,12 +205,12 @@ func (x *TenantUserAccountSpec_VisibleAttributes) Sanitize() {
 	if x == nil {
 		return
 	}
-	x.Attribute = []string{"***"}
+	x.Attribute = []string{"**HIDDEN**"}
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [TenantUserAccountSpec_VisibleAttributes].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //

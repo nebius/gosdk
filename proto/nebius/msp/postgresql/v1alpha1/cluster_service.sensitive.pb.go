@@ -27,7 +27,7 @@ func (x *ListClustersResponse) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ListClustersResponse].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -71,7 +71,7 @@ func (x *CreateClusterRequest) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [CreateClusterRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -118,7 +118,7 @@ func (x *UpdateClusterRequest) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [UpdateClusterRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
