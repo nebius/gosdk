@@ -19,7 +19,7 @@ func (x *CreateInvitationRequest) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [CreateInvitationRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -61,12 +61,12 @@ func (x *ListInvitationsRequest) Sanitize() {
 	if x == nil {
 		return
 	}
-	x.Filter = "***"
+	x.Filter = "**HIDDEN**"
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ListInvitationsRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -112,7 +112,7 @@ func (x *ListInvitationsResponse) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ListInvitationsResponse].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -159,7 +159,7 @@ func (x *UpdateInvitationRequest) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [UpdateInvitationRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //

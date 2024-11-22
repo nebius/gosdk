@@ -19,7 +19,7 @@ func (x *Cluster) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [Cluster].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -63,7 +63,7 @@ func (x *ClusterSpec) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ClusterSpec].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -108,12 +108,12 @@ func (x *Password) Sanitize() {
 	if x == nil {
 		return
 	}
-	x.Password = "***"
+	x.Password = "**HIDDEN**"
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [Password].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //

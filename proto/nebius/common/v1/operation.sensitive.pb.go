@@ -47,7 +47,7 @@ func (x *Operation) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [Operation].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
 // Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.

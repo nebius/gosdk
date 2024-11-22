@@ -25,7 +25,7 @@ func (x *CreateK8SReleaseRequest) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [CreateK8SReleaseRequest].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -74,7 +74,7 @@ func (x *ListK8SReleasesResponse) Sanitize() {
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ListK8SReleasesResponse].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
-// Sensitive strings and bytes are masked with `***`, other sensitive fields are omitted.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
