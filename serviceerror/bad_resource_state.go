@@ -6,33 +6,31 @@ import (
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
-var (
-	_ ServiceError = (*BadResourceState)(nil)
-)
+var _ Detail = (*BadResourceState)(nil)
 
 type BadResourceState struct {
-	commonServiceError
-	badResouceState *common.BadResourceState
+	commonDetail
+	badResourceState *common.BadResourceState
 }
 
-func NewBadResourceState(se *common.ServiceError, br *common.BadResourceState) *BadResourceState {
+func newBadResourceState(se *common.ServiceError, br *common.BadResourceState) *BadResourceState {
 	return &BadResourceState{
-		commonServiceError: commonServiceError{
+		commonDetail: commonDetail{
 			source: se,
 		},
-		badResouceState: br,
+		badResourceState: br,
 	}
 }
 
 func (e *BadResourceState) ResourceID() string {
-	return e.badResouceState.GetResourceId()
+	return e.badResourceState.GetResourceId()
 }
 
 func (e *BadResourceState) Message() string {
-	return e.badResouceState.GetMessage()
+	return e.badResourceState.GetMessage()
 }
 
-func (e *BadResourceState) Error() string {
+func (e *BadResourceState) String() string {
 	return fmt.Sprintf(
 		"Bad resource state %s:\n  service %s:\n  resource ID: %s\n  message: %s",
 		e.source.GetCode(),

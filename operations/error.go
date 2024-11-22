@@ -19,11 +19,12 @@ func NewError(operation Operation) error {
 		return nil
 	}
 	s := operation.Status()
-	return serviceerror.FromErrorAndAny(&Error{
+	err := &Error{
 		Operation: operation,
 		Code:      s.Code(),
 		Message:   s.Message(),
-	}, s.Proto().GetDetails())
+	}
+	return serviceerror.FromError(err, s.Proto().GetDetails()...)
 }
 
 func (e *Error) Error() string {

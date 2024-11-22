@@ -6,18 +6,16 @@ import (
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
-var (
-	_ ServiceError = (*ResourceAlreadyExists)(nil)
-)
+var _ Detail = (*ResourceAlreadyExists)(nil)
 
 type ResourceAlreadyExists struct {
-	commonServiceError
+	commonDetail
 	exists *common.ResourceAlreadyExists
 }
 
-func NewResourceAlreadyExists(se *common.ServiceError, detail *common.ResourceAlreadyExists) *ResourceAlreadyExists {
+func newResourceAlreadyExists(se *common.ServiceError, detail *common.ResourceAlreadyExists) *ResourceAlreadyExists {
 	return &ResourceAlreadyExists{
-		commonServiceError: commonServiceError{
+		commonDetail: commonDetail{
 			source: se,
 		},
 		exists: detail,
@@ -28,7 +26,7 @@ func (e *ResourceAlreadyExists) ResourceID() string {
 	return e.exists.GetResourceId()
 }
 
-func (e *ResourceAlreadyExists) Error() string {
+func (e *ResourceAlreadyExists) String() string {
 	return fmt.Sprintf(
 		"Resource already exists %s: service %s, resource ID: %s",
 		e.source.GetCode(),

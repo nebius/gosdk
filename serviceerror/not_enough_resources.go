@@ -7,18 +7,16 @@ import (
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
-var (
-	_ ServiceError = (*NotEnoughResources)(nil)
-)
+var _ Detail = (*NotEnoughResources)(nil)
 
 type NotEnoughResources struct {
-	commonServiceError
+	commonDetail
 	notEnoughResources *common.NotEnoughResources
 }
 
-func NewNotEnoughResources(se *common.ServiceError, detail *common.NotEnoughResources) *NotEnoughResources {
+func newNotEnoughResources(se *common.ServiceError, detail *common.NotEnoughResources) *NotEnoughResources {
 	return &NotEnoughResources{
-		commonServiceError: commonServiceError{
+		commonDetail: commonDetail{
 			source: se,
 		},
 		notEnoughResources: detail,
@@ -29,7 +27,7 @@ func (e *NotEnoughResources) Violations() []*common.NotEnoughResources_Violation
 	return e.notEnoughResources.GetViolations()
 }
 
-func (e *NotEnoughResources) Error() string {
+func (e *NotEnoughResources) String() string {
 	violations := make([]string, 0, len(e.notEnoughResources.GetViolations()))
 	for _, violation := range e.notEnoughResources.GetViolations() {
 		violations = append(violations, fmt.Sprintf(
