@@ -12,7 +12,7 @@ import (
 	"github.com/nebius/gosdk/serviceerror"
 )
 
-func TestServiceErrorNoUnknowns(t *testing.T) {
+func TestDetailNoUnknowns(t *testing.T) {
 	t.Parallel()
 
 	seProto := (&common.ServiceError{}).ProtoReflect()
@@ -26,7 +26,7 @@ func TestServiceErrorNoUnknowns(t *testing.T) {
 		myAny := &anypb.Any{}
 		err := anypb.MarshalFrom(myAny, seProto.Interface(), proto.MarshalOptions{})
 		require.NoError(t, err)
-		se, err := serviceerror.ServiceErrorFromAny(myAny)
+		se, err := serviceerror.NewDetailFromAny(myAny)
 		require.NoError(t, err)
 		_, ok := se.(*serviceerror.Unknown)
 		assert.False(t, ok, "Service error type not implemented", field.Name())

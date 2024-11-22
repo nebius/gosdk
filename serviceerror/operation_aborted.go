@@ -6,18 +6,16 @@ import (
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
-var (
-	_ ServiceError = (*OperationAborted)(nil)
-)
+var _ Detail = (*OperationAborted)(nil)
 
 type OperationAborted struct {
-	commonServiceError
+	commonDetail
 	aborted *common.OperationAborted
 }
 
-func NewOperationAborted(se *common.ServiceError, detail *common.OperationAborted) *OperationAborted {
+func newOperationAborted(se *common.ServiceError, detail *common.OperationAborted) *OperationAborted {
 	return &OperationAborted{
-		commonServiceError: commonServiceError{
+		commonDetail: commonDetail{
 			source: se,
 		},
 		aborted: detail,
@@ -27,14 +25,16 @@ func NewOperationAborted(se *common.ServiceError, detail *common.OperationAborte
 func (e *OperationAborted) ResourceID() string {
 	return e.aborted.GetResourceId()
 }
+
 func (e *OperationAborted) AbortedOperationID() string {
 	return e.aborted.GetOperationId()
 }
+
 func (e *OperationAborted) NewOperationID() string {
 	return e.aborted.GetAbortedByOperationId()
 }
 
-func (e *OperationAborted) Error() string {
+func (e *OperationAborted) String() string {
 	return fmt.Sprintf(
 		"Operation aborted %s: service %s, resource: %s, aborted operation ID: %s, new operation ID: %s",
 		e.source.GetCode(),

@@ -6,18 +6,16 @@ import (
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
-var (
-	_ ServiceError = (*Internal)(nil)
-)
+var _ Detail = (*Internal)(nil)
 
 type Internal struct {
-	commonServiceError
+	commonDetail
 	internal *common.InternalError
 }
 
-func NewInternal(se *common.ServiceError, detail *common.InternalError) *Internal {
+func newInternal(se *common.ServiceError, detail *common.InternalError) *Internal {
 	return &Internal{
-		commonServiceError: commonServiceError{
+		commonDetail: commonDetail{
 			source: se,
 		},
 		internal: detail,
@@ -32,7 +30,7 @@ func (e *Internal) TraceID() string {
 	return e.internal.GetTraceId()
 }
 
-func (e *Internal) Error() string {
+func (e *Internal) String() string {
 	return fmt.Sprintf(
 		"Internal error %s: service %s, request ID: %s, trace ID: %s",
 		e.source.GetCode(),

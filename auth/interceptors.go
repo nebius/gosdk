@@ -54,7 +54,7 @@ type Error struct {
 
 func newError(err error) *Error {
 	return &Error{
-		Cause: serviceerror.FromKnownErrors(err),
+		Cause: serviceerror.FromError(err),
 	}
 }
 

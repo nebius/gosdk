@@ -371,8 +371,6 @@ issues:
         - testableexamples
     - path: "operations/alphaops"
       text: "SA1019: .+ is deprecated"
-    - path: "serviceerror"
-      text: "the error type name .+ should conform to the `XxxError` format"
     - path: "fieldmask"
       linters:
         - nilnil # TODO: fix or ignore

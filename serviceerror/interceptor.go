@@ -15,7 +15,7 @@ func UnaryClientInterceptor(
 	opts ...grpc.CallOption,
 ) error {
 	err := invoker(ctx, method, req, reply, cc, opts...)
-	return FromKnownErrors(err)
+	return FromError(err)
 }
 
 func StreamClientInterceptor(
@@ -28,7 +28,7 @@ func StreamClientInterceptor(
 ) (grpc.ClientStream, error) {
 	stream, err := streamer(ctx, desc, cc, method, opts...)
 	if err != nil {
-		return nil, FromKnownErrors(err)
+		return nil, FromError(err)
 	}
 	return wrappedStream{ClientStream: stream}, nil
 }
@@ -38,9 +38,9 @@ type wrappedStream struct {
 }
 
 func (w wrappedStream) SendMsg(m any) error {
-	return FromKnownErrors(w.ClientStream.SendMsg(m))
+	return FromError(w.ClientStream.SendMsg(m))
 }
 
 func (w wrappedStream) RecvMsg(m any) error {
-	return FromKnownErrors(w.ClientStream.RecvMsg(m))
+	return FromError(w.ClientStream.RecvMsg(m))
 }

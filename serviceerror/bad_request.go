@@ -7,18 +7,16 @@ import (
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
-var (
-	_ ServiceError = (*BadRequest)(nil)
-)
+var _ Detail = (*BadRequest)(nil)
 
 type BadRequest struct {
-	commonServiceError
+	commonDetail
 	badRequest *common.BadRequest
 }
 
-func NewBadRequest(se *common.ServiceError, br *common.BadRequest) *BadRequest {
+func newBadRequest(se *common.ServiceError, br *common.BadRequest) *BadRequest {
 	return &BadRequest{
-		commonServiceError: commonServiceError{
+		commonDetail: commonDetail{
 			source: se,
 		},
 		badRequest: br,
@@ -29,7 +27,7 @@ func (e *BadRequest) Violations() []*common.BadRequest_Violation {
 	return e.badRequest.GetViolations()
 }
 
-func (e *BadRequest) Error() string {
+func (e *BadRequest) String() string {
 	violations := make([]string, 0, len(e.badRequest.GetViolations()))
 	for _, violation := range e.badRequest.GetViolations() {
 		violations = append(violations, fmt.Sprintf(

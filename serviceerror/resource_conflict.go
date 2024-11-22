@@ -6,18 +6,16 @@ import (
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
-var (
-	_ ServiceError = (*ResourceConflict)(nil)
-)
+var _ Detail = (*ResourceConflict)(nil)
 
 type ResourceConflict struct {
-	commonServiceError
+	commonDetail
 	conflict *common.ResourceConflict
 }
 
-func NewResourceConflict(se *common.ServiceError, detail *common.ResourceConflict) *ResourceConflict {
+func newResourceConflict(se *common.ServiceError, detail *common.ResourceConflict) *ResourceConflict {
 	return &ResourceConflict{
-		commonServiceError: commonServiceError{
+		commonDetail: commonDetail{
 			source: se,
 		},
 		conflict: detail,
@@ -32,7 +30,7 @@ func (e *ResourceConflict) Message() string {
 	return e.conflict.GetMessage()
 }
 
-func (e *ResourceConflict) Error() string {
+func (e *ResourceConflict) String() string {
 	return fmt.Sprintf(
 		"Resource conflict %s: service %s, resource ID %s: %s",
 		e.source.GetCode(),

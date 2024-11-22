@@ -33,30 +33,16 @@ func IsRetriableNebiusError(err error) bool { //nolint:gocognit
 		return false
 	}
 
-	var serr serviceerror.ServiceError
-	if errors.As(err, &serr) && serr != nil {
-		// We were specifically asked to retry this call
-		if serr.RetryType() == common.ServiceError_CALL {
-			return true
-		}
-		// We were specifically asked to not retry this particular call
-		if serr.RetryType() == common.ServiceError_NOTHING ||
-			serr.RetryType() == common.ServiceError_UNIT_OF_WORK {
-			return false
-		}
-		// In any other case, we have to decide based on other statement, eg
-		// grpc code.
-	}
-	var werr *serviceerror.WrapError
-	if errors.As(err, &werr); werr != nil {
-		for _, serr := range werr.ServiceErrors {
+	var serr *serviceerror.Error
+	if errors.As(err, &serr); serr != nil {
+		for _, detail := range serr.Details {
 			// We were specifically asked to retry this call
-			if serr.RetryType() == common.ServiceError_CALL {
+			if detail.RetryType() == common.ServiceError_CALL {
 				return true
 			}
 			// We were specifically asked to not retry this particular call
-			if serr.RetryType() == common.ServiceError_NOTHING ||
-				serr.RetryType() == common.ServiceError_UNIT_OF_WORK {
+			if detail.RetryType() == common.ServiceError_NOTHING ||
+				detail.RetryType() == common.ServiceError_UNIT_OF_WORK {
 				return false
 			}
 			// In any other case, we have to decide based on other statement, eg
