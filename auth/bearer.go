@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"google.golang.org/grpc/metadata"
@@ -89,9 +88,6 @@ func NewPropagateAuthorizationHeader() PropagateAuthorizationHeader {
 
 func (PropagateAuthorizationHeader) Auth(ctx context.Context) (context.Context, error) {
 	incoming := metadata.ValueFromIncomingContext(ctx, AuthorizationHeader)
-	if len(incoming) == 0 {
-		return nil, errors.New("missing authorization header in the incoming metadata")
-	}
 	md, ok := metadata.FromOutgoingContext(ctx)
 	if !ok {
 		md = make(metadata.MD)
