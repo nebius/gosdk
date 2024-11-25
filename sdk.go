@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	grpc_creds "google.golang.org/grpc/credentials"
@@ -131,9 +132,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	dialOpts := []grpc.DialOption{}
 
 	dialOpts = append(dialOpts,
-		grpc.WithChainUnaryInterceptor(
-			conn.IdempotencyKeyInterceptor,
-		),
+		grpc.WithChainUnaryInterceptor(conn.IdempotencyKeyInterceptor),
 		grpc.WithTransportCredentials(grpc_creds.NewTLS(nil)), // tls enabled by default
 	)
 
@@ -154,14 +153,16 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	// do not add interceptors if no credentials provided
 	for _, a := range auths {
 		if a != nil {
-			dialOpts = append(
-				dialOpts,
+			dialOpts = append(dialOpts,
 				grpc.WithChainUnaryInterceptor(auth.UnaryClientInterceptor(logger, auths, explicitSelector)),
 				grpc.WithChainStreamInterceptor(auth.StreamClientInterceptor(logger, auths, explicitSelector)),
 			)
 			break
 		}
 	}
+
+	// apply timeout after retry and auth interceptors for each request
+	dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(timeout.UnaryClientInterceptor(1*time.Minute)))
 
 	dialer := conn.NewDialer(logger, dialOpts...)
 	closes = append(closes, dialer.Close)
