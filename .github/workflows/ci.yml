@@ -62,7 +62,7 @@ jobs:
           go-version: "1.23.3" # update together with dev.dockerfile
       - uses: golangci/golangci-lint-action@v6
         with:
-          version: "v1.62.0" # update together with dev.dockerfile
+          version: "v1.62.2" # update together with dev.dockerfile
 
   check-tidy:
     name: go mod tidy
