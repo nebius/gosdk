@@ -25,6 +25,8 @@ const (
 // IdentityServiceClient is the client API for IdentityService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type IdentityServiceClient interface {
 	ExchangeToken(ctx context.Context, in *ExchangeTokenRequest, opts ...grpc.CallOption) (*CreateTokenResponse, error)
 }
@@ -33,6 +35,7 @@ type identityServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewIdentityServiceClient(cc grpc.ClientConnInterface) IdentityServiceClient {
 	return &identityServiceClient{cc}
 }
@@ -49,6 +52,8 @@ func (c *identityServiceClient) ExchangeToken(ctx context.Context, in *ExchangeT
 // IdentityServiceServer is the server API for IdentityService service.
 // All implementations should embed UnimplementedIdentityServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type IdentityServiceServer interface {
 	ExchangeToken(context.Context, *ExchangeTokenRequest) (*CreateTokenResponse, error)
 }
@@ -68,6 +73,7 @@ type UnsafeIdentityServiceServer interface {
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterIdentityServiceServer(s grpc.ServiceRegistrar, srv IdentityServiceServer) {
 	s.RegisterService(&IdentityService_ServiceDesc, srv)
 }

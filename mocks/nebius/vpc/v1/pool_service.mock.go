@@ -263,6 +263,50 @@ func (c *MockPoolServiceListCall) DoAndReturn(f func(context.Context, *v10.ListP
 	return c
 }
 
+// ListBySourcePool mocks base method.
+func (m *MockPoolService) ListBySourcePool(arg0 context.Context, arg1 *v10.ListPoolsBySourcePoolRequest, arg2 ...grpc.CallOption) (*v10.ListPoolsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListBySourcePool", varargs...)
+	ret0, _ := ret[0].(*v10.ListPoolsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListBySourcePool indicates an expected call of ListBySourcePool.
+func (mr *MockPoolServiceMockRecorder) ListBySourcePool(arg0, arg1 any, arg2 ...any) *MockPoolServiceListBySourcePoolCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBySourcePool", reflect.TypeOf((*MockPoolService)(nil).ListBySourcePool), varargs...)
+	return &MockPoolServiceListBySourcePoolCall{Call: call}
+}
+
+// MockPoolServiceListBySourcePoolCall wrap *gomock.Call
+type MockPoolServiceListBySourcePoolCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockPoolServiceListBySourcePoolCall) Return(arg0 *v10.ListPoolsResponse, arg1 error) *MockPoolServiceListBySourcePoolCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockPoolServiceListBySourcePoolCall) Do(f func(context.Context, *v10.ListPoolsBySourcePoolRequest, ...grpc.CallOption) (*v10.ListPoolsResponse, error)) *MockPoolServiceListBySourcePoolCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockPoolServiceListBySourcePoolCall) DoAndReturn(f func(context.Context, *v10.ListPoolsBySourcePoolRequest, ...grpc.CallOption) (*v10.ListPoolsResponse, error)) *MockPoolServiceListBySourcePoolCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListOperations mocks base method.
 func (m *MockPoolService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
 	m.ctrl.T.Helper()

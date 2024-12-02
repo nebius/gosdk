@@ -20,10 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PoolService_Get_FullMethodName       = "/nebius.vpc.v1.PoolService/Get"
-	PoolService_GetByName_FullMethodName = "/nebius.vpc.v1.PoolService/GetByName"
-	PoolService_List_FullMethodName      = "/nebius.vpc.v1.PoolService/List"
-	PoolService_Update_FullMethodName    = "/nebius.vpc.v1.PoolService/Update"
+	PoolService_Get_FullMethodName              = "/nebius.vpc.v1.PoolService/Get"
+	PoolService_GetByName_FullMethodName        = "/nebius.vpc.v1.PoolService/GetByName"
+	PoolService_List_FullMethodName             = "/nebius.vpc.v1.PoolService/List"
+	PoolService_ListBySourcePool_FullMethodName = "/nebius.vpc.v1.PoolService/ListBySourcePool"
+	PoolService_Update_FullMethodName           = "/nebius.vpc.v1.PoolService/Update"
 )
 
 // PoolServiceClient is the client API for PoolService service.
@@ -33,6 +34,7 @@ type PoolServiceClient interface {
 	Get(ctx context.Context, in *GetPoolRequest, opts ...grpc.CallOption) (*Pool, error)
 	GetByName(ctx context.Context, in *GetPoolByNameRequest, opts ...grpc.CallOption) (*Pool, error)
 	List(ctx context.Context, in *ListPoolsRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
+	ListBySourcePool(ctx context.Context, in *ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
 	Update(ctx context.Context, in *UpdatePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -71,6 +73,15 @@ func (c *poolServiceClient) List(ctx context.Context, in *ListPoolsRequest, opts
 	return out, nil
 }
 
+func (c *poolServiceClient) ListBySourcePool(ctx context.Context, in *ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error) {
+	out := new(ListPoolsResponse)
+	err := c.cc.Invoke(ctx, PoolService_ListBySourcePool_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *poolServiceClient) Update(ctx context.Context, in *UpdatePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, PoolService_Update_FullMethodName, in, out, opts...)
@@ -87,6 +98,7 @@ type PoolServiceServer interface {
 	Get(context.Context, *GetPoolRequest) (*Pool, error)
 	GetByName(context.Context, *GetPoolByNameRequest) (*Pool, error)
 	List(context.Context, *ListPoolsRequest) (*ListPoolsResponse, error)
+	ListBySourcePool(context.Context, *ListPoolsBySourcePoolRequest) (*ListPoolsResponse, error)
 	Update(context.Context, *UpdatePoolRequest) (*v1.Operation, error)
 }
 
@@ -102,6 +114,9 @@ func (UnimplementedPoolServiceServer) GetByName(context.Context, *GetPoolByNameR
 }
 func (UnimplementedPoolServiceServer) List(context.Context, *ListPoolsRequest) (*ListPoolsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedPoolServiceServer) ListBySourcePool(context.Context, *ListPoolsBySourcePoolRequest) (*ListPoolsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBySourcePool not implemented")
 }
 func (UnimplementedPoolServiceServer) Update(context.Context, *UpdatePoolRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -172,6 +187,24 @@ func _PoolService_List_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PoolService_ListBySourcePool_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPoolsBySourcePoolRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PoolServiceServer).ListBySourcePool(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PoolService_ListBySourcePool_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PoolServiceServer).ListBySourcePool(ctx, req.(*ListPoolsBySourcePoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PoolService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdatePoolRequest)
 	if err := dec(in); err != nil {
@@ -208,6 +241,10 @@ var PoolService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _PoolService_List_Handler,
+		},
+		{
+			MethodName: "ListBySourcePool",
+			Handler:    _PoolService_ListBySourcePool_Handler,
 		},
 		{
 			MethodName: "Update",
