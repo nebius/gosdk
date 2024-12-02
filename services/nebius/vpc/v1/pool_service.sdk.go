@@ -26,6 +26,7 @@ type PoolService interface {
 	GetByName(context.Context, *v1.GetPoolByNameRequest, ...grpc.CallOption) (*v1.Pool, error)
 	List(context.Context, *v1.ListPoolsRequest, ...grpc.CallOption) (*v1.ListPoolsResponse, error)
 	Filter(context.Context, *v1.ListPoolsRequest, ...grpc.CallOption) iter.Seq2[*v1.Pool, error]
+	ListBySourcePool(context.Context, *v1.ListPoolsBySourcePoolRequest, ...grpc.CallOption) (*v1.ListPoolsResponse, error)
 	Update(context.Context, *v1.UpdatePoolRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
@@ -100,6 +101,18 @@ func (s poolService) Filter(ctx context.Context, request *v1.ListPoolsRequest, o
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s poolService) ListBySourcePool(ctx context.Context, request *v1.ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (*v1.ListPoolsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, PoolServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewPoolServiceClient(con).ListBySourcePool(ctx, request, opts...)
 }
 
 func (s poolService) Update(ctx context.Context, request *v1.UpdatePoolRequest, opts ...grpc.CallOption) (operations.Operation, error) {
