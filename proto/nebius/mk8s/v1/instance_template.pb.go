@@ -25,8 +25,7 @@ const (
 type DiskSpec_DiskType int32
 
 const (
-	DiskSpec_UNSPECIFIED DiskSpec_DiskType = 0
-	// the list of available types will be clarified later, it is not final version
+	DiskSpec_UNSPECIFIED                DiskSpec_DiskType = 0
 	DiskSpec_NETWORK_SSD                DiskSpec_DiskType = 1
 	DiskSpec_NETWORK_HDD                DiskSpec_DiskType = 2
 	DiskSpec_NETWORK_SSD_IO_M3          DiskSpec_DiskType = 3
