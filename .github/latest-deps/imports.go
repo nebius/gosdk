@@ -11,8 +11,6 @@ import (
 	_ "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
 	_ "github.com/stretchr/testify/assert"
 	_ "github.com/stretchr/testify/require"
-	_ "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
-	_ "go.opentelemetry.io/otel/propagation"
 	_ "go.uber.org/mock/gomock"
 	_ "golang.org/x/exp/maps"
 	_ "golang.org/x/net/http2"

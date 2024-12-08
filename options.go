@@ -5,8 +5,6 @@ import (
 	"log/slog"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
-	"go.opentelemetry.io/otel/propagation"
 	"google.golang.org/grpc"
 
 	"github.com/nebius/gosdk/conn"
@@ -41,10 +39,6 @@ func WithLoggerHandler(handler slog.Handler) Option {
 // WithLoggingOptions allows you to specify additional configurations for the grpc-ecosystem logging interceptor.
 func WithLoggingOptions(opts ...logging.Option) Option {
 	return optionLoggingOptions(opts)
-}
-
-func WithTracingOptions(opts ...otelgrpc.Option) Option {
-	return optionTracingOptions(opts)
 }
 
 // WithDialOptions allows you to specify additional grpc dial options for all services.
@@ -88,7 +82,6 @@ type (
 	optionCredentials     struct{ creds Credentials }
 	optionLogger          struct{ handler slog.Handler }
 	optionLoggingOptions  []logging.Option
-	optionTracingOptions  []otelgrpc.Option
 	optionDialOpts        []grpc.DialOption
 	optionResolvers       []conn.Resolver
 	optionDomain          string
@@ -103,7 +96,6 @@ type (
 func (optionCredentials) option()     {}
 func (optionLogger) option()          {}
 func (optionLoggingOptions) option()  {}
-func (optionTracingOptions) option()  {}
 func (optionDialOpts) option()        {}
 func (optionResolvers) option()       {}
 func (optionDomain) option()          {}
@@ -117,14 +109,6 @@ func (NoopHandler) Enabled(context.Context, slog.Level) bool  { return false }
 func (NoopHandler) Handle(context.Context, slog.Record) error { return nil }
 func (h NoopHandler) WithAttrs([]slog.Attr) slog.Handler      { return h }
 func (h NoopHandler) WithGroup(string) slog.Handler           { return h }
-
-func TracingStatsHandler(opts ...otelgrpc.Option) grpc.DialOption {
-	options := []otelgrpc.Option{
-		otelgrpc.WithPropagators(propagation.TraceContext{}),
-	}
-	options = append(options, opts...)
-	return grpc.WithStatsHandler(otelgrpc.NewClientHandler(options...))
-}
 
 type slogAdapter struct {
 	log *slog.Logger

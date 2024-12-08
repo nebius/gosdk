@@ -10,7 +10,6 @@ import (
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	grpc_creds "google.golang.org/grpc/credentials"
 
@@ -41,7 +40,6 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 
 	customSubstitutions := make(map[string]string)
 	var logOpts []logging.Option
-	var traceOpts []otelgrpc.Option
 	var customDialOpts []grpc.DialOption
 	var customResolvers []conn.Resolver
 	var customInits []func(context.Context, *SDK) error
@@ -53,8 +51,6 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			handler = o.handler
 		case optionLoggingOptions:
 			logOpts = append(logOpts, o...)
-		case optionTracingOptions:
-			traceOpts = append(traceOpts, o...)
 		case optionDialOpts:
 			customDialOpts = append(customDialOpts, o...)
 		case optionResolvers:
@@ -140,7 +136,6 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	dialOpts = append(dialOpts, customDialOpts...)
 
 	dialOpts = append(dialOpts,
-		TracingStatsHandler(traceOpts...),
 		grpc.WithChainUnaryInterceptor(
 			unaryLoggingInterceptor(logger, logOpts...),
 			serviceerror.UnaryClientInterceptor,
