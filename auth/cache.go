@@ -11,16 +11,17 @@ import (
 	"golang.org/x/sync/singleflight"
 )
 
-// CachedServiceTokener is a middleware that enhances the functionality of the [BearerTokener] by caching the token.
-// It also automatically refreshes the token in the background before it expires, ensuring seamless authentication.
-// Recommended parameters from IAM:
-//   - lifetime 90%
-//   - initial retry 1 second
-//   - max retry 1 minute
+// CachedServiceTokener is a [BearerTokener] decorator that enhances its functionality
+// with [BearerToken] caching and automatic background refresh to ensure that token is always valid.
+//
+// Recommended parameters from the IAM team:
+//   - lifetime: 90% of token lifespan
+//   - initial retry: 1 second
+//   - max retry: 1 minute
 type CachedServiceTokener struct {
 	logger          *slog.Logger
 	tokener         BearerTokener
-	lifetime        float64
+	lifetime        float64 // lifetime is fraction of token lifespan after which the token is refreshed
 	initialRetry    time.Duration
 	retryMultiplier float64
 	maxRetry        time.Duration
@@ -36,6 +37,13 @@ type CachedServiceTokener struct {
 
 var _ BearerTokener = (*CachedServiceTokener)(nil)
 
+// NewCachedServiceTokener returns a decorated [BearerTokener] that enhances its functionality
+// with [BearerToken] caching and automatic background refresh to ensure that token is always valid.
+//
+// Recommended parameters from the IAM team:
+//   - lifetime: 90% of token lifespan
+//   - initial retry: 1 second
+//   - max retry: 1 minute
 func NewCachedServiceTokener(
 	logger *slog.Logger,
 	tokener BearerTokener,
@@ -202,6 +210,8 @@ func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool
 	return res.(BearerToken), nil //nolint:errcheck // ok to panic
 }
 
+// CachedBearerTokener is a [BearerTokener] decorator that caches the [BearerToken].
+// Method [CachedBearerTokener.HandleError] invalidates the cache on any error.
 type CachedBearerTokener struct {
 	tokener BearerTokener
 	group   singleflight.Group
@@ -212,6 +222,7 @@ type CachedBearerTokener struct {
 
 var _ BearerTokener = (*CachedBearerTokener)(nil)
 
+// NewCachedBearerTokener returns a decorated [BearerTokener] that caches the [BearerToken].
 func NewCachedBearerTokener(tokener BearerTokener) *CachedBearerTokener {
 	return &CachedBearerTokener{
 		tokener: tokener,

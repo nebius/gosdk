@@ -10,18 +10,22 @@ type Credentials interface {
 	credentials()
 }
 
+// NoCredentials is the default [Credentials] that disables authentication.
 func NoCredentials() Credentials {
 	return credsNoCreds{}
 }
 
+// IAMToken is a [Credentials] that uses a predefined token for authentication.
 func IAMToken(token string) Credentials {
 	return credsTokener{tokener: auth.StaticBearerToken(token)}
 }
 
+// CustomTokener allows the user to define its own [auth.BearerTokener] implementation for authentication.
 func CustomTokener(tokener auth.BearerTokener) Credentials {
 	return credsTokener{tokener: tokener}
 }
 
+// CustomAuthenticator allows the user to define its own [auth.Authenticator] implementation.
 func CustomAuthenticator(auth auth.Authenticator) Credentials {
 	return credsAuthenticator{auth: auth}
 }

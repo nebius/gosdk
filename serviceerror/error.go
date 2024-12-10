@@ -9,6 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 )
 
+// Error is a wrapper returned by gRPC services if an original error contains [Detail].
 type Error struct {
 	Wrapped error
 	Details []Detail
@@ -24,6 +25,8 @@ func collectServiceErrors(details []*anypb.Any) []Detail {
 	return res
 }
 
+// FromError converts wraps an error with [Error] if necessary.
+// The client should not use this function. It is called by built-in interceptor.
 func FromError(err error, extraDetails ...*anypb.Any) error {
 	if err == nil {
 		return nil
@@ -54,6 +57,7 @@ func (e *Error) Error() string {
 	return e.Wrapped.Error()
 }
 
+// Cause returns a string with all details.
 func (e *Error) Cause() string {
 	errorStrings := make([]string, 0, len(e.Details))
 	for _, se := range e.Details {

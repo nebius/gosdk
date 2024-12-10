@@ -4,14 +4,16 @@ import (
 	"context"
 )
 
-// Authenticator is used in gRPC interceptors.
+// Authenticator is an interface for adding authentication data to the [context.Context] in gRPC interceptors.
+// There are two main implementations: [AuthenticatorFromBearerTokener] and [PropagateAuthorizationHeader],
+// but custom implementations can also be provided.
 type Authenticator interface {
-	// Auth returns a [context.Context] with necessary grpc metadata for authorization.
+	// Auth enriches the provided [context.Context] with necessary gRPC metadata for authentication.
 	Auth(context.Context) (context.Context, error)
 
-	// HandleError is called with a [context.Context] received from [Authenticator.Auth]
-	// and an error from a gRPC call if it has the Unauthenticated code.
-	// If HandleError returns nil, a new auth will be requested to retry the gRPC call.
-	// If the gRPC call should not be retried, HandleError must return the incoming error.
+	// HandleError processes errors from gRPC calls that fail with the Unauthenticated status code.
+	// It receives the [context.Context] returned by [Authenticator.Auth] and the error from the gRPC call.
+	// If HandleError returns nil, the system will attempt to re-authenticate and retry the call.
+	// If the call should not be retried, HandleError should return the original error.
 	HandleError(context.Context, error) error
 }

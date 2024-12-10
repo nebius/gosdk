@@ -12,6 +12,7 @@ import (
 	"github.com/nebius/gosdk/conn"
 )
 
+// Option is an interface combining all options for [New] func.
 type Option interface {
 	option()
 }
@@ -37,6 +38,7 @@ func WithLoggerHandler(handler slog.Handler) Option {
 	return optionLogger{handler: handler}
 }
 
+// WithLoggingOptions allows you to specify additional configurations for the grpc-ecosystem logging interceptor.
 func WithLoggingOptions(opts ...logging.Option) Option {
 	return optionLoggingOptions(opts)
 }
@@ -45,18 +47,23 @@ func WithTracingOptions(opts ...otelgrpc.Option) Option {
 	return optionTracingOptions(opts)
 }
 
+// WithDialOptions allows you to specify additional grpc dial options for all services.
+// You can use [conn.WithAddressDialOptions] to use different options for a specific [conn.Address].
 func WithDialOptions(opts ...grpc.DialOption) Option {
 	return optionDialOpts(opts)
 }
 
+// WithResolvers customizes service address resolution.
 func WithResolvers(resolvers ...conn.Resolver) Option {
 	return optionResolvers(resolvers)
 }
 
+// WithDomain changes the default "api.eu.nebius.cloud:443" domain.
 func WithDomain(domain string) Option {
 	return optionDomain(domain)
 }
 
+// WithAddressTemplate customizes service address resolution.
 func WithAddressTemplate(find string, replace string) Option {
 	return optionAddressTemplate{
 		find:    find,

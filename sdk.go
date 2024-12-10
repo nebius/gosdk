@@ -20,6 +20,7 @@ import (
 	"github.com/nebius/gosdk/services/nebius"
 )
 
+// SDK is the Nebius API client.
 type SDK struct {
 	resolver conn.Resolver
 	dialer   conn.Dialer
@@ -29,8 +30,8 @@ type SDK struct {
 }
 
 // New creates a new [SDK] with provided options.
-// By default, it also does IO operations, if necessary.
-// If you want to do them later, use [WithExplicitInit] option.
+// By default, it also performs IO operations, if necessary.
+// If you want to do them separately, use [WithExplicitInit] option.
 func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	domain := "api.eu.nebius.cloud:443"
 
@@ -195,7 +196,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	return sdk, nil
 }
 
-// Init completes creation of an [SDK]. It does all necessary IO operations.
+// Init completes creation of an [SDK]. It performs all necessary IO operations.
 // You should call it only if [WithExplicitInit] option is used.
 func (s *SDK) Init(ctx context.Context) error {
 	for _, init := range s.inits {
@@ -208,10 +209,12 @@ func (s *SDK) Init(ctx context.Context) error {
 	return nil
 }
 
+// Services is a fluent interface to get a Nebius service client.
 func (s *SDK) Services() nebius.Services {
 	return nebius.New(s)
 }
 
+// Close closes connections and leans up resources.
 func (s *SDK) Close() error {
 	var errs error
 	for _, c := range s.closes {
@@ -231,10 +234,12 @@ func (s *SDK) BearerToken(ctx context.Context) (auth.BearerToken, error) {
 	return s.tokener.BearerToken(ctx)
 }
 
+// Resolve returns an address of a specific service.
 func (s *SDK) Resolve(ctx context.Context, id conn.ServiceID) (conn.Address, error) {
 	return s.resolver.Resolve(ctx, id)
 }
 
+// Dial returns an underlying gRPC client connection for a specific address.
 func (s *SDK) Dial(ctx context.Context, address conn.Address) (grpc.ClientConnInterface, error) {
 	return s.dialer.Dial(ctx, address)
 }
