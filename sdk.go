@@ -204,6 +204,7 @@ func (s *SDK) Init(ctx context.Context) error {
 			return err
 		}
 	}
+	s.inits = nil // make sure nothing breaks if the user calls Init() twice or without WithExplicitInit() option
 	return nil
 }
 
