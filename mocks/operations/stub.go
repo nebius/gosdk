@@ -20,7 +20,7 @@ import (
 
 // Stub is an [operations.Operation] wrapper over a static [commonpb.Operation].
 // It behaves like the real wrapper, mostly.
-// It fails a test if the operation is not completed and Poll, Wait, or WaitInterval methods are called.
+// It fails a test if the operation is not completed and Poll or Wait methods are called.
 //
 // If you need the full control over its behavior, use [MockOperation].
 type Stub struct {
@@ -59,11 +59,7 @@ func (s Stub) Poll(context.Context, ...grpc.CallOption) (operations.Operation, e
 	return s, nil
 }
 
-func (s Stub) Wait(ctx context.Context, opts ...grpc.CallOption) (operations.Operation, error) {
-	return s.WaitInterval(ctx, operations.DefaultPollInterval, opts...)
-}
-
-func (s Stub) WaitInterval(context.Context, time.Duration, ...grpc.CallOption) (operations.Operation, error) {
+func (s Stub) Wait(context.Context, ...grpc.CallOption) (operations.Operation, error) {
 	if s.Done() {
 		return s, operations.NewError(s)
 	}
