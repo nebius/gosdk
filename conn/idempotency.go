@@ -7,40 +7,57 @@ import (
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
-
-	"github.com/nebius/gosdk/fieldmask/grpcheader"
 )
 
 const IdempotencyKeyHeader = "X-Idempotency-Key"
 
-type IdempotencyKey string
+type withIdempotencyKey struct {
+	grpc.EmptyCallOption
 
-func NewIdempotencyKey() (IdempotencyKey, error) {
-	keyUUID, err := uuid.NewRandom()
-	if err != nil {
-		return "", fmt.Errorf("generate key: %w", err)
+	key string
+}
+
+// WithIdempotencyKey returns [grpc.CallOption] to provide a custom idempotency key for a specific request.
+func WithIdempotencyKey(key string) grpc.CallOption {
+	return withIdempotencyKey{key: key}
+}
+
+// AddCustomIdempotencyKeyToOutgoingContext adds custom idempotency key to the outgoing gRPC metadata.
+// It overrides an existing value if any.
+func AddCustomIdempotencyKeyToOutgoingContext(ctx context.Context, key string) context.Context {
+	md, exists := metadata.FromOutgoingContext(ctx)
+	if !exists {
+		md = metadata.MD{}
 	}
-	return IdempotencyKey(keyUUID.String()), nil
+	md.Set(IdempotencyKeyHeader, key)
+	return metadata.NewOutgoingContext(ctx, md)
 }
 
-func AddCustomIdempotencyKeyToOutgoingContext(ctx context.Context, key IdempotencyKey) context.Context {
-	return metadata.AppendToOutgoingContext(ctx, IdempotencyKeyHeader, string(key))
-}
+// AddNewIdempotencyKeyToOutgoingContext adds a new random idempotency key to the outgoing gRPC metadata.
+// It overrides an existing value if any.
 func AddNewIdempotencyKeyToOutgoingContext(ctx context.Context) (context.Context, error) {
-	ik, err := NewIdempotencyKey()
+	key, err := uuid.NewRandom()
 	if err != nil {
-		return ctx, err
+		return nil, fmt.Errorf("generate key: %w", err)
 	}
-	return AddCustomIdempotencyKeyToOutgoingContext(ctx, ik), nil
+	return AddCustomIdempotencyKeyToOutgoingContext(ctx, key.String()), nil
 }
 
+// EnsureIdempotencyKeyInOutgoingContext adds a new random idempotency key to the outgoing gRPC metadata if necessary.
+// It does nothing if the metadata already contains an idempotency key.
 func EnsureIdempotencyKeyInOutgoingContext(ctx context.Context) (context.Context, error) {
-	if grpcheader.IsInOutgoingContext(ctx, IdempotencyKeyHeader) {
+	md, _ := metadata.FromOutgoingContext(ctx)
+	if len(md.Get(IdempotencyKeyHeader)) != 0 {
 		return ctx, nil
 	}
 	return AddNewIdempotencyKeyToOutgoingContext(ctx)
 }
 
+// IdempotencyKeyInterceptor is a unary gRPC client interceptor that adds idempotency key to the outgoing metadata.
+// An idempotency key from [WithIdempotencyKey] call option is used if provided.
+// A new random idempotency key is generated otherwise.
+//
+// The SDK uses the interceptor by default, you don't need to do it by yourself.
 func IdempotencyKeyInterceptor(
 	ctx context.Context,
 	method string,
@@ -49,9 +66,23 @@ func IdempotencyKeyInterceptor(
 	invoker grpc.UnaryInvoker,
 	opts ...grpc.CallOption,
 ) error {
-	ctx, err := EnsureIdempotencyKeyInOutgoingContext(ctx)
-	if err != nil {
-		return fmt.Errorf("idempotency key: %w", err)
+	var idempotencyKey string
+	for _, opt := range opts {
+		ik, isIK := opt.(withIdempotencyKey)
+		if isIK && ik.key != "" {
+			idempotencyKey = ik.key
+		}
 	}
+
+	if idempotencyKey != "" {
+		ctx = AddCustomIdempotencyKeyToOutgoingContext(ctx, idempotencyKey)
+	} else {
+		var err error
+		ctx, err = EnsureIdempotencyKeyInOutgoingContext(ctx)
+		if err != nil {
+			return fmt.Errorf("idempotency key: %w", err)
+		}
+	}
+
 	return invoker(ctx, method, req, reply, cc, opts...)
 }
