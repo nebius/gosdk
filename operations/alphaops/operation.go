@@ -18,8 +18,6 @@ import (
 	"github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 )
 
-const DefaultPollInterval = 1 * time.Second
-
 // Operation is a wrapper over protobuf operation to simplify some actions.
 //
 // Deprecated: migrate to common.v1.
@@ -88,20 +86,21 @@ func (o *Operation) Poll(ctx context.Context, opts ...grpc.CallOption) (*Operati
 	return o, nil
 }
 
-// Wait calls [Operation.WaitInterval] with [DefaultPollInterval].
+// Wait polls the operation from the server until it's done.
+//
+// Important: It returns [*Error] if operation is not successful.
+//
+// Use [PollInterval] call option to override the [DefaultPollInterval].
 func (o *Operation) Wait(ctx context.Context, opts ...grpc.CallOption) (*Operation, error) {
-	return o.WaitInterval(ctx, DefaultPollInterval, opts...)
-}
-
-// WaitInterval polls the operation from the server until it's done.
-// It returns [*Error] if operation is not successful.
-func (o *Operation) WaitInterval(
-	ctx context.Context,
-	interval time.Duration,
-	opts ...grpc.CallOption,
-) (*Operation, error) {
 	if o.Done() {
 		return o, NewError(o)
+	}
+	interval := DefaultPollInterval
+	for _, opt := range opts {
+		constant, isConstant := opt.(pollInterval)
+		if isConstant && constant.interval > 0 {
+			interval = constant.interval
+		}
 	}
 	for {
 		select {
