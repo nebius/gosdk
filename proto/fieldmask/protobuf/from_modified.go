@@ -8,7 +8,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	"github.com/nebius/gosdk/fieldmask/mask"
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
 )
 
 func rmFrom2ListsRecursive(

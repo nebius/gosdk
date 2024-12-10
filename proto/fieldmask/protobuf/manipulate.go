@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	"github.com/nebius/gosdk/fieldmask/mask"
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
 )
 
 var ErrBasicTypeInTheMiddle = errors.New("found basic type in the middle of the path, can't descend deeper")

@@ -5,9 +5,9 @@ package v1
 import (
 	context "context"
 	conn "github.com/nebius/gosdk/conn"
-	grpcheader "github.com/nebius/gosdk/fieldmask/grpcheader"
 	iface "github.com/nebius/gosdk/internal/iface"
 	operations "github.com/nebius/gosdk/operations"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"

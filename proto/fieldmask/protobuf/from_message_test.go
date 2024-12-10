@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/nebius/gosdk/fieldmask/protobuf/testdata"
+	"github.com/nebius/gosdk/proto/fieldmask/protobuf/testdata"
 )
 
 func TestResetMaskFromMessage(t *testing.T) {

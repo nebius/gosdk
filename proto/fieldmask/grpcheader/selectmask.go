@@ -3,7 +3,7 @@ package grpcheader
 import (
 	"context"
 
-	"github.com/nebius/gosdk/fieldmask/mask"
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
 )
 
 // SelectMask is the gRPC header name where the select mask will be added.
