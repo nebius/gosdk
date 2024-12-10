@@ -12,8 +12,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	"github.com/nebius/gosdk/fieldmask/mask"
-	"github.com/nebius/gosdk/fieldmask/protobuf/testdata"
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
+	"github.com/nebius/gosdk/proto/fieldmask/protobuf/testdata"
 )
 
 func TestGetAtFieldPath(t *testing.T) {

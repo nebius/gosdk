@@ -6,8 +6,8 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	"github.com/nebius/gosdk/fieldmask/mask"
-	"github.com/nebius/gosdk/fieldmask/protobuf"
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
+	"github.com/nebius/gosdk/proto/fieldmask/protobuf"
 )
 
 // ResetMask is the gRPC header name where the reset mask will be added.

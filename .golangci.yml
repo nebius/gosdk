@@ -360,10 +360,10 @@ issues:
         - wrapcheck
 
     ## specific to gosdk
-    - path: "^fieldmask"
+    - path: "^proto/fieldmask"
       linters:
         - nestif
-    - path: "^fieldmask/.+_test.go"
+    - path: "^proto/fieldmask/.+_test.go"
       linters:
         - lll
     - path: "^example_test.go$"
@@ -371,7 +371,7 @@ issues:
         - testableexamples
     - path: "operations/alphaops"
       text: "SA1019: .+ is deprecated"
-    - path: "fieldmask"
+    - path: "^proto/fieldmask"
       linters:
         - nilnil # TODO: fix or ignore
         - recvcheck # TODO: fix or ignore

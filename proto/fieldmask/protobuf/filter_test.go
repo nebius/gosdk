@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/nebius/gosdk/fieldmask/mask"
-	"github.com/nebius/gosdk/fieldmask/protobuf/testdata"
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
+	"github.com/nebius/gosdk/proto/fieldmask/protobuf/testdata"
 )
 
 func TestFilterWithSelectMask(t *testing.T) {

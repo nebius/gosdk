@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.35.2
 // 	protoc        v4.25.1
-// source: api/tools/public/gosdk/fieldmask/protobuf/testdata/data_for_test.proto
+// source: api/tools/public/gosdk/proto/fieldmask/protobuf/testdata/data_for_test.proto
 
 package testdata
 

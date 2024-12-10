@@ -7,7 +7,7 @@ import (
 
 	"google.golang.org/grpc/metadata"
 
-	"github.com/nebius/gosdk/fieldmask/mask"
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
 )
 
 // IsInOutgoingContext checks if a metadata key (grpc header) exists in the

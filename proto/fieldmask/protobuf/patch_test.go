@@ -9,8 +9,8 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/nebius/gosdk/fieldmask/mask"
-	"github.com/nebius/gosdk/fieldmask/protobuf/testdata"
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
+	"github.com/nebius/gosdk/proto/fieldmask/protobuf/testdata"
 )
 
 func TestPatchWithResetMask(t *testing.T) {
