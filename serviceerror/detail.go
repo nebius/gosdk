@@ -8,6 +8,21 @@ import (
 )
 
 // Detail is a wrapper for protobuf message nebius.common.v1.ServiceError.
+//
+// Here is the list of possible detail types:
+//   - [BadRequest]
+//   - [BadResourceState]
+//   - [Internal]
+//   - [NotEnoughResources]
+//   - [OperationAborted]
+//   - [OutOfRange]
+//   - [PermissionDenied]
+//   - [QuotaFailure]
+//   - [ResourceAlreadyExists]
+//   - [ResourceConflict]
+//   - [ResourceNotFound]
+//   - [TooManyRequests]
+//   - [Unknown]
 type Detail interface {
 	String() string
 	Proto() *common.ServiceError
@@ -16,6 +31,7 @@ type Detail interface {
 	RetryType() common.ServiceError_RetryType
 }
 
+// NewDetail converts protobuf message to [Detail].
 func NewDetail(serviceError *common.ServiceError) Detail {
 	switch seDetails := serviceError.GetDetails().(type) {
 	case *common.ServiceError_BadRequest:
@@ -47,6 +63,7 @@ func NewDetail(serviceError *common.ServiceError) Detail {
 	}
 }
 
+// NewDetailFromAny converts protobuf [anypb.Any] message to [Detail].
 func NewDetailFromAny(detail *anypb.Any) (Detail, error) {
 	serviceError := &common.ServiceError{}
 	err := anypb.UnmarshalTo(

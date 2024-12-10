@@ -18,7 +18,11 @@ import (
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
-// Operation is a wrapper over protobuf operation to simplify some actions.
+// Operation is a wrapper over protobuf operation message.
+// All mutating service methods returns it.
+// An operations can be either synchronous or asynchronous.
+// Synchronous operations are completed immediately, while asynchronous operations may take time to finish.
+// The client should call Wait to ensure an operation is fully completed.
 type Operation interface {
 	// Done returns true if the operation is completed.
 	Done() bool
@@ -26,7 +30,8 @@ type Operation interface {
 	// Successful returns true if the operation is completed and status code is OK.
 	Successful() bool
 
-	// Poll updates the operation from the server. It does nothing if the operation is done.
+	// Poll fetches an updated operation from the server.
+	// It does nothing if the operation is done.
 	Poll(context.Context, ...grpc.CallOption) (Operation, error)
 
 	// Wait polls the operation from the server until it's done.
@@ -67,7 +72,7 @@ type Operation interface {
 	ProgressData() proto.Message
 
 	// Status returns the status of the completed operation and nil otherwise.
-	// See API documentation for details.
+	// The operation is successful if `Status() != nil && Status().Code() == codes.OK`.
 	Status() *status.Status
 
 	// Raw returns underlying protobuf operation.
@@ -104,7 +109,7 @@ func New(operation *common.Operation, service common.OperationServiceClient) (Op
 
 // NewCompleted accepts completed operation and returns Operation wrapper.
 // Unlike [New] it doesn't accept [common.OperationServiceClient] as the operation is done.
-// It returns an error if the operation is uncompleted.
+// It returns an error if the operation is incomplete.
 func NewCompleted(operation *common.Operation) (Operation, error) {
 	wrapper, err := New(operation, nil)
 	if err != nil {
@@ -131,7 +136,8 @@ func (o *opWrapper) Successful() bool {
 	return s != nil && s.Code() == codes.OK
 }
 
-// Poll updates the operation from the server. It does nothing if the operation is done.
+// Poll fetches an updated operation from the server.
+// It does nothing if the operation is done.
 func (o *opWrapper) Poll(ctx context.Context, opts ...grpc.CallOption) (Operation, error) {
 	// if you change this, do not forget to change Stub
 	if o.Done() {
@@ -250,7 +256,7 @@ func (o *opWrapper) ProgressData() proto.Message {
 }
 
 // Status returns the status of the completed operation and nil otherwise.
-// See API documentation for details.
+// The operation is successful if `Status() != nil && Status().Code() == codes.OK`.
 func (o *opWrapper) Status() *status.Status {
 	s := o.Raw().GetStatus()
 	if s == nil {

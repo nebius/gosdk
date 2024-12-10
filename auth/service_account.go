@@ -26,6 +26,7 @@ type ServiceAccountReader interface {
 	ServiceAccount(context.Context) (ServiceAccount, error)
 }
 
+// CachedServiceAccount is a [ServiceAccountReader] decorator that caches the [ServiceAccount].
 type CachedServiceAccount struct {
 	reader ServiceAccountReader
 	group  singleflight.Group
@@ -36,6 +37,7 @@ type CachedServiceAccount struct {
 
 var _ ServiceAccountReader = (*CachedServiceAccount)(nil)
 
+// NewCachedServiceAccount returns a decorated [ServiceAccountReader] that caches the [ServiceAccount].
 func NewCachedServiceAccount(reader ServiceAccountReader) *CachedServiceAccount {
 	return &CachedServiceAccount{
 		reader: reader,
@@ -73,15 +75,21 @@ func (c *CachedServiceAccount) ServiceAccount(ctx context.Context) (ServiceAccou
 	return res.(ServiceAccount), nil //nolint:errcheck // ok to panic
 }
 
+// StaticServiceAccount is a [ServiceAccountReader] that always returns a fixed [ServiceAccount].
 type StaticServiceAccount ServiceAccount
 
 var _ ServiceAccountReader = StaticServiceAccount{}
+
+// NewStaticServiceAccount returns a [ServiceAccountReader] that always returns a fixed [ServiceAccount].
+func NewStaticServiceAccount(sa ServiceAccount) StaticServiceAccount {
+	return StaticServiceAccount(sa)
+}
 
 func (s StaticServiceAccount) ServiceAccount(context.Context) (ServiceAccount, error) {
 	return ServiceAccount(s), nil
 }
 
-// PrivateKeyParser is a [ServiceAccountReader] that parses a PEM encoded PKCS1 or PKCS8 private key.
+// PrivateKeyParser is a [ServiceAccountReader] that parses a PEM-encoded PKCS1 or PKCS8 private key.
 type PrivateKeyParser struct {
 	privateKey       []byte
 	publicKeyID      string
@@ -90,6 +98,7 @@ type PrivateKeyParser struct {
 
 var _ ServiceAccountReader = PrivateKeyParser{}
 
+// NewPrivateKeyParser returns a [ServiceAccountReader] that parses a PEM-encoded PKCS1 or PKCS8 private key.
 func NewPrivateKeyParser(privateKey []byte, publicKeyID string, serviceAccountID string) PrivateKeyParser {
 	return PrivateKeyParser{
 		privateKey:       privateKey,
@@ -110,9 +119,8 @@ func (p PrivateKeyParser) ServiceAccount(context.Context) (ServiceAccount, error
 	}, nil
 }
 
-// PrivateKeyFileParser is a [ServiceAccountReader] that reads a file
-// and parses a PEM encoded PKCS1 or PKCS8 private key.
-// You can set fs = nil to use default fs.
+// PrivateKeyFileParser is a [ServiceAccountReader] that reads and parses
+// a PEM-encoded PKCS1 or PKCS8 private key from a file.
 type PrivateKeyFileParser struct {
 	fs               fs.FS
 	privateKeyPath   string
@@ -122,6 +130,10 @@ type PrivateKeyFileParser struct {
 
 var _ ServiceAccountReader = PrivateKeyFileParser{}
 
+// NewPrivateKeyFileParser returns a [ServiceAccountReader] that reads and parses
+// a PEM-encoded PKCS1 or PKCS8 private key from a file.
+//
+// If fs is nil, the default file system will be used.
 func NewPrivateKeyFileParser(
 	fs fs.FS,
 	privateKeyPath string,
@@ -193,12 +205,8 @@ func (p PrivateKeyFileParser) ServiceAccount(context.Context) (ServiceAccount, e
 	}, nil
 }
 
-// ServiceAccountCredentialsFileParser is a [ServiceAccountReader] that reads a json file with service account id,
-// public key id and PEM encoded PKCS8 private key.
-// Docs for service account credentials file format:
-// https://docs.nebius.dev/en/iam/for-services/step-by-step/authentication/service-account/sa-credentials-file
-//
-// You can set fs = nil to use default fs.
+// ServiceAccountCredentialsFileParser is a [ServiceAccountReader] that parses a JSON file
+// containing service account credentials.
 type ServiceAccountCredentialsFileParser struct {
 	fs              fs.FS
 	credentialsPath string
@@ -206,42 +214,27 @@ type ServiceAccountCredentialsFileParser struct {
 
 var _ ServiceAccountReader = ServiceAccountCredentialsFileParser{}
 
+// NewServiceAccountCredentialsFileParser is a [ServiceAccountReader] that parses a JSON file
+// containing service account credentials. The file format is following:
+//
+//	{
+//	  "subject-credentials": {
+//	    "alg": "RS256",
+//	    "private-key": "PKCS#8 PEM with new lines escaped as \n",
+//	    "kid": "publickey-...",
+//	    "iss": "serviceaccount-...",
+//	    "sub": "serviceaccount-..."
+//	  }
+//	}
+//
+// Note: Field names follow standard abbreviations, similar to JWT standards or RFC 7515.
+//
+// If fs is nil, the default file system will be used.
 func NewServiceAccountCredentialsFileParser(fs fs.FS, credentialsPath string) ServiceAccountCredentialsFileParser {
 	return ServiceAccountCredentialsFileParser{
 		fs:              fs,
 		credentialsPath: credentialsPath,
 	}
-}
-
-// Note: json field names are standard abbreviations (see, JWT standards or RFC 7515 for example)
-// Fields are interpreted according to IAM doc mentioned above.
-type ServiceAccountCredentials struct {
-	SubjectCredentials SubjectCredentials `json:"subject-credentials"`
-}
-
-type SubjectCredentials struct {
-	Type       string `json:"type,omitempty"`
-	Alg        string `json:"alg"`
-	PrivateKey string `json:"private-key"` // PEM encoded PKCS8 string
-	KeyID      string `json:"kid"`
-	Issuer     string `json:"iss"`
-	Subject    string `json:"sub"`
-}
-
-func (c SubjectCredentials) validate() error {
-	if (c.Type != "") && (c.Type != "JWT") {
-		return fmt.Errorf("invalid service account credentials type: '%s', the only supported value is 'JWT'", c.Type)
-	}
-
-	if c.Alg != "RS256" {
-		return fmt.Errorf("invalid service account algorithm: %s. Only RS256 is supported", c.Alg)
-	}
-
-	if c.Issuer != c.Subject {
-		return fmt.Errorf("invalid service account subject must be the same as issuer: %s != %s", c.Issuer, c.Subject)
-	}
-
-	return nil
 }
 
 func (p ServiceAccountCredentialsFileParser) ServiceAccount(context.Context) (ServiceAccount, error) {
@@ -286,4 +279,34 @@ func (p ServiceAccountCredentialsFileParser) SubjectCredentials() (SubjectCreden
 	}
 
 	return credsWithWrapper.SubjectCredentials, nil
+}
+
+// ServiceAccountCredentials represents the structure of a service account credentials file.
+type ServiceAccountCredentials struct {
+	SubjectCredentials SubjectCredentials `json:"subject-credentials"`
+}
+
+type SubjectCredentials struct {
+	Type       string `json:"type,omitempty"`
+	Alg        string `json:"alg"`
+	PrivateKey string `json:"private-key"` // PrivateKey is a PEM-encoded PKCS8 string.
+	KeyID      string `json:"kid"`
+	Issuer     string `json:"iss"`
+	Subject    string `json:"sub"`
+}
+
+func (c SubjectCredentials) validate() error {
+	if c.Type != "" && c.Type != "JWT" {
+		return fmt.Errorf("invalid service account credentials type: '%s', the only supported value is 'JWT'", c.Type)
+	}
+
+	if c.Alg != "RS256" {
+		return fmt.Errorf("invalid service account algorithm: %s. Only RS256 is supported", c.Alg)
+	}
+
+	if c.Issuer != c.Subject {
+		return fmt.Errorf("invalid service account subject must be the same as issuer: %s != %s", c.Issuer, c.Subject)
+	}
+
+	return nil
 }

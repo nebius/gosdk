@@ -8,12 +8,14 @@ import (
 	"github.com/nebius/gosdk/serviceerror"
 )
 
+// Error is returned by [Operation.Wait] if the operation is failed.
 type Error struct {
 	Operation Operation
 	Code      codes.Code
 	Message   string
 }
 
+// NewError returns nil if the operation is successful and [*Error] otherwise.
 func NewError(operation Operation) error {
 	if operation.Successful() {
 		return nil

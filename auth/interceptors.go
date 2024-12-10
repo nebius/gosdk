@@ -14,12 +14,12 @@ import (
 	"github.com/nebius/gosdk/serviceerror"
 )
 
-// Disable is a [grpc.CallOption] that disables authentication on the client for a specific request.
+// Disable is a [grpc.CallOption] that disables authentication for a specific gRPC request.
 type Disable struct {
 	grpc.EmptyCallOption
 }
 
-// The following selectors can be used in common scenarios.
+// Commonly used selectors for choosing authenticators in typical scenarios.
 //
 //nolint:gochecknoglobals // const
 var /* const */ (
@@ -27,22 +27,24 @@ var /* const */ (
 	Propagate = Select("propagate")
 )
 
-// Selector is a [grpc.CallOption] to select one of configured authenticators for a specific request.
+// Selector is a [grpc.CallOption] that allows specifying which authenticator to use for a particular gRPC request.
+// The selected authenticator must be pre-configured in the client.
 type Selector struct {
 	grpc.EmptyCallOption
 	Name string
 }
 
-// Select returns [Selector] to select one of configured authenticators for a specific request.
+// Select returns a [Selector] for specifying an authenticator by name to use for a particular gRPC request.
 func Select(name string) Selector {
 	return Selector{
 		Name: name,
 	}
 }
 
-// Error wraps any authentication error.
-// It doesn't have an Unwrap method to avoid bugs.
-// To get an underlying error you should do the following:
+// Error wraps an authentication-related error.
+//
+// It intentionally does not provide an Unwrap method to avoid unintended behavior or bugs.
+// To access the underlying error, use [errors.As] as follows:
 //
 //	var authErr *auth.Error
 //	if errors.As(err, &authErr) {

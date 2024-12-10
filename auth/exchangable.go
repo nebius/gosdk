@@ -16,7 +16,9 @@ type ExchangeTokenRequester interface {
 	GetExchangeTokenRequest(context.Context) (*iampb.ExchangeTokenRequest, error)
 }
 
-// ExchangeableBearerTokener sends request to [iampb.TokenExchangeServiceClient.Exchange] to get a [BearerToken].
+// ExchangeableBearerTokener is a [BearerTokener] that exchanges tokens
+// using the [iampb.TokenExchangeServiceClient.Exchange] method.
+// It relies on an [ExchangeTokenRequester] to generate the request payload for the exchange.
 type ExchangeableBearerTokener struct {
 	creds  ExchangeTokenRequester
 	client iampb.TokenExchangeServiceClient
@@ -25,6 +27,9 @@ type ExchangeableBearerTokener struct {
 
 var _ BearerTokener = (*ExchangeableBearerTokener)(nil)
 
+// NewExchangeableBearerTokener returns a [BearerTokener] that exchanges tokens
+// using the [iampb.TokenExchangeServiceClient.Exchange] method.
+// It relies on an [ExchangeTokenRequester] to generate the request payload for the exchange.
 func NewExchangeableBearerTokener(
 	creds ExchangeTokenRequester,
 	client iampb.TokenExchangeServiceClient,
@@ -36,6 +41,9 @@ func NewExchangeableBearerTokener(
 	}
 }
 
+// SetClient updates the gRPC client.
+//
+// Note: This method is not thread-safe and should be called during initialization.
 func (t *ExchangeableBearerTokener) SetClient(client iampb.TokenExchangeServiceClient) {
 	t.client = client
 }
@@ -68,11 +76,12 @@ func (t *ExchangeableBearerTokener) BearerToken(ctx context.Context) (BearerToke
 }
 
 func (t *ExchangeableBearerTokener) HandleError(context.Context, BearerToken, error) error {
-	return nil
+	return nil // Unauthenticated error can be retried
 }
 
-// ServiceAccountExchangeTokenRequester generates a signed JWT using the credentials of a [ServiceAccount],
-// intended for exchange to obtain a [BearerToken].
+// ServiceAccountExchangeTokenRequester is an [ExchangeTokenRequester] that generates a signed JWT
+// using the credentials of a [ServiceAccount].
+// The JWT is intended for exchange to obtain a [BearerToken] via a token exchange service.
 type ServiceAccountExchangeTokenRequester struct {
 	account ServiceAccountReader
 	now     func() time.Time
@@ -80,6 +89,9 @@ type ServiceAccountExchangeTokenRequester struct {
 
 var _ ExchangeTokenRequester = ServiceAccountExchangeTokenRequester{}
 
+// NewServiceAccountExchangeTokenRequester returns an [ExchangeTokenRequester] that generates a signed JWT
+// using the credentials of a [ServiceAccount].
+// The JWT is intended for exchange to obtain a [BearerToken] via a token exchange service.
 func NewServiceAccountExchangeTokenRequester(account ServiceAccountReader) ServiceAccountExchangeTokenRequester {
 	return ServiceAccountExchangeTokenRequester{
 		account: account,
