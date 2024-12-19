@@ -432,6 +432,8 @@ Contributions are welcome! Please refer to the [contributing guidelines](CONTRIB
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+Copyright (c) 2024 Nebius B.V.
+
 
 
 [go-img]: https://img.shields.io/github/go-mod/go-version/nebius/gosdk
