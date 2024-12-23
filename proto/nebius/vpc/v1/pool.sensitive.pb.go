@@ -13,3 +13,6 @@ package v1
 
 // func (x *PoolStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PoolStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *PoolAssignment) Sanitize()            // is not generated as no sensitive fields found
+// func (x *PoolAssignment) LogValue() slog.Value // is not generated as no sensitive fields found
