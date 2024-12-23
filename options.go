@@ -65,10 +65,10 @@ func WithAddressTemplate(find string, replace string) Option {
 	}
 }
 
-// WithExplicitInit changes the [New] constructor behavior.
-// If explicitInit is false (default), [SDK.Init] is called by [New].
-// Otherwise, you must call [SDK.Init] by yourself.
-// This option may be useful to separate the [SDK] instantiation from IO operations.
+// WithExplicitInit alters the behavior of the [New] constructor.
+// If explicitInit is false (the default), [SDK.Init] is automatically called by [New].
+// If explicitInit is true, you must manually call [SDK.Init] yourself.
+// This option is useful for separating the [SDK] instantiation from I/O operations.
 func WithExplicitInit(explicitInit bool) Option {
 	return optionExplicitInit(explicitInit)
 }
