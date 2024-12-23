@@ -28,9 +28,11 @@ type SDK struct {
 	closes   []func() error
 }
 
-// New creates a new [SDK] with provided options.
-// By default, it also performs IO operations, if necessary.
-// If you want to do them separately, use [WithExplicitInit] option.
+// New creates a new [SDK] with the provided options.
+// By default, it also performs any necessary I/O operations.
+// To separate I/O operations from instantiation, use the [WithExplicitInit] option.
+//
+// Important: Ensure that the provided ctx is not closed before calling [SDK.Close].
 func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	domain := "api.eu.nebius.cloud:443"
 
@@ -191,8 +193,11 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	return sdk, nil
 }
 
-// Init completes creation of an [SDK]. It performs all necessary IO operations.
-// You should call it only if [WithExplicitInit] option is used.
+// Init finalizes the creation of the [SDK] by performing all required I/O operations.
+// It is automatically called by the [New] constructor by default.
+// This method should only be called manually if the [WithExplicitInit] option is used.
+//
+// Important: Ensure that the provided ctx is not closed before calling [SDK.Close].
 func (s *SDK) Init(ctx context.Context) error {
 	for _, init := range s.inits {
 		err := init(ctx, s)
@@ -200,7 +205,7 @@ func (s *SDK) Init(ctx context.Context) error {
 			return err
 		}
 	}
-	s.inits = nil // make sure nothing breaks if the user calls Init() twice or without WithExplicitInit() option
+	s.inits = nil // reset to prevent issues if Init() is called multiple times or called without [WithExplicitInit]
 	return nil
 }
 

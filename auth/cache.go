@@ -76,6 +76,7 @@ func (c *CachedServiceTokener) Run(ctx context.Context) error { //nolint:gocogni
 	for {
 		select {
 		case <-ctx.Done():
+			c.logger.InfoContext(ctx, "background token refresh stopped as the context is done")
 			return ctx.Err()
 		case <-c.ticker.C:
 
@@ -101,7 +102,7 @@ func (c *CachedServiceTokener) Run(ctx context.Context) error { //nolint:gocogni
 
 			c.logger.InfoContext(
 				ctx,
-				"Token is about to expire; initiating background token refresh",
+				"token is about to expire; initiating background token refresh",
 				slog.Time("expires_at", token.ExpiresAt),
 				slog.Int("attempt", retryCount+1),
 			)
@@ -117,7 +118,7 @@ func (c *CachedServiceTokener) Run(ctx context.Context) error { //nolint:gocogni
 				}
 				c.logger.ErrorContext(
 					ctx,
-					"Background token refresh failed",
+					"background token refresh failed",
 					slog.Any("error", err),
 					slog.Int("attempt", retryCount+1),
 					slog.Duration("next_attempt", retry),
@@ -181,7 +182,7 @@ func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool
 			} else {
 				c.logger.ErrorContext(
 					ctx,
-					"Received already expired token",
+					"received already expired token",
 					slog.Time("expires_at", token.ExpiresAt),
 				)
 			}
