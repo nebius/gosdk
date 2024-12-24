@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+
+	"gopkg.in/yaml.v3"
 )
 
 // TokenType constants.
@@ -472,4 +474,119 @@ func ParseMust(mask string) *Mask {
 		panic(err)
 	}
 	return ret
+}
+
+type format string
+
+const (
+	jsonFormat format = "json"
+	yamlFormat format = "yaml"
+)
+
+// ParseJSON parses the input json into a [Mask] object. It finds the
+// leafs, build their [FieldPath] and merge them to one [Mask].
+//
+// Parameters:
+//
+//	input []byte - The input json to be parsed.
+//
+// Returns:
+//
+//   - *Mask - The parsed [Mask] object representing the structure defined by
+//     the json input.
+//   - error - An error if there was any issue during parsing or tokenization.
+//
+// [Mask Syntax]: https://nebius.atlassian.net/wiki/spaces/NEWBIUS/pages/131367768/ResetMask+tech+design
+func ParseJSON(input []byte) (*Mask, error) {
+	paths, err := getLeafFieldPaths(input, jsonFormat)
+	if err != nil {
+		return nil, err
+	}
+	return maskFromFieldPaths(paths)
+}
+
+// ParseYAML parses the input yaml into a [Mask] object. It finds the
+// leafs, build their [FieldPath] and merge them to one [Mask].
+//
+// Parameters:
+//
+//	input []byte - The input yaml to be parsed.
+//
+// Returns:
+//
+//   - *Mask - The parsed [Mask] object representing the structure defined by
+//     the yaml input.
+//   - error - An error if there was any issue during parsing or tokenization.
+//
+// [Mask Syntax]: https://nebius.atlassian.net/wiki/spaces/NEWBIUS/pages/131367768/ResetMask+tech+design
+func ParseYAML(input []byte) (*Mask, error) {
+	paths, err := getLeafFieldPaths(input, yamlFormat)
+	if err != nil {
+		return nil, err
+	}
+	return maskFromFieldPaths(paths)
+}
+
+func maskFromFieldPaths(fieldPaths []string) (*Mask, error) {
+	ret := New()
+	for _, fp := range fieldPaths {
+		m, err := Parse(fp)
+		if err != nil {
+			return nil, err
+		}
+		err = ret.Merge(m)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return ret, nil
+}
+
+// getLeafFieldPaths parses input and returns only leaf fields paths in dot-separated format.
+func getLeafFieldPaths(input []byte, format format) ([]string, error) {
+	var data interface{}
+
+	switch format {
+	case jsonFormat:
+		if err := json.Unmarshal(input, &data); err != nil {
+			return nil, err
+		}
+	case yamlFormat:
+		if err := yaml.Unmarshal(input, &data); err != nil {
+			return nil, err
+		}
+	default:
+		return nil, fmt.Errorf("unsupported format: %s", format)
+	}
+
+	return extractLeafFP(data, ""), nil
+}
+
+func extractLeafFP(data interface{}, prefix string) []string {
+	var fieldPaths []string
+
+	switch v := data.(type) {
+	case map[string]interface{}:
+		for key, value := range v {
+			newPrefix := key
+			if prefix != "" {
+				newPrefix = fmt.Sprintf("%s.%s", prefix, key)
+			}
+			fieldPaths = append(fieldPaths, extractLeafFP(value, newPrefix)...)
+		}
+	case []interface{}:
+		for i, value := range v {
+			newPrefix := fmt.Sprintf("%s.%d", prefix, i)
+			childPaths := extractLeafFP(value, newPrefix)
+			if len(childPaths) == 0 {
+				fieldPaths = append(fieldPaths, newPrefix)
+			} else {
+				fieldPaths = append(fieldPaths, childPaths...)
+			}
+		}
+	default:
+		fieldPaths = append(fieldPaths, prefix)
+	}
+
+	return fieldPaths
 }
