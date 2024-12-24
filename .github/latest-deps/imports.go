@@ -31,4 +31,5 @@ import (
 	_ "google.golang.org/protobuf/types/known/durationpb"
 	_ "google.golang.org/protobuf/types/known/emptypb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
+	_ "gopkg.in/yaml.v3"
 )
