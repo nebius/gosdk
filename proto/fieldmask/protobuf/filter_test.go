@@ -16,7 +16,7 @@ func TestFilterWithSelectMask(t *testing.T) {
 	t.Parallel()
 	veryRecursive := &testdata.RecursiveStruct{}
 	veryMask := &mask.Mask{}
-	for _ = range recursionTooDeep + 42 {
+	for range recursionTooDeep + 42 {
 		veryRecursive = &testdata.RecursiveStruct{
 			Recursive: veryRecursive,
 		}

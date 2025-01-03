@@ -236,6 +236,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestGetLeafKeysFromJSON(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name     string
 		input    string
@@ -296,6 +297,7 @@ func TestGetLeafKeysFromJSON(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			got, err := getLeafFieldPaths([]byte(tt.input), jsonFormat)
 			if tt.wantErr {
 				assert.Error(t, err)
@@ -312,6 +314,7 @@ func TestGetLeafKeysFromJSON(t *testing.T) {
 }
 
 func TestGetLeafKeysFromYAML(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name     string
 		input    string
@@ -369,6 +372,7 @@ metadata: : some data
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			got, err := getLeafFieldPaths([]byte(tt.input), yamlFormat)
 			if tt.wantErr {
 				assert.Error(t, err)
@@ -385,6 +389,7 @@ metadata: : some data
 }
 
 func TestGetLeafKeysUnsupportedFormat(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name   string
 		input  string
@@ -404,6 +409,7 @@ func TestGetLeafKeysUnsupportedFormat(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			_, err := getLeafFieldPaths([]byte(tt.input), format(tt.format))
 			assert.Error(t, err)
 		})
@@ -411,6 +417,7 @@ func TestGetLeafKeysUnsupportedFormat(t *testing.T) {
 }
 
 func TestParseJSON(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name     string
 		input    string
@@ -449,6 +456,7 @@ func TestParseJSON(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			msk, err := ParseJSON([]byte(tt.input))
 			assert.NoError(t, err)
 
@@ -458,6 +466,7 @@ func TestParseJSON(t *testing.T) {
 }
 
 func TestParseYAML(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name     string
 		input    string
@@ -492,6 +501,7 @@ metadata:
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			msk, err := ParseYAML([]byte(tt.input))
 			assert.NoError(t, err)
 

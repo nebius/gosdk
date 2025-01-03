@@ -28,7 +28,7 @@ func TestFieldKey(t *testing.T) {
 		bb, err := fk.MarshalText()
 		assert.NoError(t, err)
 		assert.Equal(t, []byte(`"Simple_Key_123"`), bb)
-		n := (FieldKey(""))
+		n := FieldKey("")
 		np := &n
 		err = np.UnmarshalText(bb)
 		assert.NoError(t, err)
