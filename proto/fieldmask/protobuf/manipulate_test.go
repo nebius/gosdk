@@ -22,7 +22,7 @@ func TestGetAtFieldPath(t *testing.T) {
 		SomeString: "foo",
 	}
 	veryPath := mask.FieldPath{}
-	for _ = range recursionTooDeep + 42 {
+	for range recursionTooDeep + 42 {
 		veryRecursive = &testdata.RecursiveStruct{
 			Recursive: veryRecursive,
 		}

@@ -56,7 +56,7 @@ func TestAddSelectMaskToOutgoingContext(t *testing.T) {
 		md, _ := metadata.FromOutgoingContext(ctx)
 		assert.Equal(t, []string{"a,b.c", "a,b.d"}, md["x-selectmask"])
 	})
-	t.Run("add twice reverce order", func(t *testing.T) {
+	t.Run("add twice reverse order", func(t *testing.T) {
 		t.Parallel()
 		ctx, err := AddSelectMaskToOutgoingContext(context.Background(), mask.ParseMust("a,b.d"))
 		assert.NoError(t, err)

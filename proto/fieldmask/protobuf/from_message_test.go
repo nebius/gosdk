@@ -18,7 +18,7 @@ func TestResetMaskFromMessage(t *testing.T) {
 	veryRecursive := &testdata.RecursiveStruct{
 		SomeString: "foo",
 	}
-	for _ = range recursionTooDeep + 42 {
+	for range recursionTooDeep + 42 {
 		veryRecursive = &testdata.RecursiveStruct{
 			Recursive: veryRecursive,
 		}

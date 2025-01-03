@@ -685,7 +685,7 @@ func TestFieldPath_Marshal(t *testing.T) {
 	}
 }
 
-func TestFieldPath_UnarshalText(t *testing.T) {
+func TestFieldPath_UnmarshalText(t *testing.T) {
 	t.Parallel()
 	cases := []struct {
 		Mask      string

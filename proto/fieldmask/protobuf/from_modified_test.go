@@ -22,7 +22,7 @@ func TestResetMaskFromModified(t *testing.T) {
 	veryRecursive := &testdata.RecursiveStruct{
 		SomeString: "foo",
 	}
-	for _ = range recursionTooDeep + 42 {
+	for range recursionTooDeep + 42 {
 		veryRecursive = &testdata.RecursiveStruct{
 			Recursive: veryRecursive,
 		}
@@ -75,7 +75,7 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial:  &testdata.TestStructs{},
 			Modified: &testdata.TestSimple{},
-			Err:      "recieved messages of different types: initial nebius.testdata.TestStructs, modified nebius.testdata.TestSimple",
+			Err:      "received messages of different types: initial nebius.testdata.TestStructs, modified nebius.testdata.TestSimple",
 		},
 		{
 			Initial: &testdata.TestOptional{
@@ -137,7 +137,7 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{},
+					{},
 				},
 			},
 			Modified: &testdata.TestStructs{},
@@ -146,7 +146,7 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestStringmap: map[string]*testdata.TestSimple{
-					"foo": &testdata.TestSimple{},
+					"foo": {},
 				},
 			},
 			Modified: &testdata.TestStructs{},
@@ -155,10 +155,10 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{
+					{
 						TestDouble: 4.2,
 					},
-					&testdata.TestSimple{},
+					{},
 				},
 			},
 			Modified: &testdata.TestStructs{},
@@ -167,10 +167,10 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestStringmap: map[string]*testdata.TestSimple{
-					"a": &testdata.TestSimple{
+					"a": {
 						TestDouble: 4.2,
 					},
-					"b": &testdata.TestSimple{},
+					"b": {},
 				},
 			},
 			Modified: &testdata.TestStructs{},
@@ -179,10 +179,10 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{
+					{
 						TestDouble: 4.2,
 					},
-					&testdata.TestSimple{},
+					{},
 				},
 			},
 			Modified: &testdata.TestStructs{
@@ -193,10 +193,10 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestStringmap: map[string]*testdata.TestSimple{
-					"a": &testdata.TestSimple{
+					"a": {
 						TestDouble: 4.2,
 					},
-					"b": &testdata.TestSimple{},
+					"b": {},
 				},
 			},
 			Modified: &testdata.TestStructs{
@@ -207,15 +207,15 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{
+					{
 						TestDouble: 4.2,
 					},
-					&testdata.TestSimple{},
+					{},
 				},
 			},
 			Modified: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{},
+					{},
 				},
 			},
 			Mask: "test_repeated.0.test_double",
@@ -223,15 +223,15 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{
+					{
 						TestDouble: 4.2,
 					},
 				},
 			},
 			Modified: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{},
-					&testdata.TestSimple{},
+					{},
+					{},
 				},
 			},
 			Mask: "test_repeated.0.test_double",
@@ -242,7 +242,7 @@ func TestResetMaskFromModified(t *testing.T) {
 			},
 			Modified: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{},
+					{},
 				},
 			},
 			Mask: "",
@@ -250,15 +250,15 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{
+					{
 						TestDouble: 4.2,
 					},
-					&testdata.TestSimple{},
+					{},
 				},
 			},
 			Modified: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
-					&testdata.TestSimple{
+					{
 						TestDouble: 5.3,
 					},
 				},
@@ -268,26 +268,26 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestStringmap: map[string]*testdata.TestSimple{
-					"a": &testdata.TestSimple{},
-					"b": &testdata.TestSimple{
+					"a": {},
+					"b": {
 						TestDouble: 4.2,
 					},
-					"c": &testdata.TestSimple{
+					"c": {
 						TestDouble: 4.2,
 					},
-					"d": &testdata.TestSimple{
+					"d": {
 						TestDouble: 4.2,
 					},
 				},
 			},
 			Modified: &testdata.TestStructs{
 				TestStringmap: map[string]*testdata.TestSimple{
-					"a": &testdata.TestSimple{},
-					"b": &testdata.TestSimple{},
-					"c": &testdata.TestSimple{
+					"a": {},
+					"b": {},
+					"c": {
 						TestDouble: 4.3,
 					},
-					"e": &testdata.TestSimple{
+					"e": {
 						TestDouble: 4.2,
 					},
 				},
@@ -297,20 +297,20 @@ func TestResetMaskFromModified(t *testing.T) {
 		{
 			Initial: &testdata.TestStructs{
 				TestStringmap: map[string]*testdata.TestSimple{
-					"a": &testdata.TestSimple{},
-					"c": &testdata.TestSimple{
+					"a": {},
+					"c": {
 						TestDouble: 4.2,
 					},
 				},
 			},
 			Modified: &testdata.TestStructs{
 				TestStringmap: map[string]*testdata.TestSimple{
-					"a": &testdata.TestSimple{},
-					"b": &testdata.TestSimple{},
-					"c": &testdata.TestSimple{
+					"a": {},
+					"b": {},
+					"c": {
 						TestDouble: 4.3,
 					},
-					"e": &testdata.TestSimple{
+					"e": {
 						TestDouble: 4.2,
 					},
 				},

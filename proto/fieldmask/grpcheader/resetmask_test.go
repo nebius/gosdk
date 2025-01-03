@@ -57,7 +57,7 @@ func TestAddResetMaskToOutgoingContext(t *testing.T) {
 		md, _ := metadata.FromOutgoingContext(ctx)
 		assert.Equal(t, []string{"a,b.c", "a,b.d"}, md["x-resetmask"])
 	})
-	t.Run("add twice reverce order", func(t *testing.T) {
+	t.Run("add twice reverse order", func(t *testing.T) {
 		t.Parallel()
 		ctx, err := AddResetMaskToOutgoingContext(context.Background(), mask.ParseMust("a,b.d"))
 		assert.NoError(t, err)
@@ -127,7 +127,7 @@ func TestAddMessageResetMaskToOutgoingContext(t *testing.T) {
 		veryRecursive := &testdata.RecursiveStruct{
 			SomeString: "foo",
 		}
-		for _ = range recursionTooDeep + 42 {
+		for range recursionTooDeep + 42 {
 			veryRecursive = &testdata.RecursiveStruct{
 				Recursive: veryRecursive,
 			}
@@ -161,7 +161,7 @@ func TestEnsureMessageResetMaskInOutgoingContext(t *testing.T) {
 		veryRecursive := &testdata.RecursiveStruct{
 			SomeString: "foo",
 		}
-		for _ = range recursionTooDeep + 42 {
+		for range recursionTooDeep + 42 {
 			veryRecursive = &testdata.RecursiveStruct{
 				Recursive: veryRecursive,
 			}

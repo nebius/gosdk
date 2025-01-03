@@ -221,7 +221,7 @@ func ResetMaskFromModified(
 	// Check if the messages are of the same type
 	if initMsg.Descriptor().FullName() != modMsg.Descriptor().FullName() {
 		return nil, fmt.Errorf(
-			"recieved messages of different types: initial %s, modified %s",
+			"received messages of different types: initial %s, modified %s",
 			initMsg.Descriptor().FullName(), modMsg.Descriptor().FullName(),
 		)
 	}

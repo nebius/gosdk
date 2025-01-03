@@ -9,7 +9,7 @@ import (
 	"github.com/nebius/gosdk/proto/fieldmask/mask"
 )
 
-func rmFromMessageRecursive( //nolint:gocognit // TODO: simplify
+func rmFromMessageRecursive( //nolint:funlen,gocognit // TODO: simplify
 	resetMask *mask.Mask,
 	updMsg protoreflect.Message,
 	recursion int,
