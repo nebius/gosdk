@@ -374,7 +374,6 @@ issues:
     - path: "^proto/fieldmask"
       linters:
         - nilnil # TODO: fix or ignore
-        - paralleltest # TODO: fix or ignore
         - recvcheck # TODO: fix or ignore
         - testifylint # TODO: fix or ignore
         - testpackage # TODO: fix or ignore
