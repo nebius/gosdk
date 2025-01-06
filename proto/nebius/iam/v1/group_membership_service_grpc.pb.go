@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	GroupMembershipService_Create_FullMethodName                    = "/nebius.iam.v1.GroupMembershipService/Create"
 	GroupMembershipService_Get_FullMethodName                       = "/nebius.iam.v1.GroupMembershipService/Get"
+	GroupMembershipService_GetWithAttributes_FullMethodName         = "/nebius.iam.v1.GroupMembershipService/GetWithAttributes"
 	GroupMembershipService_Delete_FullMethodName                    = "/nebius.iam.v1.GroupMembershipService/Delete"
 	GroupMembershipService_ListMembers_FullMethodName               = "/nebius.iam.v1.GroupMembershipService/ListMembers"
 	GroupMembershipService_ListMembersWithAttributes_FullMethodName = "/nebius.iam.v1.GroupMembershipService/ListMembersWithAttributes"
@@ -34,6 +35,7 @@ const (
 type GroupMembershipServiceClient interface {
 	Create(ctx context.Context, in *CreateGroupMembershipRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Get(ctx context.Context, in *GetGroupMembershipRequest, opts ...grpc.CallOption) (*GroupMembership, error)
+	GetWithAttributes(ctx context.Context, in *GetGroupMembershipRequest, opts ...grpc.CallOption) (*GroupMembershipWithAttributes, error)
 	Delete(ctx context.Context, in *DeleteGroupMembershipRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	ListMembers(ctx context.Context, in *ListGroupMembershipsRequest, opts ...grpc.CallOption) (*ListGroupMembershipsResponse, error)
 	ListMembersWithAttributes(ctx context.Context, in *ListGroupMembershipsRequest, opts ...grpc.CallOption) (*ListGroupMembershipsWithAttributesResponse, error)
@@ -60,6 +62,15 @@ func (c *groupMembershipServiceClient) Create(ctx context.Context, in *CreateGro
 func (c *groupMembershipServiceClient) Get(ctx context.Context, in *GetGroupMembershipRequest, opts ...grpc.CallOption) (*GroupMembership, error) {
 	out := new(GroupMembership)
 	err := c.cc.Invoke(ctx, GroupMembershipService_Get_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *groupMembershipServiceClient) GetWithAttributes(ctx context.Context, in *GetGroupMembershipRequest, opts ...grpc.CallOption) (*GroupMembershipWithAttributes, error) {
+	out := new(GroupMembershipWithAttributes)
+	err := c.cc.Invoke(ctx, GroupMembershipService_GetWithAttributes_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -108,6 +119,7 @@ func (c *groupMembershipServiceClient) ListMemberOf(ctx context.Context, in *Lis
 type GroupMembershipServiceServer interface {
 	Create(context.Context, *CreateGroupMembershipRequest) (*v1.Operation, error)
 	Get(context.Context, *GetGroupMembershipRequest) (*GroupMembership, error)
+	GetWithAttributes(context.Context, *GetGroupMembershipRequest) (*GroupMembershipWithAttributes, error)
 	Delete(context.Context, *DeleteGroupMembershipRequest) (*v1.Operation, error)
 	ListMembers(context.Context, *ListGroupMembershipsRequest) (*ListGroupMembershipsResponse, error)
 	ListMembersWithAttributes(context.Context, *ListGroupMembershipsRequest) (*ListGroupMembershipsWithAttributesResponse, error)
@@ -123,6 +135,9 @@ func (UnimplementedGroupMembershipServiceServer) Create(context.Context, *Create
 }
 func (UnimplementedGroupMembershipServiceServer) Get(context.Context, *GetGroupMembershipRequest) (*GroupMembership, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedGroupMembershipServiceServer) GetWithAttributes(context.Context, *GetGroupMembershipRequest) (*GroupMembershipWithAttributes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWithAttributes not implemented")
 }
 func (UnimplementedGroupMembershipServiceServer) Delete(context.Context, *DeleteGroupMembershipRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -180,6 +195,24 @@ func _GroupMembershipService_Get_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupMembershipServiceServer).Get(ctx, req.(*GetGroupMembershipRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GroupMembershipService_GetWithAttributes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupMembershipRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupMembershipServiceServer).GetWithAttributes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupMembershipService_GetWithAttributes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupMembershipServiceServer).GetWithAttributes(ctx, req.(*GetGroupMembershipRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -270,6 +303,10 @@ var GroupMembershipService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _GroupMembershipService_Get_Handler,
+		},
+		{
+			MethodName: "GetWithAttributes",
+			Handler:    _GroupMembershipService_GetWithAttributes_Handler,
 		},
 		{
 			MethodName: "Delete",

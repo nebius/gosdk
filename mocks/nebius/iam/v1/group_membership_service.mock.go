@@ -219,6 +219,50 @@ func (c *MockGroupMembershipServiceGetOperationCall) DoAndReturn(f func(context.
 	return c
 }
 
+// GetWithAttributes mocks base method.
+func (m *MockGroupMembershipService) GetWithAttributes(arg0 context.Context, arg1 *v10.GetGroupMembershipRequest, arg2 ...grpc.CallOption) (*v10.GroupMembershipWithAttributes, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetWithAttributes", varargs...)
+	ret0, _ := ret[0].(*v10.GroupMembershipWithAttributes)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWithAttributes indicates an expected call of GetWithAttributes.
+func (mr *MockGroupMembershipServiceMockRecorder) GetWithAttributes(arg0, arg1 any, arg2 ...any) *MockGroupMembershipServiceGetWithAttributesCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWithAttributes", reflect.TypeOf((*MockGroupMembershipService)(nil).GetWithAttributes), varargs...)
+	return &MockGroupMembershipServiceGetWithAttributesCall{Call: call}
+}
+
+// MockGroupMembershipServiceGetWithAttributesCall wrap *gomock.Call
+type MockGroupMembershipServiceGetWithAttributesCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockGroupMembershipServiceGetWithAttributesCall) Return(arg0 *v10.GroupMembershipWithAttributes, arg1 error) *MockGroupMembershipServiceGetWithAttributesCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockGroupMembershipServiceGetWithAttributesCall) Do(f func(context.Context, *v10.GetGroupMembershipRequest, ...grpc.CallOption) (*v10.GroupMembershipWithAttributes, error)) *MockGroupMembershipServiceGetWithAttributesCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockGroupMembershipServiceGetWithAttributesCall) DoAndReturn(f func(context.Context, *v10.GetGroupMembershipRequest, ...grpc.CallOption) (*v10.GroupMembershipWithAttributes, error)) *MockGroupMembershipServiceGetWithAttributesCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListMemberOf mocks base method.
 func (m *MockGroupMembershipService) ListMemberOf(arg0 context.Context, arg1 *v10.ListMemberOfRequest, arg2 ...grpc.CallOption) (*v10.ListMemberOfResponse, error) {
 	m.ctrl.T.Helper()

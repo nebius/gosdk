@@ -25,6 +25,7 @@ const GroupMembershipServiceID conn.ServiceID = "nebius.iam.v1.GroupMembershipSe
 type GroupMembershipService interface {
 	Create(context.Context, *v1.CreateGroupMembershipRequest, ...grpc.CallOption) (operations.Operation, error)
 	Get(context.Context, *v1.GetGroupMembershipRequest, ...grpc.CallOption) (*v1.GroupMembership, error)
+	GetWithAttributes(context.Context, *v1.GetGroupMembershipRequest, ...grpc.CallOption) (*v1.GroupMembershipWithAttributes, error)
 	Delete(context.Context, *v1.DeleteGroupMembershipRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListMembers(context.Context, *v1.ListGroupMembershipsRequest, ...grpc.CallOption) (*v1.ListGroupMembershipsResponse, error)
 	ListMembersWithAttributes(context.Context, *v1.ListGroupMembershipsRequest, ...grpc.CallOption) (*v1.ListGroupMembershipsWithAttributesResponse, error)
@@ -69,6 +70,18 @@ func (s groupMembershipService) Get(ctx context.Context, request *v1.GetGroupMem
 		return nil, err
 	}
 	return v1.NewGroupMembershipServiceClient(con).Get(ctx, request, opts...)
+}
+
+func (s groupMembershipService) GetWithAttributes(ctx context.Context, request *v1.GetGroupMembershipRequest, opts ...grpc.CallOption) (*v1.GroupMembershipWithAttributes, error) {
+	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewGroupMembershipServiceClient(con).GetWithAttributes(ctx, request, opts...)
 }
 
 func (s groupMembershipService) Delete(ctx context.Context, request *v1.DeleteGroupMembershipRequest, opts ...grpc.CallOption) (operations.Operation, error) {
