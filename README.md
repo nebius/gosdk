@@ -1,6 +1,6 @@
-# Nebius Go SDK <br> [![go minimal version][go-img]][go-url] [![go tested version][go-latest-img]][go-latest-url] [![CI][ci-img]][ci-url] [![License][license-img]][license-url] [![Go Reference][godoc-img]][godoc-url]
+# Nebius SDK for Go <br> [![go minimal version][go-img]][go-url] [![go tested version][go-latest-img]][go-latest-url] [![CI][ci-img]][ci-url] [![License][license-img]][license-url] [![Go Reference][godoc-img]][godoc-url]
 
-The Nebius Go SDK is a comprehensive client library for interacting with [nebius.ai](https://nebius.ai) services.
+The Nebius SDK for Go is a comprehensive client library for interacting with [nebius.ai](https://nebius.ai) services.
 Built on gRPC, it supports all APIs defined in the [Nebius API repository](https://github.com/nebius/api).
 This SDK simplifies resource management, authentication, and communication with Nebius services, making it a valuable tool for developers.
 
