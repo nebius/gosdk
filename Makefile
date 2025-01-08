@@ -39,6 +39,7 @@ tidy: ## keep go.mod and .github/latest-deps tidy
 	@echo "+ $@"
 	go mod tidy
 	$(IMPORTS) > .github/latest-deps/imports.go
+	go fmt .github/latest-deps/imports.go
 	go mod tidy -modfile=.github/latest-deps/go.mod
 .PHONY: check
 
