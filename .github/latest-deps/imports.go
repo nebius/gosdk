@@ -8,10 +8,8 @@ import (
 	_ "github.com/google/uuid"
 	_ "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	_ "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
-	_ "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
 	_ "github.com/stretchr/testify/assert"
 	_ "github.com/stretchr/testify/require"
-	_ "go.uber.org/mock/gomock"
 	_ "golang.org/x/exp/maps"
 	_ "golang.org/x/net/http2"
 	_ "golang.org/x/sync/singleflight"
@@ -32,4 +30,5 @@ import (
 	_ "google.golang.org/protobuf/types/known/emptypb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
 	_ "gopkg.in/yaml.v3"
+	_ "go.uber.org/mock/gomock"
 )
