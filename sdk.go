@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
-	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
 	"google.golang.org/grpc"
 	grpc_creds "google.golang.org/grpc/credentials"
 
@@ -160,7 +159,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	}
 
 	// apply timeout after retry and auth interceptors for each request
-	dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(timeout.UnaryClientInterceptor(1*time.Minute)))
+	dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(conn.UnaryClientTimeoutInterceptor(1*time.Minute)))
 
 	dialer := conn.NewDialer(logger, dialOpts...)
 	closes = append(closes, dialer.Close)

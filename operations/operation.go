@@ -15,6 +15,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/nebius/gosdk/conn"
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
 )
 
@@ -186,6 +187,10 @@ func (o *opWrapper) Wait(ctx context.Context, opts ...grpc.CallOption) (Operatio
 		case <-time.After(interval):
 			_, err := o.Poll(ctx, opts...)
 			if err != nil {
+				tErr := &conn.TimeoutError{}
+				if errors.As(err, &tErr) {
+					continue
+				}
 				return nil, err
 			}
 

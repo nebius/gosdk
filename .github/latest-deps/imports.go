@@ -8,7 +8,6 @@ import (
 	_ "github.com/google/uuid"
 	_ "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	_ "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
-	_ "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
 	_ "github.com/stretchr/testify/assert"
 	_ "github.com/stretchr/testify/require"
 	_ "go.uber.org/mock/gomock"
