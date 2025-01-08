@@ -34,6 +34,7 @@ func TestProtoValidator(t *testing.T) {
 }
 
 func assertViolation(t *testing.T, err *protovalidate.ValidationError, field string, expectedConstraint string) {
+	require.NotNil(t, err)
 	for _, v := range err.Violations {
 		if v.GetFieldPath() == field {
 			assert.Equal(t, expectedConstraint, v.GetConstraintId())
