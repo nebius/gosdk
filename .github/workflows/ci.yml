@@ -14,6 +14,10 @@ on:
   schedule:
     - cron: "0 0 * * 1" # Each Monday
 
+permissions:
+  contents: read
+  checks: write # allow write access to allow the golangci/golangci-lint-action to annotate code in the PR
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -22,23 +26,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-go@v5.2.0
         with:
           go-version: "1.23.4" # update together with dev.dockerfile
       - name: Debug with tmate SSH if enabled
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_ssh }}
-        uses: mxschmitt/action-tmate@v3
+        uses: mxschmitt/action-tmate@v3.19
       - run: make test-cover
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v5.1.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   test-latest-deps:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-go@v5.2.0
         with:
           go-version: "1.23.4" # update together with dev.dockerfile
       - run: make test-latest-deps
@@ -47,8 +51,8 @@ jobs:
     name: "test go 1.22"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-go@v5.2.0
         with:
           go-version: "1.22"
       - run: make test
@@ -56,11 +60,11 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-go@v5.2.0
         with:
           go-version: "1.23.4" # update together with dev.dockerfile
-      - uses: golangci/golangci-lint-action@v6
+      - uses: golangci/golangci-lint-action@v6.1.1
         with:
           version: "v1.63.4" # update together with dev.dockerfile
 
@@ -68,8 +72,8 @@ jobs:
     name: go mod tidy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-go@v5.2.0
         with:
           go-version: "1.23.4" # update together with dev.dockerfile
       - run: make check-tidy
