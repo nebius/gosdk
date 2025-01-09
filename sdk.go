@@ -259,7 +259,7 @@ func initCache(cache *auth.CachedServiceTokener) func(context.Context, *SDK) err
 
 			select {
 			case err := <-errs:
-				if err == context.Canceled { //nolint:errorlint // don't use errors.Is intentionally
+				if err == context.Canceled {
 					return nil
 				}
 				return err
