@@ -141,7 +141,6 @@ func (d *dialer) dial(ctx context.Context, address Address) (*grpc.ClientConn, e
 		if backOff != nil {
 			backOff.Reset()
 		}
-		timer := time.Timer{}
 		for {
 			conn, err = grpc.DialContext(ctx, string(address), opts...) //nolint:staticcheck // TODO: use NewClient
 			if err == nil || backOff == nil || !retriable(err) {
@@ -152,12 +151,11 @@ func (d *dialer) dial(ctx context.Context, address Address) (*grpc.ClientConn, e
 			if wait == backoff.Stop {
 				return nil, err
 			}
-			timer.Reset(wait)
 
 			select {
 			case <-ctx.Done():
 				return conn, ctx.Err()
-			case <-timer.C:
+			case <-time.After(wait):
 			}
 		}
 		if err != nil {
