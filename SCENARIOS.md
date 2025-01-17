@@ -72,7 +72,7 @@ handler := slogzap.Option{Level: slog.LevelDebug, Logger: zapLogger}.NewZapHandl
 sdk, err := gosdk.New(ctx, gosdk.WithLoggerHandler(handler))
 ```
 
-This approach allows you to harness the power of your preferred logging framework while maintaining compatibility with the Nebius SDK.
+This approach allows you to harness the power of your preferred logging framework while maintaining compatibility with the Nebius AI Cloud SDK.
 
 ## Error Handling
 
@@ -154,7 +154,7 @@ if err != nil {
 
 ### Extracting Service Error Details
 
-Many Nebius services return additional error details through the `serviceerror` package.
+Many Nebius AI Cloud services return additional error details through the `serviceerror` package.
 These details can provide insights into issues like quota failures or validation errors.
 
 #### Adding Detailed Information to Error Messages
