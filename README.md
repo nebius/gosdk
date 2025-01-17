@@ -1,6 +1,6 @@
-# Nebius SDK for Go <br> [![go minimal version][go-img]][go-url] [![go tested version][go-latest-img]][go-latest-url] [![CI][ci-img]][ci-url] [![License][license-img]][license-url] [![Go Reference][godoc-img]][godoc-url]
+# Nebius AI Cloud SDK for Go <br> [![go minimal version][go-img]][go-url] [![go tested version][go-latest-img]][go-latest-url] [![CI][ci-img]][ci-url] [![License][license-img]][license-url] [![Go Reference][godoc-img]][godoc-url]
 
-The Nebius SDK for Go is a comprehensive client library for interacting with [nebius.ai](https://nebius.ai) services.
+The Nebius AI Cloud SDK for Go is a comprehensive client library for interacting with [nebius.com](https://nebius.com) services.
 Built on gRPC, it supports all APIs defined in the [Nebius API repository](https://github.com/nebius/api).
 This SDK simplifies resource management, authentication, and communication with Nebius services, making it a valuable tool for developers.
 
@@ -138,7 +138,7 @@ Here are common approaches:
 
 ## Resources and Operations
 
-Nebius communicates via gRPC, with read operations such as `Get` and `List` returning protobuf messages that describe resources.
+Nebius AI Cloud communicates via gRPC, with read operations such as `Get` and `List` returning protobuf messages that describe resources.
 Mutating operations like `Create`, `Update`, and `Delete` return an `Operation` object.
 
 Operations can be either synchronous or asynchronous.
