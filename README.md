@@ -2,7 +2,7 @@
 
 The Nebius AI Cloud SDK for Go is a comprehensive client library for interacting with [nebius.com](https://nebius.com) services.
 Built on gRPC, it supports all APIs defined in the [Nebius API repository](https://github.com/nebius/api).
-This SDK simplifies resource management, authentication, and communication with Nebius services, making it a valuable tool for developers.
+This SDK simplifies resource management, authorization, and communication with Nebius services, making it a valuable tool for developers.
 
 ## Installation
 
@@ -44,23 +44,26 @@ defer sdk.Close()
 ```
 
 The `gosdk.New` constructor initializes the SDK.
-However, **authentication is required** for functionality.
+However, **authorization is required** for functionality.
 Use the `gosdk.WithCredentials` option to provide credentials.
 
 To clean up resources properly, ensure you call `Close` when finished.
 
 Find all available options in [options.go](options.go) ([reference](https://pkg.go.dev/github.com/nebius/gosdk#Option)).
 
-### Authentication and Credentials
+### Authorization and Credentials
 
-Authentication is handled by passing credentials via the `gosdk.WithCredentials` option.
+Authorization is handled by passing credentials via the `gosdk.WithCredentials` option.
 Commonly used credentials include `gosdk.IAMToken` and `gosdk.ServiceAccountReader`.
 
 Find all available credentials in [credentials.go](credentials.go) ([reference](https://pkg.go.dev/github.com/nebius/gosdk#Credentials)).
 
 #### Using an IAM Token
 
-Supply an IAM token with `gosdk.IAMToken`. For instance, if your token is stored in an environment variable:
+The `gosdk.IAMToken` credentials allow you to use an IAM token directly for authorization.
+This approach is ideal for testing or tools used by end-users with their own credentials.
+
+Here's an example of initializing the SDK with an IAM token stored in an environment variable:
 
 ```go
 token := os.Getenv("IAM_TOKEN")
@@ -72,15 +75,21 @@ sdk, err := gosdk.New(
 )
 ```
 
-To generate an IAM token using the `nebius` CLI ([documentation](https://docs.nebius.com/cli)):
+**Important**:
 
-```bash
-IAM_TOKEN=$(nebius iam get-access-token)
-```
+- The SDK does not automatically manage IAM token creation or refresh for user accounts.
+- Use the `nebius` CLI ([documentation](https://docs.nebius.com/cli)) to obtain an IAM token manually:
+  ```bash
+  IAM_TOKEN=$(nebius iam get-access-token)
+  ```
+- Since tokens expire, this method requires manual token refreshes, making it less suitable for production environments.
 
-#### Using a Service Account
+#### Using a Service Account (Recommended)
 
-To authenticate with a service account, provide the service account ID, public key ID, and RSA private key.
+Service account authorization is recommended for server-to-server communication and production use cases.
+This method eliminates the need for manual token management by securely handling IAM tokens in the background.
+
+To authorize with a service account, provide the service account ID, public key ID, and RSA private key.
 The SDK uses these details to generate a JWT and exchange it for an IAM token.
 The token is automatically refreshed in the background to ensure continuous validity.
 
@@ -298,7 +307,7 @@ if err != nil {
 
 ## Complete Example
 
-This example demonstrates how to initialize the SDK with IAM token authentication and perform basic resource operations.
+This example demonstrates how to initialize the SDK with IAM token authorization and perform basic resource operations.
 
 ```go
 package example
