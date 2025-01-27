@@ -187,6 +187,7 @@ type GetVersionRequest struct {
 	AgentStateMessages []string             `protobuf:"bytes,11,rep,name=agent_state_messages,json=agentStateMessages,proto3" json:"agent_state_messages,omitempty"`
 	LastUpdateError    string               `protobuf:"bytes,12,opt,name=last_update_error,json=lastUpdateError,proto3" json:"last_update_error,omitempty"`
 	Mk8SClusterId      string               `protobuf:"bytes,13,opt,name=mk8s_cluster_id,json=mk8sClusterId,proto3" json:"mk8s_cluster_id,omitempty"`
+	ModulesHealth      *ModulesHealth       `protobuf:"bytes,14,opt,name=modules_health,json=modulesHealth,proto3" json:"modules_health,omitempty"`
 }
 
 func (x *GetVersionRequest) Reset() {
@@ -310,6 +311,127 @@ func (x *GetVersionRequest) GetMk8SClusterId() string {
 	return ""
 }
 
+func (x *GetVersionRequest) GetModulesHealth() *ModulesHealth {
+	if x != nil {
+		return x.ModulesHealth
+	}
+	return nil
+}
+
+type ModulesHealth struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Process     *ModuleHealth `protobuf:"bytes,1,opt,name=process,proto3" json:"process,omitempty"`
+	GpuPipeline *ModuleHealth `protobuf:"bytes,2,opt,name=gpu_pipeline,json=gpuPipeline,proto3" json:"gpu_pipeline,omitempty"`
+	CpuPipeline *ModuleHealth `protobuf:"bytes,3,opt,name=cpu_pipeline,json=cpuPipeline,proto3" json:"cpu_pipeline,omitempty"`
+}
+
+func (x *ModulesHealth) Reset() {
+	*x = ModulesHealth{}
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ModulesHealth) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ModulesHealth) ProtoMessage() {}
+
+func (x *ModulesHealth) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ModulesHealth.ProtoReflect.Descriptor instead.
+func (*ModulesHealth) Descriptor() ([]byte, []int) {
+	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ModulesHealth) GetProcess() *ModuleHealth {
+	if x != nil {
+		return x.Process
+	}
+	return nil
+}
+
+func (x *ModulesHealth) GetGpuPipeline() *ModuleHealth {
+	if x != nil {
+		return x.GpuPipeline
+	}
+	return nil
+}
+
+func (x *ModulesHealth) GetCpuPipeline() *ModuleHealth {
+	if x != nil {
+		return x.CpuPipeline
+	}
+	return nil
+}
+
+type ModuleHealth struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	State    AgentState `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.logging.agentmanager.v1.AgentState" json:"state,omitempty"`
+	Messages []string   `protobuf:"bytes,2,rep,name=messages,proto3" json:"messages,omitempty"`
+}
+
+func (x *ModuleHealth) Reset() {
+	*x = ModuleHealth{}
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ModuleHealth) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ModuleHealth) ProtoMessage() {}
+
+func (x *ModuleHealth) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ModuleHealth.ProtoReflect.Descriptor instead.
+func (*ModuleHealth) Descriptor() ([]byte, []int) {
+	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ModuleHealth) GetState() AgentState {
+	if x != nil {
+		return x.State
+	}
+	return AgentState_STATE_UNDEFINED
+}
+
+func (x *ModuleHealth) GetMessages() []string {
+	if x != nil {
+		return x.Messages
+	}
+	return nil
+}
+
 type OSInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -324,7 +446,7 @@ type OSInfo struct {
 
 func (x *OSInfo) Reset() {
 	*x = OSInfo{}
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[1]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -336,7 +458,7 @@ func (x *OSInfo) String() string {
 func (*OSInfo) ProtoMessage() {}
 
 func (x *OSInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[1]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -349,7 +471,7 @@ func (x *OSInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OSInfo.ProtoReflect.Descriptor instead.
 func (*OSInfo) Descriptor() ([]byte, []int) {
-	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{1}
+	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *OSInfo) GetName() string {
@@ -389,7 +511,7 @@ type GetVersionResponse struct {
 
 func (x *GetVersionResponse) Reset() {
 	*x = GetVersionResponse{}
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[2]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -401,7 +523,7 @@ func (x *GetVersionResponse) String() string {
 func (*GetVersionResponse) ProtoMessage() {}
 
 func (x *GetVersionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[2]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -414,7 +536,7 @@ func (x *GetVersionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVersionResponse.ProtoReflect.Descriptor instead.
 func (*GetVersionResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{2}
+	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetVersionResponse) GetAction() Action {
@@ -482,7 +604,7 @@ type NopActionParams struct {
 
 func (x *NopActionParams) Reset() {
 	*x = NopActionParams{}
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[3]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -494,7 +616,7 @@ func (x *NopActionParams) String() string {
 func (*NopActionParams) ProtoMessage() {}
 
 func (x *NopActionParams) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[3]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -507,7 +629,7 @@ func (x *NopActionParams) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NopActionParams.ProtoReflect.Descriptor instead.
 func (*NopActionParams) Descriptor() ([]byte, []int) {
-	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{5}
 }
 
 type UpdateActionParams struct {
@@ -521,7 +643,7 @@ type UpdateActionParams struct {
 
 func (x *UpdateActionParams) Reset() {
 	*x = UpdateActionParams{}
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[4]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -533,7 +655,7 @@ func (x *UpdateActionParams) String() string {
 func (*UpdateActionParams) ProtoMessage() {}
 
 func (x *UpdateActionParams) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[4]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -546,7 +668,7 @@ func (x *UpdateActionParams) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateActionParams.ProtoReflect.Descriptor instead.
 func (*UpdateActionParams) Descriptor() ([]byte, []int) {
-	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateActionParams) GetVersion() string {
@@ -571,7 +693,7 @@ type RestartActionParams struct {
 
 func (x *RestartActionParams) Reset() {
 	*x = RestartActionParams{}
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[5]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -583,7 +705,7 @@ func (x *RestartActionParams) String() string {
 func (*RestartActionParams) ProtoMessage() {}
 
 func (x *RestartActionParams) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[5]
+	mi := &file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -596,7 +718,7 @@ func (x *RestartActionParams) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestartActionParams.ProtoReflect.Descriptor instead.
 func (*RestartActionParams) Descriptor() ([]byte, []int) {
-	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP(), []int{7}
 }
 
 var File_nebius_logging_v1_agentmanager_version_service_proto protoreflect.FileDescriptor
@@ -611,7 +733,7 @@ var file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = []byte{
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x18, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2f, 0x61,
 	0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x22, 0xb2, 0x05, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52,
+	0x22, 0x88, 0x06, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x3d, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x0e, 0x32, 0x29, 0x2e, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2e, 0x6c, 0x6f,
 	0x67, 0x67, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x67, 0x65, 0x6e, 0x74, 0x6d, 0x61, 0x6e, 0x61, 0x67,
@@ -654,7 +776,35 @@ var file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = []byte{
 	0x73, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x12, 0x26, 0x0a,
 	0x0f, 0x6d, 0x6b, 0x38, 0x73, 0x5f, 0x63, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72, 0x5f, 0x69, 0x64,
 	0x18, 0x0d, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x6d, 0x6b, 0x38, 0x73, 0x43, 0x6c, 0x75, 0x73,
-	0x74, 0x65, 0x72, 0x49, 0x64, 0x22, 0x56, 0x0a, 0x06, 0x4f, 0x53, 0x49, 0x6e, 0x66, 0x6f, 0x12,
+	0x74, 0x65, 0x72, 0x49, 0x64, 0x12, 0x54, 0x0a, 0x0e, 0x6d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x73,
+	0x5f, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2d, 0x2e,
+	0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2e, 0x6c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x2e, 0x61,
+	0x67, 0x65, 0x6e, 0x74, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x4d,
+	0x6f, 0x64, 0x75, 0x6c, 0x65, 0x73, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x52, 0x0d, 0x6d, 0x6f,
+	0x64, 0x75, 0x6c, 0x65, 0x73, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x22, 0xf9, 0x01, 0x0a, 0x0d,
+	0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x73, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x12, 0x46, 0x0a,
+	0x07, 0x70, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c,
+	0x2e, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2e, 0x6c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x2e,
+	0x61, 0x67, 0x65, 0x6e, 0x74, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e,
+	0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x52, 0x07, 0x70, 0x72,
+	0x6f, 0x63, 0x65, 0x73, 0x73, 0x12, 0x4f, 0x0a, 0x0c, 0x67, 0x70, 0x75, 0x5f, 0x70, 0x69, 0x70,
+	0x65, 0x6c, 0x69, 0x6e, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x6e, 0x65,
+	0x62, 0x69, 0x75, 0x73, 0x2e, 0x6c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x67, 0x65,
+	0x6e, 0x74, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x6f, 0x64,
+	0x75, 0x6c, 0x65, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x52, 0x0b, 0x67, 0x70, 0x75, 0x50, 0x69,
+	0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x12, 0x4f, 0x0a, 0x0c, 0x63, 0x70, 0x75, 0x5f, 0x70, 0x69,
+	0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x6e,
+	0x65, 0x62, 0x69, 0x75, 0x73, 0x2e, 0x6c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x67,
+	0x65, 0x6e, 0x74, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x6f,
+	0x64, 0x75, 0x6c, 0x65, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x52, 0x0b, 0x63, 0x70, 0x75, 0x50,
+	0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x22, 0x6c, 0x0a, 0x0c, 0x4d, 0x6f, 0x64, 0x75, 0x6c,
+	0x65, 0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x12, 0x40, 0x0a, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x2a, 0x2e, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2e,
+	0x6c, 0x6f, 0x67, 0x67, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x67, 0x65, 0x6e, 0x74, 0x6d, 0x61, 0x6e,
+	0x61, 0x67, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x53, 0x74, 0x61,
+	0x74, 0x65, 0x52, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x6d, 0x65, 0x73,
+	0x73, 0x61, 0x67, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x08, 0x6d, 0x65, 0x73,
+	0x73, 0x61, 0x67, 0x65, 0x73, 0x22, 0x56, 0x0a, 0x06, 0x4f, 0x53, 0x49, 0x6e, 0x66, 0x6f, 0x12,
 	0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e,
 	0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x75, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x05, 0x75, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x22, 0x0a, 0x0c, 0x61, 0x72, 0x63,
@@ -735,37 +885,44 @@ func file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP() []b
 }
 
 var file_nebius_logging_v1_agentmanager_version_service_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_logging_v1_agentmanager_version_service_proto_goTypes = []any{
 	(AgentType)(0),              // 0: nebius.logging.agentmanager.v1.AgentType
 	(AgentState)(0),             // 1: nebius.logging.agentmanager.v1.AgentState
 	(Action)(0),                 // 2: nebius.logging.agentmanager.v1.Action
 	(*GetVersionRequest)(nil),   // 3: nebius.logging.agentmanager.v1.GetVersionRequest
-	(*OSInfo)(nil),              // 4: nebius.logging.agentmanager.v1.OSInfo
-	(*GetVersionResponse)(nil),  // 5: nebius.logging.agentmanager.v1.GetVersionResponse
-	(*NopActionParams)(nil),     // 6: nebius.logging.agentmanager.v1.NopActionParams
-	(*UpdateActionParams)(nil),  // 7: nebius.logging.agentmanager.v1.UpdateActionParams
-	(*RestartActionParams)(nil), // 8: nebius.logging.agentmanager.v1.RestartActionParams
-	(*durationpb.Duration)(nil), // 9: google.protobuf.Duration
+	(*ModulesHealth)(nil),       // 4: nebius.logging.agentmanager.v1.ModulesHealth
+	(*ModuleHealth)(nil),        // 5: nebius.logging.agentmanager.v1.ModuleHealth
+	(*OSInfo)(nil),              // 6: nebius.logging.agentmanager.v1.OSInfo
+	(*GetVersionResponse)(nil),  // 7: nebius.logging.agentmanager.v1.GetVersionResponse
+	(*NopActionParams)(nil),     // 8: nebius.logging.agentmanager.v1.NopActionParams
+	(*UpdateActionParams)(nil),  // 9: nebius.logging.agentmanager.v1.UpdateActionParams
+	(*RestartActionParams)(nil), // 10: nebius.logging.agentmanager.v1.RestartActionParams
+	(*durationpb.Duration)(nil), // 11: google.protobuf.Duration
 }
 var file_nebius_logging_v1_agentmanager_version_service_proto_depIdxs = []int32{
 	0,  // 0: nebius.logging.agentmanager.v1.GetVersionRequest.type:type_name -> nebius.logging.agentmanager.v1.AgentType
-	4,  // 1: nebius.logging.agentmanager.v1.GetVersionRequest.os_info:type_name -> nebius.logging.agentmanager.v1.OSInfo
+	6,  // 1: nebius.logging.agentmanager.v1.GetVersionRequest.os_info:type_name -> nebius.logging.agentmanager.v1.OSInfo
 	1,  // 2: nebius.logging.agentmanager.v1.GetVersionRequest.agent_state:type_name -> nebius.logging.agentmanager.v1.AgentState
-	9,  // 3: nebius.logging.agentmanager.v1.GetVersionRequest.agent_uptime:type_name -> google.protobuf.Duration
-	9,  // 4: nebius.logging.agentmanager.v1.GetVersionRequest.system_uptime:type_name -> google.protobuf.Duration
-	9,  // 5: nebius.logging.agentmanager.v1.GetVersionRequest.updater_uptime:type_name -> google.protobuf.Duration
-	2,  // 6: nebius.logging.agentmanager.v1.GetVersionResponse.action:type_name -> nebius.logging.agentmanager.v1.Action
-	6,  // 7: nebius.logging.agentmanager.v1.GetVersionResponse.nop:type_name -> nebius.logging.agentmanager.v1.NopActionParams
-	7,  // 8: nebius.logging.agentmanager.v1.GetVersionResponse.update:type_name -> nebius.logging.agentmanager.v1.UpdateActionParams
-	8,  // 9: nebius.logging.agentmanager.v1.GetVersionResponse.restart:type_name -> nebius.logging.agentmanager.v1.RestartActionParams
-	3,  // 10: nebius.logging.agentmanager.v1.VersionService.GetVersion:input_type -> nebius.logging.agentmanager.v1.GetVersionRequest
-	5,  // 11: nebius.logging.agentmanager.v1.VersionService.GetVersion:output_type -> nebius.logging.agentmanager.v1.GetVersionResponse
-	11, // [11:12] is the sub-list for method output_type
-	10, // [10:11] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	11, // 3: nebius.logging.agentmanager.v1.GetVersionRequest.agent_uptime:type_name -> google.protobuf.Duration
+	11, // 4: nebius.logging.agentmanager.v1.GetVersionRequest.system_uptime:type_name -> google.protobuf.Duration
+	11, // 5: nebius.logging.agentmanager.v1.GetVersionRequest.updater_uptime:type_name -> google.protobuf.Duration
+	4,  // 6: nebius.logging.agentmanager.v1.GetVersionRequest.modules_health:type_name -> nebius.logging.agentmanager.v1.ModulesHealth
+	5,  // 7: nebius.logging.agentmanager.v1.ModulesHealth.process:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
+	5,  // 8: nebius.logging.agentmanager.v1.ModulesHealth.gpu_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
+	5,  // 9: nebius.logging.agentmanager.v1.ModulesHealth.cpu_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
+	1,  // 10: nebius.logging.agentmanager.v1.ModuleHealth.state:type_name -> nebius.logging.agentmanager.v1.AgentState
+	2,  // 11: nebius.logging.agentmanager.v1.GetVersionResponse.action:type_name -> nebius.logging.agentmanager.v1.Action
+	8,  // 12: nebius.logging.agentmanager.v1.GetVersionResponse.nop:type_name -> nebius.logging.agentmanager.v1.NopActionParams
+	9,  // 13: nebius.logging.agentmanager.v1.GetVersionResponse.update:type_name -> nebius.logging.agentmanager.v1.UpdateActionParams
+	10, // 14: nebius.logging.agentmanager.v1.GetVersionResponse.restart:type_name -> nebius.logging.agentmanager.v1.RestartActionParams
+	3,  // 15: nebius.logging.agentmanager.v1.VersionService.GetVersion:input_type -> nebius.logging.agentmanager.v1.GetVersionRequest
+	7,  // 16: nebius.logging.agentmanager.v1.VersionService.GetVersion:output_type -> nebius.logging.agentmanager.v1.GetVersionResponse
+	16, // [16:17] is the sub-list for method output_type
+	15, // [15:16] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_nebius_logging_v1_agentmanager_version_service_proto_init() }
@@ -773,7 +930,7 @@ func file_nebius_logging_v1_agentmanager_version_service_proto_init() {
 	if File_nebius_logging_v1_agentmanager_version_service_proto != nil {
 		return
 	}
-	file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[2].OneofWrappers = []any{
+	file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes[4].OneofWrappers = []any{
 		(*GetVersionResponse_Nop)(nil),
 		(*GetVersionResponse_Update)(nil),
 		(*GetVersionResponse_Restart)(nil),
@@ -784,7 +941,7 @@ func file_nebius_logging_v1_agentmanager_version_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc,
 			NumEnums:      3,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
