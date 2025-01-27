@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type TimeoutError struct {
@@ -35,12 +37,17 @@ func UnaryClientTimeoutInterceptor(timeout time.Duration) grpc.UnaryClientInterc
 		defer cancel()
 		err := invoker(timedCtx, method, req, reply, cc, opts...)
 		if err != nil {
-			if errors.Is(err, context.DeadlineExceeded) {
+			if errors.Is(err, context.DeadlineExceeded) || status.Code(err) == codes.DeadlineExceeded {
+				// Return TimeoutError if timedCtx is done but ctx is not done
 				select {
-				case <-ctx.Done():
-					return err
+				case <-timedCtx.Done():
+					select {
+					case <-ctx.Done():
+						// This is not timeout caused by this interceptor if the original context is done
+					default:
+						return &TimeoutError{wrapped: err}
+					}
 				default:
-					return &TimeoutError{wrapped: err}
 				}
 			}
 			// Otherwise, return the original error

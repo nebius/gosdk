@@ -389,6 +389,31 @@ func TestPatchWithResetMask(t *testing.T) {
 			Data: &testdata.TestStructs{
 				TestRepeated: []*testdata.TestSimple{
 					{
+						TestInt32: 123,
+					},
+					{
+						TestInt32: 456,
+					},
+				},
+			},
+			Patch: &testdata.TestStructs{
+				TestRepeated: make([]*testdata.TestSimple, 0),
+			},
+			Result: &testdata.TestStructs{},
+			Mask: &mask.Mask{
+				FieldParts: map[mask.FieldKey]*mask.Mask{
+					"test_repeated": {
+						FieldParts: map[mask.FieldKey]*mask.Mask{
+							"0": mask.New(),
+						},
+					},
+				},
+			},
+		},
+		{
+			Data: &testdata.TestStructs{
+				TestRepeated: []*testdata.TestSimple{
+					{
 						TestInt32:   123,
 						TestInt64:   456,
 						TestUint32:  69,
