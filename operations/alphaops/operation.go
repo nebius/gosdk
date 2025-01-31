@@ -224,33 +224,27 @@ func validateAndUnmarshal(operation *v1alpha1.Operation) (unmarshalled, error) {
 		}
 	}
 
-	msgs.request, err = unmarshalNotEmpty(operation.GetRequest())
-	if err != nil {
-		errs = errors.Join(errs, fmt.Errorf("request: %w", err))
-	}
+	msgs.request = unmarshalNotEmpty(operation.GetRequest())
+	msgs.resource = unmarshalNotEmpty(operation.GetResource())
+	msgs.progressData = unmarshalNotEmpty(operation.GetProgressData())
 
 	msgs.requestHeaders = http.Header{}
 	for name, header := range operation.GetRequestHeaders() {
 		msgs.requestHeaders[name] = header.GetValues()
 	}
 
-	msgs.resource, err = unmarshalNotEmpty(operation.GetResource())
-	if err != nil {
-		errs = errors.Join(errs, fmt.Errorf("resource: %w", err))
-	}
-
-	msgs.progressData, err = unmarshalNotEmpty(operation.GetProgressData())
-	if err != nil {
-		errs = errors.Join(errs, fmt.Errorf("progress_data: %w", err))
-	}
-
 	return msgs, errs
 }
 
-func unmarshalNotEmpty(operation *anypb.Any) (proto.Message, error) {
-	if operation == nil || operation.MessageIs(&emptypb.Empty{}) {
-		return nil, nil //nolint:nilnil // don't want to introduce a sentinel error in private method
+func unmarshalNotEmpty(message *anypb.Any) proto.Message {
+	if message.GetTypeUrl() == "" || message.MessageIs(&emptypb.Empty{}) {
+		return nil
 	}
 
-	return operation.UnmarshalNew()
+	res, err := message.UnmarshalNew()
+	if err != nil {
+		return nil // ignore the error to be compatible with newer services that may send unknown messages inside Any
+	}
+
+	return res
 }

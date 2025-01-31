@@ -133,7 +133,7 @@ func (s Stub) Raw() *commonpb.Operation {
 }
 
 func unmarshalNotEmpty(t require.TestingT, message *anypb.Any) proto.Message {
-	if message == nil || message.MessageIs(&emptypb.Empty{}) {
+	if message.GetTypeUrl() == "" || message.MessageIs(&emptypb.Empty{}) {
 		return nil
 	}
 
