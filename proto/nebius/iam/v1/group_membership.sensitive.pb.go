@@ -17,6 +17,9 @@ import (
 // func (x *GroupMembershipStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GroupMembershipStatus) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *GroupMemberKind) Sanitize()            // is not generated as no sensitive fields found
+// func (x *GroupMemberKind) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // Sanitize mutates [GroupMembershipWithAttributes] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].
 func (x *GroupMembershipWithAttributes) Sanitize() {
