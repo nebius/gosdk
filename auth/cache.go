@@ -54,6 +54,15 @@ func NewCachedServiceTokener(
 ) *CachedServiceTokener {
 	stoppedTicker := time.NewTicker(time.Minute)
 	stoppedTicker.Stop()
+	if initialRetry <= 0 {
+		initialRetry = time.Second
+	}
+	if retryMultiplier <= 0 {
+		retryMultiplier = 1
+	}
+	if maxRetry <= 0 {
+		maxRetry = time.Minute
+	}
 	return &CachedServiceTokener{
 		logger:          logger,
 		tokener:         tokener,
