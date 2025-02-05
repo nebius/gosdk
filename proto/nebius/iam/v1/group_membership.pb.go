@@ -24,6 +24,58 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type GroupMemberKind_Kind int32
+
+const (
+	GroupMemberKind_KIND_UNSPECIFIED             GroupMemberKind_Kind = 0
+	GroupMemberKind_ORDINARY_TENANT_USER_ACCOUNT GroupMemberKind_Kind = 1
+	GroupMemberKind_INVITED_TENANT_USER_ACCOUNT  GroupMemberKind_Kind = 2
+	GroupMemberKind_SERVICE_ACCOUNT              GroupMemberKind_Kind = 3
+)
+
+// Enum value maps for GroupMemberKind_Kind.
+var (
+	GroupMemberKind_Kind_name = map[int32]string{
+		0: "KIND_UNSPECIFIED",
+		1: "ORDINARY_TENANT_USER_ACCOUNT",
+		2: "INVITED_TENANT_USER_ACCOUNT",
+		3: "SERVICE_ACCOUNT",
+	}
+	GroupMemberKind_Kind_value = map[string]int32{
+		"KIND_UNSPECIFIED":             0,
+		"ORDINARY_TENANT_USER_ACCOUNT": 1,
+		"INVITED_TENANT_USER_ACCOUNT":  2,
+		"SERVICE_ACCOUNT":              3,
+	}
+)
+
+func (x GroupMemberKind_Kind) Enum() *GroupMemberKind_Kind {
+	p := new(GroupMemberKind_Kind)
+	*p = x
+	return p
+}
+
+func (x GroupMemberKind_Kind) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GroupMemberKind_Kind) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_iam_v1_group_membership_proto_enumTypes[0].Descriptor()
+}
+
+func (GroupMemberKind_Kind) Type() protoreflect.EnumType {
+	return &file_nebius_iam_v1_group_membership_proto_enumTypes[0]
+}
+
+func (x GroupMemberKind_Kind) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GroupMemberKind_Kind.Descriptor instead.
+func (GroupMemberKind_Kind) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_iam_v1_group_membership_proto_rawDescGZIP(), []int{3, 0}
+}
+
 type GroupMembership struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -179,6 +231,8 @@ type GroupMemberKind struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	Kind GroupMemberKind_Kind `protobuf:"varint,1,opt,name=kind,proto3,enum=nebius.iam.v1.GroupMemberKind_Kind" json:"kind,omitempty"`
 }
 
 func (x *GroupMemberKind) Reset() {
@@ -209,6 +263,13 @@ func (x *GroupMemberKind) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GroupMemberKind.ProtoReflect.Descriptor instead.
 func (*GroupMemberKind) Descriptor() ([]byte, []int) {
 	return file_nebius_iam_v1_group_membership_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GroupMemberKind) GetKind() GroupMemberKind_Kind {
+	if x != nil {
+		return x.Kind
+	}
+	return GroupMemberKind_KIND_UNSPECIFIED
 }
 
 // see also nebius/iam/v1/tenant_user_account.proto/TenantUserAccountWithAttributes
@@ -370,8 +431,19 @@ var file_nebius_iam_v1_group_membership_proto_rawDesc = []byte{
 	0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x04, 0xba, 0x4a, 0x01,
 	0x02, 0x52, 0x08, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x49, 0x64, 0x22, 0x17, 0x0a, 0x15, 0x47,
 	0x72, 0x6f, 0x75, 0x70, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x53, 0x74,
-	0x61, 0x74, 0x75, 0x73, 0x22, 0x11, 0x0a, 0x0f, 0x47, 0x72, 0x6f, 0x75, 0x70, 0x4d, 0x65, 0x6d,
-	0x62, 0x65, 0x72, 0x4b, 0x69, 0x6e, 0x64, 0x22, 0xad, 0x03, 0x0a, 0x1d, 0x47, 0x72, 0x6f, 0x75,
+	0x61, 0x74, 0x75, 0x73, 0x22, 0xc0, 0x01, 0x0a, 0x0f, 0x47, 0x72, 0x6f, 0x75, 0x70, 0x4d, 0x65,
+	0x6d, 0x62, 0x65, 0x72, 0x4b, 0x69, 0x6e, 0x64, 0x12, 0x37, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x23, 0x2e, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2e,
+	0x69, 0x61, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x72, 0x6f, 0x75, 0x70, 0x4d, 0x65, 0x6d, 0x62,
+	0x65, 0x72, 0x4b, 0x69, 0x6e, 0x64, 0x2e, 0x4b, 0x69, 0x6e, 0x64, 0x52, 0x04, 0x6b, 0x69, 0x6e,
+	0x64, 0x22, 0x74, 0x0a, 0x04, 0x4b, 0x69, 0x6e, 0x64, 0x12, 0x14, 0x0a, 0x10, 0x4b, 0x49, 0x4e,
+	0x44, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12,
+	0x20, 0x0a, 0x1c, 0x4f, 0x52, 0x44, 0x49, 0x4e, 0x41, 0x52, 0x59, 0x5f, 0x54, 0x45, 0x4e, 0x41,
+	0x4e, 0x54, 0x5f, 0x55, 0x53, 0x45, 0x52, 0x5f, 0x41, 0x43, 0x43, 0x4f, 0x55, 0x4e, 0x54, 0x10,
+	0x01, 0x12, 0x1f, 0x0a, 0x1b, 0x49, 0x4e, 0x56, 0x49, 0x54, 0x45, 0x44, 0x5f, 0x54, 0x45, 0x4e,
+	0x41, 0x4e, 0x54, 0x5f, 0x55, 0x53, 0x45, 0x52, 0x5f, 0x41, 0x43, 0x43, 0x4f, 0x55, 0x4e, 0x54,
+	0x10, 0x02, 0x12, 0x13, 0x0a, 0x0f, 0x53, 0x45, 0x52, 0x56, 0x49, 0x43, 0x45, 0x5f, 0x41, 0x43,
+	0x43, 0x4f, 0x55, 0x4e, 0x54, 0x10, 0x03, 0x22, 0xad, 0x03, 0x0a, 0x1d, 0x47, 0x72, 0x6f, 0x75,
 	0x70, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x57, 0x69, 0x74, 0x68, 0x41,
 	0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73, 0x12, 0x49, 0x0a, 0x10, 0x67, 0x72, 0x6f,
 	0x75, 0x70, 0x5f, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x18, 0x01, 0x20,
@@ -419,34 +491,37 @@ func file_nebius_iam_v1_group_membership_proto_rawDescGZIP() []byte {
 	return file_nebius_iam_v1_group_membership_proto_rawDescData
 }
 
+var file_nebius_iam_v1_group_membership_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_nebius_iam_v1_group_membership_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_nebius_iam_v1_group_membership_proto_goTypes = []any{
-	(*GroupMembership)(nil),               // 0: nebius.iam.v1.GroupMembership
-	(*GroupMembershipSpec)(nil),           // 1: nebius.iam.v1.GroupMembershipSpec
-	(*GroupMembershipStatus)(nil),         // 2: nebius.iam.v1.GroupMembershipStatus
-	(*GroupMemberKind)(nil),               // 3: nebius.iam.v1.GroupMemberKind
-	(*GroupMembershipWithAttributes)(nil), // 4: nebius.iam.v1.GroupMembershipWithAttributes
-	(*v1.ResourceMetadata)(nil),           // 5: nebius.common.v1.ResourceMetadata
-	(*timestamppb.Timestamp)(nil),         // 6: google.protobuf.Timestamp
-	(*UserAttributes)(nil),                // 7: nebius.iam.v1.UserAttributes
-	(*ServiceAccountAttributes)(nil),      // 8: nebius.iam.v1.ServiceAccountAttributes
-	(*Error)(nil),                         // 9: nebius.iam.v1.Error
+	(GroupMemberKind_Kind)(0),             // 0: nebius.iam.v1.GroupMemberKind.Kind
+	(*GroupMembership)(nil),               // 1: nebius.iam.v1.GroupMembership
+	(*GroupMembershipSpec)(nil),           // 2: nebius.iam.v1.GroupMembershipSpec
+	(*GroupMembershipStatus)(nil),         // 3: nebius.iam.v1.GroupMembershipStatus
+	(*GroupMemberKind)(nil),               // 4: nebius.iam.v1.GroupMemberKind
+	(*GroupMembershipWithAttributes)(nil), // 5: nebius.iam.v1.GroupMembershipWithAttributes
+	(*v1.ResourceMetadata)(nil),           // 6: nebius.common.v1.ResourceMetadata
+	(*timestamppb.Timestamp)(nil),         // 7: google.protobuf.Timestamp
+	(*UserAttributes)(nil),                // 8: nebius.iam.v1.UserAttributes
+	(*ServiceAccountAttributes)(nil),      // 9: nebius.iam.v1.ServiceAccountAttributes
+	(*Error)(nil),                         // 10: nebius.iam.v1.Error
 }
 var file_nebius_iam_v1_group_membership_proto_depIdxs = []int32{
-	5, // 0: nebius.iam.v1.GroupMembership.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	1, // 1: nebius.iam.v1.GroupMembership.spec:type_name -> nebius.iam.v1.GroupMembershipSpec
-	2, // 2: nebius.iam.v1.GroupMembership.status:type_name -> nebius.iam.v1.GroupMembershipStatus
-	6, // 3: nebius.iam.v1.GroupMembership.revoke_at:type_name -> google.protobuf.Timestamp
-	0, // 4: nebius.iam.v1.GroupMembershipWithAttributes.group_membership:type_name -> nebius.iam.v1.GroupMembership
-	3, // 5: nebius.iam.v1.GroupMembershipWithAttributes.group_member_kind:type_name -> nebius.iam.v1.GroupMemberKind
-	7, // 6: nebius.iam.v1.GroupMembershipWithAttributes.user_attributes:type_name -> nebius.iam.v1.UserAttributes
-	8, // 7: nebius.iam.v1.GroupMembershipWithAttributes.service_account_attributes:type_name -> nebius.iam.v1.ServiceAccountAttributes
-	9, // 8: nebius.iam.v1.GroupMembershipWithAttributes.error:type_name -> nebius.iam.v1.Error
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	6,  // 0: nebius.iam.v1.GroupMembership.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	2,  // 1: nebius.iam.v1.GroupMembership.spec:type_name -> nebius.iam.v1.GroupMembershipSpec
+	3,  // 2: nebius.iam.v1.GroupMembership.status:type_name -> nebius.iam.v1.GroupMembershipStatus
+	7,  // 3: nebius.iam.v1.GroupMembership.revoke_at:type_name -> google.protobuf.Timestamp
+	0,  // 4: nebius.iam.v1.GroupMemberKind.kind:type_name -> nebius.iam.v1.GroupMemberKind.Kind
+	1,  // 5: nebius.iam.v1.GroupMembershipWithAttributes.group_membership:type_name -> nebius.iam.v1.GroupMembership
+	4,  // 6: nebius.iam.v1.GroupMembershipWithAttributes.group_member_kind:type_name -> nebius.iam.v1.GroupMemberKind
+	8,  // 7: nebius.iam.v1.GroupMembershipWithAttributes.user_attributes:type_name -> nebius.iam.v1.UserAttributes
+	9,  // 8: nebius.iam.v1.GroupMembershipWithAttributes.service_account_attributes:type_name -> nebius.iam.v1.ServiceAccountAttributes
+	10, // 9: nebius.iam.v1.GroupMembershipWithAttributes.error:type_name -> nebius.iam.v1.Error
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_group_membership_proto_init() }
@@ -466,13 +541,14 @@ func file_nebius_iam_v1_group_membership_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_nebius_iam_v1_group_membership_proto_rawDesc,
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_nebius_iam_v1_group_membership_proto_goTypes,
 		DependencyIndexes: file_nebius_iam_v1_group_membership_proto_depIdxs,
+		EnumInfos:         file_nebius_iam_v1_group_membership_proto_enumTypes,
 		MessageInfos:      file_nebius_iam_v1_group_membership_proto_msgTypes,
 	}.Build()
 	File_nebius_iam_v1_group_membership_proto = out.File
