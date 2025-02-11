@@ -263,6 +263,19 @@ func TestMask_Marshal(t *testing.T) {
 		{
 			Mask: &Mask{
 				FieldParts: map[FieldKey]*Mask{
+					"test": {
+						FieldParts: map[FieldKey]*Mask{
+							"inner-with-hyphen": New(),
+							"nil":               nil,
+						},
+					},
+				},
+			},
+			Result: "test.\"inner-with-hyphen\"",
+		},
+		{
+			Mask: &Mask{
+				FieldParts: map[FieldKey]*Mask{
 					"test.inner": {
 						FieldParts: map[FieldKey]*Mask{
 							"inner": New(),

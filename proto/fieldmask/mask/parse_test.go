@@ -2,10 +2,10 @@ package mask
 
 import (
 	"fmt"
-	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParse(t *testing.T) {
@@ -235,106 +235,21 @@ func TestParse(t *testing.T) {
 	}
 }
 
-func TestGetLeafKeysFromJSON(t *testing.T) {
+func TestParseYAML(t *testing.T) {
 	t.Parallel()
-	tests := []struct {
-		name     string
+	tests := map[string]struct {
 		input    string
-		expected []string
-		wantErr  bool
+		expected string
+		err      string
 	}{
-		{
-			name: "Simple JSON",
-			input: `{
-				"spec": "some data",
-				"metadata": "some data"
-			}`,
-			expected: []string{
-				"spec",
-				"metadata",
-			},
-			wantErr: false,
-		},
-		{
-			name: "Nested JSON",
-			input: `{
-				"spec": {
-					"field1": "value1",
-					"field2": "value2",
-					"arr_field": [
-						{"subfield": 1},
-						{"another": 2},
-						{}
-					]
-				},
-				"metadata": {
-					"name": "object1",
-					"labels": {
-						"env": "production"
-					}
-				}
-			}`,
-			expected: []string{
-				"spec.field1",
-				"spec.field2",
-				"spec.arr_field.0.subfield",
-				"spec.arr_field.1.another",
-				"spec.arr_field.2",
-				"metadata.name",
-				"metadata.labels.env",
-			},
-			wantErr: false,
-		},
-		{
-			name: "Invalid JSON",
-			input: `{
-				"spec": "some data",
-				"metadata": "some data",`,
-			expected: nil,
-			wantErr:  true,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			got, err := getLeafFieldPaths([]byte(tt.input), jsonFormat)
-			if tt.wantErr {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-
-			sort.Strings(got)
-			sort.Strings(tt.expected)
-
-			assert.Equal(t, tt.expected, got)
-		})
-	}
-}
-
-func TestGetLeafKeysFromYAML(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name     string
-		input    string
-		expected []string
-		wantErr  bool
-	}{
-		{
-			name: "Simple YAML",
+		"Simple YAML": {
 			input: `
 spec: some data
 metadata: some data
 `,
-			expected: []string{
-				"spec",
-				"metadata",
-			},
-			wantErr: false,
+			expected: "Mask<metadata,spec>",
 		},
-		{
-			name: "Nested YAML",
+		"Nested YAML": {
 			input: `
 spec:
   field1: value1
@@ -348,164 +263,108 @@ metadata:
   labels:
     env: production
 `,
-			expected: []string{
-				"spec.field1",
-				"spec.field2",
-				"spec.arr_field.0.subfield",
-				"spec.arr_field.1.another",
-				"spec.arr_field.2",
-				"metadata.name",
-				"metadata.labels.env",
-			},
-			wantErr: false,
+			expected: "Mask<metadata.(labels.env,name),spec.(arr_field.(0.subfield,1.another,2),field1,field2)>",
 		},
-		{
-			name: "Invalid YAML",
+		"More sophisticated yaml": {
 			input: `
-spec: some data
-metadata: : some data
+spec:
+  with space: value1
+  has "quotes" inside: value2
+  dots,commas.included:
+    - subfield: 1
+    - another: 2
+    - {}
+  hyphen-separated: yup
+  🐈: everything for our furry friends
+metadata:
+  (braces[are]cool): object1
 `,
-			expected: nil,
-			wantErr:  true,
+			expected: `Mask<metadata."(braces[are]cool)",spec.("dots,commas.included".(0.subfield,1.another,2),"has \"quotes\" inside","hyphen-separated","with space","🐈")>`,
+		},
+		"not a yaml": {
+			input: "!@#$%^&*()",
+			err:   "yaml unmarshal: yaml: did not find expected whitespace or line break",
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			got, err := getLeafFieldPaths([]byte(tt.input), yamlFormat)
-			if tt.wantErr {
-				assert.Error(t, err)
+			msk, err := ParseYAML([]byte(tt.input))
+			if tt.err != "" {
+				require.EqualError(t, err, tt.err)
 			} else {
-				assert.NoError(t, err)
+				require.NoError(t, err)
+
+				require.Equal(t, tt.expected, msk.String())
 			}
-
-			sort.Strings(got)
-			sort.Strings(tt.expected)
-
-			assert.Equal(t, tt.expected, got)
-		})
-	}
-}
-
-func TestGetLeafKeysUnsupportedFormat(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name   string
-		input  string
-		format string
-	}{
-		{
-			name:   "Unsupported Format XML",
-			input:  `<spec>some data</spec><metadata>some data</metadata>`,
-			format: "xml",
-		},
-		{
-			name:   "Unsupported Format CSV",
-			input:  "spec,metadata\nsome data,some data",
-			format: "csv",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			_, err := getLeafFieldPaths([]byte(tt.input), format(tt.format))
-			assert.Error(t, err)
 		})
 	}
 }
 
 func TestParseJSON(t *testing.T) {
 	t.Parallel()
-	tests := []struct {
-		name     string
+	tests := map[string]struct {
 		input    string
 		expected string
+		err      string
 	}{
-		{
-			name: "Simple JSON",
+		"Simple JSON": {
 			input: `{
-				"spec": "some data",
-				"metadata": "some data"
+				"spec":"text",
+				"metadata":2
 			}`,
 			expected: "Mask<metadata,spec>",
 		},
-		{
-			name: "Nested JSON",
+		"Nested JSON": {
 			input: `{
-				"spec": {
-					"field1": "value1",
-					"field2": "value2",
-					"arr_field": [
-						{"subfield": 1},
-						{"another": 2},
-						{}
-					]
+				"spec":{
+					"something":1,
+					"other_thing":2
 				},
-				"metadata": {
-					"name": "object1",
-					"labels": {
-						"env": "production"
-					}
+				"metadata":{
+					"name":"string",
+					"id":123
 				}
 			}`,
-			expected: "Mask<metadata.(labels.env,name),spec.(arr_field.(0.subfield,1.another,2),field1,field2)>",
+			expected: "Mask<metadata.(id,name),spec.(other_thing,something)>",
+		},
+		"More sophisticated json": {
+			input: `{
+				"spec": {
+					"with space": 123,
+					"has \"quotes\" inside": 456,
+					"dots,commas.included": [
+						{"subfield":1},
+						{"another":2},
+						{}
+					],
+					"hyphen-separated": "yup",
+					"🐈": "everything for our furry friends"
+				},
+				"metadata": {
+					"(braces[are]cool)": "object1"
+				}
+			}`,
+			expected: `Mask<metadata."(braces[are]cool)",spec.("dots,commas.included".(0.subfield,1.another,2),"has \"quotes\" inside","hyphen-separated","with space","🐈")>`,
+		},
+		"not a json": {
+			input: "}",
+			err:   "json unmarshal: invalid character '}' looking for beginning of value",
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			msk, err := ParseJSON([]byte(tt.input))
-			assert.NoError(t, err)
+			if tt.err != "" {
+				require.EqualError(t, err, tt.err)
+			} else {
+				require.NoError(t, err)
 
-			assert.Equal(t, tt.expected, msk.String())
-		})
-	}
-}
-
-func TestParseYAML(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name     string
-		input    string
-		expected string
-	}{
-		{
-			name: "Simple YAML",
-			input: `
-spec: some data
-metadata: some data
-`,
-			expected: "Mask<metadata,spec>",
-		},
-		{
-			name: "Nested YAML",
-			input: `
-spec:
-  field1: value1
-  field2: value2
-  arr_field:
-    - subfield: 1
-    - another: 2
-    - {}
-metadata:
-  name: object1
-  labels:
-    env: production
-`,
-			expected: "Mask<metadata.(labels.env,name),spec.(arr_field.(0.subfield,1.another,2),field1,field2)>",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			msk, err := ParseYAML([]byte(tt.input))
-			assert.NoError(t, err)
-
-			assert.Equal(t, tt.expected, msk.String())
+				require.Equal(t, tt.expected, msk.String())
+			}
 		})
 	}
 }

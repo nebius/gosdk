@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -498,11 +499,7 @@ const (
 //
 // [Mask Syntax]: https://nebius.atlassian.net/wiki/spaces/NEWBIUS/pages/131367768/ResetMask+tech+design
 func ParseJSON(input []byte) (*Mask, error) {
-	paths, err := getLeafFieldPaths(input, jsonFormat)
-	if err != nil {
-		return nil, err
-	}
-	return maskFromFieldPaths(paths)
+	return parseFormat(input, jsonFormat)
 }
 
 // ParseYAML parses the input yaml into a [Mask] object. It finds the
@@ -520,63 +517,46 @@ func ParseJSON(input []byte) (*Mask, error) {
 //
 // [Mask Syntax]: https://nebius.atlassian.net/wiki/spaces/NEWBIUS/pages/131367768/ResetMask+tech+design
 func ParseYAML(input []byte) (*Mask, error) {
-	paths, err := getLeafFieldPaths(input, yamlFormat)
-	if err != nil {
-		return nil, err
-	}
-	return maskFromFieldPaths(paths)
+	return parseFormat(input, yamlFormat)
 }
 
-func maskFromFieldPaths(fieldPaths []string) (*Mask, error) {
-	ret := New()
-	for _, fp := range fieldPaths {
-		m, err := Parse(fp)
-		if err != nil {
-			return nil, err
-		}
-		err = ret.Merge(m)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return ret, nil
-}
-
-// getLeafFieldPaths parses input and returns only leaf fields paths in dot-separated format.
-func getLeafFieldPaths(input []byte, format format) ([]string, error) {
+func parseFormat(input []byte, format format) (*Mask, error) {
 	var data interface{}
 
 	switch format {
 	case jsonFormat:
 		if err := json.Unmarshal(input, &data); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("json unmarshal: %w", err)
 		}
 	case yamlFormat:
 		if err := yaml.Unmarshal(input, &data); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("yaml unmarshal: %w", err)
 		}
 	default:
 		return nil, fmt.Errorf("unsupported format: %s", format)
 	}
 
-	return extractLeafFP(data, ""), nil
+	ret := New()
+	for _, fp := range extractLeafFP(data, nil) {
+		if err := ret.Merge(fp.ToMask()); err != nil {
+			return nil, fmt.Errorf("merge mask and field path: %w", err)
+		}
+	}
+	return ret, nil
 }
 
-func extractLeafFP(data interface{}, prefix string) []string {
-	var fieldPaths []string
+func extractLeafFP(data interface{}, prefix FieldPath) []FieldPath {
+	var fieldPaths []FieldPath
 
 	switch v := data.(type) {
 	case map[string]interface{}:
 		for key, value := range v {
-			newPrefix := key
-			if prefix != "" {
-				newPrefix = fmt.Sprintf("%s.%s", prefix, key)
-			}
+			newPrefix := prefix.Join(FieldKey(key))
 			fieldPaths = append(fieldPaths, extractLeafFP(value, newPrefix)...)
 		}
 	case []interface{}:
 		for i, value := range v {
-			newPrefix := fmt.Sprintf("%s.%d", prefix, i)
+			newPrefix := prefix.Join(FieldKey(strconv.Itoa(i)))
 			childPaths := extractLeafFP(value, newPrefix)
 			if len(childPaths) == 0 {
 				fieldPaths = append(fieldPaths, newPrefix)
