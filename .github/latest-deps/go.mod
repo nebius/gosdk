@@ -1,6 +1,6 @@
 module github.com/nebius/gosdk
 
-go 1.23
+go 1.24
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.4-20241127180247-a33202765966.1
