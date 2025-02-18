@@ -3,7 +3,7 @@ module github.com/nebius/gosdk
 go 1.24
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.4-20241127180247-a33202765966.1
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.5-20250130201111-63bb56e20495.1
 	github.com/bufbuild/protovalidate-go v0.7.3
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/golang-jwt/jwt/v4 v4.5.1
