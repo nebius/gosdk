@@ -34,6 +34,7 @@ type ClusterService interface {
 	Create(context.Context, *v1alpha1.CreateClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	Delete(context.Context, *v1alpha1.DeleteClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	Update(context.Context, *v1alpha1.UpdateClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
+	Restore(context.Context, *v1alpha1.RestoreClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	GetOperation(context.Context, *v1alpha11.GetOperationRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	ListOperations(context.Context, *v1alpha11.ListOperationsRequest, ...grpc.CallOption) (*v1alpha11.ListOperationsResponse, error)
 }
@@ -155,6 +156,22 @@ func (s clusterService) Update(ctx context.Context, request *v1alpha1.UpdateClus
 		return nil, err
 	}
 	op, err := v1alpha1.NewClusterServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
+}
+
+func (s clusterService) Restore(ctx context.Context, request *v1alpha1.RestoreClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1alpha1.NewClusterServiceClient(con).Restore(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}
