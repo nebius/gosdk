@@ -396,6 +396,50 @@ func (c *MockClusterServiceListOperationsCall) DoAndReturn(f func(context.Contex
 	return c
 }
 
+// Restore mocks base method.
+func (m *MockClusterService) Restore(arg0 context.Context, arg1 *v1alpha10.RestoreClusterRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Restore", varargs...)
+	ret0, _ := ret[0].(*alphaops.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Restore indicates an expected call of Restore.
+func (mr *MockClusterServiceMockRecorder) Restore(arg0, arg1 any, arg2 ...any) *MockClusterServiceRestoreCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Restore", reflect.TypeOf((*MockClusterService)(nil).Restore), varargs...)
+	return &MockClusterServiceRestoreCall{Call: call}
+}
+
+// MockClusterServiceRestoreCall wrap *gomock.Call
+type MockClusterServiceRestoreCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockClusterServiceRestoreCall) Return(arg0 *alphaops.Operation, arg1 error) *MockClusterServiceRestoreCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockClusterServiceRestoreCall) Do(f func(context.Context, *v1alpha10.RestoreClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockClusterServiceRestoreCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockClusterServiceRestoreCall) DoAndReturn(f func(context.Context, *v1alpha10.RestoreClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockClusterServiceRestoreCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Update mocks base method.
 func (m *MockClusterService) Update(arg0 context.Context, arg1 *v1alpha10.UpdateClusterRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
 	m.ctrl.T.Helper()

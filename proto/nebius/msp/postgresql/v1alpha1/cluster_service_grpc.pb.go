@@ -27,6 +27,7 @@ const (
 	ClusterService_Create_FullMethodName    = "/nebius.msp.postgresql.v1alpha1.ClusterService/Create"
 	ClusterService_Delete_FullMethodName    = "/nebius.msp.postgresql.v1alpha1.ClusterService/Delete"
 	ClusterService_Update_FullMethodName    = "/nebius.msp.postgresql.v1alpha1.ClusterService/Update"
+	ClusterService_Restore_FullMethodName   = "/nebius.msp.postgresql.v1alpha1.ClusterService/Restore"
 )
 
 // ClusterServiceClient is the client API for ClusterService service.
@@ -47,6 +48,8 @@ type ClusterServiceClient interface {
 	Delete(ctx context.Context, in *DeleteClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
 	// Updates the PostgreSQL cluster.
 	Update(ctx context.Context, in *UpdateClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
+	// Creates a new PostgreSQL cluster from a previously created backup.
+	Restore(ctx context.Context, in *RestoreClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
 }
 
 type clusterServiceClient struct {
@@ -111,6 +114,15 @@ func (c *clusterServiceClient) Update(ctx context.Context, in *UpdateClusterRequ
 	return out, nil
 }
 
+func (c *clusterServiceClient) Restore(ctx context.Context, in *RestoreClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error) {
+	out := new(v1alpha1.Operation)
+	err := c.cc.Invoke(ctx, ClusterService_Restore_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClusterServiceServer is the server API for ClusterService service.
 // All implementations should embed UnimplementedClusterServiceServer
 // for forward compatibility
@@ -129,6 +141,8 @@ type ClusterServiceServer interface {
 	Delete(context.Context, *DeleteClusterRequest) (*v1alpha1.Operation, error)
 	// Updates the PostgreSQL cluster.
 	Update(context.Context, *UpdateClusterRequest) (*v1alpha1.Operation, error)
+	// Creates a new PostgreSQL cluster from a previously created backup.
+	Restore(context.Context, *RestoreClusterRequest) (*v1alpha1.Operation, error)
 }
 
 // UnimplementedClusterServiceServer should be embedded to have forward compatible implementations.
@@ -152,6 +166,9 @@ func (UnimplementedClusterServiceServer) Delete(context.Context, *DeleteClusterR
 }
 func (UnimplementedClusterServiceServer) Update(context.Context, *UpdateClusterRequest) (*v1alpha1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedClusterServiceServer) Restore(context.Context, *RestoreClusterRequest) (*v1alpha1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Restore not implemented")
 }
 
 // UnsafeClusterServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -273,6 +290,24 @@ func _ClusterService_Update_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClusterService_Restore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestoreClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterServiceServer).Restore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClusterService_Restore_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterServiceServer).Restore(ctx, req.(*RestoreClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClusterService_ServiceDesc is the grpc.ServiceDesc for ClusterService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -303,6 +338,10 @@ var ClusterService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _ClusterService_Update_Handler,
+		},
+		{
+			MethodName: "Restore",
+			Handler:    _ClusterService_Restore_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
