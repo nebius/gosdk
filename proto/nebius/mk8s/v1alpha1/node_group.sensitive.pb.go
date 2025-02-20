@@ -143,6 +143,9 @@ func (w *wrapperNodeTemplate) ProtoReflect() protoreflect.Message {
 // func (x *NodeMetadataTemplate) Sanitize()            // is not generated as no sensitive fields found
 // func (x *NodeMetadataTemplate) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *GpuSettings) Sanitize()            // is not generated as no sensitive fields found
+// func (x *GpuSettings) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *GpuClusterSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GpuClusterSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
