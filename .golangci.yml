@@ -45,20 +45,33 @@ linters-settings:
     #
     # Default (applies if no custom rules are defined): Only allow $gostd in all files.
     rules:
-      # Name of a rule.
-      legacy:
+      "deprecated":
+        # List of file globs that will match this list of settings to compare against.
+        # Default: $all
+        files:
+          - "$all"
         # List of packages that are not allowed.
         # Entries can be a variable (starting with $), a string prefix, or an exact match (if ending with $).
         # Default: []
         deny:
-          - pkg: "math/rand$"
-            desc: "Use math/rand/v2 instead, see https://go.dev/blog/randv2"
           - pkg: "github.com/golang/protobuf"
             desc: "Use google.golang.org/protobuf instead, see https://developers.google.com/protocol-buffers/docs/reference/go/faq#modules"
           - pkg: "github.com/satori/go.uuid"
             desc: "Use github.com/google/uuid instead, satori's package is not maintained"
           - pkg: "github.com/gofrs/uuid$"
             desc: "Use github.com/gofrs/uuid/v5 or later, it was not a go module before v5"
+      "non-test files":
+        files:
+          - "!$test"
+        deny:
+          - pkg: "math/rand$"
+            desc: "Use math/rand/v2 instead, see https://go.dev/blog/randv2"
+      "non-main files":
+        files:
+          - "!**/main.go"
+        deny:
+          - pkg: "log$"
+            desc: "Use log/slog instead, see https://go.dev/blog/slog"
 
   errcheck:
     # Report about not checking of errors in type assertions: `a := b.(MyStruct)`.
@@ -153,7 +166,7 @@ linters-settings:
       shadow:
         # Whether to be strict about shadowing; can be noisy.
         # Default: false
-        strict: false # TODO: enable
+        strict: true
 
   inamedparam:
     # Skips check for interface methods with only a single parameter.
@@ -395,6 +408,8 @@ issues:
         - testableexamples
     - path: "operations/alphaops"
       text: "SA1019: .+ is deprecated"
+    - path: "^proto/fieldmask"
+      text: "shadow: declaration of \\S+ shadows declaration at line \\d+" # TODO: fix
     - path: "^proto/fieldmask"
       linters:
         - nilnil # TODO: fix or ignore

@@ -67,6 +67,21 @@ jobs:
           go-version: "1.24.0" # update together with dev.dockerfile
       - uses: golangci/golangci-lint-action@v6.5.0
         with:
+          verify: true
+          version: "v1.64.5" # update together with dev.dockerfile
+
+  lint-latest-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - name: use latest go.mod
+        run: cp .github/latest-deps/go.mod go.mod && cp .github/latest-deps/go.sum go.sum
+      - uses: actions/setup-go@v5.3.0
+        with:
+          go-version: "1.24.0" # update together with dev.dockerfile
+      - uses: golangci/golangci-lint-action@v6.5.0
+        with:
+          verify: true
           version: "v1.64.5" # update together with dev.dockerfile
 
   check-tidy:
