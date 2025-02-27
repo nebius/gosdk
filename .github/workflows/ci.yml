@@ -35,7 +35,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_ssh }}
         uses: mxschmitt/action-tmate@v3.19
       - run: make test-cover
-      - uses: codecov/codecov-action@v5.3.1
+      - uses: codecov/codecov-action@v5.4.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
