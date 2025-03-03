@@ -36,4 +36,4 @@ jobs:
       - uses: golangci/golangci-lint-action@v6.5.0
         with:
           verify: true
-          version: "v1.64.5" # update together with dev.dockerfile
+          version: "v1.64.6" # update together with dev.dockerfile
