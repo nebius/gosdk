@@ -23,6 +23,8 @@ func TestAccessTokenSanitizer(t *testing.T) {
 		{"V0 long token", "v0.somelongpayloadhere", "v0.somelongpayload**", true},
 		{"NE1 valid token", "ne1somepayload.signaturehere", "ne1somepayload.**", true},
 		{"NE1 invalid token", "ne1invalidtokens", "ne1invalidtoken**", false},
+		{"V1 valid token", "v1.somepayload.signaturehere", "v1.somepayload.**", true},
+		{"V1 invalid token", "v1.invalidtokens", "v1.invalidtoken**", false},
 		{"Unrecognized short", "unknown", "unknown**", false},
 		{"Unrecognized long", "unrecognizedtoken", "unrecognizedtok**", false},
 	}
@@ -51,6 +53,8 @@ func TestCredentialsTokenSanitizer(t *testing.T) {
 		{"V0 long token", "v0.somelongpayloadhere", "v0.somelongpayload**", true},
 		{"NE1 valid token", "ne1somepayload.signaturehere", "ne1somepayload.**", true},
 		{"NE1 invalid token", "ne1invalidtokens", "ne1invalidtoken**", false},
+		{"V1 valid token", "v1.somepayload.signaturehere", "v1.somepayload.**", true},
+		{"V1 invalid token", "v1.invalidtokens", "v1.invalidtoken**", false},
 		{"Unrecognized short", "unknown", "unknown**", false},
 		{"JWT valid token", "eyJfast.payload.signature", "eyJfast.payload.**", true},
 		{"JWT with extra info", "eyJfast.payload.signature.aftersignature", "eyJfast.payload.**.aftersignature", true},
