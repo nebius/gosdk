@@ -1,0 +1,39 @@
+name: CI (optional)
+on:
+  workflow_dispatch:
+    inputs:
+      debug_ssh:
+        description: "Enable SSH debug with tmate, see https://github.com/marketplace/actions/debugging-with-tmate"
+        required: false
+        type: boolean
+        default: false
+  pull_request:
+  push:
+    branches:
+      - main
+      - sync/**
+  schedule:
+    - cron: "0 0 * * 1" # Each Monday
+
+permissions:
+  contents: read
+  checks: write # allow write access to allow the golangci/golangci-lint-action to annotate code in the PR
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  lint-latest-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - name: use latest go.mod
+        run: cp .github/latest-deps/go.mod go.mod && cp .github/latest-deps/go.sum go.sum
+      - uses: actions/setup-go@v5.3.0
+        with:
+          go-version: "1.24.0" # update together with dev.dockerfile
+      - uses: golangci/golangci-lint-action@v6.5.0
+        with:
+          verify: true
+          version: "v1.64.5" # update together with dev.dockerfile
