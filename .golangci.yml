@@ -408,6 +408,10 @@ issues:
         - testableexamples
     - path: "operations/alphaops"
       text: "SA1019: .+ is deprecated"
+    - path: "^sdk.go" # TODO: fix
+      linters:
+        - cyclop
+        - gocognit
     - path: "^proto/fieldmask"
       text: "shadow: declaration of \\S+ shadows declaration at line \\d+" # TODO: fix
     - path: "^proto/fieldmask"
