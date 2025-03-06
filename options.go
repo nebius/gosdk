@@ -3,6 +3,7 @@ package gosdk
 import (
 	"context"
 	"log/slog"
+	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"google.golang.org/grpc"
@@ -78,6 +79,11 @@ func WithInit(fn func(context.Context, *SDK) error) Option {
 	return optionInit(fn)
 }
 
+// WithTimeout changes timeout for all requests. The default is 1 minute.
+func WithTimeout(timeout time.Duration) Option {
+	return optionTimeout(timeout)
+}
+
 type (
 	optionCredentials     struct{ creds Credentials }
 	optionLogger          struct{ handler slog.Handler }
@@ -91,6 +97,7 @@ type (
 	}
 	optionExplicitInit bool
 	optionInit         func(context.Context, *SDK) error
+	optionTimeout      time.Duration
 )
 
 func (optionCredentials) option()     {}
@@ -102,6 +109,7 @@ func (optionDomain) option()          {}
 func (optionAddressTemplate) option() {}
 func (optionExplicitInit) option()    {}
 func (optionInit) option()            {}
+func (optionTimeout) option()         {}
 
 type NoopHandler struct{}
 

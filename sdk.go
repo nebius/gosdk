@@ -38,6 +38,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	credentials := NoCredentials()
 	handler := slog.Handler(NoopHandler{})
 	explicitInit := false
+	timeout := 1 * time.Minute
 
 	customSubstitutions := make(map[string]string)
 	var logOpts []logging.Option
@@ -67,6 +68,15 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			explicitInit = bool(o)
 		case optionInit:
 			customInits = append(customInits, o)
+		case optionTimeout:
+			switch {
+			case o == 0:
+				return nil, errors.New("zero timeout provided")
+			case o < 0:
+				return nil, errors.New("negative timeout provided")
+			default:
+				timeout = time.Duration(o)
+			}
 		}
 	}
 
@@ -159,7 +169,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	}
 
 	// apply timeout after retry and auth interceptors for each request
-	dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(conn.UnaryClientTimeoutInterceptor(1*time.Minute)))
+	dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(conn.UnaryClientTimeoutInterceptor(timeout)))
 
 	dialer := conn.NewDialer(logger, dialOpts...)
 	closes = append(closes, dialer.Close)
