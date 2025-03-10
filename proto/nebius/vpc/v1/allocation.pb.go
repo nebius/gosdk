@@ -496,10 +496,13 @@ func (x *AllocationStatus) GetStatic() bool {
 }
 
 type AllocationDetails struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AllocatedCidr string                 `protobuf:"bytes,1,opt,name=allocated_cidr,json=allocatedCidr,proto3" json:"allocated_cidr,omitempty"`
-	PoolId        string                 `protobuf:"bytes,2,opt,name=pool_id,json=poolId,proto3" json:"pool_id,omitempty"`
-	Version       IpVersion              `protobuf:"varint,4,opt,name=version,proto3,enum=nebius.vpc.v1.IpVersion" json:"version,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The actual CIDR block that has been allocated.
+	AllocatedCidr string `protobuf:"bytes,1,opt,name=allocated_cidr,json=allocatedCidr,proto3" json:"allocated_cidr,omitempty"`
+	// ID of the pool from which this allocation was made.
+	PoolId string `protobuf:"bytes,2,opt,name=pool_id,json=poolId,proto3" json:"pool_id,omitempty"`
+	// The IP version of this allocation (IPv4 or IPv6).
+	Version       IpVersion `protobuf:"varint,4,opt,name=version,proto3,enum=nebius.vpc.v1.IpVersion" json:"version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
