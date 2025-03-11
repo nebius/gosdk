@@ -23,9 +23,11 @@ const (
 )
 
 type GetBackupRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ClusterId     string                 `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
-	BackupId      string                 `protobuf:"bytes,2,opt,name=backup_id,json=backupId,proto3" json:"backup_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the PostgreSQL cluster that holds backup.
+	ClusterId string `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+	// ID of the designated backup.
+	BackupId      string `protobuf:"bytes,2,opt,name=backup_id,json=backupId,proto3" json:"backup_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -75,8 +77,9 @@ func (x *GetBackupRequest) GetBackupId() string {
 }
 
 type ListBackupsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifier of IAM container to list backups from.
+	ParentId      string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -119,8 +122,9 @@ func (x *ListBackupsRequest) GetParentId() string {
 }
 
 type ListBackupsByClusterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ClusterId     string                 `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the PostgreSQL cluster to list backups from.
+	ClusterId     string `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -163,8 +167,9 @@ func (x *ListBackupsByClusterRequest) GetClusterId() string {
 }
 
 type ListBackupsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Backups       []*Backup              `protobuf:"bytes,1,rep,name=backups,proto3" json:"backups,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// List of backups.
+	Backups       []*Backup `protobuf:"bytes,1,rep,name=backups,proto3" json:"backups,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
