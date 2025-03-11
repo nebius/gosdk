@@ -28,8 +28,12 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BackupServiceClient interface {
+	// Returns the specified PostgreSQL Cluster backup.
+	// To get the list of available PostgreSQL Cluster backups, make a [List] or [ListByCluster] request.
 	Get(ctx context.Context, in *GetBackupRequest, opts ...grpc.CallOption) (*Backup, error)
+	// Retrieves the list of PostgreSQL Cluster backups by project.
 	List(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error)
+	// Retrieves the list of PostgreSQL Cluster backups by cluster.
 	ListByCluster(ctx context.Context, in *ListBackupsByClusterRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error)
 }
 
@@ -72,8 +76,12 @@ func (c *backupServiceClient) ListByCluster(ctx context.Context, in *ListBackups
 // All implementations should embed UnimplementedBackupServiceServer
 // for forward compatibility
 type BackupServiceServer interface {
+	// Returns the specified PostgreSQL Cluster backup.
+	// To get the list of available PostgreSQL Cluster backups, make a [List] or [ListByCluster] request.
 	Get(context.Context, *GetBackupRequest) (*Backup, error)
+	// Retrieves the list of PostgreSQL Cluster backups by project.
 	List(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error)
+	// Retrieves the list of PostgreSQL Cluster backups by cluster.
 	ListByCluster(context.Context, *ListBackupsByClusterRequest) (*ListBackupsResponse, error)
 }
 
