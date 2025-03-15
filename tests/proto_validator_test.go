@@ -1,6 +1,7 @@
 package tests_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/bufbuild/protovalidate-go"
@@ -25,19 +26,18 @@ func TestProtoValidator(t *testing.T) {
 			Type: 0,   // required enum
 		},
 	})
-	var vErr *protovalidate.ValidationError
-	require.ErrorAs(t, err, &vErr)
-	assertViolation(t, vErr, "metadata.parent_id", "required")
-	assertViolation(t, vErr, "metadata.resource_version", "int64.gte")
-	assertViolation(t, vErr, "spec.size", "required")
-	assertViolation(t, vErr, "spec.type", "required")
+	require.Error(t, err)
+	assertViolation(t, err, "metadata.parent_id", "required")
+	assertViolation(t, err, "metadata.resource_version", "int64.gte")
+	assertViolation(t, err, "spec.size", "required")
+	assertViolation(t, err, "spec.type", "required")
 }
 
-func assertViolation(t *testing.T, err *protovalidate.ValidationError, field string, expectedConstraint string) {
-	require.NotNil(t, err)
-	for _, v := range err.Violations {
-		if v.GetFieldPath() == field {
-			assert.Equal(t, expectedConstraint, v.GetConstraintId())
+func assertViolation(t *testing.T, err error, field string, expectedConstraint string) {
+	for _, line := range strings.Split(err.Error(), "\n") {
+		_, after, found := strings.Cut(line, field)
+		if found && !strings.HasPrefix(after, ".") {
+			assert.Contains(t, line, expectedConstraint, "field %s", field)
 			return
 		}
 	}
