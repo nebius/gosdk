@@ -1,0 +1,14 @@
+# This file specifies the exclusions needed for compatibility with older Go versions and dependencies.
+# It is merged with the main .golangci.yml file to run the linter using the latest dependencies and go.mod.
+issues:
+  exclude-rules:
+    # patch for latest deps
+    - text: "context.Background\\(\\) could be replaced by t.Context\\(\\)" # remove after go 1.24+
+      linters:
+        - usetesting
+    - text: "golang.org/x/exp/maps.Values\\(\\) can be replaced by slices.AppendSeq" # remove after go 1.23+
+      linters:
+        - exptostd
+    - path: "conn/parse.go" # remove after go 1.23+
+      linters:
+        - exptostd
