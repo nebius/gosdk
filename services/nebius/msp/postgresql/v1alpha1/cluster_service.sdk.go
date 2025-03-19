@@ -35,6 +35,8 @@ type ClusterService interface {
 	Delete(context.Context, *v1alpha1.DeleteClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	Update(context.Context, *v1alpha1.UpdateClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	Restore(context.Context, *v1alpha1.RestoreClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
+	Stop(context.Context, *v1alpha1.StopClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
+	Start(context.Context, *v1alpha1.StartClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	GetOperation(context.Context, *v1alpha11.GetOperationRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	ListOperations(context.Context, *v1alpha11.ListOperationsRequest, ...grpc.CallOption) (*v1alpha11.ListOperationsResponse, error)
 }
@@ -172,6 +174,38 @@ func (s clusterService) Restore(ctx context.Context, request *v1alpha1.RestoreCl
 		return nil, err
 	}
 	op, err := v1alpha1.NewClusterServiceClient(con).Restore(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
+}
+
+func (s clusterService) Stop(ctx context.Context, request *v1alpha1.StopClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1alpha1.NewClusterServiceClient(con).Stop(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
+}
+
+func (s clusterService) Start(ctx context.Context, request *v1alpha1.StartClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1alpha1.NewClusterServiceClient(con).Start(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}

@@ -7,6 +7,9 @@ import (
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
+	operations "github.com/nebius/gosdk/operations"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
+	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
@@ -23,10 +26,15 @@ func (s Services) Group() GroupService {
 const GroupServiceID conn.ServiceID = "nebius.iam.v1.GroupService"
 
 type GroupService interface {
+	Create(context.Context, *v1.CreateGroupRequest, ...grpc.CallOption) (operations.Operation, error)
 	Get(context.Context, *v1.GetGroupRequest, ...grpc.CallOption) (*v1.Group, error)
 	GetByName(context.Context, *v1.GetGroupByNameRequest, ...grpc.CallOption) (*v1.Group, error)
 	List(context.Context, *v1.ListGroupsRequest, ...grpc.CallOption) (*v1.ListGroupsResponse, error)
 	Filter(context.Context, *v1.ListGroupsRequest, ...grpc.CallOption) iter.Seq2[*v1.Group, error]
+	Delete(context.Context, *v1.DeleteGroupRequest, ...grpc.CallOption) (operations.Operation, error)
+	Update(context.Context, *v1.UpdateGroupRequest, ...grpc.CallOption) (operations.Operation, error)
+	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
+	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
 
 type groupService struct {
@@ -37,6 +45,22 @@ func NewGroupService(sdk iface.SDK) GroupService {
 	return groupService{
 		sdk: sdk,
 	}
+}
+
+func (s groupService) Create(ctx context.Context, request *v1.CreateGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, GroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewGroupServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
 func (s groupService) Get(ctx context.Context, request *v1.GetGroupRequest, opts ...grpc.CallOption) (*v1.Group, error) {
@@ -98,4 +122,69 @@ func (s groupService) Filter(ctx context.Context, request *v1.ListGroupsRequest,
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s groupService) Delete(ctx context.Context, request *v1.DeleteGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, GroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewGroupServiceClient(con).Delete(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s groupService) Update(ctx context.Context, request *v1.UpdateGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	address, err := s.sdk.Resolve(ctx, GroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewGroupServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s groupService) GetOperation(ctx context.Context, request *v11.GetOperationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, GroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	client := v11.NewOperationServiceClient(con)
+	op, err := client.Get(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, client)
+}
+
+func (s groupService) ListOperations(ctx context.Context, request *v11.ListOperationsRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, GroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v11.NewOperationServiceClient(con).List(ctx, request, opts...)
 }

@@ -440,6 +440,94 @@ func (c *MockClusterServiceRestoreCall) DoAndReturn(f func(context.Context, *v1a
 	return c
 }
 
+// Start mocks base method.
+func (m *MockClusterService) Start(arg0 context.Context, arg1 *v1alpha10.StartClusterRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Start", varargs...)
+	ret0, _ := ret[0].(*alphaops.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Start indicates an expected call of Start.
+func (mr *MockClusterServiceMockRecorder) Start(arg0, arg1 any, arg2 ...any) *MockClusterServiceStartCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Start", reflect.TypeOf((*MockClusterService)(nil).Start), varargs...)
+	return &MockClusterServiceStartCall{Call: call}
+}
+
+// MockClusterServiceStartCall wrap *gomock.Call
+type MockClusterServiceStartCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockClusterServiceStartCall) Return(arg0 *alphaops.Operation, arg1 error) *MockClusterServiceStartCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockClusterServiceStartCall) Do(f func(context.Context, *v1alpha10.StartClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockClusterServiceStartCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockClusterServiceStartCall) DoAndReturn(f func(context.Context, *v1alpha10.StartClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockClusterServiceStartCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Stop mocks base method.
+func (m *MockClusterService) Stop(arg0 context.Context, arg1 *v1alpha10.StopClusterRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Stop", varargs...)
+	ret0, _ := ret[0].(*alphaops.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Stop indicates an expected call of Stop.
+func (mr *MockClusterServiceMockRecorder) Stop(arg0, arg1 any, arg2 ...any) *MockClusterServiceStopCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Stop", reflect.TypeOf((*MockClusterService)(nil).Stop), varargs...)
+	return &MockClusterServiceStopCall{Call: call}
+}
+
+// MockClusterServiceStopCall wrap *gomock.Call
+type MockClusterServiceStopCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockClusterServiceStopCall) Return(arg0 *alphaops.Operation, arg1 error) *MockClusterServiceStopCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockClusterServiceStopCall) Do(f func(context.Context, *v1alpha10.StopClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockClusterServiceStopCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockClusterServiceStopCall) DoAndReturn(f func(context.Context, *v1alpha10.StopClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockClusterServiceStopCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Update mocks base method.
 func (m *MockClusterService) Update(arg0 context.Context, arg1 *v1alpha10.UpdateClusterRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
 	m.ctrl.T.Helper()

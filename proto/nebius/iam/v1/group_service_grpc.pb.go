@@ -8,6 +8,7 @@ package v1
 
 import (
 	context "context"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -19,18 +20,24 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	GroupService_Create_FullMethodName    = "/nebius.iam.v1.GroupService/Create"
 	GroupService_Get_FullMethodName       = "/nebius.iam.v1.GroupService/Get"
 	GroupService_GetByName_FullMethodName = "/nebius.iam.v1.GroupService/GetByName"
 	GroupService_List_FullMethodName      = "/nebius.iam.v1.GroupService/List"
+	GroupService_Delete_FullMethodName    = "/nebius.iam.v1.GroupService/Delete"
+	GroupService_Update_FullMethodName    = "/nebius.iam.v1.GroupService/Update"
 )
 
 // GroupServiceClient is the client API for GroupService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GroupServiceClient interface {
+	Create(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Get(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*Group, error)
 	GetByName(ctx context.Context, in *GetGroupByNameRequest, opts ...grpc.CallOption) (*Group, error)
 	List(ctx context.Context, in *ListGroupsRequest, opts ...grpc.CallOption) (*ListGroupsResponse, error)
+	Delete(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	Update(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type groupServiceClient struct {
@@ -39,6 +46,15 @@ type groupServiceClient struct {
 
 func NewGroupServiceClient(cc grpc.ClientConnInterface) GroupServiceClient {
 	return &groupServiceClient{cc}
+}
+
+func (c *groupServiceClient) Create(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, GroupService_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *groupServiceClient) Get(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*Group, error) {
@@ -68,19 +84,43 @@ func (c *groupServiceClient) List(ctx context.Context, in *ListGroupsRequest, op
 	return out, nil
 }
 
+func (c *groupServiceClient) Delete(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, GroupService_Delete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *groupServiceClient) Update(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, GroupService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GroupServiceServer is the server API for GroupService service.
 // All implementations should embed UnimplementedGroupServiceServer
 // for forward compatibility
 type GroupServiceServer interface {
+	Create(context.Context, *CreateGroupRequest) (*v1.Operation, error)
 	Get(context.Context, *GetGroupRequest) (*Group, error)
 	GetByName(context.Context, *GetGroupByNameRequest) (*Group, error)
 	List(context.Context, *ListGroupsRequest) (*ListGroupsResponse, error)
+	Delete(context.Context, *DeleteGroupRequest) (*v1.Operation, error)
+	Update(context.Context, *UpdateGroupRequest) (*v1.Operation, error)
 }
 
 // UnimplementedGroupServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedGroupServiceServer struct {
 }
 
+func (UnimplementedGroupServiceServer) Create(context.Context, *CreateGroupRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
 func (UnimplementedGroupServiceServer) Get(context.Context, *GetGroupRequest) (*Group, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
@@ -89,6 +129,12 @@ func (UnimplementedGroupServiceServer) GetByName(context.Context, *GetGroupByNam
 }
 func (UnimplementedGroupServiceServer) List(context.Context, *ListGroupsRequest) (*ListGroupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedGroupServiceServer) Delete(context.Context, *DeleteGroupRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedGroupServiceServer) Update(context.Context, *UpdateGroupRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 
 // UnsafeGroupServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -100,6 +146,24 @@ type UnsafeGroupServiceServer interface {
 
 func RegisterGroupServiceServer(s grpc.ServiceRegistrar, srv GroupServiceServer) {
 	s.RegisterService(&GroupService_ServiceDesc, srv)
+}
+
+func _GroupService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupServiceServer).Create(ctx, req.(*CreateGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _GroupService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -156,6 +220,42 @@ func _GroupService_List_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GroupService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupServiceServer).Delete(ctx, req.(*DeleteGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GroupService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupServiceServer).Update(ctx, req.(*UpdateGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GroupService_ServiceDesc is the grpc.ServiceDesc for GroupService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -163,6 +263,10 @@ var GroupService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "nebius.iam.v1.GroupService",
 	HandlerType: (*GroupServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Create",
+			Handler:    _GroupService_Create_Handler,
+		},
 		{
 			MethodName: "Get",
 			Handler:    _GroupService_Get_Handler,
@@ -174,6 +278,14 @@ var GroupService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _GroupService_List_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _GroupService_Delete_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _GroupService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

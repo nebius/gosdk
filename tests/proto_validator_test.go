@@ -41,5 +41,5 @@ func assertViolation(t *testing.T, err error, field string, expectedConstraint s
 			return
 		}
 	}
-	assert.Fail(t, "violation not found", "field %s", field)
+	assert.Fail(t, "violation not found", "field %s\nerror: %s", field, err)
 }
