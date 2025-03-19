@@ -14,7 +14,9 @@ import (
 	reflect "reflect"
 
 	iter "github.com/nebius/gosdk/iter"
-	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
+	operations "github.com/nebius/gosdk/operations"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
+	v10 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"
 )
@@ -42,15 +44,103 @@ func (m *MockGroupService) EXPECT() *MockGroupServiceMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockGroupService) Create(arg0 context.Context, arg1 *v10.CreateGroupRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockGroupServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockGroupServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockGroupService)(nil).Create), varargs...)
+	return &MockGroupServiceCreateCall{Call: call}
+}
+
+// MockGroupServiceCreateCall wrap *gomock.Call
+type MockGroupServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockGroupServiceCreateCall) Return(arg0 operations.Operation, arg1 error) *MockGroupServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockGroupServiceCreateCall) Do(f func(context.Context, *v10.CreateGroupRequest, ...grpc.CallOption) (operations.Operation, error)) *MockGroupServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockGroupServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreateGroupRequest, ...grpc.CallOption) (operations.Operation, error)) *MockGroupServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *MockGroupService) Delete(arg0 context.Context, arg1 *v10.DeleteGroupRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockGroupServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockGroupServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockGroupService)(nil).Delete), varargs...)
+	return &MockGroupServiceDeleteCall{Call: call}
+}
+
+// MockGroupServiceDeleteCall wrap *gomock.Call
+type MockGroupServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockGroupServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockGroupServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockGroupServiceDeleteCall) Do(f func(context.Context, *v10.DeleteGroupRequest, ...grpc.CallOption) (operations.Operation, error)) *MockGroupServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockGroupServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeleteGroupRequest, ...grpc.CallOption) (operations.Operation, error)) *MockGroupServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Filter mocks base method.
-func (m *MockGroupService) Filter(arg0 context.Context, arg1 *v1.ListGroupsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v1.Group, error] {
+func (m *MockGroupService) Filter(arg0 context.Context, arg1 *v10.ListGroupsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v10.Group, error] {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Filter", varargs...)
-	ret0, _ := ret[0].(iter.Seq2[*v1.Group, error])
+	ret0, _ := ret[0].(iter.Seq2[*v10.Group, error])
 	return ret0
 }
 
@@ -68,32 +158,32 @@ type MockGroupServiceFilterCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockGroupServiceFilterCall) Return(arg0 iter.Seq2[*v1.Group, error]) *MockGroupServiceFilterCall {
+func (c *MockGroupServiceFilterCall) Return(arg0 iter.Seq2[*v10.Group, error]) *MockGroupServiceFilterCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockGroupServiceFilterCall) Do(f func(context.Context, *v1.ListGroupsRequest, ...grpc.CallOption) iter.Seq2[*v1.Group, error]) *MockGroupServiceFilterCall {
+func (c *MockGroupServiceFilterCall) Do(f func(context.Context, *v10.ListGroupsRequest, ...grpc.CallOption) iter.Seq2[*v10.Group, error]) *MockGroupServiceFilterCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockGroupServiceFilterCall) DoAndReturn(f func(context.Context, *v1.ListGroupsRequest, ...grpc.CallOption) iter.Seq2[*v1.Group, error]) *MockGroupServiceFilterCall {
+func (c *MockGroupServiceFilterCall) DoAndReturn(f func(context.Context, *v10.ListGroupsRequest, ...grpc.CallOption) iter.Seq2[*v10.Group, error]) *MockGroupServiceFilterCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // Get mocks base method.
-func (m *MockGroupService) Get(arg0 context.Context, arg1 *v1.GetGroupRequest, arg2 ...grpc.CallOption) (*v1.Group, error) {
+func (m *MockGroupService) Get(arg0 context.Context, arg1 *v10.GetGroupRequest, arg2 ...grpc.CallOption) (*v10.Group, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Get", varargs...)
-	ret0, _ := ret[0].(*v1.Group)
+	ret0, _ := ret[0].(*v10.Group)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -112,32 +202,32 @@ type MockGroupServiceGetCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockGroupServiceGetCall) Return(arg0 *v1.Group, arg1 error) *MockGroupServiceGetCall {
+func (c *MockGroupServiceGetCall) Return(arg0 *v10.Group, arg1 error) *MockGroupServiceGetCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockGroupServiceGetCall) Do(f func(context.Context, *v1.GetGroupRequest, ...grpc.CallOption) (*v1.Group, error)) *MockGroupServiceGetCall {
+func (c *MockGroupServiceGetCall) Do(f func(context.Context, *v10.GetGroupRequest, ...grpc.CallOption) (*v10.Group, error)) *MockGroupServiceGetCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockGroupServiceGetCall) DoAndReturn(f func(context.Context, *v1.GetGroupRequest, ...grpc.CallOption) (*v1.Group, error)) *MockGroupServiceGetCall {
+func (c *MockGroupServiceGetCall) DoAndReturn(f func(context.Context, *v10.GetGroupRequest, ...grpc.CallOption) (*v10.Group, error)) *MockGroupServiceGetCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetByName mocks base method.
-func (m *MockGroupService) GetByName(arg0 context.Context, arg1 *v1.GetGroupByNameRequest, arg2 ...grpc.CallOption) (*v1.Group, error) {
+func (m *MockGroupService) GetByName(arg0 context.Context, arg1 *v10.GetGroupByNameRequest, arg2 ...grpc.CallOption) (*v10.Group, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GetByName", varargs...)
-	ret0, _ := ret[0].(*v1.Group)
+	ret0, _ := ret[0].(*v10.Group)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,32 +246,76 @@ type MockGroupServiceGetByNameCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockGroupServiceGetByNameCall) Return(arg0 *v1.Group, arg1 error) *MockGroupServiceGetByNameCall {
+func (c *MockGroupServiceGetByNameCall) Return(arg0 *v10.Group, arg1 error) *MockGroupServiceGetByNameCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockGroupServiceGetByNameCall) Do(f func(context.Context, *v1.GetGroupByNameRequest, ...grpc.CallOption) (*v1.Group, error)) *MockGroupServiceGetByNameCall {
+func (c *MockGroupServiceGetByNameCall) Do(f func(context.Context, *v10.GetGroupByNameRequest, ...grpc.CallOption) (*v10.Group, error)) *MockGroupServiceGetByNameCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockGroupServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.GetGroupByNameRequest, ...grpc.CallOption) (*v1.Group, error)) *MockGroupServiceGetByNameCall {
+func (c *MockGroupServiceGetByNameCall) DoAndReturn(f func(context.Context, *v10.GetGroupByNameRequest, ...grpc.CallOption) (*v10.Group, error)) *MockGroupServiceGetByNameCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// GetOperation mocks base method.
+func (m *MockGroupService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockGroupServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockGroupServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockGroupService)(nil).GetOperation), varargs...)
+	return &MockGroupServiceGetOperationCall{Call: call}
+}
+
+// MockGroupServiceGetOperationCall wrap *gomock.Call
+type MockGroupServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockGroupServiceGetOperationCall) Return(arg0 operations.Operation, arg1 error) *MockGroupServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockGroupServiceGetOperationCall) Do(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockGroupServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockGroupServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockGroupServiceGetOperationCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // List mocks base method.
-func (m *MockGroupService) List(arg0 context.Context, arg1 *v1.ListGroupsRequest, arg2 ...grpc.CallOption) (*v1.ListGroupsResponse, error) {
+func (m *MockGroupService) List(arg0 context.Context, arg1 *v10.ListGroupsRequest, arg2 ...grpc.CallOption) (*v10.ListGroupsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].(*v1.ListGroupsResponse)
+	ret0, _ := ret[0].(*v10.ListGroupsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -200,19 +334,107 @@ type MockGroupServiceListCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockGroupServiceListCall) Return(arg0 *v1.ListGroupsResponse, arg1 error) *MockGroupServiceListCall {
+func (c *MockGroupServiceListCall) Return(arg0 *v10.ListGroupsResponse, arg1 error) *MockGroupServiceListCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockGroupServiceListCall) Do(f func(context.Context, *v1.ListGroupsRequest, ...grpc.CallOption) (*v1.ListGroupsResponse, error)) *MockGroupServiceListCall {
+func (c *MockGroupServiceListCall) Do(f func(context.Context, *v10.ListGroupsRequest, ...grpc.CallOption) (*v10.ListGroupsResponse, error)) *MockGroupServiceListCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockGroupServiceListCall) DoAndReturn(f func(context.Context, *v1.ListGroupsRequest, ...grpc.CallOption) (*v1.ListGroupsResponse, error)) *MockGroupServiceListCall {
+func (c *MockGroupServiceListCall) DoAndReturn(f func(context.Context, *v10.ListGroupsRequest, ...grpc.CallOption) (*v10.ListGroupsResponse, error)) *MockGroupServiceListCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockGroupService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockGroupServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockGroupServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockGroupService)(nil).ListOperations), varargs...)
+	return &MockGroupServiceListOperationsCall{Call: call}
+}
+
+// MockGroupServiceListOperationsCall wrap *gomock.Call
+type MockGroupServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockGroupServiceListOperationsCall) Return(arg0 *v1.ListOperationsResponse, arg1 error) *MockGroupServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockGroupServiceListOperationsCall) Do(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockGroupServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockGroupServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockGroupServiceListOperationsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Update mocks base method.
+func (m *MockGroupService) Update(arg0 context.Context, arg1 *v10.UpdateGroupRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockGroupServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockGroupServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockGroupService)(nil).Update), varargs...)
+	return &MockGroupServiceUpdateCall{Call: call}
+}
+
+// MockGroupServiceUpdateCall wrap *gomock.Call
+type MockGroupServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockGroupServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockGroupServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockGroupServiceUpdateCall) Do(f func(context.Context, *v10.UpdateGroupRequest, ...grpc.CallOption) (operations.Operation, error)) *MockGroupServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockGroupServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateGroupRequest, ...grpc.CallOption) (operations.Operation, error)) *MockGroupServiceUpdateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

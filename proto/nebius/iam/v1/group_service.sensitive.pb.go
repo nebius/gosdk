@@ -2,6 +2,9 @@
 
 package v1
 
+// func (x *CreateGroupRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreateGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *GetGroupRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GetGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
@@ -13,3 +16,9 @@ package v1
 
 // func (x *ListGroupsResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListGroupsResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DeleteGroupRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DeleteGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateGroupRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
