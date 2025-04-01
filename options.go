@@ -53,7 +53,7 @@ func WithResolvers(resolvers ...conn.Resolver) Option {
 	return optionResolvers(resolvers)
 }
 
-// WithDomain changes the default "api.eu.nebius.cloud:443" domain.
+// WithDomain changes the default "api.nebius.cloud:443" domain.
 func WithDomain(domain string) Option {
 	return optionDomain(domain)
 }
