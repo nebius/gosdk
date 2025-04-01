@@ -33,7 +33,7 @@ type SDK struct {
 //
 // Important: Ensure that the provided ctx is not closed before calling [SDK.Close].
 func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
-	domain := "api.eu.nebius.cloud:443"
+	domain := "api.nebius.cloud:443"
 
 	credentials := NoCredentials()
 	handler := slog.Handler(NoopHandler{})
