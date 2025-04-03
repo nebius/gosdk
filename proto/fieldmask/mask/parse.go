@@ -387,10 +387,7 @@ func Parse(mask string) (*Mask, error) { //nolint:funlen,gocognit
 	pos := 0              // Initialize position tracker.
 	state := stateKey     // Initialize state to expecting a field key.
 
-	for {
-		if pos >= len(tokens) {
-			break // End the loop if the end of tokens is reached.
-		}
+	for pos < len(tokens) { // End the loop if the end of tokens is reached.
 		tok := tokens[pos] // Get the current token.
 		switch state {
 		case stateLevelStart:

@@ -65,8 +65,9 @@ func (t *ExchangeableBearerTokener) BearerToken(ctx context.Context) (BearerToke
 		return BearerToken{}, fmt.Errorf("exchange token: %w", err)
 	}
 
-	if strings.ToLower(resp.GetTokenType()) != "bearer" {
-		return BearerToken{}, fmt.Errorf("unsupported token received: expected Bearer, received %q", resp.GetTokenType())
+	tokenType := resp.GetTokenType()
+	if strings.ToLower(tokenType) != "bearer" {
+		return BearerToken{}, fmt.Errorf("unsupported token received: expected Bearer, received %q", tokenType)
 	}
 
 	return BearerToken{
