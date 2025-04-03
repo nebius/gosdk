@@ -438,12 +438,6 @@ linters:
           - testableexamples
       - path: 'operations/alphaops'
         text: 'SA1019: .+ is deprecated'
-      - text: '^QF\d' # TODO: fix
-        linters:
-          - staticcheck
-      - path: '^auth/exchangable.go' # TODO: fix
-        linters:
-          - golines
       - path: '^sdk.go' # TODO: fix
         linters:
           - cyclop
