@@ -14,6 +14,7 @@ import (
 	_ "golang.org/x/exp/maps"
 	_ "golang.org/x/net/http2"
 	_ "golang.org/x/sync/singleflight"
+	_ "google.golang.org/genproto/googleapis/rpc/code"
 	_ "google.golang.org/genproto/googleapis/rpc/status"
 	_ "google.golang.org/grpc"
 	_ "google.golang.org/grpc/codes"
@@ -29,6 +30,7 @@ import (
 	_ "google.golang.org/protobuf/types/known/anypb"
 	_ "google.golang.org/protobuf/types/known/durationpb"
 	_ "google.golang.org/protobuf/types/known/emptypb"
+	_ "google.golang.org/protobuf/types/known/structpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
 	_ "gopkg.in/yaml.v3"
 )
