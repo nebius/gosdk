@@ -264,6 +264,50 @@ func (c *MockClusterServiceGetByNameCall) DoAndReturn(f func(context.Context, *v
 	return c
 }
 
+// GetForBackup mocks base method.
+func (m *MockClusterService) GetForBackup(arg0 context.Context, arg1 *v1alpha10.GetClusterForBackupRequest, arg2 ...grpc.CallOption) (*v1alpha10.Cluster, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetForBackup", varargs...)
+	ret0, _ := ret[0].(*v1alpha10.Cluster)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetForBackup indicates an expected call of GetForBackup.
+func (mr *MockClusterServiceMockRecorder) GetForBackup(arg0, arg1 any, arg2 ...any) *MockClusterServiceGetForBackupCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetForBackup", reflect.TypeOf((*MockClusterService)(nil).GetForBackup), varargs...)
+	return &MockClusterServiceGetForBackupCall{Call: call}
+}
+
+// MockClusterServiceGetForBackupCall wrap *gomock.Call
+type MockClusterServiceGetForBackupCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockClusterServiceGetForBackupCall) Return(arg0 *v1alpha10.Cluster, arg1 error) *MockClusterServiceGetForBackupCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockClusterServiceGetForBackupCall) Do(f func(context.Context, *v1alpha10.GetClusterForBackupRequest, ...grpc.CallOption) (*v1alpha10.Cluster, error)) *MockClusterServiceGetForBackupCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockClusterServiceGetForBackupCall) DoAndReturn(f func(context.Context, *v1alpha10.GetClusterForBackupRequest, ...grpc.CallOption) (*v1alpha10.Cluster, error)) *MockClusterServiceGetForBackupCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // GetOperation mocks base method.
 func (m *MockClusterService) GetOperation(arg0 context.Context, arg1 *v1alpha1.GetOperationRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
 	m.ctrl.T.Helper()

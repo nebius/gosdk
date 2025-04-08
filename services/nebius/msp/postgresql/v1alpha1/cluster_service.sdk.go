@@ -29,6 +29,7 @@ const ClusterServiceID conn.ServiceID = "nebius.msp.postgresql.v1alpha1.ClusterS
 type ClusterService interface {
 	Get(context.Context, *v1alpha1.GetClusterRequest, ...grpc.CallOption) (*v1alpha1.Cluster, error)
 	GetByName(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v1alpha1.Cluster, error)
+	GetForBackup(context.Context, *v1alpha1.GetClusterForBackupRequest, ...grpc.CallOption) (*v1alpha1.Cluster, error)
 	List(context.Context, *v1alpha1.ListClustersRequest, ...grpc.CallOption) (*v1alpha1.ListClustersResponse, error)
 	Filter(context.Context, *v1alpha1.ListClustersRequest, ...grpc.CallOption) iter.Seq2[*v1alpha1.Cluster, error]
 	Create(context.Context, *v1alpha1.CreateClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
@@ -73,6 +74,18 @@ func (s clusterService) GetByName(ctx context.Context, request *v1.GetByNameRequ
 		return nil, err
 	}
 	return v1alpha1.NewClusterServiceClient(con).GetByName(ctx, request, opts...)
+}
+
+func (s clusterService) GetForBackup(ctx context.Context, request *v1alpha1.GetClusterForBackupRequest, opts ...grpc.CallOption) (*v1alpha1.Cluster, error) {
+	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1alpha1.NewClusterServiceClient(con).GetForBackup(ctx, request, opts...)
 }
 
 func (s clusterService) List(ctx context.Context, request *v1alpha1.ListClustersRequest, opts ...grpc.CallOption) (*v1alpha1.ListClustersResponse, error) {

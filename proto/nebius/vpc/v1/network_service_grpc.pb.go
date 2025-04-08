@@ -8,6 +8,7 @@ package v1
 
 import (
 	context "context"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -19,9 +20,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	NetworkService_Get_FullMethodName       = "/nebius.vpc.v1.NetworkService/Get"
-	NetworkService_GetByName_FullMethodName = "/nebius.vpc.v1.NetworkService/GetByName"
-	NetworkService_List_FullMethodName      = "/nebius.vpc.v1.NetworkService/List"
+	NetworkService_Get_FullMethodName           = "/nebius.vpc.v1.NetworkService/Get"
+	NetworkService_GetByName_FullMethodName     = "/nebius.vpc.v1.NetworkService/GetByName"
+	NetworkService_List_FullMethodName          = "/nebius.vpc.v1.NetworkService/List"
+	NetworkService_Create_FullMethodName        = "/nebius.vpc.v1.NetworkService/Create"
+	NetworkService_CreateDefault_FullMethodName = "/nebius.vpc.v1.NetworkService/CreateDefault"
+	NetworkService_Update_FullMethodName        = "/nebius.vpc.v1.NetworkService/Update"
+	NetworkService_Delete_FullMethodName        = "/nebius.vpc.v1.NetworkService/Delete"
 )
 
 // NetworkServiceClient is the client API for NetworkService service.
@@ -31,6 +36,10 @@ type NetworkServiceClient interface {
 	Get(ctx context.Context, in *GetNetworkRequest, opts ...grpc.CallOption) (*Network, error)
 	GetByName(ctx context.Context, in *GetNetworkByNameRequest, opts ...grpc.CallOption) (*Network, error)
 	List(ctx context.Context, in *ListNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error)
+	Create(ctx context.Context, in *CreateNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	CreateDefault(ctx context.Context, in *CreateDefaultNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	Update(ctx context.Context, in *UpdateNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	Delete(ctx context.Context, in *DeleteNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type networkServiceClient struct {
@@ -68,6 +77,42 @@ func (c *networkServiceClient) List(ctx context.Context, in *ListNetworksRequest
 	return out, nil
 }
 
+func (c *networkServiceClient) Create(ctx context.Context, in *CreateNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, NetworkService_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServiceClient) CreateDefault(ctx context.Context, in *CreateDefaultNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, NetworkService_CreateDefault_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServiceClient) Update(ctx context.Context, in *UpdateNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, NetworkService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServiceClient) Delete(ctx context.Context, in *DeleteNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, NetworkService_Delete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NetworkServiceServer is the server API for NetworkService service.
 // All implementations should embed UnimplementedNetworkServiceServer
 // for forward compatibility
@@ -75,6 +120,10 @@ type NetworkServiceServer interface {
 	Get(context.Context, *GetNetworkRequest) (*Network, error)
 	GetByName(context.Context, *GetNetworkByNameRequest) (*Network, error)
 	List(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error)
+	Create(context.Context, *CreateNetworkRequest) (*v1.Operation, error)
+	CreateDefault(context.Context, *CreateDefaultNetworkRequest) (*v1.Operation, error)
+	Update(context.Context, *UpdateNetworkRequest) (*v1.Operation, error)
+	Delete(context.Context, *DeleteNetworkRequest) (*v1.Operation, error)
 }
 
 // UnimplementedNetworkServiceServer should be embedded to have forward compatible implementations.
@@ -89,6 +138,18 @@ func (UnimplementedNetworkServiceServer) GetByName(context.Context, *GetNetworkB
 }
 func (UnimplementedNetworkServiceServer) List(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedNetworkServiceServer) Create(context.Context, *CreateNetworkRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedNetworkServiceServer) CreateDefault(context.Context, *CreateDefaultNetworkRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDefault not implemented")
+}
+func (UnimplementedNetworkServiceServer) Update(context.Context, *UpdateNetworkRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedNetworkServiceServer) Delete(context.Context, *DeleteNetworkRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
 // UnsafeNetworkServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -156,6 +217,78 @@ func _NetworkService_List_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NetworkService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NetworkService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServiceServer).Create(ctx, req.(*CreateNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkService_CreateDefault_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateDefaultNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServiceServer).CreateDefault(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NetworkService_CreateDefault_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServiceServer).CreateDefault(ctx, req.(*CreateDefaultNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NetworkService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServiceServer).Update(ctx, req.(*UpdateNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NetworkService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServiceServer).Delete(ctx, req.(*DeleteNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NetworkService_ServiceDesc is the grpc.ServiceDesc for NetworkService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -174,6 +307,22 @@ var NetworkService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _NetworkService_List_Handler,
+		},
+		{
+			MethodName: "Create",
+			Handler:    _NetworkService_Create_Handler,
+		},
+		{
+			MethodName: "CreateDefault",
+			Handler:    _NetworkService_CreateDefault_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _NetworkService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _NetworkService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
