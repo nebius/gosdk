@@ -27,7 +27,9 @@ type PoolService interface {
 	List(context.Context, *v1.ListPoolsRequest, ...grpc.CallOption) (*v1.ListPoolsResponse, error)
 	Filter(context.Context, *v1.ListPoolsRequest, ...grpc.CallOption) iter.Seq2[*v1.Pool, error]
 	ListBySourcePool(context.Context, *v1.ListPoolsBySourcePoolRequest, ...grpc.CallOption) (*v1.ListPoolsResponse, error)
+	Create(context.Context, *v1.CreatePoolRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdatePoolRequest, ...grpc.CallOption) (operations.Operation, error)
+	Delete(context.Context, *v1.DeletePoolRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
@@ -115,6 +117,22 @@ func (s poolService) ListBySourcePool(ctx context.Context, request *v1.ListPools
 	return v1.NewPoolServiceClient(con).ListBySourcePool(ctx, request, opts...)
 }
 
+func (s poolService) Create(ctx context.Context, request *v1.CreatePoolRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, PoolServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewPoolServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
 func (s poolService) Update(ctx context.Context, request *v1.UpdatePoolRequest, opts ...grpc.CallOption) (operations.Operation, error) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
@@ -129,6 +147,22 @@ func (s poolService) Update(ctx context.Context, request *v1.UpdatePoolRequest, 
 		return nil, err
 	}
 	op, err := v1.NewPoolServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s poolService) Delete(ctx context.Context, request *v1.DeletePoolRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, PoolServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewPoolServiceClient(con).Delete(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}

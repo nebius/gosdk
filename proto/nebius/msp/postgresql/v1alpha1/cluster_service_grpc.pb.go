@@ -21,15 +21,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ClusterService_Get_FullMethodName       = "/nebius.msp.postgresql.v1alpha1.ClusterService/Get"
-	ClusterService_GetByName_FullMethodName = "/nebius.msp.postgresql.v1alpha1.ClusterService/GetByName"
-	ClusterService_List_FullMethodName      = "/nebius.msp.postgresql.v1alpha1.ClusterService/List"
-	ClusterService_Create_FullMethodName    = "/nebius.msp.postgresql.v1alpha1.ClusterService/Create"
-	ClusterService_Delete_FullMethodName    = "/nebius.msp.postgresql.v1alpha1.ClusterService/Delete"
-	ClusterService_Update_FullMethodName    = "/nebius.msp.postgresql.v1alpha1.ClusterService/Update"
-	ClusterService_Restore_FullMethodName   = "/nebius.msp.postgresql.v1alpha1.ClusterService/Restore"
-	ClusterService_Stop_FullMethodName      = "/nebius.msp.postgresql.v1alpha1.ClusterService/Stop"
-	ClusterService_Start_FullMethodName     = "/nebius.msp.postgresql.v1alpha1.ClusterService/Start"
+	ClusterService_Get_FullMethodName          = "/nebius.msp.postgresql.v1alpha1.ClusterService/Get"
+	ClusterService_GetByName_FullMethodName    = "/nebius.msp.postgresql.v1alpha1.ClusterService/GetByName"
+	ClusterService_GetForBackup_FullMethodName = "/nebius.msp.postgresql.v1alpha1.ClusterService/GetForBackup"
+	ClusterService_List_FullMethodName         = "/nebius.msp.postgresql.v1alpha1.ClusterService/List"
+	ClusterService_Create_FullMethodName       = "/nebius.msp.postgresql.v1alpha1.ClusterService/Create"
+	ClusterService_Delete_FullMethodName       = "/nebius.msp.postgresql.v1alpha1.ClusterService/Delete"
+	ClusterService_Update_FullMethodName       = "/nebius.msp.postgresql.v1alpha1.ClusterService/Update"
+	ClusterService_Restore_FullMethodName      = "/nebius.msp.postgresql.v1alpha1.ClusterService/Restore"
+	ClusterService_Stop_FullMethodName         = "/nebius.msp.postgresql.v1alpha1.ClusterService/Stop"
+	ClusterService_Start_FullMethodName        = "/nebius.msp.postgresql.v1alpha1.ClusterService/Start"
 )
 
 // ClusterServiceClient is the client API for ClusterService service.
@@ -41,6 +42,9 @@ type ClusterServiceClient interface {
 	Get(ctx context.Context, in *GetClusterRequest, opts ...grpc.CallOption) (*Cluster, error)
 	// Returns the specified PostgreSQL Cluster resource by name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Cluster, error)
+	// Returns the specified PostgreSQL Cluster resource for backup.
+	// It should be used as a hint of cluster configuration in case of backup restoration.
+	GetForBackup(ctx context.Context, in *GetClusterForBackupRequest, opts ...grpc.CallOption) (*Cluster, error)
 	// Retrieves the list of PostgreSQL Cluster resources that belong
 	// to the specified folder.
 	List(ctx context.Context, in *ListClustersRequest, opts ...grpc.CallOption) (*ListClustersResponse, error)
@@ -78,6 +82,15 @@ func (c *clusterServiceClient) Get(ctx context.Context, in *GetClusterRequest, o
 func (c *clusterServiceClient) GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Cluster, error) {
 	out := new(Cluster)
 	err := c.cc.Invoke(ctx, ClusterService_GetByName_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clusterServiceClient) GetForBackup(ctx context.Context, in *GetClusterForBackupRequest, opts ...grpc.CallOption) (*Cluster, error) {
+	out := new(Cluster)
+	err := c.cc.Invoke(ctx, ClusterService_GetForBackup_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -156,6 +169,9 @@ type ClusterServiceServer interface {
 	Get(context.Context, *GetClusterRequest) (*Cluster, error)
 	// Returns the specified PostgreSQL Cluster resource by name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Cluster, error)
+	// Returns the specified PostgreSQL Cluster resource for backup.
+	// It should be used as a hint of cluster configuration in case of backup restoration.
+	GetForBackup(context.Context, *GetClusterForBackupRequest) (*Cluster, error)
 	// Retrieves the list of PostgreSQL Cluster resources that belong
 	// to the specified folder.
 	List(context.Context, *ListClustersRequest) (*ListClustersResponse, error)
@@ -182,6 +198,9 @@ func (UnimplementedClusterServiceServer) Get(context.Context, *GetClusterRequest
 }
 func (UnimplementedClusterServiceServer) GetByName(context.Context, *v1.GetByNameRequest) (*Cluster, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
+}
+func (UnimplementedClusterServiceServer) GetForBackup(context.Context, *GetClusterForBackupRequest) (*Cluster, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetForBackup not implemented")
 }
 func (UnimplementedClusterServiceServer) List(context.Context, *ListClustersRequest) (*ListClustersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
@@ -248,6 +267,24 @@ func _ClusterService_GetByName_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ClusterServiceServer).GetByName(ctx, req.(*v1.GetByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClusterService_GetForBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetClusterForBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterServiceServer).GetForBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClusterService_GetForBackup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterServiceServer).GetForBackup(ctx, req.(*GetClusterForBackupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -392,6 +429,10 @@ var ClusterService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByName",
 			Handler:    _ClusterService_GetByName_Handler,
+		},
+		{
+			MethodName: "GetForBackup",
+			Handler:    _ClusterService_GetForBackup_Handler,
 		},
 		{
 			MethodName: "List",

@@ -24,7 +24,9 @@ const (
 	PoolService_GetByName_FullMethodName        = "/nebius.vpc.v1.PoolService/GetByName"
 	PoolService_List_FullMethodName             = "/nebius.vpc.v1.PoolService/List"
 	PoolService_ListBySourcePool_FullMethodName = "/nebius.vpc.v1.PoolService/ListBySourcePool"
+	PoolService_Create_FullMethodName           = "/nebius.vpc.v1.PoolService/Create"
 	PoolService_Update_FullMethodName           = "/nebius.vpc.v1.PoolService/Update"
+	PoolService_Delete_FullMethodName           = "/nebius.vpc.v1.PoolService/Delete"
 )
 
 // PoolServiceClient is the client API for PoolService service.
@@ -35,7 +37,9 @@ type PoolServiceClient interface {
 	GetByName(ctx context.Context, in *GetPoolByNameRequest, opts ...grpc.CallOption) (*Pool, error)
 	List(ctx context.Context, in *ListPoolsRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
 	ListBySourcePool(ctx context.Context, in *ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
+	Create(ctx context.Context, in *CreatePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Update(ctx context.Context, in *UpdatePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	Delete(ctx context.Context, in *DeletePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type poolServiceClient struct {
@@ -82,9 +86,27 @@ func (c *poolServiceClient) ListBySourcePool(ctx context.Context, in *ListPoolsB
 	return out, nil
 }
 
+func (c *poolServiceClient) Create(ctx context.Context, in *CreatePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, PoolService_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *poolServiceClient) Update(ctx context.Context, in *UpdatePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, PoolService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *poolServiceClient) Delete(ctx context.Context, in *DeletePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, PoolService_Delete_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +121,9 @@ type PoolServiceServer interface {
 	GetByName(context.Context, *GetPoolByNameRequest) (*Pool, error)
 	List(context.Context, *ListPoolsRequest) (*ListPoolsResponse, error)
 	ListBySourcePool(context.Context, *ListPoolsBySourcePoolRequest) (*ListPoolsResponse, error)
+	Create(context.Context, *CreatePoolRequest) (*v1.Operation, error)
 	Update(context.Context, *UpdatePoolRequest) (*v1.Operation, error)
+	Delete(context.Context, *DeletePoolRequest) (*v1.Operation, error)
 }
 
 // UnimplementedPoolServiceServer should be embedded to have forward compatible implementations.
@@ -118,8 +142,14 @@ func (UnimplementedPoolServiceServer) List(context.Context, *ListPoolsRequest) (
 func (UnimplementedPoolServiceServer) ListBySourcePool(context.Context, *ListPoolsBySourcePoolRequest) (*ListPoolsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBySourcePool not implemented")
 }
+func (UnimplementedPoolServiceServer) Create(context.Context, *CreatePoolRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
 func (UnimplementedPoolServiceServer) Update(context.Context, *UpdatePoolRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedPoolServiceServer) Delete(context.Context, *DeletePoolRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
 // UnsafePoolServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -205,6 +235,24 @@ func _PoolService_ListBySourcePool_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PoolService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePoolRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PoolServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PoolService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PoolServiceServer).Create(ctx, req.(*CreatePoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PoolService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdatePoolRequest)
 	if err := dec(in); err != nil {
@@ -219,6 +267,24 @@ func _PoolService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PoolServiceServer).Update(ctx, req.(*UpdatePoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PoolService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePoolRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PoolServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PoolService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PoolServiceServer).Delete(ctx, req.(*DeletePoolRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -247,8 +313,16 @@ var PoolService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PoolService_ListBySourcePool_Handler,
 		},
 		{
+			MethodName: "Create",
+			Handler:    _PoolService_Create_Handler,
+		},
+		{
 			MethodName: "Update",
 			Handler:    _PoolService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _PoolService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

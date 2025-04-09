@@ -14,7 +14,9 @@ import (
 	reflect "reflect"
 
 	iter "github.com/nebius/gosdk/iter"
-	v1 "github.com/nebius/gosdk/proto/nebius/vpc/v1"
+	operations "github.com/nebius/gosdk/operations"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
+	v10 "github.com/nebius/gosdk/proto/nebius/vpc/v1"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"
 )
@@ -42,15 +44,147 @@ func (m *MockNetworkService) EXPECT() *MockNetworkServiceMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockNetworkService) Create(arg0 context.Context, arg1 *v10.CreateNetworkRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockNetworkServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockNetworkServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockNetworkService)(nil).Create), varargs...)
+	return &MockNetworkServiceCreateCall{Call: call}
+}
+
+// MockNetworkServiceCreateCall wrap *gomock.Call
+type MockNetworkServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNetworkServiceCreateCall) Return(arg0 operations.Operation, arg1 error) *MockNetworkServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNetworkServiceCreateCall) Do(f func(context.Context, *v10.CreateNetworkRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNetworkServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreateNetworkRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// CreateDefault mocks base method.
+func (m *MockNetworkService) CreateDefault(arg0 context.Context, arg1 *v10.CreateDefaultNetworkRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateDefault", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateDefault indicates an expected call of CreateDefault.
+func (mr *MockNetworkServiceMockRecorder) CreateDefault(arg0, arg1 any, arg2 ...any) *MockNetworkServiceCreateDefaultCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDefault", reflect.TypeOf((*MockNetworkService)(nil).CreateDefault), varargs...)
+	return &MockNetworkServiceCreateDefaultCall{Call: call}
+}
+
+// MockNetworkServiceCreateDefaultCall wrap *gomock.Call
+type MockNetworkServiceCreateDefaultCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNetworkServiceCreateDefaultCall) Return(arg0 operations.Operation, arg1 error) *MockNetworkServiceCreateDefaultCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNetworkServiceCreateDefaultCall) Do(f func(context.Context, *v10.CreateDefaultNetworkRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceCreateDefaultCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNetworkServiceCreateDefaultCall) DoAndReturn(f func(context.Context, *v10.CreateDefaultNetworkRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceCreateDefaultCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *MockNetworkService) Delete(arg0 context.Context, arg1 *v10.DeleteNetworkRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockNetworkServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockNetworkServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockNetworkService)(nil).Delete), varargs...)
+	return &MockNetworkServiceDeleteCall{Call: call}
+}
+
+// MockNetworkServiceDeleteCall wrap *gomock.Call
+type MockNetworkServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNetworkServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockNetworkServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNetworkServiceDeleteCall) Do(f func(context.Context, *v10.DeleteNetworkRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNetworkServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeleteNetworkRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Filter mocks base method.
-func (m *MockNetworkService) Filter(arg0 context.Context, arg1 *v1.ListNetworksRequest, arg2 ...grpc.CallOption) iter.Seq2[*v1.Network, error] {
+func (m *MockNetworkService) Filter(arg0 context.Context, arg1 *v10.ListNetworksRequest, arg2 ...grpc.CallOption) iter.Seq2[*v10.Network, error] {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Filter", varargs...)
-	ret0, _ := ret[0].(iter.Seq2[*v1.Network, error])
+	ret0, _ := ret[0].(iter.Seq2[*v10.Network, error])
 	return ret0
 }
 
@@ -68,32 +202,32 @@ type MockNetworkServiceFilterCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockNetworkServiceFilterCall) Return(arg0 iter.Seq2[*v1.Network, error]) *MockNetworkServiceFilterCall {
+func (c *MockNetworkServiceFilterCall) Return(arg0 iter.Seq2[*v10.Network, error]) *MockNetworkServiceFilterCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockNetworkServiceFilterCall) Do(f func(context.Context, *v1.ListNetworksRequest, ...grpc.CallOption) iter.Seq2[*v1.Network, error]) *MockNetworkServiceFilterCall {
+func (c *MockNetworkServiceFilterCall) Do(f func(context.Context, *v10.ListNetworksRequest, ...grpc.CallOption) iter.Seq2[*v10.Network, error]) *MockNetworkServiceFilterCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockNetworkServiceFilterCall) DoAndReturn(f func(context.Context, *v1.ListNetworksRequest, ...grpc.CallOption) iter.Seq2[*v1.Network, error]) *MockNetworkServiceFilterCall {
+func (c *MockNetworkServiceFilterCall) DoAndReturn(f func(context.Context, *v10.ListNetworksRequest, ...grpc.CallOption) iter.Seq2[*v10.Network, error]) *MockNetworkServiceFilterCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // Get mocks base method.
-func (m *MockNetworkService) Get(arg0 context.Context, arg1 *v1.GetNetworkRequest, arg2 ...grpc.CallOption) (*v1.Network, error) {
+func (m *MockNetworkService) Get(arg0 context.Context, arg1 *v10.GetNetworkRequest, arg2 ...grpc.CallOption) (*v10.Network, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Get", varargs...)
-	ret0, _ := ret[0].(*v1.Network)
+	ret0, _ := ret[0].(*v10.Network)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -112,32 +246,32 @@ type MockNetworkServiceGetCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockNetworkServiceGetCall) Return(arg0 *v1.Network, arg1 error) *MockNetworkServiceGetCall {
+func (c *MockNetworkServiceGetCall) Return(arg0 *v10.Network, arg1 error) *MockNetworkServiceGetCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockNetworkServiceGetCall) Do(f func(context.Context, *v1.GetNetworkRequest, ...grpc.CallOption) (*v1.Network, error)) *MockNetworkServiceGetCall {
+func (c *MockNetworkServiceGetCall) Do(f func(context.Context, *v10.GetNetworkRequest, ...grpc.CallOption) (*v10.Network, error)) *MockNetworkServiceGetCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockNetworkServiceGetCall) DoAndReturn(f func(context.Context, *v1.GetNetworkRequest, ...grpc.CallOption) (*v1.Network, error)) *MockNetworkServiceGetCall {
+func (c *MockNetworkServiceGetCall) DoAndReturn(f func(context.Context, *v10.GetNetworkRequest, ...grpc.CallOption) (*v10.Network, error)) *MockNetworkServiceGetCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetByName mocks base method.
-func (m *MockNetworkService) GetByName(arg0 context.Context, arg1 *v1.GetNetworkByNameRequest, arg2 ...grpc.CallOption) (*v1.Network, error) {
+func (m *MockNetworkService) GetByName(arg0 context.Context, arg1 *v10.GetNetworkByNameRequest, arg2 ...grpc.CallOption) (*v10.Network, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GetByName", varargs...)
-	ret0, _ := ret[0].(*v1.Network)
+	ret0, _ := ret[0].(*v10.Network)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,32 +290,76 @@ type MockNetworkServiceGetByNameCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockNetworkServiceGetByNameCall) Return(arg0 *v1.Network, arg1 error) *MockNetworkServiceGetByNameCall {
+func (c *MockNetworkServiceGetByNameCall) Return(arg0 *v10.Network, arg1 error) *MockNetworkServiceGetByNameCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockNetworkServiceGetByNameCall) Do(f func(context.Context, *v1.GetNetworkByNameRequest, ...grpc.CallOption) (*v1.Network, error)) *MockNetworkServiceGetByNameCall {
+func (c *MockNetworkServiceGetByNameCall) Do(f func(context.Context, *v10.GetNetworkByNameRequest, ...grpc.CallOption) (*v10.Network, error)) *MockNetworkServiceGetByNameCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockNetworkServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.GetNetworkByNameRequest, ...grpc.CallOption) (*v1.Network, error)) *MockNetworkServiceGetByNameCall {
+func (c *MockNetworkServiceGetByNameCall) DoAndReturn(f func(context.Context, *v10.GetNetworkByNameRequest, ...grpc.CallOption) (*v10.Network, error)) *MockNetworkServiceGetByNameCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// GetOperation mocks base method.
+func (m *MockNetworkService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockNetworkServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockNetworkServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockNetworkService)(nil).GetOperation), varargs...)
+	return &MockNetworkServiceGetOperationCall{Call: call}
+}
+
+// MockNetworkServiceGetOperationCall wrap *gomock.Call
+type MockNetworkServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNetworkServiceGetOperationCall) Return(arg0 operations.Operation, arg1 error) *MockNetworkServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNetworkServiceGetOperationCall) Do(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNetworkServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceGetOperationCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // List mocks base method.
-func (m *MockNetworkService) List(arg0 context.Context, arg1 *v1.ListNetworksRequest, arg2 ...grpc.CallOption) (*v1.ListNetworksResponse, error) {
+func (m *MockNetworkService) List(arg0 context.Context, arg1 *v10.ListNetworksRequest, arg2 ...grpc.CallOption) (*v10.ListNetworksResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].(*v1.ListNetworksResponse)
+	ret0, _ := ret[0].(*v10.ListNetworksResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -200,19 +378,107 @@ type MockNetworkServiceListCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockNetworkServiceListCall) Return(arg0 *v1.ListNetworksResponse, arg1 error) *MockNetworkServiceListCall {
+func (c *MockNetworkServiceListCall) Return(arg0 *v10.ListNetworksResponse, arg1 error) *MockNetworkServiceListCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockNetworkServiceListCall) Do(f func(context.Context, *v1.ListNetworksRequest, ...grpc.CallOption) (*v1.ListNetworksResponse, error)) *MockNetworkServiceListCall {
+func (c *MockNetworkServiceListCall) Do(f func(context.Context, *v10.ListNetworksRequest, ...grpc.CallOption) (*v10.ListNetworksResponse, error)) *MockNetworkServiceListCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockNetworkServiceListCall) DoAndReturn(f func(context.Context, *v1.ListNetworksRequest, ...grpc.CallOption) (*v1.ListNetworksResponse, error)) *MockNetworkServiceListCall {
+func (c *MockNetworkServiceListCall) DoAndReturn(f func(context.Context, *v10.ListNetworksRequest, ...grpc.CallOption) (*v10.ListNetworksResponse, error)) *MockNetworkServiceListCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockNetworkService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockNetworkServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockNetworkServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockNetworkService)(nil).ListOperations), varargs...)
+	return &MockNetworkServiceListOperationsCall{Call: call}
+}
+
+// MockNetworkServiceListOperationsCall wrap *gomock.Call
+type MockNetworkServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNetworkServiceListOperationsCall) Return(arg0 *v1.ListOperationsResponse, arg1 error) *MockNetworkServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNetworkServiceListOperationsCall) Do(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockNetworkServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNetworkServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockNetworkServiceListOperationsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Update mocks base method.
+func (m *MockNetworkService) Update(arg0 context.Context, arg1 *v10.UpdateNetworkRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockNetworkServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockNetworkServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockNetworkService)(nil).Update), varargs...)
+	return &MockNetworkServiceUpdateCall{Call: call}
+}
+
+// MockNetworkServiceUpdateCall wrap *gomock.Call
+type MockNetworkServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNetworkServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockNetworkServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNetworkServiceUpdateCall) Do(f func(context.Context, *v10.UpdateNetworkRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNetworkServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateNetworkRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNetworkServiceUpdateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

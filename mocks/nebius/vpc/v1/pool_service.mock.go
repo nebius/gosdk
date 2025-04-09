@@ -44,6 +44,94 @@ func (m *MockPoolService) EXPECT() *MockPoolServiceMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockPoolService) Create(arg0 context.Context, arg1 *v10.CreatePoolRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockPoolServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockPoolServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockPoolService)(nil).Create), varargs...)
+	return &MockPoolServiceCreateCall{Call: call}
+}
+
+// MockPoolServiceCreateCall wrap *gomock.Call
+type MockPoolServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockPoolServiceCreateCall) Return(arg0 operations.Operation, arg1 error) *MockPoolServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockPoolServiceCreateCall) Do(f func(context.Context, *v10.CreatePoolRequest, ...grpc.CallOption) (operations.Operation, error)) *MockPoolServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockPoolServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreatePoolRequest, ...grpc.CallOption) (operations.Operation, error)) *MockPoolServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *MockPoolService) Delete(arg0 context.Context, arg1 *v10.DeletePoolRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockPoolServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockPoolServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockPoolService)(nil).Delete), varargs...)
+	return &MockPoolServiceDeleteCall{Call: call}
+}
+
+// MockPoolServiceDeleteCall wrap *gomock.Call
+type MockPoolServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockPoolServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockPoolServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockPoolServiceDeleteCall) Do(f func(context.Context, *v10.DeletePoolRequest, ...grpc.CallOption) (operations.Operation, error)) *MockPoolServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockPoolServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeletePoolRequest, ...grpc.CallOption) (operations.Operation, error)) *MockPoolServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Filter mocks base method.
 func (m *MockPoolService) Filter(arg0 context.Context, arg1 *v10.ListPoolsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v10.Pool, error] {
 	m.ctrl.T.Helper()
