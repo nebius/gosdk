@@ -14,7 +14,9 @@ import (
 	reflect "reflect"
 
 	iter "github.com/nebius/gosdk/iter"
-	v1 "github.com/nebius/gosdk/proto/nebius/vpc/v1"
+	operations "github.com/nebius/gosdk/operations"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
+	v10 "github.com/nebius/gosdk/proto/nebius/vpc/v1"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"
 )
@@ -42,15 +44,103 @@ func (m *MockSubnetService) EXPECT() *MockSubnetServiceMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockSubnetService) Create(arg0 context.Context, arg1 *v10.CreateSubnetRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockSubnetServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockSubnetServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockSubnetService)(nil).Create), varargs...)
+	return &MockSubnetServiceCreateCall{Call: call}
+}
+
+// MockSubnetServiceCreateCall wrap *gomock.Call
+type MockSubnetServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockSubnetServiceCreateCall) Return(arg0 operations.Operation, arg1 error) *MockSubnetServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockSubnetServiceCreateCall) Do(f func(context.Context, *v10.CreateSubnetRequest, ...grpc.CallOption) (operations.Operation, error)) *MockSubnetServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockSubnetServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreateSubnetRequest, ...grpc.CallOption) (operations.Operation, error)) *MockSubnetServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *MockSubnetService) Delete(arg0 context.Context, arg1 *v10.DeleteSubnetRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockSubnetServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockSubnetServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockSubnetService)(nil).Delete), varargs...)
+	return &MockSubnetServiceDeleteCall{Call: call}
+}
+
+// MockSubnetServiceDeleteCall wrap *gomock.Call
+type MockSubnetServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockSubnetServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockSubnetServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockSubnetServiceDeleteCall) Do(f func(context.Context, *v10.DeleteSubnetRequest, ...grpc.CallOption) (operations.Operation, error)) *MockSubnetServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockSubnetServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeleteSubnetRequest, ...grpc.CallOption) (operations.Operation, error)) *MockSubnetServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Filter mocks base method.
-func (m *MockSubnetService) Filter(arg0 context.Context, arg1 *v1.ListSubnetsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v1.Subnet, error] {
+func (m *MockSubnetService) Filter(arg0 context.Context, arg1 *v10.ListSubnetsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v10.Subnet, error] {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Filter", varargs...)
-	ret0, _ := ret[0].(iter.Seq2[*v1.Subnet, error])
+	ret0, _ := ret[0].(iter.Seq2[*v10.Subnet, error])
 	return ret0
 }
 
@@ -68,32 +158,32 @@ type MockSubnetServiceFilterCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockSubnetServiceFilterCall) Return(arg0 iter.Seq2[*v1.Subnet, error]) *MockSubnetServiceFilterCall {
+func (c *MockSubnetServiceFilterCall) Return(arg0 iter.Seq2[*v10.Subnet, error]) *MockSubnetServiceFilterCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockSubnetServiceFilterCall) Do(f func(context.Context, *v1.ListSubnetsRequest, ...grpc.CallOption) iter.Seq2[*v1.Subnet, error]) *MockSubnetServiceFilterCall {
+func (c *MockSubnetServiceFilterCall) Do(f func(context.Context, *v10.ListSubnetsRequest, ...grpc.CallOption) iter.Seq2[*v10.Subnet, error]) *MockSubnetServiceFilterCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockSubnetServiceFilterCall) DoAndReturn(f func(context.Context, *v1.ListSubnetsRequest, ...grpc.CallOption) iter.Seq2[*v1.Subnet, error]) *MockSubnetServiceFilterCall {
+func (c *MockSubnetServiceFilterCall) DoAndReturn(f func(context.Context, *v10.ListSubnetsRequest, ...grpc.CallOption) iter.Seq2[*v10.Subnet, error]) *MockSubnetServiceFilterCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // Get mocks base method.
-func (m *MockSubnetService) Get(arg0 context.Context, arg1 *v1.GetSubnetRequest, arg2 ...grpc.CallOption) (*v1.Subnet, error) {
+func (m *MockSubnetService) Get(arg0 context.Context, arg1 *v10.GetSubnetRequest, arg2 ...grpc.CallOption) (*v10.Subnet, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Get", varargs...)
-	ret0, _ := ret[0].(*v1.Subnet)
+	ret0, _ := ret[0].(*v10.Subnet)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -112,32 +202,32 @@ type MockSubnetServiceGetCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockSubnetServiceGetCall) Return(arg0 *v1.Subnet, arg1 error) *MockSubnetServiceGetCall {
+func (c *MockSubnetServiceGetCall) Return(arg0 *v10.Subnet, arg1 error) *MockSubnetServiceGetCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockSubnetServiceGetCall) Do(f func(context.Context, *v1.GetSubnetRequest, ...grpc.CallOption) (*v1.Subnet, error)) *MockSubnetServiceGetCall {
+func (c *MockSubnetServiceGetCall) Do(f func(context.Context, *v10.GetSubnetRequest, ...grpc.CallOption) (*v10.Subnet, error)) *MockSubnetServiceGetCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockSubnetServiceGetCall) DoAndReturn(f func(context.Context, *v1.GetSubnetRequest, ...grpc.CallOption) (*v1.Subnet, error)) *MockSubnetServiceGetCall {
+func (c *MockSubnetServiceGetCall) DoAndReturn(f func(context.Context, *v10.GetSubnetRequest, ...grpc.CallOption) (*v10.Subnet, error)) *MockSubnetServiceGetCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetByName mocks base method.
-func (m *MockSubnetService) GetByName(arg0 context.Context, arg1 *v1.GetSubnetByNameRequest, arg2 ...grpc.CallOption) (*v1.Subnet, error) {
+func (m *MockSubnetService) GetByName(arg0 context.Context, arg1 *v10.GetSubnetByNameRequest, arg2 ...grpc.CallOption) (*v10.Subnet, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GetByName", varargs...)
-	ret0, _ := ret[0].(*v1.Subnet)
+	ret0, _ := ret[0].(*v10.Subnet)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,32 +246,76 @@ type MockSubnetServiceGetByNameCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockSubnetServiceGetByNameCall) Return(arg0 *v1.Subnet, arg1 error) *MockSubnetServiceGetByNameCall {
+func (c *MockSubnetServiceGetByNameCall) Return(arg0 *v10.Subnet, arg1 error) *MockSubnetServiceGetByNameCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockSubnetServiceGetByNameCall) Do(f func(context.Context, *v1.GetSubnetByNameRequest, ...grpc.CallOption) (*v1.Subnet, error)) *MockSubnetServiceGetByNameCall {
+func (c *MockSubnetServiceGetByNameCall) Do(f func(context.Context, *v10.GetSubnetByNameRequest, ...grpc.CallOption) (*v10.Subnet, error)) *MockSubnetServiceGetByNameCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockSubnetServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.GetSubnetByNameRequest, ...grpc.CallOption) (*v1.Subnet, error)) *MockSubnetServiceGetByNameCall {
+func (c *MockSubnetServiceGetByNameCall) DoAndReturn(f func(context.Context, *v10.GetSubnetByNameRequest, ...grpc.CallOption) (*v10.Subnet, error)) *MockSubnetServiceGetByNameCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// GetOperation mocks base method.
+func (m *MockSubnetService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockSubnetServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockSubnetServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockSubnetService)(nil).GetOperation), varargs...)
+	return &MockSubnetServiceGetOperationCall{Call: call}
+}
+
+// MockSubnetServiceGetOperationCall wrap *gomock.Call
+type MockSubnetServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockSubnetServiceGetOperationCall) Return(arg0 operations.Operation, arg1 error) *MockSubnetServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockSubnetServiceGetOperationCall) Do(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockSubnetServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockSubnetServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockSubnetServiceGetOperationCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // List mocks base method.
-func (m *MockSubnetService) List(arg0 context.Context, arg1 *v1.ListSubnetsRequest, arg2 ...grpc.CallOption) (*v1.ListSubnetsResponse, error) {
+func (m *MockSubnetService) List(arg0 context.Context, arg1 *v10.ListSubnetsRequest, arg2 ...grpc.CallOption) (*v10.ListSubnetsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].(*v1.ListSubnetsResponse)
+	ret0, _ := ret[0].(*v10.ListSubnetsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -200,32 +334,32 @@ type MockSubnetServiceListCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockSubnetServiceListCall) Return(arg0 *v1.ListSubnetsResponse, arg1 error) *MockSubnetServiceListCall {
+func (c *MockSubnetServiceListCall) Return(arg0 *v10.ListSubnetsResponse, arg1 error) *MockSubnetServiceListCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockSubnetServiceListCall) Do(f func(context.Context, *v1.ListSubnetsRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)) *MockSubnetServiceListCall {
+func (c *MockSubnetServiceListCall) Do(f func(context.Context, *v10.ListSubnetsRequest, ...grpc.CallOption) (*v10.ListSubnetsResponse, error)) *MockSubnetServiceListCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockSubnetServiceListCall) DoAndReturn(f func(context.Context, *v1.ListSubnetsRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)) *MockSubnetServiceListCall {
+func (c *MockSubnetServiceListCall) DoAndReturn(f func(context.Context, *v10.ListSubnetsRequest, ...grpc.CallOption) (*v10.ListSubnetsResponse, error)) *MockSubnetServiceListCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // ListByNetwork mocks base method.
-func (m *MockSubnetService) ListByNetwork(arg0 context.Context, arg1 *v1.ListSubnetsByNetworkRequest, arg2 ...grpc.CallOption) (*v1.ListSubnetsResponse, error) {
+func (m *MockSubnetService) ListByNetwork(arg0 context.Context, arg1 *v10.ListSubnetsByNetworkRequest, arg2 ...grpc.CallOption) (*v10.ListSubnetsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListByNetwork", varargs...)
-	ret0, _ := ret[0].(*v1.ListSubnetsResponse)
+	ret0, _ := ret[0].(*v10.ListSubnetsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -244,19 +378,107 @@ type MockSubnetServiceListByNetworkCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockSubnetServiceListByNetworkCall) Return(arg0 *v1.ListSubnetsResponse, arg1 error) *MockSubnetServiceListByNetworkCall {
+func (c *MockSubnetServiceListByNetworkCall) Return(arg0 *v10.ListSubnetsResponse, arg1 error) *MockSubnetServiceListByNetworkCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockSubnetServiceListByNetworkCall) Do(f func(context.Context, *v1.ListSubnetsByNetworkRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)) *MockSubnetServiceListByNetworkCall {
+func (c *MockSubnetServiceListByNetworkCall) Do(f func(context.Context, *v10.ListSubnetsByNetworkRequest, ...grpc.CallOption) (*v10.ListSubnetsResponse, error)) *MockSubnetServiceListByNetworkCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockSubnetServiceListByNetworkCall) DoAndReturn(f func(context.Context, *v1.ListSubnetsByNetworkRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)) *MockSubnetServiceListByNetworkCall {
+func (c *MockSubnetServiceListByNetworkCall) DoAndReturn(f func(context.Context, *v10.ListSubnetsByNetworkRequest, ...grpc.CallOption) (*v10.ListSubnetsResponse, error)) *MockSubnetServiceListByNetworkCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockSubnetService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockSubnetServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockSubnetServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockSubnetService)(nil).ListOperations), varargs...)
+	return &MockSubnetServiceListOperationsCall{Call: call}
+}
+
+// MockSubnetServiceListOperationsCall wrap *gomock.Call
+type MockSubnetServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockSubnetServiceListOperationsCall) Return(arg0 *v1.ListOperationsResponse, arg1 error) *MockSubnetServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockSubnetServiceListOperationsCall) Do(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockSubnetServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockSubnetServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockSubnetServiceListOperationsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Update mocks base method.
+func (m *MockSubnetService) Update(arg0 context.Context, arg1 *v10.UpdateSubnetRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockSubnetServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockSubnetServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockSubnetService)(nil).Update), varargs...)
+	return &MockSubnetServiceUpdateCall{Call: call}
+}
+
+// MockSubnetServiceUpdateCall wrap *gomock.Call
+type MockSubnetServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockSubnetServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockSubnetServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockSubnetServiceUpdateCall) Do(f func(context.Context, *v10.UpdateSubnetRequest, ...grpc.CallOption) (operations.Operation, error)) *MockSubnetServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockSubnetServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateSubnetRequest, ...grpc.CallOption) (operations.Operation, error)) *MockSubnetServiceUpdateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

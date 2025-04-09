@@ -11,6 +11,9 @@ import (
 // func (x *GetClusterRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GetClusterRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *GetClusterForBackupRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *GetClusterForBackupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ListClustersRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListClustersRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 

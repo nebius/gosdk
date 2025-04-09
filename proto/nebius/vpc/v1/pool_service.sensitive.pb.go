@@ -17,5 +17,11 @@ package v1
 // func (x *ListPoolsResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListPoolsResponse) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *CreatePoolRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreatePoolRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *UpdatePoolRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *UpdatePoolRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DeletePoolRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DeletePoolRequest) LogValue() slog.Value // is not generated as no sensitive fields found

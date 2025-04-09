@@ -16,3 +16,12 @@ package v1
 
 // func (x *ListSubnetsResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListSubnetsResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *CreateSubnetRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreateSubnetRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateSubnetRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateSubnetRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DeleteSubnetRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DeleteSubnetRequest) LogValue() slog.Value // is not generated as no sensitive fields found

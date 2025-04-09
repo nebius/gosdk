@@ -13,3 +13,15 @@ package v1
 
 // func (x *ListNetworksResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListNetworksResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *CreateNetworkRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreateNetworkRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *CreateDefaultNetworkRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreateDefaultNetworkRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateNetworkRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateNetworkRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DeleteNetworkRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DeleteNetworkRequest) LogValue() slog.Value // is not generated as no sensitive fields found

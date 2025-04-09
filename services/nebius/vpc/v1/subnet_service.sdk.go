@@ -7,6 +7,9 @@ import (
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
+	operations "github.com/nebius/gosdk/operations"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
+	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/vpc/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
@@ -24,6 +27,11 @@ type SubnetService interface {
 	List(context.Context, *v1.ListSubnetsRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)
 	Filter(context.Context, *v1.ListSubnetsRequest, ...grpc.CallOption) iter.Seq2[*v1.Subnet, error]
 	ListByNetwork(context.Context, *v1.ListSubnetsByNetworkRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)
+	Create(context.Context, *v1.CreateSubnetRequest, ...grpc.CallOption) (operations.Operation, error)
+	Update(context.Context, *v1.UpdateSubnetRequest, ...grpc.CallOption) (operations.Operation, error)
+	Delete(context.Context, *v1.DeleteSubnetRequest, ...grpc.CallOption) (operations.Operation, error)
+	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
+	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
 
 type subnetService struct {
@@ -107,4 +115,85 @@ func (s subnetService) ListByNetwork(ctx context.Context, request *v1.ListSubnet
 		return nil, err
 	}
 	return v1.NewSubnetServiceClient(con).ListByNetwork(ctx, request, opts...)
+}
+
+func (s subnetService) Create(ctx context.Context, request *v1.CreateSubnetRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewSubnetServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s subnetService) Update(ctx context.Context, request *v1.UpdateSubnetRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewSubnetServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s subnetService) Delete(ctx context.Context, request *v1.DeleteSubnetRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewSubnetServiceClient(con).Delete(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s subnetService) GetOperation(ctx context.Context, request *v11.GetOperationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	client := v11.NewOperationServiceClient(con)
+	op, err := client.Get(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, client)
+}
+
+func (s subnetService) ListOperations(ctx context.Context, request *v11.ListOperationsRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v11.NewOperationServiceClient(con).List(ctx, request, opts...)
 }
