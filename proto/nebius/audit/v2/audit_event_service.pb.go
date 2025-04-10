@@ -33,12 +33,13 @@ type ListAuditEventRequest struct {
 	End       *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=end,proto3" json:"end,omitempty"`
 	PageToken string                 `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Example:
-	// service.name = 'iam' AND resource.hierarchy.id:'container-e0t'
+	// service.name = 'iam' AND resource.hierarchy.id:'container-e0t' AND regex(resource.metadata.name, '^.*test.*$')
 	//
 	// Supported filters:
 	// "=" - equals
 	// "!=" - not equals
 	// ":" - contains
+	// regex - regular expression
 	//
 	// Fields that can be used for filtering:
 	// action
@@ -52,6 +53,8 @@ type ListAuditEventRequest struct {
 	// resource.metadata.id
 	// resource.metadata.name
 	// resource.metadata.type
+	// service.name
+	// type
 	Filter        string `protobuf:"bytes,6,opt,name=filter,proto3" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
