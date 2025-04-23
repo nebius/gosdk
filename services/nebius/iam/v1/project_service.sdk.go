@@ -7,6 +7,9 @@ import (
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
+	operations "github.com/nebius/gosdk/operations"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
+	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
@@ -23,10 +26,14 @@ func (s Services) Project() ProjectService {
 const ProjectServiceID conn.ServiceID = "nebius.iam.v1.ProjectService"
 
 type ProjectService interface {
+	Create(context.Context, *v1.CreateProjectRequest, ...grpc.CallOption) (operations.Operation, error)
 	Get(context.Context, *v1.GetProjectRequest, ...grpc.CallOption) (*v1.Container, error)
 	GetByName(context.Context, *v1.GetProjectByNameRequest, ...grpc.CallOption) (*v1.Container, error)
 	List(context.Context, *v1.ListProjectsRequest, ...grpc.CallOption) (*v1.ListProjectsResponse, error)
 	Filter(context.Context, *v1.ListProjectsRequest, ...grpc.CallOption) iter.Seq2[*v1.Container, error]
+	Update(context.Context, *v1.UpdateProjectRequest, ...grpc.CallOption) (operations.Operation, error)
+	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
+	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
 
 type projectService struct {
@@ -37,6 +44,22 @@ func NewProjectService(sdk iface.SDK) ProjectService {
 	return projectService{
 		sdk: sdk,
 	}
+}
+
+func (s projectService) Create(ctx context.Context, request *v1.CreateProjectRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewProjectServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
 func (s projectService) Get(ctx context.Context, request *v1.GetProjectRequest, opts ...grpc.CallOption) (*v1.Container, error) {
@@ -98,4 +121,53 @@ func (s projectService) Filter(ctx context.Context, request *v1.ListProjectsRequ
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s projectService) Update(ctx context.Context, request *v1.UpdateProjectRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewProjectServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s projectService) GetOperation(ctx context.Context, request *v11.GetOperationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	client := v11.NewOperationServiceClient(con)
+	op, err := client.Get(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, client)
+}
+
+func (s projectService) ListOperations(ctx context.Context, request *v11.ListOperationsRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v11.NewOperationServiceClient(con).List(ctx, request, opts...)
 }
