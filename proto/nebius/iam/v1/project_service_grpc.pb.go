@@ -8,6 +8,7 @@ package v1
 
 import (
 	context "context"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -19,18 +20,22 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	ProjectService_Create_FullMethodName    = "/nebius.iam.v1.ProjectService/Create"
 	ProjectService_Get_FullMethodName       = "/nebius.iam.v1.ProjectService/Get"
 	ProjectService_GetByName_FullMethodName = "/nebius.iam.v1.ProjectService/GetByName"
 	ProjectService_List_FullMethodName      = "/nebius.iam.v1.ProjectService/List"
+	ProjectService_Update_FullMethodName    = "/nebius.iam.v1.ProjectService/Update"
 )
 
 // ProjectServiceClient is the client API for ProjectService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectServiceClient interface {
+	Create(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Get(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*Container, error)
 	GetByName(ctx context.Context, in *GetProjectByNameRequest, opts ...grpc.CallOption) (*Container, error)
 	List(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error)
+	Update(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type projectServiceClient struct {
@@ -39,6 +44,15 @@ type projectServiceClient struct {
 
 func NewProjectServiceClient(cc grpc.ClientConnInterface) ProjectServiceClient {
 	return &projectServiceClient{cc}
+}
+
+func (c *projectServiceClient) Create(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, ProjectService_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *projectServiceClient) Get(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*Container, error) {
@@ -68,19 +82,33 @@ func (c *projectServiceClient) List(ctx context.Context, in *ListProjectsRequest
 	return out, nil
 }
 
+func (c *projectServiceClient) Update(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, ProjectService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectServiceServer is the server API for ProjectService service.
 // All implementations should embed UnimplementedProjectServiceServer
 // for forward compatibility
 type ProjectServiceServer interface {
+	Create(context.Context, *CreateProjectRequest) (*v1.Operation, error)
 	Get(context.Context, *GetProjectRequest) (*Container, error)
 	GetByName(context.Context, *GetProjectByNameRequest) (*Container, error)
 	List(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error)
+	Update(context.Context, *UpdateProjectRequest) (*v1.Operation, error)
 }
 
 // UnimplementedProjectServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedProjectServiceServer struct {
 }
 
+func (UnimplementedProjectServiceServer) Create(context.Context, *CreateProjectRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
 func (UnimplementedProjectServiceServer) Get(context.Context, *GetProjectRequest) (*Container, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
@@ -89,6 +117,9 @@ func (UnimplementedProjectServiceServer) GetByName(context.Context, *GetProjectB
 }
 func (UnimplementedProjectServiceServer) List(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedProjectServiceServer) Update(context.Context, *UpdateProjectRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 
 // UnsafeProjectServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -100,6 +131,24 @@ type UnsafeProjectServiceServer interface {
 
 func RegisterProjectServiceServer(s grpc.ServiceRegistrar, srv ProjectServiceServer) {
 	s.RegisterService(&ProjectService_ServiceDesc, srv)
+}
+
+func _ProjectService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).Create(ctx, req.(*CreateProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ProjectService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -156,6 +205,24 @@ func _ProjectService_List_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProjectService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).Update(ctx, req.(*UpdateProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProjectService_ServiceDesc is the grpc.ServiceDesc for ProjectService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -163,6 +230,10 @@ var ProjectService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "nebius.iam.v1.ProjectService",
 	HandlerType: (*ProjectServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Create",
+			Handler:    _ProjectService_Create_Handler,
+		},
 		{
 			MethodName: "Get",
 			Handler:    _ProjectService_Get_Handler,
@@ -174,6 +245,10 @@ var ProjectService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _ProjectService_List_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _ProjectService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
