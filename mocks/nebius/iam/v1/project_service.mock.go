@@ -88,6 +88,50 @@ func (c *MockProjectServiceCreateCall) DoAndReturn(f func(context.Context, *v10.
 	return c
 }
 
+// Delete mocks base method.
+func (m *MockProjectService) Delete(arg0 context.Context, arg1 *v10.DeleteProjectRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockProjectServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockProjectServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockProjectService)(nil).Delete), varargs...)
+	return &MockProjectServiceDeleteCall{Call: call}
+}
+
+// MockProjectServiceDeleteCall wrap *gomock.Call
+type MockProjectServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockProjectServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockProjectServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockProjectServiceDeleteCall) Do(f func(context.Context, *v10.DeleteProjectRequest, ...grpc.CallOption) (operations.Operation, error)) *MockProjectServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockProjectServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeleteProjectRequest, ...grpc.CallOption) (operations.Operation, error)) *MockProjectServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Filter mocks base method.
 func (m *MockProjectService) Filter(arg0 context.Context, arg1 *v10.ListProjectsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v10.Container, error] {
 	m.ctrl.T.Helper()
@@ -347,6 +391,50 @@ func (c *MockProjectServiceListOperationsCall) Do(f func(context.Context, *v1.Li
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockProjectServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockProjectServiceListOperationsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Undelete mocks base method.
+func (m *MockProjectService) Undelete(arg0 context.Context, arg1 *v10.UndeleteProjectRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Undelete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Undelete indicates an expected call of Undelete.
+func (mr *MockProjectServiceMockRecorder) Undelete(arg0, arg1 any, arg2 ...any) *MockProjectServiceUndeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Undelete", reflect.TypeOf((*MockProjectService)(nil).Undelete), varargs...)
+	return &MockProjectServiceUndeleteCall{Call: call}
+}
+
+// MockProjectServiceUndeleteCall wrap *gomock.Call
+type MockProjectServiceUndeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockProjectServiceUndeleteCall) Return(arg0 operations.Operation, arg1 error) *MockProjectServiceUndeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockProjectServiceUndeleteCall) Do(f func(context.Context, *v10.UndeleteProjectRequest, ...grpc.CallOption) (operations.Operation, error)) *MockProjectServiceUndeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockProjectServiceUndeleteCall) DoAndReturn(f func(context.Context, *v10.UndeleteProjectRequest, ...grpc.CallOption) (operations.Operation, error)) *MockProjectServiceUndeleteCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

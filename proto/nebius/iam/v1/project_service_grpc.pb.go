@@ -25,6 +25,8 @@ const (
 	ProjectService_GetByName_FullMethodName = "/nebius.iam.v1.ProjectService/GetByName"
 	ProjectService_List_FullMethodName      = "/nebius.iam.v1.ProjectService/List"
 	ProjectService_Update_FullMethodName    = "/nebius.iam.v1.ProjectService/Update"
+	ProjectService_Delete_FullMethodName    = "/nebius.iam.v1.ProjectService/Delete"
+	ProjectService_Undelete_FullMethodName  = "/nebius.iam.v1.ProjectService/Undelete"
 )
 
 // ProjectServiceClient is the client API for ProjectService service.
@@ -36,6 +38,8 @@ type ProjectServiceClient interface {
 	GetByName(ctx context.Context, in *GetProjectByNameRequest, opts ...grpc.CallOption) (*Container, error)
 	List(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error)
 	Update(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	Delete(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	Undelete(ctx context.Context, in *UndeleteProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type projectServiceClient struct {
@@ -91,6 +95,24 @@ func (c *projectServiceClient) Update(ctx context.Context, in *UpdateProjectRequ
 	return out, nil
 }
 
+func (c *projectServiceClient) Delete(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, ProjectService_Delete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectServiceClient) Undelete(ctx context.Context, in *UndeleteProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, ProjectService_Undelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectServiceServer is the server API for ProjectService service.
 // All implementations should embed UnimplementedProjectServiceServer
 // for forward compatibility
@@ -100,6 +122,8 @@ type ProjectServiceServer interface {
 	GetByName(context.Context, *GetProjectByNameRequest) (*Container, error)
 	List(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error)
 	Update(context.Context, *UpdateProjectRequest) (*v1.Operation, error)
+	Delete(context.Context, *DeleteProjectRequest) (*v1.Operation, error)
+	Undelete(context.Context, *UndeleteProjectRequest) (*v1.Operation, error)
 }
 
 // UnimplementedProjectServiceServer should be embedded to have forward compatible implementations.
@@ -120,6 +144,12 @@ func (UnimplementedProjectServiceServer) List(context.Context, *ListProjectsRequ
 }
 func (UnimplementedProjectServiceServer) Update(context.Context, *UpdateProjectRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedProjectServiceServer) Delete(context.Context, *DeleteProjectRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedProjectServiceServer) Undelete(context.Context, *UndeleteProjectRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Undelete not implemented")
 }
 
 // UnsafeProjectServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -223,6 +253,42 @@ func _ProjectService_Update_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProjectService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).Delete(ctx, req.(*DeleteProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectService_Undelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UndeleteProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).Undelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectService_Undelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).Undelete(ctx, req.(*UndeleteProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProjectService_ServiceDesc is the grpc.ServiceDesc for ProjectService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -249,6 +315,14 @@ var ProjectService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _ProjectService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _ProjectService_Delete_Handler,
+		},
+		{
+			MethodName: "Undelete",
+			Handler:    _ProjectService_Undelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

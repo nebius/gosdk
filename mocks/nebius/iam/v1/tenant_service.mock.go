@@ -14,7 +14,9 @@ import (
 	reflect "reflect"
 
 	iter "github.com/nebius/gosdk/iter"
-	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
+	operations "github.com/nebius/gosdk/operations"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
+	v10 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"
 )
@@ -43,14 +45,14 @@ func (m *MockTenantService) EXPECT() *MockTenantServiceMockRecorder {
 }
 
 // Filter mocks base method.
-func (m *MockTenantService) Filter(arg0 context.Context, arg1 *v1.ListTenantsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v1.Container, error] {
+func (m *MockTenantService) Filter(arg0 context.Context, arg1 *v10.ListTenantsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v10.Container, error] {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Filter", varargs...)
-	ret0, _ := ret[0].(iter.Seq2[*v1.Container, error])
+	ret0, _ := ret[0].(iter.Seq2[*v10.Container, error])
 	return ret0
 }
 
@@ -68,32 +70,32 @@ type MockTenantServiceFilterCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTenantServiceFilterCall) Return(arg0 iter.Seq2[*v1.Container, error]) *MockTenantServiceFilterCall {
+func (c *MockTenantServiceFilterCall) Return(arg0 iter.Seq2[*v10.Container, error]) *MockTenantServiceFilterCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTenantServiceFilterCall) Do(f func(context.Context, *v1.ListTenantsRequest, ...grpc.CallOption) iter.Seq2[*v1.Container, error]) *MockTenantServiceFilterCall {
+func (c *MockTenantServiceFilterCall) Do(f func(context.Context, *v10.ListTenantsRequest, ...grpc.CallOption) iter.Seq2[*v10.Container, error]) *MockTenantServiceFilterCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTenantServiceFilterCall) DoAndReturn(f func(context.Context, *v1.ListTenantsRequest, ...grpc.CallOption) iter.Seq2[*v1.Container, error]) *MockTenantServiceFilterCall {
+func (c *MockTenantServiceFilterCall) DoAndReturn(f func(context.Context, *v10.ListTenantsRequest, ...grpc.CallOption) iter.Seq2[*v10.Container, error]) *MockTenantServiceFilterCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // Get mocks base method.
-func (m *MockTenantService) Get(arg0 context.Context, arg1 *v1.GetTenantRequest, arg2 ...grpc.CallOption) (*v1.Container, error) {
+func (m *MockTenantService) Get(arg0 context.Context, arg1 *v10.GetTenantRequest, arg2 ...grpc.CallOption) (*v10.Container, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Get", varargs...)
-	ret0, _ := ret[0].(*v1.Container)
+	ret0, _ := ret[0].(*v10.Container)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -112,32 +114,76 @@ type MockTenantServiceGetCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTenantServiceGetCall) Return(arg0 *v1.Container, arg1 error) *MockTenantServiceGetCall {
+func (c *MockTenantServiceGetCall) Return(arg0 *v10.Container, arg1 error) *MockTenantServiceGetCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTenantServiceGetCall) Do(f func(context.Context, *v1.GetTenantRequest, ...grpc.CallOption) (*v1.Container, error)) *MockTenantServiceGetCall {
+func (c *MockTenantServiceGetCall) Do(f func(context.Context, *v10.GetTenantRequest, ...grpc.CallOption) (*v10.Container, error)) *MockTenantServiceGetCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTenantServiceGetCall) DoAndReturn(f func(context.Context, *v1.GetTenantRequest, ...grpc.CallOption) (*v1.Container, error)) *MockTenantServiceGetCall {
+func (c *MockTenantServiceGetCall) DoAndReturn(f func(context.Context, *v10.GetTenantRequest, ...grpc.CallOption) (*v10.Container, error)) *MockTenantServiceGetCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// GetOperation mocks base method.
+func (m *MockTenantService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockTenantServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockTenantServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockTenantService)(nil).GetOperation), varargs...)
+	return &MockTenantServiceGetOperationCall{Call: call}
+}
+
+// MockTenantServiceGetOperationCall wrap *gomock.Call
+type MockTenantServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockTenantServiceGetOperationCall) Return(arg0 operations.Operation, arg1 error) *MockTenantServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockTenantServiceGetOperationCall) Do(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockTenantServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockTenantServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockTenantServiceGetOperationCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // List mocks base method.
-func (m *MockTenantService) List(arg0 context.Context, arg1 *v1.ListTenantsRequest, arg2 ...grpc.CallOption) (*v1.ListTenantsResponse, error) {
+func (m *MockTenantService) List(arg0 context.Context, arg1 *v10.ListTenantsRequest, arg2 ...grpc.CallOption) (*v10.ListTenantsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].(*v1.ListTenantsResponse)
+	ret0, _ := ret[0].(*v10.ListTenantsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,19 +202,107 @@ type MockTenantServiceListCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockTenantServiceListCall) Return(arg0 *v1.ListTenantsResponse, arg1 error) *MockTenantServiceListCall {
+func (c *MockTenantServiceListCall) Return(arg0 *v10.ListTenantsResponse, arg1 error) *MockTenantServiceListCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockTenantServiceListCall) Do(f func(context.Context, *v1.ListTenantsRequest, ...grpc.CallOption) (*v1.ListTenantsResponse, error)) *MockTenantServiceListCall {
+func (c *MockTenantServiceListCall) Do(f func(context.Context, *v10.ListTenantsRequest, ...grpc.CallOption) (*v10.ListTenantsResponse, error)) *MockTenantServiceListCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockTenantServiceListCall) DoAndReturn(f func(context.Context, *v1.ListTenantsRequest, ...grpc.CallOption) (*v1.ListTenantsResponse, error)) *MockTenantServiceListCall {
+func (c *MockTenantServiceListCall) DoAndReturn(f func(context.Context, *v10.ListTenantsRequest, ...grpc.CallOption) (*v10.ListTenantsResponse, error)) *MockTenantServiceListCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockTenantService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockTenantServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockTenantServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockTenantService)(nil).ListOperations), varargs...)
+	return &MockTenantServiceListOperationsCall{Call: call}
+}
+
+// MockTenantServiceListOperationsCall wrap *gomock.Call
+type MockTenantServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockTenantServiceListOperationsCall) Return(arg0 *v1.ListOperationsResponse, arg1 error) *MockTenantServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockTenantServiceListOperationsCall) Do(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockTenantServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockTenantServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockTenantServiceListOperationsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Update mocks base method.
+func (m *MockTenantService) Update(arg0 context.Context, arg1 *v10.UpdateTenantRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockTenantServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockTenantServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockTenantService)(nil).Update), varargs...)
+	return &MockTenantServiceUpdateCall{Call: call}
+}
+
+// MockTenantServiceUpdateCall wrap *gomock.Call
+type MockTenantServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockTenantServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockTenantServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockTenantServiceUpdateCall) Do(f func(context.Context, *v10.UpdateTenantRequest, ...grpc.CallOption) (operations.Operation, error)) *MockTenantServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockTenantServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateTenantRequest, ...grpc.CallOption) (operations.Operation, error)) *MockTenantServiceUpdateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
