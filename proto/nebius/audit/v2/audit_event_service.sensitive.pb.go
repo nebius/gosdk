@@ -2,8 +2,55 @@
 
 package v2
 
-// func (x *ListAuditEventRequest) Sanitize()            // is not generated as no sensitive fields found
-// func (x *ListAuditEventRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+import (
+	proto "google.golang.org/protobuf/proto"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	slog "log/slog"
+)
+
+// Sanitize mutates [ListAuditEventRequest] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *ListAuditEventRequest) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.Filter = "**HIDDEN**"
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ListAuditEventRequest].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *ListAuditEventRequest
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [ListAuditEventRequest], use the following code:
+//
+//	var original *ListAuditEventRequest
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*ListAuditEventRequest)
+func (x *ListAuditEventRequest) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*ListAuditEventRequest) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperListAuditEventRequest)(c))
+}
+
+// wrapperListAuditEventRequest is used to return [ListAuditEventRequest] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperListAuditEventRequest ListAuditEventRequest
+
+func (w *wrapperListAuditEventRequest) String() string {
+	return (*ListAuditEventRequest)(w).String()
+}
+
+func (*wrapperListAuditEventRequest) ProtoMessage() {}
+
+func (w *wrapperListAuditEventRequest) ProtoReflect() protoreflect.Message {
+	return (*ListAuditEventRequest)(w).ProtoReflect()
+}
 
 // func (x *ListAuditEventResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListAuditEventResponse) LogValue() slog.Value // is not generated as no sensitive fields found

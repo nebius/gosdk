@@ -28,8 +28,9 @@ type NetworkInterfaceSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Subnet ID
 	SubnetId string `protobuf:"bytes,1,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
-	// Name for interface.
-	// Must be unique within instance's network interfaces
+	// Interface name
+	// Value of this field configures the name of the network interface inside VM's OS.
+	// Longer values will persist in the specification but will be truncated to 15 symbols before being passed to VM configuration.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// Private IPv4 address associated with the interface.
 	IpAddress *IPAddress `protobuf:"bytes,3,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`

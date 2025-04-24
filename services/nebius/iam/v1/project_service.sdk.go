@@ -32,6 +32,8 @@ type ProjectService interface {
 	List(context.Context, *v1.ListProjectsRequest, ...grpc.CallOption) (*v1.ListProjectsResponse, error)
 	Filter(context.Context, *v1.ListProjectsRequest, ...grpc.CallOption) iter.Seq2[*v1.Container, error]
 	Update(context.Context, *v1.UpdateProjectRequest, ...grpc.CallOption) (operations.Operation, error)
+	Delete(context.Context, *v1.DeleteProjectRequest, ...grpc.CallOption) (operations.Operation, error)
+	Undelete(context.Context, *v1.UndeleteProjectRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
@@ -137,6 +139,38 @@ func (s projectService) Update(ctx context.Context, request *v1.UpdateProjectReq
 		return nil, err
 	}
 	op, err := v1.NewProjectServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s projectService) Delete(ctx context.Context, request *v1.DeleteProjectRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewProjectServiceClient(con).Delete(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s projectService) Undelete(ctx context.Context, request *v1.UndeleteProjectRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewProjectServiceClient(con).Undelete(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}
