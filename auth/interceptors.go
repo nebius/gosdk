@@ -9,6 +9,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
 	"github.com/nebius/gosdk/serviceerror"
@@ -54,9 +55,9 @@ type Error struct {
 	Cause error
 }
 
-func newError(err error) *Error {
+func newError(err error, md *metadata.MD) *Error {
 	return &Error{
-		Cause: serviceerror.FromError(err),
+		Cause: serviceerror.FromRPCError(err, md),
 	}
 }
 
@@ -77,9 +78,11 @@ func UnaryClientInterceptor(
 		invoker grpc.UnaryInvoker,
 		opts ...grpc.CallOption,
 	) error {
+		md := metadata.MD{}
+		opts = append(opts, grpc.Header(&md))
 		auth, err := selectAuth(ctx, logger, auths, explicit, method, opts)
 		if err != nil {
-			return newError(err)
+			return newError(err, &md)
 		}
 
 		if auth == nil {
@@ -88,7 +91,7 @@ func UnaryClientInterceptor(
 
 		ctxAuth, err := auth.Auth(ctx)
 		if err != nil {
-			return newError(fmt.Errorf("get auth data on the client: %w", err))
+			return newError(fmt.Errorf("get auth data on the client: %w", err), &md)
 		}
 
 		err = invoker(ctxAuth, method, req, reply, cc, opts...)
@@ -100,12 +103,12 @@ func UnaryClientInterceptor(
 				return errX
 			}
 			if errX != nil {
-				return newError(fmt.Errorf("handle error: %w", errX))
+				return newError(fmt.Errorf("handle error: %w", errX), &md)
 			}
 
 			newCtxAuth, errX := auth.Auth(ctx)
 			if errX != nil {
-				return newError(fmt.Errorf("get auth data on the client (second attempt): %w", errX))
+				return newError(fmt.Errorf("get auth data on the client (second attempt): %w", errX), &md)
 			}
 
 			logger.InfoContext(
@@ -135,9 +138,11 @@ func StreamClientInterceptor(
 		streamer grpc.Streamer,
 		opts ...grpc.CallOption,
 	) (grpc.ClientStream, error) {
+		md := metadata.MD{}
+		opts = append(opts, grpc.Header(&md))
 		auth, err := selectAuth(ctx, logger, auths, explicit, method, opts)
 		if err != nil {
-			return nil, newError(err)
+			return nil, newError(err, &md)
 		}
 
 		if auth == nil {
@@ -146,7 +151,7 @@ func StreamClientInterceptor(
 
 		ctxAuth, err := auth.Auth(ctx)
 		if err != nil {
-			return nil, newError(fmt.Errorf("get auth data on the client: %w", err))
+			return nil, newError(fmt.Errorf("get auth data on the client: %w", err), &md)
 		}
 
 		stream, err := streamer(ctxAuth, desc, cc, method, opts...)
@@ -158,12 +163,12 @@ func StreamClientInterceptor(
 				return nil, errX
 			}
 			if errX != nil {
-				return nil, newError(fmt.Errorf("handle error: %w", errX))
+				return nil, newError(fmt.Errorf("handle error: %w", errX), &md)
 			}
 
 			newCtxAuth, errX := auth.Auth(ctx)
 			if errX != nil {
-				return nil, newError(fmt.Errorf("get auth data on the client (second attempt): %w", errX))
+				return nil, newError(fmt.Errorf("get auth data on the client (second attempt): %w", errX), &md)
 			}
 
 			logger.InfoContext(
