@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func UnaryClientInterceptor(
@@ -14,8 +15,10 @@ func UnaryClientInterceptor(
 	invoker grpc.UnaryInvoker,
 	opts ...grpc.CallOption,
 ) error {
+	md := metadata.MD{}
+	opts = append(opts, grpc.Header(&md))
 	err := invoker(ctx, method, req, reply, cc, opts...)
-	return FromError(err)
+	return FromRPCError(err, &md)
 }
 
 func StreamClientInterceptor(
@@ -26,21 +29,27 @@ func StreamClientInterceptor(
 	streamer grpc.Streamer,
 	opts ...grpc.CallOption,
 ) (grpc.ClientStream, error) {
+	md := metadata.MD{}
+	opts = append(opts, grpc.Header(&md))
 	stream, err := streamer(ctx, desc, cc, method, opts...)
 	if err != nil {
-		return nil, FromError(err)
+		return nil, FromRPCError(err, &md)
 	}
-	return wrappedStream{ClientStream: stream}, nil
+	return wrappedStream{
+		md:           &md,
+		ClientStream: stream,
+	}, nil
 }
 
 type wrappedStream struct {
 	grpc.ClientStream
+	md *metadata.MD
 }
 
 func (w wrappedStream) SendMsg(m any) error {
-	return FromError(w.ClientStream.SendMsg(m))
+	return FromRPCError(w.ClientStream.SendMsg(m), w.md)
 }
 
 func (w wrappedStream) RecvMsg(m any) error {
-	return FromError(w.ClientStream.RecvMsg(m))
+	return FromRPCError(w.ClientStream.RecvMsg(m), w.md)
 }

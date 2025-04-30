@@ -5,14 +5,17 @@ import (
 	"fmt"
 	"strings"
 
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/anypb"
 )
 
 // Error is a wrapper returned by gRPC services if an original error contains [Detail].
+// It also contains request ID if it is present.
 type Error struct {
-	Wrapped error
-	Details []Detail
+	Wrapped   error
+	Details   []Detail
+	RequestID string
 }
 
 func collectServiceErrors(details []*anypb.Any) []Detail {
@@ -53,12 +56,54 @@ func FromError(err error, extraDetails ...*anypb.Any) error {
 	}
 }
 
+const (
+	requestIDKey = "X-Request-ID"
+)
+
+// FromRPCError converts wraps an error with [Error] if necessary.
+// It also extracts request ID from metadata if available.
+// The client should not use this function. It is called by a built-in interceptor.
+func FromRPCError(err error, md *metadata.MD, extraDetails ...*anypb.Any) error {
+	if err == nil {
+		return nil
+	}
+
+	var alreadyError *Error
+	if errors.As(err, &alreadyError) {
+		return err
+	}
+
+	var details []Detail
+	if stat, ok := status.FromError(err); ok {
+		details = collectServiceErrors(stat.Proto().GetDetails())
+	}
+	details = append(details, collectServiceErrors(extraDetails)...)
+
+	ret := &Error{
+		Wrapped: err,
+		Details: details,
+	}
+
+	if requestIDs := md.Get(requestIDKey); len(requestIDs) > 0 {
+		ret.RequestID = requestIDs[0]
+	}
+
+	return ret
+}
+
 func (e *Error) Error() string {
-	return e.Wrapped.Error()
+	requestInfo := ""
+	if e.RequestID != "" {
+		requestInfo += fmt.Sprintf(" request = %s", e.RequestID)
+	}
+	return e.Wrapped.Error() + requestInfo
 }
 
 // Cause returns a string with all details.
 func (e *Error) Cause() string {
+	if len(e.Details) == 0 {
+		return ""
+	}
 	errorStrings := make([]string, 0, len(e.Details))
 	for _, se := range e.Details {
 		errorStrings = append(errorStrings, addIndent(se.String(), "  "))
