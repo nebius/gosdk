@@ -381,6 +381,14 @@ var file_nebius_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		Tag:           "varint,1191,rep,packed,name=oneof_behavior,enum=nebius.FieldBehavior",
 		Filename:      "nebius/annotations.proto",
 	},
+	{
+		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
+		ExtensionType: (*DeprecationDetails)(nil),
+		Field:         1194,
+		Name:          "nebius.enum_value_deprecation_details",
+		Tag:           "bytes,1194,opt,name=enum_value_deprecation_details",
+		Filename:      "nebius/annotations.proto",
+	},
 }
 
 // Extension fields to descriptorpb.ServiceOptions.
@@ -491,6 +499,15 @@ var (
 	E_OneofBehavior = &file_nebius_annotations_proto_extTypes[10]
 )
 
+// Extension fields to descriptorpb.EnumValueOptions.
+var (
+	// Contains additional information about the planned deprecation of enum value.
+	// Used along with `[deprecated = true]`.
+	//
+	// optional nebius.DeprecationDetails enum_value_deprecation_details = 1194;
+	E_EnumValueDeprecationDetails = &file_nebius_annotations_proto_extTypes[11]
+)
+
 var File_nebius_annotations_proto protoreflect.FileDescriptor
 
 var file_nebius_annotations_proto_rawDesc = string([]byte{
@@ -594,12 +611,20 @@ var file_nebius_annotations_proto_rawDesc = string([]byte{
 	0x6f, 0x6e, 0x73, 0x18, 0xa7, 0x09, 0x20, 0x03, 0x28, 0x0e, 0x32, 0x15, 0x2e, 0x6e, 0x65, 0x62,
 	0x69, 0x75, 0x73, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x42, 0x65, 0x68, 0x61, 0x76, 0x69, 0x6f,
 	0x72, 0x52, 0x0d, 0x6f, 0x6e, 0x65, 0x6f, 0x66, 0x42, 0x65, 0x68, 0x61, 0x76, 0x69, 0x6f, 0x72,
-	0x42, 0x49, 0x0a, 0x0d, 0x61, 0x69, 0x2e, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2e, 0x70, 0x75,
-	0x62, 0x42, 0x10, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x50, 0x72,
-	0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x24, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
-	0x6d, 0x2f, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2f, 0x67, 0x6f, 0x73, 0x64, 0x6b, 0x2f, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x3a, 0x83, 0x01, 0x0a, 0x1e, 0x65, 0x6e, 0x75, 0x6d, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x5f,
+	0x64, 0x65, 0x70, 0x72, 0x65, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x64, 0x65, 0x74, 0x61,
+	0x69, 0x6c, 0x73, 0x12, 0x21, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6e, 0x75, 0x6d, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x4f,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0xaa, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
+	0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2e, 0x44, 0x65, 0x70, 0x72, 0x65, 0x63, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x52, 0x1b, 0x65, 0x6e, 0x75, 0x6d, 0x56,
+	0x61, 0x6c, 0x75, 0x65, 0x44, 0x65, 0x70, 0x72, 0x65, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x44,
+	0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x42, 0x49, 0x0a, 0x0d, 0x61, 0x69, 0x2e, 0x6e, 0x65, 0x62,
+	0x69, 0x75, 0x73, 0x2e, 0x70, 0x75, 0x62, 0x42, 0x10, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x24, 0x67, 0x69, 0x74,
+	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6e, 0x65, 0x62, 0x69, 0x75, 0x73, 0x2f, 0x67,
+	0x6f, 0x73, 0x64, 0x6b, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x6e, 0x65, 0x62, 0x69, 0x75,
+	0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 })
 
 var (
@@ -617,15 +642,16 @@ func file_nebius_annotations_proto_rawDescGZIP() []byte {
 var file_nebius_annotations_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_nebius_annotations_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_nebius_annotations_proto_goTypes = []any{
-	(ResourceBehavior)(0),               // 0: nebius.ResourceBehavior
-	(FieldBehavior)(0),                  // 1: nebius.FieldBehavior
-	(*RegionRouting)(nil),               // 2: nebius.RegionRouting
-	(*DeprecationDetails)(nil),          // 3: nebius.DeprecationDetails
-	(*descriptorpb.ServiceOptions)(nil), // 4: google.protobuf.ServiceOptions
-	(*descriptorpb.MethodOptions)(nil),  // 5: google.protobuf.MethodOptions
-	(*descriptorpb.MessageOptions)(nil), // 6: google.protobuf.MessageOptions
-	(*descriptorpb.FieldOptions)(nil),   // 7: google.protobuf.FieldOptions
-	(*descriptorpb.OneofOptions)(nil),   // 8: google.protobuf.OneofOptions
+	(ResourceBehavior)(0),                 // 0: nebius.ResourceBehavior
+	(FieldBehavior)(0),                    // 1: nebius.FieldBehavior
+	(*RegionRouting)(nil),                 // 2: nebius.RegionRouting
+	(*DeprecationDetails)(nil),            // 3: nebius.DeprecationDetails
+	(*descriptorpb.ServiceOptions)(nil),   // 4: google.protobuf.ServiceOptions
+	(*descriptorpb.MethodOptions)(nil),    // 5: google.protobuf.MethodOptions
+	(*descriptorpb.MessageOptions)(nil),   // 6: google.protobuf.MessageOptions
+	(*descriptorpb.FieldOptions)(nil),     // 7: google.protobuf.FieldOptions
+	(*descriptorpb.OneofOptions)(nil),     // 8: google.protobuf.OneofOptions
+	(*descriptorpb.EnumValueOptions)(nil), // 9: google.protobuf.EnumValueOptions
 }
 var file_nebius_annotations_proto_depIdxs = []int32{
 	4,  // 0: nebius.api_service_name:extendee -> google.protobuf.ServiceOptions
@@ -639,18 +665,20 @@ var file_nebius_annotations_proto_depIdxs = []int32{
 	7,  // 8: nebius.credentials:extendee -> google.protobuf.FieldOptions
 	7,  // 9: nebius.field_deprecation_details:extendee -> google.protobuf.FieldOptions
 	8,  // 10: nebius.oneof_behavior:extendee -> google.protobuf.OneofOptions
-	3,  // 11: nebius.service_deprecation_details:type_name -> nebius.DeprecationDetails
-	3,  // 12: nebius.method_deprecation_details:type_name -> nebius.DeprecationDetails
-	2,  // 13: nebius.region_routing:type_name -> nebius.RegionRouting
-	0,  // 14: nebius.resource_behavior:type_name -> nebius.ResourceBehavior
-	3,  // 15: nebius.message_deprecation_details:type_name -> nebius.DeprecationDetails
-	1,  // 16: nebius.field_behavior:type_name -> nebius.FieldBehavior
-	3,  // 17: nebius.field_deprecation_details:type_name -> nebius.DeprecationDetails
-	1,  // 18: nebius.oneof_behavior:type_name -> nebius.FieldBehavior
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	11, // [11:19] is the sub-list for extension type_name
-	0,  // [0:11] is the sub-list for extension extendee
+	9,  // 11: nebius.enum_value_deprecation_details:extendee -> google.protobuf.EnumValueOptions
+	3,  // 12: nebius.service_deprecation_details:type_name -> nebius.DeprecationDetails
+	3,  // 13: nebius.method_deprecation_details:type_name -> nebius.DeprecationDetails
+	2,  // 14: nebius.region_routing:type_name -> nebius.RegionRouting
+	0,  // 15: nebius.resource_behavior:type_name -> nebius.ResourceBehavior
+	3,  // 16: nebius.message_deprecation_details:type_name -> nebius.DeprecationDetails
+	1,  // 17: nebius.field_behavior:type_name -> nebius.FieldBehavior
+	3,  // 18: nebius.field_deprecation_details:type_name -> nebius.DeprecationDetails
+	1,  // 19: nebius.oneof_behavior:type_name -> nebius.FieldBehavior
+	3,  // 20: nebius.enum_value_deprecation_details:type_name -> nebius.DeprecationDetails
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	12, // [12:21] is the sub-list for extension type_name
+	0,  // [0:12] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
 }
 
@@ -666,7 +694,7 @@ func file_nebius_annotations_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_annotations_proto_rawDesc), len(file_nebius_annotations_proto_rawDesc)),
 			NumEnums:      2,
 			NumMessages:   2,
-			NumExtensions: 11,
+			NumExtensions: 12,
 			NumServices:   0,
 		},
 		GoTypes:           file_nebius_annotations_proto_goTypes,
