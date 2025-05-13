@@ -7,9 +7,6 @@ import (
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
-	operations "github.com/nebius/gosdk/operations"
-	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
-	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
@@ -29,9 +26,6 @@ type TenantService interface {
 	Get(context.Context, *v1.GetTenantRequest, ...grpc.CallOption) (*v1.Container, error)
 	List(context.Context, *v1.ListTenantsRequest, ...grpc.CallOption) (*v1.ListTenantsResponse, error)
 	Filter(context.Context, *v1.ListTenantsRequest, ...grpc.CallOption) iter.Seq2[*v1.Container, error]
-	Update(context.Context, *v1.UpdateTenantRequest, ...grpc.CallOption) (operations.Operation, error)
-	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
-	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
 
 type tenantService struct {
@@ -91,53 +85,4 @@ func (s tenantService) Filter(ctx context.Context, request *v1.ListTenantsReques
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
-}
-
-func (s tenantService) Update(ctx context.Context, request *v1.UpdateTenantRequest, opts ...grpc.CallOption) (operations.Operation, error) {
-	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
-	if err != nil {
-		return nil, err
-	}
-	address, err := s.sdk.Resolve(ctx, TenantServiceID)
-	if err != nil {
-		return nil, err
-	}
-	con, err := s.sdk.Dial(ctx, address)
-	if err != nil {
-		return nil, err
-	}
-	op, err := v1.NewTenantServiceClient(con).Update(ctx, request, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return operations.New(op, v11.NewOperationServiceClient(con))
-}
-
-func (s tenantService) GetOperation(ctx context.Context, request *v11.GetOperationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
-	address, err := s.sdk.Resolve(ctx, TenantServiceID)
-	if err != nil {
-		return nil, err
-	}
-	con, err := s.sdk.Dial(ctx, address)
-	if err != nil {
-		return nil, err
-	}
-	client := v11.NewOperationServiceClient(con)
-	op, err := client.Get(ctx, request, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return operations.New(op, client)
-}
-
-func (s tenantService) ListOperations(ctx context.Context, request *v11.ListOperationsRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
-	address, err := s.sdk.Resolve(ctx, TenantServiceID)
-	if err != nil {
-		return nil, err
-	}
-	con, err := s.sdk.Dial(ctx, address)
-	if err != nil {
-		return nil, err
-	}
-	return v11.NewOperationServiceClient(con).List(ctx, request, opts...)
 }

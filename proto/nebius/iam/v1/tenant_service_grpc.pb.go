@@ -8,7 +8,6 @@ package v1
 
 import (
 	context "context"
-	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -20,9 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	TenantService_Get_FullMethodName    = "/nebius.iam.v1.TenantService/Get"
-	TenantService_List_FullMethodName   = "/nebius.iam.v1.TenantService/List"
-	TenantService_Update_FullMethodName = "/nebius.iam.v1.TenantService/Update"
+	TenantService_Get_FullMethodName  = "/nebius.iam.v1.TenantService/Get"
+	TenantService_List_FullMethodName = "/nebius.iam.v1.TenantService/List"
 )
 
 // TenantServiceClient is the client API for TenantService service.
@@ -31,7 +29,6 @@ const (
 type TenantServiceClient interface {
 	Get(ctx context.Context, in *GetTenantRequest, opts ...grpc.CallOption) (*Container, error)
 	List(ctx context.Context, in *ListTenantsRequest, opts ...grpc.CallOption) (*ListTenantsResponse, error)
-	Update(ctx context.Context, in *UpdateTenantRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type tenantServiceClient struct {
@@ -60,22 +57,12 @@ func (c *tenantServiceClient) List(ctx context.Context, in *ListTenantsRequest, 
 	return out, nil
 }
 
-func (c *tenantServiceClient) Update(ctx context.Context, in *UpdateTenantRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
-	out := new(v1.Operation)
-	err := c.cc.Invoke(ctx, TenantService_Update_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // TenantServiceServer is the server API for TenantService service.
 // All implementations should embed UnimplementedTenantServiceServer
 // for forward compatibility
 type TenantServiceServer interface {
 	Get(context.Context, *GetTenantRequest) (*Container, error)
 	List(context.Context, *ListTenantsRequest) (*ListTenantsResponse, error)
-	Update(context.Context, *UpdateTenantRequest) (*v1.Operation, error)
 }
 
 // UnimplementedTenantServiceServer should be embedded to have forward compatible implementations.
@@ -87,9 +74,6 @@ func (UnimplementedTenantServiceServer) Get(context.Context, *GetTenantRequest) 
 }
 func (UnimplementedTenantServiceServer) List(context.Context, *ListTenantsRequest) (*ListTenantsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
-}
-func (UnimplementedTenantServiceServer) Update(context.Context, *UpdateTenantRequest) (*v1.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 
 // UnsafeTenantServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -139,24 +123,6 @@ func _TenantService_List_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TenantService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateTenantRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantServiceServer).Update(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantService_Update_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantServiceServer).Update(ctx, req.(*UpdateTenantRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // TenantService_ServiceDesc is the grpc.ServiceDesc for TenantService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -171,10 +137,6 @@ var TenantService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _TenantService_List_Handler,
-		},
-		{
-			MethodName: "Update",
-			Handler:    _TenantService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

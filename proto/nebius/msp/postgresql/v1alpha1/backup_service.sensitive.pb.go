@@ -13,3 +13,6 @@ package v1alpha1
 
 // func (x *ListBackupsResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListBackupsResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *CreateBackupRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreateBackupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
