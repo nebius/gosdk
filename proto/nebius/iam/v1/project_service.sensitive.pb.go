@@ -17,11 +17,5 @@ package v1
 // func (x *UpdateProjectRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *UpdateProjectRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
-// func (x *DeleteProjectRequest) Sanitize()            // is not generated as no sensitive fields found
-// func (x *DeleteProjectRequest) LogValue() slog.Value // is not generated as no sensitive fields found
-
-// func (x *UndeleteProjectRequest) Sanitize()            // is not generated as no sensitive fields found
-// func (x *UndeleteProjectRequest) LogValue() slog.Value // is not generated as no sensitive fields found
-
 // func (x *ListProjectsResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListProjectsResponse) LogValue() slog.Value // is not generated as no sensitive fields found

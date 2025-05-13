@@ -6,6 +6,8 @@ import (
 	context "context"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
+	alphaops "github.com/nebius/gosdk/operations/alphaops"
+	v1alpha11 "github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1"
 	grpc "google.golang.org/grpc"
 )
@@ -24,6 +26,9 @@ type BackupService interface {
 	Get(context.Context, *v1alpha1.GetBackupRequest, ...grpc.CallOption) (*v1alpha1.Backup, error)
 	List(context.Context, *v1alpha1.ListBackupsRequest, ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error)
 	ListByCluster(context.Context, *v1alpha1.ListBackupsByClusterRequest, ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error)
+	Create(context.Context, *v1alpha1.CreateBackupRequest, ...grpc.CallOption) (*alphaops.Operation, error)
+	GetOperation(context.Context, *v1alpha11.GetOperationRequest, ...grpc.CallOption) (*alphaops.Operation, error)
+	ListOperations(context.Context, *v1alpha11.ListOperationsRequest, ...grpc.CallOption) (*v1alpha11.ListOperationsResponse, error)
 }
 
 type backupService struct {
@@ -70,4 +75,49 @@ func (s backupService) ListByCluster(ctx context.Context, request *v1alpha1.List
 		return nil, err
 	}
 	return v1alpha1.NewBackupServiceClient(con).ListByCluster(ctx, request, opts...)
+}
+
+func (s backupService) Create(ctx context.Context, request *v1alpha1.CreateBackupRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, BackupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1alpha1.NewBackupServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
+}
+
+func (s backupService) GetOperation(ctx context.Context, request *v1alpha11.GetOperationRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, BackupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	client := v1alpha11.NewOperationServiceClient(con)
+	op, err := client.Get(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return alphaops.Wrap(op, client)
+}
+
+func (s backupService) ListOperations(ctx context.Context, request *v1alpha11.ListOperationsRequest, opts ...grpc.CallOption) (*v1alpha11.ListOperationsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, BackupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1alpha11.NewOperationServiceClient(con).List(ctx, request, opts...)
 }
