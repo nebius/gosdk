@@ -67,7 +67,7 @@ func NewConventionResolver() ConventionResolver {
 
 func (ConventionResolver) Resolve(_ context.Context, id ServiceID) (Address, error) {
 	parts := strings.Split(string(id), ".")
-	if len(parts) < 3 || parts[0] != "nebius" || !strings.HasSuffix(parts[len(parts)-1], "Service") {
+	if len(parts) < 3 || parts[0] != "nebius" {
 		return "", NewUnknownServiceError(id)
 	}
 	serviceName := parts[1]

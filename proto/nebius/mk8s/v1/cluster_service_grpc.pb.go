@@ -32,11 +32,17 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ClusterServiceClient interface {
+	// Returns a specific mk8s cluster by its unique identifier.
 	Get(ctx context.Context, in *GetClusterRequest, opts ...grpc.CallOption) (*Cluster, error)
+	// Returns a specific mk8s cluster by its unique name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Cluster, error)
+	// Returns a list of all mk8s clusters in the specified project.
 	List(ctx context.Context, in *ListClustersRequest, opts ...grpc.CallOption) (*ListClustersResponse, error)
+	// Creates a new mk8s cluster.
 	Create(ctx context.Context, in *CreateClusterRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Modifies an existing mk8s cluster.
 	Update(ctx context.Context, in *UpdateClusterRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes an mk8s cluster.
 	Delete(ctx context.Context, in *DeleteClusterRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -106,11 +112,17 @@ func (c *clusterServiceClient) Delete(ctx context.Context, in *DeleteClusterRequ
 // All implementations should embed UnimplementedClusterServiceServer
 // for forward compatibility
 type ClusterServiceServer interface {
+	// Returns a specific mk8s cluster by its unique identifier.
 	Get(context.Context, *GetClusterRequest) (*Cluster, error)
+	// Returns a specific mk8s cluster by its unique name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Cluster, error)
+	// Returns a list of all mk8s clusters in the specified project.
 	List(context.Context, *ListClustersRequest) (*ListClustersResponse, error)
+	// Creates a new mk8s cluster.
 	Create(context.Context, *CreateClusterRequest) (*v1.Operation, error)
+	// Modifies an existing mk8s cluster.
 	Update(context.Context, *UpdateClusterRequest) (*v1.Operation, error)
+	// Deletes an mk8s cluster.
 	Delete(context.Context, *DeleteClusterRequest) (*v1.Operation, error)
 }
 
