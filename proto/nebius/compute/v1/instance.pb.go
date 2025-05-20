@@ -306,9 +306,13 @@ type InstanceSpec struct {
 	Filesystems       []*AttachedFilesystemSpec `protobuf:"bytes,7,rep,name=filesystems,proto3" json:"filesystems,omitempty"`
 	CloudInitUserData string                    `protobuf:"bytes,8,opt,name=cloud_init_user_data,json=cloudInitUserData,proto3" json:"cloud_init_user_data,omitempty"`
 	Stopped           bool                      `protobuf:"varint,13,opt,name=stopped,proto3" json:"stopped,omitempty"`
-	RecoveryPolicy    InstanceRecoveryPolicy    `protobuf:"varint,15,opt,name=recovery_policy,json=recoveryPolicy,proto3,enum=nebius.compute.v1.InstanceRecoveryPolicy" json:"recovery_policy,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// Recovery policy defines how the instance will be treated in case of a failure. Common source of failure is a host failure, but it can be any other failure.
+	// Instance undergoing a guest shutdown (poweroff, etc.) will be subject to recovery policy, meaning that it could be restarted and billed accordingly. Stop instance via API or UI to stop it to avoid recovering.
+	// If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.
+	// If set to FAIL, instance will be stopped and not restarted.
+	RecoveryPolicy InstanceRecoveryPolicy `protobuf:"varint,15,opt,name=recovery_policy,json=recoveryPolicy,proto3,enum=nebius.compute.v1.InstanceRecoveryPolicy" json:"recovery_policy,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *InstanceSpec) Reset() {

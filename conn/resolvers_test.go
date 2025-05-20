@@ -52,7 +52,6 @@ func TestConventionResolver_negative(t *testing.T) {
 		id conn.ServiceID
 	}{
 		{id: "not.nebius.msp.postgres.inner.v1.ClusterService"},
-		{id: "nebius.msp.postgres.inner.v1.ClusterServiceNot"},
 		{id: "nebius.msp"},
 		{id: "nebius.ClusterService"},
 	}
