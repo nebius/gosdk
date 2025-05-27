@@ -94,13 +94,33 @@ func FromRPCError(err error, md *metadata.MD, extraDetails ...*anypb.Any) error 
 func (e *Error) Error() string {
 	requestInfo := ""
 	if e.RequestID != "" {
-		requestInfo += fmt.Sprintf(" request = %s", e.RequestID)
+		requestInfo = fmt.Sprintf("request = %s", e.RequestID)
 	}
-	return e.Wrapped.Error() + requestInfo
+	cause := e.cause()
+	wrapped := e.Wrapped.Error()
+
+	if cause == "" && requestInfo == "" {
+		return wrapped
+	}
+
+	sep := " "
+	if cause != "" || strings.Contains(wrapped, "\n") {
+		sep = "\n"
+	}
+
+	withRequestInfo := wrapped
+	if requestInfo != "" {
+		withRequestInfo = wrapped + sep + requestInfo
+	}
+
+	if cause != "" {
+		return withRequestInfo + "\n" + cause
+	}
+
+	return withRequestInfo
 }
 
-// Cause returns a string with all details.
-func (e *Error) Cause() string {
+func (e *Error) cause() string {
 	if len(e.Details) == 0 {
 		return ""
 	}
