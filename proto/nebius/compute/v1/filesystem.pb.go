@@ -194,17 +194,26 @@ func (x *Filesystem) GetStatus() *FilesystemStatus {
 
 type FilesystemSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// Size of the disk. Only one size unit can be specified.
+	// The size must be within the limits for the selected disk type.
+	// For current limits, see https://docs.nebius.com/compute/storage/types#disks-types-comparison
+	//
 	// Types that are valid to be assigned to Size:
 	//
 	//	*FilesystemSpec_SizeBytes
 	//	*FilesystemSpec_SizeKibibytes
 	//	*FilesystemSpec_SizeMebibytes
 	//	*FilesystemSpec_SizeGibibytes
-	Size           isFilesystemSpec_Size         `protobuf_oneof:"size"`
-	BlockSizeBytes int64                         `protobuf:"varint,5,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
-	Type           FilesystemSpec_FilesystemType `protobuf:"varint,6,opt,name=type,proto3,enum=nebius.compute.v1.FilesystemSpec_FilesystemType" json:"type,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	Size isFilesystemSpec_Size `protobuf_oneof:"size"`
+	// Block size in bytes.
+	// The block size must be a power of two between 4096 bytes (4 KiB) and 131072 bytes (128 KiB).
+	// The default value is 4096 bytes (4 KiB).
+	BlockSizeBytes int64 `protobuf:"varint,5,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
+	// The Shared Filesystem type determines its limits and performance characteristics.
+	// For details, see https://docs.nebius.com/compute/storage/types#filesystems-types
+	Type          FilesystemSpec_FilesystemType `protobuf:"varint,6,opt,name=type,proto3,enum=nebius.compute.v1.FilesystemSpec_FilesystemType" json:"type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *FilesystemSpec) Reset() {

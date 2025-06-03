@@ -33,12 +33,20 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GpuClusterServiceClient interface {
+	// Retrieves the specified GPU Cluster by its ID.
 	Get(ctx context.Context, in *GetGpuClusterRequest, opts ...grpc.CallOption) (*GpuCluster, error)
+	// Retrieves the specified GPU Cluster by its parent and name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*GpuCluster, error)
+	// Lists GPU Clusters in the specified parent.
 	List(ctx context.Context, in *ListGpuClustersRequest, opts ...grpc.CallOption) (*ListGpuClustersResponse, error)
+	// Creates a new GPU Cluster.
+	// For details, see https://docs.nebius.com/compute/clusters/gpu#create-cluster
 	Create(ctx context.Context, in *CreateGpuClusterRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Modifies the configuration of an existing GPU Cluster.
 	Update(ctx context.Context, in *UpdateGpuClusterRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a GPU Cluster by its ID.
 	Delete(ctx context.Context, in *DeleteGpuClusterRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(ctx context.Context, in *ListOperationsByParentRequest, opts ...grpc.CallOption) (*v1.ListOperationsResponse, error)
 }
 
@@ -117,12 +125,20 @@ func (c *gpuClusterServiceClient) ListOperationsByParent(ctx context.Context, in
 // All implementations should embed UnimplementedGpuClusterServiceServer
 // for forward compatibility
 type GpuClusterServiceServer interface {
+	// Retrieves the specified GPU Cluster by its ID.
 	Get(context.Context, *GetGpuClusterRequest) (*GpuCluster, error)
+	// Retrieves the specified GPU Cluster by its parent and name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*GpuCluster, error)
+	// Lists GPU Clusters in the specified parent.
 	List(context.Context, *ListGpuClustersRequest) (*ListGpuClustersResponse, error)
+	// Creates a new GPU Cluster.
+	// For details, see https://docs.nebius.com/compute/clusters/gpu#create-cluster
 	Create(context.Context, *CreateGpuClusterRequest) (*v1.Operation, error)
+	// Modifies the configuration of an existing GPU Cluster.
 	Update(context.Context, *UpdateGpuClusterRequest) (*v1.Operation, error)
+	// Deletes a GPU Cluster by its ID.
 	Delete(context.Context, *DeleteGpuClusterRequest) (*v1.Operation, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(context.Context, *ListOperationsByParentRequest) (*v1.ListOperationsResponse, error)
 }
 
