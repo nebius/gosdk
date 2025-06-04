@@ -249,16 +249,28 @@ func (x *Disk) GetStatus() *DiskStatus {
 
 type DiskSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// Size of the disk. The size must be within the limits for the selected disk type.
+	// For current limits, see https://docs.nebius.com/compute/storage/types#disks-types-comparison
+	//
 	// Types that are valid to be assigned to Size:
 	//
 	//	*DiskSpec_SizeBytes
 	//	*DiskSpec_SizeKibibytes
 	//	*DiskSpec_SizeMebibytes
 	//	*DiskSpec_SizeGibibytes
-	Size            isDiskSpec_Size      `protobuf_oneof:"size"`
-	BlockSizeBytes  int64                `protobuf:"varint,5,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
+	Size isDiskSpec_Size `protobuf_oneof:"size"`
+	// Block size in bytes.
+	// The block size must be a power of two between 4096 bytes (4 KiB) and 131072 bytes (128 KiB).
+	// The default value is 4096 bytes (4 KiB).
+	BlockSizeBytes int64 `protobuf:"varint,5,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
+	// The type of disk defines the performance and reliability characteristics of the block device.
+	// For details, see https://docs.nebius.com/compute/storage/types#disks-types
 	Type            DiskSpec_DiskType    `protobuf:"varint,6,opt,name=type,proto3,enum=nebius.compute.v1.DiskSpec_DiskType" json:"type,omitempty"`
 	PlacementPolicy *DiskPlacementPolicy `protobuf:"bytes,7,opt,name=placement_policy,json=placementPolicy,proto3" json:"placement_policy,omitempty"`
+	// Source for disk creation.
+	// Boot disk must be created from an image https://docs.nebius.com/compute/storage/manage#boot
+	// Additional disks can be created as an empty volume https://docs.nebius.com/compute/storage/manage#additional
+	//
 	// Types that are valid to be assigned to Source:
 	//
 	//	*DiskSpec_SourceImageId
