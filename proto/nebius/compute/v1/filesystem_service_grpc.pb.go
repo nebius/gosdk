@@ -33,12 +33,21 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FilesystemServiceClient interface {
+	// Retrieves information about a filesystem by its ID.
 	Get(ctx context.Context, in *GetFilesystemRequest, opts ...grpc.CallOption) (*Filesystem, error)
+	// Retrieves information about a filesystem by its parent and name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Filesystem, error)
+	// Lists all filesystems within a specified parent.
 	List(ctx context.Context, in *ListFilesystemsRequest, opts ...grpc.CallOption) (*ListFilesystemsResponse, error)
+	// Creates a new filesystem with the specified configuration.
+	// For details, see https://docs.nebius.com/compute/storage/manage
 	Create(ctx context.Context, in *CreateFilesystemRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing filesystem with new configuration parameters.
+	// For details, see https://docs.nebius.com/compute/storage/manage#parameters
 	Update(ctx context.Context, in *UpdateFilesystemRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a disk by its ID.
 	Delete(ctx context.Context, in *DeleteFilesystemRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(ctx context.Context, in *ListOperationsByParentRequest, opts ...grpc.CallOption) (*v1.ListOperationsResponse, error)
 }
 
@@ -117,12 +126,21 @@ func (c *filesystemServiceClient) ListOperationsByParent(ctx context.Context, in
 // All implementations should embed UnimplementedFilesystemServiceServer
 // for forward compatibility
 type FilesystemServiceServer interface {
+	// Retrieves information about a filesystem by its ID.
 	Get(context.Context, *GetFilesystemRequest) (*Filesystem, error)
+	// Retrieves information about a filesystem by its parent and name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Filesystem, error)
+	// Lists all filesystems within a specified parent.
 	List(context.Context, *ListFilesystemsRequest) (*ListFilesystemsResponse, error)
+	// Creates a new filesystem with the specified configuration.
+	// For details, see https://docs.nebius.com/compute/storage/manage
 	Create(context.Context, *CreateFilesystemRequest) (*v1.Operation, error)
+	// Updates an existing filesystem with new configuration parameters.
+	// For details, see https://docs.nebius.com/compute/storage/manage#parameters
 	Update(context.Context, *UpdateFilesystemRequest) (*v1.Operation, error)
+	// Deletes a disk by its ID.
 	Delete(context.Context, *DeleteFilesystemRequest) (*v1.Operation, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(context.Context, *ListOperationsByParentRequest) (*v1.ListOperationsResponse, error)
 }
 
