@@ -20,9 +20,10 @@ type ExchangeTokenRequester interface {
 // using the [iampb.TokenExchangeServiceClient.Exchange] method.
 // It relies on an [ExchangeTokenRequester] to generate the request payload for the exchange.
 type ExchangeableBearerTokener struct {
-	creds  ExchangeTokenRequester
-	client iampb.TokenExchangeServiceClient
-	now    func() time.Time
+	creds      ExchangeTokenRequester
+	client     iampb.TokenExchangeServiceClient
+	clientFunc func() (iampb.TokenExchangeServiceClient, error)
+	now        func() time.Time
 }
 
 var _ BearerTokener = (*ExchangeableBearerTokener)(nil)
@@ -41,6 +42,21 @@ func NewExchangeableBearerTokener(
 	}
 }
 
+// NewExchangeableBearerTokenerWithDeferredClient returns a [BearerTokener] that exchanges tokens
+// using the [iampb.TokenExchangeServiceClient.Exchange] method.
+// It relies on an [ExchangeTokenRequester] to generate the request payload for the exchange.
+// The gRPC client is provided via a function, allowing for lazy initialization.
+func NewExchangeableBearerTokenerWithDeferredClient(
+	creds ExchangeTokenRequester,
+	clientFunc func() (iampb.TokenExchangeServiceClient, error),
+) *ExchangeableBearerTokener {
+	return &ExchangeableBearerTokener{
+		creds:      creds,
+		clientFunc: clientFunc,
+		now:        time.Now,
+	}
+}
+
 // SetClient updates the gRPC client.
 //
 // Note: This method is not thread-safe and should be called during initialization.
@@ -49,6 +65,13 @@ func (t *ExchangeableBearerTokener) SetClient(client iampb.TokenExchangeServiceC
 }
 
 func (t *ExchangeableBearerTokener) BearerToken(ctx context.Context) (BearerToken, error) {
+	if t.client == nil && t.clientFunc != nil {
+		client, err := t.clientFunc()
+		if err != nil {
+			return BearerToken{}, fmt.Errorf("get token exchange client: %w", err)
+		}
+		t.client = client
+	}
 	if t.client == nil {
 		return BearerToken{}, errors.New("tokenService client is not defined")
 	}

@@ -8,8 +8,5 @@ package v1alpha1
 // func (x *DiskSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DiskSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
-// func (x *DiskPlacementPolicy) Sanitize()            // is not generated as no sensitive fields found
-// func (x *DiskPlacementPolicy) LogValue() slog.Value // is not generated as no sensitive fields found
-
 // func (x *DiskStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DiskStatus) LogValue() slog.Value // is not generated as no sensitive fields found

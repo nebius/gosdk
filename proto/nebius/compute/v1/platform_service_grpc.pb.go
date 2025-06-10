@@ -28,7 +28,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PlatformServiceClient interface {
+	// Retrieves detailed information about a specific compute platform by its parent and name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Platform, error)
+	// Lists all compute platforms within a specified parent.
 	List(ctx context.Context, in *ListPlatformsRequest, opts ...grpc.CallOption) (*ListPlatformsResponse, error)
 }
 
@@ -62,7 +64,9 @@ func (c *platformServiceClient) List(ctx context.Context, in *ListPlatformsReque
 // All implementations should embed UnimplementedPlatformServiceServer
 // for forward compatibility
 type PlatformServiceServer interface {
+	// Retrieves detailed information about a specific compute platform by its parent and name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Platform, error)
+	// Lists all compute platforms within a specified parent.
 	List(context.Context, *ListPlatformsRequest) (*ListPlatformsResponse, error)
 }
 

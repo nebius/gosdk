@@ -33,12 +33,21 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DiskServiceClient interface {
+	// Retrieves information about a disk by its ID.
 	Get(ctx context.Context, in *GetDiskRequest, opts ...grpc.CallOption) (*Disk, error)
+	// Retrieves information about a disk by its parent and name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Disk, error)
+	// Lists all disks within a specified parent.
 	List(ctx context.Context, in *ListDisksRequest, opts ...grpc.CallOption) (*ListDisksResponse, error)
+	// Creates a new disk with the specified configuration.
+	// For details, see https://docs.nebius.com/compute/storage/manage
 	Create(ctx context.Context, in *CreateDiskRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing disk with new configuration parameters.
+	// For details, see https://docs.nebius.com/compute/storage/manage#parameters
 	Update(ctx context.Context, in *UpdateDiskRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a disk by its ID.
 	Delete(ctx context.Context, in *DeleteDiskRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(ctx context.Context, in *ListOperationsByParentRequest, opts ...grpc.CallOption) (*v1.ListOperationsResponse, error)
 }
 
@@ -117,12 +126,21 @@ func (c *diskServiceClient) ListOperationsByParent(ctx context.Context, in *List
 // All implementations should embed UnimplementedDiskServiceServer
 // for forward compatibility
 type DiskServiceServer interface {
+	// Retrieves information about a disk by its ID.
 	Get(context.Context, *GetDiskRequest) (*Disk, error)
+	// Retrieves information about a disk by its parent and name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Disk, error)
+	// Lists all disks within a specified parent.
 	List(context.Context, *ListDisksRequest) (*ListDisksResponse, error)
+	// Creates a new disk with the specified configuration.
+	// For details, see https://docs.nebius.com/compute/storage/manage
 	Create(context.Context, *CreateDiskRequest) (*v1.Operation, error)
+	// Updates an existing disk with new configuration parameters.
+	// For details, see https://docs.nebius.com/compute/storage/manage#parameters
 	Update(context.Context, *UpdateDiskRequest) (*v1.Operation, error)
+	// Deletes a disk by its ID.
 	Delete(context.Context, *DeleteDiskRequest) (*v1.Operation, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(context.Context, *ListOperationsByParentRequest) (*v1.ListOperationsResponse, error)
 }
 
