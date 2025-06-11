@@ -15,7 +15,7 @@ import (
 // with [BearerToken] caching and automatic background refresh to ensure that token is always valid.
 //
 // Recommended parameters from the IAM team:
-//   - lifetime: 0.9 of token lifespan (90% of the token lifespan)
+//   - lifetime: 90% of token lifespan
 //   - initial retry: 1 second
 //   - max retry: 1 minute
 type CachedServiceTokener struct {
@@ -41,7 +41,7 @@ var _ BearerTokener = (*CachedServiceTokener)(nil)
 // with [BearerToken] caching and automatic background refresh to ensure that token is always valid.
 //
 // Recommended parameters from the IAM team:
-//   - lifetime: 0.9 of token lifespan (90% of the token lifespan)
+//   - lifetime: 90% of token lifespan
 //   - initial retry: 1 second
 //   - max retry: 1 minute
 func NewCachedServiceTokener(
@@ -81,21 +81,7 @@ func NewCachedServiceTokener(
 	}
 }
 
-func (c *CachedServiceTokener) Unwrap() BearerTokener {
-	return c.tokener
-}
 func (c *CachedServiceTokener) Run(ctx context.Context) error { //nolint:gocognit
-	go func() { // run underlying async tokener, if necessary
-		err, _ := RunAsyncTokener(ctx, c.tokener)
-		if err != nil && !errors.Is(err, context.Canceled) {
-			c.logger.ErrorContext(
-				ctx,
-				"background token refresh failed",
-				slog.Any("error", err),
-			)
-		}
-	}()
-
 	for {
 		select {
 		case <-ctx.Done():
@@ -255,10 +241,6 @@ func NewCachedBearerTokener(tokener BearerTokener) *CachedBearerTokener {
 		mu:    sync.RWMutex{},
 		cache: nil,
 	}
-}
-
-func (c *CachedBearerTokener) Unwrap() BearerTokener {
-	return c.tokener
 }
 
 func (c *CachedBearerTokener) BearerToken(ctx context.Context) (BearerToken, error) {
