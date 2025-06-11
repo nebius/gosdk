@@ -31,10 +31,16 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ImageServiceClient interface {
+	// Retrieves detailed information about a specific image by its ID.
 	Get(ctx context.Context, in *GetImageRequest, opts ...grpc.CallOption) (*Image, error)
+	// Retrieves detailed information about a specific image by its parent and name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Image, error)
+	// Retrieves the most recent image from a specified family.
+	// Image families are used to organize related images and ensure easy access to the latest version.
 	GetLatestByFamily(ctx context.Context, in *GetImageLatestByFamilyRequest, opts ...grpc.CallOption) (*Image, error)
+	// Lists all images in a specific parent resource.
 	List(ctx context.Context, in *ListImagesRequest, opts ...grpc.CallOption) (*ListImagesResponse, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(ctx context.Context, in *ListOperationsByParentRequest, opts ...grpc.CallOption) (*v1.ListOperationsResponse, error)
 }
 
@@ -95,10 +101,16 @@ func (c *imageServiceClient) ListOperationsByParent(ctx context.Context, in *Lis
 // All implementations should embed UnimplementedImageServiceServer
 // for forward compatibility
 type ImageServiceServer interface {
+	// Retrieves detailed information about a specific image by its ID.
 	Get(context.Context, *GetImageRequest) (*Image, error)
+	// Retrieves detailed information about a specific image by its parent and name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Image, error)
+	// Retrieves the most recent image from a specified family.
+	// Image families are used to organize related images and ensure easy access to the latest version.
 	GetLatestByFamily(context.Context, *GetImageLatestByFamilyRequest) (*Image, error)
+	// Lists all images in a specific parent resource.
 	List(context.Context, *ListImagesRequest) (*ListImagesResponse, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(context.Context, *ListOperationsByParentRequest) (*v1.ListOperationsResponse, error)
 }
 

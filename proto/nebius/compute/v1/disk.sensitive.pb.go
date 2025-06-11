@@ -11,8 +11,5 @@ package v1
 // func (x *SourceImageFamily) Sanitize()            // is not generated as no sensitive fields found
 // func (x *SourceImageFamily) LogValue() slog.Value // is not generated as no sensitive fields found
 
-// func (x *DiskPlacementPolicy) Sanitize()            // is not generated as no sensitive fields found
-// func (x *DiskPlacementPolicy) LogValue() slog.Value // is not generated as no sensitive fields found
-
 // func (x *DiskStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DiskStatus) LogValue() slog.Value // is not generated as no sensitive fields found

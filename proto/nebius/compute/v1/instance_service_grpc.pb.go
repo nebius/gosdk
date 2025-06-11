@@ -35,14 +35,24 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type InstanceServiceClient interface {
+	// Retrieves detailed information about a specific VM instance by its ID.
 	Get(ctx context.Context, in *GetInstanceRequest, opts ...grpc.CallOption) (*Instance, error)
+	// Retrieves detailed information about a specific VM instance by its parent and name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Instance, error)
+	// Lists all VM instances within a specified parent.
 	List(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
+	// Creates a new VM instance based on the provided specification.
+	// For details, see https://docs.nebius.com/compute/virtual-machines/manage
 	Create(ctx context.Context, in *CreateInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing VM instance with new configuration parameters.
 	Update(ctx context.Context, in *UpdateInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a VM instance by its ID.
 	Delete(ctx context.Context, in *DeleteInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Starts a stopped VM instance.
 	Start(ctx context.Context, in *StartInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Stops a running VM instance.
 	Stop(ctx context.Context, in *StopInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(ctx context.Context, in *ListOperationsByParentRequest, opts ...grpc.CallOption) (*v1.ListOperationsResponse, error)
 }
 
@@ -139,14 +149,24 @@ func (c *instanceServiceClient) ListOperationsByParent(ctx context.Context, in *
 // All implementations should embed UnimplementedInstanceServiceServer
 // for forward compatibility
 type InstanceServiceServer interface {
+	// Retrieves detailed information about a specific VM instance by its ID.
 	Get(context.Context, *GetInstanceRequest) (*Instance, error)
+	// Retrieves detailed information about a specific VM instance by its parent and name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Instance, error)
+	// Lists all VM instances within a specified parent.
 	List(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
+	// Creates a new VM instance based on the provided specification.
+	// For details, see https://docs.nebius.com/compute/virtual-machines/manage
 	Create(context.Context, *CreateInstanceRequest) (*v1.Operation, error)
+	// Updates an existing VM instance with new configuration parameters.
 	Update(context.Context, *UpdateInstanceRequest) (*v1.Operation, error)
+	// Deletes a VM instance by its ID.
 	Delete(context.Context, *DeleteInstanceRequest) (*v1.Operation, error)
+	// Starts a stopped VM instance.
 	Start(context.Context, *StartInstanceRequest) (*v1.Operation, error)
+	// Stops a running VM instance.
 	Stop(context.Context, *StopInstanceRequest) (*v1.Operation, error)
+	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(context.Context, *ListOperationsByParentRequest) (*v1.ListOperationsResponse, error)
 }
 

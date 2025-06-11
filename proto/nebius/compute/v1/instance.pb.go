@@ -296,16 +296,31 @@ func (x *Instance) GetStatus() *InstanceStatus {
 }
 
 type InstanceSpec struct {
-	state             protoimpl.MessageState    `protogen:"open.v1"`
-	ServiceAccountId  string                    `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
-	Resources         *ResourcesSpec            `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
-	GpuCluster        *InstanceGpuClusterSpec   `protobuf:"bytes,3,opt,name=gpu_cluster,json=gpuCluster,proto3" json:"gpu_cluster,omitempty"`
-	NetworkInterfaces []*NetworkInterfaceSpec   `protobuf:"bytes,4,rep,name=network_interfaces,json=networkInterfaces,proto3" json:"network_interfaces,omitempty"`
-	BootDisk          *AttachedDiskSpec         `protobuf:"bytes,5,opt,name=boot_disk,json=bootDisk,proto3" json:"boot_disk,omitempty"`
-	SecondaryDisks    []*AttachedDiskSpec       `protobuf:"bytes,6,rep,name=secondary_disks,json=secondaryDisks,proto3" json:"secondary_disks,omitempty"`
-	Filesystems       []*AttachedFilesystemSpec `protobuf:"bytes,7,rep,name=filesystems,proto3" json:"filesystems,omitempty"`
-	CloudInitUserData string                    `protobuf:"bytes,8,opt,name=cloud_init_user_data,json=cloudInitUserData,proto3" json:"cloud_init_user_data,omitempty"`
-	Stopped           bool                      `protobuf:"varint,13,opt,name=stopped,proto3" json:"stopped,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Unique identifier of the service account associated with this instance.
+	// For details, see https://docs.nebius.dev/en/iam/about-iam/concepts/service-accounts
+	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
+	// Specification of compute resources allocated to the instance.
+	// For details, see https://docs.nebius.com/compute/virtual-machines/types
+	Resources *ResourcesSpec `protobuf:"bytes,2,opt,name=resources,proto3" json:"resources,omitempty"`
+	// If you want to interconnect several instances in a GPU cluster via NVIDIA InfiniBand,
+	// set the ID of an existing GPU cluster.
+	// You can only add the VM to the cluster when creating the VM.
+	// For details, see https://docs.nebius.com/compute/clusters/gpu
+	GpuCluster *InstanceGpuClusterSpec `protobuf:"bytes,3,opt,name=gpu_cluster,json=gpuCluster,proto3" json:"gpu_cluster,omitempty"`
+	// List of network interfaces attached to the instance.
+	NetworkInterfaces []*NetworkInterfaceSpec `protobuf:"bytes,4,rep,name=network_interfaces,json=networkInterfaces,proto3" json:"network_interfaces,omitempty"`
+	// Specified boot disk attached to the instance.
+	BootDisk *AttachedDiskSpec `protobuf:"bytes,5,opt,name=boot_disk,json=bootDisk,proto3" json:"boot_disk,omitempty"`
+	// List of additional data disks attached to the instance beyond the boot disk.
+	SecondaryDisks []*AttachedDiskSpec `protobuf:"bytes,6,rep,name=secondary_disks,json=secondaryDisks,proto3" json:"secondary_disks,omitempty"`
+	// List of Shared Filesystems attached to the instance.
+	Filesystems []*AttachedFilesystemSpec `protobuf:"bytes,7,rep,name=filesystems,proto3" json:"filesystems,omitempty"`
+	// Data in cloud-init format for customizing instance initialization.
+	// For details, see https://docs.nebius.com/compute/virtual-machines/manage#user-data
+	CloudInitUserData string `protobuf:"bytes,8,opt,name=cloud_init_user_data,json=cloudInitUserData,proto3" json:"cloud_init_user_data,omitempty"`
+	// Indicates whether the instance should be stopped.
+	Stopped bool `protobuf:"varint,13,opt,name=stopped,proto3" json:"stopped,omitempty"`
 	// Recovery policy defines how the instance will be treated in case of a failure. Common source of failure is a host failure, but it can be any other failure.
 	// Instance undergoing a guest shutdown (poweroff, etc.) will be subject to recovery policy, meaning that it could be restarted and billed accordingly. Stop instance via API or UI to stop it to avoid recovering.
 	// If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.

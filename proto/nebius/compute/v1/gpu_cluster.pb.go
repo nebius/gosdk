@@ -85,8 +85,10 @@ func (x *GpuCluster) GetStatus() *GpuClusterStatus {
 }
 
 type GpuClusterSpec struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	InfinibandFabric string                 `protobuf:"bytes,1,opt,name=infiniband_fabric,json=infinibandFabric,proto3" json:"infiniband_fabric,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The identifier of the physical InfiniBand fabric to connect GPU instances to.
+	// For details, see https://docs.nebius.com/compute/clusters/gpu#fabrics
+	InfinibandFabric string `protobuf:"bytes,1,opt,name=infiniband_fabric,json=infinibandFabric,proto3" json:"infiniband_fabric,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
