@@ -12,6 +12,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[ScopeServiceID] = "vpc"
+}
+
 func (s Services) Scope() ScopeService {
 	return NewScopeService(s.sdk)
 }

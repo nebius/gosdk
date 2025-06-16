@@ -12,6 +12,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[NetworkServiceID] = "vpc"
+}
+
 func (s Services) Network() NetworkService {
 	return NewNetworkService(s.sdk)
 }

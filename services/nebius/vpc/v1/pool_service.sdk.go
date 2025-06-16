@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[PoolServiceID] = "vpc"
+}
+
 func (s Services) Pool() PoolService {
 	return NewPoolService(s.sdk)
 }
