@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
-	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,9 +14,6 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/sync/singleflight"
-
-	"github.com/nebius/gosdk/config"
-	iampb "github.com/nebius/gosdk/proto/nebius/iam/v1"
 )
 
 type ServiceAccount struct {
@@ -49,31 +45,6 @@ func NewCachedServiceAccount(reader ServiceAccountReader) *CachedServiceAccount 
 		mu:     sync.RWMutex{},
 		cache:  nil,
 	}
-}
-
-func NewServiceAccountTokener(
-	logger *slog.Logger,
-	profile *config.Profile,
-	getIAMClient func() (iampb.TokenExchangeServiceClient, error),
-) NamedTokener {
-	return NewNameWrapper(
-		fmt.Sprintf(
-			"service-account/%s/%s",
-			profile.ServiceAccountID, profile.PublicKeyID,
-		),
-		NewExchangeableBearerTokenerWithDeferredClient(
-			NewServiceAccountExchangeTokenRequester(
-				NewCachedServiceAccount(
-					NewPrivateKeyParser(
-						[]byte(profile.PrivateKey),
-						profile.PublicKeyID,
-						profile.ServiceAccountID,
-					),
-				),
-			),
-			getIAMClient,
-		),
-	)
 }
 
 func (c *CachedServiceAccount) ServiceAccount(ctx context.Context) (ServiceAccount, error) {
