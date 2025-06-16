@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[SubnetServiceID] = "vpc"
+}
+
 func (s Services) Subnet() SubnetService {
 	return NewSubnetService(s.sdk)
 }

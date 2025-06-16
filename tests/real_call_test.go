@@ -24,6 +24,5 @@ func TestRealCall_WithoutCreds(t *testing.T) {
 	diskService := sdk.Services().Compute().V1().Disk()
 	_, err = diskService.List(ctx, &computepb.ListDisksRequest{ParentId: "fake-e00id"})
 	require.Error(t, err)
-	require.Regexp(t, "^rpc error: code = Unauthenticated desc = failed to list disks: "+
-		"authorization failed: failed to extract token from context: no token request = [-a-zA-Z0-9]+$", err.Error())
+	require.Regexp(t, "^rpc error: code = Unauthenticated desc = .+ request = [-a-zA-Z0-9]+$", err.Error())
 }

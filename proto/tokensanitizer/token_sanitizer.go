@@ -28,6 +28,9 @@ var AccessTokenVersions = map[string]TokenVersion{
 	"V0":  {Prefix: "v0.", Delimiter: ".", SignaturePosition: NoSignature, TokenPartsCount: 1},
 	"NE1": {Prefix: "ne1", Delimiter: ".", SignaturePosition: 1, TokenPartsCount: 2},
 	"V1":  {Prefix: "v1.", Delimiter: ".", SignaturePosition: 2, TokenPartsCount: 3},
+
+	// When changing this, also update PySDK:
+	// https://github.com/nebius/pysdk/blob/main/src/nebius/base/token_sanitizer.py
 }
 
 // CredentialsVersions contains all possible token types, which is used in app.
@@ -42,6 +45,9 @@ var CredentialsVersions = map[string]TokenVersion{
 	// Other cred types delegation and jwt
 	"DE1": {Prefix: "nd1", Delimiter: ".", SignaturePosition: 1, TokenPartsCount: 2},
 	"JWT": {Prefix: "eyJ", Delimiter: ".", SignaturePosition: 2, TokenPartsCount: 3},
+
+	// When changing this, also update PySDK:
+	// https://github.com/nebius/pysdk/blob/main/src/nebius/base/token_sanitizer.py
 }
 
 type TokenSanitizer struct {

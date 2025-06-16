@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[AllocationServiceID] = "vpc"
+}
+
 func (s Services) Allocation() AllocationService {
 	return NewAllocationService(s.sdk)
 }
