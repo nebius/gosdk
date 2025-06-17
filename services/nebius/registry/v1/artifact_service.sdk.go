@@ -14,6 +14,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[ArtifactServiceID] = "registry"
+}
+
 func (s Services) Artifact() ArtifactService {
 	return NewArtifactService(s.sdk)
 }

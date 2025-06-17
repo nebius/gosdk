@@ -10,6 +10,10 @@ import (
 	grpc "google.golang.org/grpc"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[MaintenanceServiceID] = "compute"
+}
+
 func (s Services) Maintenance() MaintenanceService {
 	return NewMaintenanceService(s.sdk)
 }

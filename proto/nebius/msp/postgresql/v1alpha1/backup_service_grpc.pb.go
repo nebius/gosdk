@@ -8,6 +8,7 @@ package v1alpha1
 
 import (
 	context "context"
+	v1alpha1 "github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -22,6 +23,8 @@ const (
 	BackupService_Get_FullMethodName           = "/nebius.msp.postgresql.v1alpha1.BackupService/Get"
 	BackupService_List_FullMethodName          = "/nebius.msp.postgresql.v1alpha1.BackupService/List"
 	BackupService_ListByCluster_FullMethodName = "/nebius.msp.postgresql.v1alpha1.BackupService/ListByCluster"
+	BackupService_Create_FullMethodName        = "/nebius.msp.postgresql.v1alpha1.BackupService/Create"
+	BackupService_Delete_FullMethodName        = "/nebius.msp.postgresql.v1alpha1.BackupService/Delete"
 )
 
 // BackupServiceClient is the client API for BackupService service.
@@ -35,6 +38,10 @@ type BackupServiceClient interface {
 	List(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error)
 	// Retrieves the list of PostgreSQL Cluster backups by cluster.
 	ListByCluster(ctx context.Context, in *ListBackupsByClusterRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error)
+	// Creates a new on-demand backup.
+	Create(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
+	// Deletes an on-demand backup.
+	Delete(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
 }
 
 type backupServiceClient struct {
@@ -72,6 +79,24 @@ func (c *backupServiceClient) ListByCluster(ctx context.Context, in *ListBackups
 	return out, nil
 }
 
+func (c *backupServiceClient) Create(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error) {
+	out := new(v1alpha1.Operation)
+	err := c.cc.Invoke(ctx, BackupService_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupServiceClient) Delete(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error) {
+	out := new(v1alpha1.Operation)
+	err := c.cc.Invoke(ctx, BackupService_Delete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BackupServiceServer is the server API for BackupService service.
 // All implementations should embed UnimplementedBackupServiceServer
 // for forward compatibility
@@ -83,6 +108,10 @@ type BackupServiceServer interface {
 	List(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error)
 	// Retrieves the list of PostgreSQL Cluster backups by cluster.
 	ListByCluster(context.Context, *ListBackupsByClusterRequest) (*ListBackupsResponse, error)
+	// Creates a new on-demand backup.
+	Create(context.Context, *CreateBackupRequest) (*v1alpha1.Operation, error)
+	// Deletes an on-demand backup.
+	Delete(context.Context, *DeleteBackupRequest) (*v1alpha1.Operation, error)
 }
 
 // UnimplementedBackupServiceServer should be embedded to have forward compatible implementations.
@@ -97,6 +126,12 @@ func (UnimplementedBackupServiceServer) List(context.Context, *ListBackupsReques
 }
 func (UnimplementedBackupServiceServer) ListByCluster(context.Context, *ListBackupsByClusterRequest) (*ListBackupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByCluster not implemented")
+}
+func (UnimplementedBackupServiceServer) Create(context.Context, *CreateBackupRequest) (*v1alpha1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedBackupServiceServer) Delete(context.Context, *DeleteBackupRequest) (*v1alpha1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
 // UnsafeBackupServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -164,6 +199,42 @@ func _BackupService_ListByCluster_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BackupService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupServiceServer).Create(ctx, req.(*CreateBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BackupService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupServiceServer).Delete(ctx, req.(*DeleteBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BackupService_ServiceDesc is the grpc.ServiceDesc for BackupService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -182,6 +253,14 @@ var BackupService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListByCluster",
 			Handler:    _BackupService_ListByCluster_Handler,
+		},
+		{
+			MethodName: "Create",
+			Handler:    _BackupService_Create_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _BackupService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

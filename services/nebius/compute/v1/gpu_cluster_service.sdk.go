@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[GpuClusterServiceID] = "compute"
+}
+
 func (s Services) GpuCluster() GpuClusterService {
 	return NewGpuClusterService(s.sdk)
 }

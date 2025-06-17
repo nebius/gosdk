@@ -13,7 +13,9 @@ import (
 	context "context"
 	reflect "reflect"
 
-	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1"
+	alphaops "github.com/nebius/gosdk/operations/alphaops"
+	v1alpha1 "github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
+	v1alpha10 "github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"
 )
@@ -41,15 +43,103 @@ func (m *MockBackupService) EXPECT() *MockBackupServiceMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockBackupService) Create(arg0 context.Context, arg1 *v1alpha10.CreateBackupRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(*alphaops.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockBackupServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockBackupServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockBackupService)(nil).Create), varargs...)
+	return &MockBackupServiceCreateCall{Call: call}
+}
+
+// MockBackupServiceCreateCall wrap *gomock.Call
+type MockBackupServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockBackupServiceCreateCall) Return(arg0 *alphaops.Operation, arg1 error) *MockBackupServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockBackupServiceCreateCall) Do(f func(context.Context, *v1alpha10.CreateBackupRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockBackupServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockBackupServiceCreateCall) DoAndReturn(f func(context.Context, *v1alpha10.CreateBackupRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockBackupServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *MockBackupService) Delete(arg0 context.Context, arg1 *v1alpha10.DeleteBackupRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(*alphaops.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockBackupServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockBackupServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockBackupService)(nil).Delete), varargs...)
+	return &MockBackupServiceDeleteCall{Call: call}
+}
+
+// MockBackupServiceDeleteCall wrap *gomock.Call
+type MockBackupServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockBackupServiceDeleteCall) Return(arg0 *alphaops.Operation, arg1 error) *MockBackupServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockBackupServiceDeleteCall) Do(f func(context.Context, *v1alpha10.DeleteBackupRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockBackupServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockBackupServiceDeleteCall) DoAndReturn(f func(context.Context, *v1alpha10.DeleteBackupRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockBackupServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Get mocks base method.
-func (m *MockBackupService) Get(arg0 context.Context, arg1 *v1alpha1.GetBackupRequest, arg2 ...grpc.CallOption) (*v1alpha1.Backup, error) {
+func (m *MockBackupService) Get(arg0 context.Context, arg1 *v1alpha10.GetBackupRequest, arg2 ...grpc.CallOption) (*v1alpha10.Backup, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Get", varargs...)
-	ret0, _ := ret[0].(*v1alpha1.Backup)
+	ret0, _ := ret[0].(*v1alpha10.Backup)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -68,32 +158,76 @@ type MockBackupServiceGetCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockBackupServiceGetCall) Return(arg0 *v1alpha1.Backup, arg1 error) *MockBackupServiceGetCall {
+func (c *MockBackupServiceGetCall) Return(arg0 *v1alpha10.Backup, arg1 error) *MockBackupServiceGetCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockBackupServiceGetCall) Do(f func(context.Context, *v1alpha1.GetBackupRequest, ...grpc.CallOption) (*v1alpha1.Backup, error)) *MockBackupServiceGetCall {
+func (c *MockBackupServiceGetCall) Do(f func(context.Context, *v1alpha10.GetBackupRequest, ...grpc.CallOption) (*v1alpha10.Backup, error)) *MockBackupServiceGetCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockBackupServiceGetCall) DoAndReturn(f func(context.Context, *v1alpha1.GetBackupRequest, ...grpc.CallOption) (*v1alpha1.Backup, error)) *MockBackupServiceGetCall {
+func (c *MockBackupServiceGetCall) DoAndReturn(f func(context.Context, *v1alpha10.GetBackupRequest, ...grpc.CallOption) (*v1alpha10.Backup, error)) *MockBackupServiceGetCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// GetOperation mocks base method.
+func (m *MockBackupService) GetOperation(arg0 context.Context, arg1 *v1alpha1.GetOperationRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(*alphaops.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockBackupServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockBackupServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockBackupService)(nil).GetOperation), varargs...)
+	return &MockBackupServiceGetOperationCall{Call: call}
+}
+
+// MockBackupServiceGetOperationCall wrap *gomock.Call
+type MockBackupServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockBackupServiceGetOperationCall) Return(arg0 *alphaops.Operation, arg1 error) *MockBackupServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockBackupServiceGetOperationCall) Do(f func(context.Context, *v1alpha1.GetOperationRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockBackupServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockBackupServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1alpha1.GetOperationRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockBackupServiceGetOperationCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // List mocks base method.
-func (m *MockBackupService) List(arg0 context.Context, arg1 *v1alpha1.ListBackupsRequest, arg2 ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error) {
+func (m *MockBackupService) List(arg0 context.Context, arg1 *v1alpha10.ListBackupsRequest, arg2 ...grpc.CallOption) (*v1alpha10.ListBackupsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].(*v1alpha1.ListBackupsResponse)
+	ret0, _ := ret[0].(*v1alpha10.ListBackupsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -112,32 +246,32 @@ type MockBackupServiceListCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockBackupServiceListCall) Return(arg0 *v1alpha1.ListBackupsResponse, arg1 error) *MockBackupServiceListCall {
+func (c *MockBackupServiceListCall) Return(arg0 *v1alpha10.ListBackupsResponse, arg1 error) *MockBackupServiceListCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockBackupServiceListCall) Do(f func(context.Context, *v1alpha1.ListBackupsRequest, ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error)) *MockBackupServiceListCall {
+func (c *MockBackupServiceListCall) Do(f func(context.Context, *v1alpha10.ListBackupsRequest, ...grpc.CallOption) (*v1alpha10.ListBackupsResponse, error)) *MockBackupServiceListCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockBackupServiceListCall) DoAndReturn(f func(context.Context, *v1alpha1.ListBackupsRequest, ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error)) *MockBackupServiceListCall {
+func (c *MockBackupServiceListCall) DoAndReturn(f func(context.Context, *v1alpha10.ListBackupsRequest, ...grpc.CallOption) (*v1alpha10.ListBackupsResponse, error)) *MockBackupServiceListCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // ListByCluster mocks base method.
-func (m *MockBackupService) ListByCluster(arg0 context.Context, arg1 *v1alpha1.ListBackupsByClusterRequest, arg2 ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error) {
+func (m *MockBackupService) ListByCluster(arg0 context.Context, arg1 *v1alpha10.ListBackupsByClusterRequest, arg2 ...grpc.CallOption) (*v1alpha10.ListBackupsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListByCluster", varargs...)
-	ret0, _ := ret[0].(*v1alpha1.ListBackupsResponse)
+	ret0, _ := ret[0].(*v1alpha10.ListBackupsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,19 +290,63 @@ type MockBackupServiceListByClusterCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockBackupServiceListByClusterCall) Return(arg0 *v1alpha1.ListBackupsResponse, arg1 error) *MockBackupServiceListByClusterCall {
+func (c *MockBackupServiceListByClusterCall) Return(arg0 *v1alpha10.ListBackupsResponse, arg1 error) *MockBackupServiceListByClusterCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockBackupServiceListByClusterCall) Do(f func(context.Context, *v1alpha1.ListBackupsByClusterRequest, ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error)) *MockBackupServiceListByClusterCall {
+func (c *MockBackupServiceListByClusterCall) Do(f func(context.Context, *v1alpha10.ListBackupsByClusterRequest, ...grpc.CallOption) (*v1alpha10.ListBackupsResponse, error)) *MockBackupServiceListByClusterCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockBackupServiceListByClusterCall) DoAndReturn(f func(context.Context, *v1alpha1.ListBackupsByClusterRequest, ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error)) *MockBackupServiceListByClusterCall {
+func (c *MockBackupServiceListByClusterCall) DoAndReturn(f func(context.Context, *v1alpha10.ListBackupsByClusterRequest, ...grpc.CallOption) (*v1alpha10.ListBackupsResponse, error)) *MockBackupServiceListByClusterCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockBackupService) ListOperations(arg0 context.Context, arg1 *v1alpha1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1alpha1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1alpha1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockBackupServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockBackupServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockBackupService)(nil).ListOperations), varargs...)
+	return &MockBackupServiceListOperationsCall{Call: call}
+}
+
+// MockBackupServiceListOperationsCall wrap *gomock.Call
+type MockBackupServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockBackupServiceListOperationsCall) Return(arg0 *v1alpha1.ListOperationsResponse, arg1 error) *MockBackupServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockBackupServiceListOperationsCall) Do(f func(context.Context, *v1alpha1.ListOperationsRequest, ...grpc.CallOption) (*v1alpha1.ListOperationsResponse, error)) *MockBackupServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockBackupServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1alpha1.ListOperationsRequest, ...grpc.CallOption) (*v1alpha1.ListOperationsResponse, error)) *MockBackupServiceListOperationsCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

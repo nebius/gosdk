@@ -13,6 +13,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[ImageServiceID] = "compute"
+}
+
 func (s Services) Image() ImageService {
 	return NewImageService(s.sdk)
 }
