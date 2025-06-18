@@ -13,6 +13,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[PlatformServiceID] = "compute"
+}
+
 func (s Services) Platform() PlatformService {
 	return NewPlatformService(s.sdk)
 }

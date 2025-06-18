@@ -12,6 +12,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[TemplateServiceID] = "msp-common"
+}
+
 func (s Services) Template() TemplateService {
 	return NewTemplateService(s.sdk)
 }

@@ -12,6 +12,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[PresetServiceID] = "msp-common"
+}
+
 func (s Services) Preset() PresetService {
 	return NewPresetService(s.sdk)
 }
