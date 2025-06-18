@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[RegistryServiceID] = "registry"
+}
+
 func (s Services) Registry() RegistryService {
 	return NewRegistryService(s.sdk)
 }

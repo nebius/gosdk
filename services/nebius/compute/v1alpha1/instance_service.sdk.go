@@ -16,6 +16,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[InstanceServiceID] = "compute"
+}
+
 func (s Services) Instance() InstanceService {
 	return NewInstanceService(s.sdk)
 }

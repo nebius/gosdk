@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[DiskServiceID] = "compute"
+}
+
 func (s Services) Disk() DiskService {
 	return NewDiskService(s.sdk)
 }

@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[FilesystemServiceID] = "compute"
+}
+
 func (s Services) Filesystem() FilesystemService {
 	return NewFilesystemService(s.sdk)
 }

@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[NodeGroupServiceID] = "mk8s"
+}
+
 func (s Services) NodeGroup() NodeGroupService {
 	return NewNodeGroupService(s.sdk)
 }

@@ -15,6 +15,10 @@ import (
 	proto "google.golang.org/protobuf/proto"
 )
 
+func init() {
+	conn.ConventionResolverServiceIDToNameMap[ClusterServiceID] = "mk8s"
+}
+
 func (s Services) Cluster() ClusterService {
 	return NewClusterService(s.sdk)
 }
