@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"strings"
 	"sync/atomic"
 	"time"
 
@@ -82,7 +83,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 
 	logger := slog.New(handler)
 	substitutions := map[string]string{
-		"{domain}": domain,
+		"{domain}": ensurePort(domain),
 	}
 	for find, replace := range customSubstitutions {
 		substitutions[find] = replace
@@ -287,4 +288,11 @@ func initCache(cache *auth.CachedServiceTokener) func(context.Context, *SDK) err
 
 		return nil
 	}
+}
+
+func ensurePort(domain string) string {
+	if !strings.Contains(domain, ":") {
+		return domain + ":443"
+	}
+	return domain
 }
