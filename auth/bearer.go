@@ -9,12 +9,6 @@ import (
 
 const AuthorizationHeader = "Authorization"
 
-// BearerToken is a token used in the Bearer authentication scheme.
-type BearerToken struct {
-	Token     string
-	ExpiresAt time.Time
-}
-
 // BearerTokener is an interface for providing a [BearerToken] for authentication.
 // Most implementations provided in this package are decorators,
 // allowing you to layer additional behavior on top of a base implementation.
