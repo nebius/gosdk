@@ -15,7 +15,7 @@ type BearerToken struct {
 	ExpiresAt time.Time // ExpiresAt is the time when the token expires. If it is zero, the token does not expire.
 }
 
-var iamTokenSanitizer = tokensanitizer.AccessTokenSanitizer()
+var iamTokenSanitizer = tokensanitizer.AccessTokenSanitizer() //nolint:gochecknoglobals // performance
 
 type yamlToken struct {
 	Token     string `yaml:"token,omitempty"`

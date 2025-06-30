@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
-	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -52,7 +51,6 @@ func NewCachedServiceAccount(reader ServiceAccountReader) *CachedServiceAccount 
 }
 
 func NewServiceAccountTokener(
-	logger *slog.Logger,
 	profile *config.Profile,
 	getIAMClient func() (iampb.TokenExchangeServiceClient, error),
 ) NamedTokener {

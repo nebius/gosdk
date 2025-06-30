@@ -14,7 +14,7 @@ const (
 	authTimeout = 10 * time.Minute
 )
 
-type FederationToken struct {
+type Tokener struct {
 	logger             *slog.Logger
 	writer             io.Writer
 	clientID           string
@@ -24,28 +24,28 @@ type FederationToken struct {
 	noBrowserOpen      bool
 }
 
-var _ auth.NamedTokener = (*FederationToken)(nil)
+var _ auth.NamedTokener = (*Tokener)(nil)
 
-func NewFederationToken(
+func NewTokener(
 	logger *slog.Logger,
 	clientID string,
 	federationEndpoint string,
 	federationID string,
 	profileName string,
 	noBrowserOpen bool,
-) *FederationToken {
-	return &FederationToken{
-		logger:             logger,
-		writer:             nil,
-		clientID:           clientID,
-		federationID:       federationID,
-		federationEndpoint: federationEndpoint,
-		profileName:        profileName,
-		noBrowserOpen:      noBrowserOpen,
-	}
+) *Tokener {
+	return NewTokenerWithWriter(
+		logger,
+		nil,
+		clientID,
+		federationEndpoint,
+		federationID,
+		profileName,
+		noBrowserOpen,
+	)
 }
 
-func NewFederationTokenWithWriter(
+func NewTokenerWithWriter(
 	logger *slog.Logger,
 	writer io.Writer,
 	clientID string,
@@ -53,8 +53,8 @@ func NewFederationTokenWithWriter(
 	federationID string,
 	profileName string,
 	noBrowserOpen bool,
-) *FederationToken {
-	return &FederationToken{
+) *Tokener {
+	return &Tokener{
 		logger: logger.With(
 			slog.String("name", "federation_token"),
 			slog.String("federation_endpoint", federationEndpoint),
@@ -72,7 +72,7 @@ func NewFederationTokenWithWriter(
 	}
 }
 
-func (f *FederationToken) BearerToken(
+func (f *Tokener) BearerToken(
 	ctx context.Context,
 ) (auth.BearerToken, error) {
 	ctx, cancel := context.WithTimeout(ctx, authTimeout)
@@ -102,10 +102,10 @@ func (f *FederationToken) BearerToken(
 	return ret, nil
 }
 
-func (f *FederationToken) HandleError(context.Context, auth.BearerToken, error) error {
+func (f *Tokener) HandleError(context.Context, auth.BearerToken, error) error {
 	return nil // token can be renewed
 }
 
-func (f *FederationToken) Name() string {
+func (f *Tokener) Name() string {
 	return fmt.Sprintf("federation/%s/%s/%s", f.federationEndpoint, f.federationID, f.profileName)
 }

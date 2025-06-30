@@ -59,11 +59,11 @@ func (c *Config) LoadFromFile(file string) error {
 		if errors.Is(err, fs.ErrNotExist) {
 			return NewMissingConfigError(err)
 		}
-		return NewConfigError(err)
+		return NewError(err)
 	}
 	err = yaml.Unmarshal(bytes, c)
 	if err != nil {
-		return NewConfigError(err)
+		return NewError(err)
 	}
 	for name, profile := range c.Profiles {
 		profile.Name = name
@@ -75,18 +75,21 @@ func (c *Config) GetDefaultProfile() (*Profile, error) {
 	if c.Default == "" {
 		switch len(c.Profiles) {
 		case 0:
-			return nil, NewConfigError(NewGetProfileError(errors.New("no profile configured"), c.Profiles))
+			return nil, NewError(NewGetProfileError(errors.New("no profile configured"), c.Profiles))
 		case 1:
 			for _, profile := range c.Profiles {
 				return profile, nil
 			}
 		default:
-			return nil, NewConfigError(NewGetProfileError(errors.New("malformed configuration: default profile is empty"), c.Profiles))
+			return nil, NewError(NewGetProfileError(
+				errors.New("malformed configuration: default profile is empty"),
+				c.Profiles,
+			))
 		}
 	}
 	profile, err := c.GetProfile(c.Default)
 	if err != nil {
-		return nil, NewConfigError(err)
+		return nil, NewError(err)
 	}
 	return profile, nil
 }

@@ -2,7 +2,6 @@ package federation
 
 import (
 	"context"
-	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -27,7 +26,7 @@ func getCode(
 ) (_ string, _ string, retErr error) {
 	authURL, err := url.Parse(httpsURL(authEndpoint))
 	if err != nil {
-		return "", "", config.NewConfigError(err)
+		return "", "", config.NewError(err)
 	}
 
 	callback, err := newCallbackHandler(logger)
@@ -73,12 +72,9 @@ func getCode(
 			"no browser flag is found, asking user to open auth link",
 			slog.String("url", authURL.String()),
 		)
-		if writer != nil {
-			if _, err = fmt.Fprintln(writer, text); err != nil {
-				return "", "", fmt.Errorf("fprintln error: %w", err)
-			}
-		} else {
-			logger.InfoContext(ctx, text)
+		err = writeOrLog(ctx, logger, writer, text)
+		if err != nil {
+			return "", "", err
 		}
 	} else {
 		logger.DebugContext(ctx, "open browser", slog.String("url", authURL.String()))
@@ -87,12 +83,9 @@ func getCode(
 				"If it didn't open automatically, use the following link: %s",
 			authURL.String(),
 		)
-		if writer != nil {
-			if _, err = fmt.Fprintln(writer, text); err != nil {
-				return "", "", fmt.Errorf("fprintln error: %w", err)
-			}
-		} else {
-			logger.InfoContext(ctx, text)
+		err = writeOrLog(ctx, logger, writer, text)
+		if err != nil {
+			return "", "", err
 		}
 		browserErr = openBrowser(authURL.String())
 	}
@@ -107,6 +100,18 @@ func getCode(
 	case <-ctx.Done():
 		return "", "", ctx.Err()
 	}
+}
+
+func writeOrLog(ctx context.Context, logger *slog.Logger, writer io.Writer, text string) error {
+	if writer == nil {
+		logger.InfoContext(ctx, text)
+		return nil
+	}
+	_, err := fmt.Fprintln(writer, text)
+	if err != nil {
+		return fmt.Errorf("fprintln error: %w", err)
+	}
+	return nil
 }
 
 type GetTokenResult struct {
@@ -134,18 +139,11 @@ func getToken(
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-	client := &http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: true,
-			},
-		},
-	}
-	resp, err := client.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return GetTokenResult{}, err
 	}
-	defer resp.Body.Close() //nolint:errcheck
+	defer func() { _ = resp.Body.Close() }()
 
 	var result GetTokenResult
 	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
@@ -166,7 +164,7 @@ func Authorize(
 	)
 	tokenURL, err := url.Parse(federationURL + tokenEP)
 	if err != nil {
-		return GetTokenResult{}, config.NewConfigError(err)
+		return GetTokenResult{}, config.NewError(err)
 	}
 
 	pkceCode, err := GeneratePKCECode()
@@ -207,6 +205,7 @@ func openBrowser(url string) <-chan error {
 	switch runtime.GOOS {
 	case "linux":
 		if IsWSL() {
+			//nolint:gosec // we trust url
 			cmd = exec.Command("cmd.exe", "/c", "start", strings.ReplaceAll(url, "&", "^&"))
 			home, err := config.UserHomeDir()
 			if err != nil {
@@ -222,7 +221,7 @@ func openBrowser(url string) <-chan error {
 	case "darwin":
 		cmd = exec.Command("open", url)
 	default:
-		ch <- fmt.Errorf("unsupported platform")
+		ch <- errors.New("unsupported platform")
 		return ch
 	}
 

@@ -1,30 +1,28 @@
 package config
 
 import (
-	"fmt"
-	"maps"
-	"slices"
+	"golang.org/x/exp/maps"
 )
 
-type ConfigError struct {
+type Error struct {
 	err error
 }
 
-func NewConfigError(err error) *ConfigError {
+func NewError(err error) *Error {
 	if err == nil {
 		return nil
 	}
-	return &ConfigError{
-		err: fmt.Errorf("config: %w", err),
+	return &Error{
+		err: err,
 	}
 }
 
-func (ce *ConfigError) Error() string {
-	return ce.err.Error()
+func (e *Error) Error() string {
+	return "config: " + e.err.Error()
 }
 
-func (ce *ConfigError) Unwrap() error {
-	return ce.err
+func (e *Error) Unwrap() error {
+	return e.err
 }
 
 type MissingConfigError struct {
@@ -32,17 +30,20 @@ type MissingConfigError struct {
 }
 
 func NewMissingConfigError(err error) *MissingConfigError {
+	if err == nil {
+		return nil
+	}
 	return &MissingConfigError{
-		err: fmt.Errorf("missing configuration: %w", err),
+		err: err,
 	}
 }
 
-func (m *MissingConfigError) Error() string {
-	return m.err.Error()
+func (e *MissingConfigError) Error() string {
+	return "missing configuration: " + e.err.Error()
 }
 
-func (m *MissingConfigError) Unwrap() error {
-	return m.err
+func (e *MissingConfigError) Unwrap() error {
+	return e.err
 }
 
 type GetProfileError struct {
@@ -51,14 +52,17 @@ type GetProfileError struct {
 }
 
 func NewGetProfileError(err error, profiles ProfilesConfig) *GetProfileError {
+	if err == nil {
+		return nil
+	}
 	return &GetProfileError{
-		err:               fmt.Errorf("get profile: %w", err),
-		availableProfiles: slices.Collect(maps.Keys(profiles)),
+		err:               err,
+		availableProfiles: maps.Keys(profiles),
 	}
 }
 
 func (e *GetProfileError) Error() string {
-	return e.err.Error()
+	return "get profile: " + e.err.Error()
 }
 
 func (e *GetProfileError) Unwrap() error {

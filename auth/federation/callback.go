@@ -61,7 +61,7 @@ func newCallbackHandler(logger *slog.Logger) (*callbackHandler, error) {
 	}
 
 	handler := &callbackHandler{
-		server: &http.Server{
+		server: &http.Server{ //nolint:gosec // it's fine to have no ReadHeaderTimeout on localhost
 			Handler:  nil, // is set below
 			ErrorLog: slog.NewLogLogger(logger.Handler(), slog.LevelError),
 		},

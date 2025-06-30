@@ -445,6 +445,11 @@ linters:
           - testableexamples
       - path: 'operations/alphaops'
         text: 'SA1019: .+ is deprecated'
+      - text: 'the methods of "BearerToken" use pointer receiver and non-pointer receiver'
+        linters:
+          - recvcheck
+      - source: 'func RunAsyncTokener'
+        text: 'error-return: error should be the last type when returning multiple items'
       - path: '^sdk.go' # TODO: fix
         linters:
           - cyclop

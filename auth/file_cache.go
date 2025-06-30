@@ -51,13 +51,13 @@ func (f *tokenCache) loadCache(ctx context.Context) (*cacheContents, error) {
 				ctx,
 				"cache file does not exist, returning empty cache",
 			)
-			return nil, nil
+			return nil, nil //nolint:nilnil // it's fine to return nil, nil from private method
 		}
 		return nil, fmt.Errorf("read %q: %w", f.fileName, err)
 	}
 
 	var cache cacheContents
-	if err := yaml.Unmarshal(bytes, &cache); err != nil {
+	if err = yaml.Unmarshal(bytes, &cache); err != nil {
 		if f.logger != nil {
 			f.logger.WarnContext(
 				ctx,
@@ -65,14 +65,14 @@ func (f *tokenCache) loadCache(ctx context.Context) (*cacheContents, error) {
 				slog.Any("error", err),
 			)
 		}
-		if err := os.Remove(f.fileName); err != nil {
+		if err = os.Remove(f.fileName); err != nil {
 			return nil, fmt.Errorf("remove %q: %w", f.fileName, err)
 		}
 		f.logger.DebugContext(
 			ctx,
 			"cache file purged due to unmarshal error",
 		)
-		return nil, nil
+		return nil, nil //nolint:nilnil // it's fine to return nil, nil from private method
 	}
 
 	return &cache, nil
@@ -95,7 +95,7 @@ func (f *tokenCache) saveCache(ctx context.Context, cache *cacheContents) error 
 		return fmt.Errorf("yaml marshal: %w", err)
 	}
 
-	if err := os.WriteFile(f.fileName, bytes, 0644); err != nil {
+	if err = os.WriteFile(f.fileName, bytes, 0600); err != nil {
 		return fmt.Errorf("write to %q: %w", f.fileName, err)
 	}
 	return nil
@@ -176,7 +176,7 @@ func (f *tokenCache) Set(
 		return f.Remove(ctx, tokenName)
 	}
 
-	if err := os.MkdirAll(filepath.Dir(f.fileName), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(f.fileName), 0750); err != nil {
 		return fmt.Errorf("create cache file directory: %w", err)
 	}
 
@@ -208,7 +208,7 @@ func (f *tokenCache) Set(
 
 	cache.Tokens[tokenName] = token
 
-	if err := f.saveCache(ctx, cache); err != nil {
+	if err = f.saveCache(ctx, cache); err != nil {
 		return fmt.Errorf("save cache: %w", err)
 	}
 	f.logger.DebugContext(
@@ -271,7 +271,7 @@ func (f *tokenCache) Remove(
 	}
 
 	if cache != nil && len(cache.Tokens) == 0 {
-		if err := os.Remove(f.fileName); err != nil {
+		if err = os.Remove(f.fileName); err != nil {
 			return fmt.Errorf("remove cache file %q: %w", f.fileName, err)
 		}
 		f.logger.DebugContext(
@@ -280,7 +280,7 @@ func (f *tokenCache) Remove(
 		)
 	}
 
-	if err := f.saveCache(ctx, cache); err != nil {
+	if err = f.saveCache(ctx, cache); err != nil {
 		return fmt.Errorf("save cache: %w", err)
 	}
 	f.logger.DebugContext(
@@ -291,7 +291,7 @@ func (f *tokenCache) Remove(
 	return nil
 }
 
-func (f *tokenCache) RemoveIfEqual(
+func (f *tokenCache) RemoveIfEqual( //nolint:gocognit
 	ctx context.Context,
 	tokenName string,
 	token BearerToken,
@@ -327,7 +327,7 @@ func (f *tokenCache) RemoveIfEqual(
 		return fmt.Errorf("load cache: %w", err)
 	}
 
-	if cache != nil {
+	if cache != nil { //nolint:nestif // it's ok to have so many ifs
 		if existingToken, exists := cache.Tokens[tokenName]; exists {
 			if existingToken.Equal(token) {
 				f.logger.DebugContext(
@@ -368,12 +368,12 @@ func (f *tokenCache) RemoveIfEqual(
 			ctx,
 			"cache file is empty, removing it",
 		)
-		if err := os.Remove(f.fileName); err != nil {
+		if err = os.Remove(f.fileName); err != nil {
 			return fmt.Errorf("remove cache file %q: %w", f.fileName, err)
 		}
 	}
 
-	if err := f.saveCache(ctx, cache); err != nil {
+	if err = f.saveCache(ctx, cache); err != nil {
 		return fmt.Errorf("save cache: %w", err)
 	}
 	f.logger.DebugContext(
@@ -604,7 +604,7 @@ func (f *RenewableFileCachedTokener) BearerToken(ctx context.Context) (BearerTok
 		)
 		return token, nil
 	}
-	if err := f.cache.Set(ctx, token); err != nil {
+	if err = f.cache.Set(ctx, token); err != nil {
 		f.logger.ErrorContext(
 			ctx,
 			"failed to save token to cache",
@@ -649,7 +649,7 @@ func (f *RenewableFileCachedTokener) HandleError(
 		return nil // new token is available in cache, no need to handle error
 	}
 	if cachedTok.Equal(token) {
-		err := f.cache.RemoveIfEqual(ctx, token) // remove the token from cache as it is no longer valid
+		err = f.cache.RemoveIfEqual(ctx, token) // remove the token from cache as it is no longer valid
 		if err != nil {
 			return errors.Join(
 				checkErr,
@@ -744,7 +744,7 @@ func (f *AsynchronouslyRenewableFileCachedTokener) HandleError(
 		return nil // new token is available in cache, no need to handle error
 	}
 	if cachedTok.Equal(token) {
-		err := f.cache.RemoveIfEqual(ctx, token) // remove the token from cache as it is no longer valid
+		err = f.cache.RemoveIfEqual(ctx, token) // remove the token from cache as it is no longer valid
 		if err != nil {
 			return errors.Join(
 				checkErr,
@@ -755,9 +755,7 @@ func (f *AsynchronouslyRenewableFileCachedTokener) HandleError(
 	return f.tokener.HandleError(ctx, token, checkErr)
 }
 
-func (f *AsynchronouslyRenewableFileCachedTokener) Run(
-	ctx context.Context,
-) error { //nolint:gocognit
+func (f *AsynchronouslyRenewableFileCachedTokener) Run(ctx context.Context) error { //nolint:gocognit
 	runningUnderlying := false
 	for {
 		select {
@@ -856,7 +854,7 @@ func (f *AsynchronouslyRenewableFileCachedTokener) requestToken(
 			}
 		}
 
-		if err := f.cache.Set(ctx, token); err != nil {
+		if err = f.cache.Set(ctx, token); err != nil {
 			if f.logger != nil {
 				f.logger.ErrorContext(
 					ctx,
