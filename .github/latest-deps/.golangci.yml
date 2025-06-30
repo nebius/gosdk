@@ -13,3 +13,6 @@ linters:
       - path: 'conn/parse.go' # remove after go 1.23+
         linters:
           - exptostd
+      - path: 'config/errors.go' # remove after go 1.23+
+        linters:
+          - exptostd
