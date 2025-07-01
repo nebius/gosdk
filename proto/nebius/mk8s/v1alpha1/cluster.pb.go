@@ -192,7 +192,7 @@ func (x *ClusterSpec) GetKubeNetwork() *KubeNetworkSpec {
 type ControlPlaneSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Version is desired Kubernetes version of the cluster. For now only acceptable format is
-	// `MAJOR.MINOR` like "1.30". Option for patch version update will be added later.
+	// `MAJOR.MINOR` like "1.31". Option for patch version update will be added later.
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Subnet ID where control plane instances will be located.
 	SubnetId  string                     `protobuf:"bytes,2,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
