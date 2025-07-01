@@ -244,7 +244,7 @@ func (x *NodeGroup) GetStatus() *NodeGroupStatus {
 type NodeGroupSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Version is desired Kubernetes version of the cluster. For now only acceptable format is
-	// `<major>.<minor>` like "1.30". Option for patch version update will be added later.
+	// `<major>.<minor>` like "1.31". Option for patch version update will be added later.
 	// By default the cluster control plane <major>.<minor> version will be used.
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Types that are valid to be assigned to Size:

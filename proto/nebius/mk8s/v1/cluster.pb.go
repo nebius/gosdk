@@ -192,7 +192,7 @@ func (x *ClusterSpec) GetKubeNetwork() *KubeNetworkSpec {
 type ControlPlaneSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Desired Kubernetes version of the cluster. For now only acceptable format is
-	// `<major>.<minor>` like "1.30". Option for patch version update will be added later.
+	// `<major>.<minor>` like "1.31". Option for patch version update will be added later.
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Nebius VPC Subnet ID where control plane instances will be located.
 	// Also will be default NodeGroup subnet.
