@@ -35,6 +35,8 @@ const (
 // AccessKeyServiceClient is the client API for AccessKeyService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type AccessKeyServiceClient interface {
 	Create(ctx context.Context, in *CreateAccessKeyRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	List(ctx context.Context, in *ListAccessKeysRequest, opts ...grpc.CallOption) (*ListAccessKeysResponse, error)
@@ -52,6 +54,7 @@ type accessKeyServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewAccessKeyServiceClient(cc grpc.ClientConnInterface) AccessKeyServiceClient {
 	return &accessKeyServiceClient{cc}
 }
@@ -149,6 +152,8 @@ func (c *accessKeyServiceClient) Delete(ctx context.Context, in *DeleteAccessKey
 // AccessKeyServiceServer is the server API for AccessKeyService service.
 // All implementations should embed UnimplementedAccessKeyServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type AccessKeyServiceServer interface {
 	Create(context.Context, *CreateAccessKeyRequest) (*v1.Operation, error)
 	List(context.Context, *ListAccessKeysRequest) (*ListAccessKeysResponse, error)
@@ -204,6 +209,7 @@ type UnsafeAccessKeyServiceServer interface {
 	mustEmbedUnimplementedAccessKeyServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterAccessKeyServiceServer(s grpc.ServiceRegistrar, srv AccessKeyServiceServer) {
 	s.RegisterService(&AccessKeyService_ServiceDesc, srv)
 }

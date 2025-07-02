@@ -56,6 +56,7 @@ type ListAuditEventRequest struct {
 	// resource.metadata.type
 	// service.name
 	// type
+	// status
 	Filter        string `protobuf:"bytes,6,opt,name=filter,proto3" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
