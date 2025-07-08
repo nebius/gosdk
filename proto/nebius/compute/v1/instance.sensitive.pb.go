@@ -96,6 +96,9 @@ func (w *wrapperInstanceSpec) ProtoReflect() protoreflect.Message {
 	return (*InstanceSpec)(w).ProtoReflect()
 }
 
+// func (x *PreemptibleSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *PreemptibleSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ResourcesSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ResourcesSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
