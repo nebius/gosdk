@@ -164,6 +164,9 @@ func (w *wrapperNodeTemplate) ProtoReflect() protoreflect.Message {
 // func (x *NodeGroupAutoscalingSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *NodeGroupAutoscalingSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *PreemptibleSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *PreemptibleSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *NodeTaint) Sanitize()            // is not generated as no sensitive fields found
 // func (x *NodeTaint) LogValue() slog.Value // is not generated as no sensitive fields found
 

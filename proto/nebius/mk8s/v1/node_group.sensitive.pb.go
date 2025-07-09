@@ -173,5 +173,8 @@ func (w *wrapperNodeTemplate) ProtoReflect() protoreflect.Message {
 // func (x *PercentOrCount) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PercentOrCount) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *PreemptibleSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *PreemptibleSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *NodeGroupStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *NodeGroupStatus) LogValue() slog.Value // is not generated as no sensitive fields found
