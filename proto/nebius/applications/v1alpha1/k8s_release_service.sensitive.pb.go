@@ -58,6 +58,50 @@ func (w *wrapperCreateK8SReleaseRequest) ProtoReflect() protoreflect.Message {
 	return (*CreateK8SReleaseRequest)(w).ProtoReflect()
 }
 
+// Sanitize mutates [UpdateK8SReleaseRequest] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *UpdateK8SReleaseRequest) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.Spec.Sanitize()
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [UpdateK8SReleaseRequest].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *UpdateK8SReleaseRequest
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [UpdateK8SReleaseRequest], use the following code:
+//
+//	var original *UpdateK8SReleaseRequest
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*UpdateK8SReleaseRequest)
+func (x *UpdateK8SReleaseRequest) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*UpdateK8SReleaseRequest) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperUpdateK8SReleaseRequest)(c))
+}
+
+// wrapperUpdateK8SReleaseRequest is used to return [UpdateK8SReleaseRequest] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperUpdateK8SReleaseRequest UpdateK8SReleaseRequest
+
+func (w *wrapperUpdateK8SReleaseRequest) String() string {
+	return (*UpdateK8SReleaseRequest)(w).String()
+}
+
+func (*wrapperUpdateK8SReleaseRequest) ProtoMessage() {}
+
+func (w *wrapperUpdateK8SReleaseRequest) ProtoReflect() protoreflect.Message {
+	return (*UpdateK8SReleaseRequest)(w).ProtoReflect()
+}
+
 // func (x *DeleteK8SReleaseRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DeleteK8SReleaseRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 

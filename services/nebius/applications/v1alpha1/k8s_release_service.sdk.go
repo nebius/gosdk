@@ -8,6 +8,7 @@ import (
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
 	operations "github.com/nebius/gosdk/operations"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/applications/v1alpha1"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	grpc "google.golang.org/grpc"
@@ -29,6 +30,7 @@ type K8SReleaseService interface {
 	List(context.Context, *v1alpha1.ListK8SReleasesRequest, ...grpc.CallOption) (*v1alpha1.ListK8SReleasesResponse, error)
 	Filter(context.Context, *v1alpha1.ListK8SReleasesRequest, ...grpc.CallOption) iter.Seq2[*v1alpha1.K8SRelease, error]
 	Create(context.Context, *v1alpha1.CreateK8SReleaseRequest, ...grpc.CallOption) (operations.Operation, error)
+	Update(context.Context, *v1alpha1.UpdateK8SReleaseRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1alpha1.DeleteK8SReleaseRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)
@@ -103,6 +105,26 @@ func (s k8SReleaseService) Create(ctx context.Context, request *v1alpha1.CreateK
 		return nil, err
 	}
 	op, err := v1alpha1.NewK8SReleaseServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v1.NewOperationServiceClient(con))
+}
+
+func (s k8SReleaseService) Update(ctx context.Context, request *v1alpha1.UpdateK8SReleaseRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	address, err := s.sdk.Resolve(ctx, K8SReleaseServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1alpha1.NewK8SReleaseServiceClient(con).Update(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}
