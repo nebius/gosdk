@@ -23,6 +23,7 @@ const (
 	K8SReleaseService_Get_FullMethodName    = "/nebius.applications.v1alpha1.K8sReleaseService/Get"
 	K8SReleaseService_List_FullMethodName   = "/nebius.applications.v1alpha1.K8sReleaseService/List"
 	K8SReleaseService_Create_FullMethodName = "/nebius.applications.v1alpha1.K8sReleaseService/Create"
+	K8SReleaseService_Update_FullMethodName = "/nebius.applications.v1alpha1.K8sReleaseService/Update"
 	K8SReleaseService_Delete_FullMethodName = "/nebius.applications.v1alpha1.K8sReleaseService/Delete"
 )
 
@@ -33,6 +34,7 @@ type K8SReleaseServiceClient interface {
 	Get(ctx context.Context, in *GetK8SReleaseRequest, opts ...grpc.CallOption) (*K8SRelease, error)
 	List(ctx context.Context, in *ListK8SReleasesRequest, opts ...grpc.CallOption) (*ListK8SReleasesResponse, error)
 	Create(ctx context.Context, in *CreateK8SReleaseRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	Update(ctx context.Context, in *UpdateK8SReleaseRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Delete(ctx context.Context, in *DeleteK8SReleaseRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -71,6 +73,15 @@ func (c *k8SReleaseServiceClient) Create(ctx context.Context, in *CreateK8SRelea
 	return out, nil
 }
 
+func (c *k8SReleaseServiceClient) Update(ctx context.Context, in *UpdateK8SReleaseRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, K8SReleaseService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *k8SReleaseServiceClient) Delete(ctx context.Context, in *DeleteK8SReleaseRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, K8SReleaseService_Delete_FullMethodName, in, out, opts...)
@@ -87,6 +98,7 @@ type K8SReleaseServiceServer interface {
 	Get(context.Context, *GetK8SReleaseRequest) (*K8SRelease, error)
 	List(context.Context, *ListK8SReleasesRequest) (*ListK8SReleasesResponse, error)
 	Create(context.Context, *CreateK8SReleaseRequest) (*v1.Operation, error)
+	Update(context.Context, *UpdateK8SReleaseRequest) (*v1.Operation, error)
 	Delete(context.Context, *DeleteK8SReleaseRequest) (*v1.Operation, error)
 }
 
@@ -102,6 +114,9 @@ func (UnimplementedK8SReleaseServiceServer) List(context.Context, *ListK8SReleas
 }
 func (UnimplementedK8SReleaseServiceServer) Create(context.Context, *CreateK8SReleaseRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedK8SReleaseServiceServer) Update(context.Context, *UpdateK8SReleaseRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedK8SReleaseServiceServer) Delete(context.Context, *DeleteK8SReleaseRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -172,6 +187,24 @@ func _K8SReleaseService_Create_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _K8SReleaseService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateK8SReleaseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(K8SReleaseServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: K8SReleaseService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(K8SReleaseServiceServer).Update(ctx, req.(*UpdateK8SReleaseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _K8SReleaseService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteK8SReleaseRequest)
 	if err := dec(in); err != nil {
@@ -208,6 +241,10 @@ var K8SReleaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Create",
 			Handler:    _K8SReleaseService_Create_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _K8SReleaseService_Update_Handler,
 		},
 		{
 			MethodName: "Delete",

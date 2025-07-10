@@ -350,3 +350,47 @@ func (c *MockK8SReleaseServiceListOperationsCall) DoAndReturn(f func(context.Con
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// Update mocks base method.
+func (m *MockK8SReleaseService) Update(arg0 context.Context, arg1 *v1alpha1.UpdateK8SReleaseRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockK8SReleaseServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockK8SReleaseServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockK8SReleaseService)(nil).Update), varargs...)
+	return &MockK8SReleaseServiceUpdateCall{Call: call}
+}
+
+// MockK8SReleaseServiceUpdateCall wrap *gomock.Call
+type MockK8SReleaseServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockK8SReleaseServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockK8SReleaseServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockK8SReleaseServiceUpdateCall) Do(f func(context.Context, *v1alpha1.UpdateK8SReleaseRequest, ...grpc.CallOption) (operations.Operation, error)) *MockK8SReleaseServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockK8SReleaseServiceUpdateCall) DoAndReturn(f func(context.Context, *v1alpha1.UpdateK8SReleaseRequest, ...grpc.CallOption) (operations.Operation, error)) *MockK8SReleaseServiceUpdateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
