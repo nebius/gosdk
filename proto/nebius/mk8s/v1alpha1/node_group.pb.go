@@ -362,7 +362,7 @@ type NodeTemplate struct {
 	// cloud-init user-data. Must contain at least one SSH key.
 	CloudInitUserData string `protobuf:"bytes,6,opt,name=cloud_init_user_data,json=cloudInitUserData,proto3" json:"cloud_init_user_data,omitempty"`
 	// the Nebius service account whose credentials will be available on the nodes of the group.
-	// With these credentials, it is possible to make `npc` or public API requests from the nodes without the need for extra authentication.
+	// With these credentials, it is possible to make `nebius` CLI or public API requests from the nodes without the need for extra authentication.
 	// This service account is also used to make requests to container registry.
 	//
 	// `resource.serviceaccount.issueAccessToken` permission is required to use this field.
