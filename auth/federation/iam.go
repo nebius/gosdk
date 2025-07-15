@@ -214,8 +214,19 @@ func openBrowser(url string) <-chan error {
 			}
 			cmd.Dir = home
 		} else {
-			cmd = exec.Command("xdg-open", url)
+			for _, provider := range []string{"xdg-open", "x-www-browser", "www-browser"} {
+				_, err := exec.LookPath(provider)
+				if err != nil {
+					continue
+				}
+				cmd = exec.Command(provider, url)
+			}
+			if cmd == nil {
+				cmd = exec.Command("xdg-open", url)
+			}
 		}
+	case "freebsd", "openbsd", "netbsd":
+		cmd = exec.Command("xdg-open", url)
 	case "windows":
 		cmd = exec.Command("rundll32", "url.dll,FileProtocolHandler", url)
 	case "darwin":
