@@ -26,6 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProfileServiceClient interface {
+	// Returns the current user's profile.
 	Get(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*GetProfileResponse, error)
 }
 
@@ -50,6 +51,7 @@ func (c *profileServiceClient) Get(ctx context.Context, in *GetProfileRequest, o
 // All implementations should embed UnimplementedProfileServiceServer
 // for forward compatibility
 type ProfileServiceServer interface {
+	// Returns the current user's profile.
 	Get(context.Context, *GetProfileRequest) (*GetProfileResponse, error)
 }
 

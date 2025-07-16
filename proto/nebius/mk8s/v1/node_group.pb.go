@@ -386,10 +386,12 @@ type NodeTemplate struct {
 	// This service account is also used to make requests to container registry.
 	//
 	// `resource.serviceaccount.issueAccessToken` permission is required to use this field.
-	ServiceAccountId string           `protobuf:"bytes,10,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
-	Preemptible      *PreemptibleSpec `protobuf:"bytes,15,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	ServiceAccountId string `protobuf:"bytes,10,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
+	// Configures whether the nodes in the group are preemptible.
+	// Set to empty value to enable preemptible nodes.
+	Preemptible   *PreemptibleSpec `protobuf:"bytes,15,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *NodeTemplate) Reset() {
