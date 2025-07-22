@@ -13,3 +13,6 @@ package v1
 
 // func (x *DiskStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DiskStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DiskEncryption) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DiskEncryption) LogValue() slog.Value // is not generated as no sensitive fields found
