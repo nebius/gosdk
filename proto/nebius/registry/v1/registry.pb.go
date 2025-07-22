@@ -144,7 +144,7 @@ func (x *Registry) GetStatus() *RegistryStatus {
 type RegistrySpec struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Description   string                 `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
-	ImagesCount   int32                  `protobuf:"varint,2,opt,name=images_count,json=imagesCount,proto3" json:"images_count,omitempty"` //  Registry.Type type = 2;
+	ImagesCount   int32                  `protobuf:"varint,2,opt,name=images_count,json=imagesCount,proto3" json:"images_count,omitempty"` // Registry.Type type = 2;
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
