@@ -220,6 +220,7 @@ func openBrowser(url string) <-chan error {
 					continue
 				}
 				cmd = exec.Command(provider, url)
+				break
 			}
 			if cmd == nil {
 				cmd = exec.Command("xdg-open", url)
