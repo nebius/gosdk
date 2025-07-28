@@ -372,7 +372,9 @@ type InstanceSpec struct {
 	// If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.
 	// If set to FAIL, instance will be stopped and not restarted.
 	RecoveryPolicy InstanceRecoveryPolicy `protobuf:"varint,15,opt,name=recovery_policy,json=recoveryPolicy,proto3,enum=nebius.compute.v1.InstanceRecoveryPolicy" json:"recovery_policy,omitempty"`
-	Preemptible    *PreemptibleSpec       `protobuf:"bytes,19,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
+	// Include these parameters to create a Preemptible VM and omit them to create a Regular VM
+	// For details, see https://docs.nebius.com/compute/virtual-machines/preemptible
+	Preemptible *PreemptibleSpec `protobuf:"bytes,19,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
 	// Instance's hostname. Used to generate default DNS record in format `<hostname>.<network_id>.compute.internal.`
 	// or `<instance_id>.<network_id>.compute.internal.` if hostname is not specified.
 	Hostname string `protobuf:"bytes,20,opt,name=hostname,proto3" json:"hostname,omitempty"`
@@ -504,9 +506,13 @@ func (x *InstanceSpec) GetNvlPartitionId() string {
 }
 
 type PreemptibleSpec struct {
-	state         protoimpl.MessageState           `protogen:"open.v1"`
-	OnPreemption  PreemptibleSpec_PreemptionPolicy `protobuf:"varint,1,opt,name=on_preemption,json=onPreemption,proto3,enum=nebius.compute.v1.PreemptibleSpec_PreemptionPolicy" json:"on_preemption,omitempty"`
-	Priority      int32                            `protobuf:"varint,2,opt,name=priority,proto3" json:"priority,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Specifies what happens when the VM is preempted. The only supported value is STOP:
+	// Compute stops the VM without deleting or restarting it.
+	OnPreemption PreemptibleSpec_PreemptionPolicy `protobuf:"varint,1,opt,name=on_preemption,json=onPreemption,proto3,enum=nebius.compute.v1.PreemptibleSpec_PreemptionPolicy" json:"on_preemption,omitempty"`
+	// The value can range from 1 to 5, where 5 indicates the highest priority.
+	// Affects the order in which Compute tries to preempt VMs, but does not guarantee the exact order.
+	Priority      int32 `protobuf:"varint,2,opt,name=priority,proto3" json:"priority,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -630,8 +636,12 @@ type ResourcesSpec_Preset struct {
 func (*ResourcesSpec_Preset) isResourcesSpec_Size() {}
 
 type InstanceGpuClusterSpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// If you want to interconnect several instances in a GPU cluster via NVIDIA InfiniBand,
+	// set the ID of an existing GPU cluster.
+	// You can only add the VM to the cluster when creating the VM.
+	// For details, see https://docs.nebius.com/compute/clusters/gpu
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
