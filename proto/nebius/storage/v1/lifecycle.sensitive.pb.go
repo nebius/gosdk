@@ -19,3 +19,9 @@ package v1
 
 // func (x *LifecycleAbortIncompleteMultipartUpload) Sanitize()            // is not generated as no sensitive fields found
 // func (x *LifecycleAbortIncompleteMultipartUpload) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *LifecycleTransition) Sanitize()            // is not generated as no sensitive fields found
+// func (x *LifecycleTransition) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *LifecycleNoncurrentVersionTransition) Sanitize()            // is not generated as no sensitive fields found
+// func (x *LifecycleNoncurrentVersionTransition) LogValue() slog.Value // is not generated as no sensitive fields found
