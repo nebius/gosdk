@@ -279,6 +279,9 @@ func (w *wrapperTransferSpec_BucketCredentials_CredentialsAccessKey) ProtoReflec
 	return (*TransferSpec_BucketCredentials_CredentialsAccessKey)(w).ProtoReflect()
 }
 
+// func (x *TransferSpec_Limiters) Sanitize()            // is not generated as no sensitive fields found
+// func (x *TransferSpec_Limiters) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *TransferSpec_StopConditionAfterOneIteration) Sanitize()            // is not generated as no sensitive fields found
 // func (x *TransferSpec_StopConditionAfterOneIteration) LogValue() slog.Value // is not generated as no sensitive fields found
 
