@@ -75,6 +75,8 @@ func WithExplicitInit(explicitInit bool) Option {
 }
 
 // WithInit adds an extra fn, which will be called on init [SDK].
+// The context passed to the function is short-lived. If you need to start
+// a goroutine, use [SDK.Context] to get a long-lived context.
 func WithInit(fn func(context.Context, *SDK) error) Option {
 	return optionInit(fn)
 }
