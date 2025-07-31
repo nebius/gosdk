@@ -21,18 +21,22 @@ import (
 
 // SDK is the Nebius API client.
 type SDK struct {
+	ctx      context.Context
+	cancel   context.CancelFunc
 	resolver conn.Resolver
 	dialer   conn.Dialer
 	tokener  auth.BearerTokener
 	inits    []func(context.Context, *SDK) error
 	closes   []func() error
+	isClosed atomic.Bool
 }
 
 // New creates a new [SDK] with the provided options.
 // By default, it also performs any necessary I/O operations.
 // To separate I/O operations from instantiation, use the [WithExplicitInit] option.
-//
-// Important: Ensure that the provided ctx is not closed before calling [SDK.Close].
+// The context provided to [New] can be short-lived, as it is used only for the initial setup.
+// SDK may span goroutines that will use the context returned by [SDK.Context].
+// If you want to stop the goroutines, you should call [SDK.Close].
 func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	domain := "api.nebius.cloud:443"
 
@@ -125,7 +129,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 
 			//nolint:mnd // 90%, 1s and 1m are recommended values by IAM team
 			cache := auth.NewCachedServiceTokener(logger, t, 0.9, 1*time.Second, 1.5, 1*time.Minute)
-			inits = append(inits, initCache(cache))
+			inits = append(inits, initCache(cache, logger))
 			tokener = cache
 
 			auths[selector] = auth.NewAuthenticatorFromBearerTokener(tokener)
@@ -176,6 +180,8 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	closes = append(closes, dialer.Close)
 	inits = append(inits, customInits...)
 
+	sdkContext, cancel := context.WithCancel(context.WithoutCancel(ctx))
+
 	sdk := &SDK{
 		resolver: conn.NewContextResolver(
 			logger,
@@ -191,6 +197,8 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		tokener: tokener,
 		inits:   inits,
 		closes:  closes,
+		ctx:     sdkContext,
+		cancel:  cancel,
 	}
 
 	if !explicitInit {
@@ -203,12 +211,19 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	return sdk, nil
 }
 
+// Context returns a long-lived context for the internal SDK operations
+// that lives as long as the SDK itself and is canceled when the SDK is closed
+// (by calling [SDK.Close]).
+func (s *SDK) Context() context.Context {
+	return s.ctx
+}
+
 // Init finalizes the creation of the [SDK] by performing all required I/O operations.
 // It is automatically called by the [New] constructor by default.
 // This method should only be called manually if the [WithExplicitInit] option is used.
-//
-// Important: Ensure that the provided ctx is not closed before calling [SDK.Close].
 func (s *SDK) Init(ctx context.Context) error {
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 	for _, init := range s.inits {
 		err := init(ctx, s)
 		if err != nil {
@@ -224,8 +239,13 @@ func (s *SDK) Services() nebius.Services {
 	return nebius.New(s)
 }
 
-// Close closes connections and leans up resources.
+// Close closes connections and cleans up resources.
 func (s *SDK) Close() error {
+	if s.isClosed.Swap(true) {
+		return nil
+	}
+	defer s.cancel()
+
 	var errs error
 	for _, c := range s.closes {
 		err := c()
@@ -254,36 +274,17 @@ func (s *SDK) Dial(ctx context.Context, address conn.Address) (grpc.ClientConnIn
 	return s.dialer.Dial(ctx, address)
 }
 
-func initCache(cache *auth.CachedServiceTokener) func(context.Context, *SDK) error {
-	const wait = 5 * time.Second
-	return func(ctx context.Context, sdk *SDK) error {
-		ctx, cancel := context.WithCancel(ctx)
-		errs := make(chan error, 1)
-		stopped := atomic.Bool{}
-
-		stopCacheAndWaitResult := func() error {
-			if !stopped.CompareAndSwap(false, true) {
-				return nil
-			}
-
-			cancel()
-
-			select {
-			case err := <-errs:
-				if err == context.Canceled { //nolint:errorlint // don't use errors.Is intentionally
-					return nil
-				}
-				return err
-			case <-time.After(wait):
-				return errors.New("timed out waiting for cache")
-			}
-		}
-
-		// Need to stop cache before closing dialer
-		sdk.closes = append([]func() error{stopCacheAndWaitResult}, sdk.closes...)
-
+func initCache(cache *auth.CachedServiceTokener, logger *slog.Logger) func(context.Context, *SDK) error {
+	return func(_ context.Context, sdk *SDK) error {
 		go func() {
-			errs <- cache.Run(ctx)
+			err := cache.Run(sdk.Context())
+			if err != nil && !errors.Is(err, context.Canceled) {
+				logger.ErrorContext(
+					sdk.Context(),
+					"background token refresh failed",
+					slog.Any("error", err),
+				)
+			}
 		}()
 
 		return nil
