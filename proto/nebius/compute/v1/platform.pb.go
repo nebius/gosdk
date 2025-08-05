@@ -272,9 +272,10 @@ func (x *PresetResources) GetGpuCount() int32 {
 }
 
 type PlatformStatus struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	AllowedForPreemptibles bool                   `protobuf:"varint,3,opt,name=allowed_for_preemptibles,json=allowedForPreemptibles,proto3" json:"allowed_for_preemptibles,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *PlatformStatus) Reset() {
@@ -307,6 +308,13 @@ func (*PlatformStatus) Descriptor() ([]byte, []int) {
 	return file_nebius_compute_v1_platform_proto_rawDescGZIP(), []int{4}
 }
 
+func (x *PlatformStatus) GetAllowedForPreemptibles() bool {
+	if x != nil {
+		return x.AllowedForPreemptibles
+	}
+	return false
+}
+
 var File_nebius_compute_v1_platform_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_platform_proto_rawDesc = "" +
@@ -329,8 +337,9 @@ const file_nebius_compute_v1_platform_proto_rawDesc = "" +
 	"\n" +
 	"vcpu_count\x18\x01 \x01(\x05B\x04\xbaJ\x01\x05R\tvcpuCount\x12)\n" +
 	"\x10memory_gibibytes\x18\x03 \x01(\x05R\x0fmemoryGibibytes\x12\x1b\n" +
-	"\tgpu_count\x18\x04 \x01(\x05R\bgpuCount\"\x10\n" +
-	"\x0ePlatformStatusB\\\n" +
+	"\tgpu_count\x18\x04 \x01(\x05R\bgpuCount\"J\n" +
+	"\x0ePlatformStatus\x128\n" +
+	"\x18allowed_for_preemptibles\x18\x03 \x01(\bR\x16allowedForPreemptiblesB\\\n" +
 	"\x18ai.nebius.pub.compute.v1B\rPlatformProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 
 var (
