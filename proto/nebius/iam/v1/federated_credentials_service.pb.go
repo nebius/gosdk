@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.28.3
-// source: nebius/iam/v1/federated_credentilas_service.proto
+// source: nebius/iam/v1/federated_credentials_service.proto
 
 package v1
 
@@ -33,7 +33,7 @@ type GetFederatedCredentialsRequest struct {
 
 func (x *GetFederatedCredentialsRequest) Reset() {
 	*x = GetFederatedCredentialsRequest{}
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[0]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +45,7 @@ func (x *GetFederatedCredentialsRequest) String() string {
 func (*GetFederatedCredentialsRequest) ProtoMessage() {}
 
 func (x *GetFederatedCredentialsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[0]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *GetFederatedCredentialsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFederatedCredentialsRequest.ProtoReflect.Descriptor instead.
 func (*GetFederatedCredentialsRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federated_credentilas_service_proto_rawDescGZIP(), []int{0}
+	return file_nebius_iam_v1_federated_credentials_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GetFederatedCredentialsRequest) GetId() string {
@@ -80,7 +80,7 @@ type GetByNameFederatedCredentialsRequest struct {
 
 func (x *GetByNameFederatedCredentialsRequest) Reset() {
 	*x = GetByNameFederatedCredentialsRequest{}
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[1]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -92,7 +92,7 @@ func (x *GetByNameFederatedCredentialsRequest) String() string {
 func (*GetByNameFederatedCredentialsRequest) ProtoMessage() {}
 
 func (x *GetByNameFederatedCredentialsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[1]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,7 +105,7 @@ func (x *GetByNameFederatedCredentialsRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use GetByNameFederatedCredentialsRequest.ProtoReflect.Descriptor instead.
 func (*GetByNameFederatedCredentialsRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federated_credentilas_service_proto_rawDescGZIP(), []int{1}
+	return file_nebius_iam_v1_federated_credentials_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetByNameFederatedCredentialsRequest) GetParentId() string {
@@ -132,7 +132,7 @@ type CreateFederatedCredentialsRequest struct {
 
 func (x *CreateFederatedCredentialsRequest) Reset() {
 	*x = CreateFederatedCredentialsRequest{}
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[2]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -144,7 +144,7 @@ func (x *CreateFederatedCredentialsRequest) String() string {
 func (*CreateFederatedCredentialsRequest) ProtoMessage() {}
 
 func (x *CreateFederatedCredentialsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[2]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -157,7 +157,7 @@ func (x *CreateFederatedCredentialsRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use CreateFederatedCredentialsRequest.ProtoReflect.Descriptor instead.
 func (*CreateFederatedCredentialsRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federated_credentilas_service_proto_rawDescGZIP(), []int{2}
+	return file_nebius_iam_v1_federated_credentials_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CreateFederatedCredentialsRequest) GetMetadata() *v1.ResourceMetadata {
@@ -184,7 +184,7 @@ type UpdateFederatedCredentialsRequest struct {
 
 func (x *UpdateFederatedCredentialsRequest) Reset() {
 	*x = UpdateFederatedCredentialsRequest{}
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[3]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -196,7 +196,7 @@ func (x *UpdateFederatedCredentialsRequest) String() string {
 func (*UpdateFederatedCredentialsRequest) ProtoMessage() {}
 
 func (x *UpdateFederatedCredentialsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[3]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -209,7 +209,7 @@ func (x *UpdateFederatedCredentialsRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use UpdateFederatedCredentialsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateFederatedCredentialsRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federated_credentilas_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_iam_v1_federated_credentials_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpdateFederatedCredentialsRequest) GetMetadata() *v1.ResourceMetadata {
@@ -242,7 +242,7 @@ type ListFederatedCredentialsRequest struct {
 
 func (x *ListFederatedCredentialsRequest) Reset() {
 	*x = ListFederatedCredentialsRequest{}
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[4]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -254,7 +254,7 @@ func (x *ListFederatedCredentialsRequest) String() string {
 func (*ListFederatedCredentialsRequest) ProtoMessage() {}
 
 func (x *ListFederatedCredentialsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[4]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -267,7 +267,7 @@ func (x *ListFederatedCredentialsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFederatedCredentialsRequest.ProtoReflect.Descriptor instead.
 func (*ListFederatedCredentialsRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federated_credentilas_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_iam_v1_federated_credentials_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListFederatedCredentialsRequest) GetParentId() string {
@@ -310,7 +310,7 @@ type ListFederatedCredentialsResponse struct {
 
 func (x *ListFederatedCredentialsResponse) Reset() {
 	*x = ListFederatedCredentialsResponse{}
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[5]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -322,7 +322,7 @@ func (x *ListFederatedCredentialsResponse) String() string {
 func (*ListFederatedCredentialsResponse) ProtoMessage() {}
 
 func (x *ListFederatedCredentialsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[5]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -335,7 +335,7 @@ func (x *ListFederatedCredentialsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFederatedCredentialsResponse.ProtoReflect.Descriptor instead.
 func (*ListFederatedCredentialsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federated_credentilas_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_iam_v1_federated_credentials_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListFederatedCredentialsResponse) GetItems() []*FederatedCredentials {
@@ -361,7 +361,7 @@ type DeleteFederatedCredentialsRequest struct {
 
 func (x *DeleteFederatedCredentialsRequest) Reset() {
 	*x = DeleteFederatedCredentialsRequest{}
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[6]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -373,7 +373,7 @@ func (x *DeleteFederatedCredentialsRequest) String() string {
 func (*DeleteFederatedCredentialsRequest) ProtoMessage() {}
 
 func (x *DeleteFederatedCredentialsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes[6]
+	mi := &file_nebius_iam_v1_federated_credentials_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -386,7 +386,7 @@ func (x *DeleteFederatedCredentialsRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use DeleteFederatedCredentialsRequest.ProtoReflect.Descriptor instead.
 func (*DeleteFederatedCredentialsRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federated_credentilas_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_iam_v1_federated_credentials_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteFederatedCredentialsRequest) GetId() string {
@@ -396,11 +396,11 @@ func (x *DeleteFederatedCredentialsRequest) GetId() string {
 	return ""
 }
 
-var File_nebius_iam_v1_federated_credentilas_service_proto protoreflect.FileDescriptor
+var File_nebius_iam_v1_federated_credentials_service_proto protoreflect.FileDescriptor
 
-const file_nebius_iam_v1_federated_credentilas_service_proto_rawDesc = "" +
+const file_nebius_iam_v1_federated_credentials_service_proto_rawDesc = "" +
 	"\n" +
-	"1nebius/iam/v1/federated_credentilas_service.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a)nebius/iam/v1/federated_credentials.proto\"8\n" +
+	"1nebius/iam/v1/federated_credentials_service.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a)nebius/iam/v1/federated_credentials.proto\"8\n" +
 	"\x1eGetFederatedCredentialsRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"g\n" +
 	"$GetByNameFederatedCredentialsRequest\x12#\n" +
@@ -431,22 +431,22 @@ const file_nebius_iam_v1_federated_credentilas_service_proto_rawDesc = "" +
 	"\x06Update\x120.nebius.iam.v1.UpdateFederatedCredentialsRequest\x1a\x1b.nebius.common.v1.Operation\x12W\n" +
 	"\x06Delete\x120.nebius.iam.v1.DeleteFederatedCredentialsRequest\x1a\x1b.nebius.common.v1.Operation\x1a\n" +
 	"\xbaJ\acpl.iamBg\n" +
-	"\x14ai.nebius.pub.iam.v1B FederatedCredentilasServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
+	"\x14ai.nebius.pub.iam.v1B FederatedCredentialsServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
 
 var (
-	file_nebius_iam_v1_federated_credentilas_service_proto_rawDescOnce sync.Once
-	file_nebius_iam_v1_federated_credentilas_service_proto_rawDescData []byte
+	file_nebius_iam_v1_federated_credentials_service_proto_rawDescOnce sync.Once
+	file_nebius_iam_v1_federated_credentials_service_proto_rawDescData []byte
 )
 
-func file_nebius_iam_v1_federated_credentilas_service_proto_rawDescGZIP() []byte {
-	file_nebius_iam_v1_federated_credentilas_service_proto_rawDescOnce.Do(func() {
-		file_nebius_iam_v1_federated_credentilas_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_nebius_iam_v1_federated_credentilas_service_proto_rawDesc), len(file_nebius_iam_v1_federated_credentilas_service_proto_rawDesc)))
+func file_nebius_iam_v1_federated_credentials_service_proto_rawDescGZIP() []byte {
+	file_nebius_iam_v1_federated_credentials_service_proto_rawDescOnce.Do(func() {
+		file_nebius_iam_v1_federated_credentials_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_nebius_iam_v1_federated_credentials_service_proto_rawDesc), len(file_nebius_iam_v1_federated_credentials_service_proto_rawDesc)))
 	})
-	return file_nebius_iam_v1_federated_credentilas_service_proto_rawDescData
+	return file_nebius_iam_v1_federated_credentials_service_proto_rawDescData
 }
 
-var file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
-var file_nebius_iam_v1_federated_credentilas_service_proto_goTypes = []any{
+var file_nebius_iam_v1_federated_credentials_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_nebius_iam_v1_federated_credentials_service_proto_goTypes = []any{
 	(*GetFederatedCredentialsRequest)(nil),       // 0: nebius.iam.v1.GetFederatedCredentialsRequest
 	(*GetByNameFederatedCredentialsRequest)(nil), // 1: nebius.iam.v1.GetByNameFederatedCredentialsRequest
 	(*CreateFederatedCredentialsRequest)(nil),    // 2: nebius.iam.v1.CreateFederatedCredentialsRequest
@@ -459,7 +459,7 @@ var file_nebius_iam_v1_federated_credentilas_service_proto_goTypes = []any{
 	(*FederatedCredentials)(nil),                 // 9: nebius.iam.v1.FederatedCredentials
 	(*v1.Operation)(nil),                         // 10: nebius.common.v1.Operation
 }
-var file_nebius_iam_v1_federated_credentilas_service_proto_depIdxs = []int32{
+var file_nebius_iam_v1_federated_credentials_service_proto_depIdxs = []int32{
 	7,  // 0: nebius.iam.v1.CreateFederatedCredentialsRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	8,  // 1: nebius.iam.v1.CreateFederatedCredentialsRequest.spec:type_name -> nebius.iam.v1.FederatedCredentialsSpec
 	7,  // 2: nebius.iam.v1.UpdateFederatedCredentialsRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -484,9 +484,9 @@ var file_nebius_iam_v1_federated_credentilas_service_proto_depIdxs = []int32{
 	0,  // [0:5] is the sub-list for field type_name
 }
 
-func init() { file_nebius_iam_v1_federated_credentilas_service_proto_init() }
-func file_nebius_iam_v1_federated_credentilas_service_proto_init() {
-	if File_nebius_iam_v1_federated_credentilas_service_proto != nil {
+func init() { file_nebius_iam_v1_federated_credentials_service_proto_init() }
+func file_nebius_iam_v1_federated_credentials_service_proto_init() {
+	if File_nebius_iam_v1_federated_credentials_service_proto != nil {
 		return
 	}
 	file_nebius_iam_v1_federated_credentials_proto_init()
@@ -494,17 +494,17 @@ func file_nebius_iam_v1_federated_credentilas_service_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_iam_v1_federated_credentilas_service_proto_rawDesc), len(file_nebius_iam_v1_federated_credentilas_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_iam_v1_federated_credentials_service_proto_rawDesc), len(file_nebius_iam_v1_federated_credentials_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_nebius_iam_v1_federated_credentilas_service_proto_goTypes,
-		DependencyIndexes: file_nebius_iam_v1_federated_credentilas_service_proto_depIdxs,
-		MessageInfos:      file_nebius_iam_v1_federated_credentilas_service_proto_msgTypes,
+		GoTypes:           file_nebius_iam_v1_federated_credentials_service_proto_goTypes,
+		DependencyIndexes: file_nebius_iam_v1_federated_credentials_service_proto_depIdxs,
+		MessageInfos:      file_nebius_iam_v1_federated_credentials_service_proto_msgTypes,
 	}.Build()
-	File_nebius_iam_v1_federated_credentilas_service_proto = out.File
-	file_nebius_iam_v1_federated_credentilas_service_proto_goTypes = nil
-	file_nebius_iam_v1_federated_credentilas_service_proto_depIdxs = nil
+	File_nebius_iam_v1_federated_credentials_service_proto = out.File
+	file_nebius_iam_v1_federated_credentials_service_proto_goTypes = nil
+	file_nebius_iam_v1_federated_credentials_service_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v5.28.3
-// source: nebius/iam/v1/federated_credentilas_service.proto
+// source: nebius/iam/v1/federated_credentials_service.proto
 
 package v1
 
@@ -289,5 +289,5 @@ var FederatedCredentialsService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "nebius/iam/v1/federated_credentilas_service.proto",
+	Metadata: "nebius/iam/v1/federated_credentials_service.proto",
 }
