@@ -76,9 +76,9 @@ func newCallbackHandler(logger *slog.Logger) (*callbackHandler, error) {
 	return handler, nil
 }
 
-func (h *callbackHandler) ListenAndServe() error {
+func (h *callbackHandler) ListenAndServe(ctx context.Context) error {
 	var err error
-	if h.listener, err = listener(); err != nil {
+	if h.listener, err = listener(ctx); err != nil {
 		return err
 	}
 
@@ -92,12 +92,13 @@ func (h *callbackHandler) ListenAndServe() error {
 	return nil
 }
 
-func listener() (net.Listener, error) {
+func listener(ctx context.Context) (net.Listener, error) {
 	var errs error
-	l, err := net.Listen("tcp", "127.0.0.1:0")
+	var config net.ListenConfig
+	l, err := config.Listen(ctx, "tcp", "127.0.0.1:0")
 	if err != nil {
 		errs = err
-		if l, err = net.Listen("tcp6", "[::1]:0"); err != nil {
+		if l, err = config.Listen(ctx, "tcp6", "[::1]:0"); err != nil {
 			errs = errors.Join(errs, err)
 		}
 	}

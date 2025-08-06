@@ -34,7 +34,7 @@ func getCode(
 		return "", "", err
 	}
 
-	err = callback.ListenAndServe()
+	err = callback.ListenAndServe(ctx)
 	if err != nil {
 		return "", "", err
 	}
@@ -87,7 +87,7 @@ func getCode(
 		if err != nil {
 			return "", "", err
 		}
-		browserErr = openBrowser(authURL.String())
+		browserErr = openBrowser(ctx, authURL.String())
 	}
 
 	select {
@@ -198,7 +198,7 @@ func Authorize(
 	return token, nil
 }
 
-func openBrowser(url string) <-chan error {
+func openBrowser(ctx context.Context, url string) <-chan error {
 	ch := make(chan error, 1)
 
 	var cmd *exec.Cmd
@@ -206,7 +206,7 @@ func openBrowser(url string) <-chan error {
 	case "linux":
 		if IsWSL() {
 			//nolint:gosec // we trust url
-			cmd = exec.Command("cmd.exe", "/c", "start", strings.ReplaceAll(url, "&", "^&"))
+			cmd = exec.CommandContext(ctx, "cmd.exe", "/c", "start", strings.ReplaceAll(url, "&", "^&"))
 			home, err := config.UserHomeDir()
 			if err != nil {
 				ch <- err
@@ -219,19 +219,19 @@ func openBrowser(url string) <-chan error {
 				if err != nil {
 					continue
 				}
-				cmd = exec.Command(provider, url)
+				cmd = exec.CommandContext(ctx, provider, url)
 				break
 			}
 			if cmd == nil {
-				cmd = exec.Command("xdg-open", url)
+				cmd = exec.CommandContext(ctx, "xdg-open", url)
 			}
 		}
 	case "freebsd", "openbsd", "netbsd":
-		cmd = exec.Command("xdg-open", url)
+		cmd = exec.CommandContext(ctx, "xdg-open", url)
 	case "windows":
-		cmd = exec.Command("rundll32", "url.dll,FileProtocolHandler", url)
+		cmd = exec.CommandContext(ctx, "rundll32", "url.dll,FileProtocolHandler", url)
 	case "darwin":
-		cmd = exec.Command("open", url)
+		cmd = exec.CommandContext(ctx, "open", url)
 	default:
 		ch <- errors.New("unsupported platform")
 		return ch
