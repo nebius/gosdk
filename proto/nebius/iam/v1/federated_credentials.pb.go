@@ -92,9 +92,9 @@ type FederatedCredentialsSpec struct {
 	//
 	//	*FederatedCredentialsSpec_OidcProvider
 	CredentialsProvider isFederatedCredentialsSpec_CredentialsProvider `protobuf_oneof:"credentials_provider"`
-	FederatedSubjectId  string                                         `protobuf:"bytes,101,opt,name=federated_subject_id,json=federatedSubjectId,proto3" json:"federated_subject_id,omitempty"`
-	// IAM subject, in which federated subject will be impersonated to.
-	// E.g. for workload identities it will be IAM service account.
+	// Federated subject ID.For oidc_provider subject will be calculated based on the “sub” claim of the JWT federation token.
+	FederatedSubjectId string `protobuf:"bytes,101,opt,name=federated_subject_id,json=federatedSubjectId,proto3" json:"federated_subject_id,omitempty"`
+	// IAM subject, in which federated subject will be impersonated to. E.g. for workload identities it will be IAM service account.
 	SubjectId     string `protobuf:"bytes,111,opt,name=subject_id,json=subjectId,proto3" json:"subject_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -177,9 +177,16 @@ type OidcCredentialsProvider struct {
 	// with "/.well-known/openid-configuration" endpoint. Configuration should contains the "jwks_uri" endpoint
 	// where the JSON Web Key Set (JWKS) can be found; this set contains public keys used to verify
 	// JSON Web Tokens (JWTs) issued by an identity provider.
+	//
+	// Limitations for external OIDC providers:
+	// - token service limits the number of handled keys by 50. If your JWKS return more than 50,
+	// the only first 50  will be used for signature verifying.
+	// - response size for jwks_uri and "/.well-known/openid-configuration limited by 100KB.
 	IssuerUrl string `protobuf:"bytes,1,opt,name=issuer_url,json=issuerUrl,proto3" json:"issuer_url,omitempty"`
 	// *
-	// Literally json, which represents JWKS with public keys for JWT verification
+	// Literally json, which represents JWKS with public keys for JWT verification.
+	// It worth mentioned that in a case of adding/rotating keys the jwk_set_json also should be updated here.
+	// Besides, the "issuer" parameter should be set even if the JWKS will be resolved locally.
 	JwkSetJson    string `protobuf:"bytes,2,opt,name=jwk_set_json,json=jwkSetJson,proto3" json:"jwk_set_json,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
