@@ -29,8 +29,9 @@ var AccessTokenVersions = map[string]TokenVersion{
 	"NE1": {Prefix: "ne1", Delimiter: ".", SignaturePosition: 1, TokenPartsCount: 2},
 	"V1":  {Prefix: "v1.", Delimiter: ".", SignaturePosition: 2, TokenPartsCount: 3},
 
-	// When changing this, also update PySDK:
-	// https://github.com/nebius/pysdk/blob/main/src/nebius/base/token_sanitizer.py
+	// When changing this, also update PySDK and API gateway:
+	// https://github.com/nebius/pysdk/blob/352256c7261665a0f31548bd1a1dbf2b21fb73fe/src/nebius/base/token_sanitizer.py
+	// https://gitlab.nebius.dev/nebius/nebo/-/blob/8b0e5abf51aef29b4128dd0db36d01be88eb3ff6/api/gateway/private/internal/auth/token.go
 }
 
 // CredentialsVersions contains all possible token types, which is used in app.
@@ -47,7 +48,7 @@ var CredentialsVersions = map[string]TokenVersion{
 	"JWT": {Prefix: "eyJ", Delimiter: ".", SignaturePosition: 2, TokenPartsCount: 3},
 
 	// When changing this, also update PySDK:
-	// https://github.com/nebius/pysdk/blob/main/src/nebius/base/token_sanitizer.py
+	// https://github.com/nebius/pysdk/blob/352256c7261665a0f31548bd1a1dbf2b21fb73fe/src/nebius/base/token_sanitizer.py
 }
 
 type TokenSanitizer struct {
