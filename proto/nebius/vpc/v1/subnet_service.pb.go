@@ -473,14 +473,12 @@ const file_nebius_vpc_v1_subnet_service_proto_rawDesc = "" +
 	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')R\bmetadata\x12-\n" +
 	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecR\x04spec\"%\n" +
 	"\x13DeleteSubnetRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\xc4\x04\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id2\xb2\x04\n" +
 	"\rSubnetService\x12=\n" +
 	"\x03Get\x12\x1f.nebius.vpc.v1.GetSubnetRequest\x1a\x15.nebius.vpc.v1.Subnet\x12I\n" +
 	"\tGetByName\x12%.nebius.vpc.v1.GetSubnetByNameRequest\x1a\x15.nebius.vpc.v1.Subnet\x12M\n" +
-	"\x04List\x12!.nebius.vpc.v1.ListSubnetsRequest\x1a\".nebius.vpc.v1.ListSubnetsResponse\x12q\n" +
-	"\rListByNetwork\x12*.nebius.vpc.v1.ListSubnetsByNetworkRequest\x1a\".nebius.vpc.v1.ListSubnetsResponse\"\x10\x9a\xb5\x18\f\n" +
-	"\n" +
-	"network_id\x12I\n" +
+	"\x04List\x12!.nebius.vpc.v1.ListSubnetsRequest\x1a\".nebius.vpc.v1.ListSubnetsResponse\x12_\n" +
+	"\rListByNetwork\x12*.nebius.vpc.v1.ListSubnetsByNetworkRequest\x1a\".nebius.vpc.v1.ListSubnetsResponse\x12I\n" +
 	"\x06Create\x12\".nebius.vpc.v1.CreateSubnetRequest\x1a\x1b.nebius.common.v1.Operation\x12I\n" +
 	"\x06Update\x12\".nebius.vpc.v1.UpdateSubnetRequest\x1a\x1b.nebius.common.v1.Operation\x12I\n" +
 	"\x06Delete\x12\".nebius.vpc.v1.DeleteSubnetRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x06\xbaJ\x03vpcBY\n" +

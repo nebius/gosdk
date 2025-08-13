@@ -332,14 +332,12 @@ const file_nebius_vpc_v1alpha1_subnet_service_proto_rawDesc = "" +
 	"\x06filter\x18\x04 \x01(\tR\x06filter\"p\n" +
 	"\x13ListSubnetsResponse\x121\n" +
 	"\x05items\x18\x01 \x03(\v2\x1b.nebius.vpc.v1alpha1.SubnetR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x93\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x81\x03\n" +
 	"\rSubnetService\x12I\n" +
 	"\x03Get\x12%.nebius.vpc.v1alpha1.GetSubnetRequest\x1a\x1b.nebius.vpc.v1alpha1.Subnet\x12U\n" +
 	"\tGetByName\x12+.nebius.vpc.v1alpha1.GetSubnetByNameRequest\x1a\x1b.nebius.vpc.v1alpha1.Subnet\x12Y\n" +
-	"\x04List\x12'.nebius.vpc.v1alpha1.ListSubnetsRequest\x1a(.nebius.vpc.v1alpha1.ListSubnetsResponse\x12}\n" +
-	"\rListByNetwork\x120.nebius.vpc.v1alpha1.ListSubnetsByNetworkRequest\x1a(.nebius.vpc.v1alpha1.ListSubnetsResponse\"\x10\x9a\xb5\x18\f\n" +
-	"\n" +
-	"network_id\x1a\x06\xbaJ\x03vpcBe\n" +
+	"\x04List\x12'.nebius.vpc.v1alpha1.ListSubnetsRequest\x1a(.nebius.vpc.v1alpha1.ListSubnetsResponse\x12k\n" +
+	"\rListByNetwork\x120.nebius.vpc.v1alpha1.ListSubnetsByNetworkRequest\x1a(.nebius.vpc.v1alpha1.ListSubnetsResponse\x1a\x06\xbaJ\x03vpcBe\n" +
 	"\x1aai.nebius.pub.vpc.v1alpha1B\x12SubnetServiceProtoP\x01Z1github.com/nebius/gosdk/proto/nebius/vpc/v1alpha1b\x06proto3"
 
 var (

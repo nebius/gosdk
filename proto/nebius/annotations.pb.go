@@ -478,74 +478,6 @@ func (x *EnumValuePySDKSettings) GetName() string {
 	return ""
 }
 
-type RegionRouting struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// A list of fields to extract the NID from, in order of priority.
-	// The API Gateway will check each field in sequence and use the first valid NID it finds.
-	// This overrides the default NID lookup order: `id`, `parent_id`, `metadata.id`, `metadata.parent_id`.
-	// If the field contains a non-empty list of strings, all NIDs in the array must be valid and have the same routing code.
-	Nid []string `protobuf:"bytes,1,rep,name=nid,proto3" json:"nid,omitempty"`
-	// If true, region routing is disabled for the method.
-	// When this is set, requests will not be forwarded to a different region, even if an NID is present.
-	Disabled bool `protobuf:"varint,2,opt,name=disabled,proto3" json:"disabled,omitempty"`
-	// In strict mode, the API Gateway returns an INVALID_ARGUMENT error to the user when a routing error occurs,
-	// rather than forwarding the request to the local region.
-	Strict        bool `protobuf:"varint,3,opt,name=strict,proto3" json:"strict,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RegionRouting) Reset() {
-	*x = RegionRouting{}
-	mi := &file_nebius_annotations_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RegionRouting) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RegionRouting) ProtoMessage() {}
-
-func (x *RegionRouting) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_annotations_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RegionRouting.ProtoReflect.Descriptor instead.
-func (*RegionRouting) Descriptor() ([]byte, []int) {
-	return file_nebius_annotations_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *RegionRouting) GetNid() []string {
-	if x != nil {
-		return x.Nid
-	}
-	return nil
-}
-
-func (x *RegionRouting) GetDisabled() bool {
-	if x != nil {
-		return x.Disabled
-	}
-	return false
-}
-
-func (x *RegionRouting) GetStrict() bool {
-	if x != nil {
-		return x.Strict
-	}
-	return false
-}
-
 type DeprecationDetails struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The date when this method, service, message or field will stop working (format: YYYY-MM-DD)
@@ -558,7 +490,7 @@ type DeprecationDetails struct {
 
 func (x *DeprecationDetails) Reset() {
 	*x = DeprecationDetails{}
-	mi := &file_nebius_annotations_proto_msgTypes[8]
+	mi := &file_nebius_annotations_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -570,7 +502,7 @@ func (x *DeprecationDetails) String() string {
 func (*DeprecationDetails) ProtoMessage() {}
 
 func (x *DeprecationDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_annotations_proto_msgTypes[8]
+	mi := &file_nebius_annotations_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -583,7 +515,7 @@ func (x *DeprecationDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeprecationDetails.ProtoReflect.Descriptor instead.
 func (*DeprecationDetails) Descriptor() ([]byte, []int) {
-	return file_nebius_annotations_proto_rawDescGZIP(), []int{8}
+	return file_nebius_annotations_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *DeprecationDetails) GetEffectiveAt() string {
@@ -639,14 +571,6 @@ var file_nebius_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         1195,
 		Name:          "nebius.method_py_sdk",
 		Tag:           "bytes,1195,opt,name=method_py_sdk",
-		Filename:      "nebius/annotations.proto",
-	},
-	{
-		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
-		ExtensionType: (*RegionRouting)(nil),
-		Field:         50003,
-		Name:          "nebius.region_routing",
-		Tag:           "bytes,50003,opt,name=region_routing",
 		Filename:      "nebius/annotations.proto",
 	},
 	{
@@ -781,55 +705,19 @@ var (
 	E_MethodDeprecationDetails = &file_nebius_annotations_proto_extTypes[3]
 	// optional nebius.MethodPySDKSettings method_py_sdk = 1195;
 	E_MethodPySdk = &file_nebius_annotations_proto_extTypes[4]
-	// Defines custom region routing rules for a method.
-	//
-	// By default, the API Gateway searches for the NID in the following proto message fields (in order):
-	//   - `id`
-	//   - `parent_id`
-	//   - `metadata.id`
-	//   - `metadata.parent_id`
-	//
-	// If a valid NID is found, the request is routed to the associated region by routing code.
-	// Otherwise, the request is routed to the local region.
-	// These default rules generally cover most use cases.
-	//
-	// To customize the routing behavior, use the `region_routing` option:
-	//   - To specify a custom field path(s) for the NID, use the `nid` field.
-	//   - To return an INVALID_ARGUMENT error instead of forwarding to the local region, set `strict` to `true`.
-	//   - To completely disable region routing, set `disabled` to `true`.
-	//
-	// Examples:
-	//
-	//	service MyService {
-	//	  rpc DefaultRouting(Request) returns (Response);
-	//	  rpc CustomRoutingField(Request) returns (Response) {
-	//	    option (region_routing).nid = "path.to.resource_id";
-	//	  };
-	//	  rpc SeveralFieldsToSearch(Request) returns (Response) {
-	//	    option (region_routing).nid = "path.to.resource_id";
-	//	    option (region_routing).nid = "path.to.parent_id";
-	//	    option (region_routing).strict = true;
-	//	  };
-	//	  rpc DisabledRouting(Request) returns (Response) {
-	//	    option (region_routing).disabled = true;
-	//	  };
-	//	}
-	//
-	// optional nebius.RegionRouting region_routing = 50003;
-	E_RegionRouting = &file_nebius_annotations_proto_extTypes[5]
 )
 
 // Extension fields to descriptorpb.MessageOptions.
 var (
 	// repeated nebius.ResourceBehavior resource_behavior = 1191;
-	E_ResourceBehavior = &file_nebius_annotations_proto_extTypes[6]
+	E_ResourceBehavior = &file_nebius_annotations_proto_extTypes[5]
 	// Contains additional information about the planned deprecation of a message.
 	// Used along with `option deprecated = true`.
 	//
 	// optional nebius.DeprecationDetails message_deprecation_details = 1194;
-	E_MessageDeprecationDetails = &file_nebius_annotations_proto_extTypes[7]
+	E_MessageDeprecationDetails = &file_nebius_annotations_proto_extTypes[6]
 	// optional nebius.MessagePySDKSettings message_py_sdk = 1195;
-	E_MessagePySdk = &file_nebius_annotations_proto_extTypes[8]
+	E_MessagePySdk = &file_nebius_annotations_proto_extTypes[7]
 )
 
 // Extension fields to descriptorpb.FieldOptions.
@@ -837,24 +725,24 @@ var (
 	// Field behavior describes how the field behaves on input or output.
 	//
 	// repeated nebius.FieldBehavior field_behavior = 1191;
-	E_FieldBehavior = &file_nebius_annotations_proto_extTypes[9]
+	E_FieldBehavior = &file_nebius_annotations_proto_extTypes[8]
 	// Sensitive field is masked/removed from the message while logging, storing in DB and
 	// on all others persistent layers (except specialized storage like PDS).
 	//
 	// optional bool sensitive = 1192;
-	E_Sensitive = &file_nebius_annotations_proto_extTypes[10]
+	E_Sensitive = &file_nebius_annotations_proto_extTypes[9]
 	// Credentials field is masked access tokens/jwt/session from the message while logging, storing in DB and
 	// on all others persistent layers
 	//
 	// optional bool credentials = 1193;
-	E_Credentials = &file_nebius_annotations_proto_extTypes[11]
+	E_Credentials = &file_nebius_annotations_proto_extTypes[10]
 	// Contains additional information about the planned deprecation of a field.
 	// Used along with `[deprecated = true]`.
 	//
 	// optional nebius.DeprecationDetails field_deprecation_details = 1194;
-	E_FieldDeprecationDetails = &file_nebius_annotations_proto_extTypes[12]
+	E_FieldDeprecationDetails = &file_nebius_annotations_proto_extTypes[11]
 	// optional nebius.FieldPySDKSettings field_py_sdk = 1195;
-	E_FieldPySdk = &file_nebius_annotations_proto_extTypes[13]
+	E_FieldPySdk = &file_nebius_annotations_proto_extTypes[12]
 )
 
 // Extension fields to descriptorpb.OneofOptions.
@@ -862,15 +750,15 @@ var (
 	// Field behavior describes how oneof behaves on input or output.
 	//
 	// repeated nebius.FieldBehavior oneof_behavior = 1191;
-	E_OneofBehavior = &file_nebius_annotations_proto_extTypes[14]
+	E_OneofBehavior = &file_nebius_annotations_proto_extTypes[13]
 	// optional nebius.OneofPySDKSettings oneof_py_sdk = 1192;
-	E_OneofPySdk = &file_nebius_annotations_proto_extTypes[15]
+	E_OneofPySdk = &file_nebius_annotations_proto_extTypes[14]
 )
 
 // Extension fields to descriptorpb.EnumOptions.
 var (
 	// optional nebius.EnumPySDKSettings enum_py_sdk = 1191;
-	E_EnumPySdk = &file_nebius_annotations_proto_extTypes[16]
+	E_EnumPySdk = &file_nebius_annotations_proto_extTypes[15]
 )
 
 // Extension fields to descriptorpb.EnumValueOptions.
@@ -879,9 +767,9 @@ var (
 	// Used along with `[deprecated = true]`.
 	//
 	// optional nebius.DeprecationDetails enum_value_deprecation_details = 1194;
-	E_EnumValueDeprecationDetails = &file_nebius_annotations_proto_extTypes[17]
+	E_EnumValueDeprecationDetails = &file_nebius_annotations_proto_extTypes[16]
 	// optional nebius.EnumValuePySDKSettings enum_value_py_sdk = 1195;
-	E_EnumValuePySdk = &file_nebius_annotations_proto_extTypes[18]
+	E_EnumValuePySdk = &file_nebius_annotations_proto_extTypes[17]
 )
 
 var File_nebius_annotations_proto protoreflect.FileDescriptor
@@ -902,11 +790,7 @@ const file_nebius_annotations_proto_rawDesc = "" +
 	"\x11EnumPySDKSettings\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\",\n" +
 	"\x16EnumValuePySDKSettings\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"U\n" +
-	"\rRegionRouting\x12\x10\n" +
-	"\x03nid\x18\x01 \x03(\tR\x03nid\x12\x1a\n" +
-	"\bdisabled\x18\x02 \x01(\bR\bdisabled\x12\x16\n" +
-	"\x06strict\x18\x03 \x01(\bR\x06strict\"Y\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"Y\n" +
 	"\x12DeprecationDetails\x12!\n" +
 	"\feffective_at\x18\x01 \x01(\tR\veffectiveAt\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription*c\n" +
@@ -929,8 +813,7 @@ const file_nebius_annotations_proto_rawDesc = "" +
 	"\x1bservice_deprecation_details\x12\x1f.google.protobuf.ServiceOptions\x18\xaa\t \x01(\v2\x1a.nebius.DeprecationDetailsR\x19serviceDeprecationDetails:d\n" +
 	"\x0eservice_py_sdk\x12\x1f.google.protobuf.ServiceOptions\x18\xab\t \x01(\v2\x1c.nebius.ServicePySDKSettingsR\fservicePySdk:y\n" +
 	"\x1amethod_deprecation_details\x12\x1e.google.protobuf.MethodOptions\x18\xaa\t \x01(\v2\x1a.nebius.DeprecationDetailsR\x18methodDeprecationDetails:`\n" +
-	"\rmethod_py_sdk\x12\x1e.google.protobuf.MethodOptions\x18\xab\t \x01(\v2\x1b.nebius.MethodPySDKSettingsR\vmethodPySdk:^\n" +
-	"\x0eregion_routing\x12\x1e.google.protobuf.MethodOptions\x18ӆ\x03 \x01(\v2\x15.nebius.RegionRoutingR\rregionRouting:g\n" +
+	"\rmethod_py_sdk\x12\x1e.google.protobuf.MethodOptions\x18\xab\t \x01(\v2\x1b.nebius.MethodPySDKSettingsR\vmethodPySdk:g\n" +
 	"\x11resource_behavior\x12\x1f.google.protobuf.MessageOptions\x18\xa7\t \x03(\x0e2\x18.nebius.ResourceBehaviorR\x10resourceBehavior:|\n" +
 	"\x1bmessage_deprecation_details\x12\x1f.google.protobuf.MessageOptions\x18\xaa\t \x01(\v2\x1a.nebius.DeprecationDetailsR\x19messageDeprecationDetails:d\n" +
 	"\x0emessage_py_sdk\x12\x1f.google.protobuf.MessageOptions\x18\xab\t \x01(\v2\x1c.nebius.MessagePySDKSettingsR\fmessagePySdk:\\\n" +
@@ -961,7 +844,7 @@ func file_nebius_annotations_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_annotations_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_nebius_annotations_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_nebius_annotations_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_annotations_proto_goTypes = []any{
 	(ResourceBehavior)(0),                 // 0: nebius.ResourceBehavior
 	(FieldBehavior)(0),                    // 1: nebius.FieldBehavior
@@ -972,56 +855,53 @@ var file_nebius_annotations_proto_goTypes = []any{
 	(*OneofPySDKSettings)(nil),            // 6: nebius.OneofPySDKSettings
 	(*EnumPySDKSettings)(nil),             // 7: nebius.EnumPySDKSettings
 	(*EnumValuePySDKSettings)(nil),        // 8: nebius.EnumValuePySDKSettings
-	(*RegionRouting)(nil),                 // 9: nebius.RegionRouting
-	(*DeprecationDetails)(nil),            // 10: nebius.DeprecationDetails
-	(*descriptorpb.ServiceOptions)(nil),   // 11: google.protobuf.ServiceOptions
-	(*descriptorpb.MethodOptions)(nil),    // 12: google.protobuf.MethodOptions
-	(*descriptorpb.MessageOptions)(nil),   // 13: google.protobuf.MessageOptions
-	(*descriptorpb.FieldOptions)(nil),     // 14: google.protobuf.FieldOptions
-	(*descriptorpb.OneofOptions)(nil),     // 15: google.protobuf.OneofOptions
-	(*descriptorpb.EnumOptions)(nil),      // 16: google.protobuf.EnumOptions
-	(*descriptorpb.EnumValueOptions)(nil), // 17: google.protobuf.EnumValueOptions
+	(*DeprecationDetails)(nil),            // 9: nebius.DeprecationDetails
+	(*descriptorpb.ServiceOptions)(nil),   // 10: google.protobuf.ServiceOptions
+	(*descriptorpb.MethodOptions)(nil),    // 11: google.protobuf.MethodOptions
+	(*descriptorpb.MessageOptions)(nil),   // 12: google.protobuf.MessageOptions
+	(*descriptorpb.FieldOptions)(nil),     // 13: google.protobuf.FieldOptions
+	(*descriptorpb.OneofOptions)(nil),     // 14: google.protobuf.OneofOptions
+	(*descriptorpb.EnumOptions)(nil),      // 15: google.protobuf.EnumOptions
+	(*descriptorpb.EnumValueOptions)(nil), // 16: google.protobuf.EnumValueOptions
 }
 var file_nebius_annotations_proto_depIdxs = []int32{
-	11, // 0: nebius.api_service_name:extendee -> google.protobuf.ServiceOptions
-	11, // 1: nebius.service_deprecation_details:extendee -> google.protobuf.ServiceOptions
-	11, // 2: nebius.service_py_sdk:extendee -> google.protobuf.ServiceOptions
-	12, // 3: nebius.method_deprecation_details:extendee -> google.protobuf.MethodOptions
-	12, // 4: nebius.method_py_sdk:extendee -> google.protobuf.MethodOptions
-	12, // 5: nebius.region_routing:extendee -> google.protobuf.MethodOptions
-	13, // 6: nebius.resource_behavior:extendee -> google.protobuf.MessageOptions
-	13, // 7: nebius.message_deprecation_details:extendee -> google.protobuf.MessageOptions
-	13, // 8: nebius.message_py_sdk:extendee -> google.protobuf.MessageOptions
-	14, // 9: nebius.field_behavior:extendee -> google.protobuf.FieldOptions
-	14, // 10: nebius.sensitive:extendee -> google.protobuf.FieldOptions
-	14, // 11: nebius.credentials:extendee -> google.protobuf.FieldOptions
-	14, // 12: nebius.field_deprecation_details:extendee -> google.protobuf.FieldOptions
-	14, // 13: nebius.field_py_sdk:extendee -> google.protobuf.FieldOptions
-	15, // 14: nebius.oneof_behavior:extendee -> google.protobuf.OneofOptions
-	15, // 15: nebius.oneof_py_sdk:extendee -> google.protobuf.OneofOptions
-	16, // 16: nebius.enum_py_sdk:extendee -> google.protobuf.EnumOptions
-	17, // 17: nebius.enum_value_deprecation_details:extendee -> google.protobuf.EnumValueOptions
-	17, // 18: nebius.enum_value_py_sdk:extendee -> google.protobuf.EnumValueOptions
-	10, // 19: nebius.service_deprecation_details:type_name -> nebius.DeprecationDetails
-	2,  // 20: nebius.service_py_sdk:type_name -> nebius.ServicePySDKSettings
-	10, // 21: nebius.method_deprecation_details:type_name -> nebius.DeprecationDetails
-	3,  // 22: nebius.method_py_sdk:type_name -> nebius.MethodPySDKSettings
-	9,  // 23: nebius.region_routing:type_name -> nebius.RegionRouting
-	0,  // 24: nebius.resource_behavior:type_name -> nebius.ResourceBehavior
-	10, // 25: nebius.message_deprecation_details:type_name -> nebius.DeprecationDetails
-	5,  // 26: nebius.message_py_sdk:type_name -> nebius.MessagePySDKSettings
-	1,  // 27: nebius.field_behavior:type_name -> nebius.FieldBehavior
-	10, // 28: nebius.field_deprecation_details:type_name -> nebius.DeprecationDetails
-	4,  // 29: nebius.field_py_sdk:type_name -> nebius.FieldPySDKSettings
-	1,  // 30: nebius.oneof_behavior:type_name -> nebius.FieldBehavior
-	6,  // 31: nebius.oneof_py_sdk:type_name -> nebius.OneofPySDKSettings
-	7,  // 32: nebius.enum_py_sdk:type_name -> nebius.EnumPySDKSettings
-	10, // 33: nebius.enum_value_deprecation_details:type_name -> nebius.DeprecationDetails
-	8,  // 34: nebius.enum_value_py_sdk:type_name -> nebius.EnumValuePySDKSettings
-	35, // [35:35] is the sub-list for method output_type
-	35, // [35:35] is the sub-list for method input_type
-	19, // [19:35] is the sub-list for extension type_name
-	0,  // [0:19] is the sub-list for extension extendee
+	10, // 0: nebius.api_service_name:extendee -> google.protobuf.ServiceOptions
+	10, // 1: nebius.service_deprecation_details:extendee -> google.protobuf.ServiceOptions
+	10, // 2: nebius.service_py_sdk:extendee -> google.protobuf.ServiceOptions
+	11, // 3: nebius.method_deprecation_details:extendee -> google.protobuf.MethodOptions
+	11, // 4: nebius.method_py_sdk:extendee -> google.protobuf.MethodOptions
+	12, // 5: nebius.resource_behavior:extendee -> google.protobuf.MessageOptions
+	12, // 6: nebius.message_deprecation_details:extendee -> google.protobuf.MessageOptions
+	12, // 7: nebius.message_py_sdk:extendee -> google.protobuf.MessageOptions
+	13, // 8: nebius.field_behavior:extendee -> google.protobuf.FieldOptions
+	13, // 9: nebius.sensitive:extendee -> google.protobuf.FieldOptions
+	13, // 10: nebius.credentials:extendee -> google.protobuf.FieldOptions
+	13, // 11: nebius.field_deprecation_details:extendee -> google.protobuf.FieldOptions
+	13, // 12: nebius.field_py_sdk:extendee -> google.protobuf.FieldOptions
+	14, // 13: nebius.oneof_behavior:extendee -> google.protobuf.OneofOptions
+	14, // 14: nebius.oneof_py_sdk:extendee -> google.protobuf.OneofOptions
+	15, // 15: nebius.enum_py_sdk:extendee -> google.protobuf.EnumOptions
+	16, // 16: nebius.enum_value_deprecation_details:extendee -> google.protobuf.EnumValueOptions
+	16, // 17: nebius.enum_value_py_sdk:extendee -> google.protobuf.EnumValueOptions
+	9,  // 18: nebius.service_deprecation_details:type_name -> nebius.DeprecationDetails
+	2,  // 19: nebius.service_py_sdk:type_name -> nebius.ServicePySDKSettings
+	9,  // 20: nebius.method_deprecation_details:type_name -> nebius.DeprecationDetails
+	3,  // 21: nebius.method_py_sdk:type_name -> nebius.MethodPySDKSettings
+	0,  // 22: nebius.resource_behavior:type_name -> nebius.ResourceBehavior
+	9,  // 23: nebius.message_deprecation_details:type_name -> nebius.DeprecationDetails
+	5,  // 24: nebius.message_py_sdk:type_name -> nebius.MessagePySDKSettings
+	1,  // 25: nebius.field_behavior:type_name -> nebius.FieldBehavior
+	9,  // 26: nebius.field_deprecation_details:type_name -> nebius.DeprecationDetails
+	4,  // 27: nebius.field_py_sdk:type_name -> nebius.FieldPySDKSettings
+	1,  // 28: nebius.oneof_behavior:type_name -> nebius.FieldBehavior
+	6,  // 29: nebius.oneof_py_sdk:type_name -> nebius.OneofPySDKSettings
+	7,  // 30: nebius.enum_py_sdk:type_name -> nebius.EnumPySDKSettings
+	9,  // 31: nebius.enum_value_deprecation_details:type_name -> nebius.DeprecationDetails
+	8,  // 32: nebius.enum_value_py_sdk:type_name -> nebius.EnumValuePySDKSettings
+	33, // [33:33] is the sub-list for method output_type
+	33, // [33:33] is the sub-list for method input_type
+	18, // [18:33] is the sub-list for extension type_name
+	0,  // [0:18] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
 }
 
@@ -1036,8 +916,8 @@ func file_nebius_annotations_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_annotations_proto_rawDesc), len(file_nebius_annotations_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   9,
-			NumExtensions: 19,
+			NumMessages:   8,
+			NumExtensions: 18,
 			NumServices:   0,
 		},
 		GoTypes:           file_nebius_annotations_proto_goTypes,

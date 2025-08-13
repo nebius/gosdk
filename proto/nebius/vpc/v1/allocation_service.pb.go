@@ -472,14 +472,13 @@ const file_nebius_vpc_v1_allocation_service_proto_rawDesc = "" +
 	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')R\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.vpc.v1.AllocationSpecR\x04spec\"1\n" +
 	"\x17DeleteAllocationRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xeb\x04\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xdc\x04\n" +
 	"\x11AllocationService\x12E\n" +
 	"\x03Get\x12#.nebius.vpc.v1.GetAllocationRequest\x1a\x19.nebius.vpc.v1.Allocation\x12Q\n" +
 	"\tGetByName\x12).nebius.vpc.v1.GetAllocationByNameRequest\x1a\x19.nebius.vpc.v1.Allocation\x12U\n" +
-	"\x04List\x12%.nebius.vpc.v1.ListAllocationsRequest\x1a&.nebius.vpc.v1.ListAllocationsResponse\x12p\n" +
+	"\x04List\x12%.nebius.vpc.v1.ListAllocationsRequest\x1a&.nebius.vpc.v1.ListAllocationsResponse\x12a\n" +
 	"\n" +
-	"ListByPool\x12+.nebius.vpc.v1.ListAllocationsByPoolRequest\x1a&.nebius.vpc.v1.ListAllocationsResponse\"\r\x9a\xb5\x18\t\n" +
-	"\apool_id\x12M\n" +
+	"ListByPool\x12+.nebius.vpc.v1.ListAllocationsByPoolRequest\x1a&.nebius.vpc.v1.ListAllocationsResponse\x12M\n" +
 	"\x06Create\x12&.nebius.vpc.v1.CreateAllocationRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Update\x12&.nebius.vpc.v1.UpdateAllocationRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Delete\x12&.nebius.vpc.v1.DeleteAllocationRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x06\xbaJ\x03vpcB]\n" +

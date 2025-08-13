@@ -472,13 +472,12 @@ const file_nebius_vpc_v1_pool_service_proto_rawDesc = "" +
 	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')R\bmetadata\x12+\n" +
 	"\x04spec\x18\x02 \x01(\v2\x17.nebius.vpc.v1.PoolSpecR\x04spec\"+\n" +
 	"\x11DeletePoolRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xaf\x04\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xa0\x04\n" +
 	"\vPoolService\x129\n" +
 	"\x03Get\x12\x1d.nebius.vpc.v1.GetPoolRequest\x1a\x13.nebius.vpc.v1.Pool\x12E\n" +
 	"\tGetByName\x12#.nebius.vpc.v1.GetPoolByNameRequest\x1a\x13.nebius.vpc.v1.Pool\x12I\n" +
-	"\x04List\x12\x1f.nebius.vpc.v1.ListPoolsRequest\x1a .nebius.vpc.v1.ListPoolsResponse\x12p\n" +
-	"\x10ListBySourcePool\x12+.nebius.vpc.v1.ListPoolsBySourcePoolRequest\x1a .nebius.vpc.v1.ListPoolsResponse\"\r\x9a\xb5\x18\t\n" +
-	"\apool_id\x12G\n" +
+	"\x04List\x12\x1f.nebius.vpc.v1.ListPoolsRequest\x1a .nebius.vpc.v1.ListPoolsResponse\x12a\n" +
+	"\x10ListBySourcePool\x12+.nebius.vpc.v1.ListPoolsBySourcePoolRequest\x1a .nebius.vpc.v1.ListPoolsResponse\x12G\n" +
 	"\x06Create\x12 .nebius.vpc.v1.CreatePoolRequest\x1a\x1b.nebius.common.v1.Operation\x12G\n" +
 	"\x06Update\x12 .nebius.vpc.v1.UpdatePoolRequest\x1a\x1b.nebius.common.v1.Operation\x12G\n" +
 	"\x06Delete\x12 .nebius.vpc.v1.DeletePoolRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x06\xbaJ\x03vpcBW\n" +
