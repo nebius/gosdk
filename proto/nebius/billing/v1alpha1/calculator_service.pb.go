@@ -27,7 +27,9 @@ type EstimateRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Resource specification for cost estimation.
 	// Must contain exactly one resource type.
-	ResourceSpec  *ResourceSpec `protobuf:"bytes,1,opt,name=resource_spec,json=resourceSpec,proto3" json:"resource_spec,omitempty"`
+	ResourceSpec *ResourceSpec `protobuf:"bytes,1,opt,name=resource_spec,json=resourceSpec,proto3" json:"resource_spec,omitempty"`
+	// Type of offers to be applied to the cost estimate.
+	OfferTypes    []OfferType `protobuf:"varint,10,rep,packed,name=offer_types,json=offerTypes,proto3,enum=nebius.billing.v1alpha1.OfferType" json:"offer_types,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,6 +67,13 @@ func (*EstimateRequest) Descriptor() ([]byte, []int) {
 func (x *EstimateRequest) GetResourceSpec() *ResourceSpec {
 	if x != nil {
 		return x.ResourceSpec
+	}
+	return nil
+}
+
+func (x *EstimateRequest) GetOfferTypes() []OfferType {
+	if x != nil {
+		return x.OfferTypes
 	}
 	return nil
 }
@@ -129,6 +138,8 @@ type EstimateBatchRequest struct {
 	// List of resource specifications for cost estimation.
 	// Each resource will be priced individually and then aggregated into total costs.
 	ResourceSpecs []*ResourceSpec `protobuf:"bytes,1,rep,name=resource_specs,json=resourceSpecs,proto3" json:"resource_specs,omitempty"`
+	// Type of offers to be applied to the cost estimate.
+	OfferTypes    []OfferType `protobuf:"varint,10,rep,packed,name=offer_types,json=offerTypes,proto3,enum=nebius.billing.v1alpha1.OfferType" json:"offer_types,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -166,6 +177,13 @@ func (*EstimateBatchRequest) Descriptor() ([]byte, []int) {
 func (x *EstimateBatchRequest) GetResourceSpecs() []*ResourceSpec {
 	if x != nil {
 		return x.ResourceSpecs
+	}
+	return nil
+}
+
+func (x *EstimateBatchRequest) GetOfferTypes() []OfferType {
+	if x != nil {
+		return x.OfferTypes
 	}
 	return nil
 }
@@ -229,16 +247,22 @@ var File_nebius_billing_v1alpha1_calculator_service_proto protoreflect.FileDescr
 
 const file_nebius_billing_v1alpha1_calculator_service_proto_rawDesc = "" +
 	"\n" +
-	"0nebius/billing/v1alpha1/calculator_service.proto\x12\x17nebius.billing.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a(nebius/billing/v1alpha1/calculator.proto\"e\n" +
+	"0nebius/billing/v1alpha1/calculator_service.proto\x12\x17nebius.billing.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a(nebius/billing/v1alpha1/calculator.proto\x1a(nebius/billing/v1alpha1/offer_type.proto\"\xaa\x01\n" +
 	"\x0fEstimateRequest\x12R\n" +
-	"\rresource_spec\x18\x01 \x01(\v2%.nebius.billing.v1alpha1.ResourceSpecB\x06\xbaH\x03\xc8\x01\x01R\fresourceSpec\"\xae\x01\n" +
+	"\rresource_spec\x18\x01 \x01(\v2%.nebius.billing.v1alpha1.ResourceSpecB\x06\xbaH\x03\xc8\x01\x01R\fresourceSpec\x12C\n" +
+	"\voffer_types\x18\n" +
+	" \x03(\x0e2\".nebius.billing.v1alpha1.OfferTypeR\n" +
+	"offerTypes\"\xae\x01\n" +
 	"\x10EstimateResponse\x12K\n" +
 	"\vhourly_cost\x18\n" +
 	" \x01(\v2*.nebius.billing.v1alpha1.ResourceGroupCostR\n" +
 	"hourlyCost\x12M\n" +
-	"\fmonthly_cost\x18\x14 \x01(\v2*.nebius.billing.v1alpha1.ResourceGroupCostR\vmonthlyCost\"l\n" +
+	"\fmonthly_cost\x18\x14 \x01(\v2*.nebius.billing.v1alpha1.ResourceGroupCostR\vmonthlyCost\"\xb1\x01\n" +
 	"\x14EstimateBatchRequest\x12T\n" +
-	"\x0eresource_specs\x18\x01 \x03(\v2%.nebius.billing.v1alpha1.ResourceSpecB\x06\xbaH\x03\xc8\x01\x01R\rresourceSpecs\"\xb3\x01\n" +
+	"\x0eresource_specs\x18\x01 \x03(\v2%.nebius.billing.v1alpha1.ResourceSpecB\x06\xbaH\x03\xc8\x01\x01R\rresourceSpecs\x12C\n" +
+	"\voffer_types\x18\n" +
+	" \x03(\x0e2\".nebius.billing.v1alpha1.OfferTypeR\n" +
+	"offerTypes\"\xb3\x01\n" +
 	"\x15EstimateBatchResponse\x12K\n" +
 	"\vhourly_cost\x18\n" +
 	" \x01(\v2*.nebius.billing.v1alpha1.ResourceGroupCostR\n" +
@@ -268,24 +292,27 @@ var file_nebius_billing_v1alpha1_calculator_service_proto_goTypes = []any{
 	(*EstimateBatchRequest)(nil),  // 2: nebius.billing.v1alpha1.EstimateBatchRequest
 	(*EstimateBatchResponse)(nil), // 3: nebius.billing.v1alpha1.EstimateBatchResponse
 	(*ResourceSpec)(nil),          // 4: nebius.billing.v1alpha1.ResourceSpec
-	(*ResourceGroupCost)(nil),     // 5: nebius.billing.v1alpha1.ResourceGroupCost
+	(OfferType)(0),                // 5: nebius.billing.v1alpha1.OfferType
+	(*ResourceGroupCost)(nil),     // 6: nebius.billing.v1alpha1.ResourceGroupCost
 }
 var file_nebius_billing_v1alpha1_calculator_service_proto_depIdxs = []int32{
-	4, // 0: nebius.billing.v1alpha1.EstimateRequest.resource_spec:type_name -> nebius.billing.v1alpha1.ResourceSpec
-	5, // 1: nebius.billing.v1alpha1.EstimateResponse.hourly_cost:type_name -> nebius.billing.v1alpha1.ResourceGroupCost
-	5, // 2: nebius.billing.v1alpha1.EstimateResponse.monthly_cost:type_name -> nebius.billing.v1alpha1.ResourceGroupCost
-	4, // 3: nebius.billing.v1alpha1.EstimateBatchRequest.resource_specs:type_name -> nebius.billing.v1alpha1.ResourceSpec
-	5, // 4: nebius.billing.v1alpha1.EstimateBatchResponse.hourly_cost:type_name -> nebius.billing.v1alpha1.ResourceGroupCost
-	5, // 5: nebius.billing.v1alpha1.EstimateBatchResponse.monthly_cost:type_name -> nebius.billing.v1alpha1.ResourceGroupCost
-	0, // 6: nebius.billing.v1alpha1.CalculatorService.Estimate:input_type -> nebius.billing.v1alpha1.EstimateRequest
-	2, // 7: nebius.billing.v1alpha1.CalculatorService.EstimateBatch:input_type -> nebius.billing.v1alpha1.EstimateBatchRequest
-	1, // 8: nebius.billing.v1alpha1.CalculatorService.Estimate:output_type -> nebius.billing.v1alpha1.EstimateResponse
-	3, // 9: nebius.billing.v1alpha1.CalculatorService.EstimateBatch:output_type -> nebius.billing.v1alpha1.EstimateBatchResponse
-	8, // [8:10] is the sub-list for method output_type
-	6, // [6:8] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4,  // 0: nebius.billing.v1alpha1.EstimateRequest.resource_spec:type_name -> nebius.billing.v1alpha1.ResourceSpec
+	5,  // 1: nebius.billing.v1alpha1.EstimateRequest.offer_types:type_name -> nebius.billing.v1alpha1.OfferType
+	6,  // 2: nebius.billing.v1alpha1.EstimateResponse.hourly_cost:type_name -> nebius.billing.v1alpha1.ResourceGroupCost
+	6,  // 3: nebius.billing.v1alpha1.EstimateResponse.monthly_cost:type_name -> nebius.billing.v1alpha1.ResourceGroupCost
+	4,  // 4: nebius.billing.v1alpha1.EstimateBatchRequest.resource_specs:type_name -> nebius.billing.v1alpha1.ResourceSpec
+	5,  // 5: nebius.billing.v1alpha1.EstimateBatchRequest.offer_types:type_name -> nebius.billing.v1alpha1.OfferType
+	6,  // 6: nebius.billing.v1alpha1.EstimateBatchResponse.hourly_cost:type_name -> nebius.billing.v1alpha1.ResourceGroupCost
+	6,  // 7: nebius.billing.v1alpha1.EstimateBatchResponse.monthly_cost:type_name -> nebius.billing.v1alpha1.ResourceGroupCost
+	0,  // 8: nebius.billing.v1alpha1.CalculatorService.Estimate:input_type -> nebius.billing.v1alpha1.EstimateRequest
+	2,  // 9: nebius.billing.v1alpha1.CalculatorService.EstimateBatch:input_type -> nebius.billing.v1alpha1.EstimateBatchRequest
+	1,  // 10: nebius.billing.v1alpha1.CalculatorService.Estimate:output_type -> nebius.billing.v1alpha1.EstimateResponse
+	3,  // 11: nebius.billing.v1alpha1.CalculatorService.EstimateBatch:output_type -> nebius.billing.v1alpha1.EstimateBatchResponse
+	10, // [10:12] is the sub-list for method output_type
+	8,  // [8:10] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_nebius_billing_v1alpha1_calculator_service_proto_init() }
@@ -294,6 +321,7 @@ func file_nebius_billing_v1alpha1_calculator_service_proto_init() {
 		return
 	}
 	file_nebius_billing_v1alpha1_calculator_proto_init()
+	file_nebius_billing_v1alpha1_offer_type_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

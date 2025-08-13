@@ -189,10 +189,9 @@ const file_nebius_compute_v1_node_service_proto_rawDesc = "" +
 	"observedAt\x12!\n" +
 	"\bcheck_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\acheckId\x12(\n" +
 	"\vdescription\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vdescription\"\x1a\n" +
-	"\x18NodeSetUnhealthyResponse2\x95\x01\n" +
-	"\vNodeService\x12z\n" +
-	"\fSetUnhealthy\x12*.nebius.compute.v1.NodeSetUnhealthyRequest\x1a+.nebius.compute.v1.NodeSetUnhealthyResponse\"\x11\x9a\xb5\x18\r\n" +
-	"\vinstance_id\x1a\n" +
+	"\x18NodeSetUnhealthyResponse2\x82\x01\n" +
+	"\vNodeService\x12g\n" +
+	"\fSetUnhealthy\x12*.nebius.compute.v1.NodeSetUnhealthyRequest\x1a+.nebius.compute.v1.NodeSetUnhealthyResponse\x1a\n" +
 	"\xbaJ\acomputeB_\n" +
 	"\x18ai.nebius.pub.compute.v1B\x10NodeServiceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 

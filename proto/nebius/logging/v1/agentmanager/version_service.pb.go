@@ -973,11 +973,10 @@ const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\x03NOP\x10\x01\x12\n" +
 	"\n" +
 	"\x06UPDATE\x10\x02\x12\v\n" +
-	"\aRESTART\x10\x032\xb9\x01\n" +
-	"\x0eVersionService\x12\x86\x01\n" +
+	"\aRESTART\x10\x032\xa5\x01\n" +
+	"\x0eVersionService\x12s\n" +
 	"\n" +
-	"GetVersion\x121.nebius.logging.agentmanager.v1.GetVersionRequest\x1a2.nebius.logging.agentmanager.v1.GetVersionResponse\"\x11\x9a\xb5\x18\r\n" +
-	"\vinstance_id\x1a\x1e\xbaJ\x1bobservability-agent-managerB|\n" +
+	"GetVersion\x121.nebius.logging.agentmanager.v1.GetVersionRequest\x1a2.nebius.logging.agentmanager.v1.GetVersionResponse\x1a\x1e\xbaJ\x1bobservability-agent-managerB|\n" +
 	"%ai.nebius.pub.logging.v1.agentmanagerB\x13VersionServiceProtoP\x01Z<github.com/nebius/gosdk/proto/nebius/logging/v1/agentmanagerb\x06proto3"
 
 var (

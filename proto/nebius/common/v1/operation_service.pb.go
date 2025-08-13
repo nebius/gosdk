@@ -8,7 +8,6 @@ package v1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -186,7 +185,7 @@ var File_nebius_common_v1_operation_service_proto protoreflect.FileDescriptor
 
 const file_nebius_common_v1_operation_service_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/common/v1/operation_service.proto\x12\x10nebius.common.v1\x1a\x1bbuf/validate/validate.proto\x1a nebius/common/v1/operation.proto\x1a\x18nebius/annotations.proto\"-\n" +
+	"(nebius/common/v1/operation_service.proto\x12\x10nebius.common.v1\x1a\x1bbuf/validate/validate.proto\x1a nebius/common/v1/operation.proto\"-\n" +
 	"\x13GetOperationRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"|\n" +
 	"\x15ListOperationsRequest\x12'\n" +
@@ -199,11 +198,10 @@ const file_nebius_common_v1_operation_service_proto_rawDesc = "" +
 	"\n" +
 	"operations\x18\x01 \x03(\v2\x1b.nebius.common.v1.OperationR\n" +
 	"operations\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xcb\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xb8\x01\n" +
 	"\x10OperationService\x12I\n" +
-	"\x03Get\x12%.nebius.common.v1.GetOperationRequest\x1a\x1b.nebius.common.v1.Operation\x12l\n" +
-	"\x04List\x12'.nebius.common.v1.ListOperationsRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x11\x9a\xb5\x18\r\n" +
-	"\vresource_idBb\n" +
+	"\x03Get\x12%.nebius.common.v1.GetOperationRequest\x1a\x1b.nebius.common.v1.Operation\x12Y\n" +
+	"\x04List\x12'.nebius.common.v1.ListOperationsRequest\x1a(.nebius.common.v1.ListOperationsResponseBb\n" +
 	"\x17ai.nebius.pub.common.v1B\x15OperationServiceProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/common/v1b\x06proto3"
 
 var (

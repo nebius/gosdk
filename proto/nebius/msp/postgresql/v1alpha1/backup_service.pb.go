@@ -334,21 +334,13 @@ const file_nebius_msp_postgresql_v1alpha1_backup_service_proto_rawDesc = "" +
 	"\x13DeleteBackupRequest\x12%\n" +
 	"\n" +
 	"cluster_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tclusterId\x12#\n" +
-	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId2\x84\x05\n" +
-	"\rBackupService\x12q\n" +
-	"\x03Get\x120.nebius.msp.postgresql.v1alpha1.GetBackupRequest\x1a&.nebius.msp.postgresql.v1alpha1.Backup\"\x10\x9a\xb5\x18\f\n" +
-	"\n" +
-	"cluster_id\x12o\n" +
-	"\x04List\x122.nebius.msp.postgresql.v1alpha1.ListBackupsRequest\x1a3.nebius.msp.postgresql.v1alpha1.ListBackupsResponse\x12\x93\x01\n" +
-	"\rListByCluster\x12;.nebius.msp.postgresql.v1alpha1.ListBackupsByClusterRequest\x1a3.nebius.msp.postgresql.v1alpha1.ListBackupsResponse\"\x10\x9a\xb5\x18\f\n" +
-	"\n" +
-	"cluster_id\x12r\n" +
-	"\x06Create\x123.nebius.msp.postgresql.v1alpha1.CreateBackupRequest\x1a!.nebius.common.v1alpha1.Operation\"\x10\x9a\xb5\x18\f\n" +
-	"\n" +
-	"cluster_id\x12r\n" +
-	"\x06Delete\x123.nebius.msp.postgresql.v1alpha1.DeleteBackupRequest\x1a!.nebius.common.v1alpha1.Operation\"\x10\x9a\xb5\x18\f\n" +
-	"\n" +
-	"cluster_id\x1a\x11\xbaJ\x0epostgresql.mspB{\n" +
+	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId2\xbc\x04\n" +
+	"\rBackupService\x12_\n" +
+	"\x03Get\x120.nebius.msp.postgresql.v1alpha1.GetBackupRequest\x1a&.nebius.msp.postgresql.v1alpha1.Backup\x12o\n" +
+	"\x04List\x122.nebius.msp.postgresql.v1alpha1.ListBackupsRequest\x1a3.nebius.msp.postgresql.v1alpha1.ListBackupsResponse\x12\x81\x01\n" +
+	"\rListByCluster\x12;.nebius.msp.postgresql.v1alpha1.ListBackupsByClusterRequest\x1a3.nebius.msp.postgresql.v1alpha1.ListBackupsResponse\x12`\n" +
+	"\x06Create\x123.nebius.msp.postgresql.v1alpha1.CreateBackupRequest\x1a!.nebius.common.v1alpha1.Operation\x12`\n" +
+	"\x06Delete\x123.nebius.msp.postgresql.v1alpha1.DeleteBackupRequest\x1a!.nebius.common.v1alpha1.Operation\x1a\x11\xbaJ\x0epostgresql.mspB{\n" +
 	"%ai.nebius.pub.msp.postgresql.v1alpha1B\x12BackupServiceProtoP\x01Z<github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1b\x06proto3"
 
 var (

@@ -193,10 +193,9 @@ const file_nebius_compute_v1_maintenance_service_proto_rawDesc = "" +
 	"page_token\x18\x04 \x01(\tR\tpageToken\"\x82\x01\n" +
 	"\x1dListMaintenanceEventsResponse\x129\n" +
 	"\x05items\x18\x01 \x03(\v2#.nebius.compute.v1.MaintenanceEventR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x94\x02\n" +
-	"\x12MaintenanceService\x12\x80\x01\n" +
-	"\rGetByInstance\x127.nebius.compute.v1.GetMaintenanceEventByInstanceRequest\x1a#.nebius.compute.v1.MaintenanceEvent\"\x11\x9a\xb5\x18\r\n" +
-	"\vinstance_id\x12o\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x80\x02\n" +
+	"\x12MaintenanceService\x12m\n" +
+	"\rGetByInstance\x127.nebius.compute.v1.GetMaintenanceEventByInstanceRequest\x1a#.nebius.compute.v1.MaintenanceEvent\x12o\n" +
 	"\n" +
 	"ListActive\x12/.nebius.compute.v1.ListMaintenanceEventsRequest\x1a0.nebius.compute.v1.ListMaintenanceEventsResponse\x1a\n" +
 	"\xbaJ\acomputeBf\n" +
