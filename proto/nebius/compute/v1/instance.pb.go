@@ -1125,11 +1125,12 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\fExistingDisk\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\",\n" +
 	"\x12ExistingFilesystem\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xc3\x02\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xc7\x02\n" +
 	"\x16AttachedFilesystemSpec\x12]\n" +
 	"\vattach_mode\x18\x01 \x01(\x0e24.nebius.compute.v1.AttachedFilesystemSpec.AttachModeB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"attachMode\x12#\n" +
-	"\tmount_tag\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bmountTag\x12X\n" +
+	"attachMode\x12'\n" +
+	"\tmount_tag\x18\x02 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x18%R\bmountTag\x12X\n" +
 	"\x13existing_filesystem\x18\x03 \x01(\v2%.nebius.compute.v1.ExistingFilesystemH\x00R\x12existingFilesystem\"<\n" +
 	"\n" +
 	"AttachMode\x12\x0f\n" +

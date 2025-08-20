@@ -33,9 +33,6 @@ type NodeServiceClient interface {
 	//  2. The existing VMs continue to work on the node, but after stop/start via
 	//     Compute API they most probably will be assigned to a different node.
 	//
-	// If the node was already marked unhealthy, the consecutive calls to SetUnhealthy
-	// will return grpc code AlreadyExists.
-	//
 	// To use this rpc one needs to obtain `compute.node.setUnhealthy` permission
 	// for the VM's parent container. The permission is granted to the TSA inside the VM.
 	SetUnhealthy(ctx context.Context, in *NodeSetUnhealthyRequest, opts ...grpc.CallOption) (*NodeSetUnhealthyResponse, error)
@@ -68,9 +65,6 @@ type NodeServiceServer interface {
 	//     but in case of no capacity, the VM can be assigned to an unhealthy node.
 	//  2. The existing VMs continue to work on the node, but after stop/start via
 	//     Compute API they most probably will be assigned to a different node.
-	//
-	// If the node was already marked unhealthy, the consecutive calls to SetUnhealthy
-	// will return grpc code AlreadyExists.
 	//
 	// To use this rpc one needs to obtain `compute.node.setUnhealthy` permission
 	// for the VM's parent container. The permission is granted to the TSA inside the VM.
