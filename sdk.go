@@ -28,7 +28,7 @@ type SDK struct {
 	tokener  auth.BearerTokener
 	inits    []func(context.Context, *SDK) error
 	closes   []func() error
-	isClosed atomic.Bool
+	isClosed atomic.Bool // test
 }
 
 // New creates a new [SDK] with the provided options.
