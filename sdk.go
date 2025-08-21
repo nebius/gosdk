@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"runtime"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -45,6 +46,19 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	explicitInit := false
 	timeout := 1 * time.Minute
 
+	userAgent := "nebius-gosdk"
+	goVer := runtime.Version()
+	if goVer != "" {
+		goVer = goVer[2:]
+		if i := strings.Index(goVer, " X:"); i >= 0 {
+			goVer = goVer[:i]
+		}
+	}
+	userAgent += " ("
+	userAgent += runtime.GOOS +
+		" " + runtime.GOARCH + "; go/" + goVer
+	userAgent += ")"
+
 	customSubstitutions := make(map[string]string)
 	var logOpts []logging.Option
 	var customDialOpts []grpc.DialOption
@@ -58,6 +72,8 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			handler = o.handler
 		case optionLoggingOptions:
 			logOpts = append(logOpts, o...)
+		case optionUserAgentPrefix:
+			userAgent = string(o) + " " + userAgent
 		case optionDialOpts:
 			customDialOpts = append(customDialOpts, o...)
 		case optionResolvers:
@@ -160,6 +176,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			streamLoggingInterceptor(logger, logOpts...),
 			serviceerror.StreamClientInterceptor,
 		),
+		grpc.WithUserAgent(userAgent),
 	)
 
 	// do not add interceptors if no credentials provided

@@ -86,6 +86,10 @@ func WithTimeout(timeout time.Duration) Option {
 	return optionTimeout(timeout)
 }
 
+func WithUserAgentPrefix(prefix string) Option {
+	return optionUserAgentPrefix(prefix)
+}
+
 type (
 	optionCredentials     struct{ creds Credentials }
 	optionLogger          struct{ handler slog.Handler }
@@ -97,9 +101,10 @@ type (
 		find    string
 		replace string
 	}
-	optionExplicitInit bool
-	optionInit         func(context.Context, *SDK) error
-	optionTimeout      time.Duration
+	optionExplicitInit    bool
+	optionInit            func(context.Context, *SDK) error
+	optionTimeout         time.Duration
+	optionUserAgentPrefix string
 )
 
 func (optionCredentials) option()     {}
@@ -112,6 +117,7 @@ func (optionAddressTemplate) option() {}
 func (optionExplicitInit) option()    {}
 func (optionInit) option()            {}
 func (optionTimeout) option()         {}
+func (optionUserAgentPrefix) option() {}
 
 type NoopHandler struct{}
 
