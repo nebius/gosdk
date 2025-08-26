@@ -28,9 +28,14 @@ type TenantUserAccountStatus_State int32
 
 const (
 	TenantUserAccountStatus_STATE_UNSPECIFIED TenantUserAccountStatus_State = 0
-	TenantUserAccountStatus_ACTIVE            TenantUserAccountStatus_State = 1
-	TenantUserAccountStatus_INACTIVE          TenantUserAccountStatus_State = 2
-	TenantUserAccountStatus_BLOCKED           TenantUserAccountStatus_State = 3
+	// in case of ordinary tenant user account a corresponding user can log into the system and use granted tenant resources
+	// in case of invited tenant user account once the invitation is accepted a corresponding user can start using granted resources immediately
+	TenantUserAccountStatus_ACTIVE TenantUserAccountStatus_State = 1
+	// unused
+	TenantUserAccountStatus_INACTIVE TenantUserAccountStatus_State = 2
+	// in case of ordinary tenant user account a corresponding user can log into the system but cannot be authorized to use tenant resources
+	// in case of invited tenant user account once the invitation is accepted a corresponding user cannot start using granted resources until is unblocked
+	TenantUserAccountStatus_BLOCKED TenantUserAccountStatus_State = 3
 )
 
 // Enum value maps for TenantUserAccountStatus_State.
@@ -462,9 +467,11 @@ type TenantUserAccountStatus struct {
 	// once invitation is accepted it looses this reference (and internally gets a reference to their global federated user account)
 	InvitationId string `protobuf:"bytes,2,opt,name=invitation_id,json=invitationId,proto3" json:"invitation_id,omitempty"`
 	// currently can only accept the values: custom, unknown, google, github.
-	FederationId  string `protobuf:"bytes,3,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	FederationId string `protobuf:"bytes,3,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
+	// user account state can help distinguish case when account is blocked globally
+	UserAccountState UserAccountStatus_State `protobuf:"varint,4,opt,name=user_account_state,json=userAccountState,proto3,enum=nebius.iam.v1.UserAccountStatus_State" json:"user_account_state,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *TenantUserAccountStatus) Reset() {
@@ -516,6 +523,13 @@ func (x *TenantUserAccountStatus) GetFederationId() string {
 		return x.FederationId
 	}
 	return ""
+}
+
+func (x *TenantUserAccountStatus) GetUserAccountState() UserAccountStatus_State {
+	if x != nil {
+		return x.UserAccountState
+	}
+	return UserAccountStatus_STATE_UNSPECIFIED
 }
 
 // when a global user account is projected to a specific tenant
@@ -570,7 +584,7 @@ var File_nebius_iam_v1_tenant_user_account_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_tenant_user_account_proto_rawDesc = "" +
 	"\n" +
-	"'nebius/iam/v1/tenant_user_account.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xe9\x01\n" +
+	"'nebius/iam/v1/tenant_user_account.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\x1a nebius/iam/v1/user_account.proto\"\xe9\x01\n" +
 	"\x11TenantUserAccount\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12@\n" +
 	"\x04spec\x18\x02 \x01(\v2$.nebius.iam.v1.TenantUserAccountSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12D\n" +
@@ -618,11 +632,12 @@ const file_nebius_iam_v1_tenant_user_account_proto_rawDesc = "" +
 	"\x15TenantUserAccountSpec\x12e\n" +
 	"\x12visible_attributes\x18\x01 \x01(\v26.nebius.iam.v1.TenantUserAccountSpec.VisibleAttributesR\x11visibleAttributes\x1a6\n" +
 	"\x11VisibleAttributes\x12!\n" +
-	"\tattribute\x18\x01 \x03(\tB\x03\xc0J\x01R\tattribute\"\xee\x01\n" +
+	"\tattribute\x18\x01 \x03(\tB\x03\xc0J\x01R\tattribute\"\xc4\x02\n" +
 	"\x17TenantUserAccountStatus\x12B\n" +
 	"\x05state\x18\x01 \x01(\x0e2,.nebius.iam.v1.TenantUserAccountStatus.StateR\x05state\x12#\n" +
 	"\rinvitation_id\x18\x02 \x01(\tR\finvitationId\x12#\n" +
-	"\rfederation_id\x18\x03 \x01(\tR\ffederationId\"E\n" +
+	"\rfederation_id\x18\x03 \x01(\tR\ffederationId\x12T\n" +
+	"\x12user_account_state\x18\x04 \x01(\x0e2&.nebius.iam.v1.UserAccountStatus.StateR\x10userAccountState\"E\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +
@@ -655,6 +670,7 @@ var file_nebius_iam_v1_tenant_user_account_proto_goTypes = []any{
 	(*TenantUserAccountStatus)(nil),                 // 6: nebius.iam.v1.TenantUserAccountStatus
 	(*TenantUserAccountSpec_VisibleAttributes)(nil), // 7: nebius.iam.v1.TenantUserAccountSpec.VisibleAttributes
 	(*v1.ResourceMetadata)(nil),                     // 8: nebius.common.v1.ResourceMetadata
+	(UserAccountStatus_State)(0),                    // 9: nebius.iam.v1.UserAccountStatus.State
 }
 var file_nebius_iam_v1_tenant_user_account_proto_depIdxs = []int32{
 	8, // 0: nebius.iam.v1.TenantUserAccount.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -665,11 +681,12 @@ var file_nebius_iam_v1_tenant_user_account_proto_depIdxs = []int32{
 	4, // 5: nebius.iam.v1.TenantUserAccountWithAttributes.error:type_name -> nebius.iam.v1.Error
 	7, // 6: nebius.iam.v1.TenantUserAccountSpec.visible_attributes:type_name -> nebius.iam.v1.TenantUserAccountSpec.VisibleAttributes
 	0, // 7: nebius.iam.v1.TenantUserAccountStatus.state:type_name -> nebius.iam.v1.TenantUserAccountStatus.State
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	9, // 8: nebius.iam.v1.TenantUserAccountStatus.user_account_state:type_name -> nebius.iam.v1.UserAccountStatus.State
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_tenant_user_account_proto_init() }
@@ -677,6 +694,7 @@ func file_nebius_iam_v1_tenant_user_account_proto_init() {
 	if File_nebius_iam_v1_tenant_user_account_proto != nil {
 		return
 	}
+	file_nebius_iam_v1_user_account_proto_init()
 	file_nebius_iam_v1_tenant_user_account_proto_msgTypes[1].OneofWrappers = []any{
 		(*TenantUserAccountWithAttributes_Attributes)(nil),
 		(*TenantUserAccountWithAttributes_Error)(nil),

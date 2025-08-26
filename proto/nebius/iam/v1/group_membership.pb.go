@@ -81,7 +81,7 @@ type GroupMembership struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	Spec          *GroupMembershipSpec   `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	Status        *GroupMembershipStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"` // Dummy field for compliance with terraform resource generator.
+	Status        *GroupMembershipStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	RevokeAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=revoke_at,json=revokeAt,proto3" json:"revoke_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -191,9 +191,14 @@ func (x *GroupMembershipSpec) GetMemberId() string {
 }
 
 type GroupMembershipStatus struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to GroupMemberStatus:
+	//
+	//	*GroupMembershipStatus_TenantUserAccountStatus
+	//	*GroupMembershipStatus_ServiceAccountStatus
+	GroupMemberStatus isGroupMembershipStatus_GroupMemberStatus `protobuf_oneof:"group_member_status"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *GroupMembershipStatus) Reset() {
@@ -225,6 +230,47 @@ func (x *GroupMembershipStatus) ProtoReflect() protoreflect.Message {
 func (*GroupMembershipStatus) Descriptor() ([]byte, []int) {
 	return file_nebius_iam_v1_group_membership_proto_rawDescGZIP(), []int{2}
 }
+
+func (x *GroupMembershipStatus) GetGroupMemberStatus() isGroupMembershipStatus_GroupMemberStatus {
+	if x != nil {
+		return x.GroupMemberStatus
+	}
+	return nil
+}
+
+func (x *GroupMembershipStatus) GetTenantUserAccountStatus() *TenantUserAccountStatus {
+	if x != nil {
+		if x, ok := x.GroupMemberStatus.(*GroupMembershipStatus_TenantUserAccountStatus); ok {
+			return x.TenantUserAccountStatus
+		}
+	}
+	return nil
+}
+
+func (x *GroupMembershipStatus) GetServiceAccountStatus() *ServiceAccountStatus {
+	if x != nil {
+		if x, ok := x.GroupMemberStatus.(*GroupMembershipStatus_ServiceAccountStatus); ok {
+			return x.ServiceAccountStatus
+		}
+	}
+	return nil
+}
+
+type isGroupMembershipStatus_GroupMemberStatus interface {
+	isGroupMembershipStatus_GroupMemberStatus()
+}
+
+type GroupMembershipStatus_TenantUserAccountStatus struct {
+	TenantUserAccountStatus *TenantUserAccountStatus `protobuf:"bytes,1,opt,name=tenant_user_account_status,json=tenantUserAccountStatus,proto3,oneof"`
+}
+
+type GroupMembershipStatus_ServiceAccountStatus struct {
+	ServiceAccountStatus *ServiceAccountStatus `protobuf:"bytes,2,opt,name=service_account_status,json=serviceAccountStatus,proto3,oneof"`
+}
+
+func (*GroupMembershipStatus_TenantUserAccountStatus) isGroupMembershipStatus_GroupMemberStatus() {}
+
+func (*GroupMembershipStatus_ServiceAccountStatus) isGroupMembershipStatus_GroupMemberStatus() {}
 
 type GroupMemberKind struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -403,8 +449,11 @@ const file_nebius_iam_v1_group_membership_proto_rawDesc = "" +
 	"\x06status\x18\x03 \x01(\v2$.nebius.iam.v1.GroupMembershipStatusB\x04\xbaJ\x01\x05R\x06status\x12=\n" +
 	"\trevoke_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xbaJ\x01\x05R\brevokeAt:\x04\xbaJ\x01\x02\"8\n" +
 	"\x13GroupMembershipSpec\x12!\n" +
-	"\tmember_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\bmemberId\"\x17\n" +
-	"\x15GroupMembershipStatus\"\xc0\x01\n" +
+	"\tmember_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\bmemberId\"\xf2\x01\n" +
+	"\x15GroupMembershipStatus\x12e\n" +
+	"\x1atenant_user_account_status\x18\x01 \x01(\v2&.nebius.iam.v1.TenantUserAccountStatusH\x00R\x17tenantUserAccountStatus\x12[\n" +
+	"\x16service_account_status\x18\x02 \x01(\v2#.nebius.iam.v1.ServiceAccountStatusH\x00R\x14serviceAccountStatusB\x15\n" +
+	"\x13group_member_status\"\xc0\x01\n" +
 	"\x0fGroupMemberKind\x127\n" +
 	"\x04kind\x18\x01 \x01(\x0e2#.nebius.iam.v1.GroupMemberKind.KindR\x04kind\"t\n" +
 	"\x04Kind\x12\x14\n" +
@@ -444,26 +493,30 @@ var file_nebius_iam_v1_group_membership_proto_goTypes = []any{
 	(*GroupMembershipWithAttributes)(nil), // 5: nebius.iam.v1.GroupMembershipWithAttributes
 	(*v1.ResourceMetadata)(nil),           // 6: nebius.common.v1.ResourceMetadata
 	(*timestamppb.Timestamp)(nil),         // 7: google.protobuf.Timestamp
-	(*UserAttributes)(nil),                // 8: nebius.iam.v1.UserAttributes
-	(*ServiceAccountAttributes)(nil),      // 9: nebius.iam.v1.ServiceAccountAttributes
-	(*Error)(nil),                         // 10: nebius.iam.v1.Error
+	(*TenantUserAccountStatus)(nil),       // 8: nebius.iam.v1.TenantUserAccountStatus
+	(*ServiceAccountStatus)(nil),          // 9: nebius.iam.v1.ServiceAccountStatus
+	(*UserAttributes)(nil),                // 10: nebius.iam.v1.UserAttributes
+	(*ServiceAccountAttributes)(nil),      // 11: nebius.iam.v1.ServiceAccountAttributes
+	(*Error)(nil),                         // 12: nebius.iam.v1.Error
 }
 var file_nebius_iam_v1_group_membership_proto_depIdxs = []int32{
 	6,  // 0: nebius.iam.v1.GroupMembership.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	2,  // 1: nebius.iam.v1.GroupMembership.spec:type_name -> nebius.iam.v1.GroupMembershipSpec
 	3,  // 2: nebius.iam.v1.GroupMembership.status:type_name -> nebius.iam.v1.GroupMembershipStatus
 	7,  // 3: nebius.iam.v1.GroupMembership.revoke_at:type_name -> google.protobuf.Timestamp
-	0,  // 4: nebius.iam.v1.GroupMemberKind.kind:type_name -> nebius.iam.v1.GroupMemberKind.Kind
-	1,  // 5: nebius.iam.v1.GroupMembershipWithAttributes.group_membership:type_name -> nebius.iam.v1.GroupMembership
-	4,  // 6: nebius.iam.v1.GroupMembershipWithAttributes.group_member_kind:type_name -> nebius.iam.v1.GroupMemberKind
-	8,  // 7: nebius.iam.v1.GroupMembershipWithAttributes.user_attributes:type_name -> nebius.iam.v1.UserAttributes
-	9,  // 8: nebius.iam.v1.GroupMembershipWithAttributes.service_account_attributes:type_name -> nebius.iam.v1.ServiceAccountAttributes
-	10, // 9: nebius.iam.v1.GroupMembershipWithAttributes.error:type_name -> nebius.iam.v1.Error
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	8,  // 4: nebius.iam.v1.GroupMembershipStatus.tenant_user_account_status:type_name -> nebius.iam.v1.TenantUserAccountStatus
+	9,  // 5: nebius.iam.v1.GroupMembershipStatus.service_account_status:type_name -> nebius.iam.v1.ServiceAccountStatus
+	0,  // 6: nebius.iam.v1.GroupMemberKind.kind:type_name -> nebius.iam.v1.GroupMemberKind.Kind
+	1,  // 7: nebius.iam.v1.GroupMembershipWithAttributes.group_membership:type_name -> nebius.iam.v1.GroupMembership
+	4,  // 8: nebius.iam.v1.GroupMembershipWithAttributes.group_member_kind:type_name -> nebius.iam.v1.GroupMemberKind
+	10, // 9: nebius.iam.v1.GroupMembershipWithAttributes.user_attributes:type_name -> nebius.iam.v1.UserAttributes
+	11, // 10: nebius.iam.v1.GroupMembershipWithAttributes.service_account_attributes:type_name -> nebius.iam.v1.ServiceAccountAttributes
+	12, // 11: nebius.iam.v1.GroupMembershipWithAttributes.error:type_name -> nebius.iam.v1.Error
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_group_membership_proto_init() }
@@ -473,6 +526,10 @@ func file_nebius_iam_v1_group_membership_proto_init() {
 	}
 	file_nebius_iam_v1_service_account_proto_init()
 	file_nebius_iam_v1_tenant_user_account_proto_init()
+	file_nebius_iam_v1_group_membership_proto_msgTypes[2].OneofWrappers = []any{
+		(*GroupMembershipStatus_TenantUserAccountStatus)(nil),
+		(*GroupMembershipStatus_ServiceAccountStatus)(nil),
+	}
 	file_nebius_iam_v1_group_membership_proto_msgTypes[4].OneofWrappers = []any{
 		(*GroupMembershipWithAttributes_UserAttributes)(nil),
 		(*GroupMembershipWithAttributes_ServiceAccountAttributes)(nil),
