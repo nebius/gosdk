@@ -51,3 +51,6 @@ func (*wrapperUserAccountExternalId) ProtoMessage() {}
 func (w *wrapperUserAccountExternalId) ProtoReflect() protoreflect.Message {
 	return (*UserAccountExternalId)(w).ProtoReflect()
 }
+
+// func (x *UserAccountStatus) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UserAccountStatus) LogValue() slog.Value // is not generated as no sensitive fields found

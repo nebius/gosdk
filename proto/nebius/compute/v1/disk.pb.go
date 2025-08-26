@@ -88,7 +88,10 @@ const (
 	DiskStatus_READY       DiskStatus_State = 2
 	DiskStatus_UPDATING    DiskStatus_State = 3
 	DiskStatus_DELETING    DiskStatus_State = 4
-	DiskStatus_ERROR       DiskStatus_State = 5
+	// Indicates that error happened during disk creation, and the disk cannot be recovered.
+	DiskStatus_ERROR DiskStatus_State = 5
+	// Indicates that an error has occurred during the disk's life cycle, and the disk is broken or unhealthy, but can still be recovered.
+	DiskStatus_BROKEN DiskStatus_State = 6
 )
 
 // Enum value maps for DiskStatus_State.
@@ -100,6 +103,7 @@ var (
 		3: "UPDATING",
 		4: "DELETING",
 		5: "ERROR",
+		6: "BROKEN",
 	}
 	DiskStatus_State_value = map[string]int32{
 		"UNSPECIFIED": 0,
@@ -108,6 +112,7 @@ var (
 		"UPDATING":    3,
 		"DELETING":    4,
 		"ERROR":       5,
+		"BROKEN":      6,
 	}
 )
 
@@ -732,7 +737,7 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\"[\n" +
 	"\x11SourceImageFamily\x12)\n" +
 	"\fimage_family\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vimageFamily\x12\x1b\n" +
-	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\x9c\x05\n" +
+	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xa8\x05\n" +
 	"\n" +
 	"DiskStatus\x129\n" +
 	"\x05state\x18\x01 \x01(\x0e2#.nebius.compute.v1.DiskStatus.StateR\x05state\x12+\n" +
@@ -744,14 +749,16 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"size_bytes\x18\x06 \x01(\x03R\tsizeBytes\x12 \n" +
 	"\vreconciling\x18\a \x01(\bR\vreconciling\x12(\n" +
 	"\x10block_size_bytes\x18\b \x01(\x03R\x0eblockSizeBytes\x12{\n" +
-	"\x1dsource_image_cpu_architecture\x18\t \x01(\x0e28.nebius.compute.v1.DiskStatus.SourceImageCPUArchitectureR\x1asourceImageCpuArchitecture\"X\n" +
+	"\x1dsource_image_cpu_architecture\x18\t \x01(\x0e28.nebius.compute.v1.DiskStatus.SourceImageCPUArchitectureR\x1asourceImageCpuArchitecture\"d\n" +
 	"\x05State\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
 	"\x05READY\x10\x02\x12\f\n" +
 	"\bUPDATING\x10\x03\x12\f\n" +
 	"\bDELETING\x10\x04\x12\t\n" +
-	"\x05ERROR\x10\x05\"T\n" +
+	"\x05ERROR\x10\x05\x12\n" +
+	"\n" +
+	"\x06BROKEN\x10\x06\"T\n" +
 	"\x1aSourceImageCPUArchitecture\x12 \n" +
 	"\x1cSOURCE_IMAGE_CPU_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05AMD64\x10\x01\x12\t\n" +

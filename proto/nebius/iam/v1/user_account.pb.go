@@ -22,6 +22,61 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type UserAccountStatus_State int32
+
+const (
+	UserAccountStatus_STATE_UNSPECIFIED UserAccountStatus_State = 0
+	// usual state when federated user can log into the system and view/manage granted resources in one or more tenants
+	UserAccountStatus_ACTIVE UserAccountStatus_State = 1
+	// federated user can be blocked (manually or by any specific automated process), in this state user cannot log into the system
+	UserAccountStatus_INACTIVE UserAccountStatus_State = 2
+	// federated user can be deleted/forgot, in this state user cannot log into the system and various internal removal interactions are in progress
+	UserAccountStatus_DELETING UserAccountStatus_State = 3
+)
+
+// Enum value maps for UserAccountStatus_State.
+var (
+	UserAccountStatus_State_name = map[int32]string{
+		0: "STATE_UNSPECIFIED",
+		1: "ACTIVE",
+		2: "INACTIVE",
+		3: "DELETING",
+	}
+	UserAccountStatus_State_value = map[string]int32{
+		"STATE_UNSPECIFIED": 0,
+		"ACTIVE":            1,
+		"INACTIVE":          2,
+		"DELETING":          3,
+	}
+)
+
+func (x UserAccountStatus_State) Enum() *UserAccountStatus_State {
+	p := new(UserAccountStatus_State)
+	*p = x
+	return p
+}
+
+func (x UserAccountStatus_State) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserAccountStatus_State) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_iam_v1_user_account_proto_enumTypes[0].Descriptor()
+}
+
+func (UserAccountStatus_State) Type() protoreflect.EnumType {
+	return &file_nebius_iam_v1_user_account_proto_enumTypes[0]
+}
+
+func (x UserAccountStatus_State) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserAccountStatus_State.Descriptor instead.
+func (UserAccountStatus_State) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_iam_v1_user_account_proto_rawDescGZIP(), []int{1, 0}
+}
+
 type UserAccountExternalId struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	FederationUserAccountId string                 `protobuf:"bytes,1,opt,name=federation_user_account_id,json=federationUserAccountId,proto3" json:"federation_user_account_id,omitempty"`
@@ -74,6 +129,50 @@ func (x *UserAccountExternalId) GetFederationId() string {
 	return ""
 }
 
+type UserAccountStatus struct {
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	State         UserAccountStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.iam.v1.UserAccountStatus_State" json:"state,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserAccountStatus) Reset() {
+	*x = UserAccountStatus{}
+	mi := &file_nebius_iam_v1_user_account_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserAccountStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserAccountStatus) ProtoMessage() {}
+
+func (x *UserAccountStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_iam_v1_user_account_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserAccountStatus.ProtoReflect.Descriptor instead.
+func (*UserAccountStatus) Descriptor() ([]byte, []int) {
+	return file_nebius_iam_v1_user_account_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UserAccountStatus) GetState() UserAccountStatus_State {
+	if x != nil {
+		return x.State
+	}
+	return UserAccountStatus_STATE_UNSPECIFIED
+}
+
 var File_nebius_iam_v1_user_account_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_user_account_proto_rawDesc = "" +
@@ -81,7 +180,15 @@ const file_nebius_iam_v1_user_account_proto_rawDesc = "" +
 	" nebius/iam/v1/user_account.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\"~\n" +
 	"\x15UserAccountExternalId\x12@\n" +
 	"\x1afederation_user_account_id\x18\x01 \x01(\tB\x03\xc0J\x01R\x17federationUserAccountId\x12#\n" +
-	"\rfederation_id\x18\x02 \x01(\tR\ffederationIdBW\n" +
+	"\rfederation_id\x18\x02 \x01(\tR\ffederationId\"\x99\x01\n" +
+	"\x11UserAccountStatus\x12<\n" +
+	"\x05state\x18\x01 \x01(\x0e2&.nebius.iam.v1.UserAccountStatus.StateR\x05state\"F\n" +
+	"\x05State\x12\x15\n" +
+	"\x11STATE_UNSPECIFIED\x10\x00\x12\n" +
+	"\n" +
+	"\x06ACTIVE\x10\x01\x12\f\n" +
+	"\bINACTIVE\x10\x02\x12\f\n" +
+	"\bDELETING\x10\x03BW\n" +
 	"\x14ai.nebius.pub.iam.v1B\x10UserAccountProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
 
 var (
@@ -96,16 +203,20 @@ func file_nebius_iam_v1_user_account_proto_rawDescGZIP() []byte {
 	return file_nebius_iam_v1_user_account_proto_rawDescData
 }
 
-var file_nebius_iam_v1_user_account_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_nebius_iam_v1_user_account_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_nebius_iam_v1_user_account_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_nebius_iam_v1_user_account_proto_goTypes = []any{
-	(*UserAccountExternalId)(nil), // 0: nebius.iam.v1.UserAccountExternalId
+	(UserAccountStatus_State)(0),  // 0: nebius.iam.v1.UserAccountStatus.State
+	(*UserAccountExternalId)(nil), // 1: nebius.iam.v1.UserAccountExternalId
+	(*UserAccountStatus)(nil),     // 2: nebius.iam.v1.UserAccountStatus
 }
 var file_nebius_iam_v1_user_account_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: nebius.iam.v1.UserAccountStatus.state:type_name -> nebius.iam.v1.UserAccountStatus.State
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_user_account_proto_init() }
@@ -118,13 +229,14 @@ func file_nebius_iam_v1_user_account_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_iam_v1_user_account_proto_rawDesc), len(file_nebius_iam_v1_user_account_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   1,
+			NumEnums:      1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_nebius_iam_v1_user_account_proto_goTypes,
 		DependencyIndexes: file_nebius_iam_v1_user_account_proto_depIdxs,
+		EnumInfos:         file_nebius_iam_v1_user_account_proto_enumTypes,
 		MessageInfos:      file_nebius_iam_v1_user_account_proto_msgTypes,
 	}.Build()
 	File_nebius_iam_v1_user_account_proto = out.File
