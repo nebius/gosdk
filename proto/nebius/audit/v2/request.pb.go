@@ -24,6 +24,10 @@ const (
 
 type Request struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// Ip of the subject who initiated the RPC call.
+	ClientIp string `protobuf:"bytes,1,opt,name=client_ip,json=clientIp,proto3" json:"client_ip,omitempty"`
+	// User agent of the subject who initiated operation.
+	UserAgent string `protobuf:"bytes,2,opt,name=user_agent,json=userAgent,proto3" json:"user_agent,omitempty"`
 	// Unique identifier of the request.
 	RequestId string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	// Parameters of the request.
@@ -31,9 +35,11 @@ type Request struct {
 	// Unique key that the server uses to recognize subsequent retries of the same request.
 	IdempotencyId string `protobuf:"bytes,5,opt,name=idempotency_id,json=idempotencyId,proto3" json:"idempotency_id,omitempty"`
 	// A unique identifier that allows you to link calls to different services within an operation.
-	TraceId       string `protobuf:"bytes,6,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	TraceId string `protobuf:"bytes,6,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
+	// Client Ja3 fingerprint
+	Ja3Fingerprint string `protobuf:"bytes,7,opt,name=ja3_fingerprint,json=ja3Fingerprint,proto3" json:"ja3_fingerprint,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Request) Reset() {
@@ -66,6 +72,20 @@ func (*Request) Descriptor() ([]byte, []int) {
 	return file_nebius_audit_v2_request_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *Request) GetClientIp() string {
+	if x != nil {
+		return x.ClientIp
+	}
+	return ""
+}
+
+func (x *Request) GetUserAgent() string {
+	if x != nil {
+		return x.UserAgent
+	}
+	return ""
+}
+
 func (x *Request) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
@@ -94,19 +114,30 @@ func (x *Request) GetTraceId() string {
 	return ""
 }
 
+func (x *Request) GetJa3Fingerprint() string {
+	if x != nil {
+		return x.Ja3Fingerprint
+	}
+	return ""
+}
+
 var File_nebius_audit_v2_request_proto protoreflect.FileDescriptor
 
 const file_nebius_audit_v2_request_proto_rawDesc = "" +
 	"\n" +
-	"\x1dnebius/audit/v2/request.proto\x12\x0fnebius.audit.v2\x1a\x1cgoogle/protobuf/struct.proto\"\xa3\x01\n" +
-	"\aRequest\x12\x1d\n" +
+	"\x1dnebius/audit/v2/request.proto\x12\x0fnebius.audit.v2\x1a\x1cgoogle/protobuf/struct.proto\"\x88\x02\n" +
+	"\aRequest\x12\x1b\n" +
+	"\tclient_ip\x18\x01 \x01(\tR\bclientIp\x12\x1d\n" +
+	"\n" +
+	"user_agent\x18\x02 \x01(\tR\tuserAgent\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x03 \x01(\tR\trequestId\x127\n" +
 	"\n" +
 	"parameters\x18\x04 \x01(\v2\x17.google.protobuf.StructR\n" +
 	"parameters\x12%\n" +
 	"\x0eidempotency_id\x18\x05 \x01(\tR\ridempotencyId\x12\x19\n" +
-	"\btrace_id\x18\x06 \x01(\tR\atraceIdBW\n" +
+	"\btrace_id\x18\x06 \x01(\tR\atraceId\x12'\n" +
+	"\x0fja3_fingerprint\x18\a \x01(\tR\x0eja3FingerprintBW\n" +
 	"\x16ai.nebius.pub.audit.v2B\fRequestProtoP\x01Z-github.com/nebius/gosdk/proto/nebius/audit/v2b\x06proto3"
 
 var (
