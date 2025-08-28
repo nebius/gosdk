@@ -28,8 +28,11 @@ type NodeSetUnhealthyRequest struct {
 	state           protoimpl.MessageState                   `protogen:"open.v1"`
 	InstanceId      string                                   `protobuf:"bytes,1,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
 	HealthCheckInfo *NodeSetUnhealthyRequest_HealthCheckInfo `protobuf:"bytes,2,opt,name=health_check_info,json=healthCheckInfo,proto3" json:"health_check_info,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// If set to true, the call performs the authorization and limit checks, but does not mark node unhealthy.
+	// False by default
+	DryRun        bool `protobuf:"varint,3,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *NodeSetUnhealthyRequest) Reset() {
@@ -74,6 +77,13 @@ func (x *NodeSetUnhealthyRequest) GetHealthCheckInfo() *NodeSetUnhealthyRequest_
 		return x.HealthCheckInfo
 	}
 	return nil
+}
+
+func (x *NodeSetUnhealthyRequest) GetDryRun() bool {
+	if x != nil {
+		return x.DryRun
+	}
+	return false
 }
 
 type NodeSetUnhealthyResponse struct {
@@ -179,11 +189,12 @@ var File_nebius_compute_v1_node_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_node_service_proto_rawDesc = "" +
 	"\n" +
-	"$nebius/compute/v1/node_service.proto\x12\x11nebius.compute.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xd8\x02\n" +
+	"$nebius/compute/v1/node_service.proto\x12\x11nebius.compute.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xf1\x02\n" +
 	"\x17NodeSetUnhealthyRequest\x12'\n" +
 	"\vinstance_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"instanceId\x12n\n" +
-	"\x11health_check_info\x18\x02 \x01(\v2:.nebius.compute.v1.NodeSetUnhealthyRequest.HealthCheckInfoB\x06\xbaH\x03\xc8\x01\x01R\x0fhealthCheckInfo\x1a\xa3\x01\n" +
+	"\x11health_check_info\x18\x02 \x01(\v2:.nebius.compute.v1.NodeSetUnhealthyRequest.HealthCheckInfoB\x06\xbaH\x03\xc8\x01\x01R\x0fhealthCheckInfo\x12\x17\n" +
+	"\adry_run\x18\x03 \x01(\bR\x06dryRun\x1a\xa3\x01\n" +
 	"\x0fHealthCheckInfo\x12C\n" +
 	"\vobserved_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"observedAt\x12!\n" +
