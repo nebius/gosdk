@@ -30,6 +30,8 @@ const (
 // SessionServiceClient is the client API for SessionService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type SessionServiceClient interface {
 	// Returns the specified session.
 	Get(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*Session, error)
@@ -47,6 +49,7 @@ type sessionServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewSessionServiceClient(cc grpc.ClientConnInterface) SessionServiceClient {
 	return &sessionServiceClient{cc}
 }
@@ -99,6 +102,8 @@ func (c *sessionServiceClient) Delete(ctx context.Context, in *DeleteSessionRequ
 // SessionServiceServer is the server API for SessionService service.
 // All implementations should embed UnimplementedSessionServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type SessionServiceServer interface {
 	// Returns the specified session.
 	Get(context.Context, *GetSessionRequest) (*Session, error)
@@ -139,6 +144,7 @@ type UnsafeSessionServiceServer interface {
 	mustEmbedUnimplementedSessionServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterSessionServiceServer(s grpc.ServiceRegistrar, srv SessionServiceServer) {
 	s.RegisterService(&SessionService_ServiceDesc, srv)
 }

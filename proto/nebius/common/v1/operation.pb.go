@@ -55,8 +55,7 @@ type Operation struct {
 	// Additional information about the progress of an operation, e.g., a progress percentage.
 	// MAY be absent while the operation is running, MUST be absent after the operation has completed.
 	//
-	// Format of message inside [progress_data] is service-dependent and MUST be documented by the
-	// service, IF it is used.
+	// Type of message that's stored inside [progress_data] is service-dependent.
 	ProgressData *anypb.Any `protobuf:"bytes,9,opt,name=progress_data,json=progressData,proto3" json:"progress_data,omitempty"`
 	// The status of this operation. Set when this operation is completed.
 	// See https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto.
@@ -65,8 +64,7 @@ type Operation struct {
 	// - If [status.code] == OK, the operation has completed successfully.
 	// - If [status.code] != OK, the operation has failed or has been cancelled.
 	//   - [status.message] will contain a user-readable and actionable error message.
-	//   - [status.details] will contain additional diagnostic information in the form of
-	//     [ServiceError] from nebius/common/v1/error.proto
+	//   - [status.details] will contain additional diagnostic information in the form of [ServiceError] from nebius/common/v1/error.proto
 	//   - [status.code] must belong to an Operation-compatible subset of GRPC codes:
 	//     OK, CANCELLED, PERMISSION_DENIED, RESOURCE_EXHAUSTED, FAILED_PRECONDITION, ABORTED, INTERNAL
 	Status        *status.Status `protobuf:"bytes,10,opt,name=status,proto3" json:"status,omitempty"`
@@ -174,8 +172,7 @@ func (x *Operation) GetStatus() *status.Status {
 	return nil
 }
 
-// Request header is a container for all the values of a particular header of a request
-// as there is no such thing as map<string, repeated string>
+// Request header is a container for all the values of a particular header of a request because there is no such thing as `map<string, repeated string>`
 type Operation_RequestHeader struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The values of a particular header from a request

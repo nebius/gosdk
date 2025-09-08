@@ -29,6 +29,8 @@ const (
 // JobServiceClient is the client API for JobService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type JobServiceClient interface {
 	// Returns the specified job.
 	Get(ctx context.Context, in *GetJobRequest, opts ...grpc.CallOption) (*Job, error)
@@ -44,6 +46,7 @@ type jobServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewJobServiceClient(cc grpc.ClientConnInterface) JobServiceClient {
 	return &jobServiceClient{cc}
 }
@@ -87,6 +90,8 @@ func (c *jobServiceClient) Cancel(ctx context.Context, in *CancelJobRequest, opt
 // JobServiceServer is the server API for JobService service.
 // All implementations should embed UnimplementedJobServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type JobServiceServer interface {
 	// Returns the specified job.
 	Get(context.Context, *GetJobRequest) (*Job, error)
@@ -122,6 +127,7 @@ type UnsafeJobServiceServer interface {
 	mustEmbedUnimplementedJobServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterJobServiceServer(s grpc.ServiceRegistrar, srv JobServiceServer) {
 	s.RegisterService(&JobService_ServiceDesc, srv)
 }

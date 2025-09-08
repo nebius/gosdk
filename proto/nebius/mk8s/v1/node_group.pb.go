@@ -556,7 +556,13 @@ func (x *NodeMetadataTemplate) GetLabels() map[string]string {
 type GpuSettings struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the predefined set of drivers included in the ComputeImage deployed on ComputeInstances that are part of the NodeGroup.
-	// Supported presets: cuda12
+	// Supported presets for different platform / k8s version combinations:
+	//
+	//	gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm:
+	//	  k8s: 1.30 → "cuda12" (CUDA 12.4)
+	//	  k8s: 1.31 → "cuda12" (CUDA 12.4), "cuda12.4", "cuda12.8"
+	//	gpu-b200-sxm:
+	//	  k8s: 1.31 → "cuda12" (CUDA 12.8), "cuda12.8"
 	DriversPreset string `protobuf:"bytes,1,opt,name=drivers_preset,json=driversPreset,proto3" json:"drivers_preset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

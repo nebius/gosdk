@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"google.golang.org/grpc"
 	grpc_creds "google.golang.org/grpc/credentials"
 
@@ -32,6 +33,12 @@ type SDK struct {
 	isClosed atomic.Bool
 }
 
+const (
+	defaultTimeout  = 1 * time.Minute
+	defaultRetries  = 3
+	defaultPerRetry = 10 * time.Second
+)
+
 // New creates a new [SDK] with the provided options.
 // By default, it also performs any necessary I/O operations.
 // To separate I/O operations from instantiation, use the [WithExplicitInit] option.
@@ -44,7 +51,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	credentials := NoCredentials()
 	handler := slog.Handler(NoopHandler{})
 	explicitInit := false
-	timeout := 1 * time.Minute
+	timeout := defaultTimeout
 
 	userAgent := "nebius-gosdk"
 	goVer := runtime.Version()
@@ -64,6 +71,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var customDialOpts []grpc.DialOption
 	var customResolvers []conn.Resolver
 	var customInits []func(context.Context, *SDK) error
+	retryOpts := []retry.CallOption{}
 	for _, opt := range opts {
 		switch o := opt.(type) {
 		case optionCredentials:
@@ -89,6 +97,8 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			explicitInit = bool(o)
 		case optionInit:
 			customInits = append(customInits, o)
+		case optionRetryOptions:
+			retryOpts = append(retryOpts, o...)
 		case optionTimeout:
 			switch {
 			case o == 0:
@@ -166,6 +176,25 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	)
 
 	dialOpts = append(dialOpts, customDialOpts...)
+
+	if retryOpts != nil {
+		retryOptsFull := []retry.CallOption{
+			retry.WithMax(defaultRetries),
+			retry.WithPerRetryTimeout(defaultPerRetry),
+			conn.WithServiceRetry(),
+		}
+		retryOptsFull = append(retryOptsFull, retryOpts...)
+		dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(
+			retry.UnaryClientInterceptor(
+				retryOptsFull...,
+			),
+		))
+		dialOpts = append(dialOpts, grpc.WithChainStreamInterceptor(
+			retry.StreamClientInterceptor(
+				retryOptsFull...,
+			),
+		))
+	}
 
 	dialOpts = append(dialOpts,
 		grpc.WithChainUnaryInterceptor(

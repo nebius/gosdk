@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"google.golang.org/grpc"
 
 	"github.com/nebius/gosdk/conn"
@@ -90,6 +91,10 @@ func WithUserAgentPrefix(prefix string) Option {
 	return optionUserAgentPrefix(prefix)
 }
 
+func WithRetryOptions(opts ...retry.CallOption) Option {
+	return optionRetryOptions(opts)
+}
+
 type (
 	optionCredentials     struct{ creds Credentials }
 	optionLogger          struct{ handler slog.Handler }
@@ -105,6 +110,7 @@ type (
 	optionInit            func(context.Context, *SDK) error
 	optionTimeout         time.Duration
 	optionUserAgentPrefix string
+	optionRetryOptions    []retry.CallOption
 )
 
 func (optionCredentials) option()     {}
@@ -118,6 +124,7 @@ func (optionExplicitInit) option()    {}
 func (optionInit) option()            {}
 func (optionTimeout) option()         {}
 func (optionUserAgentPrefix) option() {}
+func (optionRetryOptions) option()    {}
 
 type NoopHandler struct{}
 

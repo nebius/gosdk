@@ -363,13 +363,15 @@ const file_nebius_msp_spark_v1alpha1_session_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2&.nebius.msp.spark.v1alpha1.SessionSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec:\x85\x01\xbaH\x81\x01\x1a\x7f\n" +
 	"\x17create_session.metadata\x12+'metadata' must have 'parent_id' and 'name'\x1a7has(this.metadata.parent_id) && has(this.metadata.name)\".\n" +
 	"\x14DeleteSessionRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xf2\x03\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x89\x05\n" +
 	"\x0eSessionService\x12W\n" +
 	"\x03Get\x12,.nebius.msp.spark.v1alpha1.GetSessionRequest\x1a\".nebius.msp.spark.v1alpha1.Session\x12c\n" +
 	"\tGetByName\x122.nebius.msp.spark.v1alpha1.GetSessionByNameRequest\x1a\".nebius.msp.spark.v1alpha1.Session\x12g\n" +
 	"\x04List\x12..nebius.msp.spark.v1alpha1.ListSessionsRequest\x1a/.nebius.msp.spark.v1alpha1.ListSessionsResponse\x12V\n" +
 	"\x06Create\x12/.nebius.msp.spark.v1alpha1.CreateSessionRequest\x1a\x1b.nebius.common.v1.Operation\x12V\n" +
-	"\x06Delete\x12/.nebius.msp.spark.v1alpha1.DeleteSessionRequest\x1a\x1b.nebius.common.v1.Operation\x1a\t\xbaJ\x06sp.mspBr\n" +
+	"\x06Delete\x12/.nebius.msp.spark.v1alpha1.DeleteSessionRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x9f\x01\xbaJ\x06sp.msp\xd2J\x8f\x01\n" +
+	"\n" +
+	"2025-08-12\x12\x80\x01Nebius AI Cloud no longer supports the service. Instead, use Application for Apache Spark™ Connect in Standalone Applications.\x88\x02\x01Br\n" +
 	" ai.nebius.pub.msp.spark.v1alpha1B\x13SessionServiceProtoP\x01Z7github.com/nebius/gosdk/proto/nebius/msp/spark/v1alpha1b\x06proto3"
 
 var (
