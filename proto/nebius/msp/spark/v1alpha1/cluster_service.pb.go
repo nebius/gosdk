@@ -422,14 +422,16 @@ const file_nebius_msp_spark_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2&.nebius.msp.spark.v1alpha1.ClusterSpecR\x04spec:P\xbaHM\x1aK\n" +
 	"\x17update_cluster.metadata\x12\x19'metadata' must have 'id'\x1a\x15has(this.metadata.id)\".\n" +
 	"\x14DeleteClusterRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xca\x04\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xe1\x05\n" +
 	"\x0eClusterService\x12W\n" +
 	"\x03Get\x12,.nebius.msp.spark.v1alpha1.GetClusterRequest\x1a\".nebius.msp.spark.v1alpha1.Cluster\x12c\n" +
 	"\tGetByName\x122.nebius.msp.spark.v1alpha1.GetClusterByNameRequest\x1a\".nebius.msp.spark.v1alpha1.Cluster\x12g\n" +
 	"\x04List\x12..nebius.msp.spark.v1alpha1.ListClustersRequest\x1a/.nebius.msp.spark.v1alpha1.ListClustersResponse\x12V\n" +
 	"\x06Create\x12/.nebius.msp.spark.v1alpha1.CreateClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12V\n" +
 	"\x06Update\x12/.nebius.msp.spark.v1alpha1.UpdateClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12V\n" +
-	"\x06Delete\x12/.nebius.msp.spark.v1alpha1.DeleteClusterRequest\x1a\x1b.nebius.common.v1.Operation\x1a\t\xbaJ\x06sp.mspBr\n" +
+	"\x06Delete\x12/.nebius.msp.spark.v1alpha1.DeleteClusterRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x9f\x01\xbaJ\x06sp.msp\xd2J\x8f\x01\n" +
+	"\n" +
+	"2025-08-12\x12\x80\x01Nebius AI Cloud no longer supports the service. Instead, use Application for Apache Spark™ Connect in Standalone Applications.\x88\x02\x01Br\n" +
 	" ai.nebius.pub.msp.spark.v1alpha1B\x13ClusterServiceProtoP\x01Z7github.com/nebius/gosdk/proto/nebius/msp/spark/v1alpha1b\x06proto3"
 
 var (

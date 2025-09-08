@@ -31,6 +31,8 @@ const (
 // ClusterServiceClient is the client API for ClusterService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type ClusterServiceClient interface {
 	// Returns the specified cluster.
 	Get(ctx context.Context, in *GetClusterRequest, opts ...grpc.CallOption) (*Cluster, error)
@@ -50,6 +52,7 @@ type clusterServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewClusterServiceClient(cc grpc.ClientConnInterface) ClusterServiceClient {
 	return &clusterServiceClient{cc}
 }
@@ -111,6 +114,8 @@ func (c *clusterServiceClient) Delete(ctx context.Context, in *DeleteClusterRequ
 // ClusterServiceServer is the server API for ClusterService service.
 // All implementations should embed UnimplementedClusterServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type ClusterServiceServer interface {
 	// Returns the specified cluster.
 	Get(context.Context, *GetClusterRequest) (*Cluster, error)
@@ -156,6 +161,7 @@ type UnsafeClusterServiceServer interface {
 	mustEmbedUnimplementedClusterServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterClusterServiceServer(s grpc.ServiceRegistrar, srv ClusterServiceServer) {
 	s.RegisterService(&ClusterService_ServiceDesc, srv)
 }

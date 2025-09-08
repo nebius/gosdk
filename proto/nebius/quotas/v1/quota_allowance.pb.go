@@ -32,6 +32,8 @@ const (
 	QuotaAllowanceStatus_STATE_PROVISIONING QuotaAllowanceStatus_State = 1
 	// Quota is allocated and can be used.
 	QuotaAllowanceStatus_STATE_ACTIVE QuotaAllowanceStatus_State = 2
+	// Quota is allocated but cannot be used any longer
+	QuotaAllowanceStatus_STATE_FROZEN QuotaAllowanceStatus_State = 3
 	// Quota has been removed and is no longer allocated.
 	QuotaAllowanceStatus_STATE_DELETED QuotaAllowanceStatus_State = 10
 )
@@ -42,12 +44,14 @@ var (
 		0:  "STATE_UNSPECIFIED",
 		1:  "STATE_PROVISIONING",
 		2:  "STATE_ACTIVE",
+		3:  "STATE_FROZEN",
 		10: "STATE_DELETED",
 	}
 	QuotaAllowanceStatus_State_value = map[string]int32{
 		"STATE_UNSPECIFIED":  0,
 		"STATE_PROVISIONING": 1,
 		"STATE_ACTIVE":       2,
+		"STATE_FROZEN":       3,
 		"STATE_DELETED":      10,
 	}
 )
@@ -373,7 +377,7 @@ const file_nebius_quotas_v1_quota_allowance_proto_rawDesc = "" +
 	"\x12QuotaAllowanceSpec\x12\x19\n" +
 	"\x05limit\x18\x01 \x01(\x04H\x00R\x05limit\x88\x01\x01\x12\x1c\n" +
 	"\x06region\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\x06regionB\b\n" +
-	"\x06_limit\"\xc1\x04\n" +
+	"\x06_limit\"\xd3\x04\n" +
 	"\x14QuotaAllowanceStatus\x12B\n" +
 	"\x05state\x18\x01 \x01(\x0e2,.nebius.quotas.v1.QuotaAllowanceStatus.StateR\x05state\x12\x14\n" +
 	"\x05usage\x18\x02 \x01(\x04R\x05usage\x12\x18\n" +
@@ -384,11 +388,12 @@ const file_nebius_quotas_v1_quota_allowance_proto_rawDesc = "" +
 	"\x10usage_percentage\x18\t \x01(\tR\x0fusagePercentage\x12R\n" +
 	"\vusage_state\x18\n" +
 	" \x01(\x0e21.nebius.quotas.v1.QuotaAllowanceStatus.UsageStateR\n" +
-	"usageState\"[\n" +
+	"usageState\"m\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12STATE_PROVISIONING\x10\x01\x12\x10\n" +
-	"\fSTATE_ACTIVE\x10\x02\x12\x11\n" +
+	"\fSTATE_ACTIVE\x10\x02\x12\x10\n" +
+	"\fSTATE_FROZEN\x10\x03\x12\x11\n" +
 	"\rSTATE_DELETED\x10\n" +
 	"\"r\n" +
 	"\n" +

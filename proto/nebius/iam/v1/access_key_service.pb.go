@@ -778,7 +778,7 @@ const file_nebius_iam_v1_access_key_service_proto_rawDesc = "" +
 	"Deactivate\x12).nebius.iam.v1.DeactivateAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12L\n" +
 	"\x06Delete\x12%.nebius.iam.v1.DeleteAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x8b\x01\xbaJ\acpl.iam\xd2J{\n" +
 	"\n" +
-	"2025-09-01\x12mAccess keys API v1 is deprecated, use the v2 version instead. Keys produced by API v1 are available using v2.\x88\x02\x01B\\\n" +
+	"2026-09-01\x12mAccess keys API v1 is deprecated, use the v2 version instead. Keys produced by API v1 are available using v2.\x88\x02\x01B\\\n" +
 	"\x14ai.nebius.pub.iam.v1B\x15AccessKeyServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
 
 var (

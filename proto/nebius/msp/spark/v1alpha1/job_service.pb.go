@@ -306,13 +306,15 @@ const file_nebius_msp_spark_v1alpha1_job_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2\".nebius.msp.spark.v1alpha1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec:\x80\x01\xbaH}\x1a{\n" +
 	"\x13create_job.metadata\x12+'metadata' must have 'parent_id' and 'name'\x1a7has(this.metadata.parent_id) && has(this.metadata.name)\"*\n" +
 	"\x10CancelJobRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xf1\x02\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x88\x04\n" +
 	"\n" +
 	"JobService\x12O\n" +
 	"\x03Get\x12(.nebius.msp.spark.v1alpha1.GetJobRequest\x1a\x1e.nebius.msp.spark.v1alpha1.Job\x12_\n" +
 	"\x04List\x12*.nebius.msp.spark.v1alpha1.ListJobsRequest\x1a+.nebius.msp.spark.v1alpha1.ListJobsResponse\x12R\n" +
 	"\x06Create\x12+.nebius.msp.spark.v1alpha1.CreateJobRequest\x1a\x1b.nebius.common.v1.Operation\x12R\n" +
-	"\x06Cancel\x12+.nebius.msp.spark.v1alpha1.CancelJobRequest\x1a\x1b.nebius.common.v1.Operation\x1a\t\xbaJ\x06sp.mspBn\n" +
+	"\x06Cancel\x12+.nebius.msp.spark.v1alpha1.CancelJobRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x9f\x01\xbaJ\x06sp.msp\xd2J\x8f\x01\n" +
+	"\n" +
+	"2025-08-12\x12\x80\x01Nebius AI Cloud no longer supports the service. Instead, use Application for Apache Spark™ Connect in Standalone Applications.\x88\x02\x01Bn\n" +
 	" ai.nebius.pub.msp.spark.v1alpha1B\x0fJobServiceProtoP\x01Z7github.com/nebius/gosdk/proto/nebius/msp/spark/v1alpha1b\x06proto3"
 
 var (
