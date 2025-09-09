@@ -1,6 +1,9 @@
 package gosdk
 
 import (
+	"fmt"
+	"log/slog"
+
 	"github.com/nebius/gosdk/auth"
 )
 
@@ -75,6 +78,21 @@ type (
 	credsOneOf          map[auth.Selector]Credentials
 	credsPropagate      struct{}
 )
+
+func (credsNoCreds) LogValue() slog.Value { return slog.AnyValue("NoCredentials") }
+func (c credsTokener) LogValue() slog.Value {
+	return slog.AnyValue(fmt.Sprintf("Tokener(%v)", c.tokener))
+}
+func (c credsAuthenticator) LogValue() slog.Value {
+	return slog.AnyValue(fmt.Sprintf("Authenticator(%v)", c.auth))
+}
+func (c credsServiceAccount) LogValue() slog.Value {
+	return slog.AnyValue(fmt.Sprintf("ServiceAccountReader(%v)", c.reader))
+}
+func (c credsOneOf) LogValue() slog.Value {
+	return slog.AnyValue(fmt.Sprintf("OneOfCredentials(%d options)", len(c)))
+}
+func (credsPropagate) LogValue() slog.Value { return slog.AnyValue("PropagateAuthorizationHeader") }
 
 func (credsNoCreds) credentials()        {}
 func (credsTokener) credentials()        {}
