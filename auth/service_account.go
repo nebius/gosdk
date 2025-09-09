@@ -15,7 +15,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/sync/singleflight"
 
-	"github.com/nebius/gosdk/config"
 	iampb "github.com/nebius/gosdk/proto/nebius/iam/v1"
 )
 
@@ -51,21 +50,23 @@ func NewCachedServiceAccount(reader ServiceAccountReader) *CachedServiceAccount 
 }
 
 func NewServiceAccountTokener(
-	profile *config.Profile,
+	id string,
+	publicKeyID string,
+	privateKey string,
 	getIAMClient func() (iampb.TokenExchangeServiceClient, error),
 ) NamedTokener {
 	return NewNameWrapper(
 		fmt.Sprintf(
 			"service-account/%s/%s",
-			profile.ServiceAccountID, profile.PublicKeyID,
+			id, publicKeyID,
 		),
 		NewExchangeableBearerTokenerWithDeferredClient(
 			NewServiceAccountExchangeTokenRequester(
 				NewCachedServiceAccount(
 					NewPrivateKeyParser(
-						[]byte(profile.PrivateKey),
-						profile.PublicKeyID,
-						profile.ServiceAccountID,
+						[]byte(privateKey),
+						publicKeyID,
+						id,
 					),
 				),
 			),
