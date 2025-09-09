@@ -16,9 +16,14 @@ import (
 	grpc_creds "google.golang.org/grpc/credentials"
 
 	"github.com/nebius/gosdk/auth"
+	"github.com/nebius/gosdk/config"
+	"github.com/nebius/gosdk/config/paths"
+	"github.com/nebius/gosdk/config/reader"
 	"github.com/nebius/gosdk/conn"
+	iampb "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	"github.com/nebius/gosdk/serviceerror"
 	"github.com/nebius/gosdk/services/nebius"
+	iam "github.com/nebius/gosdk/services/nebius/iam/v1"
 )
 
 // SDK is the Nebius API client.
@@ -31,6 +36,7 @@ type SDK struct {
 	inits    []func(context.Context, *SDK) error
 	closes   []func() error
 	isClosed atomic.Bool
+	parentID string
 }
 
 const (
@@ -46,9 +52,10 @@ const (
 // SDK may span goroutines that will use the context returned by [SDK.Context].
 // If you want to stop the goroutines, you should call [SDK.Close].
 func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
-	domain := "api.nebius.cloud:443"
+	var domain string
+	var sdk *SDK
 
-	credentials := NoCredentials()
+	var credentials Credentials = nil
 	handler := slog.Handler(NoopHandler{})
 	explicitInit := false
 	timeout := defaultTimeout
@@ -71,6 +78,8 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var customDialOpts []grpc.DialOption
 	var customResolvers []conn.Resolver
 	var customInits []func(context.Context, *SDK) error
+	var configReader config.ConfigInterface = nil
+	var parentID string
 	retryOpts := []retry.CallOption{}
 	for _, opt := range opts {
 		switch o := opt.(type) {
@@ -108,10 +117,65 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			default:
 				timeout = time.Duration(o)
 			}
+		case optionConfigReader:
+			configReader = o.configReader
+		case optionParentID:
+			parentID = string(o)
 		}
 	}
-
 	logger := slog.New(handler)
+	if configReader != nil {
+		logger.DebugContext(ctx, "SDK is initialized with config reader")
+		configReader.SetOptions(
+			reader.WithLogger(logger),
+			reader.WithDeferredClientFunc(func() (iampb.TokenExchangeServiceClient, error) {
+				if sdk == nil {
+					return nil, errors.New("SDK is not initialized")
+				}
+				return iam.NewTokenExchangeService(sdk), nil
+			}),
+		)
+
+		if domain == "" {
+			if configReader.Endpoint() == "" {
+				domain = paths.DefaultAPIEndpoint
+				logger.WarnContext(ctx, "missing profile's endpoint, using default",
+					slog.String("endpoint", domain),
+					slog.String("profile", configReader.CurrentProfileName()),
+				)
+			} else {
+				logger.DebugContext(ctx, "using endpoint from config reader",
+					slog.String("endpoint", configReader.Endpoint()),
+				)
+				domain = configReader.Endpoint()
+			}
+		}
+		if credentials == nil {
+			tokener, err := configReader.GetCredentials(ctx)
+			if err != nil {
+				return nil, fmt.Errorf("get credentials: %w", err)
+			}
+			credentials = credsTokener{
+				tokener: tokener,
+			}
+		} else {
+			logger.DebugContext(ctx, "credentials provided by options, ignoring credentials from config reader",
+				slog.Any("credentials", credentials),
+			)
+		}
+		if parentID == "" {
+			parentID = configReader.ParentID()
+		}
+
+	}
+	if credentials == nil {
+		credentials = NoCredentials()
+	}
+
+	if domain == "" {
+		domain = paths.DefaultAPIEndpoint
+	}
+
 	substitutions := map[string]string{
 		"{domain}": ensurePort(domain),
 	}
@@ -228,7 +292,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 
 	sdkContext, cancel := context.WithCancel(context.WithoutCancel(ctx))
 
-	sdk := &SDK{
+	sdk = &SDK{
 		resolver: conn.NewContextResolver(
 			logger,
 			conn.NewCachedResolver(
@@ -239,12 +303,13 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 				),
 			),
 		),
-		dialer:  dialer,
-		tokener: tokener,
-		inits:   inits,
-		closes:  closes,
-		ctx:     sdkContext,
-		cancel:  cancel,
+		dialer:   dialer,
+		tokener:  tokener,
+		inits:    inits,
+		closes:   closes,
+		ctx:      sdkContext,
+		cancel:   cancel,
+		parentID: parentID,
 	}
 
 	if !explicitInit {
@@ -278,6 +343,11 @@ func (s *SDK) Init(ctx context.Context) error {
 	}
 	s.inits = nil // reset to prevent issues if Init() is called multiple times or called without [WithExplicitInit]
 	return nil
+}
+
+// ParentID returns the parent ID saved in the SDK, if any.
+func (s *SDK) ParentID() string {
+	return s.parentID
 }
 
 // Services is a fluent interface to get a Nebius service client.
