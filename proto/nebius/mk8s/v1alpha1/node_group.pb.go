@@ -355,7 +355,29 @@ type NodeTemplate struct {
 	Resources *ResourcesSpec         `protobuf:"bytes,3,opt,name=resources,proto3" json:"resources,omitempty"`
 	BootDisk  *DiskSpec              `protobuf:"bytes,9,opt,name=boot_disk,json=bootDisk,proto3" json:"boot_disk,omitempty"`
 	// GPU-related settings.
-	GpuSettings       *GpuSettings                `protobuf:"bytes,13,opt,name=gpu_settings,json=gpuSettings,proto3" json:"gpu_settings,omitempty"`
+	GpuSettings *GpuSettings `protobuf:"bytes,13,opt,name=gpu_settings,json=gpuSettings,proto3" json:"gpu_settings,omitempty"`
+	// OS version that will be used to create the boot disk of Compute Instances in the NodeGroup.
+	// Supported platform / k8s version /  OS / driver presets combinations
+	//
+	//	gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm, cpu-e1, cpu-e2, cpu-d3:
+	//	  drivers_preset: ""
+	//	    k8s: 1.30 → "ubuntu22.04"
+	//	    k8s: 1.31 → "ubuntu22.04" (default), "ubuntu24.04"
+	//	gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm:
+	//	  drivers_preset: "cuda12" (CUDA 12.4)
+	//	    k8s: 1.30, 1.31 → "ubuntu22.04"
+	//	  drivers_preset: "cuda12.4"
+	//	    k8s: 1.31 → "ubuntu22.04"
+	//	  drivers_preset: "cuda12.8"
+	//	    k8s: 1.31 → "ubuntu24.04"
+	//	gpu-b200-sxm:
+	//	  drivers_preset: ""
+	//	    k8s: 1.30, 1.31 → "ubuntu24.04"
+	//	  drivers_preset: "cuda12" (CUDA 12.8)
+	//	    k8s: 1.30, 1.31 → "ubuntu24.04"
+	//	  drivers_preset: "cuda12.8"
+	//	    k8s: 1.31 → "ubuntu24.04"
+	Os                string                      `protobuf:"bytes,16,opt,name=os,proto3" json:"os,omitempty"`
 	GpuCluster        *GpuClusterSpec             `protobuf:"bytes,4,opt,name=gpu_cluster,json=gpuCluster,proto3" json:"gpu_cluster,omitempty"`
 	NetworkInterfaces []*NetworkInterfaceTemplate `protobuf:"bytes,5,rep,name=network_interfaces,json=networkInterfaces,proto3" json:"network_interfaces,omitempty"`
 	Filesystems       []*AttachedFilesystemSpec   `protobuf:"bytes,7,rep,name=filesystems,proto3" json:"filesystems,omitempty"`
@@ -437,6 +459,13 @@ func (x *NodeTemplate) GetGpuSettings() *GpuSettings {
 		return x.GpuSettings
 	}
 	return nil
+}
+
+func (x *NodeTemplate) GetOs() string {
+	if x != nil {
+		return x.Os
+	}
+	return ""
 }
 
 func (x *NodeTemplate) GetGpuCluster() *GpuClusterSpec {
@@ -1290,13 +1319,14 @@ const file_nebius_mk8s_v1alpha1_node_group_proto_rawDesc = "" +
 	"\vautoscaling\x18\x05 \x01(\v2..nebius.mk8s.v1alpha1.NodeGroupAutoscalingSpecH\x00R\vautoscaling\x12F\n" +
 	"\btemplate\x18\x03 \x01(\v2\".nebius.mk8s.v1alpha1.NodeTemplateB\x06\xbaH\x03\xc8\x01\x01R\btemplate\x12M\n" +
 	"\bstrategy\x18\x04 \x01(\v21.nebius.mk8s.v1alpha1.NodeGroupDeploymentStrategyR\bstrategyB\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\x92\x06\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\xa2\x06\n" +
 	"\fNodeTemplate\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2*.nebius.mk8s.v1alpha1.NodeMetadataTemplateR\bmetadata\x127\n" +
 	"\x06taints\x18\x02 \x03(\v2\x1f.nebius.mk8s.v1alpha1.NodeTaintR\x06taints\x12I\n" +
 	"\tresources\x18\x03 \x01(\v2#.nebius.mk8s.v1alpha1.ResourcesSpecB\x06\xbaH\x03\xc8\x01\x01R\tresources\x12A\n" +
 	"\tboot_disk\x18\t \x01(\v2\x1e.nebius.mk8s.v1alpha1.DiskSpecB\x04\xbaJ\x01\aR\bbootDisk\x12D\n" +
-	"\fgpu_settings\x18\r \x01(\v2!.nebius.mk8s.v1alpha1.GpuSettingsR\vgpuSettings\x12E\n" +
+	"\fgpu_settings\x18\r \x01(\v2!.nebius.mk8s.v1alpha1.GpuSettingsR\vgpuSettings\x12\x0e\n" +
+	"\x02os\x18\x10 \x01(\tR\x02os\x12E\n" +
 	"\vgpu_cluster\x18\x04 \x01(\v2$.nebius.mk8s.v1alpha1.GpuClusterSpecR\n" +
 	"gpuCluster\x12c\n" +
 	"\x12network_interfaces\x18\x05 \x03(\v2..nebius.mk8s.v1alpha1.NetworkInterfaceTemplateB\x04\xbaJ\x01\aR\x11networkInterfaces\x12N\n" +
