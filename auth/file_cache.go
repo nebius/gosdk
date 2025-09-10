@@ -14,7 +14,7 @@ import (
 	"golang.org/x/sync/singleflight"
 	"gopkg.in/yaml.v3"
 
-	"github.com/nebius/gosdk/config"
+	"github.com/nebius/gosdk/config/paths"
 )
 
 const cacheFileName = "credentials.yaml"
@@ -881,9 +881,9 @@ func (f *AsynchronouslyRenewableFileCachedTokener) requestToken(
 }
 
 func GetDefaultCacheFileName() (string, error) {
-	home, err := config.UserHomeDir()
+	home, err := paths.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, config.DefaultConfigDir, cacheFileName), nil
+	return filepath.Join(home, paths.DefaultConfigDir, cacheFileName), nil
 }

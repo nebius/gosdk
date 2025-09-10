@@ -3,18 +3,8 @@ package config
 import (
 	"errors"
 	"fmt"
-	"io/fs"
-	"os"
-	"os/user"
-	"path/filepath"
-
-	"gopkg.in/yaml.v3"
+	"log/slog"
 )
-
-const DefaultConfigDir = ".nebius/"
-const defaultConfigName = "config.yaml"
-
-const DefaultAPIEndpoint = "api.nebius.cloud"
 
 type AuthType string
 
@@ -42,8 +32,34 @@ type Profile struct {
 	ServiceAccountID string `yaml:"service-account-id,omitempty"`
 	PublicKeyID      string `yaml:"public-key-id,omitempty"`
 	PrivateKey       string `yaml:"private-key,omitempty"`
+	// PrivateKeyFilePath points to a file containing a PEM encoded PKCS1 or PKCS8 private key.
+	PrivateKeyFilePath string `yaml:"private-key-file-path,omitempty"`
+	// ServiceAccountCredentialsFilePath points to a JSON credentials file that already
+	// contains service account ID, public key ID and private key (see auth.ServiceAccountCredentialsFileParser format).
+	ServiceAccountCredentialsFilePath string `yaml:"service-account-credentials-file-path,omitempty"`
+	// Federated credentials log-in path
+	FederatedSubjectCredentialsFilePath string `yaml:"federated-subject-credentials-file-path,omitempty"`
 
 	ParentID string `yaml:"parent-id,omitempty"`
+}
+
+func (p *Profile) LogValue() slog.Value {
+	return slog.AnyValue(map[string]any{
+		"name":                p.Name,
+		"endpoint":            p.Endpoint,
+		"federation-endpoint": p.FederationEndpoint,
+		"federation-id":       p.FederationID,
+		"service-account-id":  p.ServiceAccountID,
+		"public-key-id":       p.PublicKeyID,
+		// Do not log private key
+		// "private-key":         p.PrivateKey,
+		"private-key-file-path":                   p.PrivateKeyFilePath,
+		"service-account-credentials-file-path":   p.ServiceAccountCredentialsFilePath,
+		"federated-subject-credentials-file-path": p.FederatedSubjectCredentialsFilePath,
+		"auth-type":  p.AuthType,
+		"parent-id":  p.ParentID,
+		"token-file": p.TokenFile,
+	})
 }
 
 func NewConfig() *Config {
@@ -51,24 +67,6 @@ func NewConfig() *Config {
 		Profiles: make(ProfilesConfig),
 	}
 	return cfg
-}
-
-func (c *Config) LoadFromFile(file string) error {
-	bytes, err := os.ReadFile(file)
-	if err != nil {
-		if errors.Is(err, fs.ErrNotExist) {
-			return NewMissingConfigError(err)
-		}
-		return NewError(err)
-	}
-	err = yaml.Unmarshal(bytes, c)
-	if err != nil {
-		return NewError(err)
-	}
-	for name, profile := range c.Profiles {
-		profile.Name = name
-	}
-	return nil
 }
 
 func (c *Config) GetDefaultProfile() (*Profile, error) {
@@ -105,32 +103,4 @@ func (c *Config) GetProfile(name string) (*Profile, error) {
 		return nil, NewGetProfileError(fmt.Errorf("unknown profile %q", name), c.Profiles)
 	}
 	return profile, nil
-}
-
-func GetDefaultConfigPath() (string, error) {
-	home, err := UserHomeDir()
-	if err != nil {
-		return "", err
-	}
-	return filepath.Join(home, DefaultConfigDir, defaultConfigName), nil
-}
-
-func UserHomeDir() (string, error) {
-	home, envErr := os.UserHomeDir()
-	if envErr == nil {
-		return home, nil
-	}
-	usr, uidErr := user.Current()
-	if uidErr != nil {
-		return "", errors.Join(envErr, uidErr)
-	}
-	return usr.HomeDir, nil
-}
-
-func GetAbsoluteDefaultConfigDir() (string, error) {
-	home, err := UserHomeDir()
-	if err != nil {
-		return "", err
-	}
-	return filepath.Join(home, DefaultConfigDir), nil
 }
