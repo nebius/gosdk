@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/nebius/gosdk/config"
+	"github.com/nebius/gosdk/config/paths"
 )
 
 func getCode(
@@ -87,7 +88,7 @@ func getCode(
 		if err != nil {
 			return "", "", err
 		}
-		browserErr = openBrowser(ctx, authURL.String())
+		browserErr = openBrowser(ctx, logger, authURL.String())
 	}
 
 	select {
@@ -198,7 +199,7 @@ func Authorize(
 	return token, nil
 }
 
-func openBrowser(ctx context.Context, url string) <-chan error {
+func openBrowser(ctx context.Context, logger *slog.Logger, url string) <-chan error {
 	ch := make(chan error, 1)
 
 	var cmd *exec.Cmd
@@ -207,14 +208,15 @@ func openBrowser(ctx context.Context, url string) <-chan error {
 		if IsWSL() {
 			//nolint:gosec // we trust url
 			cmd = exec.CommandContext(ctx, "cmd.exe", "/c", "start", strings.ReplaceAll(url, "&", "^&"))
-			home, err := config.UserHomeDir()
+			home, err := paths.UserHomeDir()
 			if err != nil {
 				ch <- err
 				return ch
 			}
 			cmd.Dir = home
 		} else {
-			for _, provider := range []string{"xdg-open", "x-www-browser", "www-browser"} {
+			providers := []string{"xdg-open", "x-www-browser", "www-browser"}
+			for _, provider := range providers {
 				_, err := exec.LookPath(provider)
 				if err != nil {
 					continue
@@ -223,6 +225,10 @@ func openBrowser(ctx context.Context, url string) <-chan error {
 				break
 			}
 			if cmd == nil {
+				logger.DebugContext(
+					ctx,
+					"browser provider not found, choosing xdg-open to fail",
+				)
 				cmd = exec.CommandContext(ctx, "xdg-open", url)
 			}
 		}
@@ -236,6 +242,7 @@ func openBrowser(ctx context.Context, url string) <-chan error {
 		ch <- errors.New("unsupported platform")
 		return ch
 	}
+	logger.DebugContext(ctx, "exec browser command", slog.String("cmd", cmd.String()))
 
 	go func() {
 		output, err := cmd.CombinedOutput()
