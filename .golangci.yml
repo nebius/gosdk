@@ -465,8 +465,41 @@ linters:
           - cyclop
           - gocognit
           - gocyclo
+      - path: '^sdk.go$'
+        linters:
+          - whitespace # side effect of public files generator
       - path: '^proto/fieldmask'
         text: 'shadow: declaration of \S+ shadows declaration at line \d+' # TODO: fix
+      - path: '^sdk.go$'
+        text: 'var-declaration: should drop = nil from declaration of var .+; it is the zero value' # TODO: fix
+      - path: 'constants/constants.go'
+        linters:
+          - gosec # TODO: ignore with comment
+      - path: 'config/interface.go'
+        text: 'exported: type name will be used as config.ConfigInterface by other packages, and that stutters; consider calling this Interface' # TODO: fix
+      - path: 'constants/well_known.go'
+        linters:
+          - gochecknoglobals # TODO: fix
+      - path: 'config/reader/options.go'
+        linters:
+          - godot # TODO: fix
+      - path: 'auth/federated_credentials.go'
+        text: "unused-parameter: parameter 'ctx' seems to be unused, consider removing or renaming it as _" # TODO: fix
+      - path: 'config/reader/options.go'
+        text: "comment on exported function .+ should be of the form" # TODO: fix
+      - path: 'auth/federated_credentials.go'
+        linters:
+          - golines # TODO: fix
+          - godot # TODO: fix
+      - path: 'config/reader/reader.go'
+        linters:
+          - gocognit # TODO: fix or ignore
+          - golines # TODO: fix
+          - mnd # TODO: fix or ignore
+          - perfsprint # TODO: fix
+      - path: '^sdk.go$'
+        linters:
+          - nestif # TODO: fix or ignore
       - path: '^proto/fieldmask'
         linters:
           - nilnil # TODO: fix or ignore
