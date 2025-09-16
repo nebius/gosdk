@@ -209,7 +209,9 @@ type MaintenanceStatus struct {
 	// Timestamp indicating when the maintenance operation finished.
 	FinishedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`
 	// Current state of the maintenance operation.
-	State         State `protobuf:"varint,4,opt,name=state,proto3,enum=nebius.maintenance.v1alpha1.State" json:"state,omitempty"`
+	State State `protobuf:"varint,4,opt,name=state,proto3,enum=nebius.maintenance.v1alpha1.State" json:"state,omitempty"`
+	// Indicates whether the maintenance operation's scheduled_at time can be changed.
+	Reschedulable bool `protobuf:"varint,5,opt,name=reschedulable,proto3" json:"reschedulable,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -270,6 +272,13 @@ func (x *MaintenanceStatus) GetState() State {
 		return x.State
 	}
 	return State_STATE_UNSPECIFIED
+}
+
+func (x *MaintenanceStatus) GetReschedulable() bool {
+	if x != nil {
+		return x.Reschedulable
+	}
+	return false
 }
 
 type Resource struct {
@@ -336,14 +345,15 @@ const file_nebius_maintenance_v1alpha1_maintenance_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2,.nebius.maintenance.v1alpha1.MaintenanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12F\n" +
 	"\x06status\x18\x03 \x01(\v2..nebius.maintenance.v1alpha1.MaintenanceStatusR\x06status\"X\n" +
 	"\x0fMaintenanceSpec\x12E\n" +
-	"\fscheduled_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\vscheduledAt\"\xa3\x02\n" +
+	"\fscheduled_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\vscheduledAt\"\xc9\x02\n" +
 	"\x11MaintenanceStatus\x12T\n" +
 	"\x12affected_resources\x18\x01 \x03(\v2%.nebius.maintenance.v1alpha1.ResourceR\x11affectedResources\x129\n" +
 	"\n" +
 	"started_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tstartedAt\x12;\n" +
 	"\vfinished_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"finishedAt\x12@\n" +
-	"\x05state\x18\x04 \x01(\x0e2\".nebius.maintenance.v1alpha1.StateB\x06\xbaH\x03\xc8\x01\x01R\x05state\"G\n" +
+	"\x05state\x18\x04 \x01(\x0e2\".nebius.maintenance.v1alpha1.StateB\x06\xbaH\x03\xc8\x01\x01R\x05state\x12$\n" +
+	"\rreschedulable\x18\x05 \x01(\bR\rreschedulable\"G\n" +
 	"\bResource\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12#\n" +
 	"\tparent_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId*\x84\x01\n" +

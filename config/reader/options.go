@@ -31,6 +31,13 @@ func optionFunc(f func(*configReader)) config.Option {
 
 var _ config.Option = (*optionFunction)(nil)
 
+func WithPreloadedConfig(cfg *config.Config) config.Option {
+	return optionFunc(func(c *configReader) {
+		c.config = cfg
+		c.preloadedConfig = true
+	})
+}
+
 func WithPath(path string) config.Option {
 	return optionFunc(func(c *configReader) {
 		c.path = path

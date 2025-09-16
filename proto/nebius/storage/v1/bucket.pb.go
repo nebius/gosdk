@@ -214,9 +214,13 @@ type BucketSpec struct {
 	// Storage class to override any other storage class of uploading objects. It overrides the storage class regardless
 	// of how the original storage class was specified - either the default storage class
 	// or the one provided via the `x-amz-storage-class` header.
+	//
+	// Deprecated: Marked as deprecated in nebius/storage/v1/bucket.proto.
 	OverrideStorageClass StorageClass `protobuf:"varint,10,opt,name=override_storage_class,json=overrideStorageClass,proto3,enum=nebius.storage.v1.StorageClass" json:"override_storage_class,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	// Flag to force usage of default_storage_class, ignoring `x-amz-storage-class` header.
+	ForceStorageClass bool `protobuf:"varint,11,opt,name=force_storage_class,json=forceStorageClass,proto3" json:"force_storage_class,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *BucketSpec) Reset() {
@@ -277,11 +281,19 @@ func (x *BucketSpec) GetDefaultStorageClass() StorageClass {
 	return StorageClass_STORAGE_CLASS_UNSPECIFIED
 }
 
+// Deprecated: Marked as deprecated in nebius/storage/v1/bucket.proto.
 func (x *BucketSpec) GetOverrideStorageClass() StorageClass {
 	if x != nil {
 		return x.OverrideStorageClass
 	}
 	return StorageClass_STORAGE_CLASS_UNSPECIFIED
+}
+
+func (x *BucketSpec) GetForceStorageClass() bool {
+	if x != nil {
+		return x.ForceStorageClass
+	}
+	return false
 }
 
 type BucketStatus struct {
@@ -390,15 +402,18 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x06Bucket\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\x9a\x03\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\x9e\x04\n" +
 	"\n" +
 	"BucketSpec\x12V\n" +
 	"\x11versioning_policy\x18\x02 \x01(\x0e2#.nebius.storage.v1.VersioningPolicyB\x04\xbaJ\x01\aR\x10versioningPolicy\x12$\n" +
 	"\x0emax_size_bytes\x18\x04 \x01(\x03R\fmaxSizeBytes\x12b\n" +
 	"\x17lifecycle_configuration\x18\x05 \x01(\v2).nebius.storage.v1.LifecycleConfigurationR\x16lifecycleConfiguration\x12S\n" +
-	"\x15default_storage_class\x18\t \x01(\x0e2\x1f.nebius.storage.v1.StorageClassR\x13defaultStorageClass\x12U\n" +
+	"\x15default_storage_class\x18\t \x01(\x0e2\x1f.nebius.storage.v1.StorageClassR\x13defaultStorageClass\x12\xa8\x01\n" +
 	"\x16override_storage_class\x18\n" +
-	" \x01(\x0e2\x1f.nebius.storage.v1.StorageClassR\x14overrideStorageClass\"\xcc\x04\n" +
+	" \x01(\x0e2\x1f.nebius.storage.v1.StorageClassBQ\xd2JL\n" +
+	"\n" +
+	"2025-12-01\x12>Use `default_storage_class` with `force_storage_class` instead\x18\x01R\x14overrideStorageClass\x12.\n" +
+	"\x13force_storage_class\x18\v \x01(\bR\x11forceStorageClass\"\xcc\x04\n" +
 	"\fBucketStatus\x12=\n" +
 	"\bcounters\x18\x01 \x03(\v2!.nebius.storage.v1.BucketCountersR\bcounters\x12;\n" +
 	"\x05state\x18\x02 \x01(\x0e2%.nebius.storage.v1.BucketStatus.StateR\x05state\x12Z\n" +

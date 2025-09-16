@@ -153,8 +153,12 @@ type SubnetSpec struct {
 	// Pools for public ipv4 addresses.
 	// Default is 'use_network_pools = true'
 	Ipv4PublicPools *IPv4PublicSubnetPools `protobuf:"bytes,3,opt,name=ipv4_public_pools,json=ipv4PublicPools,proto3" json:"ipv4_public_pools,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// ID of the custom route table to associate with this subnet.
+	// Must be one of the route tables associated with network.
+	// If not specified, the subnet will use the network's default route table.
+	RouteTableId  string `protobuf:"bytes,5,opt,name=route_table_id,json=routeTableId,proto3" json:"route_table_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SubnetSpec) Reset() {
@@ -206,6 +210,13 @@ func (x *SubnetSpec) GetIpv4PublicPools() *IPv4PublicSubnetPools {
 		return x.Ipv4PublicPools
 	}
 	return nil
+}
+
+func (x *SubnetSpec) GetRouteTableId() string {
+	if x != nil {
+		return x.RouteTableId
+	}
+	return ""
 }
 
 type IPv4PrivateSubnetPools struct {
@@ -438,8 +449,11 @@ type SubnetStatus struct {
 	Ipv4PrivateCidrs []string `protobuf:"bytes,2,rep,name=ipv4_private_cidrs,json=ipv4PrivateCidrs,proto3" json:"ipv4_private_cidrs,omitempty"`
 	// CIDR blocks.
 	Ipv4PublicCidrs []string `protobuf:"bytes,3,rep,name=ipv4_public_cidrs,json=ipv4PublicCidrs,proto3" json:"ipv4_public_cidrs,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Information about the route table associated with this subnet.
+	// Can be either a custom route table or the network's default route table.
+	RouteTable    *SubnetAssociatedRouteTable `protobuf:"bytes,5,opt,name=route_table,json=routeTable,proto3" json:"route_table,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SubnetStatus) Reset() {
@@ -493,6 +507,69 @@ func (x *SubnetStatus) GetIpv4PublicCidrs() []string {
 	return nil
 }
 
+func (x *SubnetStatus) GetRouteTable() *SubnetAssociatedRouteTable {
+	if x != nil {
+		return x.RouteTable
+	}
+	return nil
+}
+
+type SubnetAssociatedRouteTable struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the route table.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Indicates whether this is the network's default route table.
+	// If true, this is the default route table inherited from the network.
+	// If false, this is a custom route table explicitly associated with the subnet via spec.
+	Default       bool `protobuf:"varint,2,opt,name=default,proto3" json:"default,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubnetAssociatedRouteTable) Reset() {
+	*x = SubnetAssociatedRouteTable{}
+	mi := &file_nebius_vpc_v1_subnet_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubnetAssociatedRouteTable) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubnetAssociatedRouteTable) ProtoMessage() {}
+
+func (x *SubnetAssociatedRouteTable) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1_subnet_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubnetAssociatedRouteTable.ProtoReflect.Descriptor instead.
+func (*SubnetAssociatedRouteTable) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_subnet_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *SubnetAssociatedRouteTable) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SubnetAssociatedRouteTable) GetDefault() bool {
+	if x != nil {
+		return x.Default
+	}
+	return false
+}
+
 var File_nebius_vpc_v1_subnet_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
@@ -501,13 +578,14 @@ const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
 	"\x06Subnet\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12-\n" +
 	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecR\x04spec\x123\n" +
-	"\x06status\x18\x03 \x01(\v2\x1b.nebius.vpc.v1.SubnetStatusR\x06status\"\xe8\x01\n" +
+	"\x06status\x18\x03 \x01(\v2\x1b.nebius.vpc.v1.SubnetStatusR\x06status\"\x8e\x02\n" +
 	"\n" +
 	"SubnetSpec\x12%\n" +
 	"\n" +
 	"network_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tnetworkId\x12Z\n" +
 	"\x12ipv4_private_pools\x18\x02 \x01(\v2%.nebius.vpc.v1.IPv4PrivateSubnetPoolsB\x05\xbaJ\x02\a\x06R\x10ipv4PrivatePools\x12W\n" +
-	"\x11ipv4_public_pools\x18\x03 \x01(\v2$.nebius.vpc.v1.IPv4PublicSubnetPoolsB\x05\xbaJ\x02\a\x06R\x0fipv4PublicPools\"u\n" +
+	"\x11ipv4_public_pools\x18\x03 \x01(\v2$.nebius.vpc.v1.IPv4PublicSubnetPoolsB\x05\xbaJ\x02\a\x06R\x0fipv4PublicPools\x12$\n" +
+	"\x0eroute_table_id\x18\x05 \x01(\tR\frouteTableId\"u\n" +
 	"\x16IPv4PrivateSubnetPools\x12/\n" +
 	"\x05pools\x18\x01 \x03(\v2\x19.nebius.vpc.v1.SubnetPoolR\x05pools\x12*\n" +
 	"\x11use_network_pools\x18\x02 \x01(\bR\x0fuseNetworkPools\"t\n" +
@@ -524,16 +602,21 @@ const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
 	"\x0fstring.ip_empty\x12/value is empty, which is not a valid IP address\x1a\n" +
 	"this != ''\xc8\x01\x01R\x04cidr\x12<\n" +
 	"\x05state\x18\x02 \x01(\x0e2 .nebius.vpc.v1.AddressBlockStateB\x04\xbaJ\x01\aR\x05state\x126\n" +
-	"\x0fmax_mask_length\x18\x03 \x01(\x03B\x0e\xbaH\a\"\x05\x18\x80\x01(\x00\xbaJ\x01\aR\rmaxMaskLength\"\xe8\x01\n" +
+	"\x0fmax_mask_length\x18\x03 \x01(\x03B\x0e\xbaH\a\"\x05\x18\x80\x01(\x00\xbaJ\x01\aR\rmaxMaskLength\"\xb4\x02\n" +
 	"\fSubnetStatus\x127\n" +
 	"\x05state\x18\x01 \x01(\x0e2!.nebius.vpc.v1.SubnetStatus.StateR\x05state\x12,\n" +
 	"\x12ipv4_private_cidrs\x18\x02 \x03(\tR\x10ipv4PrivateCidrs\x12*\n" +
-	"\x11ipv4_public_cidrs\x18\x03 \x03(\tR\x0fipv4PublicCidrs\"E\n" +
+	"\x11ipv4_public_cidrs\x18\x03 \x03(\tR\x0fipv4PublicCidrs\x12J\n" +
+	"\vroute_table\x18\x05 \x01(\v2).nebius.vpc.v1.SubnetAssociatedRouteTableR\n" +
+	"routeTable\"E\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
 	"\x05READY\x10\x02\x12\f\n" +
-	"\bDELETING\x10\x03BR\n" +
+	"\bDELETING\x10\x03\"F\n" +
+	"\x1aSubnetAssociatedRouteTable\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\adefault\x18\x02 \x01(\bR\adefaultBR\n" +
 	"\x14ai.nebius.pub.vpc.v1B\vSubnetProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/vpc/v1b\x06proto3"
 
 var (
@@ -549,21 +632,22 @@ func file_nebius_vpc_v1_subnet_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_vpc_v1_subnet_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nebius_vpc_v1_subnet_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_nebius_vpc_v1_subnet_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_vpc_v1_subnet_proto_goTypes = []any{
-	(SubnetStatus_State)(0),        // 0: nebius.vpc.v1.SubnetStatus.State
-	(*Subnet)(nil),                 // 1: nebius.vpc.v1.Subnet
-	(*SubnetSpec)(nil),             // 2: nebius.vpc.v1.SubnetSpec
-	(*IPv4PrivateSubnetPools)(nil), // 3: nebius.vpc.v1.IPv4PrivateSubnetPools
-	(*IPv4PublicSubnetPools)(nil),  // 4: nebius.vpc.v1.IPv4PublicSubnetPools
-	(*SubnetPool)(nil),             // 5: nebius.vpc.v1.SubnetPool
-	(*SubnetCidr)(nil),             // 6: nebius.vpc.v1.SubnetCidr
-	(*SubnetStatus)(nil),           // 7: nebius.vpc.v1.SubnetStatus
-	(*v1.ResourceMetadata)(nil),    // 8: nebius.common.v1.ResourceMetadata
-	(AddressBlockState)(0),         // 9: nebius.vpc.v1.AddressBlockState
+	(SubnetStatus_State)(0),            // 0: nebius.vpc.v1.SubnetStatus.State
+	(*Subnet)(nil),                     // 1: nebius.vpc.v1.Subnet
+	(*SubnetSpec)(nil),                 // 2: nebius.vpc.v1.SubnetSpec
+	(*IPv4PrivateSubnetPools)(nil),     // 3: nebius.vpc.v1.IPv4PrivateSubnetPools
+	(*IPv4PublicSubnetPools)(nil),      // 4: nebius.vpc.v1.IPv4PublicSubnetPools
+	(*SubnetPool)(nil),                 // 5: nebius.vpc.v1.SubnetPool
+	(*SubnetCidr)(nil),                 // 6: nebius.vpc.v1.SubnetCidr
+	(*SubnetStatus)(nil),               // 7: nebius.vpc.v1.SubnetStatus
+	(*SubnetAssociatedRouteTable)(nil), // 8: nebius.vpc.v1.SubnetAssociatedRouteTable
+	(*v1.ResourceMetadata)(nil),        // 9: nebius.common.v1.ResourceMetadata
+	(AddressBlockState)(0),             // 10: nebius.vpc.v1.AddressBlockState
 }
 var file_nebius_vpc_v1_subnet_proto_depIdxs = []int32{
-	8,  // 0: nebius.vpc.v1.Subnet.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	9,  // 0: nebius.vpc.v1.Subnet.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	2,  // 1: nebius.vpc.v1.Subnet.spec:type_name -> nebius.vpc.v1.SubnetSpec
 	7,  // 2: nebius.vpc.v1.Subnet.status:type_name -> nebius.vpc.v1.SubnetStatus
 	3,  // 3: nebius.vpc.v1.SubnetSpec.ipv4_private_pools:type_name -> nebius.vpc.v1.IPv4PrivateSubnetPools
@@ -571,13 +655,14 @@ var file_nebius_vpc_v1_subnet_proto_depIdxs = []int32{
 	5,  // 5: nebius.vpc.v1.IPv4PrivateSubnetPools.pools:type_name -> nebius.vpc.v1.SubnetPool
 	5,  // 6: nebius.vpc.v1.IPv4PublicSubnetPools.pools:type_name -> nebius.vpc.v1.SubnetPool
 	6,  // 7: nebius.vpc.v1.SubnetPool.cidrs:type_name -> nebius.vpc.v1.SubnetCidr
-	9,  // 8: nebius.vpc.v1.SubnetCidr.state:type_name -> nebius.vpc.v1.AddressBlockState
+	10, // 8: nebius.vpc.v1.SubnetCidr.state:type_name -> nebius.vpc.v1.AddressBlockState
 	0,  // 9: nebius.vpc.v1.SubnetStatus.state:type_name -> nebius.vpc.v1.SubnetStatus.State
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	8,  // 10: nebius.vpc.v1.SubnetStatus.route_table:type_name -> nebius.vpc.v1.SubnetAssociatedRouteTable
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_nebius_vpc_v1_subnet_proto_init() }
@@ -592,7 +677,7 @@ func file_nebius_vpc_v1_subnet_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_subnet_proto_rawDesc), len(file_nebius_vpc_v1_subnet_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   7,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -23,6 +23,7 @@ const MaintenanceServiceID conn.ServiceID = "nebius.maintenance.v1alpha1.Mainten
 type MaintenanceService interface {
 	Get(context.Context, *v1alpha1.GetMaintenanceRequest, ...grpc.CallOption) (*v1alpha1.Maintenance, error)
 	List(context.Context, *v1alpha1.ListMaintenancesRequest, ...grpc.CallOption) (*v1alpha1.ListMaintenancesResponse, error)
+	Update(context.Context, *v1alpha1.UpdateMaintenanceRequest, ...grpc.CallOption) (*v1alpha1.UpdateMaintenanceResponse, error)
 }
 
 type maintenanceService struct {
@@ -57,4 +58,16 @@ func (s maintenanceService) List(ctx context.Context, request *v1alpha1.ListMain
 		return nil, err
 	}
 	return v1alpha1.NewMaintenanceServiceClient(con).List(ctx, request, opts...)
+}
+
+func (s maintenanceService) Update(ctx context.Context, request *v1alpha1.UpdateMaintenanceRequest, opts ...grpc.CallOption) (*v1alpha1.UpdateMaintenanceResponse, error) {
+	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1alpha1.NewMaintenanceServiceClient(con).Update(ctx, request, opts...)
 }

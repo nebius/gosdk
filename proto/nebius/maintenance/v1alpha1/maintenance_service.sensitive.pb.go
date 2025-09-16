@@ -10,3 +10,9 @@ package v1alpha1
 
 // func (x *GetMaintenanceRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GetMaintenanceRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateMaintenanceRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateMaintenanceRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateMaintenanceResponse) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateMaintenanceResponse) LogValue() slog.Value // is not generated as no sensitive fields found

@@ -395,6 +395,131 @@ func (x *DeleteClusterRequest) GetId() string {
 	return ""
 }
 
+type ListClusterControlPlaneVersionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListClusterControlPlaneVersionsRequest) Reset() {
+	*x = ListClusterControlPlaneVersionsRequest{}
+	mi := &file_nebius_mk8s_v1alpha1_cluster_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListClusterControlPlaneVersionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListClusterControlPlaneVersionsRequest) ProtoMessage() {}
+
+func (x *ListClusterControlPlaneVersionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1alpha1_cluster_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListClusterControlPlaneVersionsRequest.ProtoReflect.Descriptor instead.
+func (*ListClusterControlPlaneVersionsRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDescGZIP(), []int{7}
+}
+
+type ListClusterControlPlaneVersionsResponse struct {
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	Items         []*ClusterControlPlaneVersion `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListClusterControlPlaneVersionsResponse) Reset() {
+	*x = ListClusterControlPlaneVersionsResponse{}
+	mi := &file_nebius_mk8s_v1alpha1_cluster_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListClusterControlPlaneVersionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListClusterControlPlaneVersionsResponse) ProtoMessage() {}
+
+func (x *ListClusterControlPlaneVersionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1alpha1_cluster_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListClusterControlPlaneVersionsResponse.ProtoReflect.Descriptor instead.
+func (*ListClusterControlPlaneVersionsResponse) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ListClusterControlPlaneVersionsResponse) GetItems() []*ClusterControlPlaneVersion {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type ClusterControlPlaneVersion struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Format of the version includes only MAJOR.MINOR, the same as can be passed to cluster creation API. For example "1.31".
+	Version       string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClusterControlPlaneVersion) Reset() {
+	*x = ClusterControlPlaneVersion{}
+	mi := &file_nebius_mk8s_v1alpha1_cluster_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClusterControlPlaneVersion) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClusterControlPlaneVersion) ProtoMessage() {}
+
+func (x *ClusterControlPlaneVersion) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1alpha1_cluster_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClusterControlPlaneVersion.ProtoReflect.Descriptor instead.
+func (*ClusterControlPlaneVersion) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ClusterControlPlaneVersion) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
 var File_nebius_mk8s_v1alpha1_cluster_service_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDesc = "" +
@@ -421,14 +546,20 @@ const file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x125\n" +
 	"\x04spec\x18\x02 \x01(\v2!.nebius.mk8s.v1alpha1.ClusterSpecR\x04spec\".\n" +
 	"\x14DeleteClusterRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xad\x04\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"(\n" +
+	"&ListClusterControlPlaneVersionsRequest\"q\n" +
+	"'ListClusterControlPlaneVersionsResponse\x12F\n" +
+	"\x05items\x18\x01 \x03(\v20.nebius.mk8s.v1alpha1.ClusterControlPlaneVersionR\x05items\"6\n" +
+	"\x1aClusterControlPlaneVersion\x12\x18\n" +
+	"\aversion\x18\x01 \x01(\tR\aversion2\xc7\x05\n" +
 	"\x0eClusterService\x12M\n" +
 	"\x03Get\x12'.nebius.mk8s.v1alpha1.GetClusterRequest\x1a\x1d.nebius.mk8s.v1alpha1.Cluster\x12Y\n" +
 	"\tGetByName\x12-.nebius.mk8s.v1alpha1.GetClusterByNameRequest\x1a\x1d.nebius.mk8s.v1alpha1.Cluster\x12]\n" +
 	"\x04List\x12).nebius.mk8s.v1alpha1.ListClustersRequest\x1a*.nebius.mk8s.v1alpha1.ListClustersResponse\x12W\n" +
 	"\x06Create\x12*.nebius.mk8s.v1alpha1.CreateClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x12W\n" +
 	"\x06Update\x12*.nebius.mk8s.v1alpha1.UpdateClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x12W\n" +
-	"\x06Delete\x12*.nebius.mk8s.v1alpha1.DeleteClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x1a\a\xbaJ\x04mk8sBh\n" +
+	"\x06Delete\x12*.nebius.mk8s.v1alpha1.DeleteClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x12\x97\x01\n" +
+	"\x18ListControlPlaneVersions\x12<.nebius.mk8s.v1alpha1.ListClusterControlPlaneVersionsRequest\x1a=.nebius.mk8s.v1alpha1.ListClusterControlPlaneVersionsResponse\x1a\a\xbaJ\x04mk8sBh\n" +
 	"\x1bai.nebius.pub.mk8s.v1alpha1B\x13ClusterServiceProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1b\x06proto3"
 
 var (
@@ -443,43 +574,49 @@ func file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDescGZIP() []byte {
 	return file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDescData
 }
 
-var file_nebius_mk8s_v1alpha1_cluster_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_nebius_mk8s_v1alpha1_cluster_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_nebius_mk8s_v1alpha1_cluster_service_proto_goTypes = []any{
-	(*CreateClusterRequest)(nil),    // 0: nebius.mk8s.v1alpha1.CreateClusterRequest
-	(*GetClusterRequest)(nil),       // 1: nebius.mk8s.v1alpha1.GetClusterRequest
-	(*GetClusterByNameRequest)(nil), // 2: nebius.mk8s.v1alpha1.GetClusterByNameRequest
-	(*ListClustersRequest)(nil),     // 3: nebius.mk8s.v1alpha1.ListClustersRequest
-	(*ListClustersResponse)(nil),    // 4: nebius.mk8s.v1alpha1.ListClustersResponse
-	(*UpdateClusterRequest)(nil),    // 5: nebius.mk8s.v1alpha1.UpdateClusterRequest
-	(*DeleteClusterRequest)(nil),    // 6: nebius.mk8s.v1alpha1.DeleteClusterRequest
-	(*v1.ResourceMetadata)(nil),     // 7: nebius.common.v1.ResourceMetadata
-	(*ClusterSpec)(nil),             // 8: nebius.mk8s.v1alpha1.ClusterSpec
-	(*Cluster)(nil),                 // 9: nebius.mk8s.v1alpha1.Cluster
-	(*v1alpha1.Operation)(nil),      // 10: nebius.common.v1alpha1.Operation
+	(*CreateClusterRequest)(nil),                    // 0: nebius.mk8s.v1alpha1.CreateClusterRequest
+	(*GetClusterRequest)(nil),                       // 1: nebius.mk8s.v1alpha1.GetClusterRequest
+	(*GetClusterByNameRequest)(nil),                 // 2: nebius.mk8s.v1alpha1.GetClusterByNameRequest
+	(*ListClustersRequest)(nil),                     // 3: nebius.mk8s.v1alpha1.ListClustersRequest
+	(*ListClustersResponse)(nil),                    // 4: nebius.mk8s.v1alpha1.ListClustersResponse
+	(*UpdateClusterRequest)(nil),                    // 5: nebius.mk8s.v1alpha1.UpdateClusterRequest
+	(*DeleteClusterRequest)(nil),                    // 6: nebius.mk8s.v1alpha1.DeleteClusterRequest
+	(*ListClusterControlPlaneVersionsRequest)(nil),  // 7: nebius.mk8s.v1alpha1.ListClusterControlPlaneVersionsRequest
+	(*ListClusterControlPlaneVersionsResponse)(nil), // 8: nebius.mk8s.v1alpha1.ListClusterControlPlaneVersionsResponse
+	(*ClusterControlPlaneVersion)(nil),              // 9: nebius.mk8s.v1alpha1.ClusterControlPlaneVersion
+	(*v1.ResourceMetadata)(nil),                     // 10: nebius.common.v1.ResourceMetadata
+	(*ClusterSpec)(nil),                             // 11: nebius.mk8s.v1alpha1.ClusterSpec
+	(*Cluster)(nil),                                 // 12: nebius.mk8s.v1alpha1.Cluster
+	(*v1alpha1.Operation)(nil),                      // 13: nebius.common.v1alpha1.Operation
 }
 var file_nebius_mk8s_v1alpha1_cluster_service_proto_depIdxs = []int32{
-	7,  // 0: nebius.mk8s.v1alpha1.CreateClusterRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8,  // 1: nebius.mk8s.v1alpha1.CreateClusterRequest.spec:type_name -> nebius.mk8s.v1alpha1.ClusterSpec
-	9,  // 2: nebius.mk8s.v1alpha1.ListClustersResponse.items:type_name -> nebius.mk8s.v1alpha1.Cluster
-	7,  // 3: nebius.mk8s.v1alpha1.UpdateClusterRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8,  // 4: nebius.mk8s.v1alpha1.UpdateClusterRequest.spec:type_name -> nebius.mk8s.v1alpha1.ClusterSpec
-	1,  // 5: nebius.mk8s.v1alpha1.ClusterService.Get:input_type -> nebius.mk8s.v1alpha1.GetClusterRequest
-	2,  // 6: nebius.mk8s.v1alpha1.ClusterService.GetByName:input_type -> nebius.mk8s.v1alpha1.GetClusterByNameRequest
-	3,  // 7: nebius.mk8s.v1alpha1.ClusterService.List:input_type -> nebius.mk8s.v1alpha1.ListClustersRequest
-	0,  // 8: nebius.mk8s.v1alpha1.ClusterService.Create:input_type -> nebius.mk8s.v1alpha1.CreateClusterRequest
-	5,  // 9: nebius.mk8s.v1alpha1.ClusterService.Update:input_type -> nebius.mk8s.v1alpha1.UpdateClusterRequest
-	6,  // 10: nebius.mk8s.v1alpha1.ClusterService.Delete:input_type -> nebius.mk8s.v1alpha1.DeleteClusterRequest
-	9,  // 11: nebius.mk8s.v1alpha1.ClusterService.Get:output_type -> nebius.mk8s.v1alpha1.Cluster
-	9,  // 12: nebius.mk8s.v1alpha1.ClusterService.GetByName:output_type -> nebius.mk8s.v1alpha1.Cluster
-	4,  // 13: nebius.mk8s.v1alpha1.ClusterService.List:output_type -> nebius.mk8s.v1alpha1.ListClustersResponse
-	10, // 14: nebius.mk8s.v1alpha1.ClusterService.Create:output_type -> nebius.common.v1alpha1.Operation
-	10, // 15: nebius.mk8s.v1alpha1.ClusterService.Update:output_type -> nebius.common.v1alpha1.Operation
-	10, // 16: nebius.mk8s.v1alpha1.ClusterService.Delete:output_type -> nebius.common.v1alpha1.Operation
-	11, // [11:17] is the sub-list for method output_type
-	5,  // [5:11] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	10, // 0: nebius.mk8s.v1alpha1.CreateClusterRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 1: nebius.mk8s.v1alpha1.CreateClusterRequest.spec:type_name -> nebius.mk8s.v1alpha1.ClusterSpec
+	12, // 2: nebius.mk8s.v1alpha1.ListClustersResponse.items:type_name -> nebius.mk8s.v1alpha1.Cluster
+	10, // 3: nebius.mk8s.v1alpha1.UpdateClusterRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 4: nebius.mk8s.v1alpha1.UpdateClusterRequest.spec:type_name -> nebius.mk8s.v1alpha1.ClusterSpec
+	9,  // 5: nebius.mk8s.v1alpha1.ListClusterControlPlaneVersionsResponse.items:type_name -> nebius.mk8s.v1alpha1.ClusterControlPlaneVersion
+	1,  // 6: nebius.mk8s.v1alpha1.ClusterService.Get:input_type -> nebius.mk8s.v1alpha1.GetClusterRequest
+	2,  // 7: nebius.mk8s.v1alpha1.ClusterService.GetByName:input_type -> nebius.mk8s.v1alpha1.GetClusterByNameRequest
+	3,  // 8: nebius.mk8s.v1alpha1.ClusterService.List:input_type -> nebius.mk8s.v1alpha1.ListClustersRequest
+	0,  // 9: nebius.mk8s.v1alpha1.ClusterService.Create:input_type -> nebius.mk8s.v1alpha1.CreateClusterRequest
+	5,  // 10: nebius.mk8s.v1alpha1.ClusterService.Update:input_type -> nebius.mk8s.v1alpha1.UpdateClusterRequest
+	6,  // 11: nebius.mk8s.v1alpha1.ClusterService.Delete:input_type -> nebius.mk8s.v1alpha1.DeleteClusterRequest
+	7,  // 12: nebius.mk8s.v1alpha1.ClusterService.ListControlPlaneVersions:input_type -> nebius.mk8s.v1alpha1.ListClusterControlPlaneVersionsRequest
+	12, // 13: nebius.mk8s.v1alpha1.ClusterService.Get:output_type -> nebius.mk8s.v1alpha1.Cluster
+	12, // 14: nebius.mk8s.v1alpha1.ClusterService.GetByName:output_type -> nebius.mk8s.v1alpha1.Cluster
+	4,  // 15: nebius.mk8s.v1alpha1.ClusterService.List:output_type -> nebius.mk8s.v1alpha1.ListClustersResponse
+	13, // 16: nebius.mk8s.v1alpha1.ClusterService.Create:output_type -> nebius.common.v1alpha1.Operation
+	13, // 17: nebius.mk8s.v1alpha1.ClusterService.Update:output_type -> nebius.common.v1alpha1.Operation
+	13, // 18: nebius.mk8s.v1alpha1.ClusterService.Delete:output_type -> nebius.common.v1alpha1.Operation
+	8,  // 19: nebius.mk8s.v1alpha1.ClusterService.ListControlPlaneVersions:output_type -> nebius.mk8s.v1alpha1.ListClusterControlPlaneVersionsResponse
+	13, // [13:20] is the sub-list for method output_type
+	6,  // [6:13] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1alpha1_cluster_service_proto_init() }
@@ -494,7 +631,7 @@ func file_nebius_mk8s_v1alpha1_cluster_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDesc), len(file_nebius_mk8s_v1alpha1_cluster_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

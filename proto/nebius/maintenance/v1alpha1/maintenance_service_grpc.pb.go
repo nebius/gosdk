@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	MaintenanceService_Get_FullMethodName  = "/nebius.maintenance.v1alpha1.MaintenanceService/Get"
-	MaintenanceService_List_FullMethodName = "/nebius.maintenance.v1alpha1.MaintenanceService/List"
+	MaintenanceService_Get_FullMethodName    = "/nebius.maintenance.v1alpha1.MaintenanceService/Get"
+	MaintenanceService_List_FullMethodName   = "/nebius.maintenance.v1alpha1.MaintenanceService/List"
+	MaintenanceService_Update_FullMethodName = "/nebius.maintenance.v1alpha1.MaintenanceService/Update"
 )
 
 // MaintenanceServiceClient is the client API for MaintenanceService service.
@@ -33,6 +34,8 @@ type MaintenanceServiceClient interface {
 	// Retrieves the list of maintenance operations that belong
 	// to the specified container.
 	List(ctx context.Context, in *ListMaintenancesRequest, opts ...grpc.CallOption) (*ListMaintenancesResponse, error)
+	// Updates the specified maintenance operation.
+	Update(ctx context.Context, in *UpdateMaintenanceRequest, opts ...grpc.CallOption) (*UpdateMaintenanceResponse, error)
 }
 
 type maintenanceServiceClient struct {
@@ -61,6 +64,15 @@ func (c *maintenanceServiceClient) List(ctx context.Context, in *ListMaintenance
 	return out, nil
 }
 
+func (c *maintenanceServiceClient) Update(ctx context.Context, in *UpdateMaintenanceRequest, opts ...grpc.CallOption) (*UpdateMaintenanceResponse, error) {
+	out := new(UpdateMaintenanceResponse)
+	err := c.cc.Invoke(ctx, MaintenanceService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MaintenanceServiceServer is the server API for MaintenanceService service.
 // All implementations should embed UnimplementedMaintenanceServiceServer
 // for forward compatibility
@@ -71,6 +83,8 @@ type MaintenanceServiceServer interface {
 	// Retrieves the list of maintenance operations that belong
 	// to the specified container.
 	List(context.Context, *ListMaintenancesRequest) (*ListMaintenancesResponse, error)
+	// Updates the specified maintenance operation.
+	Update(context.Context, *UpdateMaintenanceRequest) (*UpdateMaintenanceResponse, error)
 }
 
 // UnimplementedMaintenanceServiceServer should be embedded to have forward compatible implementations.
@@ -82,6 +96,9 @@ func (UnimplementedMaintenanceServiceServer) Get(context.Context, *GetMaintenanc
 }
 func (UnimplementedMaintenanceServiceServer) List(context.Context, *ListMaintenancesRequest) (*ListMaintenancesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedMaintenanceServiceServer) Update(context.Context, *UpdateMaintenanceRequest) (*UpdateMaintenanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 
 // UnsafeMaintenanceServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -131,6 +148,24 @@ func _MaintenanceService_List_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MaintenanceService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMaintenanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MaintenanceServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MaintenanceService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MaintenanceServiceServer).Update(ctx, req.(*UpdateMaintenanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MaintenanceService_ServiceDesc is the grpc.ServiceDesc for MaintenanceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -145,6 +180,10 @@ var MaintenanceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _MaintenanceService_List_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _MaintenanceService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

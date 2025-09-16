@@ -20,12 +20,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ClusterService_Get_FullMethodName       = "/nebius.mk8s.v1alpha1.ClusterService/Get"
-	ClusterService_GetByName_FullMethodName = "/nebius.mk8s.v1alpha1.ClusterService/GetByName"
-	ClusterService_List_FullMethodName      = "/nebius.mk8s.v1alpha1.ClusterService/List"
-	ClusterService_Create_FullMethodName    = "/nebius.mk8s.v1alpha1.ClusterService/Create"
-	ClusterService_Update_FullMethodName    = "/nebius.mk8s.v1alpha1.ClusterService/Update"
-	ClusterService_Delete_FullMethodName    = "/nebius.mk8s.v1alpha1.ClusterService/Delete"
+	ClusterService_Get_FullMethodName                      = "/nebius.mk8s.v1alpha1.ClusterService/Get"
+	ClusterService_GetByName_FullMethodName                = "/nebius.mk8s.v1alpha1.ClusterService/GetByName"
+	ClusterService_List_FullMethodName                     = "/nebius.mk8s.v1alpha1.ClusterService/List"
+	ClusterService_Create_FullMethodName                   = "/nebius.mk8s.v1alpha1.ClusterService/Create"
+	ClusterService_Update_FullMethodName                   = "/nebius.mk8s.v1alpha1.ClusterService/Update"
+	ClusterService_Delete_FullMethodName                   = "/nebius.mk8s.v1alpha1.ClusterService/Delete"
+	ClusterService_ListControlPlaneVersions_FullMethodName = "/nebius.mk8s.v1alpha1.ClusterService/ListControlPlaneVersions"
 )
 
 // ClusterServiceClient is the client API for ClusterService service.
@@ -38,6 +39,8 @@ type ClusterServiceClient interface {
 	Create(ctx context.Context, in *CreateClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
 	Update(ctx context.Context, in *UpdateClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
 	Delete(ctx context.Context, in *DeleteClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
+	// ListControlPlaneVersions returns all k8s release versions available in Nebius API.
+	ListControlPlaneVersions(ctx context.Context, in *ListClusterControlPlaneVersionsRequest, opts ...grpc.CallOption) (*ListClusterControlPlaneVersionsResponse, error)
 }
 
 type clusterServiceClient struct {
@@ -102,6 +105,15 @@ func (c *clusterServiceClient) Delete(ctx context.Context, in *DeleteClusterRequ
 	return out, nil
 }
 
+func (c *clusterServiceClient) ListControlPlaneVersions(ctx context.Context, in *ListClusterControlPlaneVersionsRequest, opts ...grpc.CallOption) (*ListClusterControlPlaneVersionsResponse, error) {
+	out := new(ListClusterControlPlaneVersionsResponse)
+	err := c.cc.Invoke(ctx, ClusterService_ListControlPlaneVersions_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClusterServiceServer is the server API for ClusterService service.
 // All implementations should embed UnimplementedClusterServiceServer
 // for forward compatibility
@@ -112,6 +124,8 @@ type ClusterServiceServer interface {
 	Create(context.Context, *CreateClusterRequest) (*v1alpha1.Operation, error)
 	Update(context.Context, *UpdateClusterRequest) (*v1alpha1.Operation, error)
 	Delete(context.Context, *DeleteClusterRequest) (*v1alpha1.Operation, error)
+	// ListControlPlaneVersions returns all k8s release versions available in Nebius API.
+	ListControlPlaneVersions(context.Context, *ListClusterControlPlaneVersionsRequest) (*ListClusterControlPlaneVersionsResponse, error)
 }
 
 // UnimplementedClusterServiceServer should be embedded to have forward compatible implementations.
@@ -135,6 +149,9 @@ func (UnimplementedClusterServiceServer) Update(context.Context, *UpdateClusterR
 }
 func (UnimplementedClusterServiceServer) Delete(context.Context, *DeleteClusterRequest) (*v1alpha1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedClusterServiceServer) ListControlPlaneVersions(context.Context, *ListClusterControlPlaneVersionsRequest) (*ListClusterControlPlaneVersionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListControlPlaneVersions not implemented")
 }
 
 // UnsafeClusterServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -256,6 +273,24 @@ func _ClusterService_Delete_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClusterService_ListControlPlaneVersions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListClusterControlPlaneVersionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterServiceServer).ListControlPlaneVersions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClusterService_ListControlPlaneVersions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterServiceServer).ListControlPlaneVersions(ctx, req.(*ListClusterControlPlaneVersionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClusterService_ServiceDesc is the grpc.ServiceDesc for ClusterService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -286,6 +321,10 @@ var ClusterService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _ClusterService_Delete_Handler,
+		},
+		{
+			MethodName: "ListControlPlaneVersions",
+			Handler:    _ClusterService_ListControlPlaneVersions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

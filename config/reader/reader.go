@@ -31,6 +31,8 @@ type configReader struct {
 	profileEnv  string
 	tokenEnv    string
 
+	preloadedConfig bool
+
 	// credentials options
 	noFileCache                  bool
 	fileRefreshPeriod            time.Duration
@@ -59,15 +61,22 @@ func NewConfigReader(options ...config.Option) config.ConfigInterface {
 		tokenSafetyMargin:            0, // fix after NIAM-2917
 	}
 	r.SetOptions(options...)
-	r.config = config.NewConfig()
 	if r.logger == nil {
 		r.logger = slog.New(slog.NewTextHandler(io.Discard, &slog.HandlerOptions{Level: slog.LevelError}))
+	}
+	if !r.preloadedConfig || r.config == nil {
+		r.config = config.NewConfig()
+		r.preloadedConfig = false
 	}
 	return r
 }
 func (r *configReader) Load(ctx context.Context) error {
-	if err := r.load(ctx); err != nil {
-		return err
+	if r.preloadedConfig {
+		r.logger.DebugContext(ctx, "config is preloaded, skipping file load")
+	} else {
+		if err := r.load(ctx); err != nil {
+			return err
+		}
 	}
 	if r.profileName == "" && r.profileEnv != "" {
 		r.profileName = strings.TrimSpace(os.Getenv(r.profileEnv))

@@ -37,7 +37,9 @@ type Backup struct {
 	// Is PostgreSQL cluster that the backup was created for visible.
 	SourceClusterVisible bool `protobuf:"varint,6,opt,name=source_cluster_visible,json=sourceClusterVisible,proto3" json:"source_cluster_visible,omitempty"`
 	// Is the backup an on-demand manual backup.
-	OnDemand      bool `protobuf:"varint,7,opt,name=on_demand,json=onDemand,proto3" json:"on_demand,omitempty"`
+	OnDemand bool `protobuf:"varint,7,opt,name=on_demand,json=onDemand,proto3" json:"on_demand,omitempty"`
+	// Size of the backup in bytes.
+	SizeBytes     int64 `protobuf:"varint,8,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -121,11 +123,18 @@ func (x *Backup) GetOnDemand() bool {
 	return false
 }
 
+func (x *Backup) GetSizeBytes() int64 {
+	if x != nil {
+		return x.SizeBytes
+	}
+	return 0
+}
+
 var File_nebius_msp_postgresql_v1alpha1_backup_proto protoreflect.FileDescriptor
 
 const file_nebius_msp_postgresql_v1alpha1_backup_proto_rawDesc = "" +
 	"\n" +
-	"+nebius/msp/postgresql/v1alpha1/backup.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xcf\x02\n" +
+	"+nebius/msp/postgresql/v1alpha1/backup.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xee\x02\n" +
 	"\x06Backup\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12*\n" +
 	"\x11source_cluster_id\x18\x02 \x01(\tR\x0fsourceClusterId\x12A\n" +
@@ -133,7 +142,9 @@ const file_nebius_msp_postgresql_v1alpha1_backup_proto_rawDesc = "" +
 	"\x0fcreation_finish\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecreationFinish\x12.\n" +
 	"\x13source_cluster_name\x18\x05 \x01(\tR\x11sourceClusterName\x124\n" +
 	"\x16source_cluster_visible\x18\x06 \x01(\bR\x14sourceClusterVisible\x12\x1b\n" +
-	"\ton_demand\x18\a \x01(\bR\bonDemandBt\n" +
+	"\ton_demand\x18\a \x01(\bR\bonDemand\x12\x1d\n" +
+	"\n" +
+	"size_bytes\x18\b \x01(\x03R\tsizeBytesBt\n" +
 	"%ai.nebius.pub.msp.postgresql.v1alpha1B\vBackupProtoP\x01Z<github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1b\x06proto3"
 
 var (
