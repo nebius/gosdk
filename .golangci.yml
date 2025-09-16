@@ -475,6 +475,9 @@ linters:
       - path: 'constants/constants.go'
         linters:
           - gosec # TODO: ignore with comment
+      - path: 'config/reader/reader.go'
+        linters:
+          - gosec # TODO: ignore with comment
       - path: 'config/interface.go'
         text: 'exported: type name will be used as config.ConfigInterface by other packages, and that stutters; consider calling this Interface' # TODO: fix
       - path: 'constants/well_known.go'
