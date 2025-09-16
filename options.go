@@ -9,6 +9,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"google.golang.org/grpc"
 
+	"github.com/nebius/gosdk/config"
 	"github.com/nebius/gosdk/conn"
 )
 
@@ -95,6 +96,14 @@ func WithRetryOptions(opts ...retry.CallOption) Option {
 	return optionRetryOptions(opts)
 }
 
+func WithConfigReader(configReader config.ConfigInterface) Option {
+	return optionConfigReader{configReader: configReader}
+}
+
+func WithParentID(parentID string) Option {
+	return optionParentID(parentID)
+}
+
 type (
 	optionCredentials     struct{ creds Credentials }
 	optionLogger          struct{ handler slog.Handler }
@@ -111,6 +120,9 @@ type (
 	optionTimeout         time.Duration
 	optionUserAgentPrefix string
 	optionRetryOptions    []retry.CallOption
+
+	optionConfigReader struct{ configReader config.ConfigInterface }
+	optionParentID     string
 )
 
 func (optionCredentials) option()     {}
@@ -125,6 +137,8 @@ func (optionInit) option()            {}
 func (optionTimeout) option()         {}
 func (optionUserAgentPrefix) option() {}
 func (optionRetryOptions) option()    {}
+func (optionConfigReader) option()    {}
+func (optionParentID) option()        {}
 
 type NoopHandler struct{}
 
