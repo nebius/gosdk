@@ -22,3 +22,6 @@ package v1
 
 // func (x *SubnetStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *SubnetStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *SubnetAssociatedRouteTable) Sanitize()            // is not generated as no sensitive fields found
+// func (x *SubnetAssociatedRouteTable) LogValue() slog.Value // is not generated as no sensitive fields found

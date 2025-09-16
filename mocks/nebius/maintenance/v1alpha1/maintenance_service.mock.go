@@ -128,3 +128,47 @@ func (c *MockMaintenanceServiceListCall) DoAndReturn(f func(context.Context, *v1
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// Update mocks base method.
+func (m *MockMaintenanceService) Update(arg0 context.Context, arg1 *v1alpha1.UpdateMaintenanceRequest, arg2 ...grpc.CallOption) (*v1alpha1.UpdateMaintenanceResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(*v1alpha1.UpdateMaintenanceResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockMaintenanceServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockMaintenanceServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockMaintenanceService)(nil).Update), varargs...)
+	return &MockMaintenanceServiceUpdateCall{Call: call}
+}
+
+// MockMaintenanceServiceUpdateCall wrap *gomock.Call
+type MockMaintenanceServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockMaintenanceServiceUpdateCall) Return(arg0 *v1alpha1.UpdateMaintenanceResponse, arg1 error) *MockMaintenanceServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockMaintenanceServiceUpdateCall) Do(f func(context.Context, *v1alpha1.UpdateMaintenanceRequest, ...grpc.CallOption) (*v1alpha1.UpdateMaintenanceResponse, error)) *MockMaintenanceServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockMaintenanceServiceUpdateCall) DoAndReturn(f func(context.Context, *v1alpha1.UpdateMaintenanceRequest, ...grpc.CallOption) (*v1alpha1.UpdateMaintenanceResponse, error)) *MockMaintenanceServiceUpdateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}

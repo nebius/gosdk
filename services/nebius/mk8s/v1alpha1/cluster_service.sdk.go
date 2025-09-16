@@ -33,6 +33,7 @@ type ClusterService interface {
 	Create(context.Context, *v1alpha1.CreateClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	Update(context.Context, *v1alpha1.UpdateClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	Delete(context.Context, *v1alpha1.DeleteClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
+	ListControlPlaneVersions(context.Context, *v1alpha1.ListClusterControlPlaneVersionsRequest, ...grpc.CallOption) (*v1alpha1.ListClusterControlPlaneVersionsResponse, error)
 	GetOperation(context.Context, *v1alpha11.GetOperationRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	ListOperations(context.Context, *v1alpha11.ListOperationsRequest, ...grpc.CallOption) (*v1alpha11.ListOperationsResponse, error)
 }
@@ -158,6 +159,18 @@ func (s clusterService) Delete(ctx context.Context, request *v1alpha1.DeleteClus
 		return nil, err
 	}
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
+}
+
+func (s clusterService) ListControlPlaneVersions(ctx context.Context, request *v1alpha1.ListClusterControlPlaneVersionsRequest, opts ...grpc.CallOption) (*v1alpha1.ListClusterControlPlaneVersionsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1alpha1.NewClusterServiceClient(con).ListControlPlaneVersions(ctx, request, opts...)
 }
 
 func (s clusterService) GetOperation(ctx context.Context, request *v1alpha11.GetOperationRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {

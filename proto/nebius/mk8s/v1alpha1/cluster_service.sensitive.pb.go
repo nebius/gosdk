@@ -22,3 +22,12 @@ package v1alpha1
 
 // func (x *DeleteClusterRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DeleteClusterRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ListClusterControlPlaneVersionsRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListClusterControlPlaneVersionsRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ListClusterControlPlaneVersionsResponse) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListClusterControlPlaneVersionsResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ClusterControlPlaneVersion) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ClusterControlPlaneVersion) LogValue() slog.Value // is not generated as no sensitive fields found

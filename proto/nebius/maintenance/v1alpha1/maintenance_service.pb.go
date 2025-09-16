@@ -9,6 +9,7 @@ package v1alpha1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/nebius/gosdk/proto/nebius"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -159,20 +160,127 @@ func (x *GetMaintenanceRequest) GetId() string {
 	return ""
 }
 
+type UpdateMaintenanceRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Metadata associated with the maintenance operation.
+	// Must include ID of the maintenance operation to update.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Updated specification for the maintenance operation.
+	Spec          *MaintenanceSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMaintenanceRequest) Reset() {
+	*x = UpdateMaintenanceRequest{}
+	mi := &file_nebius_maintenance_v1alpha1_maintenance_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMaintenanceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMaintenanceRequest) ProtoMessage() {}
+
+func (x *UpdateMaintenanceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_maintenance_v1alpha1_maintenance_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMaintenanceRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMaintenanceRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_maintenance_v1alpha1_maintenance_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UpdateMaintenanceRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *UpdateMaintenanceRequest) GetSpec() *MaintenanceSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
+type UpdateMaintenanceResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Updated maintenance operation.
+	Maintenance   *Maintenance `protobuf:"bytes,1,opt,name=maintenance,proto3" json:"maintenance,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMaintenanceResponse) Reset() {
+	*x = UpdateMaintenanceResponse{}
+	mi := &file_nebius_maintenance_v1alpha1_maintenance_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMaintenanceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMaintenanceResponse) ProtoMessage() {}
+
+func (x *UpdateMaintenanceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_maintenance_v1alpha1_maintenance_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMaintenanceResponse.ProtoReflect.Descriptor instead.
+func (*UpdateMaintenanceResponse) Descriptor() ([]byte, []int) {
+	return file_nebius_maintenance_v1alpha1_maintenance_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateMaintenanceResponse) GetMaintenance() *Maintenance {
+	if x != nil {
+		return x.Maintenance
+	}
+	return nil
+}
+
 var File_nebius_maintenance_v1alpha1_maintenance_service_proto protoreflect.FileDescriptor
 
 const file_nebius_maintenance_v1alpha1_maintenance_service_proto_rawDesc = "" +
 	"\n" +
-	"5nebius/maintenance/v1alpha1/maintenance_service.proto\x12\x1bnebius.maintenance.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a-nebius/maintenance/v1alpha1/maintenance.proto\">\n" +
+	"5nebius/maintenance/v1alpha1/maintenance_service.proto\x12\x1bnebius.maintenance.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a-nebius/maintenance/v1alpha1/maintenance.proto\">\n" +
 	"\x17ListMaintenancesRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\"Z\n" +
 	"\x18ListMaintenancesResponse\x12>\n" +
 	"\x05items\x18\x01 \x03(\v2(.nebius.maintenance.v1alpha1.MaintenanceR\x05items\"/\n" +
 	"\x15GetMaintenanceRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x82\x02\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xfa\x01\n" +
+	"\x18UpdateMaintenanceRequest\x12F\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12@\n" +
+	"\x04spec\x18\x02 \x01(\v2,.nebius.maintenance.v1alpha1.MaintenanceSpecR\x04spec:T\xbaHQ\x1aO\n" +
+	"\x1bupdate_maintenance.metadata\x12\x19'metadata' must have 'id'\x1a\x15has(this.metadata.id)\"g\n" +
+	"\x19UpdateMaintenanceResponse\x12J\n" +
+	"\vmaintenance\x18\x01 \x01(\v2(.nebius.maintenance.v1alpha1.MaintenanceR\vmaintenance2\xfb\x02\n" +
 	"\x12MaintenanceService\x12c\n" +
 	"\x03Get\x122.nebius.maintenance.v1alpha1.GetMaintenanceRequest\x1a(.nebius.maintenance.v1alpha1.Maintenance\x12s\n" +
-	"\x04List\x124.nebius.maintenance.v1alpha1.ListMaintenancesRequest\x1a5.nebius.maintenance.v1alpha1.ListMaintenancesResponse\x1a\x12\xbaJ\x0fmaintenance.mspBz\n" +
+	"\x04List\x124.nebius.maintenance.v1alpha1.ListMaintenancesRequest\x1a5.nebius.maintenance.v1alpha1.ListMaintenancesResponse\x12w\n" +
+	"\x06Update\x125.nebius.maintenance.v1alpha1.UpdateMaintenanceRequest\x1a6.nebius.maintenance.v1alpha1.UpdateMaintenanceResponse\x1a\x12\xbaJ\x0fmaintenance.mspBz\n" +
 	"\"ai.nebius.pub.maintenance.v1alpha1B\x17MaintenanceServiceProtoP\x01Z9github.com/nebius/gosdk/proto/nebius/maintenance/v1alpha1b\x06proto3"
 
 var (
@@ -187,24 +295,33 @@ func file_nebius_maintenance_v1alpha1_maintenance_service_proto_rawDescGZIP() []
 	return file_nebius_maintenance_v1alpha1_maintenance_service_proto_rawDescData
 }
 
-var file_nebius_maintenance_v1alpha1_maintenance_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_nebius_maintenance_v1alpha1_maintenance_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_nebius_maintenance_v1alpha1_maintenance_service_proto_goTypes = []any{
-	(*ListMaintenancesRequest)(nil),  // 0: nebius.maintenance.v1alpha1.ListMaintenancesRequest
-	(*ListMaintenancesResponse)(nil), // 1: nebius.maintenance.v1alpha1.ListMaintenancesResponse
-	(*GetMaintenanceRequest)(nil),    // 2: nebius.maintenance.v1alpha1.GetMaintenanceRequest
-	(*Maintenance)(nil),              // 3: nebius.maintenance.v1alpha1.Maintenance
+	(*ListMaintenancesRequest)(nil),   // 0: nebius.maintenance.v1alpha1.ListMaintenancesRequest
+	(*ListMaintenancesResponse)(nil),  // 1: nebius.maintenance.v1alpha1.ListMaintenancesResponse
+	(*GetMaintenanceRequest)(nil),     // 2: nebius.maintenance.v1alpha1.GetMaintenanceRequest
+	(*UpdateMaintenanceRequest)(nil),  // 3: nebius.maintenance.v1alpha1.UpdateMaintenanceRequest
+	(*UpdateMaintenanceResponse)(nil), // 4: nebius.maintenance.v1alpha1.UpdateMaintenanceResponse
+	(*Maintenance)(nil),               // 5: nebius.maintenance.v1alpha1.Maintenance
+	(*v1.ResourceMetadata)(nil),       // 6: nebius.common.v1.ResourceMetadata
+	(*MaintenanceSpec)(nil),           // 7: nebius.maintenance.v1alpha1.MaintenanceSpec
 }
 var file_nebius_maintenance_v1alpha1_maintenance_service_proto_depIdxs = []int32{
-	3, // 0: nebius.maintenance.v1alpha1.ListMaintenancesResponse.items:type_name -> nebius.maintenance.v1alpha1.Maintenance
-	2, // 1: nebius.maintenance.v1alpha1.MaintenanceService.Get:input_type -> nebius.maintenance.v1alpha1.GetMaintenanceRequest
-	0, // 2: nebius.maintenance.v1alpha1.MaintenanceService.List:input_type -> nebius.maintenance.v1alpha1.ListMaintenancesRequest
-	3, // 3: nebius.maintenance.v1alpha1.MaintenanceService.Get:output_type -> nebius.maintenance.v1alpha1.Maintenance
-	1, // 4: nebius.maintenance.v1alpha1.MaintenanceService.List:output_type -> nebius.maintenance.v1alpha1.ListMaintenancesResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	5, // 0: nebius.maintenance.v1alpha1.ListMaintenancesResponse.items:type_name -> nebius.maintenance.v1alpha1.Maintenance
+	6, // 1: nebius.maintenance.v1alpha1.UpdateMaintenanceRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	7, // 2: nebius.maintenance.v1alpha1.UpdateMaintenanceRequest.spec:type_name -> nebius.maintenance.v1alpha1.MaintenanceSpec
+	5, // 3: nebius.maintenance.v1alpha1.UpdateMaintenanceResponse.maintenance:type_name -> nebius.maintenance.v1alpha1.Maintenance
+	2, // 4: nebius.maintenance.v1alpha1.MaintenanceService.Get:input_type -> nebius.maintenance.v1alpha1.GetMaintenanceRequest
+	0, // 5: nebius.maintenance.v1alpha1.MaintenanceService.List:input_type -> nebius.maintenance.v1alpha1.ListMaintenancesRequest
+	3, // 6: nebius.maintenance.v1alpha1.MaintenanceService.Update:input_type -> nebius.maintenance.v1alpha1.UpdateMaintenanceRequest
+	5, // 7: nebius.maintenance.v1alpha1.MaintenanceService.Get:output_type -> nebius.maintenance.v1alpha1.Maintenance
+	1, // 8: nebius.maintenance.v1alpha1.MaintenanceService.List:output_type -> nebius.maintenance.v1alpha1.ListMaintenancesResponse
+	4, // 9: nebius.maintenance.v1alpha1.MaintenanceService.Update:output_type -> nebius.maintenance.v1alpha1.UpdateMaintenanceResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_nebius_maintenance_v1alpha1_maintenance_service_proto_init() }
@@ -219,7 +336,7 @@ func file_nebius_maintenance_v1alpha1_maintenance_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_maintenance_v1alpha1_maintenance_service_proto_rawDesc), len(file_nebius_maintenance_v1alpha1_maintenance_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
