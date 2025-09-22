@@ -39,10 +39,10 @@ func (x *Operation) Sanitize() {
 		}
 	}
 	sanitizeAny(x.Request)
-	sanitizeAny(x.ProgressData)
 	for _, y := range x.Status.GetDetails() {
 		sanitizeAny(y)
 	}
+	sanitizeAny(x.ProgressData)
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [Operation].
