@@ -1121,14 +1121,14 @@ const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
 	"\bTransfer\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12A\n" +
 	"\x04spec\x18\x02 \x01(\v2%.nebius.storage.v1alpha1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12E\n" +
-	"\x06status\x18\x03 \x01(\v2'.nebius.storage.v1alpha1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\x90\x10\n" +
+	"\x06status\x18\x03 \x01(\v2'.nebius.storage.v1alpha1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\x94\x10\n" +
 	"\fTransferSpec\x12R\n" +
 	"\x06source\x18\x01 \x01(\v22.nebius.storage.v1alpha1.TransferSpec.SourceBucketB\x06\xbaH\x03\xc8\x01\x01R\x06source\x12a\n" +
 	"\vdestination\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.DestinationBucketB\x06\xbaH\x03\xc8\x01\x01R\vdestination\x12|\n" +
 	"\x13after_one_iteration\x18\x03 \x01(\v2D.nebius.storage.v1alpha1.TransferSpec.StopConditionAfterOneIterationB\x04\xbaJ\x01\x06H\x00R\x11afterOneIteration\x12\x83\x01\n" +
 	"\x18after_n_empty_iterations\x18\x04 \x01(\v2H.nebius.storage.v1alpha1.TransferSpec.StopConditionAfterNEmptyIterationsH\x00R\x15afterNEmptyIterations\x12_\n" +
-	"\binfinite\x18\x05 \x01(\v2;.nebius.storage.v1alpha1.TransferSpec.StopConditionInfiniteB\x04\xbaJ\x01\x06H\x00R\binfinite\x12]\n" +
-	"\x18inter_iteration_interval\x18\x06 \x01(\v2\x19.google.protobuf.DurationB\b\xbaH\x05\xaa\x01\x022\x00R\x16interIterationInterval\x12n\n" +
+	"\binfinite\x18\x05 \x01(\v2;.nebius.storage.v1alpha1.TransferSpec.StopConditionInfiniteB\x04\xbaJ\x01\x06H\x00R\binfinite\x12a\n" +
+	"\x18inter_iteration_interval\x18\x06 \x01(\v2\x19.google.protobuf.DurationB\f\xbaH\x05\xaa\x01\x022\x00\xbaJ\x01\aR\x16interIterationInterval\x12n\n" +
 	"\x12overwrite_strategy\x18\a \x01(\x0e27.nebius.storage.v1alpha1.TransferSpec.OverwriteStrategyB\x06\xbaH\x03\xc8\x01\x01R\x11overwriteStrategy\x1a\xb4\x02\n" +
 	"\fSourceBucket\x12&\n" +
 	"\bendpoint\x18\x01 \x01(\tB\n" +

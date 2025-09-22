@@ -31,6 +31,7 @@ const (
 	StaticKeySpec_CLIENT_SERVICE_UNSPECIFIED StaticKeySpec_ClientService = 0
 	StaticKeySpec_OBSERVABILITY              StaticKeySpec_ClientService = 1
 	StaticKeySpec_CONTAINER_REGISTRY         StaticKeySpec_ClientService = 2
+	StaticKeySpec_AI_STUDIO                  StaticKeySpec_ClientService = 3
 )
 
 // Enum value maps for StaticKeySpec_ClientService.
@@ -39,11 +40,13 @@ var (
 		0: "CLIENT_SERVICE_UNSPECIFIED",
 		1: "OBSERVABILITY",
 		2: "CONTAINER_REGISTRY",
+		3: "AI_STUDIO",
 	}
 	StaticKeySpec_ClientService_value = map[string]int32{
 		"CLIENT_SERVICE_UNSPECIFIED": 0,
 		"OBSERVABILITY":              1,
 		"CONTAINER_REGISTRY":         2,
+		"AI_STUDIO":                  3,
 	}
 )
 
@@ -246,15 +249,16 @@ const file_nebius_iam_v1_static_key_proto_rawDesc = "" +
 	"\tStaticKey\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x128\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.iam.v1.StaticKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12<\n" +
-	"\x06status\x18\x03 \x01(\v2\x1e.nebius.iam.v1.StaticKeyStatusB\x04\xbaJ\x01\x05R\x06status\"\xab\x02\n" +
+	"\x06status\x18\x03 \x01(\v2\x1e.nebius.iam.v1.StaticKeyStatusB\x04\xbaJ\x01\x05R\x06status\"\xba\x02\n" +
 	"\rStaticKeySpec\x126\n" +
 	"\aaccount\x18\x01 \x01(\v2\x16.nebius.iam.v1.AccountB\x04\xbaJ\x01\x02R\aaccount\x12L\n" +
 	"\aservice\x18\x02 \x01(\x0e2*.nebius.iam.v1.StaticKeySpec.ClientServiceB\x06\xbaH\x03\xc8\x01\x01R\aservice\x128\n" +
-	"\texpiresAt\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\"Z\n" +
+	"\texpiresAt\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\"i\n" +
 	"\rClientService\x12\x1e\n" +
 	"\x1aCLIENT_SERVICE_UNSPECIFIED\x10\x00\x12\x11\n" +
 	"\rOBSERVABILITY\x10\x01\x12\x16\n" +
-	"\x12CONTAINER_REGISTRY\x10\x02\")\n" +
+	"\x12CONTAINER_REGISTRY\x10\x02\x12\r\n" +
+	"\tAI_STUDIO\x10\x03\")\n" +
 	"\x0fStaticKeyStatus\x12\x16\n" +
 	"\x06active\x18\x01 \x01(\bR\x06activeBU\n" +
 	"\x14ai.nebius.pub.iam.v1B\x0eStaticKeyProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"

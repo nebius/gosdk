@@ -52,11 +52,6 @@ type Operation struct {
 	// If the operation affects multiple resources or does not affect any API resources at all
 	// (e.g. a routine maintenance operation visible to the user), the [resource_id] must be empty.
 	ResourceId string `protobuf:"bytes,7,opt,name=resource_id,json=resourceId,proto3" json:"resource_id,omitempty"`
-	// Additional information about the progress of an operation, e.g., a progress percentage.
-	// MAY be absent while the operation is running, MUST be absent after the operation has completed.
-	//
-	// Type of message that's stored inside [progress_data] is service-dependent.
-	ProgressData *anypb.Any `protobuf:"bytes,9,opt,name=progress_data,json=progressData,proto3" json:"progress_data,omitempty"`
 	// The status of this operation. Set when this operation is completed.
 	// See https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto.
 	//
@@ -67,7 +62,11 @@ type Operation struct {
 	//   - [status.details] will contain additional diagnostic information in the form of [ServiceError] from nebius/common/v1/error.proto
 	//   - [status.code] must belong to an Operation-compatible subset of GRPC codes:
 	//     OK, CANCELLED, PERMISSION_DENIED, RESOURCE_EXHAUSTED, FAILED_PRECONDITION, ABORTED, INTERNAL
-	Status        *status.Status `protobuf:"bytes,10,opt,name=status,proto3" json:"status,omitempty"`
+	Status *status.Status `protobuf:"bytes,10,opt,name=status,proto3" json:"status,omitempty"`
+	// Extra information about this operation's progress. MAY be absent while the operation is running, MUST be absent after the operation has completed.
+	//
+	// Type of message that's stored inside [progress_data] is service-dependent.
+	ProgressData  *anypb.Any `protobuf:"bytes,9,opt,name=progress_data,json=progressData,proto3" json:"progress_data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -158,16 +157,16 @@ func (x *Operation) GetResourceId() string {
 	return ""
 }
 
-func (x *Operation) GetProgressData() *anypb.Any {
+func (x *Operation) GetStatus() *status.Status {
 	if x != nil {
-		return x.ProgressData
+		return x.Status
 	}
 	return nil
 }
 
-func (x *Operation) GetStatus() *status.Status {
+func (x *Operation) GetProgressData() *anypb.Any {
 	if x != nil {
-		return x.Status
+		return x.ProgressData
 	}
 	return nil
 }
@@ -235,10 +234,10 @@ const file_nebius_common_v1_operation_proto_rawDesc = "" +
 	"\arequest\x18\x06 \x01(\v2\x14.google.protobuf.AnyR\arequest\x12v\n" +
 	"\x0frequest_headers\x18\v \x03(\v2/.nebius.common.v1.Operation.RequestHeadersEntryB\x1c\xbaH\x19\x9a\x01\x16\"\x14r\x122\x10^[a-z][-a-z\\.]*$R\x0erequestHeaders\x12\x1f\n" +
 	"\vresource_id\x18\a \x01(\tR\n" +
-	"resourceId\x129\n" +
-	"\rprogress_data\x18\t \x01(\v2\x14.google.protobuf.AnyR\fprogressData\x120\n" +
+	"resourceId\x120\n" +
 	"\x06status\x18\n" +
-	" \x01(\v2\x12.google.rpc.StatusB\x04\xbaJ\x01\x06R\x06status\x1a'\n" +
+	" \x01(\v2\x12.google.rpc.StatusB\x04\xbaJ\x01\x06R\x06status\x129\n" +
+	"\rprogress_data\x18\t \x01(\v2\x14.google.protobuf.AnyR\fprogressData\x1a'\n" +
 	"\rRequestHeader\x12\x16\n" +
 	"\x06values\x18\x01 \x03(\tR\x06values\x1al\n" +
 	"\x13RequestHeadersEntry\x12\x10\n" +
@@ -272,8 +271,8 @@ var file_nebius_common_v1_operation_proto_depIdxs = []int32{
 	3, // 1: nebius.common.v1.Operation.finished_at:type_name -> google.protobuf.Timestamp
 	4, // 2: nebius.common.v1.Operation.request:type_name -> google.protobuf.Any
 	2, // 3: nebius.common.v1.Operation.request_headers:type_name -> nebius.common.v1.Operation.RequestHeadersEntry
-	4, // 4: nebius.common.v1.Operation.progress_data:type_name -> google.protobuf.Any
-	5, // 5: nebius.common.v1.Operation.status:type_name -> google.rpc.Status
+	5, // 4: nebius.common.v1.Operation.status:type_name -> google.rpc.Status
+	4, // 5: nebius.common.v1.Operation.progress_data:type_name -> google.protobuf.Any
 	1, // 6: nebius.common.v1.Operation.RequestHeadersEntry.value:type_name -> nebius.common.v1.Operation.RequestHeader
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
