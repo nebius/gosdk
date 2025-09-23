@@ -25,7 +25,7 @@ const (
 
 type ListQuotaAllowancesRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// ID of the Tenant or Project to list quotas for.
+	// ID of the Container to list quotas for.
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Page size. Must be between [1...1000].
 	// Optional; if not specified, a reasonable default will be chosen by the service.
@@ -188,7 +188,7 @@ func (x *ListQuotaAllowancesResponse) GetNextPageToken() string {
 
 type GetByNameRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// ID of the Tenant or Project to list quotas for.
+	// ID of the Container to list quotas for.
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Name of the quota.
 	// Example: "compute.disk.size.network-ssd".
