@@ -120,6 +120,50 @@ func (x *GetAccessKeyRequest) GetId() string {
 	return ""
 }
 
+type GetAccessKeySecretRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAccessKeySecretRequest) Reset() {
+	*x = GetAccessKeySecretRequest{}
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAccessKeySecretRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAccessKeySecretRequest) ProtoMessage() {}
+
+func (x *GetAccessKeySecretRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAccessKeySecretRequest.ProtoReflect.Descriptor instead.
+func (*GetAccessKeySecretRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetAccessKeySecretRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 type GetAccessKeyByAwsIdRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	AwsAccessKeyId string                 `protobuf:"bytes,1,opt,name=aws_access_key_id,json=awsAccessKeyId,proto3" json:"aws_access_key_id,omitempty"`
@@ -129,7 +173,7 @@ type GetAccessKeyByAwsIdRequest struct {
 
 func (x *GetAccessKeyByAwsIdRequest) Reset() {
 	*x = GetAccessKeyByAwsIdRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[2]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -141,7 +185,7 @@ func (x *GetAccessKeyByAwsIdRequest) String() string {
 func (*GetAccessKeyByAwsIdRequest) ProtoMessage() {}
 
 func (x *GetAccessKeyByAwsIdRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[2]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -154,7 +198,7 @@ func (x *GetAccessKeyByAwsIdRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAccessKeyByAwsIdRequest.ProtoReflect.Descriptor instead.
 func (*GetAccessKeyByAwsIdRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{2}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetAccessKeyByAwsIdRequest) GetAwsAccessKeyId() string {
@@ -181,7 +225,7 @@ type ListAccessKeysRequest struct {
 
 func (x *ListAccessKeysRequest) Reset() {
 	*x = ListAccessKeysRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[3]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -193,7 +237,7 @@ func (x *ListAccessKeysRequest) String() string {
 func (*ListAccessKeysRequest) ProtoMessage() {}
 
 func (x *ListAccessKeysRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[3]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -206,7 +250,7 @@ func (x *ListAccessKeysRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAccessKeysRequest.ProtoReflect.Descriptor instead.
 func (*ListAccessKeysRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListAccessKeysRequest) GetParentId() string {
@@ -254,7 +298,7 @@ type ListAccessKeysByAccountRequest struct {
 
 func (x *ListAccessKeysByAccountRequest) Reset() {
 	*x = ListAccessKeysByAccountRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[4]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -266,7 +310,7 @@ func (x *ListAccessKeysByAccountRequest) String() string {
 func (*ListAccessKeysByAccountRequest) ProtoMessage() {}
 
 func (x *ListAccessKeysByAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[4]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -279,7 +323,7 @@ func (x *ListAccessKeysByAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAccessKeysByAccountRequest.ProtoReflect.Descriptor instead.
 func (*ListAccessKeysByAccountRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListAccessKeysByAccountRequest) GetAccount() *v11.Account {
@@ -320,7 +364,7 @@ type UpdateAccessKeyRequest struct {
 
 func (x *UpdateAccessKeyRequest) Reset() {
 	*x = UpdateAccessKeyRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[5]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -332,7 +376,7 @@ func (x *UpdateAccessKeyRequest) String() string {
 func (*UpdateAccessKeyRequest) ProtoMessage() {}
 
 func (x *UpdateAccessKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[5]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -345,7 +389,7 @@ func (x *UpdateAccessKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAccessKeyRequest.ProtoReflect.Descriptor instead.
 func (*UpdateAccessKeyRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateAccessKeyRequest) GetMetadata() *v1.ResourceMetadata {
@@ -371,7 +415,7 @@ type ActivateAccessKeyRequest struct {
 
 func (x *ActivateAccessKeyRequest) Reset() {
 	*x = ActivateAccessKeyRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[6]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -383,7 +427,7 @@ func (x *ActivateAccessKeyRequest) String() string {
 func (*ActivateAccessKeyRequest) ProtoMessage() {}
 
 func (x *ActivateAccessKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[6]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -396,7 +440,7 @@ func (x *ActivateAccessKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActivateAccessKeyRequest.ProtoReflect.Descriptor instead.
 func (*ActivateAccessKeyRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ActivateAccessKeyRequest) GetId() string {
@@ -415,7 +459,7 @@ type DeactivateAccessKeyRequest struct {
 
 func (x *DeactivateAccessKeyRequest) Reset() {
 	*x = DeactivateAccessKeyRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[7]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -427,7 +471,7 @@ func (x *DeactivateAccessKeyRequest) String() string {
 func (*DeactivateAccessKeyRequest) ProtoMessage() {}
 
 func (x *DeactivateAccessKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[7]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -440,7 +484,7 @@ func (x *DeactivateAccessKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeactivateAccessKeyRequest.ProtoReflect.Descriptor instead.
 func (*DeactivateAccessKeyRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{7}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeactivateAccessKeyRequest) GetId() string {
@@ -459,7 +503,7 @@ type ActivateAccessKeyByAwsIdRequest struct {
 
 func (x *ActivateAccessKeyByAwsIdRequest) Reset() {
 	*x = ActivateAccessKeyByAwsIdRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[8]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -471,7 +515,7 @@ func (x *ActivateAccessKeyByAwsIdRequest) String() string {
 func (*ActivateAccessKeyByAwsIdRequest) ProtoMessage() {}
 
 func (x *ActivateAccessKeyByAwsIdRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[8]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -484,7 +528,7 @@ func (x *ActivateAccessKeyByAwsIdRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActivateAccessKeyByAwsIdRequest.ProtoReflect.Descriptor instead.
 func (*ActivateAccessKeyByAwsIdRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{8}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ActivateAccessKeyByAwsIdRequest) GetAwsAccessKeyId() string {
@@ -503,7 +547,7 @@ type DeactivateAccessKeyByAwsIdRequest struct {
 
 func (x *DeactivateAccessKeyByAwsIdRequest) Reset() {
 	*x = DeactivateAccessKeyByAwsIdRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[9]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -515,7 +559,7 @@ func (x *DeactivateAccessKeyByAwsIdRequest) String() string {
 func (*DeactivateAccessKeyByAwsIdRequest) ProtoMessage() {}
 
 func (x *DeactivateAccessKeyByAwsIdRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[9]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -528,7 +572,7 @@ func (x *DeactivateAccessKeyByAwsIdRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use DeactivateAccessKeyByAwsIdRequest.ProtoReflect.Descriptor instead.
 func (*DeactivateAccessKeyByAwsIdRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{9}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DeactivateAccessKeyByAwsIdRequest) GetAwsAccessKeyId() string {
@@ -547,7 +591,7 @@ type DeleteAccessKeyRequest struct {
 
 func (x *DeleteAccessKeyRequest) Reset() {
 	*x = DeleteAccessKeyRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[10]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -559,7 +603,7 @@ func (x *DeleteAccessKeyRequest) String() string {
 func (*DeleteAccessKeyRequest) ProtoMessage() {}
 
 func (x *DeleteAccessKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[10]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -572,7 +616,7 @@ func (x *DeleteAccessKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAccessKeyRequest.ProtoReflect.Descriptor instead.
 func (*DeleteAccessKeyRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{10}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *DeleteAccessKeyRequest) GetId() string {
@@ -591,7 +635,7 @@ type DeleteAccessKeyByAwsIdRequest struct {
 
 func (x *DeleteAccessKeyByAwsIdRequest) Reset() {
 	*x = DeleteAccessKeyByAwsIdRequest{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[11]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -603,7 +647,7 @@ func (x *DeleteAccessKeyByAwsIdRequest) String() string {
 func (*DeleteAccessKeyByAwsIdRequest) ProtoMessage() {}
 
 func (x *DeleteAccessKeyByAwsIdRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[11]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -616,12 +660,64 @@ func (x *DeleteAccessKeyByAwsIdRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAccessKeyByAwsIdRequest.ProtoReflect.Descriptor instead.
 func (*DeleteAccessKeyByAwsIdRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{11}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *DeleteAccessKeyByAwsIdRequest) GetAwsAccessKeyId() string {
 	if x != nil {
 		return x.AwsAccessKeyId
+	}
+	return ""
+}
+
+type GetAccessKeySecretResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	AwsAccessKeyId string                 `protobuf:"bytes,1,opt,name=aws_access_key_id,json=awsAccessKeyId,proto3" json:"aws_access_key_id,omitempty"`
+	Secret         string                 `protobuf:"bytes,2,opt,name=secret,proto3" json:"secret,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *GetAccessKeySecretResponse) Reset() {
+	*x = GetAccessKeySecretResponse{}
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAccessKeySecretResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAccessKeySecretResponse) ProtoMessage() {}
+
+func (x *GetAccessKeySecretResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAccessKeySecretResponse.ProtoReflect.Descriptor instead.
+func (*GetAccessKeySecretResponse) Descriptor() ([]byte, []int) {
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetAccessKeySecretResponse) GetAwsAccessKeyId() string {
+	if x != nil {
+		return x.AwsAccessKeyId
+	}
+	return ""
+}
+
+func (x *GetAccessKeySecretResponse) GetSecret() string {
+	if x != nil {
+		return x.Secret
 	}
 	return ""
 }
@@ -638,7 +734,7 @@ type ListAccessKeysResponse struct {
 
 func (x *ListAccessKeysResponse) Reset() {
 	*x = ListAccessKeysResponse{}
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[12]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -650,7 +746,7 @@ func (x *ListAccessKeysResponse) String() string {
 func (*ListAccessKeysResponse) ProtoMessage() {}
 
 func (x *ListAccessKeysResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[12]
+	mi := &file_nebius_iam_v2_access_key_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -663,7 +759,7 @@ func (x *ListAccessKeysResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAccessKeysResponse.ProtoReflect.Descriptor instead.
 func (*ListAccessKeysResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{12}
+	return file_nebius_iam_v2_access_key_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListAccessKeysResponse) GetItems() []*AccessKey {
@@ -689,6 +785,8 @@ const file_nebius_iam_v2_access_key_service_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.iam.v2.AccessKeySpecR\x04spec\"%\n" +
 	"\x13GetAccessKeyRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"+\n" +
+	"\x19GetAccessKeySecretRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"G\n" +
 	"\x1aGetAccessKeyByAwsIdRequest\x12)\n" +
 	"\x11aws_access_key_id\x18\x01 \x01(\tR\x0eawsAccessKeyId\"\x88\x01\n" +
@@ -718,13 +816,17 @@ const file_nebius_iam_v2_access_key_service_proto_rawDesc = "" +
 	"\x16DeleteAccessKeyRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"J\n" +
 	"\x1dDeleteAccessKeyByAwsIdRequest\x12)\n" +
-	"\x11aws_access_key_id\x18\x01 \x01(\tR\x0eawsAccessKeyId\"p\n" +
+	"\x11aws_access_key_id\x18\x01 \x01(\tR\x0eawsAccessKeyId\"d\n" +
+	"\x1aGetAccessKeySecretResponse\x12)\n" +
+	"\x11aws_access_key_id\x18\x01 \x01(\tR\x0eawsAccessKeyId\x12\x1b\n" +
+	"\x06secret\x18\x02 \x01(\tB\x03\xc0J\x01R\x06secret\"p\n" +
 	"\x16ListAccessKeysResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.iam.v2.AccessKeyR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa4\b\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x86\t\n" +
 	"\x10AccessKeyService\x12L\n" +
 	"\x06Create\x12%.nebius.iam.v2.CreateAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12C\n" +
-	"\x03Get\x12\".nebius.iam.v2.GetAccessKeyRequest\x1a\x18.nebius.iam.v2.AccessKey\x12S\n" +
+	"\x03Get\x12\".nebius.iam.v2.GetAccessKeyRequest\x1a\x18.nebius.iam.v2.AccessKey\x12`\n" +
+	"\tGetSecret\x12(.nebius.iam.v2.GetAccessKeySecretRequest\x1a).nebius.iam.v2.GetAccessKeySecretResponse\x12S\n" +
 	"\x04List\x12$.nebius.iam.v2.ListAccessKeysRequest\x1a%.nebius.iam.v2.ListAccessKeysResponse\x12L\n" +
 	"\x06Update\x12%.nebius.iam.v2.UpdateAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12L\n" +
 	"\x06Delete\x12%.nebius.iam.v2.DeleteAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12P\n" +
@@ -752,60 +854,64 @@ func file_nebius_iam_v2_access_key_service_proto_rawDescGZIP() []byte {
 	return file_nebius_iam_v2_access_key_service_proto_rawDescData
 }
 
-var file_nebius_iam_v2_access_key_service_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_nebius_iam_v2_access_key_service_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_nebius_iam_v2_access_key_service_proto_goTypes = []any{
 	(*CreateAccessKeyRequest)(nil),            // 0: nebius.iam.v2.CreateAccessKeyRequest
 	(*GetAccessKeyRequest)(nil),               // 1: nebius.iam.v2.GetAccessKeyRequest
-	(*GetAccessKeyByAwsIdRequest)(nil),        // 2: nebius.iam.v2.GetAccessKeyByAwsIdRequest
-	(*ListAccessKeysRequest)(nil),             // 3: nebius.iam.v2.ListAccessKeysRequest
-	(*ListAccessKeysByAccountRequest)(nil),    // 4: nebius.iam.v2.ListAccessKeysByAccountRequest
-	(*UpdateAccessKeyRequest)(nil),            // 5: nebius.iam.v2.UpdateAccessKeyRequest
-	(*ActivateAccessKeyRequest)(nil),          // 6: nebius.iam.v2.ActivateAccessKeyRequest
-	(*DeactivateAccessKeyRequest)(nil),        // 7: nebius.iam.v2.DeactivateAccessKeyRequest
-	(*ActivateAccessKeyByAwsIdRequest)(nil),   // 8: nebius.iam.v2.ActivateAccessKeyByAwsIdRequest
-	(*DeactivateAccessKeyByAwsIdRequest)(nil), // 9: nebius.iam.v2.DeactivateAccessKeyByAwsIdRequest
-	(*DeleteAccessKeyRequest)(nil),            // 10: nebius.iam.v2.DeleteAccessKeyRequest
-	(*DeleteAccessKeyByAwsIdRequest)(nil),     // 11: nebius.iam.v2.DeleteAccessKeyByAwsIdRequest
-	(*ListAccessKeysResponse)(nil),            // 12: nebius.iam.v2.ListAccessKeysResponse
-	(*v1.ResourceMetadata)(nil),               // 13: nebius.common.v1.ResourceMetadata
-	(*AccessKeySpec)(nil),                     // 14: nebius.iam.v2.AccessKeySpec
-	(*v11.Account)(nil),                       // 15: nebius.iam.v1.Account
-	(*AccessKey)(nil),                         // 16: nebius.iam.v2.AccessKey
-	(*v1.Operation)(nil),                      // 17: nebius.common.v1.Operation
+	(*GetAccessKeySecretRequest)(nil),         // 2: nebius.iam.v2.GetAccessKeySecretRequest
+	(*GetAccessKeyByAwsIdRequest)(nil),        // 3: nebius.iam.v2.GetAccessKeyByAwsIdRequest
+	(*ListAccessKeysRequest)(nil),             // 4: nebius.iam.v2.ListAccessKeysRequest
+	(*ListAccessKeysByAccountRequest)(nil),    // 5: nebius.iam.v2.ListAccessKeysByAccountRequest
+	(*UpdateAccessKeyRequest)(nil),            // 6: nebius.iam.v2.UpdateAccessKeyRequest
+	(*ActivateAccessKeyRequest)(nil),          // 7: nebius.iam.v2.ActivateAccessKeyRequest
+	(*DeactivateAccessKeyRequest)(nil),        // 8: nebius.iam.v2.DeactivateAccessKeyRequest
+	(*ActivateAccessKeyByAwsIdRequest)(nil),   // 9: nebius.iam.v2.ActivateAccessKeyByAwsIdRequest
+	(*DeactivateAccessKeyByAwsIdRequest)(nil), // 10: nebius.iam.v2.DeactivateAccessKeyByAwsIdRequest
+	(*DeleteAccessKeyRequest)(nil),            // 11: nebius.iam.v2.DeleteAccessKeyRequest
+	(*DeleteAccessKeyByAwsIdRequest)(nil),     // 12: nebius.iam.v2.DeleteAccessKeyByAwsIdRequest
+	(*GetAccessKeySecretResponse)(nil),        // 13: nebius.iam.v2.GetAccessKeySecretResponse
+	(*ListAccessKeysResponse)(nil),            // 14: nebius.iam.v2.ListAccessKeysResponse
+	(*v1.ResourceMetadata)(nil),               // 15: nebius.common.v1.ResourceMetadata
+	(*AccessKeySpec)(nil),                     // 16: nebius.iam.v2.AccessKeySpec
+	(*v11.Account)(nil),                       // 17: nebius.iam.v1.Account
+	(*AccessKey)(nil),                         // 18: nebius.iam.v2.AccessKey
+	(*v1.Operation)(nil),                      // 19: nebius.common.v1.Operation
 }
 var file_nebius_iam_v2_access_key_service_proto_depIdxs = []int32{
-	13, // 0: nebius.iam.v2.CreateAccessKeyRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	14, // 1: nebius.iam.v2.CreateAccessKeyRequest.spec:type_name -> nebius.iam.v2.AccessKeySpec
-	15, // 2: nebius.iam.v2.ListAccessKeysByAccountRequest.account:type_name -> nebius.iam.v1.Account
-	13, // 3: nebius.iam.v2.UpdateAccessKeyRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	14, // 4: nebius.iam.v2.UpdateAccessKeyRequest.spec:type_name -> nebius.iam.v2.AccessKeySpec
-	16, // 5: nebius.iam.v2.ListAccessKeysResponse.items:type_name -> nebius.iam.v2.AccessKey
+	15, // 0: nebius.iam.v2.CreateAccessKeyRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	16, // 1: nebius.iam.v2.CreateAccessKeyRequest.spec:type_name -> nebius.iam.v2.AccessKeySpec
+	17, // 2: nebius.iam.v2.ListAccessKeysByAccountRequest.account:type_name -> nebius.iam.v1.Account
+	15, // 3: nebius.iam.v2.UpdateAccessKeyRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	16, // 4: nebius.iam.v2.UpdateAccessKeyRequest.spec:type_name -> nebius.iam.v2.AccessKeySpec
+	18, // 5: nebius.iam.v2.ListAccessKeysResponse.items:type_name -> nebius.iam.v2.AccessKey
 	0,  // 6: nebius.iam.v2.AccessKeyService.Create:input_type -> nebius.iam.v2.CreateAccessKeyRequest
 	1,  // 7: nebius.iam.v2.AccessKeyService.Get:input_type -> nebius.iam.v2.GetAccessKeyRequest
-	3,  // 8: nebius.iam.v2.AccessKeyService.List:input_type -> nebius.iam.v2.ListAccessKeysRequest
-	5,  // 9: nebius.iam.v2.AccessKeyService.Update:input_type -> nebius.iam.v2.UpdateAccessKeyRequest
-	10, // 10: nebius.iam.v2.AccessKeyService.Delete:input_type -> nebius.iam.v2.DeleteAccessKeyRequest
-	6,  // 11: nebius.iam.v2.AccessKeyService.Activate:input_type -> nebius.iam.v2.ActivateAccessKeyRequest
-	7,  // 12: nebius.iam.v2.AccessKeyService.Deactivate:input_type -> nebius.iam.v2.DeactivateAccessKeyRequest
-	4,  // 13: nebius.iam.v2.AccessKeyService.ListByAccount:input_type -> nebius.iam.v2.ListAccessKeysByAccountRequest
-	2,  // 14: nebius.iam.v2.AccessKeyService.GetByAwsId:input_type -> nebius.iam.v2.GetAccessKeyByAwsIdRequest
-	11, // 15: nebius.iam.v2.AccessKeyService.DeleteByAwsId:input_type -> nebius.iam.v2.DeleteAccessKeyByAwsIdRequest
-	8,  // 16: nebius.iam.v2.AccessKeyService.ActivateByAwsId:input_type -> nebius.iam.v2.ActivateAccessKeyByAwsIdRequest
-	9,  // 17: nebius.iam.v2.AccessKeyService.DeactivateByAwsId:input_type -> nebius.iam.v2.DeactivateAccessKeyByAwsIdRequest
-	17, // 18: nebius.iam.v2.AccessKeyService.Create:output_type -> nebius.common.v1.Operation
-	16, // 19: nebius.iam.v2.AccessKeyService.Get:output_type -> nebius.iam.v2.AccessKey
-	12, // 20: nebius.iam.v2.AccessKeyService.List:output_type -> nebius.iam.v2.ListAccessKeysResponse
-	17, // 21: nebius.iam.v2.AccessKeyService.Update:output_type -> nebius.common.v1.Operation
-	17, // 22: nebius.iam.v2.AccessKeyService.Delete:output_type -> nebius.common.v1.Operation
-	17, // 23: nebius.iam.v2.AccessKeyService.Activate:output_type -> nebius.common.v1.Operation
-	17, // 24: nebius.iam.v2.AccessKeyService.Deactivate:output_type -> nebius.common.v1.Operation
-	12, // 25: nebius.iam.v2.AccessKeyService.ListByAccount:output_type -> nebius.iam.v2.ListAccessKeysResponse
-	16, // 26: nebius.iam.v2.AccessKeyService.GetByAwsId:output_type -> nebius.iam.v2.AccessKey
-	17, // 27: nebius.iam.v2.AccessKeyService.DeleteByAwsId:output_type -> nebius.common.v1.Operation
-	17, // 28: nebius.iam.v2.AccessKeyService.ActivateByAwsId:output_type -> nebius.common.v1.Operation
-	17, // 29: nebius.iam.v2.AccessKeyService.DeactivateByAwsId:output_type -> nebius.common.v1.Operation
-	18, // [18:30] is the sub-list for method output_type
-	6,  // [6:18] is the sub-list for method input_type
+	2,  // 8: nebius.iam.v2.AccessKeyService.GetSecret:input_type -> nebius.iam.v2.GetAccessKeySecretRequest
+	4,  // 9: nebius.iam.v2.AccessKeyService.List:input_type -> nebius.iam.v2.ListAccessKeysRequest
+	6,  // 10: nebius.iam.v2.AccessKeyService.Update:input_type -> nebius.iam.v2.UpdateAccessKeyRequest
+	11, // 11: nebius.iam.v2.AccessKeyService.Delete:input_type -> nebius.iam.v2.DeleteAccessKeyRequest
+	7,  // 12: nebius.iam.v2.AccessKeyService.Activate:input_type -> nebius.iam.v2.ActivateAccessKeyRequest
+	8,  // 13: nebius.iam.v2.AccessKeyService.Deactivate:input_type -> nebius.iam.v2.DeactivateAccessKeyRequest
+	5,  // 14: nebius.iam.v2.AccessKeyService.ListByAccount:input_type -> nebius.iam.v2.ListAccessKeysByAccountRequest
+	3,  // 15: nebius.iam.v2.AccessKeyService.GetByAwsId:input_type -> nebius.iam.v2.GetAccessKeyByAwsIdRequest
+	12, // 16: nebius.iam.v2.AccessKeyService.DeleteByAwsId:input_type -> nebius.iam.v2.DeleteAccessKeyByAwsIdRequest
+	9,  // 17: nebius.iam.v2.AccessKeyService.ActivateByAwsId:input_type -> nebius.iam.v2.ActivateAccessKeyByAwsIdRequest
+	10, // 18: nebius.iam.v2.AccessKeyService.DeactivateByAwsId:input_type -> nebius.iam.v2.DeactivateAccessKeyByAwsIdRequest
+	19, // 19: nebius.iam.v2.AccessKeyService.Create:output_type -> nebius.common.v1.Operation
+	18, // 20: nebius.iam.v2.AccessKeyService.Get:output_type -> nebius.iam.v2.AccessKey
+	13, // 21: nebius.iam.v2.AccessKeyService.GetSecret:output_type -> nebius.iam.v2.GetAccessKeySecretResponse
+	14, // 22: nebius.iam.v2.AccessKeyService.List:output_type -> nebius.iam.v2.ListAccessKeysResponse
+	19, // 23: nebius.iam.v2.AccessKeyService.Update:output_type -> nebius.common.v1.Operation
+	19, // 24: nebius.iam.v2.AccessKeyService.Delete:output_type -> nebius.common.v1.Operation
+	19, // 25: nebius.iam.v2.AccessKeyService.Activate:output_type -> nebius.common.v1.Operation
+	19, // 26: nebius.iam.v2.AccessKeyService.Deactivate:output_type -> nebius.common.v1.Operation
+	14, // 27: nebius.iam.v2.AccessKeyService.ListByAccount:output_type -> nebius.iam.v2.ListAccessKeysResponse
+	18, // 28: nebius.iam.v2.AccessKeyService.GetByAwsId:output_type -> nebius.iam.v2.AccessKey
+	19, // 29: nebius.iam.v2.AccessKeyService.DeleteByAwsId:output_type -> nebius.common.v1.Operation
+	19, // 30: nebius.iam.v2.AccessKeyService.ActivateByAwsId:output_type -> nebius.common.v1.Operation
+	19, // 31: nebius.iam.v2.AccessKeyService.DeactivateByAwsId:output_type -> nebius.common.v1.Operation
+	19, // [19:32] is the sub-list for method output_type
+	6,  // [6:19] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
@@ -823,7 +929,7 @@ func file_nebius_iam_v2_access_key_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_iam_v2_access_key_service_proto_rawDesc), len(file_nebius_iam_v2_access_key_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

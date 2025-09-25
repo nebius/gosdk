@@ -167,6 +167,70 @@ func (x *ResourceEvent) GetError() *status.Status {
 	return nil
 }
 
+// A resource event that has occurred (more or less in the same way) multiple times across a service-defined aggregation interval
+type RecurrentResourceEvent struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Time of the first occurrence of a recurrent event
+	FirstOccurredAt *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=first_occurred_at,json=firstOccurredAt,proto3" json:"first_occurred_at,omitempty"`
+	// Last occurrence of a recurrent event
+	LastOccurrence *ResourceEvent `protobuf:"bytes,2,opt,name=last_occurrence,json=lastOccurrence,proto3" json:"last_occurrence,omitempty"`
+	// The number of times this event has occurred between `first_occurred_at` and `last_occurrence.occurred_at`. Must be > 0
+	OccurrenceCount int64 `protobuf:"varint,3,opt,name=occurrence_count,json=occurrenceCount,proto3" json:"occurrence_count,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *RecurrentResourceEvent) Reset() {
+	*x = RecurrentResourceEvent{}
+	mi := &file_nebius_common_v1_resource_event_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecurrentResourceEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecurrentResourceEvent) ProtoMessage() {}
+
+func (x *RecurrentResourceEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_common_v1_resource_event_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecurrentResourceEvent.ProtoReflect.Descriptor instead.
+func (*RecurrentResourceEvent) Descriptor() ([]byte, []int) {
+	return file_nebius_common_v1_resource_event_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *RecurrentResourceEvent) GetFirstOccurredAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.FirstOccurredAt
+	}
+	return nil
+}
+
+func (x *RecurrentResourceEvent) GetLastOccurrence() *ResourceEvent {
+	if x != nil {
+		return x.LastOccurrence
+	}
+	return nil
+}
+
+func (x *RecurrentResourceEvent) GetOccurrenceCount() int64 {
+	if x != nil {
+		return x.OccurrenceCount
+	}
+	return 0
+}
+
 var File_nebius_common_v1_resource_event_proto protoreflect.FileDescriptor
 
 const file_nebius_common_v1_resource_event_proto_rawDesc = "" +
@@ -185,7 +249,11 @@ const file_nebius_common_v1_resource_event_proto_rawDesc = "" +
 	"\x05DEBUG\x10\x01\x12\b\n" +
 	"\x04INFO\x10\x02\x12\b\n" +
 	"\x04WARN\x10\x03\x12\t\n" +
-	"\x05ERROR\x10\x04B_\n" +
+	"\x05ERROR\x10\x04\"\xee\x01\n" +
+	"\x16RecurrentResourceEvent\x12N\n" +
+	"\x11first_occurred_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\x0ffirstOccurredAt\x12P\n" +
+	"\x0flast_occurrence\x18\x02 \x01(\v2\x1f.nebius.common.v1.ResourceEventB\x06\xbaH\x03\xc8\x01\x01R\x0elastOccurrence\x122\n" +
+	"\x10occurrence_count\x18\x03 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x0foccurrenceCountB_\n" +
 	"\x17ai.nebius.pub.common.v1B\x12ResourceEventProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/common/v1b\x06proto3"
 
 var (
@@ -201,22 +269,25 @@ func file_nebius_common_v1_resource_event_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_common_v1_resource_event_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nebius_common_v1_resource_event_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_nebius_common_v1_resource_event_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_nebius_common_v1_resource_event_proto_goTypes = []any{
-	(ResourceEvent_Level)(0),      // 0: nebius.common.v1.ResourceEvent.Level
-	(*ResourceEvent)(nil),         // 1: nebius.common.v1.ResourceEvent
-	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
-	(*status.Status)(nil),         // 3: google.rpc.Status
+	(ResourceEvent_Level)(0),       // 0: nebius.common.v1.ResourceEvent.Level
+	(*ResourceEvent)(nil),          // 1: nebius.common.v1.ResourceEvent
+	(*RecurrentResourceEvent)(nil), // 2: nebius.common.v1.RecurrentResourceEvent
+	(*timestamppb.Timestamp)(nil),  // 3: google.protobuf.Timestamp
+	(*status.Status)(nil),          // 4: google.rpc.Status
 }
 var file_nebius_common_v1_resource_event_proto_depIdxs = []int32{
-	2, // 0: nebius.common.v1.ResourceEvent.occurred_at:type_name -> google.protobuf.Timestamp
+	3, // 0: nebius.common.v1.ResourceEvent.occurred_at:type_name -> google.protobuf.Timestamp
 	0, // 1: nebius.common.v1.ResourceEvent.level:type_name -> nebius.common.v1.ResourceEvent.Level
-	3, // 2: nebius.common.v1.ResourceEvent.error:type_name -> google.rpc.Status
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 2: nebius.common.v1.ResourceEvent.error:type_name -> google.rpc.Status
+	3, // 3: nebius.common.v1.RecurrentResourceEvent.first_occurred_at:type_name -> google.protobuf.Timestamp
+	1, // 4: nebius.common.v1.RecurrentResourceEvent.last_occurrence:type_name -> nebius.common.v1.ResourceEvent
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_nebius_common_v1_resource_event_proto_init() }
@@ -230,7 +301,7 @@ func file_nebius_common_v1_resource_event_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_common_v1_resource_event_proto_rawDesc), len(file_nebius_common_v1_resource_event_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

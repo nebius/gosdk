@@ -28,6 +28,7 @@ const AccessKeyServiceID conn.ServiceID = "nebius.iam.v2.AccessKeyService"
 type AccessKeyService interface {
 	Create(context.Context, *v2.CreateAccessKeyRequest, ...grpc.CallOption) (operations.Operation, error)
 	Get(context.Context, *v2.GetAccessKeyRequest, ...grpc.CallOption) (*v2.AccessKey, error)
+	GetSecret(context.Context, *v2.GetAccessKeySecretRequest, ...grpc.CallOption) (*v2.GetAccessKeySecretResponse, error)
 	List(context.Context, *v2.ListAccessKeysRequest, ...grpc.CallOption) (*v2.ListAccessKeysResponse, error)
 	Filter(context.Context, *v2.ListAccessKeysRequest, ...grpc.CallOption) iter.Seq2[*v2.AccessKey, error]
 	Update(context.Context, *v2.UpdateAccessKeyRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -79,6 +80,18 @@ func (s accessKeyService) Get(ctx context.Context, request *v2.GetAccessKeyReque
 		return nil, err
 	}
 	return v2.NewAccessKeyServiceClient(con).Get(ctx, request, opts...)
+}
+
+func (s accessKeyService) GetSecret(ctx context.Context, request *v2.GetAccessKeySecretRequest, opts ...grpc.CallOption) (*v2.GetAccessKeySecretResponse, error) {
+	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v2.NewAccessKeyServiceClient(con).GetSecret(ctx, request, opts...)
 }
 
 func (s accessKeyService) List(ctx context.Context, request *v2.ListAccessKeysRequest, opts ...grpc.CallOption) (*v2.ListAccessKeysResponse, error) {

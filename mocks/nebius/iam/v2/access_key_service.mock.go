@@ -527,6 +527,50 @@ func (c *MockAccessKeyServiceGetOperationCall) DoAndReturn(f func(context.Contex
 	return c
 }
 
+// GetSecret mocks base method.
+func (m *MockAccessKeyService) GetSecret(arg0 context.Context, arg1 *v2.GetAccessKeySecretRequest, arg2 ...grpc.CallOption) (*v2.GetAccessKeySecretResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetSecret", varargs...)
+	ret0, _ := ret[0].(*v2.GetAccessKeySecretResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSecret indicates an expected call of GetSecret.
+func (mr *MockAccessKeyServiceMockRecorder) GetSecret(arg0, arg1 any, arg2 ...any) *MockAccessKeyServiceGetSecretCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSecret", reflect.TypeOf((*MockAccessKeyService)(nil).GetSecret), varargs...)
+	return &MockAccessKeyServiceGetSecretCall{Call: call}
+}
+
+// MockAccessKeyServiceGetSecretCall wrap *gomock.Call
+type MockAccessKeyServiceGetSecretCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockAccessKeyServiceGetSecretCall) Return(arg0 *v2.GetAccessKeySecretResponse, arg1 error) *MockAccessKeyServiceGetSecretCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockAccessKeyServiceGetSecretCall) Do(f func(context.Context, *v2.GetAccessKeySecretRequest, ...grpc.CallOption) (*v2.GetAccessKeySecretResponse, error)) *MockAccessKeyServiceGetSecretCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockAccessKeyServiceGetSecretCall) DoAndReturn(f func(context.Context, *v2.GetAccessKeySecretRequest, ...grpc.CallOption) (*v2.GetAccessKeySecretResponse, error)) *MockAccessKeyServiceGetSecretCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // List mocks base method.
 func (m *MockAccessKeyService) List(arg0 context.Context, arg1 *v2.ListAccessKeysRequest, arg2 ...grpc.CallOption) (*v2.ListAccessKeysResponse, error) {
 	m.ctrl.T.Helper()

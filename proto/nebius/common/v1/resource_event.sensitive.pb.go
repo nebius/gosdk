@@ -81,3 +81,55 @@ func (*wrapperResourceEvent) ProtoMessage() {}
 func (w *wrapperResourceEvent) ProtoReflect() protoreflect.Message {
 	return (*ResourceEvent)(w).ProtoReflect()
 }
+
+// Sanitize mutates [RecurrentResourceEvent] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+func (x *RecurrentResourceEvent) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.LastOccurrence.Sanitize()
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [RecurrentResourceEvent].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *RecurrentResourceEvent
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [RecurrentResourceEvent], use the following code:
+//
+//	var original *RecurrentResourceEvent
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*RecurrentResourceEvent)
+func (x *RecurrentResourceEvent) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*RecurrentResourceEvent) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperRecurrentResourceEvent)(c))
+}
+
+// wrapperRecurrentResourceEvent is used to return [RecurrentResourceEvent] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperRecurrentResourceEvent RecurrentResourceEvent
+
+func (w *wrapperRecurrentResourceEvent) String() string {
+	return (*RecurrentResourceEvent)(w).String()
+}
+
+func (*wrapperRecurrentResourceEvent) ProtoMessage() {}
+
+func (w *wrapperRecurrentResourceEvent) ProtoReflect() protoreflect.Message {
+	return (*RecurrentResourceEvent)(w).ProtoReflect()
+}
