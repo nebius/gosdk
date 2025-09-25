@@ -26,6 +26,62 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type SecretDeliveryMode int32
+
+const (
+	// If not specified, the default behaviour will be applied. Currently it's INLINE, later will be EXPLICIT.
+	SecretDeliveryMode_UNSPECIFIED SecretDeliveryMode = 0
+	// The secret value will be returned directly in the API response
+	SecretDeliveryMode_INLINE SecretDeliveryMode = 1
+	// The secret will be delivered via a MysteryBox secret, in case of terraform it is recommended to use that enum
+	SecretDeliveryMode_MYSTERY_BOX SecretDeliveryMode = 2
+	// The secret value will be accessible via a separate method GetSecret
+	SecretDeliveryMode_EXPLICIT SecretDeliveryMode = 3
+)
+
+// Enum value maps for SecretDeliveryMode.
+var (
+	SecretDeliveryMode_name = map[int32]string{
+		0: "UNSPECIFIED",
+		1: "INLINE",
+		2: "MYSTERY_BOX",
+		3: "EXPLICIT",
+	}
+	SecretDeliveryMode_value = map[string]int32{
+		"UNSPECIFIED": 0,
+		"INLINE":      1,
+		"MYSTERY_BOX": 2,
+		"EXPLICIT":    3,
+	}
+)
+
+func (x SecretDeliveryMode) Enum() *SecretDeliveryMode {
+	p := new(SecretDeliveryMode)
+	*p = x
+	return p
+}
+
+func (x SecretDeliveryMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SecretDeliveryMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_iam_v2_access_key_proto_enumTypes[0].Descriptor()
+}
+
+func (SecretDeliveryMode) Type() protoreflect.EnumType {
+	return &file_nebius_iam_v2_access_key_proto_enumTypes[0]
+}
+
+func (x SecretDeliveryMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SecretDeliveryMode.Descriptor instead.
+func (SecretDeliveryMode) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_iam_v2_access_key_proto_rawDescGZIP(), []int{0}
+}
+
 type AccessKeyStatus_State int32
 
 const (
@@ -68,11 +124,11 @@ func (x AccessKeyStatus_State) String() string {
 }
 
 func (AccessKeyStatus_State) Descriptor() protoreflect.EnumDescriptor {
-	return file_nebius_iam_v2_access_key_proto_enumTypes[0].Descriptor()
+	return file_nebius_iam_v2_access_key_proto_enumTypes[1].Descriptor()
 }
 
 func (AccessKeyStatus_State) Type() protoreflect.EnumType {
-	return &file_nebius_iam_v2_access_key_proto_enumTypes[0]
+	return &file_nebius_iam_v2_access_key_proto_enumTypes[1]
 }
 
 func (x AccessKeyStatus_State) Number() protoreflect.EnumNumber {
@@ -145,12 +201,14 @@ func (x *AccessKey) GetStatus() *AccessKeyStatus {
 }
 
 type AccessKeySpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Account       *v11.Account           `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
-	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Account     *v11.Account           `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	ExpiresAt   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	Description string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	// Specifies how the secret will be delivered upon creation. This field is immutable — it cannot be changed after the resource is created.
+	SecretDeliveryMode SecretDeliveryMode `protobuf:"varint,4,opt,name=secret_delivery_mode,json=secretDeliveryMode,proto3,enum=nebius.iam.v2.SecretDeliveryMode" json:"secret_delivery_mode,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *AccessKeySpec) Reset() {
@@ -202,6 +260,13 @@ func (x *AccessKeySpec) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *AccessKeySpec) GetSecretDeliveryMode() SecretDeliveryMode {
+	if x != nil {
+		return x.SecretDeliveryMode
+	}
+	return SecretDeliveryMode_UNSPECIFIED
 }
 
 type AccessKeyStatus struct {
@@ -296,12 +361,13 @@ const file_nebius_iam_v2_access_key_proto_rawDesc = "" +
 	"\tAccessKey\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x128\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.iam.v2.AccessKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12<\n" +
-	"\x06status\x18\x03 \x01(\v2\x1e.nebius.iam.v2.AccessKeyStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02\"\xaa\x01\n" +
+	"\x06status\x18\x03 \x01(\v2\x1e.nebius.iam.v2.AccessKeyStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02\"\x85\x02\n" +
 	"\rAccessKeySpec\x126\n" +
 	"\aaccount\x18\x01 \x01(\v2\x16.nebius.iam.v1.AccountB\x04\xbaJ\x01\x02R\aaccount\x12?\n" +
 	"\n" +
 	"expires_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xbaJ\x01\x02R\texpiresAt\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\"\xd2\x02\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12Y\n" +
+	"\x14secret_delivery_mode\x18\x04 \x01(\x0e2!.nebius.iam.v2.SecretDeliveryModeB\x04\xbaJ\x01\x02R\x12secretDeliveryMode\"\xd2\x02\n" +
 	"\x0fAccessKeyStatus\x12:\n" +
 	"\x05state\x18\x01 \x01(\x0e2$.nebius.iam.v2.AccessKeyStatus.StateR\x05state\x12 \n" +
 	"\vfingerprint\x18\x02 \x01(\tR\vfingerprint\x12\x1c\n" +
@@ -316,7 +382,13 @@ const file_nebius_iam_v2_access_key_proto_rawDesc = "" +
 	"\bINACTIVE\x10\x02\x12\v\n" +
 	"\aEXPIRED\x10\x03\x12\f\n" +
 	"\bDELETING\x10\x04\x12\v\n" +
-	"\aDELETED\x10\x05BU\n" +
+	"\aDELETED\x10\x05*P\n" +
+	"\x12SecretDeliveryMode\x12\x0f\n" +
+	"\vUNSPECIFIED\x10\x00\x12\n" +
+	"\n" +
+	"\x06INLINE\x10\x01\x12\x0f\n" +
+	"\vMYSTERY_BOX\x10\x02\x12\f\n" +
+	"\bEXPLICIT\x10\x03BU\n" +
 	"\x14ai.nebius.pub.iam.v2B\x0eAccessKeyProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v2b\x06proto3"
 
 var (
@@ -331,29 +403,31 @@ func file_nebius_iam_v2_access_key_proto_rawDescGZIP() []byte {
 	return file_nebius_iam_v2_access_key_proto_rawDescData
 }
 
-var file_nebius_iam_v2_access_key_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_nebius_iam_v2_access_key_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_nebius_iam_v2_access_key_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_nebius_iam_v2_access_key_proto_goTypes = []any{
-	(AccessKeyStatus_State)(0),    // 0: nebius.iam.v2.AccessKeyStatus.State
-	(*AccessKey)(nil),             // 1: nebius.iam.v2.AccessKey
-	(*AccessKeySpec)(nil),         // 2: nebius.iam.v2.AccessKeySpec
-	(*AccessKeyStatus)(nil),       // 3: nebius.iam.v2.AccessKeyStatus
-	(*v1.ResourceMetadata)(nil),   // 4: nebius.common.v1.ResourceMetadata
-	(*v11.Account)(nil),           // 5: nebius.iam.v1.Account
-	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(SecretDeliveryMode)(0),       // 0: nebius.iam.v2.SecretDeliveryMode
+	(AccessKeyStatus_State)(0),    // 1: nebius.iam.v2.AccessKeyStatus.State
+	(*AccessKey)(nil),             // 2: nebius.iam.v2.AccessKey
+	(*AccessKeySpec)(nil),         // 3: nebius.iam.v2.AccessKeySpec
+	(*AccessKeyStatus)(nil),       // 4: nebius.iam.v2.AccessKeyStatus
+	(*v1.ResourceMetadata)(nil),   // 5: nebius.common.v1.ResourceMetadata
+	(*v11.Account)(nil),           // 6: nebius.iam.v1.Account
+	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
 }
 var file_nebius_iam_v2_access_key_proto_depIdxs = []int32{
-	4, // 0: nebius.iam.v2.AccessKey.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	2, // 1: nebius.iam.v2.AccessKey.spec:type_name -> nebius.iam.v2.AccessKeySpec
-	3, // 2: nebius.iam.v2.AccessKey.status:type_name -> nebius.iam.v2.AccessKeyStatus
-	5, // 3: nebius.iam.v2.AccessKeySpec.account:type_name -> nebius.iam.v1.Account
-	6, // 4: nebius.iam.v2.AccessKeySpec.expires_at:type_name -> google.protobuf.Timestamp
-	0, // 5: nebius.iam.v2.AccessKeyStatus.state:type_name -> nebius.iam.v2.AccessKeyStatus.State
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	5, // 0: nebius.iam.v2.AccessKey.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	3, // 1: nebius.iam.v2.AccessKey.spec:type_name -> nebius.iam.v2.AccessKeySpec
+	4, // 2: nebius.iam.v2.AccessKey.status:type_name -> nebius.iam.v2.AccessKeyStatus
+	6, // 3: nebius.iam.v2.AccessKeySpec.account:type_name -> nebius.iam.v1.Account
+	7, // 4: nebius.iam.v2.AccessKeySpec.expires_at:type_name -> google.protobuf.Timestamp
+	0, // 5: nebius.iam.v2.AccessKeySpec.secret_delivery_mode:type_name -> nebius.iam.v2.SecretDeliveryMode
+	1, // 6: nebius.iam.v2.AccessKeyStatus.state:type_name -> nebius.iam.v2.AccessKeyStatus.State
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v2_access_key_proto_init() }
@@ -366,7 +440,7 @@ func file_nebius_iam_v2_access_key_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_iam_v2_access_key_proto_rawDesc), len(file_nebius_iam_v2_access_key_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,

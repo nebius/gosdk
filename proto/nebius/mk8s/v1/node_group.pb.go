@@ -1236,7 +1236,8 @@ type NodeGroupStatus struct {
 	// Both outdated and up-to-date nodes are counted.
 	ReadyNodeCount int64 `protobuf:"varint,6,opt,name=ready_node_count,json=readyNodeCount,proto3" json:"ready_node_count,omitempty"`
 	// Deprecated: Marked as deprecated in nebius/mk8s/v1/node_group.proto.
-	Conditions []*Condition `protobuf:"bytes,50,rep,name=conditions,proto3" json:"conditions,omitempty"`
+	Conditions []*Condition                 `protobuf:"bytes,50,rep,name=conditions,proto3" json:"conditions,omitempty"`
+	Events     []*v1.RecurrentResourceEvent `protobuf:"bytes,61,rep,name=events,proto3" json:"events,omitempty"`
 	// Show that there are changes are in flight.
 	Reconciling   bool `protobuf:"varint,100,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1323,6 +1324,13 @@ func (x *NodeGroupStatus) GetConditions() []*Condition {
 	return nil
 }
 
+func (x *NodeGroupStatus) GetEvents() []*v1.RecurrentResourceEvent {
+	if x != nil {
+		return x.Events
+	}
+	return nil
+}
+
 func (x *NodeGroupStatus) GetReconciling() bool {
 	if x != nil {
 		return x.Reconciling
@@ -1334,7 +1342,7 @@ var File_nebius_mk8s_v1_node_group_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\n" +
-	"\x1fnebius/mk8s/v1/node_group.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/mk8s/v1/instance_template.proto\x1a\x1enebius/mk8s/v1/condition.proto\"\xb7\x01\n" +
+	"\x1fnebius/mk8s/v1/node_group.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a%nebius/common/v1/resource_event.proto\x1a&nebius/mk8s/v1/instance_template.proto\x1a\x1enebius/mk8s/v1/condition.proto\"\xb7\x01\n" +
 	"\tNodeGroup\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecR\x04spec\x127\n" +
@@ -1410,7 +1418,7 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\apercent\x18\x01 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00H\x00R\apercent\x12\x1f\n" +
 	"\x05count\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00H\x00R\x05countB\x0e\n" +
 	"\x05value\x12\x05\xbaH\x02\b\x01\"\x11\n" +
-	"\x0fPreemptibleSpec\"\x88\x04\n" +
+	"\x0fPreemptibleSpec\"\xca\x04\n" +
 	"\x0fNodeGroupStatus\x12;\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.mk8s.v1.NodeGroupStatus.StateR\x05state\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12*\n" +
@@ -1423,7 +1431,8 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"conditions\x182 \x03(\v2\x19.nebius.mk8s.v1.ConditionBN\xd2JI\n" +
 	"\n" +
 	"2025-08-01\x12;it is not implemented well, messages should be used instead\x18\x01R\n" +
-	"conditions\x12 \n" +
+	"conditions\x12@\n" +
+	"\x06events\x18= \x03(\v2(.nebius.common.v1.RecurrentResourceEventR\x06events\x12 \n" +
 	"\vreconciling\x18d \x01(\bR\vreconciling\"K\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
@@ -1472,6 +1481,7 @@ var file_nebius_mk8s_v1_node_group_proto_goTypes = []any{
 	(*DiskSpec)(nil),                       // 22: nebius.mk8s.v1.DiskSpec
 	(*durationpb.Duration)(nil),            // 23: google.protobuf.Duration
 	(*Condition)(nil),                      // 24: nebius.mk8s.v1.Condition
+	(*v1.RecurrentResourceEvent)(nil),      // 25: nebius.common.v1.RecurrentResourceEvent
 }
 var file_nebius_mk8s_v1_node_group_proto_depIdxs = []int32{
 	20, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -1499,11 +1509,12 @@ var file_nebius_mk8s_v1_node_group_proto_depIdxs = []int32{
 	23, // 22: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
 	2,  // 23: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
 	24, // 24: nebius.mk8s.v1.NodeGroupStatus.conditions:type_name -> nebius.mk8s.v1.Condition
-	25, // [25:25] is the sub-list for method output_type
-	25, // [25:25] is the sub-list for method input_type
-	25, // [25:25] is the sub-list for extension type_name
-	25, // [25:25] is the sub-list for extension extendee
-	0,  // [0:25] is the sub-list for field type_name
+	25, // 25: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
+	26, // [26:26] is the sub-list for method output_type
+	26, // [26:26] is the sub-list for method input_type
+	26, // [26:26] is the sub-list for extension type_name
+	26, // [26:26] is the sub-list for extension extendee
+	0,  // [0:26] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_node_group_proto_init() }

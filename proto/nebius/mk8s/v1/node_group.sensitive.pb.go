@@ -10,16 +10,25 @@ import (
 
 // Sanitize mutates [NodeGroup] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
 func (x *NodeGroup) Sanitize() {
 	if x == nil {
 		return
 	}
 	x.Spec.Sanitize()
+	x.Status.Sanitize()
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [NodeGroup].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
 // Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //
@@ -176,5 +185,56 @@ func (w *wrapperNodeTemplate) ProtoReflect() protoreflect.Message {
 // func (x *PreemptibleSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PreemptibleSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
-// func (x *NodeGroupStatus) Sanitize()            // is not generated as no sensitive fields found
-// func (x *NodeGroupStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+// Sanitize mutates [NodeGroupStatus] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+func (x *NodeGroupStatus) Sanitize() {
+	if x == nil {
+		return
+	}
+	for _, y := range x.Events {
+		y.Sanitize()
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [NodeGroupStatus].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *NodeGroupStatus
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [NodeGroupStatus], use the following code:
+//
+//	var original *NodeGroupStatus
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*NodeGroupStatus)
+func (x *NodeGroupStatus) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*NodeGroupStatus) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperNodeGroupStatus)(c))
+}
+
+// wrapperNodeGroupStatus is used to return [NodeGroupStatus] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperNodeGroupStatus NodeGroupStatus
+
+func (w *wrapperNodeGroupStatus) String() string {
+	return (*NodeGroupStatus)(w).String()
+}
+
+func (*wrapperNodeGroupStatus) ProtoMessage() {}
+
+func (w *wrapperNodeGroupStatus) ProtoReflect() protoreflect.Message {
+	return (*NodeGroupStatus)(w).ProtoReflect()
+}

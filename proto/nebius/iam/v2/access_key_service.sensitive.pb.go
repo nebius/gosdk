@@ -14,6 +14,9 @@ import (
 // func (x *GetAccessKeyRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GetAccessKeyRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *GetAccessKeySecretRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *GetAccessKeySecretRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *GetAccessKeyByAwsIdRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GetAccessKeyByAwsIdRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
@@ -43,6 +46,50 @@ import (
 
 // func (x *DeleteAccessKeyByAwsIdRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DeleteAccessKeyByAwsIdRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// Sanitize mutates [GetAccessKeySecretResponse] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *GetAccessKeySecretResponse) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.Secret = "**HIDDEN**"
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [GetAccessKeySecretResponse].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *GetAccessKeySecretResponse
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [GetAccessKeySecretResponse], use the following code:
+//
+//	var original *GetAccessKeySecretResponse
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*GetAccessKeySecretResponse)
+func (x *GetAccessKeySecretResponse) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*GetAccessKeySecretResponse) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperGetAccessKeySecretResponse)(c))
+}
+
+// wrapperGetAccessKeySecretResponse is used to return [GetAccessKeySecretResponse] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperGetAccessKeySecretResponse GetAccessKeySecretResponse
+
+func (w *wrapperGetAccessKeySecretResponse) String() string {
+	return (*GetAccessKeySecretResponse)(w).String()
+}
+
+func (*wrapperGetAccessKeySecretResponse) ProtoMessage() {}
+
+func (w *wrapperGetAccessKeySecretResponse) ProtoReflect() protoreflect.Message {
+	return (*GetAccessKeySecretResponse)(w).ProtoReflect()
+}
 
 // Sanitize mutates [ListAccessKeysResponse] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].

@@ -60,6 +60,10 @@ func (w *wrapperCreateNodeGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Sanitize mutates [ListNodeGroupsResponse] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
 func (x *ListNodeGroupsResponse) Sanitize() {
 	if x == nil {
 		return
@@ -72,6 +76,10 @@ func (x *ListNodeGroupsResponse) Sanitize() {
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ListNodeGroupsResponse].
 // Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
 // Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
 //
 // Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
 //

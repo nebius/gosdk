@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/nebius/gosdk/config/paths"
@@ -26,12 +27,17 @@ func newFileTokener(path string) (*fileTokener, error) {
 }
 
 func (t *fileTokener) BearerToken(context.Context) (BearerToken, error) {
-	data, err := os.ReadFile(string(*t))
+	file := string(*t)
+	data, err := os.ReadFile(file)
 	if err != nil {
 		return BearerToken{}, fmt.Errorf("read file: %w", err)
 	}
+	token := strings.TrimSpace(string(data))
+	if strings.Contains(token, "\n") {
+		return BearerToken{}, fmt.Errorf("invalid token file: %s contains newline", file)
+	}
 	return BearerToken{
-		Token:     string(data),
+		Token:     token,
 		ExpiresAt: time.Time{},
 	}, nil
 }
