@@ -11,6 +11,9 @@ package v1
 // func (x *PublicIPAddress) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PublicIPAddress) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *IPAlias) Sanitize()            // is not generated as no sensitive fields found
+// func (x *IPAlias) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *NetworkInterfaceStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *NetworkInterfaceStatus) LogValue() slog.Value // is not generated as no sensitive fields found
 
@@ -19,3 +22,6 @@ package v1
 
 // func (x *PublicIPAddressStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PublicIPAddressStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *IPAliasesStatus) Sanitize()            // is not generated as no sensitive fields found
+// func (x *IPAliasesStatus) LogValue() slog.Value // is not generated as no sensitive fields found
