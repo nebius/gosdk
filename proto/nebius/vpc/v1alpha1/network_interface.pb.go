@@ -36,8 +36,10 @@ type NetworkInterfaceSpec struct {
 	IpAddress *IPAddress `protobuf:"bytes,3,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
 	// Public IPv4 address associated with the interface.
 	PublicIpAddress *PublicIPAddress `protobuf:"bytes,4,opt,name=public_ip_address,json=publicIpAddress,proto3" json:"public_ip_address,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Assign ranges of IP addresses as aliases
+	Aliases       []*IPAlias `protobuf:"bytes,6,rep,name=aliases,proto3" json:"aliases,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *NetworkInterfaceSpec) Reset() {
@@ -94,6 +96,13 @@ func (x *NetworkInterfaceSpec) GetIpAddress() *IPAddress {
 func (x *NetworkInterfaceSpec) GetPublicIpAddress() *PublicIPAddress {
 	if x != nil {
 		return x.PublicIpAddress
+	}
+	return nil
+}
+
+func (x *NetworkInterfaceSpec) GetAliases() []*IPAlias {
+	if x != nil {
+		return x.Aliases
 	}
 	return nil
 }
@@ -225,6 +234,51 @@ type PublicIPAddress_AllocationId struct {
 
 func (*PublicIPAddress_AllocationId) isPublicIPAddress_Allocation() {}
 
+type IPAlias struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of allocation
+	AllocationId  string `protobuf:"bytes,1,opt,name=allocation_id,json=allocationId,proto3" json:"allocation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IPAlias) Reset() {
+	*x = IPAlias{}
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IPAlias) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IPAlias) ProtoMessage() {}
+
+func (x *IPAlias) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IPAlias.ProtoReflect.Descriptor instead.
+func (*IPAlias) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *IPAlias) GetAllocationId() string {
+	if x != nil {
+		return x.AllocationId
+	}
+	return ""
+}
+
 // Describes the status of a network interface.
 type NetworkInterfaceStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -237,6 +291,8 @@ type NetworkInterfaceStatus struct {
 	IpAddress *IPAddressStatus `protobuf:"bytes,3,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
 	// Effective Public IPv4 address
 	PublicIpAddress *PublicIPAddressStatus `protobuf:"bytes,4,opt,name=public_ip_address,json=publicIpAddress,proto3" json:"public_ip_address,omitempty"`
+	// Effective IP Aliases
+	Aliases *IPAliasesStatus `protobuf:"bytes,6,opt,name=aliases,proto3" json:"aliases,omitempty"`
 	// MAC address
 	MacAddress    string `protobuf:"bytes,7,opt,name=mac_address,json=macAddress,proto3" json:"mac_address,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -245,7 +301,7 @@ type NetworkInterfaceStatus struct {
 
 func (x *NetworkInterfaceStatus) Reset() {
 	*x = NetworkInterfaceStatus{}
-	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -257,7 +313,7 @@ func (x *NetworkInterfaceStatus) String() string {
 func (*NetworkInterfaceStatus) ProtoMessage() {}
 
 func (x *NetworkInterfaceStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -270,7 +326,7 @@ func (x *NetworkInterfaceStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NetworkInterfaceStatus.ProtoReflect.Descriptor instead.
 func (*NetworkInterfaceStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP(), []int{3}
+	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *NetworkInterfaceStatus) GetIndex() int32 {
@@ -301,6 +357,13 @@ func (x *NetworkInterfaceStatus) GetPublicIpAddress() *PublicIPAddressStatus {
 	return nil
 }
 
+func (x *NetworkInterfaceStatus) GetAliases() *IPAliasesStatus {
+	if x != nil {
+		return x.Aliases
+	}
+	return nil
+}
+
 func (x *NetworkInterfaceStatus) GetMacAddress() string {
 	if x != nil {
 		return x.MacAddress
@@ -320,7 +383,7 @@ type IPAddressStatus struct {
 
 func (x *IPAddressStatus) Reset() {
 	*x = IPAddressStatus{}
-	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -332,7 +395,7 @@ func (x *IPAddressStatus) String() string {
 func (*IPAddressStatus) ProtoMessage() {}
 
 func (x *IPAddressStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -345,7 +408,7 @@ func (x *IPAddressStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IPAddressStatus.ProtoReflect.Descriptor instead.
 func (*IPAddressStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP(), []int{4}
+	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *IPAddressStatus) GetAddress() string {
@@ -374,7 +437,7 @@ type PublicIPAddressStatus struct {
 
 func (x *PublicIPAddressStatus) Reset() {
 	*x = PublicIPAddressStatus{}
-	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -386,7 +449,7 @@ func (x *PublicIPAddressStatus) String() string {
 func (*PublicIPAddressStatus) ProtoMessage() {}
 
 func (x *PublicIPAddressStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -399,7 +462,7 @@ func (x *PublicIPAddressStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PublicIPAddressStatus.ProtoReflect.Descriptor instead.
 func (*PublicIPAddressStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP(), []int{5}
+	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *PublicIPAddressStatus) GetAddress() string {
@@ -416,31 +479,79 @@ func (x *PublicIPAddressStatus) GetAllocationId() string {
 	return ""
 }
 
+type IPAliasesStatus struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Cidrs         []string               `protobuf:"bytes,2,rep,name=cidrs,proto3" json:"cidrs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IPAliasesStatus) Reset() {
+	*x = IPAliasesStatus{}
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IPAliasesStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IPAliasesStatus) ProtoMessage() {}
+
+func (x *IPAliasesStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IPAliasesStatus.ProtoReflect.Descriptor instead.
+func (*IPAliasesStatus) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *IPAliasesStatus) GetCidrs() []string {
+	if x != nil {
+		return x.Cidrs
+	}
+	return nil
+}
+
 var File_nebius_vpc_v1alpha1_network_interface_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc = "" +
 	"\n" +
-	"+nebius/vpc/v1alpha1/network_interface.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\x94\x02\n" +
+	"+nebius/vpc/v1alpha1/network_interface.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xcc\x02\n" +
 	"\x14NetworkInterfaceSpec\x12'\n" +
 	"\tsubnet_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\bsubnetId\x126\n" +
 	"\x04name\x18\x02 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a\x10\x01\x18<2\x14^[0-9a-z][0-9a-z-]*$R\x04name\x12C\n" +
 	"\n" +
 	"ip_address\x18\x03 \x01(\v2\x1e.nebius.vpc.v1alpha1.IPAddressB\x04\xbaJ\x01\x06R\tipAddress\x12V\n" +
-	"\x11public_ip_address\x18\x04 \x01(\v2$.nebius.vpc.v1alpha1.PublicIPAddressB\x04\xbaJ\x01\x06R\x0fpublicIpAddress\"0\n" +
+	"\x11public_ip_address\x18\x04 \x01(\v2$.nebius.vpc.v1alpha1.PublicIPAddressB\x04\xbaJ\x01\x06R\x0fpublicIpAddress\x126\n" +
+	"\aaliases\x18\x06 \x03(\v2\x1c.nebius.vpc.v1alpha1.IPAliasR\aaliases\"0\n" +
 	"\tIPAddress\x12#\n" +
 	"\rallocation_id\x18\x01 \x01(\tR\fallocationId\"^\n" +
 	"\x0fPublicIPAddress\x12%\n" +
 	"\rallocation_id\x18\x01 \x01(\tH\x00R\fallocationId\x12\x16\n" +
 	"\x06static\x18\x03 \x01(\bR\x06staticB\f\n" +
 	"\n" +
-	"allocation\"\x80\x02\n" +
+	"allocation\"6\n" +
+	"\aIPAlias\x12+\n" +
+	"\rallocation_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fallocationId\"\xc0\x02\n" +
 	"\x16NetworkInterfaceStatus\x12\x14\n" +
 	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12C\n" +
 	"\n" +
 	"ip_address\x18\x03 \x01(\v2$.nebius.vpc.v1alpha1.IPAddressStatusR\tipAddress\x12V\n" +
-	"\x11public_ip_address\x18\x04 \x01(\v2*.nebius.vpc.v1alpha1.PublicIPAddressStatusR\x0fpublicIpAddress\x12\x1f\n" +
+	"\x11public_ip_address\x18\x04 \x01(\v2*.nebius.vpc.v1alpha1.PublicIPAddressStatusR\x0fpublicIpAddress\x12>\n" +
+	"\aaliases\x18\x06 \x01(\v2$.nebius.vpc.v1alpha1.IPAliasesStatusR\aaliases\x12\x1f\n" +
 	"\vmac_address\x18\a \x01(\tR\n" +
 	"macAddress\"P\n" +
 	"\x0fIPAddressStatus\x12\x18\n" +
@@ -448,7 +559,9 @@ const file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc = "" +
 	"\rallocation_id\x18\x02 \x01(\tR\fallocationId\"V\n" +
 	"\x15PublicIPAddressStatus\x12\x18\n" +
 	"\aaddress\x18\x01 \x01(\tR\aaddress\x12#\n" +
-	"\rallocation_id\x18\x02 \x01(\tR\fallocationIdBh\n" +
+	"\rallocation_id\x18\x02 \x01(\tR\fallocationId\"'\n" +
+	"\x0fIPAliasesStatus\x12\x14\n" +
+	"\x05cidrs\x18\x02 \x03(\tR\x05cidrsBh\n" +
 	"\x1aai.nebius.pub.vpc.v1alpha1B\x15NetworkInterfaceProtoP\x01Z1github.com/nebius/gosdk/proto/nebius/vpc/v1alpha1b\x06proto3"
 
 var (
@@ -463,25 +576,29 @@ func file_nebius_vpc_v1alpha1_network_interface_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1alpha1_network_interface_proto_rawDescData
 }
 
-var file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_nebius_vpc_v1alpha1_network_interface_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_vpc_v1alpha1_network_interface_proto_goTypes = []any{
 	(*NetworkInterfaceSpec)(nil),   // 0: nebius.vpc.v1alpha1.NetworkInterfaceSpec
 	(*IPAddress)(nil),              // 1: nebius.vpc.v1alpha1.IPAddress
 	(*PublicIPAddress)(nil),        // 2: nebius.vpc.v1alpha1.PublicIPAddress
-	(*NetworkInterfaceStatus)(nil), // 3: nebius.vpc.v1alpha1.NetworkInterfaceStatus
-	(*IPAddressStatus)(nil),        // 4: nebius.vpc.v1alpha1.IPAddressStatus
-	(*PublicIPAddressStatus)(nil),  // 5: nebius.vpc.v1alpha1.PublicIPAddressStatus
+	(*IPAlias)(nil),                // 3: nebius.vpc.v1alpha1.IPAlias
+	(*NetworkInterfaceStatus)(nil), // 4: nebius.vpc.v1alpha1.NetworkInterfaceStatus
+	(*IPAddressStatus)(nil),        // 5: nebius.vpc.v1alpha1.IPAddressStatus
+	(*PublicIPAddressStatus)(nil),  // 6: nebius.vpc.v1alpha1.PublicIPAddressStatus
+	(*IPAliasesStatus)(nil),        // 7: nebius.vpc.v1alpha1.IPAliasesStatus
 }
 var file_nebius_vpc_v1alpha1_network_interface_proto_depIdxs = []int32{
 	1, // 0: nebius.vpc.v1alpha1.NetworkInterfaceSpec.ip_address:type_name -> nebius.vpc.v1alpha1.IPAddress
 	2, // 1: nebius.vpc.v1alpha1.NetworkInterfaceSpec.public_ip_address:type_name -> nebius.vpc.v1alpha1.PublicIPAddress
-	4, // 2: nebius.vpc.v1alpha1.NetworkInterfaceStatus.ip_address:type_name -> nebius.vpc.v1alpha1.IPAddressStatus
-	5, // 3: nebius.vpc.v1alpha1.NetworkInterfaceStatus.public_ip_address:type_name -> nebius.vpc.v1alpha1.PublicIPAddressStatus
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	3, // 2: nebius.vpc.v1alpha1.NetworkInterfaceSpec.aliases:type_name -> nebius.vpc.v1alpha1.IPAlias
+	5, // 3: nebius.vpc.v1alpha1.NetworkInterfaceStatus.ip_address:type_name -> nebius.vpc.v1alpha1.IPAddressStatus
+	6, // 4: nebius.vpc.v1alpha1.NetworkInterfaceStatus.public_ip_address:type_name -> nebius.vpc.v1alpha1.PublicIPAddressStatus
+	7, // 5: nebius.vpc.v1alpha1.NetworkInterfaceStatus.aliases:type_name -> nebius.vpc.v1alpha1.IPAliasesStatus
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_nebius_vpc_v1alpha1_network_interface_proto_init() }
@@ -498,7 +615,7 @@ func file_nebius_vpc_v1alpha1_network_interface_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc), len(file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
