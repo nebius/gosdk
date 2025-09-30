@@ -411,7 +411,7 @@ type ModulesHealth struct {
 	// Health status of the Cilium pipeline module.
 	CiliumPipeline *ModuleHealth `protobuf:"bytes,4,opt,name=cilium_pipeline,json=ciliumPipeline,proto3" json:"cilium_pipeline,omitempty"`
 	// Health status of the VM applications pipeline module.
-	VmappsPipeline *ModulesHealth `protobuf:"bytes,5,opt,name=vmapps_pipeline,json=vmappsPipeline,proto3" json:"vmapps_pipeline,omitempty"`
+	VmappsPipeline *ModuleHealth `protobuf:"bytes,5,opt,name=vmapps_pipeline,json=vmappsPipeline,proto3" json:"vmapps_pipeline,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -474,7 +474,7 @@ func (x *ModulesHealth) GetCiliumPipeline() *ModuleHealth {
 	return nil
 }
 
-func (x *ModulesHealth) GetVmappsPipeline() *ModulesHealth {
+func (x *ModulesHealth) GetVmappsPipeline() *ModuleHealth {
 	if x != nil {
 		return x.VmappsPipeline
 	}
@@ -937,13 +937,13 @@ const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\tgpu_model\x18\x12 \x01(\tR\bgpuModel\x12\x1d\n" +
 	"\n" +
 	"gpu_number\x18\x13 \x01(\x05R\tgpuNumber\x12!\n" +
-	"\fdcgm_version\x18\x14 \x01(\tR\vdcgmVersion\"\xa8\x03\n" +
+	"\fdcgm_version\x18\x14 \x01(\tR\vdcgmVersion\"\xa7\x03\n" +
 	"\rModulesHealth\x12F\n" +
 	"\aprocess\x18\x01 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\aprocess\x12O\n" +
 	"\fgpu_pipeline\x18\x02 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\vgpuPipeline\x12O\n" +
 	"\fcpu_pipeline\x18\x03 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\vcpuPipeline\x12U\n" +
-	"\x0fcilium_pipeline\x18\x04 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x0eciliumPipeline\x12V\n" +
-	"\x0fvmapps_pipeline\x18\x05 \x01(\v2-.nebius.logging.agentmanager.v1.ModulesHealthR\x0evmappsPipeline\"\xb7\x01\n" +
+	"\x0fcilium_pipeline\x18\x04 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x0eciliumPipeline\x12U\n" +
+	"\x0fvmapps_pipeline\x18\x05 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x0evmappsPipeline\"\xb7\x01\n" +
 	"\fModuleHealth\x12@\n" +
 	"\x05state\x18\x01 \x01(\x0e2*.nebius.logging.agentmanager.v1.AgentStateR\x05state\x12\x1a\n" +
 	"\bmessages\x18\x02 \x03(\tR\bmessages\x12I\n" +
@@ -1030,7 +1030,7 @@ var file_nebius_logging_v1_agentmanager_version_service_proto_depIdxs = []int32{
 	5,  // 8: nebius.logging.agentmanager.v1.ModulesHealth.gpu_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
 	5,  // 9: nebius.logging.agentmanager.v1.ModulesHealth.cpu_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
 	5,  // 10: nebius.logging.agentmanager.v1.ModulesHealth.cilium_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
-	4,  // 11: nebius.logging.agentmanager.v1.ModulesHealth.vmapps_pipeline:type_name -> nebius.logging.agentmanager.v1.ModulesHealth
+	5,  // 11: nebius.logging.agentmanager.v1.ModulesHealth.vmapps_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
 	1,  // 12: nebius.logging.agentmanager.v1.ModuleHealth.state:type_name -> nebius.logging.agentmanager.v1.AgentState
 	6,  // 13: nebius.logging.agentmanager.v1.ModuleHealth.parameters:type_name -> nebius.logging.agentmanager.v1.Parameter
 	2,  // 14: nebius.logging.agentmanager.v1.GetVersionResponse.action:type_name -> nebius.logging.agentmanager.v1.Action

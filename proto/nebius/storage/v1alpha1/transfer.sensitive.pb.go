@@ -194,6 +194,9 @@ func (x *TransferSpec_BucketCredentials) Sanitize() {
 	if o, ok := x.Credentials.(*TransferSpec_BucketCredentials_AccessKey); ok && o != nil {
 		o.AccessKey.Sanitize()
 	}
+	if o, ok := x.Credentials.(*TransferSpec_BucketCredentials_AzureAccessKey_); ok && o != nil {
+		o.AzureAccessKey.Sanitize()
+	}
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [TransferSpec_BucketCredentials].
@@ -277,6 +280,51 @@ func (*wrapperTransferSpec_BucketCredentials_CredentialsAccessKey) ProtoMessage(
 
 func (w *wrapperTransferSpec_BucketCredentials_CredentialsAccessKey) ProtoReflect() protoreflect.Message {
 	return (*TransferSpec_BucketCredentials_CredentialsAccessKey)(w).ProtoReflect()
+}
+
+// Sanitize mutates [TransferSpec_BucketCredentials_AzureAccessKey] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *TransferSpec_BucketCredentials_AzureAccessKey) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.AccountName = "**HIDDEN**"
+	x.AccessKey = "**HIDDEN**"
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [TransferSpec_BucketCredentials_AzureAccessKey].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *TransferSpec_BucketCredentials_AzureAccessKey
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [TransferSpec_BucketCredentials_AzureAccessKey], use the following code:
+//
+//	var original *TransferSpec_BucketCredentials_AzureAccessKey
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*TransferSpec_BucketCredentials_AzureAccessKey)
+func (x *TransferSpec_BucketCredentials_AzureAccessKey) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*TransferSpec_BucketCredentials_AzureAccessKey) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperTransferSpec_BucketCredentials_AzureAccessKey)(c))
+}
+
+// wrapperTransferSpec_BucketCredentials_AzureAccessKey is used to return [TransferSpec_BucketCredentials_AzureAccessKey] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperTransferSpec_BucketCredentials_AzureAccessKey TransferSpec_BucketCredentials_AzureAccessKey
+
+func (w *wrapperTransferSpec_BucketCredentials_AzureAccessKey) String() string {
+	return (*TransferSpec_BucketCredentials_AzureAccessKey)(w).String()
+}
+
+func (*wrapperTransferSpec_BucketCredentials_AzureAccessKey) ProtoMessage() {}
+
+func (w *wrapperTransferSpec_BucketCredentials_AzureAccessKey) ProtoReflect() protoreflect.Message {
+	return (*TransferSpec_BucketCredentials_AzureAccessKey)(w).ProtoReflect()
 }
 
 // func (x *TransferSpec_Limiters) Sanitize()            // is not generated as no sensitive fields found
