@@ -778,6 +778,7 @@ type TransferSpec_BucketCredentials struct {
 	//
 	//	*TransferSpec_BucketCredentials_Anonymous
 	//	*TransferSpec_BucketCredentials_AccessKey
+	//	*TransferSpec_BucketCredentials_AzureAccessKey_
 	Credentials   isTransferSpec_BucketCredentials_Credentials `protobuf_oneof:"credentials"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -838,6 +839,15 @@ func (x *TransferSpec_BucketCredentials) GetAccessKey() *TransferSpec_BucketCred
 	return nil
 }
 
+func (x *TransferSpec_BucketCredentials) GetAzureAccessKey() *TransferSpec_BucketCredentials_AzureAccessKey {
+	if x != nil {
+		if x, ok := x.Credentials.(*TransferSpec_BucketCredentials_AzureAccessKey_); ok {
+			return x.AzureAccessKey
+		}
+	}
+	return nil
+}
+
 type isTransferSpec_BucketCredentials_Credentials interface {
 	isTransferSpec_BucketCredentials_Credentials()
 }
@@ -850,9 +860,16 @@ type TransferSpec_BucketCredentials_AccessKey struct {
 	AccessKey *TransferSpec_BucketCredentials_CredentialsAccessKey `protobuf:"bytes,2,opt,name=access_key,json=accessKey,proto3,oneof"`
 }
 
+type TransferSpec_BucketCredentials_AzureAccessKey_ struct {
+	AzureAccessKey *TransferSpec_BucketCredentials_AzureAccessKey `protobuf:"bytes,3,opt,name=azure_access_key,json=azureAccessKey,proto3,oneof"`
+}
+
 func (*TransferSpec_BucketCredentials_Anonymous) isTransferSpec_BucketCredentials_Credentials() {}
 
 func (*TransferSpec_BucketCredentials_AccessKey) isTransferSpec_BucketCredentials_Credentials() {}
+
+func (*TransferSpec_BucketCredentials_AzureAccessKey_) isTransferSpec_BucketCredentials_Credentials() {
+}
 
 type TransferSpec_Limiters struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1113,6 +1130,58 @@ func (x *TransferSpec_BucketCredentials_CredentialsAccessKey) GetSecretAccessKey
 	return ""
 }
 
+type TransferSpec_BucketCredentials_AzureAccessKey struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AccountName   string                 `protobuf:"bytes,2,opt,name=account_name,json=accountName,proto3" json:"account_name,omitempty"`
+	AccessKey     string                 `protobuf:"bytes,1,opt,name=access_key,json=accessKey,proto3" json:"access_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TransferSpec_BucketCredentials_AzureAccessKey) Reset() {
+	*x = TransferSpec_BucketCredentials_AzureAccessKey{}
+	mi := &file_nebius_storage_v1alpha1_transfer_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TransferSpec_BucketCredentials_AzureAccessKey) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TransferSpec_BucketCredentials_AzureAccessKey) ProtoMessage() {}
+
+func (x *TransferSpec_BucketCredentials_AzureAccessKey) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1alpha1_transfer_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TransferSpec_BucketCredentials_AzureAccessKey.ProtoReflect.Descriptor instead.
+func (*TransferSpec_BucketCredentials_AzureAccessKey) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1alpha1_transfer_proto_rawDescGZIP(), []int{1, 2, 2}
+}
+
+func (x *TransferSpec_BucketCredentials_AzureAccessKey) GetAccountName() string {
+	if x != nil {
+		return x.AccountName
+	}
+	return ""
+}
+
+func (x *TransferSpec_BucketCredentials_AzureAccessKey) GetAccessKey() string {
+	if x != nil {
+		return x.AccessKey
+	}
+	return ""
+}
+
 var File_nebius_storage_v1alpha1_transfer_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
@@ -1121,7 +1190,7 @@ const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
 	"\bTransfer\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12A\n" +
 	"\x04spec\x18\x02 \x01(\v2%.nebius.storage.v1alpha1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12E\n" +
-	"\x06status\x18\x03 \x01(\v2'.nebius.storage.v1alpha1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\x94\x10\n" +
+	"\x06status\x18\x03 \x01(\v2'.nebius.storage.v1alpha1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\xf2\x11\n" +
 	"\fTransferSpec\x12R\n" +
 	"\x06source\x18\x01 \x01(\v22.nebius.storage.v1alpha1.TransferSpec.SourceBucketB\x06\xbaH\x03\xc8\x01\x01R\x06source\x12a\n" +
 	"\vdestination\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.DestinationBucketB\x06\xbaH\x03\xc8\x01\x01R\vdestination\x12|\n" +
@@ -1144,15 +1213,20 @@ const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
 	"\vbucket_name\x18\x01 \x01(\tB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\n" +
 	"bucketName\x12_\n" +
-	"\vcredentials\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.BucketCredentialsB\x04\xbaJ\x01\x04R\vcredentials\x1a\xa2\x03\n" +
+	"\vcredentials\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.BucketCredentialsB\x04\xbaJ\x01\x04R\vcredentials\x1a\x80\x05\n" +
 	"\x11BucketCredentials\x12r\n" +
 	"\tanonymous\x18\x01 \x01(\v2L.nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAnonymousB\x04\xbaJ\x01\x06H\x00R\tanonymous\x12m\n" +
 	"\n" +
-	"access_key\x18\x02 \x01(\v2L.nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAccessKeyH\x00R\taccessKey\x1a\x16\n" +
+	"access_key\x18\x02 \x01(\v2L.nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAccessKeyH\x00R\taccessKey\x12r\n" +
+	"\x10azure_access_key\x18\x03 \x01(\v2F.nebius.storage.v1alpha1.TransferSpec.BucketCredentials.AzureAccessKeyH\x00R\x0eazureAccessKey\x1a\x16\n" +
 	"\x14CredentialsAnonymous\x1a|\n" +
 	"\x14CredentialsAccessKey\x12-\n" +
 	"\raccess_key_id\x18\x01 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\vaccessKeyId\x125\n" +
-	"\x11secret_access_key\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\x0fsecretAccessKeyB\x14\n" +
+	"\x11secret_access_key\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\x0fsecretAccessKey\x1ah\n" +
+	"\x0eAzureAccessKey\x12,\n" +
+	"\faccount_name\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\vaccountName\x12(\n" +
+	"\n" +
+	"access_key\x18\x01 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\taccessKeyB\x14\n" +
 	"\vcredentials\x12\x05\xbaH\x02\b\x01\x1aw\n" +
 	"\bLimiters\x12;\n" +
 	"\x1abandwidth_bytes_per_second\x18\x01 \x01(\x04R\x17bandwidthBytesPerSecond\x12.\n" +
@@ -1221,7 +1295,7 @@ func file_nebius_storage_v1alpha1_transfer_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_storage_v1alpha1_transfer_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_nebius_storage_v1alpha1_transfer_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_nebius_storage_v1alpha1_transfer_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_nebius_storage_v1alpha1_transfer_proto_goTypes = []any{
 	(TransferSpec_OverwriteStrategy)(0),                         // 0: nebius.storage.v1alpha1.TransferSpec.OverwriteStrategy
 	(TransferStatus_State)(0),                                   // 1: nebius.storage.v1alpha1.TransferStatus.State
@@ -1240,12 +1314,13 @@ var file_nebius_storage_v1alpha1_transfer_proto_goTypes = []any{
 	(*TransferSpec_StopConditionInfinite)(nil),                  // 14: nebius.storage.v1alpha1.TransferSpec.StopConditionInfinite
 	(*TransferSpec_BucketCredentials_CredentialsAnonymous)(nil), // 15: nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAnonymous
 	(*TransferSpec_BucketCredentials_CredentialsAccessKey)(nil), // 16: nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAccessKey
-	(*v1.ResourceMetadata)(nil),                                 // 17: nebius.common.v1.ResourceMetadata
-	(*durationpb.Duration)(nil),                                 // 18: google.protobuf.Duration
-	(*timestamppb.Timestamp)(nil),                               // 19: google.protobuf.Timestamp
+	(*TransferSpec_BucketCredentials_AzureAccessKey)(nil),       // 17: nebius.storage.v1alpha1.TransferSpec.BucketCredentials.AzureAccessKey
+	(*v1.ResourceMetadata)(nil),                                 // 18: nebius.common.v1.ResourceMetadata
+	(*durationpb.Duration)(nil),                                 // 19: google.protobuf.Duration
+	(*timestamppb.Timestamp)(nil),                               // 20: google.protobuf.Timestamp
 }
 var file_nebius_storage_v1alpha1_transfer_proto_depIdxs = []int32{
-	17, // 0: nebius.storage.v1alpha1.Transfer.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	18, // 0: nebius.storage.v1alpha1.Transfer.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	5,  // 1: nebius.storage.v1alpha1.Transfer.spec:type_name -> nebius.storage.v1alpha1.TransferSpec
 	6,  // 2: nebius.storage.v1alpha1.Transfer.status:type_name -> nebius.storage.v1alpha1.TransferStatus
 	8,  // 3: nebius.storage.v1alpha1.TransferSpec.source:type_name -> nebius.storage.v1alpha1.TransferSpec.SourceBucket
@@ -1253,24 +1328,25 @@ var file_nebius_storage_v1alpha1_transfer_proto_depIdxs = []int32{
 	12, // 5: nebius.storage.v1alpha1.TransferSpec.after_one_iteration:type_name -> nebius.storage.v1alpha1.TransferSpec.StopConditionAfterOneIteration
 	13, // 6: nebius.storage.v1alpha1.TransferSpec.after_n_empty_iterations:type_name -> nebius.storage.v1alpha1.TransferSpec.StopConditionAfterNEmptyIterations
 	14, // 7: nebius.storage.v1alpha1.TransferSpec.infinite:type_name -> nebius.storage.v1alpha1.TransferSpec.StopConditionInfinite
-	18, // 8: nebius.storage.v1alpha1.TransferSpec.inter_iteration_interval:type_name -> google.protobuf.Duration
+	19, // 8: nebius.storage.v1alpha1.TransferSpec.inter_iteration_interval:type_name -> google.protobuf.Duration
 	0,  // 9: nebius.storage.v1alpha1.TransferSpec.overwrite_strategy:type_name -> nebius.storage.v1alpha1.TransferSpec.OverwriteStrategy
 	1,  // 10: nebius.storage.v1alpha1.TransferStatus.state:type_name -> nebius.storage.v1alpha1.TransferStatus.State
 	2,  // 11: nebius.storage.v1alpha1.TransferStatus.suspension_state:type_name -> nebius.storage.v1alpha1.TransferStatus.SuspensionState
 	7,  // 12: nebius.storage.v1alpha1.TransferStatus.last_iteration:type_name -> nebius.storage.v1alpha1.TransferIteration
 	3,  // 13: nebius.storage.v1alpha1.TransferIteration.state:type_name -> nebius.storage.v1alpha1.TransferIteration.State
-	19, // 14: nebius.storage.v1alpha1.TransferIteration.start_time:type_name -> google.protobuf.Timestamp
-	19, // 15: nebius.storage.v1alpha1.TransferIteration.end_time:type_name -> google.protobuf.Timestamp
+	20, // 14: nebius.storage.v1alpha1.TransferIteration.start_time:type_name -> google.protobuf.Timestamp
+	20, // 15: nebius.storage.v1alpha1.TransferIteration.end_time:type_name -> google.protobuf.Timestamp
 	10, // 16: nebius.storage.v1alpha1.TransferSpec.SourceBucket.credentials:type_name -> nebius.storage.v1alpha1.TransferSpec.BucketCredentials
 	11, // 17: nebius.storage.v1alpha1.TransferSpec.SourceBucket.limiters:type_name -> nebius.storage.v1alpha1.TransferSpec.Limiters
 	10, // 18: nebius.storage.v1alpha1.TransferSpec.DestinationBucket.credentials:type_name -> nebius.storage.v1alpha1.TransferSpec.BucketCredentials
 	15, // 19: nebius.storage.v1alpha1.TransferSpec.BucketCredentials.anonymous:type_name -> nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAnonymous
 	16, // 20: nebius.storage.v1alpha1.TransferSpec.BucketCredentials.access_key:type_name -> nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAccessKey
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	17, // 21: nebius.storage.v1alpha1.TransferSpec.BucketCredentials.azure_access_key:type_name -> nebius.storage.v1alpha1.TransferSpec.BucketCredentials.AzureAccessKey
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1alpha1_transfer_proto_init() }
@@ -1286,6 +1362,7 @@ func file_nebius_storage_v1alpha1_transfer_proto_init() {
 	file_nebius_storage_v1alpha1_transfer_proto_msgTypes[6].OneofWrappers = []any{
 		(*TransferSpec_BucketCredentials_Anonymous)(nil),
 		(*TransferSpec_BucketCredentials_AccessKey)(nil),
+		(*TransferSpec_BucketCredentials_AzureAccessKey_)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1293,7 +1370,7 @@ func file_nebius_storage_v1alpha1_transfer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_storage_v1alpha1_transfer_proto_rawDesc), len(file_nebius_storage_v1alpha1_transfer_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   13,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
