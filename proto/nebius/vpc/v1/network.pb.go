@@ -146,10 +146,12 @@ func (x *Network) GetStatus() *NetworkStatus {
 
 type NetworkSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Pools for private ipv4 addresses.
+	// Pools for private IPv4 addresses.
 	// Default private pools will be created if not specified.
+	// Default private pools are referred here
+	// https://docs.nebius.com/vpc/addressing/available-addresses
 	Ipv4PrivatePools *IPv4PrivateNetworkPools `protobuf:"bytes,1,opt,name=ipv4_private_pools,json=ipv4PrivatePools,proto3" json:"ipv4_private_pools,omitempty"`
-	// Pools for public ipv4 addresses.
+	// Pools for public IPv4 addresses.
 	// Default public pool will be used if not specified.
 	Ipv4PublicPools *IPv4PublicNetworkPools `protobuf:"bytes,2,opt,name=ipv4_public_pools,json=ipv4PublicPools,proto3" json:"ipv4_public_pools,omitempty"`
 	unknownFields   protoimpl.UnknownFields
@@ -290,7 +292,7 @@ func (x *IPv4PublicNetworkPools) GetPools() []*NetworkPool {
 
 type NetworkPool struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// ID of the IP address pool.
+	// ID of the pool.
 	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
