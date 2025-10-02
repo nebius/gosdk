@@ -87,7 +87,8 @@ type Allocation struct {
 	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// Specifications for the allocation, detailing its name and IP configuration.
 	Spec *AllocationSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	// Contains the current status of the allocation, indicating its state and any additional details.
+	// Contains the current status of the allocation, indicating its state and
+	// any additional details.
 	Status        *AllocationStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -146,7 +147,7 @@ func (x *Allocation) GetStatus() *AllocationStatus {
 
 type AllocationSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Holds the IP specifications for the allocation, including the type of IP (IPv4 or IPv6) and its corresponding configuration.
+	// IP specifications for the allocation.
 	//
 	// Types that are valid to be assigned to IpSpec:
 	//
@@ -228,12 +229,14 @@ func (*AllocationSpec_Ipv4Private) isAllocationSpec_IpSpec() {}
 
 func (*AllocationSpec_Ipv4Public) isAllocationSpec_IpSpec() {}
 
+// Private IPv4 address configuration for the allocation.
 type IPv4PrivateAllocationSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// CIDR block for IPv4 Allocation.
-	// May be a single IP address (such as 10.2.3.4),
-	// a prefix length (such as /24) or a CIDR-formatted string (such as 10.1.2.0/24).
-	// Random address (/32) from pool would be allocated if field is omitted.
+	// A single IP address (e.g 10.1.2.1), a CIDR block (e.g., "10.1.2.0/24") or
+	// a prefix length (e.g., "/32").
+	// If prefix length is specified, the CIDR block will be auto-allocated from
+	// the available space in the pool or subnet.
+	// If not specified, defaults to "/32".
 	Cidr string `protobuf:"bytes,1,opt,name=cidr,proto3" json:"cidr,omitempty"`
 	// Types that are valid to be assigned to Pool:
 	//
@@ -311,13 +314,16 @@ type isIPv4PrivateAllocationSpec_Pool interface {
 }
 
 type IPv4PrivateAllocationSpec_SubnetId struct {
-	// Subnet ID.
-	// Required same subnet to use allocation in subnet-resources (e.g. Network Interface)
+	// ID of the subnet that allocation will be associated with.
+	// IP address of the allocation must be within a CIDR block associated
+	// with this subnet.
+	// In order to assign an allocation to a resource (i.e. network interface)
+	// both must be associated with the same subnet.
 	SubnetId string `protobuf:"bytes,2,opt,name=subnet_id,json=subnetId,proto3,oneof"`
 }
 
 type IPv4PrivateAllocationSpec_PoolId struct {
-	// Pool for the IPv4 private allocation.
+	// ID of the pool that allocation will receive its IP address from.
 	PoolId string `protobuf:"bytes,3,opt,name=pool_id,json=poolId,proto3,oneof"`
 }
 
@@ -325,12 +331,14 @@ func (*IPv4PrivateAllocationSpec_SubnetId) isIPv4PrivateAllocationSpec_Pool() {}
 
 func (*IPv4PrivateAllocationSpec_PoolId) isIPv4PrivateAllocationSpec_Pool() {}
 
+// Public IPv4 address configuration for the allocation.
 type IPv4PublicAllocationSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// CIDR block for IPv4 Allocation.
-	// May be a single IP address (such as 10.2.3.4),
-	// a prefix length (such as /32) or a CIDR-formatted string (such as 10.1.2.0/32).
-	// Random address (/32) from pool would be allocated if field is omitted.
+	// A single IP address (e.g. 1.2.3.4), a CIDR block (e.g., "1.2.3.4/24")
+	// or a prefix length (e.g., "/32").
+	// If prefix length is specified, the CIDR block will be auto-allocated from
+	// the available space in the pool or subnet.
+	// If not specified, defaults to "/32".
 	Cidr string `protobuf:"bytes,1,opt,name=cidr,proto3" json:"cidr,omitempty"`
 	// Types that are valid to be assigned to Pool:
 	//
@@ -408,13 +416,16 @@ type isIPv4PublicAllocationSpec_Pool interface {
 }
 
 type IPv4PublicAllocationSpec_SubnetId struct {
-	// Subnet ID.
-	// Required same subnet to use allocation in subnet-resources (e.g. Network Interface)
+	// ID of the subnet that allocation will be associated with.
+	// IP address of the allocation must be within a CIDR block associated with
+	// this subnet.
+	// Assigning an allocation to a resource (i.e. network interface) requires
+	// both to be associated with the same subnet.
 	SubnetId string `protobuf:"bytes,2,opt,name=subnet_id,json=subnetId,proto3,oneof"`
 }
 
 type IPv4PublicAllocationSpec_PoolId struct {
-	// Pool for the IPv4 public allocation.
+	// ID of the pool that allocation will receive its IP address from.
 	PoolId string `protobuf:"bytes,3,opt,name=pool_id,json=poolId,proto3,oneof"`
 }
 
@@ -752,10 +763,10 @@ const file_nebius_vpc_v1_allocation_proto_rawDesc = "" +
 	"Allocation\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.vpc.v1.AllocationSpecR\x04spec\x127\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.vpc.v1.AllocationStatusR\x06status\"\xc9\x01\n" +
-	"\x0eAllocationSpec\x12S\n" +
-	"\fipv4_private\x18\x01 \x01(\v2(.nebius.vpc.v1.IPv4PrivateAllocationSpecB\x04\xbaJ\x01\x06H\x00R\vipv4Private\x12P\n" +
-	"\vipv4_public\x18\x02 \x01(\v2'.nebius.vpc.v1.IPv4PublicAllocationSpecB\x04\xbaJ\x01\x06H\x00R\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.vpc.v1.AllocationStatusR\x06status\"\xbd\x01\n" +
+	"\x0eAllocationSpec\x12M\n" +
+	"\fipv4_private\x18\x01 \x01(\v2(.nebius.vpc.v1.IPv4PrivateAllocationSpecH\x00R\vipv4Private\x12J\n" +
+	"\vipv4_public\x18\x02 \x01(\v2'.nebius.vpc.v1.IPv4PublicAllocationSpecH\x00R\n" +
 	"ipv4PublicB\x10\n" +
 	"\aip_spec\x12\x05\xbaH\x02\b\x01\"\xc3\x02\n" +
 	"\x19IPv4PrivateAllocationSpec\x12\xcc\x01\n" +

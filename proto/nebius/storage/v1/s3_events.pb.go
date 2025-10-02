@@ -351,10 +351,9 @@ func (x *DeleteObjectResponse) GetDeleteMarker() bool {
 }
 
 type DeleteObjectsRequestParameters struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	BucketName    string                 `protobuf:"bytes,1,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
-	ObjectKey     string                 `protobuf:"bytes,2,opt,name=object_key,json=objectKey,proto3" json:"object_key,omitempty"`
-	Version       string                 `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	state         protoimpl.MessageState                      `protogen:"open.v1"`
+	BucketName    string                                      `protobuf:"bytes,1,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
+	Objects       []*DeleteObjectsRequestParameters_ObjectKey `protobuf:"bytes,4,rep,name=objects,proto3" json:"objects,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -396,18 +395,11 @@ func (x *DeleteObjectsRequestParameters) GetBucketName() string {
 	return ""
 }
 
-func (x *DeleteObjectsRequestParameters) GetObjectKey() string {
+func (x *DeleteObjectsRequestParameters) GetObjects() []*DeleteObjectsRequestParameters_ObjectKey {
 	if x != nil {
-		return x.ObjectKey
+		return x.Objects
 	}
-	return ""
-}
-
-func (x *DeleteObjectsRequestParameters) GetVersion() string {
-	if x != nil {
-		return x.Version
-	}
-	return ""
+	return nil
 }
 
 type DeleteObjectsResponse struct {
@@ -1290,6 +1282,58 @@ func (x *CopyObjectRequestParameters_Target) GetObjectKey() string {
 	return ""
 }
 
+type DeleteObjectsRequestParameters_ObjectKey struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Version       string                 `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteObjectsRequestParameters_ObjectKey) Reset() {
+	*x = DeleteObjectsRequestParameters_ObjectKey{}
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteObjectsRequestParameters_ObjectKey) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteObjectsRequestParameters_ObjectKey) ProtoMessage() {}
+
+func (x *DeleteObjectsRequestParameters_ObjectKey) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteObjectsRequestParameters_ObjectKey.ProtoReflect.Descriptor instead.
+func (*DeleteObjectsRequestParameters_ObjectKey) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_s3_events_proto_rawDescGZIP(), []int{6, 0}
+}
+
+func (x *DeleteObjectsRequestParameters_ObjectKey) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *DeleteObjectsRequestParameters_ObjectKey) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
 type DeleteObjectsResponse_DeleteSuccess struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	DeleteMarker  bool                   `protobuf:"varint,1,opt,name=delete_marker,json=deleteMarker,proto3" json:"delete_marker,omitempty"`
@@ -1301,7 +1345,7 @@ type DeleteObjectsResponse_DeleteSuccess struct {
 
 func (x *DeleteObjectsResponse_DeleteSuccess) Reset() {
 	*x = DeleteObjectsResponse_DeleteSuccess{}
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[21]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1313,7 +1357,7 @@ func (x *DeleteObjectsResponse_DeleteSuccess) String() string {
 func (*DeleteObjectsResponse_DeleteSuccess) ProtoMessage() {}
 
 func (x *DeleteObjectsResponse_DeleteSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[21]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1362,7 +1406,7 @@ type DeleteObjectsResponse_DeleteError struct {
 
 func (x *DeleteObjectsResponse_DeleteError) Reset() {
 	*x = DeleteObjectsResponse_DeleteError{}
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[22]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1374,7 +1418,7 @@ func (x *DeleteObjectsResponse_DeleteError) String() string {
 func (*DeleteObjectsResponse_DeleteError) ProtoMessage() {}
 
 func (x *DeleteObjectsResponse_DeleteError) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[22]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1433,7 +1477,7 @@ type ListObjectVersionsResponse_VersionView struct {
 
 func (x *ListObjectVersionsResponse_VersionView) Reset() {
 	*x = ListObjectVersionsResponse_VersionView{}
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[23]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1445,7 +1489,7 @@ func (x *ListObjectVersionsResponse_VersionView) String() string {
 func (*ListObjectVersionsResponse_VersionView) ProtoMessage() {}
 
 func (x *ListObjectVersionsResponse_VersionView) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[23]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1522,7 +1566,7 @@ type ListObjectVersionsResponse_DeleteMarkerView struct {
 
 func (x *ListObjectVersionsResponse_DeleteMarkerView) Reset() {
 	*x = ListObjectVersionsResponse_DeleteMarkerView{}
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[24]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1534,7 +1578,7 @@ func (x *ListObjectVersionsResponse_DeleteMarkerView) String() string {
 func (*ListObjectVersionsResponse_DeleteMarkerView) ProtoMessage() {}
 
 func (x *ListObjectVersionsResponse_DeleteMarkerView) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[24]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1591,7 +1635,7 @@ type ListObjectsResponse_ObjectView struct {
 
 func (x *ListObjectsResponse_ObjectView) Reset() {
 	*x = ListObjectsResponse_ObjectView{}
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[25]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1603,7 +1647,7 @@ func (x *ListObjectsResponse_ObjectView) String() string {
 func (*ListObjectsResponse_ObjectView) ProtoMessage() {}
 
 func (x *ListObjectsResponse_ObjectView) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[25]
+	mi := &file_nebius_storage_v1_s3_events_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1699,13 +1743,14 @@ const file_nebius_storage_v1_s3_events_proto_rawDesc = "" +
 	"object_key\x18\x02 \x01(\tR\tobjectKey\x12\x18\n" +
 	"\aversion\x18\x03 \x01(\tR\aversion\";\n" +
 	"\x14DeleteObjectResponse\x12#\n" +
-	"\rdelete_marker\x18\x01 \x01(\bR\fdeleteMarker\"z\n" +
+	"\rdelete_marker\x18\x01 \x01(\bR\fdeleteMarker\"\xd1\x01\n" +
 	"\x1eDeleteObjectsRequestParameters\x12\x1f\n" +
 	"\vbucket_name\x18\x01 \x01(\tR\n" +
-	"bucketName\x12\x1d\n" +
-	"\n" +
-	"object_key\x18\x02 \x01(\tR\tobjectKey\x12\x18\n" +
-	"\aversion\x18\x03 \x01(\tR\aversion\"\x9c\x03\n" +
+	"bucketName\x12U\n" +
+	"\aobjects\x18\x04 \x03(\v2;.nebius.storage.v1.DeleteObjectsRequestParameters.ObjectKeyR\aobjects\x1a7\n" +
+	"\tObjectKey\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x18\n" +
+	"\aversion\x18\x02 \x01(\tR\aversion\"\x9c\x03\n" +
 	"\x15DeleteObjectsResponse\x12P\n" +
 	"\adeleted\x18\x01 \x03(\v26.nebius.storage.v1.DeleteObjectsResponse.DeleteSuccessR\adeleted\x12L\n" +
 	"\x06errors\x18\x02 \x03(\v24.nebius.storage.v1.DeleteObjectsResponse.DeleteErrorR\x06errors\x1am\n" +
@@ -1817,7 +1862,7 @@ func file_nebius_storage_v1_s3_events_proto_rawDescGZIP() []byte {
 	return file_nebius_storage_v1_s3_events_proto_rawDescData
 }
 
-var file_nebius_storage_v1_s3_events_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
+var file_nebius_storage_v1_s3_events_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_nebius_storage_v1_s3_events_proto_goTypes = []any{
 	(*CompleteMultipartUploadRequestParameters)(nil),      // 0: nebius.storage.v1.CompleteMultipartUploadRequestParameters
 	(*CompleteMultipartUploadResponse)(nil),               // 1: nebius.storage.v1.CompleteMultipartUploadResponse
@@ -1840,32 +1885,34 @@ var file_nebius_storage_v1_s3_events_proto_goTypes = []any{
 	(*CompleteMultipartUploadRequestParameters_Part)(nil), // 18: nebius.storage.v1.CompleteMultipartUploadRequestParameters.Part
 	(*CopyObjectRequestParameters_Source)(nil),            // 19: nebius.storage.v1.CopyObjectRequestParameters.Source
 	(*CopyObjectRequestParameters_Target)(nil),            // 20: nebius.storage.v1.CopyObjectRequestParameters.Target
-	(*DeleteObjectsResponse_DeleteSuccess)(nil),           // 21: nebius.storage.v1.DeleteObjectsResponse.DeleteSuccess
-	(*DeleteObjectsResponse_DeleteError)(nil),             // 22: nebius.storage.v1.DeleteObjectsResponse.DeleteError
-	(*ListObjectVersionsResponse_VersionView)(nil),        // 23: nebius.storage.v1.ListObjectVersionsResponse.VersionView
-	(*ListObjectVersionsResponse_DeleteMarkerView)(nil),   // 24: nebius.storage.v1.ListObjectVersionsResponse.DeleteMarkerView
-	(*ListObjectsResponse_ObjectView)(nil),                // 25: nebius.storage.v1.ListObjectsResponse.ObjectView
-	(*timestamppb.Timestamp)(nil),                         // 26: google.protobuf.Timestamp
+	(*DeleteObjectsRequestParameters_ObjectKey)(nil),      // 21: nebius.storage.v1.DeleteObjectsRequestParameters.ObjectKey
+	(*DeleteObjectsResponse_DeleteSuccess)(nil),           // 22: nebius.storage.v1.DeleteObjectsResponse.DeleteSuccess
+	(*DeleteObjectsResponse_DeleteError)(nil),             // 23: nebius.storage.v1.DeleteObjectsResponse.DeleteError
+	(*ListObjectVersionsResponse_VersionView)(nil),        // 24: nebius.storage.v1.ListObjectVersionsResponse.VersionView
+	(*ListObjectVersionsResponse_DeleteMarkerView)(nil),   // 25: nebius.storage.v1.ListObjectVersionsResponse.DeleteMarkerView
+	(*ListObjectsResponse_ObjectView)(nil),                // 26: nebius.storage.v1.ListObjectsResponse.ObjectView
+	(*timestamppb.Timestamp)(nil),                         // 27: google.protobuf.Timestamp
 }
 var file_nebius_storage_v1_s3_events_proto_depIdxs = []int32{
 	18, // 0: nebius.storage.v1.CompleteMultipartUploadRequestParameters.parts:type_name -> nebius.storage.v1.CompleteMultipartUploadRequestParameters.Part
 	19, // 1: nebius.storage.v1.CopyObjectRequestParameters.source:type_name -> nebius.storage.v1.CopyObjectRequestParameters.Source
 	20, // 2: nebius.storage.v1.CopyObjectRequestParameters.target:type_name -> nebius.storage.v1.CopyObjectRequestParameters.Target
-	26, // 3: nebius.storage.v1.CopyObjectResponse.last_modified:type_name -> google.protobuf.Timestamp
-	21, // 4: nebius.storage.v1.DeleteObjectsResponse.deleted:type_name -> nebius.storage.v1.DeleteObjectsResponse.DeleteSuccess
-	22, // 5: nebius.storage.v1.DeleteObjectsResponse.errors:type_name -> nebius.storage.v1.DeleteObjectsResponse.DeleteError
-	26, // 6: nebius.storage.v1.ObjectResponse.last_modified:type_name -> google.protobuf.Timestamp
-	23, // 7: nebius.storage.v1.ListObjectVersionsResponse.versions:type_name -> nebius.storage.v1.ListObjectVersionsResponse.VersionView
-	24, // 8: nebius.storage.v1.ListObjectVersionsResponse.delete_markers:type_name -> nebius.storage.v1.ListObjectVersionsResponse.DeleteMarkerView
-	25, // 9: nebius.storage.v1.ListObjectsResponse.objects:type_name -> nebius.storage.v1.ListObjectsResponse.ObjectView
-	26, // 10: nebius.storage.v1.ListObjectVersionsResponse.VersionView.last_modified:type_name -> google.protobuf.Timestamp
-	26, // 11: nebius.storage.v1.ListObjectVersionsResponse.DeleteMarkerView.last_modified:type_name -> google.protobuf.Timestamp
-	26, // 12: nebius.storage.v1.ListObjectsResponse.ObjectView.last_modified:type_name -> google.protobuf.Timestamp
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	27, // 3: nebius.storage.v1.CopyObjectResponse.last_modified:type_name -> google.protobuf.Timestamp
+	21, // 4: nebius.storage.v1.DeleteObjectsRequestParameters.objects:type_name -> nebius.storage.v1.DeleteObjectsRequestParameters.ObjectKey
+	22, // 5: nebius.storage.v1.DeleteObjectsResponse.deleted:type_name -> nebius.storage.v1.DeleteObjectsResponse.DeleteSuccess
+	23, // 6: nebius.storage.v1.DeleteObjectsResponse.errors:type_name -> nebius.storage.v1.DeleteObjectsResponse.DeleteError
+	27, // 7: nebius.storage.v1.ObjectResponse.last_modified:type_name -> google.protobuf.Timestamp
+	24, // 8: nebius.storage.v1.ListObjectVersionsResponse.versions:type_name -> nebius.storage.v1.ListObjectVersionsResponse.VersionView
+	25, // 9: nebius.storage.v1.ListObjectVersionsResponse.delete_markers:type_name -> nebius.storage.v1.ListObjectVersionsResponse.DeleteMarkerView
+	26, // 10: nebius.storage.v1.ListObjectsResponse.objects:type_name -> nebius.storage.v1.ListObjectsResponse.ObjectView
+	27, // 11: nebius.storage.v1.ListObjectVersionsResponse.VersionView.last_modified:type_name -> google.protobuf.Timestamp
+	27, // 12: nebius.storage.v1.ListObjectVersionsResponse.DeleteMarkerView.last_modified:type_name -> google.protobuf.Timestamp
+	27, // 13: nebius.storage.v1.ListObjectsResponse.ObjectView.last_modified:type_name -> google.protobuf.Timestamp
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_s3_events_proto_init() }
@@ -1879,7 +1926,7 @@ func file_nebius_storage_v1_s3_events_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_storage_v1_s3_events_proto_rawDesc), len(file_nebius_storage_v1_s3_events_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   26,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

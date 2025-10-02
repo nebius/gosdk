@@ -145,17 +145,16 @@ func (x *Subnet) GetStatus() *SubnetStatus {
 
 type SubnetSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Network ID.
+	// ID of the network this subnet belongs to.
 	NetworkId string `protobuf:"bytes,1,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
-	// Pools for private ipv4 addresses.
-	// Default is 'use_network_pools = true'
+	// Private IPv4 address pools for this subnet.
+	// If unspecified, pools from the associated network are used.
 	Ipv4PrivatePools *IPv4PrivateSubnetPools `protobuf:"bytes,2,opt,name=ipv4_private_pools,json=ipv4PrivatePools,proto3" json:"ipv4_private_pools,omitempty"`
-	// Pools for public ipv4 addresses.
-	// Default is 'use_network_pools = true'
+	// Public IPv4 address pools for this subnet.
+	// If unspecified, pools from the associated network are used.
 	Ipv4PublicPools *IPv4PublicSubnetPools `protobuf:"bytes,3,opt,name=ipv4_public_pools,json=ipv4PublicPools,proto3" json:"ipv4_public_pools,omitempty"`
-	// ID of the custom route table to associate with this subnet.
-	// Must be one of the route tables associated with network.
-	// If not specified, the subnet will use the network's default route table.
+	// ID of the route table to associate with the subnet.
+	// If unspecified, the network's default route table is used.
 	RouteTableId  string `protobuf:"bytes,5,opt,name=route_table_id,json=routeTableId,proto3" json:"route_table_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -221,11 +220,12 @@ func (x *SubnetSpec) GetRouteTableId() string {
 
 type IPv4PrivateSubnetPools struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Pools for private ipv4 allocations in subnet
-	// Must be empty if 'use_network_pools = true'
+	// List of private IPv4 CIDR blocks for this subnet.
+	// Must not overlap with other resources in the network
+	// Must be empty if `use_network_pools` is true.
 	Pools []*SubnetPool `protobuf:"bytes,1,rep,name=pools,proto3" json:"pools,omitempty"`
-	// Allow using of private ipv4 pools which are specified in network
-	// Must be false if 'pools' is not empty
+	// If true, inherit private IPv4 pools from the network. Defaults to true.
+	// Must be false if `pools` is specified.
 	UseNetworkPools bool `protobuf:"varint,2,opt,name=use_network_pools,json=useNetworkPools,proto3" json:"use_network_pools,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -277,11 +277,12 @@ func (x *IPv4PrivateSubnetPools) GetUseNetworkPools() bool {
 
 type IPv4PublicSubnetPools struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Pools for public ipv4 allocations in subnet
-	// Must be empty if 'use_network_pools = true'
+	// List of public IPv4 CIDR blocks for this subnet.
+	// Must not overlap with other resources in the network.
+	// Must be empty if `use_network_pools` is true.
 	Pools []*SubnetPool `protobuf:"bytes,1,rep,name=pools,proto3" json:"pools,omitempty"`
-	// Allow using of public ipv4 pools which are specified in network
-	// Must be false if 'pools' is not empty
+	// If true, inherit public IPv4 pools from the network.
+	// Must be false if `pools` is specified.
 	UseNetworkPools bool `protobuf:"varint,2,opt,name=use_network_pools,json=useNetworkPools,proto3" json:"use_network_pools,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -377,14 +378,13 @@ func (x *SubnetPool) GetCidrs() []*SubnetCidr {
 
 type SubnetCidr struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// CIDR block.
-	// May be a prefix length (such as /24) or a CIDR-formatted string (such as 10.1.2.0/24).
+	// A CIDR block (e.g., "10.1.2.0/24") or a prefix length (e.g., "/24").
+	// If prefix length is specified, the CIDR block will be auto-allocated
+	// from the network's available space.
 	Cidr string `protobuf:"bytes,1,opt,name=cidr,proto3" json:"cidr,omitempty"`
-	// State of the Cidr.
-	// Default state is AVAILABLE
+	// Controls provisioning of IP addresses from the CIDR block . Defaults to AVAILABLE.
 	State AddressBlockState `protobuf:"varint,2,opt,name=state,proto3,enum=nebius.vpc.v1.AddressBlockState" json:"state,omitempty"`
-	// Maximum mask length for allocation from this cidr
-	// Default max_mask_length is 32 for IPv4 and 128 for IPv6
+	// Maximum mask length for an allocation from this block. Defaults to /32 for IPv4.
 	MaxMaskLength int64 `protobuf:"varint,3,opt,name=max_mask_length,json=maxMaskLength,proto3" json:"max_mask_length,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -578,13 +578,13 @@ const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
 	"\x06Subnet\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12-\n" +
 	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecR\x04spec\x123\n" +
-	"\x06status\x18\x03 \x01(\v2\x1b.nebius.vpc.v1.SubnetStatusR\x06status\"\x8e\x02\n" +
+	"\x06status\x18\x03 \x01(\v2\x1b.nebius.vpc.v1.SubnetStatusR\x06status\"\x8c\x02\n" +
 	"\n" +
 	"SubnetSpec\x12%\n" +
 	"\n" +
-	"network_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tnetworkId\x12Z\n" +
-	"\x12ipv4_private_pools\x18\x02 \x01(\v2%.nebius.vpc.v1.IPv4PrivateSubnetPoolsB\x05\xbaJ\x02\a\x06R\x10ipv4PrivatePools\x12W\n" +
-	"\x11ipv4_public_pools\x18\x03 \x01(\v2$.nebius.vpc.v1.IPv4PublicSubnetPoolsB\x05\xbaJ\x02\a\x06R\x0fipv4PublicPools\x12$\n" +
+	"network_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tnetworkId\x12Y\n" +
+	"\x12ipv4_private_pools\x18\x02 \x01(\v2%.nebius.vpc.v1.IPv4PrivateSubnetPoolsB\x04\xbaJ\x01\aR\x10ipv4PrivatePools\x12V\n" +
+	"\x11ipv4_public_pools\x18\x03 \x01(\v2$.nebius.vpc.v1.IPv4PublicSubnetPoolsB\x04\xbaJ\x01\aR\x0fipv4PublicPools\x12$\n" +
 	"\x0eroute_table_id\x18\x05 \x01(\tR\frouteTableId\"u\n" +
 	"\x16IPv4PrivateSubnetPools\x12/\n" +
 	"\x05pools\x18\x01 \x03(\v2\x19.nebius.vpc.v1.SubnetPoolR\x05pools\x12*\n" +

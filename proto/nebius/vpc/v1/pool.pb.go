@@ -24,12 +24,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Controls provisioning of IP addresses from this pool to other pools
+// or allocations. Defaults to AVAILABLE.
 type AddressBlockState int32
 
 const (
-	AddressBlockState_STATE_UNSPECIFIED AddressBlockState = 0 // Default, unspecified state.
-	AddressBlockState_AVAILABLE         AddressBlockState = 1 // Allocation from range is available.
-	AddressBlockState_DISABLED          AddressBlockState = 2 // New allocation would not be created.
+	AddressBlockState_STATE_UNSPECIFIED AddressBlockState = 0 // Not used, mandated by the protocol.
+	AddressBlockState_AVAILABLE         AddressBlockState = 1 // Default state. Provision of the IP addresses from this CIDR block is allowed.
+	AddressBlockState_DISABLED          AddressBlockState = 2 // Provision of the IP addresses from this CIDR block is denied.
 )
 
 // Enum value maps for AddressBlockState.
@@ -290,13 +292,15 @@ func (x *Pool) GetStatus() *PoolStatus {
 
 type PoolSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// ID of source pool. Current pool will be created with the same scope.
-	// Pool is a root-pool if this field is empty
+	// ID of the source pool.
+	// CIDR blocks of a pool must be within the range defined by its source pool.
 	SourcePoolId string `protobuf:"bytes,1,opt,name=source_pool_id,json=sourcePoolId,proto3" json:"source_pool_id,omitempty"`
-	// IP version for the Pool.
-	Version    IpVersion    `protobuf:"varint,3,opt,name=version,proto3,enum=nebius.vpc.v1.IpVersion" json:"version,omitempty"`
+	// IP version of the pool.
+	Version IpVersion `protobuf:"varint,3,opt,name=version,proto3,enum=nebius.vpc.v1.IpVersion" json:"version,omitempty"`
+	// Configures whether the pool is private or public.
+	// Only public pools IP addresses are routable in the Internet.
 	Visibility IpVisibility `protobuf:"varint,5,opt,name=visibility,proto3,enum=nebius.vpc.v1.IpVisibility" json:"visibility,omitempty"`
-	// CIDR blocks.
+	// CIDR blocks defined by the pool.
 	Cidrs         []*PoolCidr `protobuf:"bytes,4,rep,name=cidrs,proto3" json:"cidrs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -362,15 +366,15 @@ func (x *PoolSpec) GetCidrs() []*PoolCidr {
 
 type PoolCidr struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// CIDR block.
-	// May be a prefix length (such as /24) for non-top-level pools
-	// or a CIDR-formatted string (such as 10.1.2.0/24).
+	// A CIDR block (e.g., "10.1.2.0/24") or a prefix length (e.g., "/24").
+	// If prefix length is specified, the CIDR block will be auto-allocated from
+	// the available space in the parent pool.
 	Cidr string `protobuf:"bytes,1,opt,name=cidr,proto3" json:"cidr,omitempty"`
-	// State of the Cidr.
-	// Default state is AVAILABLE
+	// Controls provisioning of IP addresses from the CIDR block to other pools
+	// or allocations. Defaults to AVAILABLE.
 	State AddressBlockState `protobuf:"varint,2,opt,name=state,proto3,enum=nebius.vpc.v1.AddressBlockState" json:"state,omitempty"`
-	// Maximum mask length for allocation from this cidr including creation of sub-pools
-	// Default max_mask_length is 32 for IPv4 and 128 for IPv6
+	// Maximum mask length for this pool child pools and allocations.
+	// Default max_mask_length is 32 for IPv4.
 	MaxMaskLength int64 `protobuf:"varint,3,opt,name=max_mask_length,json=maxMaskLength,proto3" json:"max_mask_length,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
