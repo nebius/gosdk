@@ -94,6 +94,8 @@ const (
 	// Quota region is unreachable, the current usage is therefore unknown.
 	// Please, retry the request later.
 	QuotaAllowanceStatus_USAGE_STATE_UNKNOWN QuotaAllowanceStatus_UsageState = 3
+	// Quota usage is not applicable
+	QuotaAllowanceStatus_USAGE_STATE_NOT_APPLICABLE QuotaAllowanceStatus_UsageState = 4
 )
 
 // Enum value maps for QuotaAllowanceStatus_UsageState.
@@ -103,12 +105,14 @@ var (
 		1: "USAGE_STATE_USED",
 		2: "USAGE_STATE_NOT_USED",
 		3: "USAGE_STATE_UNKNOWN",
+		4: "USAGE_STATE_NOT_APPLICABLE",
 	}
 	QuotaAllowanceStatus_UsageState_value = map[string]int32{
-		"USAGE_STATE_UNSPECIFIED": 0,
-		"USAGE_STATE_USED":        1,
-		"USAGE_STATE_NOT_USED":    2,
-		"USAGE_STATE_UNKNOWN":     3,
+		"USAGE_STATE_UNSPECIFIED":    0,
+		"USAGE_STATE_USED":           1,
+		"USAGE_STATE_NOT_USED":       2,
+		"USAGE_STATE_UNKNOWN":        3,
+		"USAGE_STATE_NOT_APPLICABLE": 4,
 	}
 )
 
@@ -377,7 +381,7 @@ const file_nebius_quotas_v1_quota_allowance_proto_rawDesc = "" +
 	"\x12QuotaAllowanceSpec\x12\x19\n" +
 	"\x05limit\x18\x01 \x01(\x04H\x00R\x05limit\x88\x01\x01\x12\x1c\n" +
 	"\x06region\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\x06regionB\b\n" +
-	"\x06_limit\"\xd3\x04\n" +
+	"\x06_limit\"\xf4\x04\n" +
 	"\x14QuotaAllowanceStatus\x12B\n" +
 	"\x05state\x18\x01 \x01(\x0e2,.nebius.quotas.v1.QuotaAllowanceStatus.StateR\x05state\x12\x14\n" +
 	"\x05usage\x18\x02 \x01(\x04R\x05usage\x12\x18\n" +
@@ -395,13 +399,14 @@ const file_nebius_quotas_v1_quota_allowance_proto_rawDesc = "" +
 	"\fSTATE_ACTIVE\x10\x02\x12\x10\n" +
 	"\fSTATE_FROZEN\x10\x03\x12\x11\n" +
 	"\rSTATE_DELETED\x10\n" +
-	"\"r\n" +
+	"\"\x92\x01\n" +
 	"\n" +
 	"UsageState\x12\x1b\n" +
 	"\x17USAGE_STATE_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10USAGE_STATE_USED\x10\x01\x12\x18\n" +
 	"\x14USAGE_STATE_NOT_USED\x10\x02\x12\x17\n" +
-	"\x13USAGE_STATE_UNKNOWN\x10\x03\"\xe6\x01\n" +
+	"\x13USAGE_STATE_UNKNOWN\x10\x03\x12\x1e\n" +
+	"\x1aUSAGE_STATE_NOT_APPLICABLE\x10\x04\"\xe6\x01\n" +
 	"\x0eQuotaAllowance\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12@\n" +
 	"\x04spec\x18\x02 \x01(\v2$.nebius.quotas.v1.QuotaAllowanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12D\n" +
