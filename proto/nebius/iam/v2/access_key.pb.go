@@ -270,15 +270,16 @@ func (x *AccessKeySpec) GetSecretDeliveryMode() SecretDeliveryMode {
 }
 
 type AccessKeyStatus struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	State          AccessKeyStatus_State  `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.iam.v2.AccessKeyStatus_State" json:"state,omitempty"`
-	Fingerprint    string                 `protobuf:"bytes,2,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
-	Algorithm      string                 `protobuf:"bytes,3,opt,name=algorithm,proto3" json:"algorithm,omitempty"`
-	KeySize        int32                  `protobuf:"varint,4,opt,name=key_size,json=keySize,proto3" json:"key_size,omitempty"`
-	AwsAccessKeyId string                 `protobuf:"bytes,5,opt,name=aws_access_key_id,json=awsAccessKeyId,proto3" json:"aws_access_key_id,omitempty"`
-	Secret         string                 `protobuf:"bytes,6,opt,name=secret,proto3" json:"secret,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	State             AccessKeyStatus_State  `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.iam.v2.AccessKeyStatus_State" json:"state,omitempty"`
+	Fingerprint       string                 `protobuf:"bytes,2,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	Algorithm         string                 `protobuf:"bytes,3,opt,name=algorithm,proto3" json:"algorithm,omitempty"`
+	KeySize           int32                  `protobuf:"varint,4,opt,name=key_size,json=keySize,proto3" json:"key_size,omitempty"`
+	AwsAccessKeyId    string                 `protobuf:"bytes,5,opt,name=aws_access_key_id,json=awsAccessKeyId,proto3" json:"aws_access_key_id,omitempty"`
+	Secret            string                 `protobuf:"bytes,6,opt,name=secret,proto3" json:"secret,omitempty"`
+	SecretReferenceId string                 `protobuf:"bytes,7,opt,name=secret_reference_id,json=secretReferenceId,proto3" json:"secret_reference_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *AccessKeyStatus) Reset() {
@@ -353,6 +354,13 @@ func (x *AccessKeyStatus) GetSecret() string {
 	return ""
 }
 
+func (x *AccessKeyStatus) GetSecretReferenceId() string {
+	if x != nil {
+		return x.SecretReferenceId
+	}
+	return ""
+}
+
 var File_nebius_iam_v2_access_key_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v2_access_key_proto_rawDesc = "" +
@@ -367,14 +375,15 @@ const file_nebius_iam_v2_access_key_proto_rawDesc = "" +
 	"\n" +
 	"expires_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xbaJ\x01\x02R\texpiresAt\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12Y\n" +
-	"\x14secret_delivery_mode\x18\x04 \x01(\x0e2!.nebius.iam.v2.SecretDeliveryModeB\x04\xbaJ\x01\x02R\x12secretDeliveryMode\"\xd2\x02\n" +
+	"\x14secret_delivery_mode\x18\x04 \x01(\x0e2!.nebius.iam.v2.SecretDeliveryModeB\x04\xbaJ\x01\x02R\x12secretDeliveryMode\"\x82\x03\n" +
 	"\x0fAccessKeyStatus\x12:\n" +
 	"\x05state\x18\x01 \x01(\x0e2$.nebius.iam.v2.AccessKeyStatus.StateR\x05state\x12 \n" +
 	"\vfingerprint\x18\x02 \x01(\tR\vfingerprint\x12\x1c\n" +
 	"\talgorithm\x18\x03 \x01(\tR\talgorithm\x12\x19\n" +
 	"\bkey_size\x18\x04 \x01(\x05R\akeySize\x12)\n" +
 	"\x11aws_access_key_id\x18\x05 \x01(\tR\x0eawsAccessKeyId\x12\x1b\n" +
-	"\x06secret\x18\x06 \x01(\tB\x03\xc0J\x01R\x06secret\"`\n" +
+	"\x06secret\x18\x06 \x01(\tB\x03\xc0J\x01R\x06secret\x12.\n" +
+	"\x13secret_reference_id\x18\a \x01(\tR\x11secretReferenceId\"`\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +
