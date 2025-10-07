@@ -107,7 +107,7 @@ func WithConfigReader(configReader config.ConfigInterface) Option {
 	return optionConfigReader{configReader: configReader}
 }
 
-// withParentID sets the default parent ID for all requests. This can be overridden by
+// WithParentID sets the default parent ID for all requests. This can be overridden by
 // methods that accept a parent ID parameter.
 //
 // If no parent ID is set (the default), methods that require a parent ID will
