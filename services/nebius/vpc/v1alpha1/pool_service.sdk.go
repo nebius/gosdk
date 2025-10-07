@@ -30,16 +30,19 @@ type PoolService interface {
 }
 
 type poolService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewPoolService(sdk iface.SDK) PoolService {
 	return poolService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s poolService) Get(ctx context.Context, request *v1alpha1.GetPoolRequest, opts ...grpc.CallOption) (*v1alpha1.Pool, error) {
+func (s poolService) Get(ctx context.Context, request *v1alpha1.GetPoolRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Pool,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err
@@ -51,7 +54,13 @@ func (s poolService) Get(ctx context.Context, request *v1alpha1.GetPoolRequest, 
 	return v1alpha1.NewPoolServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s poolService) GetByName(ctx context.Context, request *v1alpha1.GetPoolByNameRequest, opts ...grpc.CallOption) (*v1alpha1.Pool, error) {
+func (s poolService) GetByName(ctx context.Context, request *v1alpha1.GetPoolByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Pool,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err
@@ -63,7 +72,13 @@ func (s poolService) GetByName(ctx context.Context, request *v1alpha1.GetPoolByN
 	return v1alpha1.NewPoolServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s poolService) List(ctx context.Context, request *v1alpha1.ListPoolsRequest, opts ...grpc.CallOption) (*v1alpha1.ListPoolsResponse, error) {
+func (s poolService) List(ctx context.Context, request *v1alpha1.ListPoolsRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListPoolsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err

@@ -33,16 +33,19 @@ type BackupService interface {
 }
 
 type backupService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewBackupService(sdk iface.SDK) BackupService {
 	return backupService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s backupService) Get(ctx context.Context, request *v1alpha1.GetBackupRequest, opts ...grpc.CallOption) (*v1alpha1.Backup, error) {
+func (s backupService) Get(ctx context.Context, request *v1alpha1.GetBackupRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Backup,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -54,7 +57,13 @@ func (s backupService) Get(ctx context.Context, request *v1alpha1.GetBackupReque
 	return v1alpha1.NewBackupServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s backupService) List(ctx context.Context, request *v1alpha1.ListBackupsRequest, opts ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error) {
+func (s backupService) List(ctx context.Context, request *v1alpha1.ListBackupsRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListBackupsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -66,7 +75,10 @@ func (s backupService) List(ctx context.Context, request *v1alpha1.ListBackupsRe
 	return v1alpha1.NewBackupServiceClient(con).List(ctx, request, opts...)
 }
 
-func (s backupService) ListByCluster(ctx context.Context, request *v1alpha1.ListBackupsByClusterRequest, opts ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error) {
+func (s backupService) ListByCluster(ctx context.Context, request *v1alpha1.ListBackupsByClusterRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListBackupsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -78,7 +90,10 @@ func (s backupService) ListByCluster(ctx context.Context, request *v1alpha1.List
 	return v1alpha1.NewBackupServiceClient(con).ListByCluster(ctx, request, opts...)
 }
 
-func (s backupService) Create(ctx context.Context, request *v1alpha1.CreateBackupRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s backupService) Create(ctx context.Context, request *v1alpha1.CreateBackupRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -94,7 +109,10 @@ func (s backupService) Create(ctx context.Context, request *v1alpha1.CreateBacku
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s backupService) Delete(ctx context.Context, request *v1alpha1.DeleteBackupRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s backupService) Delete(ctx context.Context, request *v1alpha1.DeleteBackupRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err

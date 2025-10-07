@@ -8,6 +8,7 @@ import (
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
 	alphaops "github.com/nebius/gosdk/operations/alphaops"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1alpha11 "github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/mlflow/v1alpha1"
 	grpc "google.golang.org/grpc"
@@ -36,16 +37,19 @@ type ClusterService interface {
 }
 
 type clusterService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewClusterService(sdk iface.SDK) ClusterService {
 	return clusterService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s clusterService) Get(ctx context.Context, request *v1alpha1.GetClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Cluster, error) {
+func (s clusterService) Get(ctx context.Context, request *v1alpha1.GetClusterRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Cluster,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -57,7 +61,13 @@ func (s clusterService) Get(ctx context.Context, request *v1alpha1.GetClusterReq
 	return v1alpha1.NewClusterServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s clusterService) GetByName(ctx context.Context, request *v1alpha1.GetClusterByNameRequest, opts ...grpc.CallOption) (*v1alpha1.Cluster, error) {
+func (s clusterService) GetByName(ctx context.Context, request *v1alpha1.GetClusterByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Cluster,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -69,7 +79,13 @@ func (s clusterService) GetByName(ctx context.Context, request *v1alpha1.GetClus
 	return v1alpha1.NewClusterServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s clusterService) List(ctx context.Context, request *v1alpha1.ListClustersRequest, opts ...grpc.CallOption) (*v1alpha1.ListClustersResponse, error) {
+func (s clusterService) List(ctx context.Context, request *v1alpha1.ListClustersRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListClustersResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -106,7 +122,18 @@ func (s clusterService) Filter(ctx context.Context, request *v1alpha1.ListCluste
 	}
 }
 
-func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -122,7 +149,10 @@ func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClus
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) Delete(ctx context.Context, request *v1alpha1.DeleteClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s clusterService) Delete(ctx context.Context, request *v1alpha1.DeleteClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err

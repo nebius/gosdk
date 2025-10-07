@@ -26,16 +26,19 @@ type PayloadService interface {
 }
 
 type payloadService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewPayloadService(sdk iface.SDK) PayloadService {
 	return payloadService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s payloadService) Get(ctx context.Context, request *v1.GetPayloadRequest, opts ...grpc.CallOption) (*v1.SecretPayload, error) {
+func (s payloadService) Get(ctx context.Context, request *v1.GetPayloadRequest, opts ...grpc.CallOption) (
+	*v1.SecretPayload,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, PayloadServiceID)
 	if err != nil {
 		return nil, err
@@ -47,7 +50,10 @@ func (s payloadService) Get(ctx context.Context, request *v1.GetPayloadRequest, 
 	return v1.NewPayloadServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s payloadService) GetByKey(ctx context.Context, request *v1.GetPayloadByKeyRequest, opts ...grpc.CallOption) (*v1.SecretPayloadEntry, error) {
+func (s payloadService) GetByKey(ctx context.Context, request *v1.GetPayloadByKeyRequest, opts ...grpc.CallOption) (
+	*v1.SecretPayloadEntry,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, PayloadServiceID)
 	if err != nil {
 		return nil, err

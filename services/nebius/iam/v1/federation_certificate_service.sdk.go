@@ -34,16 +34,27 @@ type FederationCertificateService interface {
 }
 
 type federationCertificateService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewFederationCertificateService(sdk iface.SDK) FederationCertificateService {
 	return federationCertificateService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s federationCertificateService) Create(ctx context.Context, request *v1.CreateFederationCertificateRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federationCertificateService) Create(ctx context.Context, request *v1.CreateFederationCertificateRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -59,7 +70,10 @@ func (s federationCertificateService) Create(ctx context.Context, request *v1.Cr
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s federationCertificateService) Get(ctx context.Context, request *v1.GetFederationCertificateRequest, opts ...grpc.CallOption) (*v1.FederationCertificate, error) {
+func (s federationCertificateService) Get(ctx context.Context, request *v1.GetFederationCertificateRequest, opts ...grpc.CallOption) (
+	*v1.FederationCertificate,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -71,7 +85,10 @@ func (s federationCertificateService) Get(ctx context.Context, request *v1.GetFe
 	return v1.NewFederationCertificateServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s federationCertificateService) ListByFederation(ctx context.Context, request *v1.ListFederationCertificateByFederationRequest, opts ...grpc.CallOption) (*v1.ListFederationCertificateResponse, error) {
+func (s federationCertificateService) ListByFederation(ctx context.Context, request *v1.ListFederationCertificateByFederationRequest, opts ...grpc.CallOption) (
+	*v1.ListFederationCertificateResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -83,7 +100,10 @@ func (s federationCertificateService) ListByFederation(ctx context.Context, requ
 	return v1.NewFederationCertificateServiceClient(con).ListByFederation(ctx, request, opts...)
 }
 
-func (s federationCertificateService) Update(ctx context.Context, request *v1.UpdateFederationCertificateRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federationCertificateService) Update(ctx context.Context, request *v1.UpdateFederationCertificateRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -103,7 +123,10 @@ func (s federationCertificateService) Update(ctx context.Context, request *v1.Up
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s federationCertificateService) Delete(ctx context.Context, request *v1.DeleteFederationCertificateRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federationCertificateService) Delete(ctx context.Context, request *v1.DeleteFederationCertificateRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err

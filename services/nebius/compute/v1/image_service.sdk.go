@@ -33,16 +33,19 @@ type ImageService interface {
 }
 
 type imageService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewImageService(sdk iface.SDK) ImageService {
 	return imageService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s imageService) Get(ctx context.Context, request *v1.GetImageRequest, opts ...grpc.CallOption) (*v1.Image, error) {
+func (s imageService) Get(ctx context.Context, request *v1.GetImageRequest, opts ...grpc.CallOption) (
+	*v1.Image,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
 		return nil, err
@@ -54,7 +57,13 @@ func (s imageService) Get(ctx context.Context, request *v1.GetImageRequest, opts
 	return v1.NewImageServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s imageService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (*v1.Image, error) {
+func (s imageService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.Image,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
 		return nil, err
@@ -66,7 +75,10 @@ func (s imageService) GetByName(ctx context.Context, request *v11.GetByNameReque
 	return v1.NewImageServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s imageService) GetLatestByFamily(ctx context.Context, request *v1.GetImageLatestByFamilyRequest, opts ...grpc.CallOption) (*v1.Image, error) {
+func (s imageService) GetLatestByFamily(ctx context.Context, request *v1.GetImageLatestByFamilyRequest, opts ...grpc.CallOption) (
+	*v1.Image,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
 		return nil, err
@@ -78,7 +90,13 @@ func (s imageService) GetLatestByFamily(ctx context.Context, request *v1.GetImag
 	return v1.NewImageServiceClient(con).GetLatestByFamily(ctx, request, opts...)
 }
 
-func (s imageService) List(ctx context.Context, request *v1.ListImagesRequest, opts ...grpc.CallOption) (*v1.ListImagesResponse, error) {
+func (s imageService) List(ctx context.Context, request *v1.ListImagesRequest, opts ...grpc.CallOption) (
+	*v1.ListImagesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
 		return nil, err
@@ -115,7 +133,10 @@ func (s imageService) Filter(ctx context.Context, request *v1.ListImagesRequest,
 	}
 }
 
-func (s imageService) ListOperationsByParent(ctx context.Context, request *v1.ListOperationsByParentRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+func (s imageService) ListOperationsByParent(ctx context.Context, request *v1.ListOperationsByParentRequest, opts ...grpc.CallOption) (
+	*v11.ListOperationsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
 		return nil, err

@@ -40,9 +40,10 @@ type SDK struct {
 }
 
 const (
-	defaultTimeout  = 1 * time.Minute
-	defaultRetries  = 3
-	defaultPerRetry = 10 * time.Second
+	DefaultTimeout     = 1 * time.Minute
+	DefaultRetries     = 3
+	DefaultPerRetry    = 10 * time.Second
+	DefaultAuthTimeout = 15 * time.Minute // should be large enough to authenticate manually
 )
 
 // New creates a new [SDK] with the provided options.
@@ -58,7 +59,8 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var credentials Credentials = nil
 	handler := slog.Handler(NoopHandler{})
 	explicitInit := false
-	timeout := defaultTimeout
+	timeout := DefaultTimeout
+	authTimeout := DefaultAuthTimeout
 
 	userAgent := "nebius-gosdk"
 	goVer := runtime.Version()
@@ -80,6 +82,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var customInits []func(context.Context, *SDK) error
 	var configReader config.ConfigInterface = nil
 	var parentID string
+	var noParentID bool
 	retryOpts := []retry.CallOption{}
 	for _, opt := range opts {
 		switch o := opt.(type) {
@@ -117,10 +120,22 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			default:
 				timeout = time.Duration(o)
 			}
+		case optionAuthTimeout:
+			switch {
+			case o == 0:
+				return nil, errors.New("zero auth timeout provided")
+			case o < 0:
+				return nil, errors.New("negative auth timeout provided")
+			default:
+				authTimeout = time.Duration(o)
+			}
 		case optionConfigReader:
 			configReader = o.configReader
 		case optionParentID:
 			parentID = string(o)
+			noParentID = false // to ensure that WithParentID overrides the previous WithNoParentID
+		case optionNoParentID:
+			noParentID = bool(o)
 		}
 	}
 	logger := slog.New(handler)
@@ -241,10 +256,29 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 
 	dialOpts = append(dialOpts, customDialOpts...)
 
+	dialOpts = append(dialOpts, grpc.WithUserAgent(userAgent))
+
+	// apply auth timeout, it must cover both authentication and request
+	dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(conn.UnaryClientTimeoutInterceptor(authTimeout)))
+
+	// do not add interceptors if no credentials provided
+	for _, a := range auths {
+		if a != nil {
+			dialOpts = append(dialOpts,
+				grpc.WithChainUnaryInterceptor(auth.UnaryClientInterceptor(logger, auths, explicitSelector)),
+				grpc.WithChainStreamInterceptor(auth.StreamClientInterceptor(logger, auths, explicitSelector)),
+			)
+			break
+		}
+	}
+
+	// apply overall timeout
+	dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(conn.UnaryClientTimeoutInterceptor(timeout)))
+
 	if retryOpts != nil {
 		retryOptsFull := []retry.CallOption{
-			retry.WithMax(defaultRetries),
-			retry.WithPerRetryTimeout(defaultPerRetry),
+			retry.WithMax(DefaultRetries),
+			retry.WithPerRetryTimeout(DefaultPerRetry),
 			conn.WithServiceRetry(),
 		}
 		retryOptsFull = append(retryOptsFull, retryOpts...)
@@ -269,28 +303,18 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			streamLoggingInterceptor(logger, logOpts...),
 			serviceerror.StreamClientInterceptor,
 		),
-		grpc.WithUserAgent(userAgent),
 	)
-
-	// do not add interceptors if no credentials provided
-	for _, a := range auths {
-		if a != nil {
-			dialOpts = append(dialOpts,
-				grpc.WithChainUnaryInterceptor(auth.UnaryClientInterceptor(logger, auths, explicitSelector)),
-				grpc.WithChainStreamInterceptor(auth.StreamClientInterceptor(logger, auths, explicitSelector)),
-			)
-			break
-		}
-	}
-
-	// apply timeout after retry and auth interceptors for each request
-	dialOpts = append(dialOpts, grpc.WithChainUnaryInterceptor(conn.UnaryClientTimeoutInterceptor(timeout)))
 
 	dialer := conn.NewDialer(logger, dialOpts...)
 	closes = append(closes, dialer.Close)
 	inits = append(inits, customInits...)
 
 	sdkContext, cancel := context.WithCancel(context.WithoutCancel(ctx))
+
+	if noParentID {
+		parentID = ""
+		logger.DebugContext(ctx, "parent ID is disabled by options")
+	}
 
 	sdk = &SDK{
 		resolver: conn.NewContextResolver(

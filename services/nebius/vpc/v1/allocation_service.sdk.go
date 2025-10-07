@@ -39,16 +39,19 @@ type AllocationService interface {
 }
 
 type allocationService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewAllocationService(sdk iface.SDK) AllocationService {
 	return allocationService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s allocationService) Get(ctx context.Context, request *v1.GetAllocationRequest, opts ...grpc.CallOption) (*v1.Allocation, error) {
+func (s allocationService) Get(ctx context.Context, request *v1.GetAllocationRequest, opts ...grpc.CallOption) (
+	*v1.Allocation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s allocationService) Get(ctx context.Context, request *v1.GetAllocationReq
 	return v1.NewAllocationServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s allocationService) GetByName(ctx context.Context, request *v1.GetAllocationByNameRequest, opts ...grpc.CallOption) (*v1.Allocation, error) {
+func (s allocationService) GetByName(ctx context.Context, request *v1.GetAllocationByNameRequest, opts ...grpc.CallOption) (
+	*v1.Allocation,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s allocationService) GetByName(ctx context.Context, request *v1.GetAllocat
 	return v1.NewAllocationServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s allocationService) List(ctx context.Context, request *v1.ListAllocationsRequest, opts ...grpc.CallOption) (*v1.ListAllocationsResponse, error) {
+func (s allocationService) List(ctx context.Context, request *v1.ListAllocationsRequest, opts ...grpc.CallOption) (
+	*v1.ListAllocationsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,10 @@ func (s allocationService) Filter(ctx context.Context, request *v1.ListAllocatio
 	}
 }
 
-func (s allocationService) ListByPool(ctx context.Context, request *v1.ListAllocationsByPoolRequest, opts ...grpc.CallOption) (*v1.ListAllocationsResponse, error) {
+func (s allocationService) ListByPool(ctx context.Context, request *v1.ListAllocationsByPoolRequest, opts ...grpc.CallOption) (
+	*v1.ListAllocationsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -121,7 +139,18 @@ func (s allocationService) ListByPool(ctx context.Context, request *v1.ListAlloc
 	return v1.NewAllocationServiceClient(con).ListByPool(ctx, request, opts...)
 }
 
-func (s allocationService) Create(ctx context.Context, request *v1.CreateAllocationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s allocationService) Create(ctx context.Context, request *v1.CreateAllocationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -137,7 +166,10 @@ func (s allocationService) Create(ctx context.Context, request *v1.CreateAllocat
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s allocationService) Update(ctx context.Context, request *v1.UpdateAllocationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s allocationService) Update(ctx context.Context, request *v1.UpdateAllocationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -157,7 +189,10 @@ func (s allocationService) Update(ctx context.Context, request *v1.UpdateAllocat
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s allocationService) Delete(ctx context.Context, request *v1.DeleteAllocationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s allocationService) Delete(ctx context.Context, request *v1.DeleteAllocationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err

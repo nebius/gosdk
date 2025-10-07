@@ -38,16 +38,27 @@ type FederationService interface {
 }
 
 type federationService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewFederationService(sdk iface.SDK) FederationService {
 	return federationService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s federationService) Create(ctx context.Context, request *v1.CreateFederationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federationService) Create(ctx context.Context, request *v1.CreateFederationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err
@@ -63,7 +74,10 @@ func (s federationService) Create(ctx context.Context, request *v1.CreateFederat
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s federationService) Get(ctx context.Context, request *v1.GetFederationRequest, opts ...grpc.CallOption) (*v1.Federation, error) {
+func (s federationService) Get(ctx context.Context, request *v1.GetFederationRequest, opts ...grpc.CallOption) (
+	*v1.Federation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err
@@ -75,7 +89,13 @@ func (s federationService) Get(ctx context.Context, request *v1.GetFederationReq
 	return v1.NewFederationServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s federationService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (*v1.Federation, error) {
+func (s federationService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.Federation,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err
@@ -87,7 +107,13 @@ func (s federationService) GetByName(ctx context.Context, request *v11.GetByName
 	return v1.NewFederationServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s federationService) List(ctx context.Context, request *v1.ListFederationsRequest, opts ...grpc.CallOption) (*v1.ListFederationsResponse, error) {
+func (s federationService) List(ctx context.Context, request *v1.ListFederationsRequest, opts ...grpc.CallOption) (
+	*v1.ListFederationsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err
@@ -124,7 +150,10 @@ func (s federationService) Filter(ctx context.Context, request *v1.ListFederatio
 	}
 }
 
-func (s federationService) Update(ctx context.Context, request *v1.UpdateFederationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federationService) Update(ctx context.Context, request *v1.UpdateFederationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -144,7 +173,10 @@ func (s federationService) Update(ctx context.Context, request *v1.UpdateFederat
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s federationService) Delete(ctx context.Context, request *v1.DeleteFederationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federationService) Delete(ctx context.Context, request *v1.DeleteFederationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err

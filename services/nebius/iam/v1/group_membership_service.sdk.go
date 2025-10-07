@@ -35,16 +35,27 @@ type GroupMembershipService interface {
 }
 
 type groupMembershipService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewGroupMembershipService(sdk iface.SDK) GroupMembershipService {
 	return groupMembershipService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s groupMembershipService) Create(ctx context.Context, request *v1.CreateGroupMembershipRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s groupMembershipService) Create(ctx context.Context, request *v1.CreateGroupMembershipRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +71,10 @@ func (s groupMembershipService) Create(ctx context.Context, request *v1.CreateGr
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s groupMembershipService) Get(ctx context.Context, request *v1.GetGroupMembershipRequest, opts ...grpc.CallOption) (*v1.GroupMembership, error) {
+func (s groupMembershipService) Get(ctx context.Context, request *v1.GetGroupMembershipRequest, opts ...grpc.CallOption) (
+	*v1.GroupMembership,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +86,10 @@ func (s groupMembershipService) Get(ctx context.Context, request *v1.GetGroupMem
 	return v1.NewGroupMembershipServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s groupMembershipService) GetWithAttributes(ctx context.Context, request *v1.GetGroupMembershipRequest, opts ...grpc.CallOption) (*v1.GroupMembershipWithAttributes, error) {
+func (s groupMembershipService) GetWithAttributes(ctx context.Context, request *v1.GetGroupMembershipRequest, opts ...grpc.CallOption) (
+	*v1.GroupMembershipWithAttributes,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -84,7 +101,10 @@ func (s groupMembershipService) GetWithAttributes(ctx context.Context, request *
 	return v1.NewGroupMembershipServiceClient(con).GetWithAttributes(ctx, request, opts...)
 }
 
-func (s groupMembershipService) Delete(ctx context.Context, request *v1.DeleteGroupMembershipRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s groupMembershipService) Delete(ctx context.Context, request *v1.DeleteGroupMembershipRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -100,7 +120,10 @@ func (s groupMembershipService) Delete(ctx context.Context, request *v1.DeleteGr
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s groupMembershipService) ListMembers(ctx context.Context, request *v1.ListGroupMembershipsRequest, opts ...grpc.CallOption) (*v1.ListGroupMembershipsResponse, error) {
+func (s groupMembershipService) ListMembers(ctx context.Context, request *v1.ListGroupMembershipsRequest, opts ...grpc.CallOption) (
+	*v1.ListGroupMembershipsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -112,7 +135,10 @@ func (s groupMembershipService) ListMembers(ctx context.Context, request *v1.Lis
 	return v1.NewGroupMembershipServiceClient(con).ListMembers(ctx, request, opts...)
 }
 
-func (s groupMembershipService) ListMembersWithAttributes(ctx context.Context, request *v1.ListGroupMembershipsRequest, opts ...grpc.CallOption) (*v1.ListGroupMembershipsWithAttributesResponse, error) {
+func (s groupMembershipService) ListMembersWithAttributes(ctx context.Context, request *v1.ListGroupMembershipsRequest, opts ...grpc.CallOption) (
+	*v1.ListGroupMembershipsWithAttributesResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -124,7 +150,10 @@ func (s groupMembershipService) ListMembersWithAttributes(ctx context.Context, r
 	return v1.NewGroupMembershipServiceClient(con).ListMembersWithAttributes(ctx, request, opts...)
 }
 
-func (s groupMembershipService) ListMemberOf(ctx context.Context, request *v1.ListMemberOfRequest, opts ...grpc.CallOption) (*v1.ListMemberOfResponse, error) {
+func (s groupMembershipService) ListMemberOf(ctx context.Context, request *v1.ListMemberOfRequest, opts ...grpc.CallOption) (
+	*v1.ListMemberOfResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err

@@ -40,16 +40,19 @@ type GpuClusterService interface {
 }
 
 type gpuClusterService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewGpuClusterService(sdk iface.SDK) GpuClusterService {
 	return gpuClusterService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s gpuClusterService) Get(ctx context.Context, request *v1alpha1.GetGpuClusterRequest, opts ...grpc.CallOption) (*v1alpha1.GpuCluster, error) {
+func (s gpuClusterService) Get(ctx context.Context, request *v1alpha1.GetGpuClusterRequest, opts ...grpc.CallOption) (
+	*v1alpha1.GpuCluster,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -61,7 +64,13 @@ func (s gpuClusterService) Get(ctx context.Context, request *v1alpha1.GetGpuClus
 	return v1alpha1.NewGpuClusterServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s gpuClusterService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (*v1alpha1.GpuCluster, error) {
+func (s gpuClusterService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.GpuCluster,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -73,7 +82,13 @@ func (s gpuClusterService) GetByName(ctx context.Context, request *v1.GetByNameR
 	return v1alpha1.NewGpuClusterServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s gpuClusterService) List(ctx context.Context, request *v1alpha1.ListGpuClustersRequest, opts ...grpc.CallOption) (*v1alpha1.ListGpuClustersResponse, error) {
+func (s gpuClusterService) List(ctx context.Context, request *v1alpha1.ListGpuClustersRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListGpuClustersResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -110,7 +125,18 @@ func (s gpuClusterService) Filter(ctx context.Context, request *v1alpha1.ListGpu
 	}
 }
 
-func (s gpuClusterService) Create(ctx context.Context, request *v1alpha1.CreateGpuClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s gpuClusterService) Create(ctx context.Context, request *v1alpha1.CreateGpuClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -126,7 +152,10 @@ func (s gpuClusterService) Create(ctx context.Context, request *v1alpha1.CreateG
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s gpuClusterService) Update(ctx context.Context, request *v1alpha1.UpdateGpuClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s gpuClusterService) Update(ctx context.Context, request *v1alpha1.UpdateGpuClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -146,7 +175,10 @@ func (s gpuClusterService) Update(ctx context.Context, request *v1alpha1.UpdateG
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s gpuClusterService) Delete(ctx context.Context, request *v1alpha1.DeleteGpuClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s gpuClusterService) Delete(ctx context.Context, request *v1alpha1.DeleteGpuClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -162,7 +194,10 @@ func (s gpuClusterService) Delete(ctx context.Context, request *v1alpha1.DeleteG
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s gpuClusterService) ListOperationsByParent(ctx context.Context, request *v1alpha11.ListOperationsByParentRequest, opts ...grpc.CallOption) (*v1alpha11.ListOperationsResponse, error) {
+func (s gpuClusterService) ListOperationsByParent(ctx context.Context, request *v1alpha11.ListOperationsByParentRequest, opts ...grpc.CallOption) (
+	*v1alpha11.ListOperationsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err

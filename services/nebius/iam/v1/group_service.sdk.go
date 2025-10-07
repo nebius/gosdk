@@ -38,16 +38,27 @@ type GroupService interface {
 }
 
 type groupService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewGroupService(sdk iface.SDK) GroupService {
 	return groupService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s groupService) Create(ctx context.Context, request *v1.CreateGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s groupService) Create(ctx context.Context, request *v1.CreateGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, GroupServiceID)
 	if err != nil {
 		return nil, err
@@ -63,7 +74,10 @@ func (s groupService) Create(ctx context.Context, request *v1.CreateGroupRequest
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s groupService) Get(ctx context.Context, request *v1.GetGroupRequest, opts ...grpc.CallOption) (*v1.Group, error) {
+func (s groupService) Get(ctx context.Context, request *v1.GetGroupRequest, opts ...grpc.CallOption) (
+	*v1.Group,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GroupServiceID)
 	if err != nil {
 		return nil, err
@@ -75,7 +89,13 @@ func (s groupService) Get(ctx context.Context, request *v1.GetGroupRequest, opts
 	return v1.NewGroupServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s groupService) GetByName(ctx context.Context, request *v1.GetGroupByNameRequest, opts ...grpc.CallOption) (*v1.Group, error) {
+func (s groupService) GetByName(ctx context.Context, request *v1.GetGroupByNameRequest, opts ...grpc.CallOption) (
+	*v1.Group,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, GroupServiceID)
 	if err != nil {
 		return nil, err
@@ -87,7 +107,13 @@ func (s groupService) GetByName(ctx context.Context, request *v1.GetGroupByNameR
 	return v1.NewGroupServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s groupService) List(ctx context.Context, request *v1.ListGroupsRequest, opts ...grpc.CallOption) (*v1.ListGroupsResponse, error) {
+func (s groupService) List(ctx context.Context, request *v1.ListGroupsRequest, opts ...grpc.CallOption) (
+	*v1.ListGroupsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, GroupServiceID)
 	if err != nil {
 		return nil, err
@@ -124,7 +150,10 @@ func (s groupService) Filter(ctx context.Context, request *v1.ListGroupsRequest,
 	}
 }
 
-func (s groupService) Delete(ctx context.Context, request *v1.DeleteGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s groupService) Delete(ctx context.Context, request *v1.DeleteGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, GroupServiceID)
 	if err != nil {
 		return nil, err
@@ -140,7 +169,10 @@ func (s groupService) Delete(ctx context.Context, request *v1.DeleteGroupRequest
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s groupService) Update(ctx context.Context, request *v1.UpdateGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s groupService) Update(ctx context.Context, request *v1.UpdateGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

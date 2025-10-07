@@ -37,16 +37,19 @@ type JobService interface {
 }
 
 type jobService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewJobService(sdk iface.SDK) JobService {
 	return jobService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s jobService) Get(ctx context.Context, request *v1alpha1.GetRequest, opts ...grpc.CallOption) (*v1alpha11.Job, error) {
+func (s jobService) Get(ctx context.Context, request *v1alpha1.GetRequest, opts ...grpc.CallOption) (
+	*v1alpha11.Job,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err
@@ -58,7 +61,13 @@ func (s jobService) Get(ctx context.Context, request *v1alpha1.GetRequest, opts 
 	return v1alpha11.NewJobServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s jobService) List(ctx context.Context, request *v1alpha1.ListRequest, opts ...grpc.CallOption) (*v1alpha11.ListJobsResponse, error) {
+func (s jobService) List(ctx context.Context, request *v1alpha1.ListRequest, opts ...grpc.CallOption) (
+	*v1alpha11.ListJobsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err
@@ -95,7 +104,18 @@ func (s jobService) Filter(ctx context.Context, request *v1alpha1.ListRequest, o
 	}
 }
 
-func (s jobService) Create(ctx context.Context, request *v1alpha11.CreateJobRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s jobService) Create(ctx context.Context, request *v1alpha11.CreateJobRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err
@@ -111,7 +131,10 @@ func (s jobService) Create(ctx context.Context, request *v1alpha11.CreateJobRequ
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s jobService) Delete(ctx context.Context, request *v1alpha1.DeleteRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s jobService) Delete(ctx context.Context, request *v1alpha1.DeleteRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err
@@ -127,7 +150,10 @@ func (s jobService) Delete(ctx context.Context, request *v1alpha1.DeleteRequest,
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s jobService) Cancel(ctx context.Context, request *v1alpha11.CancelJobRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s jobService) Cancel(ctx context.Context, request *v1alpha11.CancelJobRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err

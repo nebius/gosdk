@@ -29,16 +29,19 @@ type TenantUserAccountWithAttributesService interface {
 }
 
 type tenantUserAccountWithAttributesService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewTenantUserAccountWithAttributesService(sdk iface.SDK) TenantUserAccountWithAttributesService {
 	return tenantUserAccountWithAttributesService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s tenantUserAccountWithAttributesService) Get(ctx context.Context, request *v1.GetTenantUserAccountWithAttributesRequest, opts ...grpc.CallOption) (*v1.TenantUserAccountWithAttributes, error) {
+func (s tenantUserAccountWithAttributesService) Get(ctx context.Context, request *v1.GetTenantUserAccountWithAttributesRequest, opts ...grpc.CallOption) (
+	*v1.TenantUserAccountWithAttributes,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountWithAttributesServiceID)
 	if err != nil {
 		return nil, err
@@ -50,7 +53,13 @@ func (s tenantUserAccountWithAttributesService) Get(ctx context.Context, request
 	return v1.NewTenantUserAccountWithAttributesServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s tenantUserAccountWithAttributesService) List(ctx context.Context, request *v1.ListTenantUserAccountsWithAttributesRequest, opts ...grpc.CallOption) (*v1.ListTenantUserAccountsWithAttributesResponse, error) {
+func (s tenantUserAccountWithAttributesService) List(ctx context.Context, request *v1.ListTenantUserAccountsWithAttributesRequest, opts ...grpc.CallOption) (
+	*v1.ListTenantUserAccountsWithAttributesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountWithAttributesServiceID)
 	if err != nil {
 		return nil, err

@@ -215,7 +215,7 @@ func selectAuth( //nolint:gocognit
 				)
 			}
 			if selected {
-				return nil, fmt.Errorf("ambigious selectors %s and %s", name, o.Name)
+				return nil, fmt.Errorf("ambiguous selectors %s and %s", name, o.Name)
 			}
 			auth = a
 			selected = true

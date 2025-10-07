@@ -30,16 +30,22 @@ type QuotaAllowanceService interface {
 }
 
 type quotaAllowanceService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewQuotaAllowanceService(sdk iface.SDK) QuotaAllowanceService {
 	return quotaAllowanceService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s quotaAllowanceService) List(ctx context.Context, request *v1.ListQuotaAllowancesRequest, opts ...grpc.CallOption) (*v1.ListQuotaAllowancesResponse, error) {
+func (s quotaAllowanceService) List(ctx context.Context, request *v1.ListQuotaAllowancesRequest, opts ...grpc.CallOption) (
+	*v1.ListQuotaAllowancesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
 		return nil, err
@@ -76,7 +82,10 @@ func (s quotaAllowanceService) Filter(ctx context.Context, request *v1.ListQuota
 	}
 }
 
-func (s quotaAllowanceService) Get(ctx context.Context, request *v1.GetQuotaAllowanceRequest, opts ...grpc.CallOption) (*v1.QuotaAllowance, error) {
+func (s quotaAllowanceService) Get(ctx context.Context, request *v1.GetQuotaAllowanceRequest, opts ...grpc.CallOption) (
+	*v1.QuotaAllowance,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
 		return nil, err
@@ -88,7 +97,13 @@ func (s quotaAllowanceService) Get(ctx context.Context, request *v1.GetQuotaAllo
 	return v1.NewQuotaAllowanceServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s quotaAllowanceService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (*v1.QuotaAllowance, error) {
+func (s quotaAllowanceService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.QuotaAllowance,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
 		return nil, err

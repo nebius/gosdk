@@ -40,16 +40,19 @@ type DiskService interface {
 }
 
 type diskService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewDiskService(sdk iface.SDK) DiskService {
 	return diskService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s diskService) Get(ctx context.Context, request *v1alpha1.GetDiskRequest, opts ...grpc.CallOption) (*v1alpha1.Disk, error) {
+func (s diskService) Get(ctx context.Context, request *v1alpha1.GetDiskRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Disk,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -61,7 +64,13 @@ func (s diskService) Get(ctx context.Context, request *v1alpha1.GetDiskRequest, 
 	return v1alpha1.NewDiskServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s diskService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (*v1alpha1.Disk, error) {
+func (s diskService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Disk,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -73,7 +82,13 @@ func (s diskService) GetByName(ctx context.Context, request *v1.GetByNameRequest
 	return v1alpha1.NewDiskServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s diskService) List(ctx context.Context, request *v1alpha1.ListDisksRequest, opts ...grpc.CallOption) (*v1alpha1.ListDisksResponse, error) {
+func (s diskService) List(ctx context.Context, request *v1alpha1.ListDisksRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListDisksResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -110,7 +125,18 @@ func (s diskService) Filter(ctx context.Context, request *v1alpha1.ListDisksRequ
 	}
 }
 
-func (s diskService) Create(ctx context.Context, request *v1alpha1.CreateDiskRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s diskService) Create(ctx context.Context, request *v1alpha1.CreateDiskRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -126,7 +152,10 @@ func (s diskService) Create(ctx context.Context, request *v1alpha1.CreateDiskReq
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s diskService) Update(ctx context.Context, request *v1alpha1.UpdateDiskRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s diskService) Update(ctx context.Context, request *v1alpha1.UpdateDiskRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -146,7 +175,10 @@ func (s diskService) Update(ctx context.Context, request *v1alpha1.UpdateDiskReq
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s diskService) Delete(ctx context.Context, request *v1alpha1.DeleteDiskRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s diskService) Delete(ctx context.Context, request *v1alpha1.DeleteDiskRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -162,7 +194,10 @@ func (s diskService) Delete(ctx context.Context, request *v1alpha1.DeleteDiskReq
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s diskService) ListOperationsByParent(ctx context.Context, request *v1alpha11.ListOperationsByParentRequest, opts ...grpc.CallOption) (*v1alpha11.ListOperationsResponse, error) {
+func (s diskService) ListOperationsByParent(ctx context.Context, request *v1alpha11.ListOperationsByParentRequest, opts ...grpc.CallOption) (
+	*v1alpha11.ListOperationsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err

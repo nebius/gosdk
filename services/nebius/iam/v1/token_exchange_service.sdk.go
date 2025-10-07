@@ -25,16 +25,19 @@ type TokenExchangeService interface {
 }
 
 type tokenExchangeService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewTokenExchangeService(sdk iface.SDK) TokenExchangeService {
 	return tokenExchangeService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s tokenExchangeService) Exchange(ctx context.Context, request *v1.ExchangeTokenRequest, opts ...grpc.CallOption) (*v1.CreateTokenResponse, error) {
+func (s tokenExchangeService) Exchange(ctx context.Context, request *v1.ExchangeTokenRequest, opts ...grpc.CallOption) (
+	*v1.CreateTokenResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TokenExchangeServiceID)
 	if err != nil {
 		return nil, err

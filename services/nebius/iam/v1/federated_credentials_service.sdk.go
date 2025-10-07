@@ -38,16 +38,19 @@ type FederatedCredentialsService interface {
 }
 
 type federatedCredentialsService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewFederatedCredentialsService(sdk iface.SDK) FederatedCredentialsService {
 	return federatedCredentialsService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s federatedCredentialsService) Get(ctx context.Context, request *v1.GetFederatedCredentialsRequest, opts ...grpc.CallOption) (*v1.FederatedCredentials, error) {
+func (s federatedCredentialsService) Get(ctx context.Context, request *v1.GetFederatedCredentialsRequest, opts ...grpc.CallOption) (
+	*v1.FederatedCredentials,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, FederatedCredentialsServiceID)
 	if err != nil {
 		return nil, err
@@ -59,7 +62,13 @@ func (s federatedCredentialsService) Get(ctx context.Context, request *v1.GetFed
 	return v1.NewFederatedCredentialsServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s federatedCredentialsService) GetByName(ctx context.Context, request *v1.GetByNameFederatedCredentialsRequest, opts ...grpc.CallOption) (*v1.FederatedCredentials, error) {
+func (s federatedCredentialsService) GetByName(ctx context.Context, request *v1.GetByNameFederatedCredentialsRequest, opts ...grpc.CallOption) (
+	*v1.FederatedCredentials,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, FederatedCredentialsServiceID)
 	if err != nil {
 		return nil, err
@@ -71,7 +80,13 @@ func (s federatedCredentialsService) GetByName(ctx context.Context, request *v1.
 	return v1.NewFederatedCredentialsServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s federatedCredentialsService) List(ctx context.Context, request *v1.ListFederatedCredentialsRequest, opts ...grpc.CallOption) (*v1.ListFederatedCredentialsResponse, error) {
+func (s federatedCredentialsService) List(ctx context.Context, request *v1.ListFederatedCredentialsRequest, opts ...grpc.CallOption) (
+	*v1.ListFederatedCredentialsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, FederatedCredentialsServiceID)
 	if err != nil {
 		return nil, err
@@ -108,7 +123,18 @@ func (s federatedCredentialsService) Filter(ctx context.Context, request *v1.Lis
 	}
 }
 
-func (s federatedCredentialsService) Create(ctx context.Context, request *v1.CreateFederatedCredentialsRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federatedCredentialsService) Create(ctx context.Context, request *v1.CreateFederatedCredentialsRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, FederatedCredentialsServiceID)
 	if err != nil {
 		return nil, err
@@ -124,7 +150,10 @@ func (s federatedCredentialsService) Create(ctx context.Context, request *v1.Cre
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s federatedCredentialsService) Update(ctx context.Context, request *v1.UpdateFederatedCredentialsRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federatedCredentialsService) Update(ctx context.Context, request *v1.UpdateFederatedCredentialsRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -144,7 +173,10 @@ func (s federatedCredentialsService) Update(ctx context.Context, request *v1.Upd
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s federatedCredentialsService) Delete(ctx context.Context, request *v1.DeleteFederatedCredentialsRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s federatedCredentialsService) Delete(ctx context.Context, request *v1.DeleteFederatedCredentialsRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, FederatedCredentialsServiceID)
 	if err != nil {
 		return nil, err

@@ -247,7 +247,13 @@ func openBrowser(ctx context.Context, logger *slog.Logger, url string) <-chan er
 	go func() {
 		output, err := cmd.CombinedOutput()
 		if err != nil {
+			logger.ErrorContext(ctx, "open browser command failed",
+				slog.String("output", string(output)),
+				slog.String("error", err.Error()),
+			)
 			ch <- errors.Join(err, errors.New(string(output)))
+		} else {
+			logger.DebugContext(ctx, "open browser command completed", slog.String("output", string(output)))
 		}
 	}()
 

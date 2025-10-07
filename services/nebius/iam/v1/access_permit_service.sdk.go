@@ -35,16 +35,27 @@ type AccessPermitService interface {
 }
 
 type accessPermitService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewAccessPermitService(sdk iface.SDK) AccessPermitService {
 	return accessPermitService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s accessPermitService) Create(ctx context.Context, request *v1.CreateAccessPermitRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s accessPermitService) Create(ctx context.Context, request *v1.CreateAccessPermitRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, AccessPermitServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +71,13 @@ func (s accessPermitService) Create(ctx context.Context, request *v1.CreateAcces
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s accessPermitService) List(ctx context.Context, request *v1.ListAccessPermitRequest, opts ...grpc.CallOption) (*v1.ListAccessPermitResponse, error) {
+func (s accessPermitService) List(ctx context.Context, request *v1.ListAccessPermitRequest, opts ...grpc.CallOption) (
+	*v1.ListAccessPermitResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, AccessPermitServiceID)
 	if err != nil {
 		return nil, err
@@ -97,7 +114,10 @@ func (s accessPermitService) Filter(ctx context.Context, request *v1.ListAccessP
 	}
 }
 
-func (s accessPermitService) Delete(ctx context.Context, request *v1.DeleteAccessPermitRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s accessPermitService) Delete(ctx context.Context, request *v1.DeleteAccessPermitRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessPermitServiceID)
 	if err != nil {
 		return nil, err
@@ -113,7 +133,10 @@ func (s accessPermitService) Delete(ctx context.Context, request *v1.DeleteAcces
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s accessPermitService) Get(ctx context.Context, request *v1.GetAccessPermitRequest, opts ...grpc.CallOption) (*v1.AccessPermit, error) {
+func (s accessPermitService) Get(ctx context.Context, request *v1.GetAccessPermitRequest, opts ...grpc.CallOption) (
+	*v1.AccessPermit,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessPermitServiceID)
 	if err != nil {
 		return nil, err

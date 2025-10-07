@@ -142,7 +142,7 @@ type ConnectionPoolerConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Mode that the connection pooler is working in.
 	PoolingMode ConnectionPoolerConfig_PoolingMode `protobuf:"varint,1,opt,name=pooling_mode,json=poolingMode,proto3,enum=nebius.msp.postgresql.v1alpha1.ConnectionPoolerConfig_PoolingMode" json:"pooling_mode,omitempty"`
-	// Maximum number of connections in the pool for a single database.
+	// Maximum number of connections in the pool for a single user/database pair.
 	MaxPoolSize   *int64 `protobuf:"varint,2,opt,name=max_pool_size,json=maxPoolSize,proto3,oneof" json:"max_pool_size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

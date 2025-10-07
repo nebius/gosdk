@@ -38,16 +38,27 @@ type ServiceAccountService interface {
 }
 
 type serviceAccountService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewServiceAccountService(sdk iface.SDK) ServiceAccountService {
 	return serviceAccountService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s serviceAccountService) Create(ctx context.Context, request *v1.CreateServiceAccountRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s serviceAccountService) Create(ctx context.Context, request *v1.CreateServiceAccountRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, ServiceAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -63,7 +74,10 @@ func (s serviceAccountService) Create(ctx context.Context, request *v1.CreateSer
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s serviceAccountService) Get(ctx context.Context, request *v1.GetServiceAccountRequest, opts ...grpc.CallOption) (*v1.ServiceAccount, error) {
+func (s serviceAccountService) Get(ctx context.Context, request *v1.GetServiceAccountRequest, opts ...grpc.CallOption) (
+	*v1.ServiceAccount,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ServiceAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -75,7 +89,13 @@ func (s serviceAccountService) Get(ctx context.Context, request *v1.GetServiceAc
 	return v1.NewServiceAccountServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s serviceAccountService) GetByName(ctx context.Context, request *v1.GetServiceAccountByNameRequest, opts ...grpc.CallOption) (*v1.ServiceAccount, error) {
+func (s serviceAccountService) GetByName(ctx context.Context, request *v1.GetServiceAccountByNameRequest, opts ...grpc.CallOption) (
+	*v1.ServiceAccount,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ServiceAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -87,7 +107,13 @@ func (s serviceAccountService) GetByName(ctx context.Context, request *v1.GetSer
 	return v1.NewServiceAccountServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s serviceAccountService) List(ctx context.Context, request *v1.ListServiceAccountRequest, opts ...grpc.CallOption) (*v1.ListServiceAccountResponse, error) {
+func (s serviceAccountService) List(ctx context.Context, request *v1.ListServiceAccountRequest, opts ...grpc.CallOption) (
+	*v1.ListServiceAccountResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ServiceAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -124,7 +150,10 @@ func (s serviceAccountService) Filter(ctx context.Context, request *v1.ListServi
 	}
 }
 
-func (s serviceAccountService) Update(ctx context.Context, request *v1.UpdateServiceAccountRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s serviceAccountService) Update(ctx context.Context, request *v1.UpdateServiceAccountRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -144,7 +173,10 @@ func (s serviceAccountService) Update(ctx context.Context, request *v1.UpdateSer
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s serviceAccountService) Delete(ctx context.Context, request *v1.DeleteServiceAccountRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s serviceAccountService) Delete(ctx context.Context, request *v1.DeleteServiceAccountRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ServiceAccountServiceID)
 	if err != nil {
 		return nil, err

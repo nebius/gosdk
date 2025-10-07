@@ -39,16 +39,27 @@ type SecretService interface {
 }
 
 type secretService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewSecretService(sdk iface.SDK) SecretService {
 	return secretService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s secretService) Create(ctx context.Context, request *v1.CreateSecretRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s secretService) Create(ctx context.Context, request *v1.CreateSecretRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, SecretServiceID)
 	if err != nil {
 		return nil, err
@@ -64,7 +75,10 @@ func (s secretService) Create(ctx context.Context, request *v1.CreateSecretReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s secretService) Update(ctx context.Context, request *v1.UpdateSecretRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s secretService) Update(ctx context.Context, request *v1.UpdateSecretRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -84,7 +98,10 @@ func (s secretService) Update(ctx context.Context, request *v1.UpdateSecretReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s secretService) Get(ctx context.Context, request *v1.GetSecretRequest, opts ...grpc.CallOption) (*v1.Secret, error) {
+func (s secretService) Get(ctx context.Context, request *v1.GetSecretRequest, opts ...grpc.CallOption) (
+	*v1.Secret,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SecretServiceID)
 	if err != nil {
 		return nil, err
@@ -96,7 +113,13 @@ func (s secretService) Get(ctx context.Context, request *v1.GetSecretRequest, op
 	return v1.NewSecretServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s secretService) GetByName(ctx context.Context, request *v1.GetSecretByNameRequest, opts ...grpc.CallOption) (*v1.Secret, error) {
+func (s secretService) GetByName(ctx context.Context, request *v1.GetSecretByNameRequest, opts ...grpc.CallOption) (
+	*v1.Secret,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, SecretServiceID)
 	if err != nil {
 		return nil, err
@@ -108,7 +131,13 @@ func (s secretService) GetByName(ctx context.Context, request *v1.GetSecretByNam
 	return v1.NewSecretServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s secretService) List(ctx context.Context, request *v1.ListSecretsRequest, opts ...grpc.CallOption) (*v1.ListSecretsResponse, error) {
+func (s secretService) List(ctx context.Context, request *v1.ListSecretsRequest, opts ...grpc.CallOption) (
+	*v1.ListSecretsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, SecretServiceID)
 	if err != nil {
 		return nil, err
@@ -145,7 +174,10 @@ func (s secretService) Filter(ctx context.Context, request *v1.ListSecretsReques
 	}
 }
 
-func (s secretService) Delete(ctx context.Context, request *v1.DeleteSecretRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s secretService) Delete(ctx context.Context, request *v1.DeleteSecretRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SecretServiceID)
 	if err != nil {
 		return nil, err
@@ -161,7 +193,10 @@ func (s secretService) Delete(ctx context.Context, request *v1.DeleteSecretReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s secretService) Undelete(ctx context.Context, request *v1.UndeleteSecretRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s secretService) Undelete(ctx context.Context, request *v1.UndeleteSecretRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SecretServiceID)
 	if err != nil {
 		return nil, err

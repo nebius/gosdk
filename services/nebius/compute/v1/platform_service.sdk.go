@@ -30,16 +30,22 @@ type PlatformService interface {
 }
 
 type platformService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewPlatformService(sdk iface.SDK) PlatformService {
 	return platformService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s platformService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (*v11.Platform, error) {
+func (s platformService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (
+	*v11.Platform,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, PlatformServiceID)
 	if err != nil {
 		return nil, err
@@ -51,7 +57,13 @@ func (s platformService) GetByName(ctx context.Context, request *v1.GetByNameReq
 	return v11.NewPlatformServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s platformService) List(ctx context.Context, request *v11.ListPlatformsRequest, opts ...grpc.CallOption) (*v11.ListPlatformsResponse, error) {
+func (s platformService) List(ctx context.Context, request *v11.ListPlatformsRequest, opts ...grpc.CallOption) (
+	*v11.ListPlatformsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, PlatformServiceID)
 	if err != nil {
 		return nil, err

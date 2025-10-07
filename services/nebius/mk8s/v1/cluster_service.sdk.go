@@ -39,16 +39,19 @@ type ClusterService interface {
 }
 
 type clusterService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewClusterService(sdk iface.SDK) ClusterService {
 	return clusterService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s clusterService) Get(ctx context.Context, request *v1.GetClusterRequest, opts ...grpc.CallOption) (*v1.Cluster, error) {
+func (s clusterService) Get(ctx context.Context, request *v1.GetClusterRequest, opts ...grpc.CallOption) (
+	*v1.Cluster,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s clusterService) Get(ctx context.Context, request *v1.GetClusterRequest, 
 	return v1.NewClusterServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s clusterService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (*v1.Cluster, error) {
+func (s clusterService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.Cluster,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s clusterService) GetByName(ctx context.Context, request *v11.GetByNameReq
 	return v1.NewClusterServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s clusterService) List(ctx context.Context, request *v1.ListClustersRequest, opts ...grpc.CallOption) (*v1.ListClustersResponse, error) {
+func (s clusterService) List(ctx context.Context, request *v1.ListClustersRequest, opts ...grpc.CallOption) (
+	*v1.ListClustersResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,18 @@ func (s clusterService) Filter(ctx context.Context, request *v1.ListClustersRequ
 	}
 }
 
-func (s clusterService) Create(ctx context.Context, request *v1.CreateClusterRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s clusterService) Create(ctx context.Context, request *v1.CreateClusterRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -125,7 +151,10 @@ func (s clusterService) Create(ctx context.Context, request *v1.CreateClusterReq
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) Update(ctx context.Context, request *v1.UpdateClusterRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s clusterService) Update(ctx context.Context, request *v1.UpdateClusterRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -145,7 +174,10 @@ func (s clusterService) Update(ctx context.Context, request *v1.UpdateClusterReq
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) Delete(ctx context.Context, request *v1.DeleteClusterRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s clusterService) Delete(ctx context.Context, request *v1.DeleteClusterRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -161,7 +193,10 @@ func (s clusterService) Delete(ctx context.Context, request *v1.DeleteClusterReq
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) ListControlPlaneVersions(ctx context.Context, request *v1.ListClusterControlPlaneVersionsRequest, opts ...grpc.CallOption) (*v1.ListClusterControlPlaneVersionsResponse, error) {
+func (s clusterService) ListControlPlaneVersions(ctx context.Context, request *v1.ListClusterControlPlaneVersionsRequest, opts ...grpc.CallOption) (
+	*v1.ListClusterControlPlaneVersionsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err

@@ -39,16 +39,19 @@ type NodeGroupService interface {
 }
 
 type nodeGroupService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewNodeGroupService(sdk iface.SDK) NodeGroupService {
 	return nodeGroupService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s nodeGroupService) Get(ctx context.Context, request *v1.GetNodeGroupRequest, opts ...grpc.CallOption) (*v1.NodeGroup, error) {
+func (s nodeGroupService) Get(ctx context.Context, request *v1.GetNodeGroupRequest, opts ...grpc.CallOption) (
+	*v1.NodeGroup,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s nodeGroupService) Get(ctx context.Context, request *v1.GetNodeGroupReque
 	return v1.NewNodeGroupServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s nodeGroupService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (*v1.NodeGroup, error) {
+func (s nodeGroupService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.NodeGroup,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s nodeGroupService) GetByName(ctx context.Context, request *v11.GetByNameR
 	return v1.NewNodeGroupServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s nodeGroupService) List(ctx context.Context, request *v1.ListNodeGroupsRequest, opts ...grpc.CallOption) (*v1.ListNodeGroupsResponse, error) {
+func (s nodeGroupService) List(ctx context.Context, request *v1.ListNodeGroupsRequest, opts ...grpc.CallOption) (
+	*v1.ListNodeGroupsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,18 @@ func (s nodeGroupService) Filter(ctx context.Context, request *v1.ListNodeGroups
 	}
 }
 
-func (s nodeGroupService) Create(ctx context.Context, request *v1.CreateNodeGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s nodeGroupService) Create(ctx context.Context, request *v1.CreateNodeGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -125,7 +151,10 @@ func (s nodeGroupService) Create(ctx context.Context, request *v1.CreateNodeGrou
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s nodeGroupService) Update(ctx context.Context, request *v1.UpdateNodeGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s nodeGroupService) Update(ctx context.Context, request *v1.UpdateNodeGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -145,7 +174,10 @@ func (s nodeGroupService) Update(ctx context.Context, request *v1.UpdateNodeGrou
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s nodeGroupService) Delete(ctx context.Context, request *v1.DeleteNodeGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s nodeGroupService) Delete(ctx context.Context, request *v1.DeleteNodeGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -161,7 +193,10 @@ func (s nodeGroupService) Delete(ctx context.Context, request *v1.DeleteNodeGrou
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s nodeGroupService) Upgrade(ctx context.Context, request *v1.UpgradeNodeGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s nodeGroupService) Upgrade(ctx context.Context, request *v1.UpgradeNodeGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err

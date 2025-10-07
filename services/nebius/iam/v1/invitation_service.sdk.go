@@ -38,16 +38,27 @@ type InvitationService interface {
 }
 
 type invitationService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewInvitationService(sdk iface.SDK) InvitationService {
 	return invitationService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s invitationService) Create(ctx context.Context, request *v1.CreateInvitationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s invitationService) Create(ctx context.Context, request *v1.CreateInvitationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, InvitationServiceID)
 	if err != nil {
 		return nil, err
@@ -63,7 +74,10 @@ func (s invitationService) Create(ctx context.Context, request *v1.CreateInvitat
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s invitationService) Get(ctx context.Context, request *v1.GetInvitationRequest, opts ...grpc.CallOption) (*v1.Invitation, error) {
+func (s invitationService) Get(ctx context.Context, request *v1.GetInvitationRequest, opts ...grpc.CallOption) (
+	*v1.Invitation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, InvitationServiceID)
 	if err != nil {
 		return nil, err
@@ -75,7 +89,13 @@ func (s invitationService) Get(ctx context.Context, request *v1.GetInvitationReq
 	return v1.NewInvitationServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s invitationService) List(ctx context.Context, request *v1.ListInvitationsRequest, opts ...grpc.CallOption) (*v1.ListInvitationsResponse, error) {
+func (s invitationService) List(ctx context.Context, request *v1.ListInvitationsRequest, opts ...grpc.CallOption) (
+	*v1.ListInvitationsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, InvitationServiceID)
 	if err != nil {
 		return nil, err
@@ -112,7 +132,10 @@ func (s invitationService) Filter(ctx context.Context, request *v1.ListInvitatio
 	}
 }
 
-func (s invitationService) Delete(ctx context.Context, request *v1.DeleteInvitationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s invitationService) Delete(ctx context.Context, request *v1.DeleteInvitationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, InvitationServiceID)
 	if err != nil {
 		return nil, err
@@ -128,7 +151,10 @@ func (s invitationService) Delete(ctx context.Context, request *v1.DeleteInvitat
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s invitationService) Update(ctx context.Context, request *v1.UpdateInvitationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s invitationService) Update(ctx context.Context, request *v1.UpdateInvitationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -148,7 +174,10 @@ func (s invitationService) Update(ctx context.Context, request *v1.UpdateInvitat
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s invitationService) Resend(ctx context.Context, request *v1.ResendInvitationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s invitationService) Resend(ctx context.Context, request *v1.ResendInvitationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, InvitationServiceID)
 	if err != nil {
 		return nil, err

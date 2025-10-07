@@ -38,16 +38,19 @@ type RouteService interface {
 }
 
 type routeService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewRouteService(sdk iface.SDK) RouteService {
 	return routeService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s routeService) Get(ctx context.Context, request *v1.GetRouteRequest, opts ...grpc.CallOption) (*v1.Route, error) {
+func (s routeService) Get(ctx context.Context, request *v1.GetRouteRequest, opts ...grpc.CallOption) (
+	*v1.Route,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
 	if err != nil {
 		return nil, err
@@ -59,7 +62,13 @@ func (s routeService) Get(ctx context.Context, request *v1.GetRouteRequest, opts
 	return v1.NewRouteServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s routeService) GetByName(ctx context.Context, request *v1.GetRouteByNameRequest, opts ...grpc.CallOption) (*v1.Route, error) {
+func (s routeService) GetByName(ctx context.Context, request *v1.GetRouteByNameRequest, opts ...grpc.CallOption) (
+	*v1.Route,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
 	if err != nil {
 		return nil, err
@@ -71,7 +80,13 @@ func (s routeService) GetByName(ctx context.Context, request *v1.GetRouteByNameR
 	return v1.NewRouteServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s routeService) List(ctx context.Context, request *v1.ListRoutesRequest, opts ...grpc.CallOption) (*v1.ListRoutesResponse, error) {
+func (s routeService) List(ctx context.Context, request *v1.ListRoutesRequest, opts ...grpc.CallOption) (
+	*v1.ListRoutesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
 	if err != nil {
 		return nil, err
@@ -108,7 +123,18 @@ func (s routeService) Filter(ctx context.Context, request *v1.ListRoutesRequest,
 	}
 }
 
-func (s routeService) Create(ctx context.Context, request *v1.CreateRouteRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s routeService) Create(ctx context.Context, request *v1.CreateRouteRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
 	if err != nil {
 		return nil, err
@@ -124,7 +150,10 @@ func (s routeService) Create(ctx context.Context, request *v1.CreateRouteRequest
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s routeService) Update(ctx context.Context, request *v1.UpdateRouteRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s routeService) Update(ctx context.Context, request *v1.UpdateRouteRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -144,7 +173,10 @@ func (s routeService) Update(ctx context.Context, request *v1.UpdateRouteRequest
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s routeService) Delete(ctx context.Context, request *v1.DeleteRouteRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s routeService) Delete(ctx context.Context, request *v1.DeleteRouteRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
 	if err != nil {
 		return nil, err

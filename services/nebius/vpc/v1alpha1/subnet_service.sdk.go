@@ -31,16 +31,19 @@ type SubnetService interface {
 }
 
 type subnetService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewSubnetService(sdk iface.SDK) SubnetService {
 	return subnetService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s subnetService) Get(ctx context.Context, request *v1alpha1.GetSubnetRequest, opts ...grpc.CallOption) (*v1alpha1.Subnet, error) {
+func (s subnetService) Get(ctx context.Context, request *v1alpha1.GetSubnetRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Subnet,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err
@@ -52,7 +55,13 @@ func (s subnetService) Get(ctx context.Context, request *v1alpha1.GetSubnetReque
 	return v1alpha1.NewSubnetServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s subnetService) GetByName(ctx context.Context, request *v1alpha1.GetSubnetByNameRequest, opts ...grpc.CallOption) (*v1alpha1.Subnet, error) {
+func (s subnetService) GetByName(ctx context.Context, request *v1alpha1.GetSubnetByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Subnet,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err
@@ -64,7 +73,13 @@ func (s subnetService) GetByName(ctx context.Context, request *v1alpha1.GetSubne
 	return v1alpha1.NewSubnetServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s subnetService) List(ctx context.Context, request *v1alpha1.ListSubnetsRequest, opts ...grpc.CallOption) (*v1alpha1.ListSubnetsResponse, error) {
+func (s subnetService) List(ctx context.Context, request *v1alpha1.ListSubnetsRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListSubnetsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err
@@ -101,7 +116,10 @@ func (s subnetService) Filter(ctx context.Context, request *v1alpha1.ListSubnets
 	}
 }
 
-func (s subnetService) ListByNetwork(ctx context.Context, request *v1alpha1.ListSubnetsByNetworkRequest, opts ...grpc.CallOption) (*v1alpha1.ListSubnetsResponse, error) {
+func (s subnetService) ListByNetwork(ctx context.Context, request *v1alpha1.ListSubnetsByNetworkRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListSubnetsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err

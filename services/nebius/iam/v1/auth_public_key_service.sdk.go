@@ -40,16 +40,27 @@ type AuthPublicKeyService interface {
 }
 
 type authPublicKeyService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewAuthPublicKeyService(sdk iface.SDK) AuthPublicKeyService {
 	return authPublicKeyService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s authPublicKeyService) Create(ctx context.Context, request *v1.CreateAuthPublicKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s authPublicKeyService) Create(ctx context.Context, request *v1.CreateAuthPublicKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -65,7 +76,10 @@ func (s authPublicKeyService) Create(ctx context.Context, request *v1.CreateAuth
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s authPublicKeyService) Get(ctx context.Context, request *v1.GetAuthPublicKeyRequest, opts ...grpc.CallOption) (*v1.AuthPublicKey, error) {
+func (s authPublicKeyService) Get(ctx context.Context, request *v1.GetAuthPublicKeyRequest, opts ...grpc.CallOption) (
+	*v1.AuthPublicKey,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -77,7 +91,13 @@ func (s authPublicKeyService) Get(ctx context.Context, request *v1.GetAuthPublic
 	return v1.NewAuthPublicKeyServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s authPublicKeyService) List(ctx context.Context, request *v1.ListAuthPublicKeyRequest, opts ...grpc.CallOption) (*v1.ListAuthPublicKeyResponse, error) {
+func (s authPublicKeyService) List(ctx context.Context, request *v1.ListAuthPublicKeyRequest, opts ...grpc.CallOption) (
+	*v1.ListAuthPublicKeyResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -114,7 +134,10 @@ func (s authPublicKeyService) Filter(ctx context.Context, request *v1.ListAuthPu
 	}
 }
 
-func (s authPublicKeyService) ListByAccount(ctx context.Context, request *v1.ListAuthPublicKeyByAccountRequest, opts ...grpc.CallOption) (*v1.ListAuthPublicKeyResponse, error) {
+func (s authPublicKeyService) ListByAccount(ctx context.Context, request *v1.ListAuthPublicKeyByAccountRequest, opts ...grpc.CallOption) (
+	*v1.ListAuthPublicKeyResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -126,7 +149,10 @@ func (s authPublicKeyService) ListByAccount(ctx context.Context, request *v1.Lis
 	return v1.NewAuthPublicKeyServiceClient(con).ListByAccount(ctx, request, opts...)
 }
 
-func (s authPublicKeyService) Update(ctx context.Context, request *v1.UpdateAuthPublicKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s authPublicKeyService) Update(ctx context.Context, request *v1.UpdateAuthPublicKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -146,7 +172,10 @@ func (s authPublicKeyService) Update(ctx context.Context, request *v1.UpdateAuth
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s authPublicKeyService) Activate(ctx context.Context, request *v1.ActivateAuthPublicKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s authPublicKeyService) Activate(ctx context.Context, request *v1.ActivateAuthPublicKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -162,7 +191,10 @@ func (s authPublicKeyService) Activate(ctx context.Context, request *v1.Activate
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s authPublicKeyService) Deactivate(ctx context.Context, request *v1.DeactivateAuthPublicKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s authPublicKeyService) Deactivate(ctx context.Context, request *v1.DeactivateAuthPublicKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -178,7 +210,10 @@ func (s authPublicKeyService) Deactivate(ctx context.Context, request *v1.Deacti
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s authPublicKeyService) Delete(ctx context.Context, request *v1.DeleteAuthPublicKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s authPublicKeyService) Delete(ctx context.Context, request *v1.DeleteAuthPublicKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
