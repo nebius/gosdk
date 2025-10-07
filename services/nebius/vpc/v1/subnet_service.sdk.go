@@ -39,16 +39,19 @@ type SubnetService interface {
 }
 
 type subnetService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewSubnetService(sdk iface.SDK) SubnetService {
 	return subnetService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s subnetService) Get(ctx context.Context, request *v1.GetSubnetRequest, opts ...grpc.CallOption) (*v1.Subnet, error) {
+func (s subnetService) Get(ctx context.Context, request *v1.GetSubnetRequest, opts ...grpc.CallOption) (
+	*v1.Subnet,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s subnetService) Get(ctx context.Context, request *v1.GetSubnetRequest, op
 	return v1.NewSubnetServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s subnetService) GetByName(ctx context.Context, request *v1.GetSubnetByNameRequest, opts ...grpc.CallOption) (*v1.Subnet, error) {
+func (s subnetService) GetByName(ctx context.Context, request *v1.GetSubnetByNameRequest, opts ...grpc.CallOption) (
+	*v1.Subnet,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s subnetService) GetByName(ctx context.Context, request *v1.GetSubnetByNam
 	return v1.NewSubnetServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s subnetService) List(ctx context.Context, request *v1.ListSubnetsRequest, opts ...grpc.CallOption) (*v1.ListSubnetsResponse, error) {
+func (s subnetService) List(ctx context.Context, request *v1.ListSubnetsRequest, opts ...grpc.CallOption) (
+	*v1.ListSubnetsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,10 @@ func (s subnetService) Filter(ctx context.Context, request *v1.ListSubnetsReques
 	}
 }
 
-func (s subnetService) ListByNetwork(ctx context.Context, request *v1.ListSubnetsByNetworkRequest, opts ...grpc.CallOption) (*v1.ListSubnetsResponse, error) {
+func (s subnetService) ListByNetwork(ctx context.Context, request *v1.ListSubnetsByNetworkRequest, opts ...grpc.CallOption) (
+	*v1.ListSubnetsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err
@@ -121,7 +139,18 @@ func (s subnetService) ListByNetwork(ctx context.Context, request *v1.ListSubnet
 	return v1.NewSubnetServiceClient(con).ListByNetwork(ctx, request, opts...)
 }
 
-func (s subnetService) Create(ctx context.Context, request *v1.CreateSubnetRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s subnetService) Create(ctx context.Context, request *v1.CreateSubnetRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err
@@ -137,7 +166,10 @@ func (s subnetService) Create(ctx context.Context, request *v1.CreateSubnetReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s subnetService) Update(ctx context.Context, request *v1.UpdateSubnetRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s subnetService) Update(ctx context.Context, request *v1.UpdateSubnetRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -157,7 +189,10 @@ func (s subnetService) Update(ctx context.Context, request *v1.UpdateSubnetReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s subnetService) Delete(ctx context.Context, request *v1.DeleteSubnetRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s subnetService) Delete(ctx context.Context, request *v1.DeleteSubnetRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
 	if err != nil {
 		return nil, err

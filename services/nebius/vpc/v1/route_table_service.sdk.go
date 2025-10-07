@@ -39,16 +39,19 @@ type RouteTableService interface {
 }
 
 type routeTableService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewRouteTableService(sdk iface.SDK) RouteTableService {
 	return routeTableService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s routeTableService) Get(ctx context.Context, request *v1.GetRouteTableRequest, opts ...grpc.CallOption) (*v1.RouteTable, error) {
+func (s routeTableService) Get(ctx context.Context, request *v1.GetRouteTableRequest, opts ...grpc.CallOption) (
+	*v1.RouteTable,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, RouteTableServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s routeTableService) Get(ctx context.Context, request *v1.GetRouteTableReq
 	return v1.NewRouteTableServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s routeTableService) GetByName(ctx context.Context, request *v1.GetRouteTableByNameRequest, opts ...grpc.CallOption) (*v1.RouteTable, error) {
+func (s routeTableService) GetByName(ctx context.Context, request *v1.GetRouteTableByNameRequest, opts ...grpc.CallOption) (
+	*v1.RouteTable,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, RouteTableServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s routeTableService) GetByName(ctx context.Context, request *v1.GetRouteTa
 	return v1.NewRouteTableServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s routeTableService) List(ctx context.Context, request *v1.ListRouteTablesRequest, opts ...grpc.CallOption) (*v1.ListRouteTablesResponse, error) {
+func (s routeTableService) List(ctx context.Context, request *v1.ListRouteTablesRequest, opts ...grpc.CallOption) (
+	*v1.ListRouteTablesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, RouteTableServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,10 @@ func (s routeTableService) Filter(ctx context.Context, request *v1.ListRouteTabl
 	}
 }
 
-func (s routeTableService) ListByNetwork(ctx context.Context, request *v1.ListRouteTablesByNetworkRequest, opts ...grpc.CallOption) (*v1.ListRouteTablesResponse, error) {
+func (s routeTableService) ListByNetwork(ctx context.Context, request *v1.ListRouteTablesByNetworkRequest, opts ...grpc.CallOption) (
+	*v1.ListRouteTablesResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, RouteTableServiceID)
 	if err != nil {
 		return nil, err
@@ -121,7 +139,18 @@ func (s routeTableService) ListByNetwork(ctx context.Context, request *v1.ListRo
 	return v1.NewRouteTableServiceClient(con).ListByNetwork(ctx, request, opts...)
 }
 
-func (s routeTableService) Create(ctx context.Context, request *v1.CreateRouteTableRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s routeTableService) Create(ctx context.Context, request *v1.CreateRouteTableRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, RouteTableServiceID)
 	if err != nil {
 		return nil, err
@@ -137,7 +166,10 @@ func (s routeTableService) Create(ctx context.Context, request *v1.CreateRouteTa
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s routeTableService) Update(ctx context.Context, request *v1.UpdateRouteTableRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s routeTableService) Update(ctx context.Context, request *v1.UpdateRouteTableRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -157,7 +189,10 @@ func (s routeTableService) Update(ctx context.Context, request *v1.UpdateRouteTa
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s routeTableService) Delete(ctx context.Context, request *v1.DeleteRouteTableRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s routeTableService) Delete(ctx context.Context, request *v1.DeleteRouteTableRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, RouteTableServiceID)
 	if err != nil {
 		return nil, err

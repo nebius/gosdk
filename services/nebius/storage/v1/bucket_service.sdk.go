@@ -40,16 +40,19 @@ type BucketService interface {
 }
 
 type bucketService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewBucketService(sdk iface.SDK) BucketService {
 	return bucketService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s bucketService) Get(ctx context.Context, request *v1.GetBucketRequest, opts ...grpc.CallOption) (*v1.Bucket, error) {
+func (s bucketService) Get(ctx context.Context, request *v1.GetBucketRequest, opts ...grpc.CallOption) (
+	*v1.Bucket,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -61,7 +64,13 @@ func (s bucketService) Get(ctx context.Context, request *v1.GetBucketRequest, op
 	return v1.NewBucketServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s bucketService) GetByName(ctx context.Context, request *v1.GetBucketByNameRequest, opts ...grpc.CallOption) (*v1.Bucket, error) {
+func (s bucketService) GetByName(ctx context.Context, request *v1.GetBucketByNameRequest, opts ...grpc.CallOption) (
+	*v1.Bucket,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -73,7 +82,13 @@ func (s bucketService) GetByName(ctx context.Context, request *v1.GetBucketByNam
 	return v1.NewBucketServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s bucketService) List(ctx context.Context, request *v1.ListBucketsRequest, opts ...grpc.CallOption) (*v1.ListBucketsResponse, error) {
+func (s bucketService) List(ctx context.Context, request *v1.ListBucketsRequest, opts ...grpc.CallOption) (
+	*v1.ListBucketsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -110,7 +125,18 @@ func (s bucketService) Filter(ctx context.Context, request *v1.ListBucketsReques
 	}
 }
 
-func (s bucketService) Create(ctx context.Context, request *v1.CreateBucketRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s bucketService) Create(ctx context.Context, request *v1.CreateBucketRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -126,7 +152,10 @@ func (s bucketService) Create(ctx context.Context, request *v1.CreateBucketReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s bucketService) Update(ctx context.Context, request *v1.UpdateBucketRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s bucketService) Update(ctx context.Context, request *v1.UpdateBucketRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -146,7 +175,10 @@ func (s bucketService) Update(ctx context.Context, request *v1.UpdateBucketReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s bucketService) Delete(ctx context.Context, request *v1.DeleteBucketRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s bucketService) Delete(ctx context.Context, request *v1.DeleteBucketRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -162,7 +194,10 @@ func (s bucketService) Delete(ctx context.Context, request *v1.DeleteBucketReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s bucketService) Purge(ctx context.Context, request *v1.PurgeBucketRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s bucketService) Purge(ctx context.Context, request *v1.PurgeBucketRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -178,7 +213,10 @@ func (s bucketService) Purge(ctx context.Context, request *v1.PurgeBucketRequest
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s bucketService) Undelete(ctx context.Context, request *v1.UndeleteBucketRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s bucketService) Undelete(ctx context.Context, request *v1.UndeleteBucketRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err

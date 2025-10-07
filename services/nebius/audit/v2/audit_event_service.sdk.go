@@ -28,16 +28,22 @@ type AuditEventService interface {
 }
 
 type auditEventService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewAuditEventService(sdk iface.SDK) AuditEventService {
 	return auditEventService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s auditEventService) List(ctx context.Context, request *v2.ListAuditEventRequest, opts ...grpc.CallOption) (*v2.ListAuditEventResponse, error) {
+func (s auditEventService) List(ctx context.Context, request *v2.ListAuditEventRequest, opts ...grpc.CallOption) (
+	*v2.ListAuditEventResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, AuditEventServiceID)
 	if err != nil {
 		return nil, err

@@ -43,16 +43,19 @@ type ClusterService interface {
 }
 
 type clusterService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewClusterService(sdk iface.SDK) ClusterService {
 	return clusterService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s clusterService) Get(ctx context.Context, request *v1alpha1.GetClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Cluster, error) {
+func (s clusterService) Get(ctx context.Context, request *v1alpha1.GetClusterRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Cluster,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -64,7 +67,13 @@ func (s clusterService) Get(ctx context.Context, request *v1alpha1.GetClusterReq
 	return v1alpha1.NewClusterServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s clusterService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (*v1alpha1.Cluster, error) {
+func (s clusterService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Cluster,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -76,7 +85,10 @@ func (s clusterService) GetByName(ctx context.Context, request *v1.GetByNameRequ
 	return v1alpha1.NewClusterServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s clusterService) GetForBackup(ctx context.Context, request *v1alpha1.GetClusterForBackupRequest, opts ...grpc.CallOption) (*v1alpha1.Cluster, error) {
+func (s clusterService) GetForBackup(ctx context.Context, request *v1alpha1.GetClusterForBackupRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Cluster,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -88,7 +100,13 @@ func (s clusterService) GetForBackup(ctx context.Context, request *v1alpha1.GetC
 	return v1alpha1.NewClusterServiceClient(con).GetForBackup(ctx, request, opts...)
 }
 
-func (s clusterService) List(ctx context.Context, request *v1alpha1.ListClustersRequest, opts ...grpc.CallOption) (*v1alpha1.ListClustersResponse, error) {
+func (s clusterService) List(ctx context.Context, request *v1alpha1.ListClustersRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListClustersResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -125,7 +143,18 @@ func (s clusterService) Filter(ctx context.Context, request *v1alpha1.ListCluste
 	}
 }
 
-func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -141,7 +170,10 @@ func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClus
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) Delete(ctx context.Context, request *v1alpha1.DeleteClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s clusterService) Delete(ctx context.Context, request *v1alpha1.DeleteClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -157,7 +189,10 @@ func (s clusterService) Delete(ctx context.Context, request *v1alpha1.DeleteClus
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) Update(ctx context.Context, request *v1alpha1.UpdateClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s clusterService) Update(ctx context.Context, request *v1alpha1.UpdateClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -177,7 +212,18 @@ func (s clusterService) Update(ctx context.Context, request *v1alpha1.UpdateClus
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) Restore(ctx context.Context, request *v1alpha1.RestoreClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s clusterService) Restore(ctx context.Context, request *v1alpha1.RestoreClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -193,7 +239,10 @@ func (s clusterService) Restore(ctx context.Context, request *v1alpha1.RestoreCl
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) Stop(ctx context.Context, request *v1alpha1.StopClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s clusterService) Stop(ctx context.Context, request *v1alpha1.StopClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -209,7 +258,10 @@ func (s clusterService) Stop(ctx context.Context, request *v1alpha1.StopClusterR
 	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
 }
 
-func (s clusterService) Start(ctx context.Context, request *v1alpha1.StartClusterRequest, opts ...grpc.CallOption) (*alphaops.Operation, error) {
+func (s clusterService) Start(ctx context.Context, request *v1alpha1.StartClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err

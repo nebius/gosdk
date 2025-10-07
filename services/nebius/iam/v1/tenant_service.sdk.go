@@ -29,16 +29,19 @@ type TenantService interface {
 }
 
 type tenantService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewTenantService(sdk iface.SDK) TenantService {
 	return tenantService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s tenantService) Get(ctx context.Context, request *v1.GetTenantRequest, opts ...grpc.CallOption) (*v1.Container, error) {
+func (s tenantService) Get(ctx context.Context, request *v1.GetTenantRequest, opts ...grpc.CallOption) (
+	*v1.Container,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err
@@ -50,7 +53,10 @@ func (s tenantService) Get(ctx context.Context, request *v1.GetTenantRequest, op
 	return v1.NewTenantServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s tenantService) List(ctx context.Context, request *v1.ListTenantsRequest, opts ...grpc.CallOption) (*v1.ListTenantsResponse, error) {
+func (s tenantService) List(ctx context.Context, request *v1.ListTenantsRequest, opts ...grpc.CallOption) (
+	*v1.ListTenantsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err

@@ -39,16 +39,19 @@ type EndpointService interface {
 }
 
 type endpointService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewEndpointService(sdk iface.SDK) EndpointService {
 	return endpointService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s endpointService) Get(ctx context.Context, request *v1alpha1.GetRequest, opts ...grpc.CallOption) (*v1alpha11.Endpoint, error) {
+func (s endpointService) Get(ctx context.Context, request *v1alpha1.GetRequest, opts ...grpc.CallOption) (
+	*v1alpha11.Endpoint,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s endpointService) Get(ctx context.Context, request *v1alpha1.GetRequest, 
 	return v1alpha11.NewEndpointServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s endpointService) GetByName(ctx context.Context, request *v1alpha1.GetByNameRequest, opts ...grpc.CallOption) (*v1alpha11.Endpoint, error) {
+func (s endpointService) GetByName(ctx context.Context, request *v1alpha1.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha11.Endpoint,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s endpointService) GetByName(ctx context.Context, request *v1alpha1.GetByN
 	return v1alpha11.NewEndpointServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s endpointService) List(ctx context.Context, request *v1alpha1.ListRequest, opts ...grpc.CallOption) (*v1alpha11.ListEndpointsResponse, error) {
+func (s endpointService) List(ctx context.Context, request *v1alpha1.ListRequest, opts ...grpc.CallOption) (
+	*v1alpha11.ListEndpointsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,18 @@ func (s endpointService) Filter(ctx context.Context, request *v1alpha1.ListReque
 	}
 }
 
-func (s endpointService) Create(ctx context.Context, request *v1alpha11.CreateEndpointRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s endpointService) Create(ctx context.Context, request *v1alpha11.CreateEndpointRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -125,7 +151,10 @@ func (s endpointService) Create(ctx context.Context, request *v1alpha11.CreateEn
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s endpointService) Delete(ctx context.Context, request *v1alpha1.DeleteRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s endpointService) Delete(ctx context.Context, request *v1alpha1.DeleteRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -141,7 +170,10 @@ func (s endpointService) Delete(ctx context.Context, request *v1alpha1.DeleteReq
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s endpointService) Start(ctx context.Context, request *v1alpha1.StartRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s endpointService) Start(ctx context.Context, request *v1alpha1.StartRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -157,7 +189,10 @@ func (s endpointService) Start(ctx context.Context, request *v1alpha1.StartReque
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s endpointService) Stop(ctx context.Context, request *v1alpha1.StopRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s endpointService) Stop(ctx context.Context, request *v1alpha1.StopRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err

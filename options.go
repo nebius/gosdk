@@ -88,6 +88,13 @@ func WithTimeout(timeout time.Duration) Option {
 	return optionTimeout(timeout)
 }
 
+// WithAuthTimeout sets overall timeout for the request plus authentication.
+// The default is 15 minutes. This timeout should be larger than the timeout set by [WithTimeout].
+// If the authentication process takes longer than this timeout, the request will fail.
+func WithAuthTimeout(timeout time.Duration) Option {
+	return optionAuthTimeout(timeout)
+}
+
 func WithUserAgentPrefix(prefix string) Option {
 	return optionUserAgentPrefix(prefix)
 }
@@ -100,8 +107,29 @@ func WithConfigReader(configReader config.ConfigInterface) Option {
 	return optionConfigReader{configReader: configReader}
 }
 
+// WithParentID sets the default parent ID for all requests. This can be overridden by
+// methods that accept a parent ID parameter.
+//
+// If no parent ID is set (the default), methods that require a parent ID will
+// return an error if the parent ID is not provided in the method call.
+//
+// It will override any previous call to [WithNoParentID] or [WithoutParentID].
 func WithParentID(parentID string) Option {
 	return optionParentID(parentID)
+}
+
+// WithNoParentID indicates that the SDK should not use a parent ID by default.
+// This is useful when the parent ID is not applicable to the service being used.
+//
+// If withParentID is set to true, it will override any previous call to [WithParentID].
+func WithNoParentID(noParentID bool) Option {
+	return optionNoParentID(noParentID)
+}
+
+// WithoutParentID is a shorthand for [WithNoParentID] with true value.
+// It will override any previous call to [WithParentID].
+func WithoutParentID() Option {
+	return optionNoParentID(true)
 }
 
 type (
@@ -118,11 +146,13 @@ type (
 	optionExplicitInit    bool
 	optionInit            func(context.Context, *SDK) error
 	optionTimeout         time.Duration
+	optionAuthTimeout     time.Duration
 	optionUserAgentPrefix string
 	optionRetryOptions    []retry.CallOption
 
 	optionConfigReader struct{ configReader config.ConfigInterface }
 	optionParentID     string
+	optionNoParentID   bool
 )
 
 func (optionCredentials) option()     {}
@@ -139,6 +169,8 @@ func (optionUserAgentPrefix) option() {}
 func (optionRetryOptions) option()    {}
 func (optionConfigReader) option()    {}
 func (optionParentID) option()        {}
+func (optionAuthTimeout) option()     {}
+func (optionNoParentID) option()      {}
 
 type NoopHandler struct{}
 

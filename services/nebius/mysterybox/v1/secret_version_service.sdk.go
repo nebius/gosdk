@@ -36,16 +36,27 @@ type SecretVersionService interface {
 }
 
 type secretVersionService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewSecretVersionService(sdk iface.SDK) SecretVersionService {
 	return secretVersionService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s secretVersionService) Create(ctx context.Context, request *v1.CreateSecretVersionRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s secretVersionService) Create(ctx context.Context, request *v1.CreateSecretVersionRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err
@@ -61,7 +72,10 @@ func (s secretVersionService) Create(ctx context.Context, request *v1.CreateSecr
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s secretVersionService) Get(ctx context.Context, request *v1.GetSecretVersionRequest, opts ...grpc.CallOption) (*v1.SecretVersion, error) {
+func (s secretVersionService) Get(ctx context.Context, request *v1.GetSecretVersionRequest, opts ...grpc.CallOption) (
+	*v1.SecretVersion,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err
@@ -73,7 +87,13 @@ func (s secretVersionService) Get(ctx context.Context, request *v1.GetSecretVers
 	return v1.NewSecretVersionServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s secretVersionService) List(ctx context.Context, request *v1.ListSecretVersionsRequest, opts ...grpc.CallOption) (*v1.ListSecretVersionsResponse, error) {
+func (s secretVersionService) List(ctx context.Context, request *v1.ListSecretVersionsRequest, opts ...grpc.CallOption) (
+	*v1.ListSecretVersionsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err
@@ -110,7 +130,10 @@ func (s secretVersionService) Filter(ctx context.Context, request *v1.ListSecret
 	}
 }
 
-func (s secretVersionService) Delete(ctx context.Context, request *v1.DeleteSecretVersionRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s secretVersionService) Delete(ctx context.Context, request *v1.DeleteSecretVersionRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err
@@ -126,7 +149,10 @@ func (s secretVersionService) Delete(ctx context.Context, request *v1.DeleteSecr
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s secretVersionService) Undelete(ctx context.Context, request *v1.UndeleteSecretVersionRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s secretVersionService) Undelete(ctx context.Context, request *v1.UndeleteSecretVersionRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err

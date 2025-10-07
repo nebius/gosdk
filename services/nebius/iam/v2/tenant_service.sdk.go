@@ -36,16 +36,19 @@ type TenantService interface {
 }
 
 type tenantService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewTenantService(sdk iface.SDK) TenantService {
 	return tenantService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s tenantService) Get(ctx context.Context, request *v2.GetTenantRequest, opts ...grpc.CallOption) (*v2.Tenant, error) {
+func (s tenantService) Get(ctx context.Context, request *v2.GetTenantRequest, opts ...grpc.CallOption) (
+	*v2.Tenant,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err
@@ -57,7 +60,13 @@ func (s tenantService) Get(ctx context.Context, request *v2.GetTenantRequest, op
 	return v2.NewTenantServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s tenantService) GetByName(ctx context.Context, request *v2.GetTenantByNameRequest, opts ...grpc.CallOption) (*v2.Tenant, error) {
+func (s tenantService) GetByName(ctx context.Context, request *v2.GetTenantByNameRequest, opts ...grpc.CallOption) (
+	*v2.Tenant,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err
@@ -69,7 +78,10 @@ func (s tenantService) GetByName(ctx context.Context, request *v2.GetTenantByNam
 	return v2.NewTenantServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s tenantService) List(ctx context.Context, request *v2.ListTenantsRequest, opts ...grpc.CallOption) (*v2.ListTenantsResponse, error) {
+func (s tenantService) List(ctx context.Context, request *v2.ListTenantsRequest, opts ...grpc.CallOption) (
+	*v2.ListTenantsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err
@@ -106,7 +118,10 @@ func (s tenantService) Filter(ctx context.Context, request *v2.ListTenantsReques
 	}
 }
 
-func (s tenantService) Update(ctx context.Context, request *v2.UpdateTenantRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s tenantService) Update(ctx context.Context, request *v2.UpdateTenantRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

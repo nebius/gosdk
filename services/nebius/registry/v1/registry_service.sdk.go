@@ -37,16 +37,19 @@ type RegistryService interface {
 }
 
 type registryService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewRegistryService(sdk iface.SDK) RegistryService {
 	return registryService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s registryService) Get(ctx context.Context, request *v1.GetRegistryRequest, opts ...grpc.CallOption) (*v1.Registry, error) {
+func (s registryService) Get(ctx context.Context, request *v1.GetRegistryRequest, opts ...grpc.CallOption) (
+	*v1.Registry,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
 		return nil, err
@@ -58,7 +61,13 @@ func (s registryService) Get(ctx context.Context, request *v1.GetRegistryRequest
 	return v1.NewRegistryServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s registryService) List(ctx context.Context, request *v1.ListRegistriesRequest, opts ...grpc.CallOption) (*v1.ListRegistriesResponse, error) {
+func (s registryService) List(ctx context.Context, request *v1.ListRegistriesRequest, opts ...grpc.CallOption) (
+	*v1.ListRegistriesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
 		return nil, err
@@ -95,7 +104,18 @@ func (s registryService) Filter(ctx context.Context, request *v1.ListRegistriesR
 	}
 }
 
-func (s registryService) Create(ctx context.Context, request *v1.CreateRegistryRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s registryService) Create(ctx context.Context, request *v1.CreateRegistryRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
 		return nil, err
@@ -111,7 +131,10 @@ func (s registryService) Create(ctx context.Context, request *v1.CreateRegistryR
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s registryService) Update(ctx context.Context, request *v1.UpdateRegistryRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s registryService) Update(ctx context.Context, request *v1.UpdateRegistryRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -131,7 +154,10 @@ func (s registryService) Update(ctx context.Context, request *v1.UpdateRegistryR
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s registryService) Delete(ctx context.Context, request *v1.DeleteRegistryRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s registryService) Delete(ctx context.Context, request *v1.DeleteRegistryRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
 		return nil, err

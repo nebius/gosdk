@@ -39,16 +39,19 @@ type DiskService interface {
 }
 
 type diskService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewDiskService(sdk iface.SDK) DiskService {
 	return diskService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s diskService) Get(ctx context.Context, request *v1.GetDiskRequest, opts ...grpc.CallOption) (*v1.Disk, error) {
+func (s diskService) Get(ctx context.Context, request *v1.GetDiskRequest, opts ...grpc.CallOption) (
+	*v1.Disk,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s diskService) Get(ctx context.Context, request *v1.GetDiskRequest, opts .
 	return v1.NewDiskServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s diskService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (*v1.Disk, error) {
+func (s diskService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.Disk,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s diskService) GetByName(ctx context.Context, request *v11.GetByNameReques
 	return v1.NewDiskServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s diskService) List(ctx context.Context, request *v1.ListDisksRequest, opts ...grpc.CallOption) (*v1.ListDisksResponse, error) {
+func (s diskService) List(ctx context.Context, request *v1.ListDisksRequest, opts ...grpc.CallOption) (
+	*v1.ListDisksResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,18 @@ func (s diskService) Filter(ctx context.Context, request *v1.ListDisksRequest, o
 	}
 }
 
-func (s diskService) Create(ctx context.Context, request *v1.CreateDiskRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s diskService) Create(ctx context.Context, request *v1.CreateDiskRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -125,7 +151,10 @@ func (s diskService) Create(ctx context.Context, request *v1.CreateDiskRequest, 
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s diskService) Update(ctx context.Context, request *v1.UpdateDiskRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s diskService) Update(ctx context.Context, request *v1.UpdateDiskRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -145,7 +174,10 @@ func (s diskService) Update(ctx context.Context, request *v1.UpdateDiskRequest, 
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s diskService) Delete(ctx context.Context, request *v1.DeleteDiskRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s diskService) Delete(ctx context.Context, request *v1.DeleteDiskRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -161,7 +193,10 @@ func (s diskService) Delete(ctx context.Context, request *v1.DeleteDiskRequest, 
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s diskService) ListOperationsByParent(ctx context.Context, request *v1.ListOperationsByParentRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+func (s diskService) ListOperationsByParent(ctx context.Context, request *v1.ListOperationsByParentRequest, opts ...grpc.CallOption) (
+	*v11.ListOperationsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err

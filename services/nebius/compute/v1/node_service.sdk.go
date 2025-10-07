@@ -25,16 +25,19 @@ type NodeService interface {
 }
 
 type nodeService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewNodeService(sdk iface.SDK) NodeService {
 	return nodeService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s nodeService) SetUnhealthy(ctx context.Context, request *v1.NodeSetUnhealthyRequest, opts ...grpc.CallOption) (*v1.NodeSetUnhealthyResponse, error) {
+func (s nodeService) SetUnhealthy(ctx context.Context, request *v1.NodeSetUnhealthyRequest, opts ...grpc.CallOption) (
+	*v1.NodeSetUnhealthyResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, NodeServiceID)
 	if err != nil {
 		return nil, err

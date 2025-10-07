@@ -25,16 +25,19 @@ type VersionService interface {
 }
 
 type versionService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewVersionService(sdk iface.SDK) VersionService {
 	return versionService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s versionService) GetVersion(ctx context.Context, request *agentmanager.GetVersionRequest, opts ...grpc.CallOption) (*agentmanager.GetVersionResponse, error) {
+func (s versionService) GetVersion(ctx context.Context, request *agentmanager.GetVersionRequest, opts ...grpc.CallOption) (
+	*agentmanager.GetVersionResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, VersionServiceID)
 	if err != nil {
 		return nil, err

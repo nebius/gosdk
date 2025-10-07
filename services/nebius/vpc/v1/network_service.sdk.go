@@ -39,16 +39,19 @@ type NetworkService interface {
 }
 
 type networkService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewNetworkService(sdk iface.SDK) NetworkService {
 	return networkService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s networkService) Get(ctx context.Context, request *v1.GetNetworkRequest, opts ...grpc.CallOption) (*v1.Network, error) {
+func (s networkService) Get(ctx context.Context, request *v1.GetNetworkRequest, opts ...grpc.CallOption) (
+	*v1.Network,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s networkService) Get(ctx context.Context, request *v1.GetNetworkRequest, 
 	return v1.NewNetworkServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s networkService) GetByName(ctx context.Context, request *v1.GetNetworkByNameRequest, opts ...grpc.CallOption) (*v1.Network, error) {
+func (s networkService) GetByName(ctx context.Context, request *v1.GetNetworkByNameRequest, opts ...grpc.CallOption) (
+	*v1.Network,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s networkService) GetByName(ctx context.Context, request *v1.GetNetworkByN
 	return v1.NewNetworkServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s networkService) List(ctx context.Context, request *v1.ListNetworksRequest, opts ...grpc.CallOption) (*v1.ListNetworksResponse, error) {
+func (s networkService) List(ctx context.Context, request *v1.ListNetworksRequest, opts ...grpc.CallOption) (
+	*v1.ListNetworksResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,18 @@ func (s networkService) Filter(ctx context.Context, request *v1.ListNetworksRequ
 	}
 }
 
-func (s networkService) Create(ctx context.Context, request *v1.CreateNetworkRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s networkService) Create(ctx context.Context, request *v1.CreateNetworkRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err
@@ -125,7 +151,18 @@ func (s networkService) Create(ctx context.Context, request *v1.CreateNetworkReq
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s networkService) CreateDefault(ctx context.Context, request *v1.CreateDefaultNetworkRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s networkService) CreateDefault(ctx context.Context, request *v1.CreateDefaultNetworkRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err
@@ -141,7 +178,10 @@ func (s networkService) CreateDefault(ctx context.Context, request *v1.CreateDef
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s networkService) Update(ctx context.Context, request *v1.UpdateNetworkRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s networkService) Update(ctx context.Context, request *v1.UpdateNetworkRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -161,7 +201,10 @@ func (s networkService) Update(ctx context.Context, request *v1.UpdateNetworkReq
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s networkService) Delete(ctx context.Context, request *v1.DeleteNetworkRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s networkService) Delete(ctx context.Context, request *v1.DeleteNetworkRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err

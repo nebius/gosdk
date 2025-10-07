@@ -41,16 +41,19 @@ type InstanceService interface {
 }
 
 type instanceService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewInstanceService(sdk iface.SDK) InstanceService {
 	return instanceService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s instanceService) Get(ctx context.Context, request *v1.GetInstanceRequest, opts ...grpc.CallOption) (*v1.Instance, error) {
+func (s instanceService) Get(ctx context.Context, request *v1.GetInstanceRequest, opts ...grpc.CallOption) (
+	*v1.Instance,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
 	if err != nil {
 		return nil, err
@@ -62,7 +65,13 @@ func (s instanceService) Get(ctx context.Context, request *v1.GetInstanceRequest
 	return v1.NewInstanceServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s instanceService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (*v1.Instance, error) {
+func (s instanceService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.Instance,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
 	if err != nil {
 		return nil, err
@@ -74,7 +83,13 @@ func (s instanceService) GetByName(ctx context.Context, request *v11.GetByNameRe
 	return v1.NewInstanceServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s instanceService) List(ctx context.Context, request *v1.ListInstancesRequest, opts ...grpc.CallOption) (*v1.ListInstancesResponse, error) {
+func (s instanceService) List(ctx context.Context, request *v1.ListInstancesRequest, opts ...grpc.CallOption) (
+	*v1.ListInstancesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
 	if err != nil {
 		return nil, err
@@ -111,7 +126,18 @@ func (s instanceService) Filter(ctx context.Context, request *v1.ListInstancesRe
 	}
 }
 
-func (s instanceService) Create(ctx context.Context, request *v1.CreateInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s instanceService) Create(ctx context.Context, request *v1.CreateInstanceRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
 	if err != nil {
 		return nil, err
@@ -127,7 +153,10 @@ func (s instanceService) Create(ctx context.Context, request *v1.CreateInstanceR
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s instanceService) Update(ctx context.Context, request *v1.UpdateInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s instanceService) Update(ctx context.Context, request *v1.UpdateInstanceRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -147,7 +176,10 @@ func (s instanceService) Update(ctx context.Context, request *v1.UpdateInstanceR
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s instanceService) Delete(ctx context.Context, request *v1.DeleteInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s instanceService) Delete(ctx context.Context, request *v1.DeleteInstanceRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
 	if err != nil {
 		return nil, err
@@ -163,7 +195,10 @@ func (s instanceService) Delete(ctx context.Context, request *v1.DeleteInstanceR
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s instanceService) Start(ctx context.Context, request *v1.StartInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s instanceService) Start(ctx context.Context, request *v1.StartInstanceRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
 	if err != nil {
 		return nil, err
@@ -179,7 +214,10 @@ func (s instanceService) Start(ctx context.Context, request *v1.StartInstanceReq
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s instanceService) Stop(ctx context.Context, request *v1.StopInstanceRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s instanceService) Stop(ctx context.Context, request *v1.StopInstanceRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
 	if err != nil {
 		return nil, err
@@ -195,7 +233,10 @@ func (s instanceService) Stop(ctx context.Context, request *v1.StopInstanceReque
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s instanceService) ListOperationsByParent(ctx context.Context, request *v1.ListOperationsByParentRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+func (s instanceService) ListOperationsByParent(ctx context.Context, request *v1.ListOperationsByParentRequest, opts ...grpc.CallOption) (
+	*v11.ListOperationsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
 	if err != nil {
 		return nil, err

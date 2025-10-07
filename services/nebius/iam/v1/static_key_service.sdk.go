@@ -38,16 +38,27 @@ type StaticKeyService interface {
 }
 
 type staticKeyService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewStaticKeyService(sdk iface.SDK) StaticKeyService {
 	return staticKeyService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s staticKeyService) Issue(ctx context.Context, request *v1.IssueStaticKeyRequest, opts ...grpc.CallOption) (*v1.IssueStaticKeyResponse, error) {
+func (s staticKeyService) Issue(ctx context.Context, request *v1.IssueStaticKeyRequest, opts ...grpc.CallOption) (
+	*v1.IssueStaticKeyResponse,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -59,7 +70,13 @@ func (s staticKeyService) Issue(ctx context.Context, request *v1.IssueStaticKeyR
 	return v1.NewStaticKeyServiceClient(con).Issue(ctx, request, opts...)
 }
 
-func (s staticKeyService) List(ctx context.Context, request *v1.ListStaticKeysRequest, opts ...grpc.CallOption) (*v1.ListStaticKeysResponse, error) {
+func (s staticKeyService) List(ctx context.Context, request *v1.ListStaticKeysRequest, opts ...grpc.CallOption) (
+	*v1.ListStaticKeysResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -96,7 +113,10 @@ func (s staticKeyService) Filter(ctx context.Context, request *v1.ListStaticKeys
 	}
 }
 
-func (s staticKeyService) Get(ctx context.Context, request *v1.GetStaticKeyRequest, opts ...grpc.CallOption) (*v1.StaticKey, error) {
+func (s staticKeyService) Get(ctx context.Context, request *v1.GetStaticKeyRequest, opts ...grpc.CallOption) (
+	*v1.StaticKey,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -108,7 +128,13 @@ func (s staticKeyService) Get(ctx context.Context, request *v1.GetStaticKeyReque
 	return v1.NewStaticKeyServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s staticKeyService) GetByName(ctx context.Context, request *v1.GetStaticKeyByNameRequest, opts ...grpc.CallOption) (*v1.StaticKey, error) {
+func (s staticKeyService) GetByName(ctx context.Context, request *v1.GetStaticKeyByNameRequest, opts ...grpc.CallOption) (
+	*v1.StaticKey,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -120,7 +146,10 @@ func (s staticKeyService) GetByName(ctx context.Context, request *v1.GetStaticKe
 	return v1.NewStaticKeyServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s staticKeyService) Delete(ctx context.Context, request *v1.DeleteStaticKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s staticKeyService) Delete(ctx context.Context, request *v1.DeleteStaticKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -136,7 +165,10 @@ func (s staticKeyService) Delete(ctx context.Context, request *v1.DeleteStaticKe
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s staticKeyService) Find(ctx context.Context, request *v1.FindStaticKeyRequest, opts ...grpc.CallOption) (*v1.FindStaticKeyResponse, error) {
+func (s staticKeyService) Find(ctx context.Context, request *v1.FindStaticKeyRequest, opts ...grpc.CallOption) (
+	*v1.FindStaticKeyResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -148,7 +180,10 @@ func (s staticKeyService) Find(ctx context.Context, request *v1.FindStaticKeyReq
 	return v1.NewStaticKeyServiceClient(con).Find(ctx, request, opts...)
 }
 
-func (s staticKeyService) Revoke(ctx context.Context, request *v1.RevokeStaticKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s staticKeyService) Revoke(ctx context.Context, request *v1.RevokeStaticKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err

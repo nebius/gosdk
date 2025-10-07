@@ -37,16 +37,27 @@ type ProjectService interface {
 }
 
 type projectService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewProjectService(sdk iface.SDK) ProjectService {
 	return projectService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s projectService) Create(ctx context.Context, request *v1.CreateProjectRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s projectService) Create(ctx context.Context, request *v1.CreateProjectRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
 	if err != nil {
 		return nil, err
@@ -62,7 +73,10 @@ func (s projectService) Create(ctx context.Context, request *v1.CreateProjectReq
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s projectService) Get(ctx context.Context, request *v1.GetProjectRequest, opts ...grpc.CallOption) (*v1.Container, error) {
+func (s projectService) Get(ctx context.Context, request *v1.GetProjectRequest, opts ...grpc.CallOption) (
+	*v1.Container,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
 	if err != nil {
 		return nil, err
@@ -74,7 +88,13 @@ func (s projectService) Get(ctx context.Context, request *v1.GetProjectRequest, 
 	return v1.NewProjectServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s projectService) GetByName(ctx context.Context, request *v1.GetProjectByNameRequest, opts ...grpc.CallOption) (*v1.Container, error) {
+func (s projectService) GetByName(ctx context.Context, request *v1.GetProjectByNameRequest, opts ...grpc.CallOption) (
+	*v1.Container,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
 	if err != nil {
 		return nil, err
@@ -86,7 +106,13 @@ func (s projectService) GetByName(ctx context.Context, request *v1.GetProjectByN
 	return v1.NewProjectServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s projectService) List(ctx context.Context, request *v1.ListProjectsRequest, opts ...grpc.CallOption) (*v1.ListProjectsResponse, error) {
+func (s projectService) List(ctx context.Context, request *v1.ListProjectsRequest, opts ...grpc.CallOption) (
+	*v1.ListProjectsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ProjectServiceID)
 	if err != nil {
 		return nil, err
@@ -123,7 +149,10 @@ func (s projectService) Filter(ctx context.Context, request *v1.ListProjectsRequ
 	}
 }
 
-func (s projectService) Update(ctx context.Context, request *v1.UpdateProjectRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s projectService) Update(ctx context.Context, request *v1.UpdateProjectRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

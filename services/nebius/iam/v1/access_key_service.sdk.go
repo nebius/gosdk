@@ -42,16 +42,27 @@ type AccessKeyService interface {
 }
 
 type accessKeyService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewAccessKeyService(sdk iface.SDK) AccessKeyService {
 	return accessKeyService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s accessKeyService) Create(ctx context.Context, request *v1.CreateAccessKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s accessKeyService) Create(ctx context.Context, request *v1.CreateAccessKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -67,7 +78,13 @@ func (s accessKeyService) Create(ctx context.Context, request *v1.CreateAccessKe
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s accessKeyService) List(ctx context.Context, request *v1.ListAccessKeysRequest, opts ...grpc.CallOption) (*v1.ListAccessKeysResponse, error) {
+func (s accessKeyService) List(ctx context.Context, request *v1.ListAccessKeysRequest, opts ...grpc.CallOption) (
+	*v1.ListAccessKeysResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -104,7 +121,10 @@ func (s accessKeyService) Filter(ctx context.Context, request *v1.ListAccessKeys
 	}
 }
 
-func (s accessKeyService) ListByAccount(ctx context.Context, request *v1.ListAccessKeysByAccountRequest, opts ...grpc.CallOption) (*v1.ListAccessKeysResponse, error) {
+func (s accessKeyService) ListByAccount(ctx context.Context, request *v1.ListAccessKeysByAccountRequest, opts ...grpc.CallOption) (
+	*v1.ListAccessKeysResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -116,7 +136,10 @@ func (s accessKeyService) ListByAccount(ctx context.Context, request *v1.ListAcc
 	return v1.NewAccessKeyServiceClient(con).ListByAccount(ctx, request, opts...)
 }
 
-func (s accessKeyService) Update(ctx context.Context, request *v1.UpdateAccessKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s accessKeyService) Update(ctx context.Context, request *v1.UpdateAccessKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -136,7 +159,10 @@ func (s accessKeyService) Update(ctx context.Context, request *v1.UpdateAccessKe
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s accessKeyService) GetById(ctx context.Context, request *v1.GetAccessKeyByIdRequest, opts ...grpc.CallOption) (*v1.AccessKey, error) {
+func (s accessKeyService) GetById(ctx context.Context, request *v1.GetAccessKeyByIdRequest, opts ...grpc.CallOption) (
+	*v1.AccessKey,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -148,7 +174,10 @@ func (s accessKeyService) GetById(ctx context.Context, request *v1.GetAccessKeyB
 	return v1.NewAccessKeyServiceClient(con).GetById(ctx, request, opts...)
 }
 
-func (s accessKeyService) GetByAwsId(ctx context.Context, request *v1.GetAccessKeyByAwsIdRequest, opts ...grpc.CallOption) (*v1.AccessKey, error) {
+func (s accessKeyService) GetByAwsId(ctx context.Context, request *v1.GetAccessKeyByAwsIdRequest, opts ...grpc.CallOption) (
+	*v1.AccessKey,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -160,7 +189,10 @@ func (s accessKeyService) GetByAwsId(ctx context.Context, request *v1.GetAccessK
 	return v1.NewAccessKeyServiceClient(con).GetByAwsId(ctx, request, opts...)
 }
 
-func (s accessKeyService) GetSecretOnce(ctx context.Context, request *v1.GetAccessKeySecretOnceRequest, opts ...grpc.CallOption) (*v1.GetAccessKeySecretOnceResponse, error) {
+func (s accessKeyService) GetSecretOnce(ctx context.Context, request *v1.GetAccessKeySecretOnceRequest, opts ...grpc.CallOption) (
+	*v1.GetAccessKeySecretOnceResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -172,7 +204,10 @@ func (s accessKeyService) GetSecretOnce(ctx context.Context, request *v1.GetAcce
 	return v1.NewAccessKeyServiceClient(con).GetSecretOnce(ctx, request, opts...)
 }
 
-func (s accessKeyService) Activate(ctx context.Context, request *v1.ActivateAccessKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s accessKeyService) Activate(ctx context.Context, request *v1.ActivateAccessKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -188,7 +223,10 @@ func (s accessKeyService) Activate(ctx context.Context, request *v1.ActivateAcce
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s accessKeyService) Deactivate(ctx context.Context, request *v1.DeactivateAccessKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s accessKeyService) Deactivate(ctx context.Context, request *v1.DeactivateAccessKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -204,7 +242,10 @@ func (s accessKeyService) Deactivate(ctx context.Context, request *v1.Deactivate
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s accessKeyService) Delete(ctx context.Context, request *v1.DeleteAccessKeyRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s accessKeyService) Delete(ctx context.Context, request *v1.DeleteAccessKeyRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err

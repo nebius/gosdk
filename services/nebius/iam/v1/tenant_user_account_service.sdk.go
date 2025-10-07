@@ -35,16 +35,19 @@ type TenantUserAccountService interface {
 }
 
 type tenantUserAccountService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewTenantUserAccountService(sdk iface.SDK) TenantUserAccountService {
 	return tenantUserAccountService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s tenantUserAccountService) Get(ctx context.Context, request *v1.GetTenantUserAccountRequest, opts ...grpc.CallOption) (*v1.TenantUserAccount, error) {
+func (s tenantUserAccountService) Get(ctx context.Context, request *v1.GetTenantUserAccountRequest, opts ...grpc.CallOption) (
+	*v1.TenantUserAccount,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -56,7 +59,13 @@ func (s tenantUserAccountService) Get(ctx context.Context, request *v1.GetTenant
 	return v1.NewTenantUserAccountServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s tenantUserAccountService) List(ctx context.Context, request *v1.ListTenantUserAccountsRequest, opts ...grpc.CallOption) (*v1.ListTenantUserAccountsResponse, error) {
+func (s tenantUserAccountService) List(ctx context.Context, request *v1.ListTenantUserAccountsRequest, opts ...grpc.CallOption) (
+	*v1.ListTenantUserAccountsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -93,7 +102,10 @@ func (s tenantUserAccountService) Filter(ctx context.Context, request *v1.ListTe
 	}
 }
 
-func (s tenantUserAccountService) Block(ctx context.Context, request *v1.BlockTenantUserAccountRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s tenantUserAccountService) Block(ctx context.Context, request *v1.BlockTenantUserAccountRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +121,10 @@ func (s tenantUserAccountService) Block(ctx context.Context, request *v1.BlockTe
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s tenantUserAccountService) Unblock(ctx context.Context, request *v1.UnblockTenantUserAccountRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s tenantUserAccountService) Unblock(ctx context.Context, request *v1.UnblockTenantUserAccountRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountServiceID)
 	if err != nil {
 		return nil, err

@@ -37,16 +37,19 @@ type K8SReleaseService interface {
 }
 
 type k8SReleaseService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewK8SReleaseService(sdk iface.SDK) K8SReleaseService {
 	return k8SReleaseService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s k8SReleaseService) Get(ctx context.Context, request *v1alpha1.GetK8SReleaseRequest, opts ...grpc.CallOption) (*v1alpha1.K8SRelease, error) {
+func (s k8SReleaseService) Get(ctx context.Context, request *v1alpha1.GetK8SReleaseRequest, opts ...grpc.CallOption) (
+	*v1alpha1.K8SRelease,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, K8SReleaseServiceID)
 	if err != nil {
 		return nil, err
@@ -58,7 +61,13 @@ func (s k8SReleaseService) Get(ctx context.Context, request *v1alpha1.GetK8SRele
 	return v1alpha1.NewK8SReleaseServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s k8SReleaseService) List(ctx context.Context, request *v1alpha1.ListK8SReleasesRequest, opts ...grpc.CallOption) (*v1alpha1.ListK8SReleasesResponse, error) {
+func (s k8SReleaseService) List(ctx context.Context, request *v1alpha1.ListK8SReleasesRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListK8SReleasesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, K8SReleaseServiceID)
 	if err != nil {
 		return nil, err
@@ -95,7 +104,18 @@ func (s k8SReleaseService) Filter(ctx context.Context, request *v1alpha1.ListK8S
 	}
 }
 
-func (s k8SReleaseService) Create(ctx context.Context, request *v1alpha1.CreateK8SReleaseRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s k8SReleaseService) Create(ctx context.Context, request *v1alpha1.CreateK8SReleaseRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, K8SReleaseServiceID)
 	if err != nil {
 		return nil, err
@@ -111,7 +131,10 @@ func (s k8SReleaseService) Create(ctx context.Context, request *v1alpha1.CreateK
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s k8SReleaseService) Update(ctx context.Context, request *v1alpha1.UpdateK8SReleaseRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s k8SReleaseService) Update(ctx context.Context, request *v1alpha1.UpdateK8SReleaseRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -131,7 +154,10 @@ func (s k8SReleaseService) Update(ctx context.Context, request *v1alpha1.UpdateK
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s k8SReleaseService) Delete(ctx context.Context, request *v1alpha1.DeleteK8SReleaseRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s k8SReleaseService) Delete(ctx context.Context, request *v1alpha1.DeleteK8SReleaseRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, K8SReleaseServiceID)
 	if err != nil {
 		return nil, err

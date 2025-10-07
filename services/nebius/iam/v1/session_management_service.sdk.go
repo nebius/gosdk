@@ -25,16 +25,19 @@ type SessionManagementService interface {
 }
 
 type sessionManagementService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewSessionManagementService(sdk iface.SDK) SessionManagementService {
 	return sessionManagementService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s sessionManagementService) Revoke(ctx context.Context, request *v1.RevokeSessionRequest, opts ...grpc.CallOption) (*v1.RevokeSessionResponse, error) {
+func (s sessionManagementService) Revoke(ctx context.Context, request *v1.RevokeSessionRequest, opts ...grpc.CallOption) (
+	*v1.RevokeSessionResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, SessionManagementServiceID)
 	if err != nil {
 		return nil, err

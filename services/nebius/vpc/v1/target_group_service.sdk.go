@@ -31,16 +31,19 @@ type TargetGroupService interface {
 }
 
 type targetGroupService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewTargetGroupService(sdk iface.SDK) TargetGroupService {
 	return targetGroupService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s targetGroupService) Get(ctx context.Context, request *v1.GetTargetGroupRequest, opts ...grpc.CallOption) (*v1.TargetGroup, error) {
+func (s targetGroupService) Get(ctx context.Context, request *v1.GetTargetGroupRequest, opts ...grpc.CallOption) (
+	*v1.TargetGroup,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TargetGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -52,7 +55,10 @@ func (s targetGroupService) Get(ctx context.Context, request *v1.GetTargetGroupR
 	return v1.NewTargetGroupServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s targetGroupService) Update(ctx context.Context, request *v1.UpdateTargetGroupRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s targetGroupService) Update(ctx context.Context, request *v1.UpdateTargetGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

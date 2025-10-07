@@ -6,6 +6,7 @@ import (
 	context "context"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/maintenance/v1alpha1"
 	grpc "google.golang.org/grpc"
 )
@@ -27,16 +28,19 @@ type MaintenanceService interface {
 }
 
 type maintenanceService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewMaintenanceService(sdk iface.SDK) MaintenanceService {
 	return maintenanceService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s maintenanceService) Get(ctx context.Context, request *v1alpha1.GetMaintenanceRequest, opts ...grpc.CallOption) (*v1alpha1.Maintenance, error) {
+func (s maintenanceService) Get(ctx context.Context, request *v1alpha1.GetMaintenanceRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Maintenance,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err
@@ -48,7 +52,13 @@ func (s maintenanceService) Get(ctx context.Context, request *v1alpha1.GetMainte
 	return v1alpha1.NewMaintenanceServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s maintenanceService) List(ctx context.Context, request *v1alpha1.ListMaintenancesRequest, opts ...grpc.CallOption) (*v1alpha1.ListMaintenancesResponse, error) {
+func (s maintenanceService) List(ctx context.Context, request *v1alpha1.ListMaintenancesRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListMaintenancesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +70,14 @@ func (s maintenanceService) List(ctx context.Context, request *v1alpha1.ListMain
 	return v1alpha1.NewMaintenanceServiceClient(con).List(ctx, request, opts...)
 }
 
-func (s maintenanceService) Update(ctx context.Context, request *v1alpha1.UpdateMaintenanceRequest, opts ...grpc.CallOption) (*v1alpha1.UpdateMaintenanceResponse, error) {
+func (s maintenanceService) Update(ctx context.Context, request *v1alpha1.UpdateMaintenanceRequest, opts ...grpc.CallOption) (
+	*v1alpha1.UpdateMaintenanceResponse,
+	error,
+) {
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err

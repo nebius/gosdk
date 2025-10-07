@@ -25,16 +25,19 @@ type ProfileService interface {
 }
 
 type profileService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewProfileService(sdk iface.SDK) ProfileService {
 	return profileService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s profileService) Get(ctx context.Context, request *v1.GetProfileRequest, opts ...grpc.CallOption) (*v1.GetProfileResponse, error) {
+func (s profileService) Get(ctx context.Context, request *v1.GetProfileRequest, opts ...grpc.CallOption) (
+	*v1.GetProfileResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ProfileServiceID)
 	if err != nil {
 		return nil, err

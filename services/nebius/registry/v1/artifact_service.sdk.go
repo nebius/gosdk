@@ -34,16 +34,19 @@ type ArtifactService interface {
 }
 
 type artifactService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewArtifactService(sdk iface.SDK) ArtifactService {
 	return artifactService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s artifactService) Get(ctx context.Context, request *v1.GetArtifactRequest, opts ...grpc.CallOption) (*v1.Artifact, error) {
+func (s artifactService) Get(ctx context.Context, request *v1.GetArtifactRequest, opts ...grpc.CallOption) (
+	*v1.Artifact,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ArtifactServiceID)
 	if err != nil {
 		return nil, err
@@ -55,7 +58,13 @@ func (s artifactService) Get(ctx context.Context, request *v1.GetArtifactRequest
 	return v1.NewArtifactServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s artifactService) List(ctx context.Context, request *v1.ListArtifactsRequest, opts ...grpc.CallOption) (*v1.ListArtifactsResponse, error) {
+func (s artifactService) List(ctx context.Context, request *v1.ListArtifactsRequest, opts ...grpc.CallOption) (
+	*v1.ListArtifactsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ArtifactServiceID)
 	if err != nil {
 		return nil, err
@@ -92,7 +101,10 @@ func (s artifactService) Filter(ctx context.Context, request *v1.ListArtifactsRe
 	}
 }
 
-func (s artifactService) Delete(ctx context.Context, request *v1.DeleteArtifactRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s artifactService) Delete(ctx context.Context, request *v1.DeleteArtifactRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ArtifactServiceID)
 	if err != nil {
 		return nil, err

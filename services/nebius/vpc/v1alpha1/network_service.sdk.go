@@ -30,16 +30,19 @@ type NetworkService interface {
 }
 
 type networkService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewNetworkService(sdk iface.SDK) NetworkService {
 	return networkService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s networkService) Get(ctx context.Context, request *v1alpha1.GetNetworkRequest, opts ...grpc.CallOption) (*v1alpha1.Network, error) {
+func (s networkService) Get(ctx context.Context, request *v1alpha1.GetNetworkRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Network,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err
@@ -51,7 +54,13 @@ func (s networkService) Get(ctx context.Context, request *v1alpha1.GetNetworkReq
 	return v1alpha1.NewNetworkServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s networkService) GetByName(ctx context.Context, request *v1alpha1.GetNetworkByNameRequest, opts ...grpc.CallOption) (*v1alpha1.Network, error) {
+func (s networkService) GetByName(ctx context.Context, request *v1alpha1.GetNetworkByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Network,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err
@@ -63,7 +72,13 @@ func (s networkService) GetByName(ctx context.Context, request *v1alpha1.GetNetw
 	return v1alpha1.NewNetworkServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s networkService) List(ctx context.Context, request *v1alpha1.ListNetworksRequest, opts ...grpc.CallOption) (*v1alpha1.ListNetworksResponse, error) {
+func (s networkService) List(ctx context.Context, request *v1alpha1.ListNetworksRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListNetworksResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
 	if err != nil {
 		return nil, err

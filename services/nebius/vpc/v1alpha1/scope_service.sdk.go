@@ -30,16 +30,19 @@ type ScopeService interface {
 }
 
 type scopeService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewScopeService(sdk iface.SDK) ScopeService {
 	return scopeService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s scopeService) Get(ctx context.Context, request *v1alpha1.GetScopeRequest, opts ...grpc.CallOption) (*v1alpha1.Scope, error) {
+func (s scopeService) Get(ctx context.Context, request *v1alpha1.GetScopeRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Scope,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, ScopeServiceID)
 	if err != nil {
 		return nil, err
@@ -51,7 +54,13 @@ func (s scopeService) Get(ctx context.Context, request *v1alpha1.GetScopeRequest
 	return v1alpha1.NewScopeServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s scopeService) GetByName(ctx context.Context, request *v1alpha1.GetScopeByNameRequest, opts ...grpc.CallOption) (*v1alpha1.Scope, error) {
+func (s scopeService) GetByName(ctx context.Context, request *v1alpha1.GetScopeByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Scope,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ScopeServiceID)
 	if err != nil {
 		return nil, err
@@ -63,7 +72,13 @@ func (s scopeService) GetByName(ctx context.Context, request *v1alpha1.GetScopeB
 	return v1alpha1.NewScopeServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s scopeService) List(ctx context.Context, request *v1alpha1.ListScopesRequest, opts ...grpc.CallOption) (*v1alpha1.ListScopesResponse, error) {
+func (s scopeService) List(ctx context.Context, request *v1alpha1.ListScopesRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListScopesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, ScopeServiceID)
 	if err != nil {
 		return nil, err

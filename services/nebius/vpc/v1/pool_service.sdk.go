@@ -39,16 +39,19 @@ type PoolService interface {
 }
 
 type poolService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewPoolService(sdk iface.SDK) PoolService {
 	return poolService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s poolService) Get(ctx context.Context, request *v1.GetPoolRequest, opts ...grpc.CallOption) (*v1.Pool, error) {
+func (s poolService) Get(ctx context.Context, request *v1.GetPoolRequest, opts ...grpc.CallOption) (
+	*v1.Pool,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err
@@ -60,7 +63,13 @@ func (s poolService) Get(ctx context.Context, request *v1.GetPoolRequest, opts .
 	return v1.NewPoolServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s poolService) GetByName(ctx context.Context, request *v1.GetPoolByNameRequest, opts ...grpc.CallOption) (*v1.Pool, error) {
+func (s poolService) GetByName(ctx context.Context, request *v1.GetPoolByNameRequest, opts ...grpc.CallOption) (
+	*v1.Pool,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err
@@ -72,7 +81,13 @@ func (s poolService) GetByName(ctx context.Context, request *v1.GetPoolByNameReq
 	return v1.NewPoolServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s poolService) List(ctx context.Context, request *v1.ListPoolsRequest, opts ...grpc.CallOption) (*v1.ListPoolsResponse, error) {
+func (s poolService) List(ctx context.Context, request *v1.ListPoolsRequest, opts ...grpc.CallOption) (
+	*v1.ListPoolsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err
@@ -109,7 +124,10 @@ func (s poolService) Filter(ctx context.Context, request *v1.ListPoolsRequest, o
 	}
 }
 
-func (s poolService) ListBySourcePool(ctx context.Context, request *v1.ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (*v1.ListPoolsResponse, error) {
+func (s poolService) ListBySourcePool(ctx context.Context, request *v1.ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (
+	*v1.ListPoolsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err
@@ -121,7 +139,18 @@ func (s poolService) ListBySourcePool(ctx context.Context, request *v1.ListPools
 	return v1.NewPoolServiceClient(con).ListBySourcePool(ctx, request, opts...)
 }
 
-func (s poolService) Create(ctx context.Context, request *v1.CreatePoolRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s poolService) Create(ctx context.Context, request *v1.CreatePoolRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v11.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err
@@ -137,7 +166,10 @@ func (s poolService) Create(ctx context.Context, request *v1.CreatePoolRequest, 
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s poolService) Update(ctx context.Context, request *v1.UpdatePoolRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s poolService) Update(ctx context.Context, request *v1.UpdatePoolRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -157,7 +189,10 @@ func (s poolService) Update(ctx context.Context, request *v1.UpdatePoolRequest, 
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
-func (s poolService) Delete(ctx context.Context, request *v1.DeletePoolRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s poolService) Delete(ctx context.Context, request *v1.DeletePoolRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, PoolServiceID)
 	if err != nil {
 		return nil, err

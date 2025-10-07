@@ -26,16 +26,19 @@ type CalculatorService interface {
 }
 
 type calculatorService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewCalculatorService(sdk iface.SDK) CalculatorService {
 	return calculatorService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s calculatorService) Estimate(ctx context.Context, request *v1alpha1.EstimateRequest, opts ...grpc.CallOption) (*v1alpha1.EstimateResponse, error) {
+func (s calculatorService) Estimate(ctx context.Context, request *v1alpha1.EstimateRequest, opts ...grpc.CallOption) (
+	*v1alpha1.EstimateResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, CalculatorServiceID)
 	if err != nil {
 		return nil, err
@@ -47,7 +50,10 @@ func (s calculatorService) Estimate(ctx context.Context, request *v1alpha1.Estim
 	return v1alpha1.NewCalculatorServiceClient(con).Estimate(ctx, request, opts...)
 }
 
-func (s calculatorService) EstimateBatch(ctx context.Context, request *v1alpha1.EstimateBatchRequest, opts ...grpc.CallOption) (*v1alpha1.EstimateBatchResponse, error) {
+func (s calculatorService) EstimateBatch(ctx context.Context, request *v1alpha1.EstimateBatchRequest, opts ...grpc.CallOption) (
+	*v1alpha1.EstimateBatchResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, CalculatorServiceID)
 	if err != nil {
 		return nil, err

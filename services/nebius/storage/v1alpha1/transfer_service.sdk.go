@@ -41,16 +41,19 @@ type TransferService interface {
 }
 
 type transferService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewTransferService(sdk iface.SDK) TransferService {
 	return transferService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s transferService) Get(ctx context.Context, request *v1alpha1.GetTransferRequest, opts ...grpc.CallOption) (*v1alpha1.Transfer, error) {
+func (s transferService) Get(ctx context.Context, request *v1alpha1.GetTransferRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Transfer,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TransferServiceID)
 	if err != nil {
 		return nil, err
@@ -62,7 +65,13 @@ func (s transferService) Get(ctx context.Context, request *v1alpha1.GetTransferR
 	return v1alpha1.NewTransferServiceClient(con).Get(ctx, request, opts...)
 }
 
-func (s transferService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (*v1alpha1.Transfer, error) {
+func (s transferService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1alpha1.Transfer,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, TransferServiceID)
 	if err != nil {
 		return nil, err
@@ -74,7 +83,13 @@ func (s transferService) GetByName(ctx context.Context, request *v1.GetByNameReq
 	return v1alpha1.NewTransferServiceClient(con).GetByName(ctx, request, opts...)
 }
 
-func (s transferService) List(ctx context.Context, request *v1alpha1.ListTransfersRequest, opts ...grpc.CallOption) (*v1alpha1.ListTransfersResponse, error) {
+func (s transferService) List(ctx context.Context, request *v1alpha1.ListTransfersRequest, opts ...grpc.CallOption) (
+	*v1alpha1.ListTransfersResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		request.ParentId = s.sdk.ParentID()
+	}
 	address, err := s.sdk.Resolve(ctx, TransferServiceID)
 	if err != nil {
 		return nil, err
@@ -111,7 +126,18 @@ func (s transferService) Filter(ctx context.Context, request *v1alpha1.ListTrans
 	}
 }
 
-func (s transferService) Create(ctx context.Context, request *v1alpha1.CreateTransferRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s transferService) Create(ctx context.Context, request *v1alpha1.CreateTransferRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		md := request.GetMetadata()
+		if md == nil {
+			md = &v1.ResourceMetadata{}
+		}
+		md.ParentId = s.sdk.ParentID()
+		request.Metadata = md
+	}
 	address, err := s.sdk.Resolve(ctx, TransferServiceID)
 	if err != nil {
 		return nil, err
@@ -127,7 +153,10 @@ func (s transferService) Create(ctx context.Context, request *v1alpha1.CreateTra
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s transferService) Update(ctx context.Context, request *v1alpha1.UpdateTransferRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s transferService) Update(ctx context.Context, request *v1alpha1.UpdateTransferRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -147,7 +176,10 @@ func (s transferService) Update(ctx context.Context, request *v1alpha1.UpdateTra
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s transferService) Stop(ctx context.Context, request *v1alpha1.StopTransferRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s transferService) Stop(ctx context.Context, request *v1alpha1.StopTransferRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TransferServiceID)
 	if err != nil {
 		return nil, err
@@ -163,7 +195,10 @@ func (s transferService) Stop(ctx context.Context, request *v1alpha1.StopTransfe
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s transferService) Resume(ctx context.Context, request *v1alpha1.ResumeTransferRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s transferService) Resume(ctx context.Context, request *v1alpha1.ResumeTransferRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TransferServiceID)
 	if err != nil {
 		return nil, err
@@ -179,7 +214,10 @@ func (s transferService) Resume(ctx context.Context, request *v1alpha1.ResumeTra
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s transferService) Delete(ctx context.Context, request *v1alpha1.DeleteTransferRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+func (s transferService) Delete(ctx context.Context, request *v1alpha1.DeleteTransferRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TransferServiceID)
 	if err != nil {
 		return nil, err
@@ -195,7 +233,10 @@ func (s transferService) Delete(ctx context.Context, request *v1alpha1.DeleteTra
 	return operations.New(op, v1.NewOperationServiceClient(con))
 }
 
-func (s transferService) GetIterationHistory(ctx context.Context, request *v1alpha1.GetIterationHistoryRequest, opts ...grpc.CallOption) (*v1alpha1.GetIterationHistoryResponse, error) {
+func (s transferService) GetIterationHistory(ctx context.Context, request *v1alpha1.GetIterationHistoryRequest, opts ...grpc.CallOption) (
+	*v1alpha1.GetIterationHistoryResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, TransferServiceID)
 	if err != nil {
 		return nil, err

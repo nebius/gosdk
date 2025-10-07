@@ -26,16 +26,19 @@ type MaintenanceService interface {
 }
 
 type maintenanceService struct {
-	sdk iface.SDK
+	sdk iface.SDKWithParentID
 }
 
 func NewMaintenanceService(sdk iface.SDK) MaintenanceService {
 	return maintenanceService{
-		sdk: sdk,
+		sdk: iface.WrapSDK(sdk),
 	}
 }
 
-func (s maintenanceService) GetByInstance(ctx context.Context, request *v1.GetMaintenanceEventByInstanceRequest, opts ...grpc.CallOption) (*v1.MaintenanceEvent, error) {
+func (s maintenanceService) GetByInstance(ctx context.Context, request *v1.GetMaintenanceEventByInstanceRequest, opts ...grpc.CallOption) (
+	*v1.MaintenanceEvent,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err
@@ -47,7 +50,10 @@ func (s maintenanceService) GetByInstance(ctx context.Context, request *v1.GetMa
 	return v1.NewMaintenanceServiceClient(con).GetByInstance(ctx, request, opts...)
 }
 
-func (s maintenanceService) ListActive(ctx context.Context, request *v1.ListMaintenanceEventsRequest, opts ...grpc.CallOption) (*v1.ListMaintenanceEventsResponse, error) {
+func (s maintenanceService) ListActive(ctx context.Context, request *v1.ListMaintenanceEventsRequest, opts ...grpc.CallOption) (
+	*v1.ListMaintenanceEventsResponse,
+	error,
+) {
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err
