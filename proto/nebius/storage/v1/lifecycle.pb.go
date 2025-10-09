@@ -150,7 +150,7 @@ type LifecycleRule struct {
 	// Specifies the transition for the lifecycle of an object in the form of date or days and
 	// target storage class to transit object to.
 	Transition *LifecycleTransition `protobuf:"bytes,7,opt,name=transition,proto3" json:"transition,omitempty"`
-	// Spicifies the transition for the lifecycle of a noncurrent object.
+	// Specifies the transition for the lifecycle of a noncurrent object.
 	// It works only on a bucket that has versioning enabled (or suspended).
 	NoncurrentVersionTransition *LifecycleNoncurrentVersionTransition `protobuf:"bytes,8,opt,name=noncurrent_version_transition,json=noncurrentVersionTransition,proto3" json:"noncurrent_version_transition,omitempty"`
 	unknownFields               protoimpl.UnknownFields
