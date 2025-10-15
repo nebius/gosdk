@@ -7,6 +7,7 @@
 package v1alpha1
 
 import (
+	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -804,7 +805,7 @@ var File_nebius_common_error_v1alpha1_common_errors_proto protoreflect.FileDescr
 
 const file_nebius_common_error_v1alpha1_common_errors_proto_rawDesc = "" +
 	"\n" +
-	"0nebius/common/error/v1alpha1/common_errors.proto\x12\x1cnebius.common.error.v1alpha1\"\x9d\x01\n" +
+	"0nebius/common/error/v1alpha1/common_errors.proto\x12\x1cnebius.common.error.v1alpha1\x1a\x18nebius/annotations.proto\"\x9d\x01\n" +
 	"\n" +
 	"BadRequest\x12R\n" +
 	"\n" +
@@ -853,7 +854,7 @@ const file_nebius_common_error_v1alpha1_common_errors_proto_rawDesc = "" +
 	"\x05quota\x18\x01 \x01(\tR\x05quota\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\tR\x05limit\x12\x1c\n" +
-	"\trequested\x18\x04 \x01(\tR\trequestedBy\n" +
+	"\trequested\x18\x04 \x01(\tR\trequestedB\x92\x01\xd2J\x16\x12\x14migrate to common/v1\n" +
 	"#ai.nebius.pub.common.error.v1alpha1B\x11CommonErrorsProtoP\x01Z:github.com/nebius/gosdk/proto/nebius/common/error/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (

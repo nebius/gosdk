@@ -286,7 +286,7 @@ var File_nebius_common_v1alpha1_operation_proto protoreflect.FileDescriptor
 
 const file_nebius_common_v1alpha1_operation_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/common/v1alpha1/operation.proto\x12\x16nebius.common.v1alpha1\x1a\x19google/protobuf/any.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xe5\x05\n" +
+	"&nebius/common/v1alpha1/operation.proto\x12\x16nebius.common.v1alpha1\x1a\x19google/protobuf/any.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xfe\x05\n" +
 	"\tOperation\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x129\n" +
@@ -308,7 +308,7 @@ const file_nebius_common_v1alpha1_operation_proto_rawDesc = "" +
 	"\x06values\x18\x01 \x03(\tR\x06values\x1as\n" +
 	"\x13RequestHeadersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12F\n" +
-	"\x05value\x18\x02 \x01(\v20.nebius.common.v1alpha1.Operation.request_headerR\x05value:\x028\x01:\x02\x18\x01Bj\n" +
+	"\x05value\x18\x02 \x01(\v20.nebius.common.v1alpha1.Operation.request_headerR\x05value:\x028\x01:\x1b\xd2J\x16\x12\x14migrate to common/v1\x18\x01B\x83\x01\xd2J\x16\x12\x14migrate to common/v1\n" +
 	"\x1dai.nebius.pub.common.v1alpha1B\x0eOperationProtoP\x01Z4github.com/nebius/gosdk/proto/nebius/common/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (
