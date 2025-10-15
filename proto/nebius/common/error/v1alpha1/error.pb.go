@@ -7,6 +7,7 @@
 package v1alpha1
 
 import (
+	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -377,7 +378,7 @@ var File_nebius_common_error_v1alpha1_error_proto protoreflect.FileDescriptor
 
 const file_nebius_common_error_v1alpha1_error_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/common/error/v1alpha1/error.proto\x12\x1cnebius.common.error.v1alpha1\x1a0nebius/common/error/v1alpha1/common_errors.proto\"\xd9\t\n" +
+	"(nebius/common/error/v1alpha1/error.proto\x12\x1cnebius.common.error.v1alpha1\x1a\x18nebius/annotations.proto\x1a0nebius/common/error/v1alpha1/common_errors.proto\"\xf2\t\n" +
 	"\fServiceError\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12K\n" +
@@ -400,8 +401,8 @@ const file_nebius_common_error_v1alpha1_error_proto_rawDesc = "" +
 	"\vUNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04CALL\x10\x01\x12\x10\n" +
 	"\fUNIT_OF_WORK\x10\x02\x12\v\n" +
-	"\aNOTHING\x10\x03:\x02\x18\x01B\t\n" +
-	"\adetailsBr\n" +
+	"\aNOTHING\x10\x03:\x1b\xd2J\x16\x12\x14migrate to common/v1\x18\x01B\t\n" +
+	"\adetailsB\x8b\x01\xd2J\x16\x12\x14migrate to common/v1\n" +
 	"#ai.nebius.pub.common.error.v1alpha1B\n" +
 	"ErrorProtoP\x01Z:github.com/nebius/gosdk/proto/nebius/common/error/v1alpha1\xb8\x01\x01b\x06proto3"
 

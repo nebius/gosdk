@@ -377,6 +377,11 @@ type NodeTemplate struct {
 	//	    k8s: 1.30, 1.31 → "ubuntu24.04"
 	//	  drivers_preset: "cuda12.8"
 	//	    k8s: 1.31 → "ubuntu24.04"
+	//	gpu-b200-sxm-a:
+	//	  drivers_preset: ""
+	//	    k8s: 1.31 → "ubuntu24.04"
+	//	  drivers_preset: "cuda12.8"
+	//	    k8s: 1.31 → "ubuntu24.04"
 	Os                string                      `protobuf:"bytes,16,opt,name=os,proto3" json:"os,omitempty"`
 	GpuCluster        *GpuClusterSpec             `protobuf:"bytes,4,opt,name=gpu_cluster,json=gpuCluster,proto3" json:"gpu_cluster,omitempty"`
 	NetworkInterfaces []*NetworkInterfaceTemplate `protobuf:"bytes,5,rep,name=network_interfaces,json=networkInterfaces,proto3" json:"network_interfaces,omitempty"`
@@ -568,6 +573,8 @@ type GpuSettings struct {
 	//	  k8s: 1.31 → "cuda12" (CUDA 12.4), "cuda12.4", "cuda12.8"
 	//	gpu-b200-sxm:
 	//	  k8s: 1.31 → "cuda12" (CUDA 12.8), "cuda12.8"
+	//	gpu-b200-sxm-a:
+	//	  k8s: 1.31 → "cuda12.8"
 	DriversPreset string `protobuf:"bytes,1,opt,name=drivers_preset,json=driversPreset,proto3" json:"drivers_preset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

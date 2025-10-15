@@ -8,6 +8,7 @@ package v1alpha1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -308,30 +309,30 @@ var File_nebius_common_v1alpha1_operation_service_proto protoreflect.FileDescrip
 
 const file_nebius_common_v1alpha1_operation_service_proto_rawDesc = "" +
 	"\n" +
-	".nebius/common/v1alpha1/operation_service.proto\x12\x16nebius.common.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&nebius/common/v1alpha1/operation.proto\"1\n" +
+	".nebius/common/v1alpha1/operation_service.proto\x12\x16nebius.common.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a\x18nebius/annotations.proto\"J\n" +
 	"\x13GetOperationRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id:\x02\x18\x01\"\x98\x01\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id:\x1b\xd2J\x16\x12\x14migrate to common/v1\x18\x01\"\xb1\x01\n" +
 	"\x15ListOperationsRequest\x12'\n" +
 	"\vresource_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"resourceId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x04 \x01(\tR\x06filter:\x02\x18\x01\"\x87\x01\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter:\x1b\xd2J\x16\x12\x14migrate to common/v1\x18\x01\"\xa0\x01\n" +
 	"\x16ListOperationsResponse\x12A\n" +
 	"\n" +
 	"operations\x18\x01 \x03(\v2!.nebius.common.v1alpha1.OperationR\n" +
 	"operations\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken:\x02\x18\x01\"\x9c\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken:\x1b\xd2J\x16\x12\x14migrate to common/v1\x18\x01\"\xb5\x01\n" +
 	"\x1dListOperationsByParentRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x04 \x01(\tR\x06filter:\x02\x18\x012\xd5\x01\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter:\x1b\xd2J\x16\x12\x14migrate to common/v1\x18\x012\xee\x01\n" +
 	"\x10OperationService\x12U\n" +
 	"\x03Get\x12+.nebius.common.v1alpha1.GetOperationRequest\x1a!.nebius.common.v1alpha1.Operation\x12e\n" +
-	"\x04List\x12-.nebius.common.v1alpha1.ListOperationsRequest\x1a..nebius.common.v1alpha1.ListOperationsResponse\x1a\x03\x88\x02\x01Bq\n" +
+	"\x04List\x12-.nebius.common.v1alpha1.ListOperationsRequest\x1a..nebius.common.v1alpha1.ListOperationsResponse\x1a\x1c\xd2J\x16\x12\x14migrate to common/v1\x88\x02\x01B\x8a\x01\xd2J\x16\x12\x14migrate to common/v1\n" +
 	"\x1dai.nebius.pub.common.v1alpha1B\x15OperationServiceProtoP\x01Z4github.com/nebius/gosdk/proto/nebius/common/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (
