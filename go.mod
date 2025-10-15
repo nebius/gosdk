@@ -1,6 +1,6 @@
 module github.com/nebius/gosdk
 
-go 1.22 // minimal supported version 1.22, tested all versions up to 1.24
+go 1.22 // minimal supported version 1.22, tested all versions up to 1.25
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.31.0-20231030212536-12f9cba37c9d.2
