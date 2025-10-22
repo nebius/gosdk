@@ -42,7 +42,7 @@ type SDK struct {
 const (
 	DefaultTimeout     = 1 * time.Minute
 	DefaultRetries     = 3
-	DefaultPerRetry    = 10 * time.Second
+	DefaultPerRetry    = DefaultTimeout / DefaultRetries
 	DefaultAuthTimeout = 15 * time.Minute // should be large enough to authenticate manually
 )
 
@@ -52,6 +52,8 @@ const (
 // The context provided to [New] can be short-lived, as it is used only for the initial setup.
 // SDK may span goroutines that will use the context returned by [SDK.Context].
 // If you want to stop the goroutines, you should call [SDK.Close].
+// Add a [WithConfigReader] option to read configuration from the standard Nebius CLI config file.
+// We also recommend setting a [WithUserAgentPrefix] option to identify your application.
 func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var domain string
 	var sdk *SDK

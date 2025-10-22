@@ -19,3 +19,6 @@ package v1alpha1
 
 // func (x *ListRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateVersionRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateVersionRequest) LogValue() slog.Value // is not generated as no sensitive fields found

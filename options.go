@@ -84,6 +84,8 @@ func WithInit(fn func(context.Context, *SDK) error) Option {
 }
 
 // WithTimeout changes timeout for all requests. The default is 1 minute.
+// This timeout does not include authentication time, which is controlled by
+// [WithAuthTimeout].
 func WithTimeout(timeout time.Duration) Option {
 	return optionTimeout(timeout)
 }
@@ -95,14 +97,32 @@ func WithAuthTimeout(timeout time.Duration) Option {
 	return optionAuthTimeout(timeout)
 }
 
+// WithUserAgentPrefix adds a prefix to the User-Agent header sent with each request.
+// By default, the User-Agent is "nebius-gosdk/<version> (os arch; go/ver) grpc-go/<version>".
+// You can use this option to identify your application.
+// Please, use the following format for the prefix:
+// "<app-name>[/<app-version>][ (critical-dependency/versions; if-necessary-to-track)]".
 func WithUserAgentPrefix(prefix string) Option {
 	return optionUserAgentPrefix(prefix)
 }
 
+// WithRetryOptions enables retries and allows you to specify additional
+// configurations for the grpc-ecosystem retry interceptor.
+// By default, if this option is not set,
+// retries will be set with three attempts, 1/3 of timeout per retry attempt,
+// no cooldown or backoff, and with a custom retry function that takes into
+// account the API-specific retry information.
+// It is advised to set backoff and overall timeout (using [WithTimeout])
+// depending on your request and usage.
 func WithRetryOptions(opts ...retry.CallOption) Option {
 	return optionRetryOptions(opts)
 }
 
+// WithConfigReader sets the config reader to read configuration from.
+// It will enable ParentID autofill, if ParentID is set in the config.
+// You can disable ParentID autofill by adding [WithNoParentID] or
+// [WithoutParentID] option.
+// By default, it reads configuration from the standard Nebius CLI config file.
 func WithConfigReader(configReader config.ConfigInterface) Option {
 	return optionConfigReader{configReader: configReader}
 }
@@ -133,9 +153,10 @@ func WithoutParentID() Option {
 }
 
 type (
-	optionCredentials     struct{ creds Credentials }
-	optionLogger          struct{ handler slog.Handler }
-	optionLoggingOptions  []logging.Option
+	optionCredentials    struct{ creds Credentials }
+	optionLogger         struct{ handler slog.Handler }
+	optionLoggingOptions []logging.Option
+
 	optionDialOpts        []grpc.DialOption
 	optionResolvers       []conn.Resolver
 	optionDomain          string
@@ -155,9 +176,10 @@ type (
 	optionNoParentID   bool
 )
 
-func (optionCredentials) option()     {}
-func (optionLogger) option()          {}
-func (optionLoggingOptions) option()  {}
+func (optionCredentials) option()    {}
+func (optionLogger) option()         {}
+func (optionLoggingOptions) option() {}
+
 func (optionDialOpts) option()        {}
 func (optionResolvers) option()       {}
 func (optionDomain) option()          {}
