@@ -36,6 +36,10 @@ const (
 	FilesystemSpec_NETWORK_SSD FilesystemSpec_FilesystemType = 1
 	// Deprecated: The entire proto file nebius/compute/v1alpha1/filesystem.proto is marked as deprecated.
 	FilesystemSpec_NETWORK_HDD FilesystemSpec_FilesystemType = 2
+	// Deprecated: The entire proto file nebius/compute/v1alpha1/filesystem.proto is marked as deprecated.
+	FilesystemSpec_WEKA FilesystemSpec_FilesystemType = 3
+	// Deprecated: The entire proto file nebius/compute/v1alpha1/filesystem.proto is marked as deprecated.
+	FilesystemSpec_VAST FilesystemSpec_FilesystemType = 4
 )
 
 // Enum value maps for FilesystemSpec_FilesystemType.
@@ -44,11 +48,15 @@ var (
 		0: "UNSPECIFIED",
 		1: "NETWORK_SSD",
 		2: "NETWORK_HDD",
+		3: "WEKA",
+		4: "VAST",
 	}
 	FilesystemSpec_FilesystemType_value = map[string]int32{
 		"UNSPECIFIED": 0,
 		"NETWORK_SSD": 1,
 		"NETWORK_HDD": 2,
+		"WEKA":        3,
+		"VAST":        4,
 	}
 )
 
@@ -462,7 +470,7 @@ const file_nebius_compute_v1alpha1_filesystem_proto_rawDesc = "" +
 	"Filesystem\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1alpha1.FilesystemSpecR\x04spec\x12A\n" +
-	"\x06status\x18\x03 \x01(\v2).nebius.compute.v1alpha1.FilesystemStatusR\x06status\"\xa0\x03\n" +
+	"\x06status\x18\x03 \x01(\v2).nebius.compute.v1alpha1.FilesystemStatusR\x06status\"\xb4\x03\n" +
 	"\x0eFilesystemSpec\x12%\n" +
 	"\n" +
 	"size_bytes\x18\x01 \x01(\x03B\x04\xbaJ\x01\x02H\x00R\tsizeBytes\x12-\n" +
@@ -471,11 +479,13 @@ const file_nebius_compute_v1alpha1_filesystem_proto_rawDesc = "" +
 	"\x0esize_gibibytes\x18\x04 \x01(\x03B\x04\xbaJ\x01\x02H\x00R\rsizeGibibytes\x12.\n" +
 	"\x10block_size_bytes\x18\x05 \x01(\x03B\x04\xbaJ\x01\x02R\x0eblockSizeBytes\x12V\n" +
 	"\x04type\x18\x06 \x01(\x0e26.nebius.compute.v1alpha1.FilesystemSpec.FilesystemTypeB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04type\"C\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04type\"W\n" +
 	"\x0eFilesystemType\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vNETWORK_SSD\x10\x01\x12\x0f\n" +
-	"\vNETWORK_HDD\x10\x02B\r\n" +
+	"\vNETWORK_HDD\x10\x02\x12\b\n" +
+	"\x04WEKA\x10\x03\x12\b\n" +
+	"\x04VAST\x10\x04B\r\n" +
 	"\x04size\x12\x05\xbaH\x02\b\x01\"\x8b\x03\n" +
 	"\x10FilesystemStatus\x12E\n" +
 	"\x05state\x18\x01 \x01(\x0e2/.nebius.compute.v1alpha1.FilesystemStatus.StateR\x05state\x12+\n" +

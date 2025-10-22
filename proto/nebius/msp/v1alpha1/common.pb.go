@@ -319,6 +319,60 @@ func (x *ListRequest) GetPageToken() string {
 	return ""
 }
 
+type UpdateVersionRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the entity to stop.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// New version string.
+	Version       string `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateVersionRequest) Reset() {
+	*x = UpdateVersionRequest{}
+	mi := &file_nebius_msp_v1alpha1_common_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateVersionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateVersionRequest) ProtoMessage() {}
+
+func (x *UpdateVersionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_msp_v1alpha1_common_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateVersionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateVersionRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_msp_v1alpha1_common_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdateVersionRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *UpdateVersionRequest) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
 var File_nebius_msp_v1alpha1_common_proto protoreflect.FileDescriptor
 
 const file_nebius_msp_v1alpha1_common_proto_rawDesc = "" +
@@ -340,7 +394,10 @@ const file_nebius_msp_v1alpha1_common_proto_rawDesc = "" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12$\n" +
 	"\tpage_size\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageTokenB^\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"P\n" +
+	"\x14UpdateVersionRequest\x12\x16\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12 \n" +
+	"\aversion\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aversionB^\n" +
 	"\x1aai.nebius.pub.msp.v1alpha1B\vCommonProtoP\x01Z1github.com/nebius/gosdk/proto/nebius/msp/v1alpha1b\x06proto3"
 
 var (
@@ -355,14 +412,15 @@ func file_nebius_msp_v1alpha1_common_proto_rawDescGZIP() []byte {
 	return file_nebius_msp_v1alpha1_common_proto_rawDescData
 }
 
-var file_nebius_msp_v1alpha1_common_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_nebius_msp_v1alpha1_common_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_nebius_msp_v1alpha1_common_proto_goTypes = []any{
-	(*GetRequest)(nil),       // 0: nebius.msp.v1alpha1.GetRequest
-	(*GetByNameRequest)(nil), // 1: nebius.msp.v1alpha1.GetByNameRequest
-	(*DeleteRequest)(nil),    // 2: nebius.msp.v1alpha1.DeleteRequest
-	(*StartRequest)(nil),     // 3: nebius.msp.v1alpha1.StartRequest
-	(*StopRequest)(nil),      // 4: nebius.msp.v1alpha1.StopRequest
-	(*ListRequest)(nil),      // 5: nebius.msp.v1alpha1.ListRequest
+	(*GetRequest)(nil),           // 0: nebius.msp.v1alpha1.GetRequest
+	(*GetByNameRequest)(nil),     // 1: nebius.msp.v1alpha1.GetByNameRequest
+	(*DeleteRequest)(nil),        // 2: nebius.msp.v1alpha1.DeleteRequest
+	(*StartRequest)(nil),         // 3: nebius.msp.v1alpha1.StartRequest
+	(*StopRequest)(nil),          // 4: nebius.msp.v1alpha1.StopRequest
+	(*ListRequest)(nil),          // 5: nebius.msp.v1alpha1.ListRequest
+	(*UpdateVersionRequest)(nil), // 6: nebius.msp.v1alpha1.UpdateVersionRequest
 }
 var file_nebius_msp_v1alpha1_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -383,7 +441,7 @@ func file_nebius_msp_v1alpha1_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_msp_v1alpha1_common_proto_rawDesc), len(file_nebius_msp_v1alpha1_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
