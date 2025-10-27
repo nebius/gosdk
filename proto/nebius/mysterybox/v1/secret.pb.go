@@ -144,7 +144,7 @@ type SecretSpec struct {
 	// Specifies the primary version of the secret to update its payload. This parameter should only be provided during update operations.
 	PrimaryVersionId *string `protobuf:"bytes,3,opt,name=primary_version_id,json=primaryVersionId,proto3,oneof" json:"primary_version_id,omitempty"`
 	// Secret's version specification, defines the secret version, including its payload. This parameter must be specified only during create operations.
-	SecretVersion *SecretVersionSpec `protobuf:"bytes,4,opt,name=secret_version,json=secretVersion,proto3,oneof" json:"secret_version,omitempty"`
+	SecretVersion *SecretVersionSpec `protobuf:"bytes,4,opt,name=secret_version,json=secretVersion,proto3" json:"secret_version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -279,14 +279,13 @@ const file_nebius_mysterybox_v1_secret_proto_rawDesc = "" +
 	"\x06Secret\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.mysterybox.v1.SecretSpecR\x04spec\x12@\n" +
-	"\x06status\x18\x03 \x01(\v2\".nebius.mysterybox.v1.SecretStatusB\x04\xbaJ\x01\x05R\x06status\"\xed\x01\n" +
+	"\x06status\x18\x03 \x01(\v2\".nebius.mysterybox.v1.SecretStatusB\x04\xbaJ\x01\x05R\x06status\"\xd5\x01\n" +
 	"\n" +
 	"SecretSpec\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x127\n" +
-	"\x12primary_version_id\x18\x03 \x01(\tB\x04\xbaJ\x01\aH\x00R\x10primaryVersionId\x88\x01\x01\x12Z\n" +
-	"\x0esecret_version\x18\x04 \x01(\v2'.nebius.mysterybox.v1.SecretVersionSpecB\x05\xbaJ\x02\x04\x02H\x01R\rsecretVersion\x88\x01\x01B\x15\n" +
-	"\x13_primary_version_idB\x11\n" +
-	"\x0f_secret_version\"\xb9\x02\n" +
+	"\x12primary_version_id\x18\x03 \x01(\tB\x04\xbaJ\x01\aH\x00R\x10primaryVersionId\x88\x01\x01\x12U\n" +
+	"\x0esecret_version\x18\x04 \x01(\v2'.nebius.mysterybox.v1.SecretVersionSpecB\x05\xbaJ\x02\x04\x02R\rsecretVersionB\x15\n" +
+	"\x13_primary_version_id\"\xb9\x02\n" +
 	"\fSecretStatus\x12>\n" +
 	"\x05state\x18\x01 \x01(\x0e2(.nebius.mysterybox.v1.SecretStatus.StateR\x05state\x129\n" +
 	"\n" +
