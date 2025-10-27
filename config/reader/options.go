@@ -74,6 +74,18 @@ func WithTokenEnv(tokenEnv string) config.Option {
 	})
 }
 
+func WithEndpointEnv(endpointEnv string) config.Option {
+	return optionFunc(func(c *configReader) {
+		c.endpointEnv = endpointEnv
+	})
+}
+
+func WithCustomEndpoint(customEndpoint string) config.Option {
+	return optionFunc(func(c *configReader) {
+		c.customEndpoint = customEndpoint
+	})
+}
+
 func WithoutEnvVars() config.Option {
 	return optionFunc(func(c *configReader) {
 		c.profileEnv = ""

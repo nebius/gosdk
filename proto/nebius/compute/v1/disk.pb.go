@@ -552,13 +552,19 @@ func (x *SourceImageFamily) GetParentId() string {
 }
 
 type DiskStatus struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	State               DiskStatus_State       `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.compute.v1.DiskStatus_State" json:"state,omitempty"`
-	StateDescription    string                 `protobuf:"bytes,2,opt,name=state_description,json=stateDescription,proto3" json:"state_description,omitempty"`
-	ReadWriteAttachment string                 `protobuf:"bytes,3,opt,name=read_write_attachment,json=readWriteAttachment,proto3" json:"read_write_attachment,omitempty"`
-	ReadOnlyAttachments []string               `protobuf:"bytes,4,rep,name=read_only_attachments,json=readOnlyAttachments,proto3" json:"read_only_attachments,omitempty"`
-	SourceImageId       string                 `protobuf:"bytes,5,opt,name=source_image_id,json=sourceImageId,proto3" json:"source_image_id,omitempty"`
-	SizeBytes           int64                  `protobuf:"varint,6,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	State            DiskStatus_State       `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.compute.v1.DiskStatus_State" json:"state,omitempty"`
+	StateDescription string                 `protobuf:"bytes,2,opt,name=state_description,json=stateDescription,proto3" json:"state_description,omitempty"`
+	// Current read-write owner (instance ID).
+	// May refer to an instance in any state, including stopped
+	// (this semantics is preserved for backward compatibility).
+	// Reassigned on disk detach, instance deletion, or ownership transfer.
+	// Ownership transfer occurs when this disk is explicitly attached to another instance
+	// or when a VM with this disk attached starts while the current owner is stopped.
+	ReadWriteAttachment string   `protobuf:"bytes,3,opt,name=read_write_attachment,json=readWriteAttachment,proto3" json:"read_write_attachment,omitempty"`
+	ReadOnlyAttachments []string `protobuf:"bytes,4,rep,name=read_only_attachments,json=readOnlyAttachments,proto3" json:"read_only_attachments,omitempty"`
+	SourceImageId       string   `protobuf:"bytes,5,opt,name=source_image_id,json=sourceImageId,proto3" json:"source_image_id,omitempty"`
+	SizeBytes           int64    `protobuf:"varint,6,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
 	// Indicates whether there is an ongoing operation
 	Reconciling                bool                                  `protobuf:"varint,7,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
 	BlockSizeBytes             int64                                 `protobuf:"varint,8,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`

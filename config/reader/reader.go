@@ -25,11 +25,13 @@ type configReader struct {
 	config  *config.Config
 	profile *config.Profile
 
-	path        string
-	profileName string
-	noParentID  bool
-	profileEnv  string
-	tokenEnv    string
+	path           string
+	profileName    string
+	noParentID     bool
+	profileEnv     string
+	tokenEnv       string
+	endpointEnv    string
+	customEndpoint string
 
 	preloadedConfig bool
 
@@ -53,6 +55,7 @@ func NewConfigReader(options ...config.Option) config.ConfigInterface {
 	r := &configReader{
 		tokenEnv:                     constants.TokenEnv,
 		profileEnv:                   constants.ProfileEnv,
+		endpointEnv:                  constants.EndpointEnv,
 		fileRefreshPeriod:            5 * time.Minute,
 		cachedTokenLifetimeFraction:  0.9,
 		cachedTokenInitialRetryDelay: 1 * time.Second,
@@ -77,6 +80,15 @@ func (r *configReader) Load(ctx context.Context) error {
 		if err := r.load(ctx); err != nil {
 			return err
 		}
+	}
+	if r.customEndpoint == "" && r.endpointEnv != "" {
+		r.customEndpoint = strings.TrimSpace(os.Getenv(r.endpointEnv))
+		if r.customEndpoint != "" {
+			r.logger.DebugContext(ctx, "will load custom endpoint from environment variable", slog.String("env", r.endpointEnv))
+		}
+	}
+	if r.customEndpoint != "" {
+		r.logger.DebugContext(ctx, "overriding profile endpoint with custom endpoint", slog.String("endpoint", r.customEndpoint))
 	}
 	if r.profileName == "" && r.profileEnv != "" {
 		r.profileName = strings.TrimSpace(os.Getenv(r.profileEnv))
@@ -210,6 +222,9 @@ func (r *configReader) ParentID() string {
 }
 
 func (r *configReader) Endpoint() string {
+	if r.customEndpoint != "" {
+		return r.customEndpoint
+	}
 	return r.profile.Endpoint
 }
 

@@ -14,7 +14,7 @@ func TestRealCall_WithoutCreds(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
 
-	sdk, err := gosdk.New(ctx)
+	sdk, err := gosdk.New(ctx, gosdk.WithUserAgentPrefix("test-real-call-no-creds"))
 	require.NoError(t, err)
 
 	t.Cleanup(func() {
