@@ -266,11 +266,11 @@ var File_nebius_mysterybox_v1_secret_version_proto protoreflect.FileDescriptor
 
 const file_nebius_mysterybox_v1_secret_version_proto_rawDesc = "" +
 	"\n" +
-	")nebius/mysterybox/v1/secret_version.proto\x12\x14nebius.mysterybox.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\x1a\"nebius/mysterybox/v1/payload.proto\"\xd5\x01\n" +
+	")nebius/mysterybox/v1/secret_version.proto\x12\x14nebius.mysterybox.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\x1a\"nebius/mysterybox/v1/payload.proto\"\xdb\x01\n" +
 	"\rSecretVersion\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.mysterybox.v1.SecretVersionSpecR\x04spec\x12G\n" +
-	"\x06status\x18\x03 \x01(\v2).nebius.mysterybox.v1.SecretVersionStatusB\x04\xbaJ\x01\x05R\x06status\"\xa8\x01\n" +
+	"\x06status\x18\x03 \x01(\v2).nebius.mysterybox.v1.SecretVersionStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02\"\xa8\x01\n" +
 	"\x11SecretVersionSpec\x12&\n" +
 	"\vdescription\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\vdescription\x12D\n" +
 	"\apayload\x18\x02 \x03(\v2\x1d.nebius.mysterybox.v1.PayloadB\v\xbaH\x03\xc8\x01\x01\xbaJ\x02\x04\x02R\apayload\x12%\n" +
