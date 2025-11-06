@@ -31,6 +31,7 @@ type AllocationService interface {
 	List(context.Context, *v1.ListAllocationsRequest, ...grpc.CallOption) (*v1.ListAllocationsResponse, error)
 	Filter(context.Context, *v1.ListAllocationsRequest, ...grpc.CallOption) iter.Seq2[*v1.Allocation, error]
 	ListByPool(context.Context, *v1.ListAllocationsByPoolRequest, ...grpc.CallOption) (*v1.ListAllocationsResponse, error)
+	ListBySubnet(context.Context, *v1.ListAllocationsBySubnetRequest, ...grpc.CallOption) (*v1.ListAllocationsResponse, error)
 	Create(context.Context, *v1.CreateAllocationRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdateAllocationRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteAllocationRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -137,6 +138,21 @@ func (s allocationService) ListByPool(ctx context.Context, request *v1.ListAlloc
 		return nil, err
 	}
 	return v1.NewAllocationServiceClient(con).ListByPool(ctx, request, opts...)
+}
+
+func (s allocationService) ListBySubnet(ctx context.Context, request *v1.ListAllocationsBySubnetRequest, opts ...grpc.CallOption) (
+	*v1.ListAllocationsResponse,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewAllocationServiceClient(con).ListBySubnet(ctx, request, opts...)
 }
 
 func (s allocationService) Create(ctx context.Context, request *v1.CreateAllocationRequest, opts ...grpc.CallOption) (

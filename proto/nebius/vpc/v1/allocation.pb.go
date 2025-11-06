@@ -514,7 +514,11 @@ type AllocationDetails struct {
 	// ID of the pool from which this allocation was made.
 	PoolId string `protobuf:"bytes,2,opt,name=pool_id,json=poolId,proto3" json:"pool_id,omitempty"`
 	// The IP version of this allocation (IPv4 or IPv6).
-	Version       IpVersion `protobuf:"varint,4,opt,name=version,proto3,enum=nebius.vpc.v1.IpVersion" json:"version,omitempty"`
+	Version IpVersion `protobuf:"varint,4,opt,name=version,proto3,enum=nebius.vpc.v1.IpVersion" json:"version,omitempty"`
+	// ID of the subnet associated with this allocation.
+	// Populated when created with explicit subnet_id, from a subnet-specific pool,
+	// or when assigned to a resource.
+	SubnetId      string `protobuf:"bytes,5,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -568,6 +572,13 @@ func (x *AllocationDetails) GetVersion() IpVersion {
 		return x.Version
 	}
 	return IpVersion_IP_VERSION_UNSPECIFIED
+}
+
+func (x *AllocationDetails) GetSubnetId() string {
+	if x != nil {
+		return x.SubnetId
+	}
+	return ""
 }
 
 type Assignment struct {
@@ -793,11 +804,12 @@ const file_nebius_vpc_v1_allocation_proto_rawDesc = "" +
 	"\bCREATING\x10\x01\x12\r\n" +
 	"\tALLOCATED\x10\x02\x12\f\n" +
 	"\bASSIGNED\x10\x03\x12\f\n" +
-	"\bDELETING\x10\x04\"\x87\x01\n" +
+	"\bDELETING\x10\x04\"\xa4\x01\n" +
 	"\x11AllocationDetails\x12%\n" +
 	"\x0eallocated_cidr\x18\x01 \x01(\tR\rallocatedCidr\x12\x17\n" +
 	"\apool_id\x18\x02 \x01(\tR\x06poolId\x122\n" +
-	"\aversion\x18\x04 \x01(\x0e2\x18.nebius.vpc.v1.IpVersionR\aversion\"\xbc\x01\n" +
+	"\aversion\x18\x04 \x01(\x0e2\x18.nebius.vpc.v1.IpVersionR\aversion\x12\x1b\n" +
+	"\tsubnet_id\x18\x05 \x01(\tR\bsubnetId\"\xbc\x01\n" +
 	"\n" +
 	"Assignment\x12X\n" +
 	"\x11network_interface\x18\x01 \x01(\v2).nebius.vpc.v1.NetworkInterfaceAssignmentH\x00R\x10networkInterface\x12L\n" +

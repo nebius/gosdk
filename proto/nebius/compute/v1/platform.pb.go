@@ -220,11 +220,12 @@ func (x *Preset) GetAllowGpuClustering() bool {
 }
 
 type PresetResources struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	VcpuCount          int32                  `protobuf:"varint,1,opt,name=vcpu_count,json=vcpuCount,proto3" json:"vcpu_count,omitempty"`
-	MemoryGibibytes    int32                  `protobuf:"varint,3,opt,name=memory_gibibytes,json=memoryGibibytes,proto3" json:"memory_gibibytes,omitempty"`
-	GpuCount           int32                  `protobuf:"varint,4,opt,name=gpu_count,json=gpuCount,proto3" json:"gpu_count,omitempty"`
-	GpuMemoryGibibytes int32                  `protobuf:"varint,6,opt,name=gpu_memory_gibibytes,json=gpuMemoryGibibytes,proto3" json:"gpu_memory_gibibytes,omitempty"`
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	VcpuCount       int32                  `protobuf:"varint,1,opt,name=vcpu_count,json=vcpuCount,proto3" json:"vcpu_count,omitempty"`
+	MemoryGibibytes int32                  `protobuf:"varint,3,opt,name=memory_gibibytes,json=memoryGibibytes,proto3" json:"memory_gibibytes,omitempty"`
+	GpuCount        int32                  `protobuf:"varint,4,opt,name=gpu_count,json=gpuCount,proto3" json:"gpu_count,omitempty"`
+	// Deprecated: Marked as deprecated in nebius/compute/v1/platform.proto.
+	GpuMemoryGibibytes int32 `protobuf:"varint,6,opt,name=gpu_memory_gibibytes,json=gpuMemoryGibibytes,proto3" json:"gpu_memory_gibibytes,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -280,6 +281,7 @@ func (x *PresetResources) GetGpuCount() int32 {
 	return 0
 }
 
+// Deprecated: Marked as deprecated in nebius/compute/v1/platform.proto.
 func (x *PresetResources) GetGpuMemoryGibibytes() int32 {
 	if x != nil {
 		return x.GpuMemoryGibibytes
@@ -350,13 +352,15 @@ const file_nebius_compute_v1_platform_proto_rawDesc = "" +
 	"\x06Preset\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12@\n" +
 	"\tresources\x18\x02 \x01(\v2\".nebius.compute.v1.PresetResourcesR\tresources\x120\n" +
-	"\x14allow_gpu_clustering\x18\x03 \x01(\bR\x12allowGpuClustering\"\xb0\x01\n" +
+	"\x14allow_gpu_clustering\x18\x03 \x01(\bR\x12allowGpuClustering\"\xfb\x01\n" +
 	"\x0fPresetResources\x12#\n" +
 	"\n" +
 	"vcpu_count\x18\x01 \x01(\x05B\x04\xbaJ\x01\x05R\tvcpuCount\x12)\n" +
 	"\x10memory_gibibytes\x18\x03 \x01(\x05R\x0fmemoryGibibytes\x12\x1b\n" +
-	"\tgpu_count\x18\x04 \x01(\x05R\bgpuCount\x120\n" +
-	"\x14gpu_memory_gibibytes\x18\x06 \x01(\x05R\x12gpuMemoryGibibytes\"J\n" +
+	"\tgpu_count\x18\x04 \x01(\x05R\bgpuCount\x12{\n" +
+	"\x14gpu_memory_gibibytes\x18\x06 \x01(\x05BI\xd2JD\n" +
+	"\n" +
+	"2026-01-10\x126Use field 'platform.spec.gpu_memory_gibibytes' instead\x18\x01R\x12gpuMemoryGibibytes\"J\n" +
 	"\x0ePlatformStatus\x128\n" +
 	"\x18allowed_for_preemptibles\x18\x03 \x01(\bR\x16allowedForPreemptiblesB\\\n" +
 	"\x18ai.nebius.pub.compute.v1B\rPlatformProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
