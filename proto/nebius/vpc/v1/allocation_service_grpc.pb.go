@@ -20,13 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AllocationService_Get_FullMethodName        = "/nebius.vpc.v1.AllocationService/Get"
-	AllocationService_GetByName_FullMethodName  = "/nebius.vpc.v1.AllocationService/GetByName"
-	AllocationService_List_FullMethodName       = "/nebius.vpc.v1.AllocationService/List"
-	AllocationService_ListByPool_FullMethodName = "/nebius.vpc.v1.AllocationService/ListByPool"
-	AllocationService_Create_FullMethodName     = "/nebius.vpc.v1.AllocationService/Create"
-	AllocationService_Update_FullMethodName     = "/nebius.vpc.v1.AllocationService/Update"
-	AllocationService_Delete_FullMethodName     = "/nebius.vpc.v1.AllocationService/Delete"
+	AllocationService_Get_FullMethodName          = "/nebius.vpc.v1.AllocationService/Get"
+	AllocationService_GetByName_FullMethodName    = "/nebius.vpc.v1.AllocationService/GetByName"
+	AllocationService_List_FullMethodName         = "/nebius.vpc.v1.AllocationService/List"
+	AllocationService_ListByPool_FullMethodName   = "/nebius.vpc.v1.AllocationService/ListByPool"
+	AllocationService_ListBySubnet_FullMethodName = "/nebius.vpc.v1.AllocationService/ListBySubnet"
+	AllocationService_Create_FullMethodName       = "/nebius.vpc.v1.AllocationService/Create"
+	AllocationService_Update_FullMethodName       = "/nebius.vpc.v1.AllocationService/Update"
+	AllocationService_Delete_FullMethodName       = "/nebius.vpc.v1.AllocationService/Delete"
 )
 
 // AllocationServiceClient is the client API for AllocationService service.
@@ -37,6 +38,7 @@ type AllocationServiceClient interface {
 	GetByName(ctx context.Context, in *GetAllocationByNameRequest, opts ...grpc.CallOption) (*Allocation, error)
 	List(ctx context.Context, in *ListAllocationsRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
 	ListByPool(ctx context.Context, in *ListAllocationsByPoolRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
+	ListBySubnet(ctx context.Context, in *ListAllocationsBySubnetRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
 	Create(ctx context.Context, in *CreateAllocationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Update(ctx context.Context, in *UpdateAllocationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Delete(ctx context.Context, in *DeleteAllocationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
@@ -86,6 +88,15 @@ func (c *allocationServiceClient) ListByPool(ctx context.Context, in *ListAlloca
 	return out, nil
 }
 
+func (c *allocationServiceClient) ListBySubnet(ctx context.Context, in *ListAllocationsBySubnetRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error) {
+	out := new(ListAllocationsResponse)
+	err := c.cc.Invoke(ctx, AllocationService_ListBySubnet_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *allocationServiceClient) Create(ctx context.Context, in *CreateAllocationRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, AllocationService_Create_FullMethodName, in, out, opts...)
@@ -121,6 +132,7 @@ type AllocationServiceServer interface {
 	GetByName(context.Context, *GetAllocationByNameRequest) (*Allocation, error)
 	List(context.Context, *ListAllocationsRequest) (*ListAllocationsResponse, error)
 	ListByPool(context.Context, *ListAllocationsByPoolRequest) (*ListAllocationsResponse, error)
+	ListBySubnet(context.Context, *ListAllocationsBySubnetRequest) (*ListAllocationsResponse, error)
 	Create(context.Context, *CreateAllocationRequest) (*v1.Operation, error)
 	Update(context.Context, *UpdateAllocationRequest) (*v1.Operation, error)
 	Delete(context.Context, *DeleteAllocationRequest) (*v1.Operation, error)
@@ -141,6 +153,9 @@ func (UnimplementedAllocationServiceServer) List(context.Context, *ListAllocatio
 }
 func (UnimplementedAllocationServiceServer) ListByPool(context.Context, *ListAllocationsByPoolRequest) (*ListAllocationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByPool not implemented")
+}
+func (UnimplementedAllocationServiceServer) ListBySubnet(context.Context, *ListAllocationsBySubnetRequest) (*ListAllocationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBySubnet not implemented")
 }
 func (UnimplementedAllocationServiceServer) Create(context.Context, *CreateAllocationRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -235,6 +250,24 @@ func _AllocationService_ListByPool_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AllocationService_ListBySubnet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAllocationsBySubnetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AllocationServiceServer).ListBySubnet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AllocationService_ListBySubnet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AllocationServiceServer).ListBySubnet(ctx, req.(*ListAllocationsBySubnetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AllocationService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateAllocationRequest)
 	if err := dec(in); err != nil {
@@ -311,6 +344,10 @@ var AllocationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListByPool",
 			Handler:    _AllocationService_ListByPool_Handler,
+		},
+		{
+			MethodName: "ListBySubnet",
+			Handler:    _AllocationService_ListBySubnet_Handler,
 		},
 		{
 			MethodName: "Create",

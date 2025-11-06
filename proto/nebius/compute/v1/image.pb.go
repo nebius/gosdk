@@ -191,9 +191,10 @@ func (x *Image) GetStatus() *ImageStatus {
 }
 
 type ImageSpec struct {
-	state           protoimpl.MessageState    `protogen:"open.v1"`
-	Description     *string                   `protobuf:"bytes,1,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	ImageFamily     string                    `protobuf:"bytes,2,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Description *string                `protobuf:"bytes,1,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	ImageFamily string                 `protobuf:"bytes,2,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
+	// part of identifier into the image family
 	Version         string                    `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
 	CpuArchitecture ImageSpec_CPUArchitecture `protobuf:"varint,6,opt,name=cpu_architecture,json=cpuArchitecture,proto3,enum=nebius.compute.v1.ImageSpec_CPUArchitecture" json:"cpu_architecture,omitempty"`
 	unknownFields   protoimpl.UnknownFields

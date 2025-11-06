@@ -242,6 +242,66 @@ func (x *ListAllocationsByPoolRequest) GetPageToken() string {
 	return ""
 }
 
+type ListAllocationsBySubnetRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SubnetId      string                 `protobuf:"bytes,1,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
+	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAllocationsBySubnetRequest) Reset() {
+	*x = ListAllocationsBySubnetRequest{}
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAllocationsBySubnetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAllocationsBySubnetRequest) ProtoMessage() {}
+
+func (x *ListAllocationsBySubnetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAllocationsBySubnetRequest.ProtoReflect.Descriptor instead.
+func (*ListAllocationsBySubnetRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListAllocationsBySubnetRequest) GetSubnetId() string {
+	if x != nil {
+		return x.SubnetId
+	}
+	return ""
+}
+
+func (x *ListAllocationsBySubnetRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListAllocationsBySubnetRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
 type ListAllocationsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Allocation          `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -252,7 +312,7 @@ type ListAllocationsResponse struct {
 
 func (x *ListAllocationsResponse) Reset() {
 	*x = ListAllocationsResponse{}
-	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -264,7 +324,7 @@ func (x *ListAllocationsResponse) String() string {
 func (*ListAllocationsResponse) ProtoMessage() {}
 
 func (x *ListAllocationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -277,7 +337,7 @@ func (x *ListAllocationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAllocationsResponse.ProtoReflect.Descriptor instead.
 func (*ListAllocationsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListAllocationsResponse) GetItems() []*Allocation {
@@ -304,7 +364,7 @@ type CreateAllocationRequest struct {
 
 func (x *CreateAllocationRequest) Reset() {
 	*x = CreateAllocationRequest{}
-	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -316,7 +376,7 @@ func (x *CreateAllocationRequest) String() string {
 func (*CreateAllocationRequest) ProtoMessage() {}
 
 func (x *CreateAllocationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +389,7 @@ func (x *CreateAllocationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAllocationRequest.ProtoReflect.Descriptor instead.
 func (*CreateAllocationRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateAllocationRequest) GetMetadata() *v1.ResourceMetadata {
@@ -356,7 +416,7 @@ type UpdateAllocationRequest struct {
 
 func (x *UpdateAllocationRequest) Reset() {
 	*x = UpdateAllocationRequest{}
-	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -368,7 +428,7 @@ func (x *UpdateAllocationRequest) String() string {
 func (*UpdateAllocationRequest) ProtoMessage() {}
 
 func (x *UpdateAllocationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -381,7 +441,7 @@ func (x *UpdateAllocationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAllocationRequest.ProtoReflect.Descriptor instead.
 func (*UpdateAllocationRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateAllocationRequest) GetMetadata() *v1.ResourceMetadata {
@@ -407,7 +467,7 @@ type DeleteAllocationRequest struct {
 
 func (x *DeleteAllocationRequest) Reset() {
 	*x = DeleteAllocationRequest{}
-	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -419,7 +479,7 @@ func (x *DeleteAllocationRequest) String() string {
 func (*DeleteAllocationRequest) ProtoMessage() {}
 
 func (x *DeleteAllocationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_allocation_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -432,7 +492,7 @@ func (x *DeleteAllocationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAllocationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteAllocationRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{7}
+	return file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteAllocationRequest) GetId() string {
@@ -461,6 +521,11 @@ const file_nebius_vpc_v1_allocation_service_proto_rawDesc = "" +
 	"\apool_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06poolId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x81\x01\n" +
+	"\x1eListAllocationsBySubnetRequest\x12#\n" +
+	"\tsubnet_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bsubnetId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
+	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"r\n" +
 	"\x17ListAllocationsResponse\x12/\n" +
 	"\x05items\x18\x01 \x03(\v2\x19.nebius.vpc.v1.AllocationR\x05items\x12&\n" +
@@ -474,13 +539,14 @@ const file_nebius_vpc_v1_allocation_service_proto_rawDesc = "" +
 	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')R\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.vpc.v1.AllocationSpecR\x04spec\"1\n" +
 	"\x17DeleteAllocationRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xdc\x04\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xc3\x05\n" +
 	"\x11AllocationService\x12E\n" +
 	"\x03Get\x12#.nebius.vpc.v1.GetAllocationRequest\x1a\x19.nebius.vpc.v1.Allocation\x12Q\n" +
 	"\tGetByName\x12).nebius.vpc.v1.GetAllocationByNameRequest\x1a\x19.nebius.vpc.v1.Allocation\x12U\n" +
 	"\x04List\x12%.nebius.vpc.v1.ListAllocationsRequest\x1a&.nebius.vpc.v1.ListAllocationsResponse\x12a\n" +
 	"\n" +
-	"ListByPool\x12+.nebius.vpc.v1.ListAllocationsByPoolRequest\x1a&.nebius.vpc.v1.ListAllocationsResponse\x12M\n" +
+	"ListByPool\x12+.nebius.vpc.v1.ListAllocationsByPoolRequest\x1a&.nebius.vpc.v1.ListAllocationsResponse\x12e\n" +
+	"\fListBySubnet\x12-.nebius.vpc.v1.ListAllocationsBySubnetRequest\x1a&.nebius.vpc.v1.ListAllocationsResponse\x12M\n" +
 	"\x06Create\x12&.nebius.vpc.v1.CreateAllocationRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Update\x12&.nebius.vpc.v1.UpdateAllocationRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Delete\x12&.nebius.vpc.v1.DeleteAllocationRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x06\xbaJ\x03vpcB]\n" +
@@ -498,43 +564,46 @@ func file_nebius_vpc_v1_allocation_service_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1_allocation_service_proto_rawDescData
 }
 
-var file_nebius_vpc_v1_allocation_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_vpc_v1_allocation_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_vpc_v1_allocation_service_proto_goTypes = []any{
-	(*GetAllocationRequest)(nil),         // 0: nebius.vpc.v1.GetAllocationRequest
-	(*GetAllocationByNameRequest)(nil),   // 1: nebius.vpc.v1.GetAllocationByNameRequest
-	(*ListAllocationsRequest)(nil),       // 2: nebius.vpc.v1.ListAllocationsRequest
-	(*ListAllocationsByPoolRequest)(nil), // 3: nebius.vpc.v1.ListAllocationsByPoolRequest
-	(*ListAllocationsResponse)(nil),      // 4: nebius.vpc.v1.ListAllocationsResponse
-	(*CreateAllocationRequest)(nil),      // 5: nebius.vpc.v1.CreateAllocationRequest
-	(*UpdateAllocationRequest)(nil),      // 6: nebius.vpc.v1.UpdateAllocationRequest
-	(*DeleteAllocationRequest)(nil),      // 7: nebius.vpc.v1.DeleteAllocationRequest
-	(*Allocation)(nil),                   // 8: nebius.vpc.v1.Allocation
-	(*v1.ResourceMetadata)(nil),          // 9: nebius.common.v1.ResourceMetadata
-	(*AllocationSpec)(nil),               // 10: nebius.vpc.v1.AllocationSpec
-	(*v1.Operation)(nil),                 // 11: nebius.common.v1.Operation
+	(*GetAllocationRequest)(nil),           // 0: nebius.vpc.v1.GetAllocationRequest
+	(*GetAllocationByNameRequest)(nil),     // 1: nebius.vpc.v1.GetAllocationByNameRequest
+	(*ListAllocationsRequest)(nil),         // 2: nebius.vpc.v1.ListAllocationsRequest
+	(*ListAllocationsByPoolRequest)(nil),   // 3: nebius.vpc.v1.ListAllocationsByPoolRequest
+	(*ListAllocationsBySubnetRequest)(nil), // 4: nebius.vpc.v1.ListAllocationsBySubnetRequest
+	(*ListAllocationsResponse)(nil),        // 5: nebius.vpc.v1.ListAllocationsResponse
+	(*CreateAllocationRequest)(nil),        // 6: nebius.vpc.v1.CreateAllocationRequest
+	(*UpdateAllocationRequest)(nil),        // 7: nebius.vpc.v1.UpdateAllocationRequest
+	(*DeleteAllocationRequest)(nil),        // 8: nebius.vpc.v1.DeleteAllocationRequest
+	(*Allocation)(nil),                     // 9: nebius.vpc.v1.Allocation
+	(*v1.ResourceMetadata)(nil),            // 10: nebius.common.v1.ResourceMetadata
+	(*AllocationSpec)(nil),                 // 11: nebius.vpc.v1.AllocationSpec
+	(*v1.Operation)(nil),                   // 12: nebius.common.v1.Operation
 }
 var file_nebius_vpc_v1_allocation_service_proto_depIdxs = []int32{
-	8,  // 0: nebius.vpc.v1.ListAllocationsResponse.items:type_name -> nebius.vpc.v1.Allocation
-	9,  // 1: nebius.vpc.v1.CreateAllocationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 2: nebius.vpc.v1.CreateAllocationRequest.spec:type_name -> nebius.vpc.v1.AllocationSpec
-	9,  // 3: nebius.vpc.v1.UpdateAllocationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 4: nebius.vpc.v1.UpdateAllocationRequest.spec:type_name -> nebius.vpc.v1.AllocationSpec
+	9,  // 0: nebius.vpc.v1.ListAllocationsResponse.items:type_name -> nebius.vpc.v1.Allocation
+	10, // 1: nebius.vpc.v1.CreateAllocationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 2: nebius.vpc.v1.CreateAllocationRequest.spec:type_name -> nebius.vpc.v1.AllocationSpec
+	10, // 3: nebius.vpc.v1.UpdateAllocationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 4: nebius.vpc.v1.UpdateAllocationRequest.spec:type_name -> nebius.vpc.v1.AllocationSpec
 	0,  // 5: nebius.vpc.v1.AllocationService.Get:input_type -> nebius.vpc.v1.GetAllocationRequest
 	1,  // 6: nebius.vpc.v1.AllocationService.GetByName:input_type -> nebius.vpc.v1.GetAllocationByNameRequest
 	2,  // 7: nebius.vpc.v1.AllocationService.List:input_type -> nebius.vpc.v1.ListAllocationsRequest
 	3,  // 8: nebius.vpc.v1.AllocationService.ListByPool:input_type -> nebius.vpc.v1.ListAllocationsByPoolRequest
-	5,  // 9: nebius.vpc.v1.AllocationService.Create:input_type -> nebius.vpc.v1.CreateAllocationRequest
-	6,  // 10: nebius.vpc.v1.AllocationService.Update:input_type -> nebius.vpc.v1.UpdateAllocationRequest
-	7,  // 11: nebius.vpc.v1.AllocationService.Delete:input_type -> nebius.vpc.v1.DeleteAllocationRequest
-	8,  // 12: nebius.vpc.v1.AllocationService.Get:output_type -> nebius.vpc.v1.Allocation
-	8,  // 13: nebius.vpc.v1.AllocationService.GetByName:output_type -> nebius.vpc.v1.Allocation
-	4,  // 14: nebius.vpc.v1.AllocationService.List:output_type -> nebius.vpc.v1.ListAllocationsResponse
-	4,  // 15: nebius.vpc.v1.AllocationService.ListByPool:output_type -> nebius.vpc.v1.ListAllocationsResponse
-	11, // 16: nebius.vpc.v1.AllocationService.Create:output_type -> nebius.common.v1.Operation
-	11, // 17: nebius.vpc.v1.AllocationService.Update:output_type -> nebius.common.v1.Operation
-	11, // 18: nebius.vpc.v1.AllocationService.Delete:output_type -> nebius.common.v1.Operation
-	12, // [12:19] is the sub-list for method output_type
-	5,  // [5:12] is the sub-list for method input_type
+	4,  // 9: nebius.vpc.v1.AllocationService.ListBySubnet:input_type -> nebius.vpc.v1.ListAllocationsBySubnetRequest
+	6,  // 10: nebius.vpc.v1.AllocationService.Create:input_type -> nebius.vpc.v1.CreateAllocationRequest
+	7,  // 11: nebius.vpc.v1.AllocationService.Update:input_type -> nebius.vpc.v1.UpdateAllocationRequest
+	8,  // 12: nebius.vpc.v1.AllocationService.Delete:input_type -> nebius.vpc.v1.DeleteAllocationRequest
+	9,  // 13: nebius.vpc.v1.AllocationService.Get:output_type -> nebius.vpc.v1.Allocation
+	9,  // 14: nebius.vpc.v1.AllocationService.GetByName:output_type -> nebius.vpc.v1.Allocation
+	5,  // 15: nebius.vpc.v1.AllocationService.List:output_type -> nebius.vpc.v1.ListAllocationsResponse
+	5,  // 16: nebius.vpc.v1.AllocationService.ListByPool:output_type -> nebius.vpc.v1.ListAllocationsResponse
+	5,  // 17: nebius.vpc.v1.AllocationService.ListBySubnet:output_type -> nebius.vpc.v1.ListAllocationsResponse
+	12, // 18: nebius.vpc.v1.AllocationService.Create:output_type -> nebius.common.v1.Operation
+	12, // 19: nebius.vpc.v1.AllocationService.Update:output_type -> nebius.common.v1.Operation
+	12, // 20: nebius.vpc.v1.AllocationService.Delete:output_type -> nebius.common.v1.Operation
+	13, // [13:21] is the sub-list for method output_type
+	5,  // [5:13] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -552,7 +621,7 @@ func file_nebius_vpc_v1_allocation_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_allocation_service_proto_rawDesc), len(file_nebius_vpc_v1_allocation_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
