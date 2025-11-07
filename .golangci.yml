@@ -76,6 +76,7 @@ linters:
     - makezero # finds slice declarations with non-zero initial length
     - mirror # reports wrong mirror patterns of bytes/strings usage
     - mnd # detects magic numbers
+    - modernize # suggests simplifications to Go code, using modern language and library features
     - musttag # enforces field tags in (un)marshaled structs
     - nakedret # finds naked returns in functions greater than a specified function length
     - nestif # reports deeply nested if statements
@@ -516,3 +517,18 @@ linters:
           - recvcheck # TODO: fix or ignore
           - testifylint # TODO: fix or ignore
           - testpackage # TODO: fix or ignore
+      - text: 'any: interface\{\} can be replaced by any' # TODO: fix
+        linters:
+          - modernize
+      - text: 'stringscutprefix: HasSuffix \+ TrimSuffix can be simplified to CutSuffix' # TODO: fix
+        linters:
+          - modernize
+      - text: 'slicescontains: Loop can be simplified using slices.Contains' # TODO: fix
+        linters:
+          - modernize
+      - text: 'minmax: if statement can be modernized using min' # TODO: fix
+        linters:
+          - modernize
+      - text: 'mapsloop: Replace m\[k\]=v loop with maps.Copy' # TODO: fix
+        linters:
+          - modernize

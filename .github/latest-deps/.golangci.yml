@@ -16,3 +16,6 @@ linters:
       - path: 'config/errors.go' # remove after go 1.23+
         linters:
           - exptostd
+      - text: 'stringsseq: Ranging over SplitSeq is more efficient' # remove after go 1.24+
+        linters:
+          - modernize
