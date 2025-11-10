@@ -2,11 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.28.3
-// source: nebius/mk8s/v1alpha1/condition.proto
+// nebius/mk8s/v1alpha1/condition.proto is a deprecated file.
 
 package v1alpha1
 
 import (
+	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -22,16 +23,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 type Condition_Severity int32
 
 const (
 	// Should apply only if the condition is in state "True".
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	Condition_NONE Condition_Severity = 0
 	// Specifies that a failure of a condition type
 	// should be viewed as purely informational
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	Condition_INFO Condition_Severity = 1
 	// Specifies that a failure of a condition type
 	// should be viewed as an error.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	Condition_ERROR Condition_Severity = 2
 )
 
@@ -76,12 +84,16 @@ func (Condition_Severity) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_condition_proto_rawDescGZIP(), []int{0, 0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 type Condition_Status int32
 
 const (
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	Condition_UNKNOWN Condition_Status = 0
-	Condition_TRUE    Condition_Status = 1
-	Condition_FALSE   Condition_Status = 2
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
+	Condition_TRUE Condition_Status = 1
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
+	Condition_FALSE Condition_Status = 2
 )
 
 // Enum value maps for Condition_Status.
@@ -125,22 +137,36 @@ func (Condition_Status) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_condition_proto_rawDescGZIP(), []int{0, 1}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 type Condition struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Type of condition. Should be CamelCase
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
 	// Status of the condition, one of TRUE, FALSE or UNKNOWN.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	Status Condition_Status `protobuf:"varint,2,opt,name=status,proto3,enum=nebius.mk8s.v1alpha1.Condition_Status" json:"status,omitempty"`
 	// The last time the condition transitioned from one status to another.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	LastTransitionAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=last_transition_at,json=lastTransitionAt,proto3" json:"last_transition_at,omitempty"`
 	// The reason for the condition's last transition in CamelCase.
 	// The values are considered a guaranteed API.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	Reason string `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
 	// Explicit classification of Reason code, so the users or machines can immediately
 	// understand the current situation and act accordingly.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	Severity Condition_Severity `protobuf:"varint,5,opt,name=severity,proto3,enum=nebius.mk8s.v1alpha1.Condition_Severity" json:"severity,omitempty"`
 	// A human readable description message of this detail.
-	Description         string                     `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
+	Description string `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 	LastTransitionError *Condition_TransitionError `protobuf:"bytes,7,opt,name=last_transition_error,json=lastTransitionError,proto3" json:"last_transition_error,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
@@ -176,6 +202,7 @@ func (*Condition) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_condition_proto_rawDescGZIP(), []int{0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition) GetType() string {
 	if x != nil {
 		return x.Type
@@ -183,6 +210,7 @@ func (x *Condition) GetType() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition) GetStatus() Condition_Status {
 	if x != nil {
 		return x.Status
@@ -190,6 +218,7 @@ func (x *Condition) GetStatus() Condition_Status {
 	return Condition_UNKNOWN
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition) GetLastTransitionAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.LastTransitionAt
@@ -197,6 +226,7 @@ func (x *Condition) GetLastTransitionAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition) GetReason() string {
 	if x != nil {
 		return x.Reason
@@ -204,6 +234,7 @@ func (x *Condition) GetReason() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition) GetSeverity() Condition_Severity {
 	if x != nil {
 		return x.Severity
@@ -211,6 +242,7 @@ func (x *Condition) GetSeverity() Condition_Severity {
 	return Condition_NONE
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition) GetDescription() string {
 	if x != nil {
 		return x.Description
@@ -218,6 +250,7 @@ func (x *Condition) GetDescription() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition) GetLastTransitionError() *Condition_TransitionError {
 	if x != nil {
 		return x.LastTransitionError
@@ -225,10 +258,13 @@ func (x *Condition) GetLastTransitionError() *Condition_TransitionError {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 type Condition_TransitionError struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Reason        string                 `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
-	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
+	Reason string `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
+	Description   string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -263,6 +299,7 @@ func (*Condition_TransitionError) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_condition_proto_rawDescGZIP(), []int{0, 0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition_TransitionError) GetReason() string {
 	if x != nil {
 		return x.Reason
@@ -270,6 +307,7 @@ func (x *Condition_TransitionError) GetReason() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/condition.proto is marked as deprecated.
 func (x *Condition_TransitionError) GetDescription() string {
 	if x != nil {
 		return x.Description
@@ -281,7 +319,7 @@ var File_nebius_mk8s_v1alpha1_condition_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1alpha1_condition_proto_rawDesc = "" +
 	"\n" +
-	"$nebius/mk8s/v1alpha1/condition.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb2\x04\n" +
+	"$nebius/mk8s/v1alpha1/condition.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x18nebius/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb2\x04\n" +
 	"\tCondition\x12\x12\n" +
 	"\x04type\x18\x01 \x01(\tR\x04type\x12>\n" +
 	"\x06status\x18\x02 \x01(\x0e2&.nebius.mk8s.v1alpha1.Condition.StatusR\x06status\x12H\n" +
@@ -300,8 +338,8 @@ const file_nebius_mk8s_v1alpha1_condition_proto_rawDesc = "" +
 	"\x06Status\x12\v\n" +
 	"\aUNKNOWN\x10\x00\x12\b\n" +
 	"\x04TRUE\x10\x01\x12\t\n" +
-	"\x05FALSE\x10\x02Bc\n" +
-	"\x1bai.nebius.pub.mk8s.v1alpha1B\x0eConditionProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1b\x06proto3"
+	"\x05FALSE\x10\x02Bx\xd2J\x0f\x12\rmigrate to v1\n" +
+	"\x1bai.nebius.pub.mk8s.v1alpha1B\x0eConditionProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (
 	file_nebius_mk8s_v1alpha1_condition_proto_rawDescOnce sync.Once

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.28.3
-// source: nebius/mk8s/v1alpha1/cluster.proto
+// nebius/mk8s/v1alpha1/cluster.proto is a deprecated file.
 
 package v1alpha1
 
@@ -24,13 +24,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type ClusterStatus_State int32
 
 const (
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	ClusterStatus_STATE_UNSPECIFIED ClusterStatus_State = 0
-	ClusterStatus_PROVISIONING      ClusterStatus_State = 1
-	ClusterStatus_RUNNING           ClusterStatus_State = 2
-	ClusterStatus_DELETING          ClusterStatus_State = 3
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	ClusterStatus_PROVISIONING ClusterStatus_State = 1
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	ClusterStatus_RUNNING ClusterStatus_State = 2
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	ClusterStatus_DELETING ClusterStatus_State = 3
 )
 
 // Enum value maps for ClusterStatus_State.
@@ -76,11 +81,15 @@ func (ClusterStatus_State) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{6, 0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type Cluster struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *ClusterSpec           `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	Status        *ClusterStatus         `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	Spec *ClusterSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	Status        *ClusterStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -115,6 +124,7 @@ func (*Cluster) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *Cluster) GetMetadata() *v1.ResourceMetadata {
 	if x != nil {
 		return x.Metadata
@@ -122,6 +132,7 @@ func (x *Cluster) GetMetadata() *v1.ResourceMetadata {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *Cluster) GetSpec() *ClusterSpec {
 	if x != nil {
 		return x.Spec
@@ -129,6 +140,7 @@ func (x *Cluster) GetSpec() *ClusterSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *Cluster) GetStatus() *ClusterStatus {
 	if x != nil {
 		return x.Status
@@ -136,10 +148,14 @@ func (x *Cluster) GetStatus() *ClusterStatus {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type ClusterSpec struct {
-	state        protoimpl.MessageState `protogen:"open.v1"`
-	ControlPlane *ControlPlaneSpec      `protobuf:"bytes,2,opt,name=control_plane,json=controlPlane,proto3" json:"control_plane,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	ControlPlane *ControlPlaneSpec `protobuf:"bytes,2,opt,name=control_plane,json=controlPlane,proto3" json:"control_plane,omitempty"`
 	// Defines kubernetes network configuration, like IP allocation.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	KubeNetwork   *KubeNetworkSpec `protobuf:"bytes,3,opt,name=kube_network,json=kubeNetwork,proto3" json:"kube_network,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -175,6 +191,7 @@ func (*ClusterSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{1}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ClusterSpec) GetControlPlane() *ControlPlaneSpec {
 	if x != nil {
 		return x.ControlPlane
@@ -182,6 +199,7 @@ func (x *ClusterSpec) GetControlPlane() *ControlPlaneSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ClusterSpec) GetKubeNetwork() *KubeNetworkSpec {
 	if x != nil {
 		return x.KubeNetwork
@@ -189,18 +207,26 @@ func (x *ClusterSpec) GetKubeNetwork() *KubeNetworkSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type ControlPlaneSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Version is desired Kubernetes version of the cluster. For now only acceptable format is
 	// `MAJOR.MINOR` like "1.31". Option for patch version update will be added later.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Subnet ID where control plane instances will be located.
-	SubnetId  string                     `protobuf:"bytes,2,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	SubnetId string `protobuf:"bytes,2,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	Endpoints *ControlPlaneEndpointsSpec `protobuf:"bytes,3,opt,name=endpoints,proto3" json:"endpoints,omitempty"`
 	// Number of instances in etcd cluster.
 	// 3 by default.
 	// Control plane with `etcd_cluster_size: 3` called "Highly Available" ("HA"), because it's Kubernetes API
 	// will be available despite a failure of one control plane instance.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	EtcdClusterSize int64 `protobuf:"varint,4,opt,name=etcd_cluster_size,json=etcdClusterSize,proto3" json:"etcd_cluster_size,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -236,6 +262,7 @@ func (*ControlPlaneSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{2}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneSpec) GetVersion() string {
 	if x != nil {
 		return x.Version
@@ -243,6 +270,7 @@ func (x *ControlPlaneSpec) GetVersion() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneSpec) GetSubnetId() string {
 	if x != nil {
 		return x.SubnetId
@@ -250,6 +278,7 @@ func (x *ControlPlaneSpec) GetSubnetId() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneSpec) GetEndpoints() *ControlPlaneEndpointsSpec {
 	if x != nil {
 		return x.Endpoints
@@ -257,6 +286,7 @@ func (x *ControlPlaneSpec) GetEndpoints() *ControlPlaneEndpointsSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneSpec) GetEtcdClusterSize() int64 {
 	if x != nil {
 		return x.EtcdClusterSize
@@ -264,9 +294,12 @@ func (x *ControlPlaneSpec) GetEtcdClusterSize() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type ControlPlaneEndpointsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// PublicEndpointSpec is a specification of public endpoint for control plane.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	PublicEndpoint *PublicEndpointSpec `protobuf:"bytes,1,opt,name=public_endpoint,json=publicEndpoint,proto3" json:"public_endpoint,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
@@ -302,6 +335,7 @@ func (*ControlPlaneEndpointsSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{3}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneEndpointsSpec) GetPublicEndpoint() *PublicEndpointSpec {
 	if x != nil {
 		return x.PublicEndpoint
@@ -309,6 +343,7 @@ func (x *ControlPlaneEndpointsSpec) GetPublicEndpoint() *PublicEndpointSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type PublicEndpointSpec struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -345,6 +380,7 @@ func (*PublicEndpointSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{4}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type KubeNetworkSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// CIDR blocks for Service ClusterIP allocation.
@@ -354,6 +390,8 @@ type KubeNetworkSpec struct {
 	// Specified CIDR blocks will be reserved in Cluster.spec.control_plane.subnet_id to prevent address duplication.
 	// Allowed prefix length is from "/12" to "/28".
 	// Empty value treated as ["/16"].
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	ServiceCidrs  []string `protobuf:"bytes,1,rep,name=service_cidrs,json=serviceCidrs,proto3" json:"service_cidrs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -389,6 +427,7 @@ func (*KubeNetworkSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{5}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *KubeNetworkSpec) GetServiceCidrs() []string {
 	if x != nil {
 		return x.ServiceCidrs
@@ -396,11 +435,16 @@ func (x *KubeNetworkSpec) GetServiceCidrs() []string {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type ClusterStatus struct {
-	state        protoimpl.MessageState `protogen:"open.v1"`
-	State        ClusterStatus_State    `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1alpha1.ClusterStatus_State" json:"state,omitempty"`
-	ControlPlane *ControlPlaneStatus    `protobuf:"bytes,2,opt,name=control_plane,json=controlPlane,proto3" json:"control_plane,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	State ClusterStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1alpha1.ClusterStatus_State" json:"state,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	ControlPlane *ControlPlaneStatus `protobuf:"bytes,2,opt,name=control_plane,json=controlPlane,proto3" json:"control_plane,omitempty"`
 	// Show that changes are in flight
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	Reconciling   bool `protobuf:"varint,100,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -436,6 +480,7 @@ func (*ClusterStatus) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{6}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ClusterStatus) GetState() ClusterStatus_State {
 	if x != nil {
 		return x.State
@@ -443,6 +488,7 @@ func (x *ClusterStatus) GetState() ClusterStatus_State {
 	return ClusterStatus_STATE_UNSPECIFIED
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ClusterStatus) GetControlPlane() *ControlPlaneStatus {
 	if x != nil {
 		return x.ControlPlane
@@ -450,6 +496,7 @@ func (x *ClusterStatus) GetControlPlane() *ControlPlaneStatus {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ClusterStatus) GetReconciling() bool {
 	if x != nil {
 		return x.Reconciling
@@ -457,16 +504,23 @@ func (x *ClusterStatus) GetReconciling() bool {
 	return false
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type ControlPlaneStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Version have format `major.minor.patch-nebius-cp.n` like "1.30.0-nebius-cp.3".
-	Version   string                       `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	Endpoints *ControlPlaneStatusEndpoints `protobuf:"bytes,2,opt,name=endpoints,proto3" json:"endpoints,omitempty"`
 	// Number of instances in etcd cluster.
-	EtcdClusterSize int64                   `protobuf:"varint,3,opt,name=etcd_cluster_size,json=etcdClusterSize,proto3" json:"etcd_cluster_size,omitempty"`
-	Auth            *ControlPlaneStatusAuth `protobuf:"bytes,100,opt,name=auth,proto3" json:"auth,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	EtcdClusterSize int64 `protobuf:"varint,3,opt,name=etcd_cluster_size,json=etcdClusterSize,proto3" json:"etcd_cluster_size,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	Auth          *ControlPlaneStatusAuth `protobuf:"bytes,100,opt,name=auth,proto3" json:"auth,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ControlPlaneStatus) Reset() {
@@ -499,6 +553,7 @@ func (*ControlPlaneStatus) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{7}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneStatus) GetVersion() string {
 	if x != nil {
 		return x.Version
@@ -506,6 +561,7 @@ func (x *ControlPlaneStatus) GetVersion() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneStatus) GetEndpoints() *ControlPlaneStatusEndpoints {
 	if x != nil {
 		return x.Endpoints
@@ -513,6 +569,7 @@ func (x *ControlPlaneStatus) GetEndpoints() *ControlPlaneStatusEndpoints {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneStatus) GetEtcdClusterSize() int64 {
 	if x != nil {
 		return x.EtcdClusterSize
@@ -520,6 +577,7 @@ func (x *ControlPlaneStatus) GetEtcdClusterSize() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneStatus) GetAuth() *ControlPlaneStatusAuth {
 	if x != nil {
 		return x.Auth
@@ -528,11 +586,17 @@ func (x *ControlPlaneStatus) GetAuth() *ControlPlaneStatusAuth {
 }
 
 // Endpoints of Kubernetes control plane. Kubernetes API can be accessed at `https://endpoint/`.
+//
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type ControlPlaneStatusEndpoints struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// DNS name or IP address accessible from the Internet.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	PublicEndpoint string `protobuf:"bytes,1,opt,name=public_endpoint,json=publicEndpoint,proto3" json:"public_endpoint,omitempty"`
 	// DNS name or IP address accessible from the user VPC.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 	PrivateEndpoint string `protobuf:"bytes,2,opt,name=private_endpoint,json=privateEndpoint,proto3" json:"private_endpoint,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -568,6 +632,7 @@ func (*ControlPlaneStatusEndpoints) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{8}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneStatusEndpoints) GetPublicEndpoint() string {
 	if x != nil {
 		return x.PublicEndpoint
@@ -575,6 +640,7 @@ func (x *ControlPlaneStatusEndpoints) GetPublicEndpoint() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneStatusEndpoints) GetPrivateEndpoint() string {
 	if x != nil {
 		return x.PrivateEndpoint
@@ -582,9 +648,11 @@ func (x *ControlPlaneStatusEndpoints) GetPrivateEndpoint() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 type ControlPlaneStatusAuth struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	ClusterCaCertificate string                 `protobuf:"bytes,1,opt,name=cluster_ca_certificate,json=clusterCaCertificate,proto3" json:"cluster_ca_certificate,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
+	ClusterCaCertificate string `protobuf:"bytes,1,opt,name=cluster_ca_certificate,json=clusterCaCertificate,proto3" json:"cluster_ca_certificate,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -619,6 +687,7 @@ func (*ControlPlaneStatusAuth) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_cluster_proto_rawDescGZIP(), []int{9}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/cluster.proto is marked as deprecated.
 func (x *ControlPlaneStatusAuth) GetClusterCaCertificate() string {
 	if x != nil {
 		return x.ClusterCaCertificate
@@ -669,8 +738,8 @@ const file_nebius_mk8s_v1alpha1_cluster_proto_rawDesc = "" +
 	"\x0fpublic_endpoint\x18\x01 \x01(\tR\x0epublicEndpoint\x12)\n" +
 	"\x10private_endpoint\x18\x02 \x01(\tR\x0fprivateEndpoint\"N\n" +
 	"\x16ControlPlaneStatusAuth\x124\n" +
-	"\x16cluster_ca_certificate\x18\x01 \x01(\tR\x14clusterCaCertificateBa\n" +
-	"\x1bai.nebius.pub.mk8s.v1alpha1B\fClusterProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1b\x06proto3"
+	"\x16cluster_ca_certificate\x18\x01 \x01(\tR\x14clusterCaCertificateBv\xd2J\x0f\x12\rmigrate to v1\n" +
+	"\x1bai.nebius.pub.mk8s.v1alpha1B\fClusterProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (
 	file_nebius_mk8s_v1alpha1_cluster_proto_rawDescOnce sync.Once

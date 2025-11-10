@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v5.28.3
-// source: nebius/mk8s/v1alpha1/cluster_service.proto
+// nebius/mk8s/v1alpha1/cluster_service.proto is a deprecated file.
 
 package v1alpha1
 
@@ -32,6 +32,8 @@ const (
 // ClusterServiceClient is the client API for ClusterService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type ClusterServiceClient interface {
 	Get(ctx context.Context, in *GetClusterRequest, opts ...grpc.CallOption) (*Cluster, error)
 	GetByName(ctx context.Context, in *GetClusterByNameRequest, opts ...grpc.CallOption) (*Cluster, error)
@@ -47,6 +49,7 @@ type clusterServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewClusterServiceClient(cc grpc.ClientConnInterface) ClusterServiceClient {
 	return &clusterServiceClient{cc}
 }
@@ -117,6 +120,8 @@ func (c *clusterServiceClient) ListControlPlaneVersions(ctx context.Context, in 
 // ClusterServiceServer is the server API for ClusterService service.
 // All implementations should embed UnimplementedClusterServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type ClusterServiceServer interface {
 	Get(context.Context, *GetClusterRequest) (*Cluster, error)
 	GetByName(context.Context, *GetClusterByNameRequest) (*Cluster, error)
@@ -161,6 +166,7 @@ type UnsafeClusterServiceServer interface {
 	mustEmbedUnimplementedClusterServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterClusterServiceServer(s grpc.ServiceRegistrar, srv ClusterServiceServer) {
 	s.RegisterService(&ClusterService_ServiceDesc, srv)
 }

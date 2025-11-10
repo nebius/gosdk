@@ -2,11 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.28.3
-// source: nebius/mk8s/v1alpha1/progress_data.proto
+// nebius/mk8s/v1alpha1/progress_data.proto is a deprecated file.
 
 package v1alpha1
 
 import (
+	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -21,9 +22,12 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/progress_data.proto is marked as deprecated.
 type ProgressData struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Problems encountered during the operation execution.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/progress_data.proto is marked as deprecated.
 	Problems      []*Problem `protobuf:"bytes,1,rep,name=problems,proto3" json:"problems,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -59,6 +63,7 @@ func (*ProgressData) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_progress_data_proto_rawDescGZIP(), []int{0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/progress_data.proto is marked as deprecated.
 func (x *ProgressData) GetProblems() []*Problem {
 	if x != nil {
 		return x.Problems
@@ -66,11 +71,16 @@ func (x *ProgressData) GetProblems() []*Problem {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/progress_data.proto is marked as deprecated.
 type Problem struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Stage on which the problem occurred.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/progress_data.proto is marked as deprecated.
 	Stage string `protobuf:"bytes,1,opt,name=stage,proto3" json:"stage,omitempty"`
 	// Message describing the problem.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/progress_data.proto is marked as deprecated.
 	Message       string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -106,6 +116,7 @@ func (*Problem) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_progress_data_proto_rawDescGZIP(), []int{1}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/progress_data.proto is marked as deprecated.
 func (x *Problem) GetStage() string {
 	if x != nil {
 		return x.Stage
@@ -113,6 +124,7 @@ func (x *Problem) GetStage() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/progress_data.proto is marked as deprecated.
 func (x *Problem) GetMessage() string {
 	if x != nil {
 		return x.Message
@@ -124,13 +136,13 @@ var File_nebius_mk8s_v1alpha1_progress_data_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1alpha1_progress_data_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/mk8s/v1alpha1/progress_data.proto\x12\x14nebius.mk8s.v1alpha1\"I\n" +
+	"(nebius/mk8s/v1alpha1/progress_data.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x18nebius/annotations.proto\"I\n" +
 	"\fProgressData\x129\n" +
 	"\bproblems\x18\x01 \x03(\v2\x1d.nebius.mk8s.v1alpha1.ProblemR\bproblems\"9\n" +
 	"\aProblem\x12\x14\n" +
 	"\x05stage\x18\x01 \x01(\tR\x05stage\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessageBf\n" +
-	"\x1bai.nebius.pub.mk8s.v1alpha1B\x11ProgressDataProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1b\x06proto3"
+	"\amessage\x18\x02 \x01(\tR\amessageB{\xd2J\x0f\x12\rmigrate to v1\n" +
+	"\x1bai.nebius.pub.mk8s.v1alpha1B\x11ProgressDataProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (
 	file_nebius_mk8s_v1alpha1_progress_data_proto_rawDescOnce sync.Once
