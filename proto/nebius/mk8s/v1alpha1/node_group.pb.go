@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.28.3
-// source: nebius/mk8s/v1alpha1/node_group.proto
+// nebius/mk8s/v1alpha1/node_group.proto is a deprecated file.
 
 package v1alpha1
 
@@ -25,12 +25,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type AttachedFilesystemSpec_AttachMode int32
 
 const (
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	AttachedFilesystemSpec_UNSPECIFIED AttachedFilesystemSpec_AttachMode = 0
-	AttachedFilesystemSpec_READ_ONLY   AttachedFilesystemSpec_AttachMode = 1
-	AttachedFilesystemSpec_READ_WRITE  AttachedFilesystemSpec_AttachMode = 2
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	AttachedFilesystemSpec_READ_ONLY AttachedFilesystemSpec_AttachMode = 1
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	AttachedFilesystemSpec_READ_WRITE AttachedFilesystemSpec_AttachMode = 2
 )
 
 // Enum value maps for AttachedFilesystemSpec_AttachMode.
@@ -74,12 +78,17 @@ func (AttachedFilesystemSpec_AttachMode) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{8, 0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeTaint_Effect int32
 
 const (
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	NodeTaint_EFFECT_UNSPECIFIED NodeTaint_Effect = 0
-	NodeTaint_NO_EXECUTE         NodeTaint_Effect = 1
-	NodeTaint_NO_SCHEDULE        NodeTaint_Effect = 2
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	NodeTaint_NO_EXECUTE NodeTaint_Effect = 1
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	NodeTaint_NO_SCHEDULE NodeTaint_Effect = 2
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	NodeTaint_PREFER_NO_SCHEDULE NodeTaint_Effect = 3
 )
 
@@ -126,13 +135,18 @@ func (NodeTaint_Effect) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{12, 0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeGroupStatus_State int32
 
 const (
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	NodeGroupStatus_STATE_UNSPECIFIED NodeGroupStatus_State = 0
-	NodeGroupStatus_PROVISIONING      NodeGroupStatus_State = 1
-	NodeGroupStatus_RUNNING           NodeGroupStatus_State = 2
-	NodeGroupStatus_DELETING          NodeGroupStatus_State = 3
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	NodeGroupStatus_PROVISIONING NodeGroupStatus_State = 1
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	NodeGroupStatus_RUNNING NodeGroupStatus_State = 2
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	NodeGroupStatus_DELETING NodeGroupStatus_State = 3
 )
 
 // Enum value maps for NodeGroupStatus_State.
@@ -179,11 +193,16 @@ func (NodeGroupStatus_State) EnumDescriptor() ([]byte, []int) {
 }
 
 // NodeGroup represents Kubernetes node pool
+//
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeGroup struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"` // the parent_id is an ID of Cluster
-	Spec          *NodeGroupSpec         `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	Status        *NodeGroupStatus       `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"` // the parent_id is an ID of Cluster
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Spec *NodeGroupSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Status        *NodeGroupStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -218,6 +237,7 @@ func (*NodeGroup) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroup) GetMetadata() *v1.ResourceMetadata {
 	if x != nil {
 		return x.Metadata
@@ -225,6 +245,7 @@ func (x *NodeGroup) GetMetadata() *v1.ResourceMetadata {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroup) GetSpec() *NodeGroupSpec {
 	if x != nil {
 		return x.Spec
@@ -232,6 +253,7 @@ func (x *NodeGroup) GetSpec() *NodeGroupSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroup) GetStatus() *NodeGroupStatus {
 	if x != nil {
 		return x.Status
@@ -239,18 +261,23 @@ func (x *NodeGroup) GetStatus() *NodeGroupStatus {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeGroupSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Version is desired Kubernetes version of the cluster. For now only acceptable format is
 	// `MAJOR.MINOR` like "1.31". Option for patch version update will be added later.
 	// By default the cluster control plane MAJOR.MINOR version will be used.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Types that are valid to be assigned to Size:
 	//
 	//	*NodeGroupSpec_FixedNodeCount
 	//	*NodeGroupSpec_Autoscaling
-	Size          isNodeGroupSpec_Size         `protobuf_oneof:"size"`
-	Template      *NodeTemplate                `protobuf:"bytes,3,opt,name=template,proto3" json:"template,omitempty"`
+	Size isNodeGroupSpec_Size `protobuf_oneof:"size"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Template *NodeTemplate `protobuf:"bytes,3,opt,name=template,proto3" json:"template,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Strategy      *NodeGroupDeploymentStrategy `protobuf:"bytes,4,opt,name=strategy,proto3" json:"strategy,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -286,6 +313,7 @@ func (*NodeGroupSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{1}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupSpec) GetVersion() string {
 	if x != nil {
 		return x.Version
@@ -300,6 +328,7 @@ func (x *NodeGroupSpec) GetSize() isNodeGroupSpec_Size {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupSpec) GetFixedNodeCount() int64 {
 	if x != nil {
 		if x, ok := x.Size.(*NodeGroupSpec_FixedNodeCount); ok {
@@ -309,6 +338,7 @@ func (x *NodeGroupSpec) GetFixedNodeCount() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupSpec) GetAutoscaling() *NodeGroupAutoscalingSpec {
 	if x != nil {
 		if x, ok := x.Size.(*NodeGroupSpec_Autoscaling); ok {
@@ -318,6 +348,7 @@ func (x *NodeGroupSpec) GetAutoscaling() *NodeGroupAutoscalingSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupSpec) GetTemplate() *NodeTemplate {
 	if x != nil {
 		return x.Template
@@ -325,6 +356,7 @@ func (x *NodeGroupSpec) GetTemplate() *NodeTemplate {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupSpec) GetStrategy() *NodeGroupDeploymentStrategy {
 	if x != nil {
 		return x.Strategy
@@ -337,10 +369,12 @@ type isNodeGroupSpec_Size interface {
 }
 
 type NodeGroupSpec_FixedNodeCount struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	FixedNodeCount int64 `protobuf:"varint,2,opt,name=fixed_node_count,json=fixedNodeCount,proto3,oneof"`
 }
 
 type NodeGroupSpec_Autoscaling struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Autoscaling *NodeGroupAutoscalingSpec `protobuf:"bytes,5,opt,name=autoscaling,proto3,oneof"`
 }
 
@@ -348,13 +382,20 @@ func (*NodeGroupSpec_FixedNodeCount) isNodeGroupSpec_Size() {}
 
 func (*NodeGroupSpec_Autoscaling) isNodeGroupSpec_Size() {}
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeTemplate struct {
-	state     protoimpl.MessageState `protogen:"open.v1"`
-	Metadata  *NodeMetadataTemplate  `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Taints    []*NodeTaint           `protobuf:"bytes,2,rep,name=taints,proto3" json:"taints,omitempty"`
-	Resources *ResourcesSpec         `protobuf:"bytes,3,opt,name=resources,proto3" json:"resources,omitempty"`
-	BootDisk  *DiskSpec              `protobuf:"bytes,9,opt,name=boot_disk,json=bootDisk,proto3" json:"boot_disk,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Metadata *NodeMetadataTemplate `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Taints []*NodeTaint `protobuf:"bytes,2,rep,name=taints,proto3" json:"taints,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Resources *ResourcesSpec `protobuf:"bytes,3,opt,name=resources,proto3" json:"resources,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	BootDisk *DiskSpec `protobuf:"bytes,9,opt,name=boot_disk,json=bootDisk,proto3" json:"boot_disk,omitempty"`
 	// GPU-related settings.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	GpuSettings *GpuSettings `protobuf:"bytes,13,opt,name=gpu_settings,json=gpuSettings,proto3" json:"gpu_settings,omitempty"`
 	// OS version that will be used to create the boot disk of Compute Instances in the NodeGroup.
 	// Supported platform / k8s version /  OS / driver presets combinations
@@ -382,20 +423,31 @@ type NodeTemplate struct {
 	//	    k8s: 1.31 → "ubuntu24.04"
 	//	  drivers_preset: "cuda12.8"
 	//	    k8s: 1.31 → "ubuntu24.04"
-	Os                string                      `protobuf:"bytes,16,opt,name=os,proto3" json:"os,omitempty"`
-	GpuCluster        *GpuClusterSpec             `protobuf:"bytes,4,opt,name=gpu_cluster,json=gpuCluster,proto3" json:"gpu_cluster,omitempty"`
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Os string `protobuf:"bytes,16,opt,name=os,proto3" json:"os,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	GpuCluster *GpuClusterSpec `protobuf:"bytes,4,opt,name=gpu_cluster,json=gpuCluster,proto3" json:"gpu_cluster,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	NetworkInterfaces []*NetworkInterfaceTemplate `protobuf:"bytes,5,rep,name=network_interfaces,json=networkInterfaces,proto3" json:"network_interfaces,omitempty"`
-	Filesystems       []*AttachedFilesystemSpec   `protobuf:"bytes,7,rep,name=filesystems,proto3" json:"filesystems,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Filesystems []*AttachedFilesystemSpec `protobuf:"bytes,7,rep,name=filesystems,proto3" json:"filesystems,omitempty"`
 	// cloud-init user-data. Must contain at least one SSH key.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	CloudInitUserData string `protobuf:"bytes,6,opt,name=cloud_init_user_data,json=cloudInitUserData,proto3" json:"cloud_init_user_data,omitempty"`
 	// the Nebius service account whose credentials will be available on the nodes of the group.
 	// With these credentials, it is possible to make `nebius` CLI or public API requests from the nodes without the need for extra authentication.
 	// This service account is also used to make requests to container registry.
 	//
 	// `resource.serviceaccount.issueAccessToken` permission is required to use this field.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	ServiceAccountId string `protobuf:"bytes,10,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
 	// Configures whether the nodes in the group are preemptible.
 	// Set to empty value to enable preemptible nodes.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Preemptible   *PreemptibleSpec `protobuf:"bytes,15,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -431,6 +483,7 @@ func (*NodeTemplate) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{2}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetMetadata() *NodeMetadataTemplate {
 	if x != nil {
 		return x.Metadata
@@ -438,6 +491,7 @@ func (x *NodeTemplate) GetMetadata() *NodeMetadataTemplate {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetTaints() []*NodeTaint {
 	if x != nil {
 		return x.Taints
@@ -445,6 +499,7 @@ func (x *NodeTemplate) GetTaints() []*NodeTaint {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetResources() *ResourcesSpec {
 	if x != nil {
 		return x.Resources
@@ -452,6 +507,7 @@ func (x *NodeTemplate) GetResources() *ResourcesSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetBootDisk() *DiskSpec {
 	if x != nil {
 		return x.BootDisk
@@ -459,6 +515,7 @@ func (x *NodeTemplate) GetBootDisk() *DiskSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetGpuSettings() *GpuSettings {
 	if x != nil {
 		return x.GpuSettings
@@ -466,6 +523,7 @@ func (x *NodeTemplate) GetGpuSettings() *GpuSettings {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetOs() string {
 	if x != nil {
 		return x.Os
@@ -473,6 +531,7 @@ func (x *NodeTemplate) GetOs() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetGpuCluster() *GpuClusterSpec {
 	if x != nil {
 		return x.GpuCluster
@@ -480,6 +539,7 @@ func (x *NodeTemplate) GetGpuCluster() *GpuClusterSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetNetworkInterfaces() []*NetworkInterfaceTemplate {
 	if x != nil {
 		return x.NetworkInterfaces
@@ -487,6 +547,7 @@ func (x *NodeTemplate) GetNetworkInterfaces() []*NetworkInterfaceTemplate {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetFilesystems() []*AttachedFilesystemSpec {
 	if x != nil {
 		return x.Filesystems
@@ -494,6 +555,7 @@ func (x *NodeTemplate) GetFilesystems() []*AttachedFilesystemSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetCloudInitUserData() string {
 	if x != nil {
 		return x.CloudInitUserData
@@ -501,6 +563,7 @@ func (x *NodeTemplate) GetCloudInitUserData() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetServiceAccountId() string {
 	if x != nil {
 		return x.ServiceAccountId
@@ -508,6 +571,7 @@ func (x *NodeTemplate) GetServiceAccountId() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTemplate) GetPreemptible() *PreemptibleSpec {
 	if x != nil {
 		return x.Preemptible
@@ -515,11 +579,14 @@ func (x *NodeTemplate) GetPreemptible() *PreemptibleSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeMetadataTemplate struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Labels will be propagated into nodes metadata.
 	// System labels containing "kubernetes.io" and "k8s.io" will not be propagated.
 	// On update labels they will not be updated in nodes right away, only on node group update.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Labels        map[string]string `protobuf:"bytes,1,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -555,6 +622,7 @@ func (*NodeMetadataTemplate) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{3}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeMetadataTemplate) GetLabels() map[string]string {
 	if x != nil {
 		return x.Labels
@@ -563,6 +631,8 @@ func (x *NodeMetadataTemplate) GetLabels() map[string]string {
 }
 
 // GPU-related settings.
+//
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type GpuSettings struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the predefined set of drivers included in the ComputeImage deployed on ComputeInstances that are part of the NodeGroup.
@@ -575,6 +645,8 @@ type GpuSettings struct {
 	//	  k8s: 1.31 → "cuda12" (CUDA 12.8), "cuda12.8"
 	//	gpu-b200-sxm-a:
 	//	  k8s: 1.31 → "cuda12.8"
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	DriversPreset string `protobuf:"bytes,1,opt,name=drivers_preset,json=driversPreset,proto3" json:"drivers_preset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -610,6 +682,7 @@ func (*GpuSettings) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{4}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *GpuSettings) GetDriversPreset() string {
 	if x != nil {
 		return x.DriversPreset
@@ -617,9 +690,11 @@ func (x *GpuSettings) GetDriversPreset() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type GpuClusterSpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -654,6 +729,7 @@ func (*GpuClusterSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{5}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *GpuClusterSpec) GetId() string {
 	if x != nil {
 		return x.Id
@@ -661,13 +737,18 @@ func (x *GpuClusterSpec) GetId() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NetworkInterfaceTemplate struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Public IPv4 address associated with the interface.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	PublicIpAddress *PublicIPAddress `protobuf:"bytes,1,opt,name=public_ip_address,json=publicIpAddress,proto3" json:"public_ip_address,omitempty"`
 	// Subnet ID that will be attached to a node cloud intstance network interface.
 	// By default control plane subnet_id used.
 	// Subnet should be located in the same network with control plane and have same parent ID as cluster.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	SubnetId      string `protobuf:"bytes,3,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -703,6 +784,7 @@ func (*NetworkInterfaceTemplate) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{6}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NetworkInterfaceTemplate) GetPublicIpAddress() *PublicIPAddress {
 	if x != nil {
 		return x.PublicIpAddress
@@ -710,6 +792,7 @@ func (x *NetworkInterfaceTemplate) GetPublicIpAddress() *PublicIPAddress {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NetworkInterfaceTemplate) GetSubnetId() string {
 	if x != nil {
 		return x.SubnetId
@@ -718,6 +801,8 @@ func (x *NetworkInterfaceTemplate) GetSubnetId() string {
 }
 
 // Describes a public IP address.
+//
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type PublicIPAddress struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -754,10 +839,13 @@ func (*PublicIPAddress) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{7}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type AttachedFilesystemSpec struct {
-	state      protoimpl.MessageState            `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	AttachMode AttachedFilesystemSpec_AttachMode `protobuf:"varint,1,opt,name=attach_mode,json=attachMode,proto3,enum=nebius.mk8s.v1alpha1.AttachedFilesystemSpec_AttachMode" json:"attach_mode,omitempty"`
-	DeviceName string                            `protobuf:"bytes,2,opt,name=device_name,json=deviceName,proto3" json:"device_name,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	DeviceName string `protobuf:"bytes,2,opt,name=device_name,json=deviceName,proto3" json:"device_name,omitempty"`
 	// Types that are valid to be assigned to Type:
 	//
 	//	*AttachedFilesystemSpec_ExistingFilesystem
@@ -796,6 +884,7 @@ func (*AttachedFilesystemSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{8}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *AttachedFilesystemSpec) GetAttachMode() AttachedFilesystemSpec_AttachMode {
 	if x != nil {
 		return x.AttachMode
@@ -803,6 +892,7 @@ func (x *AttachedFilesystemSpec) GetAttachMode() AttachedFilesystemSpec_AttachMo
 	return AttachedFilesystemSpec_UNSPECIFIED
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *AttachedFilesystemSpec) GetDeviceName() string {
 	if x != nil {
 		return x.DeviceName
@@ -817,6 +907,7 @@ func (x *AttachedFilesystemSpec) GetType() isAttachedFilesystemSpec_Type {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *AttachedFilesystemSpec) GetExistingFilesystem() *ExistingFilesystem {
 	if x != nil {
 		if x, ok := x.Type.(*AttachedFilesystemSpec_ExistingFilesystem); ok {
@@ -831,14 +922,17 @@ type isAttachedFilesystemSpec_Type interface {
 }
 
 type AttachedFilesystemSpec_ExistingFilesystem struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	ExistingFilesystem *ExistingFilesystem `protobuf:"bytes,3,opt,name=existing_filesystem,json=existingFilesystem,proto3,oneof"`
 }
 
 func (*AttachedFilesystemSpec_ExistingFilesystem) isAttachedFilesystemSpec_Type() {}
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type ExistingFilesystem struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -873,6 +967,7 @@ func (*ExistingFilesystem) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{9}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *ExistingFilesystem) GetId() string {
 	if x != nil {
 		return x.Id
@@ -880,10 +975,13 @@ func (x *ExistingFilesystem) GetId() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeGroupAutoscalingSpec struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	MinNodeCount  int64                  `protobuf:"varint,1,opt,name=min_node_count,json=minNodeCount,proto3" json:"min_node_count,omitempty"`
-	MaxNodeCount  int64                  `protobuf:"varint,2,opt,name=max_node_count,json=maxNodeCount,proto3" json:"max_node_count,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	MinNodeCount int64 `protobuf:"varint,1,opt,name=min_node_count,json=minNodeCount,proto3" json:"min_node_count,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	MaxNodeCount  int64 `protobuf:"varint,2,opt,name=max_node_count,json=maxNodeCount,proto3" json:"max_node_count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -918,6 +1016,7 @@ func (*NodeGroupAutoscalingSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{10}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupAutoscalingSpec) GetMinNodeCount() int64 {
 	if x != nil {
 		return x.MinNodeCount
@@ -925,6 +1024,7 @@ func (x *NodeGroupAutoscalingSpec) GetMinNodeCount() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupAutoscalingSpec) GetMaxNodeCount() int64 {
 	if x != nil {
 		return x.MaxNodeCount
@@ -932,6 +1032,7 @@ func (x *NodeGroupAutoscalingSpec) GetMaxNodeCount() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type PreemptibleSpec struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -969,11 +1070,16 @@ func (*PreemptibleSpec) Descriptor() ([]byte, []int) {
 }
 
 // See https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+//
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeTaint struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-	Effect        NodeTaint_Effect       `protobuf:"varint,3,opt,name=effect,proto3,enum=nebius.mk8s.v1alpha1.NodeTaint_Effect" json:"effect,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	Effect        NodeTaint_Effect `protobuf:"varint,3,opt,name=effect,proto3,enum=nebius.mk8s.v1alpha1.NodeTaint_Effect" json:"effect,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1008,6 +1114,7 @@ func (*NodeTaint) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{12}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTaint) GetKey() string {
 	if x != nil {
 		return x.Key
@@ -1015,6 +1122,7 @@ func (x *NodeTaint) GetKey() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTaint) GetValue() string {
 	if x != nil {
 		return x.Value
@@ -1022,6 +1130,7 @@ func (x *NodeTaint) GetValue() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeTaint) GetEffect() NodeTaint_Effect {
 	if x != nil {
 		return x.Effect
@@ -1029,6 +1138,7 @@ func (x *NodeTaint) GetEffect() NodeTaint_Effect {
 	return NodeTaint_EFFECT_UNSPECIFIED
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeGroupDeploymentStrategy struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The maximum number of machines that can be unavailable during the update.
@@ -1043,6 +1153,8 @@ type NodeGroupDeploymentStrategy struct {
 	// down further, followed by scaling up the new MachineSet, ensuring
 	// that the total number of machines available at all times
 	// during the update is at least 70% of desired machines.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	MaxUnavailable *PercentOrCount `protobuf:"bytes,1,opt,name=max_unavailable,json=maxUnavailable,proto3" json:"max_unavailable,omitempty"`
 	// The maximum number of machines that can be scheduled above the
 	// desired number of machines.
@@ -1057,10 +1169,14 @@ type NodeGroupDeploymentStrategy struct {
 	// machines. Once old machines have been killed, new MachineSet can
 	// be scaled up further, ensuring that total number of machines running
 	// at any time during the update is at most 130% of desired machines.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	MaxSurge *PercentOrCount `protobuf:"bytes,2,opt,name=max_surge,json=maxSurge,proto3" json:"max_surge,omitempty"`
 	// DrainTimeout is the total amount of time that the service will spend on draining a node.
 	// By default, node can be drained without any time limitations.
 	// NOTE: NodeDrainTimeout is different from `kubectl drain --timeout`
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	DrainTimeout  *durationpb.Duration `protobuf:"bytes,3,opt,name=drain_timeout,json=drainTimeout,proto3" json:"drain_timeout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1096,6 +1212,7 @@ func (*NodeGroupDeploymentStrategy) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{13}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupDeploymentStrategy) GetMaxUnavailable() *PercentOrCount {
 	if x != nil {
 		return x.MaxUnavailable
@@ -1103,6 +1220,7 @@ func (x *NodeGroupDeploymentStrategy) GetMaxUnavailable() *PercentOrCount {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupDeploymentStrategy) GetMaxSurge() *PercentOrCount {
 	if x != nil {
 		return x.MaxSurge
@@ -1110,6 +1228,7 @@ func (x *NodeGroupDeploymentStrategy) GetMaxSurge() *PercentOrCount {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupDeploymentStrategy) GetDrainTimeout() *durationpb.Duration {
 	if x != nil {
 		return x.DrainTimeout
@@ -1117,6 +1236,7 @@ func (x *NodeGroupDeploymentStrategy) GetDrainTimeout() *durationpb.Duration {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type PercentOrCount struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Value:
@@ -1165,6 +1285,7 @@ func (x *PercentOrCount) GetValue() isPercentOrCount_Value {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *PercentOrCount) GetPercent() int64 {
 	if x != nil {
 		if x, ok := x.Value.(*PercentOrCount_Percent); ok {
@@ -1174,6 +1295,7 @@ func (x *PercentOrCount) GetPercent() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *PercentOrCount) GetCount() int64 {
 	if x != nil {
 		if x, ok := x.Value.(*PercentOrCount_Count); ok {
@@ -1188,10 +1310,12 @@ type isPercentOrCount_Value interface {
 }
 
 type PercentOrCount_Percent struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Percent int64 `protobuf:"varint,1,opt,name=percent,proto3,oneof"`
 }
 
 type PercentOrCount_Count struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Count int64 `protobuf:"varint,2,opt,name=count,proto3,oneof"`
 }
 
@@ -1199,26 +1323,40 @@ func (*PercentOrCount_Percent) isPercentOrCount_Value() {}
 
 func (*PercentOrCount_Count) isPercentOrCount_Value() {}
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 type NodeGroupStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	State NodeGroupStatus_State  `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1alpha1.NodeGroupStatus_State" json:"state,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	State NodeGroupStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1alpha1.NodeGroupStatus_State" json:"state,omitempty"`
 	// Version have format `MAJOR.MINOR.PATCH-nebius-node.n` like "1.30.0-nebius-node.10".
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Version string `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	// Desired total number of nodes that should be in the node group.
 	// It is either fixed_node_count or arbitrary number between min_node_count and max_node_count decided by autoscaler.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	TargetNodeCount int64 `protobuf:"varint,3,opt,name=target_node_count,json=targetNodeCount,proto3" json:"target_node_count,omitempty"`
 	// Total number of nodes that are currently in the node group.
 	// Both ready and not ready nodes are counted.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	NodeCount int64 `protobuf:"varint,4,opt,name=node_count,json=nodeCount,proto3" json:"node_count,omitempty"`
 	// Total number of nodes that has outdated node configuration.
 	// These nodes will be replaced by new nodes with up-to-date configuration.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	OutdatedNodeCount int64 `protobuf:"varint,5,opt,name=outdated_node_count,json=outdatedNodeCount,proto3" json:"outdated_node_count,omitempty"`
 	// Total number of nodes that successfully joined the cluster and are ready to serve workloads.
 	// Both outdated and up-to-date nodes are counted.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	ReadyNodeCount int64 `protobuf:"varint,6,opt,name=ready_node_count,json=readyNodeCount,proto3" json:"ready_node_count,omitempty"`
-	// Deprecated: Marked as deprecated in nebius/mk8s/v1alpha1/node_group.proto.
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Conditions []*Condition `protobuf:"bytes,50,rep,name=conditions,proto3" json:"conditions,omitempty"`
 	// Show that changes are in flight
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Reconciling   bool `protobuf:"varint,100,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1254,6 +1392,7 @@ func (*NodeGroupStatus) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_proto_rawDescGZIP(), []int{15}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetState() NodeGroupStatus_State {
 	if x != nil {
 		return x.State
@@ -1261,6 +1400,7 @@ func (x *NodeGroupStatus) GetState() NodeGroupStatus_State {
 	return NodeGroupStatus_STATE_UNSPECIFIED
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetVersion() string {
 	if x != nil {
 		return x.Version
@@ -1268,6 +1408,7 @@ func (x *NodeGroupStatus) GetVersion() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetTargetNodeCount() int64 {
 	if x != nil {
 		return x.TargetNodeCount
@@ -1275,6 +1416,7 @@ func (x *NodeGroupStatus) GetTargetNodeCount() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetNodeCount() int64 {
 	if x != nil {
 		return x.NodeCount
@@ -1282,6 +1424,7 @@ func (x *NodeGroupStatus) GetNodeCount() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetOutdatedNodeCount() int64 {
 	if x != nil {
 		return x.OutdatedNodeCount
@@ -1289,6 +1432,7 @@ func (x *NodeGroupStatus) GetOutdatedNodeCount() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetReadyNodeCount() int64 {
 	if x != nil {
 		return x.ReadyNodeCount
@@ -1296,7 +1440,7 @@ func (x *NodeGroupStatus) GetReadyNodeCount() int64 {
 	return 0
 }
 
-// Deprecated: Marked as deprecated in nebius/mk8s/v1alpha1/node_group.proto.
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetConditions() []*Condition {
 	if x != nil {
 		return x.Conditions
@@ -1304,6 +1448,7 @@ func (x *NodeGroupStatus) GetConditions() []*Condition {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetReconciling() bool {
 	if x != nil {
 		return x.Reconciling
@@ -1411,8 +1556,8 @@ const file_nebius_mk8s_v1alpha1_node_group_proto_rawDesc = "" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPROVISIONING\x10\x01\x12\v\n" +
 	"\aRUNNING\x10\x02\x12\f\n" +
-	"\bDELETING\x10\x03Bc\n" +
-	"\x1bai.nebius.pub.mk8s.v1alpha1B\x0eNodeGroupProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1b\x06proto3"
+	"\bDELETING\x10\x03Bx\xd2J\x0f\x12\rmigrate to v1\n" +
+	"\x1bai.nebius.pub.mk8s.v1alpha1B\x0eNodeGroupProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (
 	file_nebius_mk8s_v1alpha1_node_group_proto_rawDescOnce sync.Once

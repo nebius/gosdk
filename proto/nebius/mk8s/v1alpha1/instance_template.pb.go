@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.28.3
-// source: nebius/mk8s/v1alpha1/instance_template.proto
+// nebius/mk8s/v1alpha1/instance_template.proto is a deprecated file.
 
 package v1alpha1
 
@@ -23,14 +23,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 type DiskSpec_DiskType int32
 
 const (
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 	DiskSpec_UNSPECIFIED DiskSpec_DiskType = 0
 	// the list of available types will be clarified later, it is not final version
-	DiskSpec_NETWORK_SSD                DiskSpec_DiskType = 1
-	DiskSpec_NETWORK_HDD                DiskSpec_DiskType = 2
-	DiskSpec_NETWORK_SSD_IO_M3          DiskSpec_DiskType = 3
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
+	DiskSpec_NETWORK_SSD DiskSpec_DiskType = 1
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
+	DiskSpec_NETWORK_HDD DiskSpec_DiskType = 2
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
+	DiskSpec_NETWORK_SSD_IO_M3 DiskSpec_DiskType = 3
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 	DiskSpec_NETWORK_SSD_NON_REPLICATED DiskSpec_DiskType = 4
 )
 
@@ -79,6 +86,7 @@ func (DiskSpec_DiskType) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_instance_template_proto_rawDescGZIP(), []int{0, 0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 type DiskSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Size:
@@ -87,11 +95,13 @@ type DiskSpec struct {
 	//	*DiskSpec_SizeKibibytes
 	//	*DiskSpec_SizeMebibytes
 	//	*DiskSpec_SizeGibibytes
-	Size           isDiskSpec_Size   `protobuf_oneof:"size"`
-	BlockSizeBytes int64             `protobuf:"varint,5,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
-	Type           DiskSpec_DiskType `protobuf:"varint,6,opt,name=type,proto3,enum=nebius.mk8s.v1alpha1.DiskSpec_DiskType" json:"type,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	Size isDiskSpec_Size `protobuf_oneof:"size"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
+	BlockSizeBytes int64 `protobuf:"varint,5,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
+	Type          DiskSpec_DiskType `protobuf:"varint,6,opt,name=type,proto3,enum=nebius.mk8s.v1alpha1.DiskSpec_DiskType" json:"type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DiskSpec) Reset() {
@@ -131,6 +141,7 @@ func (x *DiskSpec) GetSize() isDiskSpec_Size {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 func (x *DiskSpec) GetSizeBytes() int64 {
 	if x != nil {
 		if x, ok := x.Size.(*DiskSpec_SizeBytes); ok {
@@ -140,6 +151,7 @@ func (x *DiskSpec) GetSizeBytes() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 func (x *DiskSpec) GetSizeKibibytes() int64 {
 	if x != nil {
 		if x, ok := x.Size.(*DiskSpec_SizeKibibytes); ok {
@@ -149,6 +161,7 @@ func (x *DiskSpec) GetSizeKibibytes() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 func (x *DiskSpec) GetSizeMebibytes() int64 {
 	if x != nil {
 		if x, ok := x.Size.(*DiskSpec_SizeMebibytes); ok {
@@ -158,6 +171,7 @@ func (x *DiskSpec) GetSizeMebibytes() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 func (x *DiskSpec) GetSizeGibibytes() int64 {
 	if x != nil {
 		if x, ok := x.Size.(*DiskSpec_SizeGibibytes); ok {
@@ -167,6 +181,7 @@ func (x *DiskSpec) GetSizeGibibytes() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 func (x *DiskSpec) GetBlockSizeBytes() int64 {
 	if x != nil {
 		return x.BlockSizeBytes
@@ -174,6 +189,7 @@ func (x *DiskSpec) GetBlockSizeBytes() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 func (x *DiskSpec) GetType() DiskSpec_DiskType {
 	if x != nil {
 		return x.Type
@@ -186,18 +202,22 @@ type isDiskSpec_Size interface {
 }
 
 type DiskSpec_SizeBytes struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 	SizeBytes int64 `protobuf:"varint,1,opt,name=size_bytes,json=sizeBytes,proto3,oneof"`
 }
 
 type DiskSpec_SizeKibibytes struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 	SizeKibibytes int64 `protobuf:"varint,2,opt,name=size_kibibytes,json=sizeKibibytes,proto3,oneof"`
 }
 
 type DiskSpec_SizeMebibytes struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 	SizeMebibytes int64 `protobuf:"varint,3,opt,name=size_mebibytes,json=sizeMebibytes,proto3,oneof"`
 }
 
 type DiskSpec_SizeGibibytes struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 	SizeGibibytes int64 `protobuf:"varint,4,opt,name=size_gibibytes,json=sizeGibibytes,proto3,oneof"`
 }
 
@@ -209,9 +229,11 @@ func (*DiskSpec_SizeMebibytes) isDiskSpec_Size() {}
 
 func (*DiskSpec_SizeGibibytes) isDiskSpec_Size() {}
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 type ResourcesSpec struct {
-	state    protoimpl.MessageState `protogen:"open.v1"`
-	Platform string                 `protobuf:"bytes,1,opt,name=platform,proto3" json:"platform,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
+	Platform string `protobuf:"bytes,1,opt,name=platform,proto3" json:"platform,omitempty"`
 	// Types that are valid to be assigned to Size:
 	//
 	//	*ResourcesSpec_Preset
@@ -250,6 +272,7 @@ func (*ResourcesSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_instance_template_proto_rawDescGZIP(), []int{1}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 func (x *ResourcesSpec) GetPlatform() string {
 	if x != nil {
 		return x.Platform
@@ -264,6 +287,7 @@ func (x *ResourcesSpec) GetSize() isResourcesSpec_Size {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 func (x *ResourcesSpec) GetPreset() string {
 	if x != nil {
 		if x, ok := x.Size.(*ResourcesSpec_Preset); ok {
@@ -278,6 +302,7 @@ type isResourcesSpec_Size interface {
 }
 
 type ResourcesSpec_Preset struct {
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/instance_template.proto is marked as deprecated.
 	Preset string `protobuf:"bytes,2,opt,name=preset,proto3,oneof"`
 }
 
@@ -307,8 +332,8 @@ const file_nebius_mk8s_v1alpha1_instance_template_proto_rawDesc = "" +
 	"\rResourcesSpec\x12\"\n" +
 	"\bplatform\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bplatform\x12\x18\n" +
 	"\x06preset\x18\x02 \x01(\tH\x00R\x06presetB\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01Bj\n" +
-	"\x1bai.nebius.pub.mk8s.v1alpha1B\x15InstanceTemplateProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1b\x06proto3"
+	"\x04size\x12\x05\xbaH\x02\b\x01B\x7f\xd2J\x0f\x12\rmigrate to v1\n" +
+	"\x1bai.nebius.pub.mk8s.v1alpha1B\x15InstanceTemplateProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (
 	file_nebius_mk8s_v1alpha1_instance_template_proto_rawDescOnce sync.Once

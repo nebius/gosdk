@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v5.28.3
-// source: nebius/mk8s/v1alpha1/node_group_service.proto
+// nebius/mk8s/v1alpha1/node_group_service.proto is a deprecated file.
 
 package v1alpha1
 
@@ -32,6 +32,8 @@ const (
 // NodeGroupServiceClient is the client API for NodeGroupService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type NodeGroupServiceClient interface {
 	Get(ctx context.Context, in *GetNodeGroupRequest, opts ...grpc.CallOption) (*NodeGroup, error)
 	GetByName(ctx context.Context, in *GetNodeGroupByNameRequest, opts ...grpc.CallOption) (*NodeGroup, error)
@@ -46,6 +48,7 @@ type nodeGroupServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewNodeGroupServiceClient(cc grpc.ClientConnInterface) NodeGroupServiceClient {
 	return &nodeGroupServiceClient{cc}
 }
@@ -116,6 +119,8 @@ func (c *nodeGroupServiceClient) Upgrade(ctx context.Context, in *UpgradeNodeGro
 // NodeGroupServiceServer is the server API for NodeGroupService service.
 // All implementations should embed UnimplementedNodeGroupServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type NodeGroupServiceServer interface {
 	Get(context.Context, *GetNodeGroupRequest) (*NodeGroup, error)
 	GetByName(context.Context, *GetNodeGroupByNameRequest) (*NodeGroup, error)
@@ -159,6 +164,7 @@ type UnsafeNodeGroupServiceServer interface {
 	mustEmbedUnimplementedNodeGroupServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterNodeGroupServiceServer(s grpc.ServiceRegistrar, srv NodeGroupServiceServer) {
 	s.RegisterService(&NodeGroupService_ServiceDesc, srv)
 }

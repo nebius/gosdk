@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.28.3
-// source: nebius/mk8s/v1alpha1/node_group_service.proto
+// nebius/mk8s/v1alpha1/node_group_service.proto is a deprecated file.
 
 package v1alpha1
 
@@ -26,10 +26,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 type CreateNodeGroupRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *NodeGroupSpec         `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Spec          *NodeGroupSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -64,6 +67,7 @@ func (*CreateNodeGroupRequest) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescGZIP(), []int{0}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *CreateNodeGroupRequest) GetMetadata() *v1.ResourceMetadata {
 	if x != nil {
 		return x.Metadata
@@ -71,6 +75,7 @@ func (x *CreateNodeGroupRequest) GetMetadata() *v1.ResourceMetadata {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *CreateNodeGroupRequest) GetSpec() *NodeGroupSpec {
 	if x != nil {
 		return x.Spec
@@ -78,10 +83,13 @@ func (x *CreateNodeGroupRequest) GetSpec() *NodeGroupSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 type GetNodeGroupRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	ResourceVersion string                 `protobuf:"bytes,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	ResourceVersion string `protobuf:"bytes,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -116,6 +124,7 @@ func (*GetNodeGroupRequest) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescGZIP(), []int{1}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *GetNodeGroupRequest) GetId() string {
 	if x != nil {
 		return x.Id
@@ -123,6 +132,7 @@ func (x *GetNodeGroupRequest) GetId() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *GetNodeGroupRequest) GetResourceVersion() string {
 	if x != nil {
 		return x.ResourceVersion
@@ -130,10 +140,13 @@ func (x *GetNodeGroupRequest) GetResourceVersion() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 type GetNodeGroupByNameRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Name          string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -168,6 +181,7 @@ func (*GetNodeGroupByNameRequest) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescGZIP(), []int{2}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *GetNodeGroupByNameRequest) GetParentId() string {
 	if x != nil {
 		return x.ParentId
@@ -175,6 +189,7 @@ func (x *GetNodeGroupByNameRequest) GetParentId() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *GetNodeGroupByNameRequest) GetName() string {
 	if x != nil {
 		return x.Name
@@ -182,13 +197,20 @@ func (x *GetNodeGroupByNameRequest) GetName() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 type ListNodeGroupsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID of the parent Cluster.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Specifies the maximum number of items to return in the response.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Token for pagination, allowing the retrieval of the next set of results.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -224,6 +246,7 @@ func (*ListNodeGroupsRequest) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescGZIP(), []int{3}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *ListNodeGroupsRequest) GetParentId() string {
 	if x != nil {
 		return x.ParentId
@@ -231,6 +254,7 @@ func (x *ListNodeGroupsRequest) GetParentId() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *ListNodeGroupsRequest) GetPageSize() int64 {
 	if x != nil {
 		return x.PageSize
@@ -238,6 +262,7 @@ func (x *ListNodeGroupsRequest) GetPageSize() int64 {
 	return 0
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *ListNodeGroupsRequest) GetPageToken() string {
 	if x != nil {
 		return x.PageToken
@@ -245,10 +270,13 @@ func (x *ListNodeGroupsRequest) GetPageToken() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 type ListNodeGroupsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*NodeGroup           `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Items []*NodeGroup `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -283,6 +311,7 @@ func (*ListNodeGroupsResponse) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescGZIP(), []int{4}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *ListNodeGroupsResponse) GetItems() []*NodeGroup {
 	if x != nil {
 		return x.Items
@@ -290,6 +319,7 @@ func (x *ListNodeGroupsResponse) GetItems() []*NodeGroup {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *ListNodeGroupsResponse) GetNextPageToken() string {
 	if x != nil {
 		return x.NextPageToken
@@ -297,10 +327,13 @@ func (x *ListNodeGroupsResponse) GetNextPageToken() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 type UpdateNodeGroupRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *NodeGroupSpec         `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Spec          *NodeGroupSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -335,6 +368,7 @@ func (*UpdateNodeGroupRequest) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescGZIP(), []int{5}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *UpdateNodeGroupRequest) GetMetadata() *v1.ResourceMetadata {
 	if x != nil {
 		return x.Metadata
@@ -342,6 +376,7 @@ func (x *UpdateNodeGroupRequest) GetMetadata() *v1.ResourceMetadata {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *UpdateNodeGroupRequest) GetSpec() *NodeGroupSpec {
 	if x != nil {
 		return x.Spec
@@ -349,9 +384,11 @@ func (x *UpdateNodeGroupRequest) GetSpec() *NodeGroupSpec {
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 type DeleteNodeGroupRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -386,6 +423,7 @@ func (*DeleteNodeGroupRequest) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescGZIP(), []int{6}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *DeleteNodeGroupRequest) GetId() string {
 	if x != nil {
 		return x.Id
@@ -393,9 +431,11 @@ func (x *DeleteNodeGroupRequest) GetId() string {
 	return ""
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 type UpgradeNodeGroupRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// Types that are valid to be assigned to UpgradeType:
 	//
 	//	*UpgradeNodeGroupRequest_LatestInfraVersion
@@ -434,6 +474,7 @@ func (*UpgradeNodeGroupRequest) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescGZIP(), []int{7}
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *UpgradeNodeGroupRequest) GetId() string {
 	if x != nil {
 		return x.Id
@@ -448,6 +489,7 @@ func (x *UpgradeNodeGroupRequest) GetUpgradeType() isUpgradeNodeGroupRequest_Upg
 	return nil
 }
 
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 func (x *UpgradeNodeGroupRequest) GetLatestInfraVersion() *emptypb.Empty {
 	if x != nil {
 		if x, ok := x.UpgradeType.(*UpgradeNodeGroupRequest_LatestInfraVersion); ok {
@@ -463,6 +505,8 @@ type isUpgradeNodeGroupRequest_UpgradeType interface {
 
 type UpgradeNodeGroupRequest_LatestInfraVersion struct {
 	// Upgrades to the latest infra version, which includes latest supported kubernetes patch version. Kubernetes minor version remain the same.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group_service.proto is marked as deprecated.
 	LatestInfraVersion *emptypb.Empty `protobuf:"bytes,2,opt,name=latest_infra_version,json=latestInfraVersion,proto3,oneof"`
 }
 
@@ -498,7 +542,7 @@ const file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDesc = "" +
 	"\x17UpgradeNodeGroupRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12P\n" +
 	"\x14latest_infra_version\x18\x02 \x01(\v2\x16.google.protobuf.EmptyB\x04\xbaJ\x01\x06H\x00R\x12latestInfraVersionB\x15\n" +
-	"\fupgrade_type\x12\x05\xbaH\x02\b\x012\x9e\x05\n" +
+	"\fupgrade_type\x12\x05\xbaH\x02\b\x012\xe1\x05\n" +
 	"\x10NodeGroupService\x12Q\n" +
 	"\x03Get\x12).nebius.mk8s.v1alpha1.GetNodeGroupRequest\x1a\x1f.nebius.mk8s.v1alpha1.NodeGroup\x12]\n" +
 	"\tGetByName\x12/.nebius.mk8s.v1alpha1.GetNodeGroupByNameRequest\x1a\x1f.nebius.mk8s.v1alpha1.NodeGroup\x12a\n" +
@@ -506,8 +550,8 @@ const file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDesc = "" +
 	"\x06Create\x12,.nebius.mk8s.v1alpha1.CreateNodeGroupRequest\x1a!.nebius.common.v1alpha1.Operation\x12Y\n" +
 	"\x06Update\x12,.nebius.mk8s.v1alpha1.UpdateNodeGroupRequest\x1a!.nebius.common.v1alpha1.Operation\x12Y\n" +
 	"\x06Delete\x12,.nebius.mk8s.v1alpha1.DeleteNodeGroupRequest\x1a!.nebius.common.v1alpha1.Operation\x12[\n" +
-	"\aUpgrade\x12-.nebius.mk8s.v1alpha1.UpgradeNodeGroupRequest\x1a!.nebius.common.v1alpha1.Operation\x1a\a\xbaJ\x04mk8sBj\n" +
-	"\x1bai.nebius.pub.mk8s.v1alpha1B\x15NodeGroupServiceProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1b\x06proto3"
+	"\aUpgrade\x12-.nebius.mk8s.v1alpha1.UpgradeNodeGroupRequest\x1a!.nebius.common.v1alpha1.Operation\x1aJ\xbaJ\x04mk8s\xd2J=\x12;NodeGroup v1alpha1 API is deprecated, please migrate to v1.\x88\x02\x01B\x7f\xd2J\x0f\x12\rmigrate to v1\n" +
+	"\x1bai.nebius.pub.mk8s.v1alpha1B\x15NodeGroupServiceProtoP\x01Z2github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1\xb8\x01\x01b\x06proto3"
 
 var (
 	file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDescOnce sync.Once
