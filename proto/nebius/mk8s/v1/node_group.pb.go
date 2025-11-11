@@ -25,6 +25,58 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ConditionStatus int32
+
+const (
+	ConditionStatus_CONDITION_STATUS_UNSPECIFIED ConditionStatus = 0
+	ConditionStatus_TRUE                         ConditionStatus = 1
+	ConditionStatus_FALSE                        ConditionStatus = 2
+	ConditionStatus_UNKNOWN                      ConditionStatus = 3
+)
+
+// Enum value maps for ConditionStatus.
+var (
+	ConditionStatus_name = map[int32]string{
+		0: "CONDITION_STATUS_UNSPECIFIED",
+		1: "TRUE",
+		2: "FALSE",
+		3: "UNKNOWN",
+	}
+	ConditionStatus_value = map[string]int32{
+		"CONDITION_STATUS_UNSPECIFIED": 0,
+		"TRUE":                         1,
+		"FALSE":                        2,
+		"UNKNOWN":                      3,
+	}
+)
+
+func (x ConditionStatus) Enum() *ConditionStatus {
+	p := new(ConditionStatus)
+	*p = x
+	return p
+}
+
+func (x ConditionStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ConditionStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_mk8s_v1_node_group_proto_enumTypes[0].Descriptor()
+}
+
+func (ConditionStatus) Type() protoreflect.EnumType {
+	return &file_nebius_mk8s_v1_node_group_proto_enumTypes[0]
+}
+
+func (x ConditionStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ConditionStatus.Descriptor instead.
+func (ConditionStatus) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{0}
+}
+
 type AttachedFilesystemSpec_AttachMode int32
 
 const (
@@ -58,11 +110,11 @@ func (x AttachedFilesystemSpec_AttachMode) String() string {
 }
 
 func (AttachedFilesystemSpec_AttachMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_nebius_mk8s_v1_node_group_proto_enumTypes[0].Descriptor()
+	return file_nebius_mk8s_v1_node_group_proto_enumTypes[1].Descriptor()
 }
 
 func (AttachedFilesystemSpec_AttachMode) Type() protoreflect.EnumType {
-	return &file_nebius_mk8s_v1_node_group_proto_enumTypes[0]
+	return &file_nebius_mk8s_v1_node_group_proto_enumTypes[1]
 }
 
 func (x AttachedFilesystemSpec_AttachMode) Number() protoreflect.EnumNumber {
@@ -110,11 +162,11 @@ func (x NodeTaint_Effect) String() string {
 }
 
 func (NodeTaint_Effect) Descriptor() protoreflect.EnumDescriptor {
-	return file_nebius_mk8s_v1_node_group_proto_enumTypes[1].Descriptor()
+	return file_nebius_mk8s_v1_node_group_proto_enumTypes[2].Descriptor()
 }
 
 func (NodeTaint_Effect) Type() protoreflect.EnumType {
-	return &file_nebius_mk8s_v1_node_group_proto_enumTypes[1]
+	return &file_nebius_mk8s_v1_node_group_proto_enumTypes[2]
 }
 
 func (x NodeTaint_Effect) Number() protoreflect.EnumNumber {
@@ -162,11 +214,11 @@ func (x NodeGroupStatus_State) String() string {
 }
 
 func (NodeGroupStatus_State) Descriptor() protoreflect.EnumDescriptor {
-	return file_nebius_mk8s_v1_node_group_proto_enumTypes[2].Descriptor()
+	return file_nebius_mk8s_v1_node_group_proto_enumTypes[3].Descriptor()
 }
 
 func (NodeGroupStatus_State) Type() protoreflect.EnumType {
-	return &file_nebius_mk8s_v1_node_group_proto_enumTypes[2]
+	return &file_nebius_mk8s_v1_node_group_proto_enumTypes[3]
 }
 
 func (x NodeGroupStatus_State) Number() protoreflect.EnumNumber {
@@ -175,7 +227,7 @@ func (x NodeGroupStatus_State) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use NodeGroupStatus_State.Descriptor instead.
 func (NodeGroupStatus_State) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{15, 0}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{17, 0}
 }
 
 // NodeGroup represents Kubernetes node pool - set of worker machines having the same configuration.
@@ -257,7 +309,9 @@ type NodeGroupSpec struct {
 	Template *NodeTemplate `protobuf:"bytes,3,opt,name=template,proto3" json:"template,omitempty"`
 	// Defines deployment - roll-out, or nodes re-creation during configuration change.
 	// Allows to setup compromise in roll-out speed, extra resources consumption and workloads disruption.
-	Strategy      *NodeGroupDeploymentStrategy `protobuf:"bytes,4,opt,name=strategy,proto3" json:"strategy,omitempty"`
+	Strategy *NodeGroupDeploymentStrategy `protobuf:"bytes,4,opt,name=strategy,proto3" json:"strategy,omitempty"`
+	// Parameters for nodes auto repair.
+	AutoRepair    *NodeGroupAutoRepairSpec `protobuf:"bytes,6,opt,name=auto_repair,json=autoRepair,proto3" json:"auto_repair,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -334,6 +388,13 @@ func (x *NodeGroupSpec) GetTemplate() *NodeTemplate {
 func (x *NodeGroupSpec) GetStrategy() *NodeGroupDeploymentStrategy {
 	if x != nil {
 		return x.Strategy
+	}
+	return nil
+}
+
+func (x *NodeGroupSpec) GetAutoRepair() *NodeGroupAutoRepairSpec {
+	if x != nil {
+		return x.AutoRepair
 	}
 	return nil
 }
@@ -1189,6 +1250,153 @@ func (*PercentOrCount_Percent) isPercentOrCount_Value() {}
 
 func (*PercentOrCount_Count) isPercentOrCount_Value() {}
 
+type NodeGroupAutoRepairSpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Conditions that determine whether a node should be auto repaired.
+	Conditions    []*NodeAutoRepairCondition `protobuf:"bytes,4,rep,name=conditions,proto3" json:"conditions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NodeGroupAutoRepairSpec) Reset() {
+	*x = NodeGroupAutoRepairSpec{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NodeGroupAutoRepairSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NodeGroupAutoRepairSpec) ProtoMessage() {}
+
+func (x *NodeGroupAutoRepairSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NodeGroupAutoRepairSpec.ProtoReflect.Descriptor instead.
+func (*NodeGroupAutoRepairSpec) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *NodeGroupAutoRepairSpec) GetConditions() []*NodeAutoRepairCondition {
+	if x != nil {
+		return x.Conditions
+	}
+	return nil
+}
+
+type NodeAutoRepairCondition struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Node condition type.
+	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+	// Node condition status.
+	Status ConditionStatus `protobuf:"varint,2,opt,name=status,proto3,enum=nebius.mk8s.v1.ConditionStatus" json:"status,omitempty"`
+	// Types that are valid to be assigned to Trigger:
+	//
+	//	*NodeAutoRepairCondition_Timeout
+	//	*NodeAutoRepairCondition_Disabled
+	Trigger       isNodeAutoRepairCondition_Trigger `protobuf_oneof:"trigger"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NodeAutoRepairCondition) Reset() {
+	*x = NodeAutoRepairCondition{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NodeAutoRepairCondition) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NodeAutoRepairCondition) ProtoMessage() {}
+
+func (x *NodeAutoRepairCondition) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NodeAutoRepairCondition.ProtoReflect.Descriptor instead.
+func (*NodeAutoRepairCondition) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *NodeAutoRepairCondition) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *NodeAutoRepairCondition) GetStatus() ConditionStatus {
+	if x != nil {
+		return x.Status
+	}
+	return ConditionStatus_CONDITION_STATUS_UNSPECIFIED
+}
+
+func (x *NodeAutoRepairCondition) GetTrigger() isNodeAutoRepairCondition_Trigger {
+	if x != nil {
+		return x.Trigger
+	}
+	return nil
+}
+
+func (x *NodeAutoRepairCondition) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		if x, ok := x.Trigger.(*NodeAutoRepairCondition_Timeout); ok {
+			return x.Timeout
+		}
+	}
+	return nil
+}
+
+func (x *NodeAutoRepairCondition) GetDisabled() bool {
+	if x != nil {
+		if x, ok := x.Trigger.(*NodeAutoRepairCondition_Disabled); ok {
+			return x.Disabled
+		}
+	}
+	return false
+}
+
+type isNodeAutoRepairCondition_Trigger interface {
+	isNodeAutoRepairCondition_Trigger()
+}
+
+type NodeAutoRepairCondition_Timeout struct {
+	// The duration after which the node is automatically repaired if the condition remains in the specified status.
+	Timeout *durationpb.Duration `protobuf:"bytes,3,opt,name=timeout,proto3,oneof"`
+}
+
+type NodeAutoRepairCondition_Disabled struct {
+	// When true, disables the default auto-repair condition rules.
+	Disabled bool `protobuf:"varint,4,opt,name=disabled,proto3,oneof"`
+}
+
+func (*NodeAutoRepairCondition_Timeout) isNodeAutoRepairCondition_Trigger() {}
+
+func (*NodeAutoRepairCondition_Disabled) isNodeAutoRepairCondition_Trigger() {}
+
 type PreemptibleSpec struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -1197,7 +1405,7 @@ type PreemptibleSpec struct {
 
 func (x *PreemptibleSpec) Reset() {
 	*x = PreemptibleSpec{}
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[14]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1209,7 +1417,7 @@ func (x *PreemptibleSpec) String() string {
 func (*PreemptibleSpec) ProtoMessage() {}
 
 func (x *PreemptibleSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[14]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1222,7 +1430,7 @@ func (x *PreemptibleSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreemptibleSpec.ProtoReflect.Descriptor instead.
 func (*PreemptibleSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{14}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{16}
 }
 
 type NodeGroupStatus struct {
@@ -1256,7 +1464,7 @@ type NodeGroupStatus struct {
 
 func (x *NodeGroupStatus) Reset() {
 	*x = NodeGroupStatus{}
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[15]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1268,7 +1476,7 @@ func (x *NodeGroupStatus) String() string {
 func (*NodeGroupStatus) ProtoMessage() {}
 
 func (x *NodeGroupStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[15]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1281,7 +1489,7 @@ func (x *NodeGroupStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NodeGroupStatus.ProtoReflect.Descriptor instead.
 func (*NodeGroupStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{15}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *NodeGroupStatus) GetState() NodeGroupStatus_State {
@@ -1356,13 +1564,15 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\tNodeGroup\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecR\x04spec\x127\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.NodeGroupStatusR\x06status\"\xdc\x02\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.NodeGroupStatusR\x06status\"\xa6\x03\n" +
 	"\rNodeGroupSpec\x12,\n" +
 	"\aversion\x18\x01 \x01(\tB\x12\xbaH\x0fr\r2\v|^\\d\\.\\d\\d$R\aversion\x125\n" +
 	"\x10fixed_node_count\x18\x02 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00H\x00R\x0efixedNodeCount\x12L\n" +
 	"\vautoscaling\x18\x05 \x01(\v2(.nebius.mk8s.v1.NodeGroupAutoscalingSpecH\x00R\vautoscaling\x12@\n" +
 	"\btemplate\x18\x03 \x01(\v2\x1c.nebius.mk8s.v1.NodeTemplateB\x06\xbaH\x03\xc8\x01\x01R\btemplate\x12G\n" +
-	"\bstrategy\x18\x04 \x01(\v2+.nebius.mk8s.v1.NodeGroupDeploymentStrategyR\bstrategyB\r\n" +
+	"\bstrategy\x18\x04 \x01(\v2+.nebius.mk8s.v1.NodeGroupDeploymentStrategyR\bstrategy\x12H\n" +
+	"\vauto_repair\x18\x06 \x01(\v2'.nebius.mk8s.v1.NodeGroupAutoRepairSpecR\n" +
+	"autoRepairB\r\n" +
 	"\x04size\x12\x05\xbaH\x02\b\x01\"\xf6\x05\n" +
 	"\fNodeTemplate\x12@\n" +
 	"\bmetadata\x18\x01 \x01(\v2$.nebius.mk8s.v1.NodeMetadataTemplateR\bmetadata\x12;\n" +
@@ -1427,7 +1637,17 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\x0ePercentOrCount\x12%\n" +
 	"\apercent\x18\x01 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00H\x00R\apercent\x12\x1f\n" +
 	"\x05count\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00H\x00R\x05countB\x0e\n" +
-	"\x05value\x12\x05\xbaH\x02\b\x01\"\x11\n" +
+	"\x05value\x12\x05\xbaH\x02\b\x01\"b\n" +
+	"\x17NodeGroupAutoRepairSpec\x12G\n" +
+	"\n" +
+	"conditions\x18\x04 \x03(\v2'.nebius.mk8s.v1.NodeAutoRepairConditionR\n" +
+	"conditions\"\xd5\x01\n" +
+	"\x17NodeAutoRepairCondition\x12\x1a\n" +
+	"\x04type\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04type\x127\n" +
+	"\x06status\x18\x02 \x01(\x0e2\x1f.nebius.mk8s.v1.ConditionStatusR\x06status\x125\n" +
+	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationH\x00R\atimeout\x12\x1c\n" +
+	"\bdisabled\x18\x04 \x01(\bH\x00R\bdisabledB\x10\n" +
+	"\atrigger\x12\x05\xbaH\x02\b\x01\"\x11\n" +
 	"\x0fPreemptibleSpec\"\xca\x04\n" +
 	"\x0fNodeGroupStatus\x12;\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.mk8s.v1.NodeGroupStatus.StateR\x05state\x12\x18\n" +
@@ -1448,7 +1668,12 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPROVISIONING\x10\x01\x12\v\n" +
 	"\aRUNNING\x10\x02\x12\f\n" +
-	"\bDELETING\x10\x03BW\n" +
+	"\bDELETING\x10\x03*U\n" +
+	"\x0fConditionStatus\x12 \n" +
+	"\x1cCONDITION_STATUS_UNSPECIFIED\x10\x00\x12\b\n" +
+	"\x04TRUE\x10\x01\x12\t\n" +
+	"\x05FALSE\x10\x02\x12\v\n" +
+	"\aUNKNOWN\x10\x03BW\n" +
 	"\x15ai.nebius.pub.mk8s.v1B\x0eNodeGroupProtoP\x01Z,github.com/nebius/gosdk/proto/nebius/mk8s/v1b\x06proto3"
 
 var (
@@ -1463,68 +1688,75 @@ func file_nebius_mk8s_v1_node_group_proto_rawDescGZIP() []byte {
 	return file_nebius_mk8s_v1_node_group_proto_rawDescData
 }
 
-var file_nebius_mk8s_v1_node_group_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_nebius_mk8s_v1_node_group_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_nebius_mk8s_v1_node_group_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_nebius_mk8s_v1_node_group_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_nebius_mk8s_v1_node_group_proto_goTypes = []any{
-	(AttachedFilesystemSpec_AttachMode)(0), // 0: nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
-	(NodeTaint_Effect)(0),                  // 1: nebius.mk8s.v1.NodeTaint.Effect
-	(NodeGroupStatus_State)(0),             // 2: nebius.mk8s.v1.NodeGroupStatus.State
-	(*NodeGroup)(nil),                      // 3: nebius.mk8s.v1.NodeGroup
-	(*NodeGroupSpec)(nil),                  // 4: nebius.mk8s.v1.NodeGroupSpec
-	(*NodeTemplate)(nil),                   // 5: nebius.mk8s.v1.NodeTemplate
-	(*NodeMetadataTemplate)(nil),           // 6: nebius.mk8s.v1.NodeMetadataTemplate
-	(*GpuSettings)(nil),                    // 7: nebius.mk8s.v1.GpuSettings
-	(*GpuClusterSpec)(nil),                 // 8: nebius.mk8s.v1.GpuClusterSpec
-	(*NetworkInterfaceTemplate)(nil),       // 9: nebius.mk8s.v1.NetworkInterfaceTemplate
-	(*PublicIPAddress)(nil),                // 10: nebius.mk8s.v1.PublicIPAddress
-	(*AttachedFilesystemSpec)(nil),         // 11: nebius.mk8s.v1.AttachedFilesystemSpec
-	(*ExistingFilesystem)(nil),             // 12: nebius.mk8s.v1.ExistingFilesystem
-	(*NodeGroupAutoscalingSpec)(nil),       // 13: nebius.mk8s.v1.NodeGroupAutoscalingSpec
-	(*NodeTaint)(nil),                      // 14: nebius.mk8s.v1.NodeTaint
-	(*NodeGroupDeploymentStrategy)(nil),    // 15: nebius.mk8s.v1.NodeGroupDeploymentStrategy
-	(*PercentOrCount)(nil),                 // 16: nebius.mk8s.v1.PercentOrCount
-	(*PreemptibleSpec)(nil),                // 17: nebius.mk8s.v1.PreemptibleSpec
-	(*NodeGroupStatus)(nil),                // 18: nebius.mk8s.v1.NodeGroupStatus
-	nil,                                    // 19: nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
-	(*v1.ResourceMetadata)(nil),            // 20: nebius.common.v1.ResourceMetadata
-	(*ResourcesSpec)(nil),                  // 21: nebius.mk8s.v1.ResourcesSpec
-	(*DiskSpec)(nil),                       // 22: nebius.mk8s.v1.DiskSpec
-	(*durationpb.Duration)(nil),            // 23: google.protobuf.Duration
-	(*Condition)(nil),                      // 24: nebius.mk8s.v1.Condition
-	(*v1.RecurrentResourceEvent)(nil),      // 25: nebius.common.v1.RecurrentResourceEvent
+	(ConditionStatus)(0),                   // 0: nebius.mk8s.v1.ConditionStatus
+	(AttachedFilesystemSpec_AttachMode)(0), // 1: nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
+	(NodeTaint_Effect)(0),                  // 2: nebius.mk8s.v1.NodeTaint.Effect
+	(NodeGroupStatus_State)(0),             // 3: nebius.mk8s.v1.NodeGroupStatus.State
+	(*NodeGroup)(nil),                      // 4: nebius.mk8s.v1.NodeGroup
+	(*NodeGroupSpec)(nil),                  // 5: nebius.mk8s.v1.NodeGroupSpec
+	(*NodeTemplate)(nil),                   // 6: nebius.mk8s.v1.NodeTemplate
+	(*NodeMetadataTemplate)(nil),           // 7: nebius.mk8s.v1.NodeMetadataTemplate
+	(*GpuSettings)(nil),                    // 8: nebius.mk8s.v1.GpuSettings
+	(*GpuClusterSpec)(nil),                 // 9: nebius.mk8s.v1.GpuClusterSpec
+	(*NetworkInterfaceTemplate)(nil),       // 10: nebius.mk8s.v1.NetworkInterfaceTemplate
+	(*PublicIPAddress)(nil),                // 11: nebius.mk8s.v1.PublicIPAddress
+	(*AttachedFilesystemSpec)(nil),         // 12: nebius.mk8s.v1.AttachedFilesystemSpec
+	(*ExistingFilesystem)(nil),             // 13: nebius.mk8s.v1.ExistingFilesystem
+	(*NodeGroupAutoscalingSpec)(nil),       // 14: nebius.mk8s.v1.NodeGroupAutoscalingSpec
+	(*NodeTaint)(nil),                      // 15: nebius.mk8s.v1.NodeTaint
+	(*NodeGroupDeploymentStrategy)(nil),    // 16: nebius.mk8s.v1.NodeGroupDeploymentStrategy
+	(*PercentOrCount)(nil),                 // 17: nebius.mk8s.v1.PercentOrCount
+	(*NodeGroupAutoRepairSpec)(nil),        // 18: nebius.mk8s.v1.NodeGroupAutoRepairSpec
+	(*NodeAutoRepairCondition)(nil),        // 19: nebius.mk8s.v1.NodeAutoRepairCondition
+	(*PreemptibleSpec)(nil),                // 20: nebius.mk8s.v1.PreemptibleSpec
+	(*NodeGroupStatus)(nil),                // 21: nebius.mk8s.v1.NodeGroupStatus
+	nil,                                    // 22: nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
+	(*v1.ResourceMetadata)(nil),            // 23: nebius.common.v1.ResourceMetadata
+	(*ResourcesSpec)(nil),                  // 24: nebius.mk8s.v1.ResourcesSpec
+	(*DiskSpec)(nil),                       // 25: nebius.mk8s.v1.DiskSpec
+	(*durationpb.Duration)(nil),            // 26: google.protobuf.Duration
+	(*Condition)(nil),                      // 27: nebius.mk8s.v1.Condition
+	(*v1.RecurrentResourceEvent)(nil),      // 28: nebius.common.v1.RecurrentResourceEvent
 }
 var file_nebius_mk8s_v1_node_group_proto_depIdxs = []int32{
-	20, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	4,  // 1: nebius.mk8s.v1.NodeGroup.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
-	18, // 2: nebius.mk8s.v1.NodeGroup.status:type_name -> nebius.mk8s.v1.NodeGroupStatus
-	13, // 3: nebius.mk8s.v1.NodeGroupSpec.autoscaling:type_name -> nebius.mk8s.v1.NodeGroupAutoscalingSpec
-	5,  // 4: nebius.mk8s.v1.NodeGroupSpec.template:type_name -> nebius.mk8s.v1.NodeTemplate
-	15, // 5: nebius.mk8s.v1.NodeGroupSpec.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
-	6,  // 6: nebius.mk8s.v1.NodeTemplate.metadata:type_name -> nebius.mk8s.v1.NodeMetadataTemplate
-	14, // 7: nebius.mk8s.v1.NodeTemplate.taints:type_name -> nebius.mk8s.v1.NodeTaint
-	21, // 8: nebius.mk8s.v1.NodeTemplate.resources:type_name -> nebius.mk8s.v1.ResourcesSpec
-	22, // 9: nebius.mk8s.v1.NodeTemplate.boot_disk:type_name -> nebius.mk8s.v1.DiskSpec
-	7,  // 10: nebius.mk8s.v1.NodeTemplate.gpu_settings:type_name -> nebius.mk8s.v1.GpuSettings
-	8,  // 11: nebius.mk8s.v1.NodeTemplate.gpu_cluster:type_name -> nebius.mk8s.v1.GpuClusterSpec
-	9,  // 12: nebius.mk8s.v1.NodeTemplate.network_interfaces:type_name -> nebius.mk8s.v1.NetworkInterfaceTemplate
-	11, // 13: nebius.mk8s.v1.NodeTemplate.filesystems:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec
-	17, // 14: nebius.mk8s.v1.NodeTemplate.preemptible:type_name -> nebius.mk8s.v1.PreemptibleSpec
-	19, // 15: nebius.mk8s.v1.NodeMetadataTemplate.labels:type_name -> nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
-	10, // 16: nebius.mk8s.v1.NetworkInterfaceTemplate.public_ip_address:type_name -> nebius.mk8s.v1.PublicIPAddress
-	0,  // 17: nebius.mk8s.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
-	12, // 18: nebius.mk8s.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.mk8s.v1.ExistingFilesystem
-	1,  // 19: nebius.mk8s.v1.NodeTaint.effect:type_name -> nebius.mk8s.v1.NodeTaint.Effect
-	16, // 20: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_unavailable:type_name -> nebius.mk8s.v1.PercentOrCount
-	16, // 21: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_surge:type_name -> nebius.mk8s.v1.PercentOrCount
-	23, // 22: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
-	2,  // 23: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
-	24, // 24: nebius.mk8s.v1.NodeGroupStatus.conditions:type_name -> nebius.mk8s.v1.Condition
-	25, // 25: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
-	26, // [26:26] is the sub-list for method output_type
-	26, // [26:26] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	23, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	5,  // 1: nebius.mk8s.v1.NodeGroup.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
+	21, // 2: nebius.mk8s.v1.NodeGroup.status:type_name -> nebius.mk8s.v1.NodeGroupStatus
+	14, // 3: nebius.mk8s.v1.NodeGroupSpec.autoscaling:type_name -> nebius.mk8s.v1.NodeGroupAutoscalingSpec
+	6,  // 4: nebius.mk8s.v1.NodeGroupSpec.template:type_name -> nebius.mk8s.v1.NodeTemplate
+	16, // 5: nebius.mk8s.v1.NodeGroupSpec.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
+	18, // 6: nebius.mk8s.v1.NodeGroupSpec.auto_repair:type_name -> nebius.mk8s.v1.NodeGroupAutoRepairSpec
+	7,  // 7: nebius.mk8s.v1.NodeTemplate.metadata:type_name -> nebius.mk8s.v1.NodeMetadataTemplate
+	15, // 8: nebius.mk8s.v1.NodeTemplate.taints:type_name -> nebius.mk8s.v1.NodeTaint
+	24, // 9: nebius.mk8s.v1.NodeTemplate.resources:type_name -> nebius.mk8s.v1.ResourcesSpec
+	25, // 10: nebius.mk8s.v1.NodeTemplate.boot_disk:type_name -> nebius.mk8s.v1.DiskSpec
+	8,  // 11: nebius.mk8s.v1.NodeTemplate.gpu_settings:type_name -> nebius.mk8s.v1.GpuSettings
+	9,  // 12: nebius.mk8s.v1.NodeTemplate.gpu_cluster:type_name -> nebius.mk8s.v1.GpuClusterSpec
+	10, // 13: nebius.mk8s.v1.NodeTemplate.network_interfaces:type_name -> nebius.mk8s.v1.NetworkInterfaceTemplate
+	12, // 14: nebius.mk8s.v1.NodeTemplate.filesystems:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec
+	20, // 15: nebius.mk8s.v1.NodeTemplate.preemptible:type_name -> nebius.mk8s.v1.PreemptibleSpec
+	22, // 16: nebius.mk8s.v1.NodeMetadataTemplate.labels:type_name -> nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
+	11, // 17: nebius.mk8s.v1.NetworkInterfaceTemplate.public_ip_address:type_name -> nebius.mk8s.v1.PublicIPAddress
+	1,  // 18: nebius.mk8s.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
+	13, // 19: nebius.mk8s.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.mk8s.v1.ExistingFilesystem
+	2,  // 20: nebius.mk8s.v1.NodeTaint.effect:type_name -> nebius.mk8s.v1.NodeTaint.Effect
+	17, // 21: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_unavailable:type_name -> nebius.mk8s.v1.PercentOrCount
+	17, // 22: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_surge:type_name -> nebius.mk8s.v1.PercentOrCount
+	26, // 23: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
+	19, // 24: nebius.mk8s.v1.NodeGroupAutoRepairSpec.conditions:type_name -> nebius.mk8s.v1.NodeAutoRepairCondition
+	0,  // 25: nebius.mk8s.v1.NodeAutoRepairCondition.status:type_name -> nebius.mk8s.v1.ConditionStatus
+	26, // 26: nebius.mk8s.v1.NodeAutoRepairCondition.timeout:type_name -> google.protobuf.Duration
+	3,  // 27: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
+	27, // 28: nebius.mk8s.v1.NodeGroupStatus.conditions:type_name -> nebius.mk8s.v1.Condition
+	28, // 29: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
+	30, // [30:30] is the sub-list for method output_type
+	30, // [30:30] is the sub-list for method input_type
+	30, // [30:30] is the sub-list for extension type_name
+	30, // [30:30] is the sub-list for extension extendee
+	0,  // [0:30] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_node_group_proto_init() }
@@ -1545,13 +1777,17 @@ func file_nebius_mk8s_v1_node_group_proto_init() {
 		(*PercentOrCount_Percent)(nil),
 		(*PercentOrCount_Count)(nil),
 	}
+	file_nebius_mk8s_v1_node_group_proto_msgTypes[15].OneofWrappers = []any{
+		(*NodeAutoRepairCondition_Timeout)(nil),
+		(*NodeAutoRepairCondition_Disabled)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1_node_group_proto_rawDesc), len(file_nebius_mk8s_v1_node_group_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   17,
+			NumEnums:      4,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

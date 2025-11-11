@@ -25,6 +25,222 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type GetNodeGroupCompatibilityMatrixRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Cluster kubernetes version.
+	ClusterKubernetesVersion string `protobuf:"bytes,1,opt,name=cluster_kubernetes_version,json=clusterKubernetesVersion,proto3" json:"cluster_kubernetes_version,omitempty"`
+	// Hardware platform for which the capabilities are requested.
+	Platform      string `protobuf:"bytes,2,opt,name=platform,proto3" json:"platform,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetNodeGroupCompatibilityMatrixRequest) Reset() {
+	*x = GetNodeGroupCompatibilityMatrixRequest{}
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetNodeGroupCompatibilityMatrixRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetNodeGroupCompatibilityMatrixRequest) ProtoMessage() {}
+
+func (x *GetNodeGroupCompatibilityMatrixRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetNodeGroupCompatibilityMatrixRequest.ProtoReflect.Descriptor instead.
+func (*GetNodeGroupCompatibilityMatrixRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *GetNodeGroupCompatibilityMatrixRequest) GetClusterKubernetesVersion() string {
+	if x != nil {
+		return x.ClusterKubernetesVersion
+	}
+	return ""
+}
+
+func (x *GetNodeGroupCompatibilityMatrixRequest) GetPlatform() string {
+	if x != nil {
+		return x.Platform
+	}
+	return ""
+}
+
+type NodeGroupCompatibilityMatrix struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// List of available versions.
+	Versions      []*NodeGroupCompatibilityVersion `protobuf:"bytes,1,rep,name=versions,proto3" json:"versions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NodeGroupCompatibilityMatrix) Reset() {
+	*x = NodeGroupCompatibilityMatrix{}
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NodeGroupCompatibilityMatrix) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NodeGroupCompatibilityMatrix) ProtoMessage() {}
+
+func (x *NodeGroupCompatibilityMatrix) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NodeGroupCompatibilityMatrix.ProtoReflect.Descriptor instead.
+func (*NodeGroupCompatibilityMatrix) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *NodeGroupCompatibilityMatrix) GetVersions() []*NodeGroupCompatibilityVersion {
+	if x != nil {
+		return x.Versions
+	}
+	return nil
+}
+
+type NodeGroupCompatibilityVersion struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Kubernetes version.
+	KubernetesVersion string `protobuf:"bytes,1,opt,name=kubernetes_version,json=kubernetesVersion,proto3" json:"kubernetes_version,omitempty"`
+	// List of available images.
+	Items         []*NodeGroupCompatibilityVersionItem `protobuf:"bytes,2,rep,name=items,proto3" json:"items,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NodeGroupCompatibilityVersion) Reset() {
+	*x = NodeGroupCompatibilityVersion{}
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NodeGroupCompatibilityVersion) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NodeGroupCompatibilityVersion) ProtoMessage() {}
+
+func (x *NodeGroupCompatibilityVersion) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NodeGroupCompatibilityVersion.ProtoReflect.Descriptor instead.
+func (*NodeGroupCompatibilityVersion) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *NodeGroupCompatibilityVersion) GetKubernetesVersion() string {
+	if x != nil {
+		return x.KubernetesVersion
+	}
+	return ""
+}
+
+func (x *NodeGroupCompatibilityVersion) GetItems() []*NodeGroupCompatibilityVersionItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type NodeGroupCompatibilityVersionItem struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Operating system.
+	Os string `protobuf:"bytes,1,opt,name=os,proto3" json:"os,omitempty"`
+	// Drivers preset name.
+	DriversPreset string `protobuf:"bytes,3,opt,name=drivers_preset,json=driversPreset,proto3" json:"drivers_preset,omitempty"`
+	// Hardware platforms.
+	CompatiblePlatforms []string `protobuf:"bytes,5,rep,name=compatible_platforms,json=compatiblePlatforms,proto3" json:"compatible_platforms,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *NodeGroupCompatibilityVersionItem) Reset() {
+	*x = NodeGroupCompatibilityVersionItem{}
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NodeGroupCompatibilityVersionItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NodeGroupCompatibilityVersionItem) ProtoMessage() {}
+
+func (x *NodeGroupCompatibilityVersionItem) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NodeGroupCompatibilityVersionItem.ProtoReflect.Descriptor instead.
+func (*NodeGroupCompatibilityVersionItem) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *NodeGroupCompatibilityVersionItem) GetOs() string {
+	if x != nil {
+		return x.Os
+	}
+	return ""
+}
+
+func (x *NodeGroupCompatibilityVersionItem) GetDriversPreset() string {
+	if x != nil {
+		return x.DriversPreset
+	}
+	return ""
+}
+
+func (x *NodeGroupCompatibilityVersionItem) GetCompatiblePlatforms() []string {
+	if x != nil {
+		return x.CompatiblePlatforms
+	}
+	return nil
+}
+
 type CreateNodeGroupRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
@@ -35,7 +251,7 @@ type CreateNodeGroupRequest struct {
 
 func (x *CreateNodeGroupRequest) Reset() {
 	*x = CreateNodeGroupRequest{}
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[0]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +263,7 @@ func (x *CreateNodeGroupRequest) String() string {
 func (*CreateNodeGroupRequest) ProtoMessage() {}
 
 func (x *CreateNodeGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[0]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +276,7 @@ func (x *CreateNodeGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateNodeGroupRequest.ProtoReflect.Descriptor instead.
 func (*CreateNodeGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{0}
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CreateNodeGroupRequest) GetMetadata() *v1.ResourceMetadata {
@@ -87,7 +303,7 @@ type GetNodeGroupRequest struct {
 
 func (x *GetNodeGroupRequest) Reset() {
 	*x = GetNodeGroupRequest{}
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[1]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -99,7 +315,7 @@ func (x *GetNodeGroupRequest) String() string {
 func (*GetNodeGroupRequest) ProtoMessage() {}
 
 func (x *GetNodeGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[1]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -112,7 +328,7 @@ func (x *GetNodeGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetNodeGroupRequest.ProtoReflect.Descriptor instead.
 func (*GetNodeGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{1}
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetNodeGroupRequest) GetId() string {
@@ -143,7 +359,7 @@ type ListNodeGroupsRequest struct {
 
 func (x *ListNodeGroupsRequest) Reset() {
 	*x = ListNodeGroupsRequest{}
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[2]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -155,7 +371,7 @@ func (x *ListNodeGroupsRequest) String() string {
 func (*ListNodeGroupsRequest) ProtoMessage() {}
 
 func (x *ListNodeGroupsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[2]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -168,7 +384,7 @@ func (x *ListNodeGroupsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNodeGroupsRequest.ProtoReflect.Descriptor instead.
 func (*ListNodeGroupsRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{2}
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ListNodeGroupsRequest) GetParentId() string {
@@ -202,7 +418,7 @@ type ListNodeGroupsResponse struct {
 
 func (x *ListNodeGroupsResponse) Reset() {
 	*x = ListNodeGroupsResponse{}
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[3]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -214,7 +430,7 @@ func (x *ListNodeGroupsResponse) String() string {
 func (*ListNodeGroupsResponse) ProtoMessage() {}
 
 func (x *ListNodeGroupsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[3]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -227,7 +443,7 @@ func (x *ListNodeGroupsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNodeGroupsResponse.ProtoReflect.Descriptor instead.
 func (*ListNodeGroupsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListNodeGroupsResponse) GetItems() []*NodeGroup {
@@ -254,7 +470,7 @@ type UpdateNodeGroupRequest struct {
 
 func (x *UpdateNodeGroupRequest) Reset() {
 	*x = UpdateNodeGroupRequest{}
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[4]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -266,7 +482,7 @@ func (x *UpdateNodeGroupRequest) String() string {
 func (*UpdateNodeGroupRequest) ProtoMessage() {}
 
 func (x *UpdateNodeGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[4]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -279,7 +495,7 @@ func (x *UpdateNodeGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateNodeGroupRequest.ProtoReflect.Descriptor instead.
 func (*UpdateNodeGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UpdateNodeGroupRequest) GetMetadata() *v1.ResourceMetadata {
@@ -305,7 +521,7 @@ type DeleteNodeGroupRequest struct {
 
 func (x *DeleteNodeGroupRequest) Reset() {
 	*x = DeleteNodeGroupRequest{}
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[5]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -317,7 +533,7 @@ func (x *DeleteNodeGroupRequest) String() string {
 func (*DeleteNodeGroupRequest) ProtoMessage() {}
 
 func (x *DeleteNodeGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[5]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -330,7 +546,7 @@ func (x *DeleteNodeGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteNodeGroupRequest.ProtoReflect.Descriptor instead.
 func (*DeleteNodeGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *DeleteNodeGroupRequest) GetId() string {
@@ -353,7 +569,7 @@ type UpgradeNodeGroupRequest struct {
 
 func (x *UpgradeNodeGroupRequest) Reset() {
 	*x = UpgradeNodeGroupRequest{}
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[6]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -365,7 +581,7 @@ func (x *UpgradeNodeGroupRequest) String() string {
 func (*UpgradeNodeGroupRequest) ProtoMessage() {}
 
 func (x *UpgradeNodeGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[6]
+	mi := &file_nebius_mk8s_v1_node_group_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -378,7 +594,7 @@ func (x *UpgradeNodeGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpgradeNodeGroupRequest.ProtoReflect.Descriptor instead.
 func (*UpgradeNodeGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpgradeNodeGroupRequest) GetId() string {
@@ -419,7 +635,19 @@ var File_nebius_mk8s_v1_node_group_service_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_node_group_service_proto_rawDesc = "" +
 	"\n" +
-	"'nebius/mk8s/v1/node_group_service.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1fnebius/mk8s/v1/node_group.proto\"\x9b\x01\n" +
+	"'nebius/mk8s/v1/node_group_service.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1fnebius/mk8s/v1/node_group.proto\"\x8a\x01\n" +
+	"&GetNodeGroupCompatibilityMatrixRequest\x12D\n" +
+	"\x1acluster_kubernetes_version\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x18clusterKubernetesVersion\x12\x1a\n" +
+	"\bplatform\x18\x02 \x01(\tR\bplatform\"i\n" +
+	"\x1cNodeGroupCompatibilityMatrix\x12I\n" +
+	"\bversions\x18\x01 \x03(\v2-.nebius.mk8s.v1.NodeGroupCompatibilityVersionR\bversions\"\x97\x01\n" +
+	"\x1dNodeGroupCompatibilityVersion\x12-\n" +
+	"\x12kubernetes_version\x18\x01 \x01(\tR\x11kubernetesVersion\x12G\n" +
+	"\x05items\x18\x02 \x03(\v21.nebius.mk8s.v1.NodeGroupCompatibilityVersionItemR\x05items\"\x8d\x01\n" +
+	"!NodeGroupCompatibilityVersionItem\x12\x0e\n" +
+	"\x02os\x18\x01 \x01(\tR\x02os\x12%\n" +
+	"\x0edrivers_preset\x18\x03 \x01(\tR\rdriversPreset\x121\n" +
+	"\x14compatible_platforms\x18\x05 \x03(\tR\x13compatiblePlatforms\"\x9b\x01\n" +
 	"\x16CreateNodeGroupRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"X\n" +
@@ -442,7 +670,7 @@ const file_nebius_mk8s_v1_node_group_service_proto_rawDesc = "" +
 	"\x17UpgradeNodeGroupRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12P\n" +
 	"\x14latest_infra_version\x18\x02 \x01(\v2\x16.google.protobuf.EmptyB\x04\xbaJ\x01\x06H\x00R\x12latestInfraVersionB\x15\n" +
-	"\fupgrade_type\x12\x05\xbaH\x02\b\x012\xc3\x04\n" +
+	"\fupgrade_type\x12\x05\xbaH\x02\b\x012\xc3\x05\n" +
 	"\x10NodeGroupService\x12E\n" +
 	"\x03Get\x12#.nebius.mk8s.v1.GetNodeGroupRequest\x1a\x19.nebius.mk8s.v1.NodeGroup\x12J\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x19.nebius.mk8s.v1.NodeGroup\x12U\n" +
@@ -450,7 +678,8 @@ const file_nebius_mk8s_v1_node_group_service_proto_rawDesc = "" +
 	"\x06Create\x12&.nebius.mk8s.v1.CreateNodeGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Update\x12&.nebius.mk8s.v1.UpdateNodeGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Delete\x12&.nebius.mk8s.v1.DeleteNodeGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12O\n" +
-	"\aUpgrade\x12'.nebius.mk8s.v1.UpgradeNodeGroupRequest\x1a\x1b.nebius.common.v1.Operation\x1a\a\xbaJ\x04mk8sB^\n" +
+	"\aUpgrade\x12'.nebius.mk8s.v1.UpgradeNodeGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12~\n" +
+	"\x16GetCompatibilityMatrix\x126.nebius.mk8s.v1.GetNodeGroupCompatibilityMatrixRequest\x1a,.nebius.mk8s.v1.NodeGroupCompatibilityMatrix\x1a\a\xbaJ\x04mk8sB^\n" +
 	"\x15ai.nebius.pub.mk8s.v1B\x15NodeGroupServiceProtoP\x01Z,github.com/nebius/gosdk/proto/nebius/mk8s/v1b\x06proto3"
 
 var (
@@ -465,48 +694,56 @@ func file_nebius_mk8s_v1_node_group_service_proto_rawDescGZIP() []byte {
 	return file_nebius_mk8s_v1_node_group_service_proto_rawDescData
 }
 
-var file_nebius_mk8s_v1_node_group_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_nebius_mk8s_v1_node_group_service_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_nebius_mk8s_v1_node_group_service_proto_goTypes = []any{
-	(*CreateNodeGroupRequest)(nil),  // 0: nebius.mk8s.v1.CreateNodeGroupRequest
-	(*GetNodeGroupRequest)(nil),     // 1: nebius.mk8s.v1.GetNodeGroupRequest
-	(*ListNodeGroupsRequest)(nil),   // 2: nebius.mk8s.v1.ListNodeGroupsRequest
-	(*ListNodeGroupsResponse)(nil),  // 3: nebius.mk8s.v1.ListNodeGroupsResponse
-	(*UpdateNodeGroupRequest)(nil),  // 4: nebius.mk8s.v1.UpdateNodeGroupRequest
-	(*DeleteNodeGroupRequest)(nil),  // 5: nebius.mk8s.v1.DeleteNodeGroupRequest
-	(*UpgradeNodeGroupRequest)(nil), // 6: nebius.mk8s.v1.UpgradeNodeGroupRequest
-	(*v1.ResourceMetadata)(nil),     // 7: nebius.common.v1.ResourceMetadata
-	(*NodeGroupSpec)(nil),           // 8: nebius.mk8s.v1.NodeGroupSpec
-	(*NodeGroup)(nil),               // 9: nebius.mk8s.v1.NodeGroup
-	(*emptypb.Empty)(nil),           // 10: google.protobuf.Empty
-	(*v1.GetByNameRequest)(nil),     // 11: nebius.common.v1.GetByNameRequest
-	(*v1.Operation)(nil),            // 12: nebius.common.v1.Operation
+	(*GetNodeGroupCompatibilityMatrixRequest)(nil), // 0: nebius.mk8s.v1.GetNodeGroupCompatibilityMatrixRequest
+	(*NodeGroupCompatibilityMatrix)(nil),           // 1: nebius.mk8s.v1.NodeGroupCompatibilityMatrix
+	(*NodeGroupCompatibilityVersion)(nil),          // 2: nebius.mk8s.v1.NodeGroupCompatibilityVersion
+	(*NodeGroupCompatibilityVersionItem)(nil),      // 3: nebius.mk8s.v1.NodeGroupCompatibilityVersionItem
+	(*CreateNodeGroupRequest)(nil),                 // 4: nebius.mk8s.v1.CreateNodeGroupRequest
+	(*GetNodeGroupRequest)(nil),                    // 5: nebius.mk8s.v1.GetNodeGroupRequest
+	(*ListNodeGroupsRequest)(nil),                  // 6: nebius.mk8s.v1.ListNodeGroupsRequest
+	(*ListNodeGroupsResponse)(nil),                 // 7: nebius.mk8s.v1.ListNodeGroupsResponse
+	(*UpdateNodeGroupRequest)(nil),                 // 8: nebius.mk8s.v1.UpdateNodeGroupRequest
+	(*DeleteNodeGroupRequest)(nil),                 // 9: nebius.mk8s.v1.DeleteNodeGroupRequest
+	(*UpgradeNodeGroupRequest)(nil),                // 10: nebius.mk8s.v1.UpgradeNodeGroupRequest
+	(*v1.ResourceMetadata)(nil),                    // 11: nebius.common.v1.ResourceMetadata
+	(*NodeGroupSpec)(nil),                          // 12: nebius.mk8s.v1.NodeGroupSpec
+	(*NodeGroup)(nil),                              // 13: nebius.mk8s.v1.NodeGroup
+	(*emptypb.Empty)(nil),                          // 14: google.protobuf.Empty
+	(*v1.GetByNameRequest)(nil),                    // 15: nebius.common.v1.GetByNameRequest
+	(*v1.Operation)(nil),                           // 16: nebius.common.v1.Operation
 }
 var file_nebius_mk8s_v1_node_group_service_proto_depIdxs = []int32{
-	7,  // 0: nebius.mk8s.v1.CreateNodeGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8,  // 1: nebius.mk8s.v1.CreateNodeGroupRequest.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
-	9,  // 2: nebius.mk8s.v1.ListNodeGroupsResponse.items:type_name -> nebius.mk8s.v1.NodeGroup
-	7,  // 3: nebius.mk8s.v1.UpdateNodeGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8,  // 4: nebius.mk8s.v1.UpdateNodeGroupRequest.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
-	10, // 5: nebius.mk8s.v1.UpgradeNodeGroupRequest.latest_infra_version:type_name -> google.protobuf.Empty
-	1,  // 6: nebius.mk8s.v1.NodeGroupService.Get:input_type -> nebius.mk8s.v1.GetNodeGroupRequest
-	11, // 7: nebius.mk8s.v1.NodeGroupService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
-	2,  // 8: nebius.mk8s.v1.NodeGroupService.List:input_type -> nebius.mk8s.v1.ListNodeGroupsRequest
-	0,  // 9: nebius.mk8s.v1.NodeGroupService.Create:input_type -> nebius.mk8s.v1.CreateNodeGroupRequest
-	4,  // 10: nebius.mk8s.v1.NodeGroupService.Update:input_type -> nebius.mk8s.v1.UpdateNodeGroupRequest
-	5,  // 11: nebius.mk8s.v1.NodeGroupService.Delete:input_type -> nebius.mk8s.v1.DeleteNodeGroupRequest
-	6,  // 12: nebius.mk8s.v1.NodeGroupService.Upgrade:input_type -> nebius.mk8s.v1.UpgradeNodeGroupRequest
-	9,  // 13: nebius.mk8s.v1.NodeGroupService.Get:output_type -> nebius.mk8s.v1.NodeGroup
-	9,  // 14: nebius.mk8s.v1.NodeGroupService.GetByName:output_type -> nebius.mk8s.v1.NodeGroup
-	3,  // 15: nebius.mk8s.v1.NodeGroupService.List:output_type -> nebius.mk8s.v1.ListNodeGroupsResponse
-	12, // 16: nebius.mk8s.v1.NodeGroupService.Create:output_type -> nebius.common.v1.Operation
-	12, // 17: nebius.mk8s.v1.NodeGroupService.Update:output_type -> nebius.common.v1.Operation
-	12, // 18: nebius.mk8s.v1.NodeGroupService.Delete:output_type -> nebius.common.v1.Operation
-	12, // 19: nebius.mk8s.v1.NodeGroupService.Upgrade:output_type -> nebius.common.v1.Operation
-	13, // [13:20] is the sub-list for method output_type
-	6,  // [6:13] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	2,  // 0: nebius.mk8s.v1.NodeGroupCompatibilityMatrix.versions:type_name -> nebius.mk8s.v1.NodeGroupCompatibilityVersion
+	3,  // 1: nebius.mk8s.v1.NodeGroupCompatibilityVersion.items:type_name -> nebius.mk8s.v1.NodeGroupCompatibilityVersionItem
+	11, // 2: nebius.mk8s.v1.CreateNodeGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	12, // 3: nebius.mk8s.v1.CreateNodeGroupRequest.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
+	13, // 4: nebius.mk8s.v1.ListNodeGroupsResponse.items:type_name -> nebius.mk8s.v1.NodeGroup
+	11, // 5: nebius.mk8s.v1.UpdateNodeGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	12, // 6: nebius.mk8s.v1.UpdateNodeGroupRequest.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
+	14, // 7: nebius.mk8s.v1.UpgradeNodeGroupRequest.latest_infra_version:type_name -> google.protobuf.Empty
+	5,  // 8: nebius.mk8s.v1.NodeGroupService.Get:input_type -> nebius.mk8s.v1.GetNodeGroupRequest
+	15, // 9: nebius.mk8s.v1.NodeGroupService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	6,  // 10: nebius.mk8s.v1.NodeGroupService.List:input_type -> nebius.mk8s.v1.ListNodeGroupsRequest
+	4,  // 11: nebius.mk8s.v1.NodeGroupService.Create:input_type -> nebius.mk8s.v1.CreateNodeGroupRequest
+	8,  // 12: nebius.mk8s.v1.NodeGroupService.Update:input_type -> nebius.mk8s.v1.UpdateNodeGroupRequest
+	9,  // 13: nebius.mk8s.v1.NodeGroupService.Delete:input_type -> nebius.mk8s.v1.DeleteNodeGroupRequest
+	10, // 14: nebius.mk8s.v1.NodeGroupService.Upgrade:input_type -> nebius.mk8s.v1.UpgradeNodeGroupRequest
+	0,  // 15: nebius.mk8s.v1.NodeGroupService.GetCompatibilityMatrix:input_type -> nebius.mk8s.v1.GetNodeGroupCompatibilityMatrixRequest
+	13, // 16: nebius.mk8s.v1.NodeGroupService.Get:output_type -> nebius.mk8s.v1.NodeGroup
+	13, // 17: nebius.mk8s.v1.NodeGroupService.GetByName:output_type -> nebius.mk8s.v1.NodeGroup
+	7,  // 18: nebius.mk8s.v1.NodeGroupService.List:output_type -> nebius.mk8s.v1.ListNodeGroupsResponse
+	16, // 19: nebius.mk8s.v1.NodeGroupService.Create:output_type -> nebius.common.v1.Operation
+	16, // 20: nebius.mk8s.v1.NodeGroupService.Update:output_type -> nebius.common.v1.Operation
+	16, // 21: nebius.mk8s.v1.NodeGroupService.Delete:output_type -> nebius.common.v1.Operation
+	16, // 22: nebius.mk8s.v1.NodeGroupService.Upgrade:output_type -> nebius.common.v1.Operation
+	1,  // 23: nebius.mk8s.v1.NodeGroupService.GetCompatibilityMatrix:output_type -> nebius.mk8s.v1.NodeGroupCompatibilityMatrix
+	16, // [16:24] is the sub-list for method output_type
+	8,  // [8:16] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_node_group_service_proto_init() }
@@ -515,7 +752,7 @@ func file_nebius_mk8s_v1_node_group_service_proto_init() {
 		return
 	}
 	file_nebius_mk8s_v1_node_group_proto_init()
-	file_nebius_mk8s_v1_node_group_service_proto_msgTypes[6].OneofWrappers = []any{
+	file_nebius_mk8s_v1_node_group_service_proto_msgTypes[10].OneofWrappers = []any{
 		(*UpgradeNodeGroupRequest_LatestInfraVersion)(nil),
 	}
 	type x struct{}
@@ -524,7 +761,7 @@ func file_nebius_mk8s_v1_node_group_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1_node_group_service_proto_rawDesc), len(file_nebius_mk8s_v1_node_group_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -34,6 +34,7 @@ type NodeGroupService interface {
 	Update(context.Context, *v1.UpdateNodeGroupRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteNodeGroupRequest, ...grpc.CallOption) (operations.Operation, error)
 	Upgrade(context.Context, *v1.UpgradeNodeGroupRequest, ...grpc.CallOption) (operations.Operation, error)
+	GetCompatibilityMatrix(context.Context, *v1.GetNodeGroupCompatibilityMatrixRequest, ...grpc.CallOption) (*v1.NodeGroupCompatibilityMatrix, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
@@ -210,6 +211,21 @@ func (s nodeGroupService) Upgrade(ctx context.Context, request *v1.UpgradeNodeGr
 		return nil, err
 	}
 	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s nodeGroupService) GetCompatibilityMatrix(ctx context.Context, request *v1.GetNodeGroupCompatibilityMatrixRequest, opts ...grpc.CallOption) (
+	*v1.NodeGroupCompatibilityMatrix,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewNodeGroupServiceClient(con).GetCompatibilityMatrix(ctx, request, opts...)
 }
 
 func (s nodeGroupService) GetOperation(ctx context.Context, request *v11.GetOperationRequest, opts ...grpc.CallOption) (operations.Operation, error) {

@@ -8,6 +8,18 @@ import (
 	slog "log/slog"
 )
 
+// func (x *GetNodeGroupCompatibilityMatrixRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *GetNodeGroupCompatibilityMatrixRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *NodeGroupCompatibilityMatrix) Sanitize()            // is not generated as no sensitive fields found
+// func (x *NodeGroupCompatibilityMatrix) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *NodeGroupCompatibilityVersion) Sanitize()            // is not generated as no sensitive fields found
+// func (x *NodeGroupCompatibilityVersion) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *NodeGroupCompatibilityVersionItem) Sanitize()            // is not generated as no sensitive fields found
+// func (x *NodeGroupCompatibilityVersionItem) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // Sanitize mutates [CreateNodeGroupRequest] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].
 func (x *CreateNodeGroupRequest) Sanitize() {
