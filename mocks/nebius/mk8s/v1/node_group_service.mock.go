@@ -263,6 +263,50 @@ func (c *MockNodeGroupServiceGetByNameCall) DoAndReturn(f func(context.Context, 
 	return c
 }
 
+// GetCompatibilityMatrix mocks base method.
+func (m *MockNodeGroupService) GetCompatibilityMatrix(arg0 context.Context, arg1 *v10.GetNodeGroupCompatibilityMatrixRequest, arg2 ...grpc.CallOption) (*v10.NodeGroupCompatibilityMatrix, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetCompatibilityMatrix", varargs...)
+	ret0, _ := ret[0].(*v10.NodeGroupCompatibilityMatrix)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCompatibilityMatrix indicates an expected call of GetCompatibilityMatrix.
+func (mr *MockNodeGroupServiceMockRecorder) GetCompatibilityMatrix(arg0, arg1 any, arg2 ...any) *MockNodeGroupServiceGetCompatibilityMatrixCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCompatibilityMatrix", reflect.TypeOf((*MockNodeGroupService)(nil).GetCompatibilityMatrix), varargs...)
+	return &MockNodeGroupServiceGetCompatibilityMatrixCall{Call: call}
+}
+
+// MockNodeGroupServiceGetCompatibilityMatrixCall wrap *gomock.Call
+type MockNodeGroupServiceGetCompatibilityMatrixCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNodeGroupServiceGetCompatibilityMatrixCall) Return(arg0 *v10.NodeGroupCompatibilityMatrix, arg1 error) *MockNodeGroupServiceGetCompatibilityMatrixCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNodeGroupServiceGetCompatibilityMatrixCall) Do(f func(context.Context, *v10.GetNodeGroupCompatibilityMatrixRequest, ...grpc.CallOption) (*v10.NodeGroupCompatibilityMatrix, error)) *MockNodeGroupServiceGetCompatibilityMatrixCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNodeGroupServiceGetCompatibilityMatrixCall) DoAndReturn(f func(context.Context, *v10.GetNodeGroupCompatibilityMatrixRequest, ...grpc.CallOption) (*v10.NodeGroupCompatibilityMatrix, error)) *MockNodeGroupServiceGetCompatibilityMatrixCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // GetOperation mocks base method.
 func (m *MockNodeGroupService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()

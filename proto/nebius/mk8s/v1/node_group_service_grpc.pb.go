@@ -20,13 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	NodeGroupService_Get_FullMethodName       = "/nebius.mk8s.v1.NodeGroupService/Get"
-	NodeGroupService_GetByName_FullMethodName = "/nebius.mk8s.v1.NodeGroupService/GetByName"
-	NodeGroupService_List_FullMethodName      = "/nebius.mk8s.v1.NodeGroupService/List"
-	NodeGroupService_Create_FullMethodName    = "/nebius.mk8s.v1.NodeGroupService/Create"
-	NodeGroupService_Update_FullMethodName    = "/nebius.mk8s.v1.NodeGroupService/Update"
-	NodeGroupService_Delete_FullMethodName    = "/nebius.mk8s.v1.NodeGroupService/Delete"
-	NodeGroupService_Upgrade_FullMethodName   = "/nebius.mk8s.v1.NodeGroupService/Upgrade"
+	NodeGroupService_Get_FullMethodName                    = "/nebius.mk8s.v1.NodeGroupService/Get"
+	NodeGroupService_GetByName_FullMethodName              = "/nebius.mk8s.v1.NodeGroupService/GetByName"
+	NodeGroupService_List_FullMethodName                   = "/nebius.mk8s.v1.NodeGroupService/List"
+	NodeGroupService_Create_FullMethodName                 = "/nebius.mk8s.v1.NodeGroupService/Create"
+	NodeGroupService_Update_FullMethodName                 = "/nebius.mk8s.v1.NodeGroupService/Update"
+	NodeGroupService_Delete_FullMethodName                 = "/nebius.mk8s.v1.NodeGroupService/Delete"
+	NodeGroupService_Upgrade_FullMethodName                = "/nebius.mk8s.v1.NodeGroupService/Upgrade"
+	NodeGroupService_GetCompatibilityMatrix_FullMethodName = "/nebius.mk8s.v1.NodeGroupService/GetCompatibilityMatrix"
 )
 
 // NodeGroupServiceClient is the client API for NodeGroupService service.
@@ -40,6 +41,7 @@ type NodeGroupServiceClient interface {
 	Update(ctx context.Context, in *UpdateNodeGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Delete(ctx context.Context, in *DeleteNodeGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Upgrade(ctx context.Context, in *UpgradeNodeGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	GetCompatibilityMatrix(ctx context.Context, in *GetNodeGroupCompatibilityMatrixRequest, opts ...grpc.CallOption) (*NodeGroupCompatibilityMatrix, error)
 }
 
 type nodeGroupServiceClient struct {
@@ -113,6 +115,15 @@ func (c *nodeGroupServiceClient) Upgrade(ctx context.Context, in *UpgradeNodeGro
 	return out, nil
 }
 
+func (c *nodeGroupServiceClient) GetCompatibilityMatrix(ctx context.Context, in *GetNodeGroupCompatibilityMatrixRequest, opts ...grpc.CallOption) (*NodeGroupCompatibilityMatrix, error) {
+	out := new(NodeGroupCompatibilityMatrix)
+	err := c.cc.Invoke(ctx, NodeGroupService_GetCompatibilityMatrix_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NodeGroupServiceServer is the server API for NodeGroupService service.
 // All implementations should embed UnimplementedNodeGroupServiceServer
 // for forward compatibility
@@ -124,6 +135,7 @@ type NodeGroupServiceServer interface {
 	Update(context.Context, *UpdateNodeGroupRequest) (*v1.Operation, error)
 	Delete(context.Context, *DeleteNodeGroupRequest) (*v1.Operation, error)
 	Upgrade(context.Context, *UpgradeNodeGroupRequest) (*v1.Operation, error)
+	GetCompatibilityMatrix(context.Context, *GetNodeGroupCompatibilityMatrixRequest) (*NodeGroupCompatibilityMatrix, error)
 }
 
 // UnimplementedNodeGroupServiceServer should be embedded to have forward compatible implementations.
@@ -150,6 +162,9 @@ func (UnimplementedNodeGroupServiceServer) Delete(context.Context, *DeleteNodeGr
 }
 func (UnimplementedNodeGroupServiceServer) Upgrade(context.Context, *UpgradeNodeGroupRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Upgrade not implemented")
+}
+func (UnimplementedNodeGroupServiceServer) GetCompatibilityMatrix(context.Context, *GetNodeGroupCompatibilityMatrixRequest) (*NodeGroupCompatibilityMatrix, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCompatibilityMatrix not implemented")
 }
 
 // UnsafeNodeGroupServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -289,6 +304,24 @@ func _NodeGroupService_Upgrade_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NodeGroupService_GetCompatibilityMatrix_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetNodeGroupCompatibilityMatrixRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NodeGroupServiceServer).GetCompatibilityMatrix(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NodeGroupService_GetCompatibilityMatrix_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NodeGroupServiceServer).GetCompatibilityMatrix(ctx, req.(*GetNodeGroupCompatibilityMatrixRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NodeGroupService_ServiceDesc is the grpc.ServiceDesc for NodeGroupService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -323,6 +356,10 @@ var NodeGroupService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Upgrade",
 			Handler:    _NodeGroupService_Upgrade_Handler,
+		},
+		{
+			MethodName: "GetCompatibilityMatrix",
+			Handler:    _NodeGroupService_GetCompatibilityMatrix_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
