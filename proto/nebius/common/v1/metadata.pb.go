@@ -198,10 +198,10 @@ const file_nebius_common_v1_metadata_proto_rawDesc = "" +
 	"\x06labels\x18\a \x03(\v2..nebius.common.v1.ResourceMetadata.LabelsEntryR\x06labels\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"C\n" +
-	"\x10GetByNameRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04nameBZ\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"S\n" +
+	"\x10GetByNameRequest\x12#\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04nameBZ\n" +
 	"\x17ai.nebius.pub.common.v1B\rMetadataProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/common/v1b\x06proto3"
 
 var (
