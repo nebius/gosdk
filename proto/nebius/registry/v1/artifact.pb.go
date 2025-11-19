@@ -133,16 +133,18 @@ func (Artifact_Type) EnumDescriptor() ([]byte, []int) {
 }
 
 type Artifact struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	MediaType     string                 `protobuf:"bytes,3,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
-	Digest        string                 `protobuf:"bytes,4,opt,name=digest,proto3" json:"digest,omitempty"`
-	Size          int64                  `protobuf:"varint,5,opt,name=size,proto3" json:"size,omitempty"`
-	Status        Artifact_Status        `protobuf:"varint,6,opt,name=status,proto3,enum=nebius.registry.v1.Artifact_Status" json:"status,omitempty"`
-	Type          Artifact_Type          `protobuf:"varint,7,opt,name=type,proto3,enum=nebius.registry.v1.Artifact_Type" json:"type,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	Id        string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name      string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	MediaType string                 `protobuf:"bytes,3,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
+	Digest    string                 `protobuf:"bytes,4,opt,name=digest,proto3" json:"digest,omitempty"`
+	Size      int64                  `protobuf:"varint,5,opt,name=size,proto3" json:"size,omitempty"`
+	Status    Artifact_Status        `protobuf:"varint,6,opt,name=status,proto3,enum=nebius.registry.v1.Artifact_Status" json:"status,omitempty"`
+	Type      Artifact_Type          `protobuf:"varint,7,opt,name=type,proto3,enum=nebius.registry.v1.Artifact_Type" json:"type,omitempty"`
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	// List of tags associated with the artifact. Example: ["v1.0", "latest", "stable"].
+	Tags          []string `protobuf:"bytes,10,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -240,11 +242,18 @@ func (x *Artifact) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Artifact) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
 var File_nebius_registry_v1_artifact_proto protoreflect.FileDescriptor
 
 const file_nebius_registry_v1_artifact_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/registry/v1/artifact.proto\x12\x12nebius.registry.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa5\x04\n" +
+	"!nebius/registry/v1/artifact.proto\x12\x12nebius.registry.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb9\x04\n" +
 	"\bArtifact\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
@@ -257,7 +266,9 @@ const file_nebius_registry_v1_artifact_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\":\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x12\n" +
+	"\x04tags\x18\n" +
+	" \x03(\tR\x04tags\":\n" +
 	"\x06Status\x12\x16\n" +
 	"\x12STATUS_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +
