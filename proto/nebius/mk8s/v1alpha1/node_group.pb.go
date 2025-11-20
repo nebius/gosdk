@@ -1585,8 +1585,6 @@ type NodeGroupStatus struct {
 	//
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	ReadyNodeCount int64 `protobuf:"varint,6,opt,name=ready_node_count,json=readyNodeCount,proto3" json:"ready_node_count,omitempty"`
-	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
-	Conditions []*Condition `protobuf:"bytes,50,rep,name=conditions,proto3" json:"conditions,omitempty"`
 	// Show that changes are in flight
 	//
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
@@ -1674,14 +1672,6 @@ func (x *NodeGroupStatus) GetReadyNodeCount() int64 {
 }
 
 // Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
-func (x *NodeGroupStatus) GetConditions() []*Condition {
-	if x != nil {
-		return x.Conditions
-	}
-	return nil
-}
-
-// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 func (x *NodeGroupStatus) GetReconciling() bool {
 	if x != nil {
 		return x.Reconciling
@@ -1693,7 +1683,7 @@ var File_nebius_mk8s_v1alpha1_node_group_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1alpha1_node_group_proto_rawDesc = "" +
 	"\n" +
-	"%nebius/mk8s/v1alpha1/node_group.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a,nebius/mk8s/v1alpha1/instance_template.proto\x1a$nebius/mk8s/v1alpha1/condition.proto\"\xc3\x01\n" +
+	"%nebius/mk8s/v1alpha1/node_group.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a,nebius/mk8s/v1alpha1/instance_template.proto\"\xc3\x01\n" +
 	"\tNodeGroup\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x127\n" +
 	"\x04spec\x18\x02 \x01(\v2#.nebius.mk8s.v1alpha1.NodeGroupSpecR\x04spec\x12=\n" +
@@ -1782,7 +1772,7 @@ const file_nebius_mk8s_v1alpha1_node_group_proto_rawDesc = "" +
 	"\x06status\x18\x02 \x01(\x0e2%.nebius.mk8s.v1alpha1.ConditionStatusR\x06status\x125\n" +
 	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationH\x00R\atimeout\x12\x1c\n" +
 	"\bdisabled\x18\x04 \x01(\bH\x00R\bdisabledB\x10\n" +
-	"\atrigger\x12\x05\xbaH\x02\b\x01\"\x94\x04\n" +
+	"\atrigger\x12\x05\xbaH\x02\b\x01\"\x82\x03\n" +
 	"\x0fNodeGroupStatus\x12A\n" +
 	"\x05state\x18\x01 \x01(\x0e2+.nebius.mk8s.v1alpha1.NodeGroupStatus.StateR\x05state\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12*\n" +
@@ -1790,12 +1780,7 @@ const file_nebius_mk8s_v1alpha1_node_group_proto_rawDesc = "" +
 	"\n" +
 	"node_count\x18\x04 \x01(\x03R\tnodeCount\x12.\n" +
 	"\x13outdated_node_count\x18\x05 \x01(\x03R\x11outdatedNodeCount\x12(\n" +
-	"\x10ready_node_count\x18\x06 \x01(\x03R\x0ereadyNodeCount\x12\x8f\x01\n" +
-	"\n" +
-	"conditions\x182 \x03(\v2\x1f.nebius.mk8s.v1alpha1.ConditionBN\xd2JI\n" +
-	"\n" +
-	"2025-08-01\x12;it is not implemented well, messages should be used instead\x18\x01R\n" +
-	"conditions\x12 \n" +
+	"\x10ready_node_count\x18\x06 \x01(\x03R\x0ereadyNodeCount\x12 \n" +
 	"\vreconciling\x18d \x01(\bR\vreconciling\"K\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
@@ -1851,7 +1836,6 @@ var file_nebius_mk8s_v1alpha1_node_group_proto_goTypes = []any{
 	(*ResourcesSpec)(nil),                  // 24: nebius.mk8s.v1alpha1.ResourcesSpec
 	(*DiskSpec)(nil),                       // 25: nebius.mk8s.v1alpha1.DiskSpec
 	(*durationpb.Duration)(nil),            // 26: google.protobuf.Duration
-	(*Condition)(nil),                      // 27: nebius.mk8s.v1alpha1.Condition
 }
 var file_nebius_mk8s_v1alpha1_node_group_proto_depIdxs = []int32{
 	23, // 0: nebius.mk8s.v1alpha1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -1882,12 +1866,11 @@ var file_nebius_mk8s_v1alpha1_node_group_proto_depIdxs = []int32{
 	0,  // 25: nebius.mk8s.v1alpha1.NodeAutoRepairCondition.status:type_name -> nebius.mk8s.v1alpha1.ConditionStatus
 	26, // 26: nebius.mk8s.v1alpha1.NodeAutoRepairCondition.timeout:type_name -> google.protobuf.Duration
 	3,  // 27: nebius.mk8s.v1alpha1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1alpha1.NodeGroupStatus.State
-	27, // 28: nebius.mk8s.v1alpha1.NodeGroupStatus.conditions:type_name -> nebius.mk8s.v1alpha1.Condition
-	29, // [29:29] is the sub-list for method output_type
-	29, // [29:29] is the sub-list for method input_type
-	29, // [29:29] is the sub-list for extension type_name
-	29, // [29:29] is the sub-list for extension extendee
-	0,  // [0:29] is the sub-list for field type_name
+	28, // [28:28] is the sub-list for method output_type
+	28, // [28:28] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1alpha1_node_group_proto_init() }
@@ -1896,7 +1879,6 @@ func file_nebius_mk8s_v1alpha1_node_group_proto_init() {
 		return
 	}
 	file_nebius_mk8s_v1alpha1_instance_template_proto_init()
-	file_nebius_mk8s_v1alpha1_condition_proto_init()
 	file_nebius_mk8s_v1alpha1_node_group_proto_msgTypes[1].OneofWrappers = []any{
 		(*NodeGroupSpec_FixedNodeCount)(nil),
 		(*NodeGroupSpec_Autoscaling)(nil),

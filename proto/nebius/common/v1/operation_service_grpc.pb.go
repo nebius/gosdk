@@ -27,7 +27,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OperationServiceClient interface {
+	// Returns the current state of the specified operation.
 	Get(ctx context.Context, in *GetOperationRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Lists operations for the specified resource.
 	List(ctx context.Context, in *ListOperationsRequest, opts ...grpc.CallOption) (*ListOperationsResponse, error)
 }
 
@@ -61,7 +63,9 @@ func (c *operationServiceClient) List(ctx context.Context, in *ListOperationsReq
 // All implementations should embed UnimplementedOperationServiceServer
 // for forward compatibility
 type OperationServiceServer interface {
+	// Returns the current state of the specified operation.
 	Get(context.Context, *GetOperationRequest) (*Operation, error)
+	// Lists operations for the specified resource.
 	List(context.Context, *ListOperationsRequest) (*ListOperationsResponse, error)
 }
 
