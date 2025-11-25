@@ -196,7 +196,8 @@ type ControlPlaneSpec struct {
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Nebius VPC Subnet ID where control plane instances will be located.
 	// Also will be default NodeGroup subnet.
-	SubnetId  string                     `protobuf:"bytes,2,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
+	SubnetId string `protobuf:"bytes,2,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
+	// Specification of endpoints of cluster control plane.
 	Endpoints *ControlPlaneEndpointsSpec `protobuf:"bytes,3,opt,name=endpoints,proto3" json:"endpoints,omitempty"`
 	// Number of instances in etcd cluster.
 	// 3 by default.
@@ -267,8 +268,7 @@ func (x *ControlPlaneSpec) GetEtcdClusterSize() int64 {
 
 type ControlPlaneEndpointsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Specification of public endpoint for control plane.
-	// Set value to empty, to enable it.
+	// Public endpoint specification. When set, a public endpoint is created.
 	PublicEndpoint *PublicEndpointSpec `protobuf:"bytes,1,opt,name=public_endpoint,json=publicEndpoint,proto3" json:"public_endpoint,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
