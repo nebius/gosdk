@@ -28,6 +28,7 @@ type FederationCertificateService interface {
 	Get(context.Context, *v1.GetFederationCertificateRequest, ...grpc.CallOption) (*v1.FederationCertificate, error)
 	ListByFederation(context.Context, *v1.ListFederationCertificateByFederationRequest, ...grpc.CallOption) (*v1.ListFederationCertificateResponse, error)
 	Update(context.Context, *v1.UpdateFederationCertificateRequest, ...grpc.CallOption) (operations.Operation, error)
+	UpdateBulk(context.Context, *v1.UpdateBulkFederationCertificateRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteFederationCertificateRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
@@ -117,6 +118,25 @@ func (s federationCertificateService) Update(ctx context.Context, request *v1.Up
 		return nil, err
 	}
 	op, err := v1.NewFederationCertificateServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s federationCertificateService) UpdateBulk(ctx context.Context, request *v1.UpdateBulkFederationCertificateRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewFederationCertificateServiceClient(con).UpdateBulk(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}

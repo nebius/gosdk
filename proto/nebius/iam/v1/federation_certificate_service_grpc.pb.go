@@ -24,6 +24,7 @@ const (
 	FederationCertificateService_Get_FullMethodName              = "/nebius.iam.v1.FederationCertificateService/Get"
 	FederationCertificateService_ListByFederation_FullMethodName = "/nebius.iam.v1.FederationCertificateService/ListByFederation"
 	FederationCertificateService_Update_FullMethodName           = "/nebius.iam.v1.FederationCertificateService/Update"
+	FederationCertificateService_UpdateBulk_FullMethodName       = "/nebius.iam.v1.FederationCertificateService/UpdateBulk"
 	FederationCertificateService_Delete_FullMethodName           = "/nebius.iam.v1.FederationCertificateService/Delete"
 )
 
@@ -35,6 +36,8 @@ type FederationCertificateServiceClient interface {
 	Get(ctx context.Context, in *GetFederationCertificateRequest, opts ...grpc.CallOption) (*FederationCertificate, error)
 	ListByFederation(ctx context.Context, in *ListFederationCertificateByFederationRequest, opts ...grpc.CallOption) (*ListFederationCertificateResponse, error)
 	Update(ctx context.Context, in *UpdateFederationCertificateRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Replaces all federation's certificates with provided in the request. Certificates which are not presented will be removed.
+	UpdateBulk(ctx context.Context, in *UpdateBulkFederationCertificateRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Delete(ctx context.Context, in *DeleteFederationCertificateRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -82,6 +85,15 @@ func (c *federationCertificateServiceClient) Update(ctx context.Context, in *Upd
 	return out, nil
 }
 
+func (c *federationCertificateServiceClient) UpdateBulk(ctx context.Context, in *UpdateBulkFederationCertificateRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, FederationCertificateService_UpdateBulk_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *federationCertificateServiceClient) Delete(ctx context.Context, in *DeleteFederationCertificateRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, FederationCertificateService_Delete_FullMethodName, in, out, opts...)
@@ -99,6 +111,8 @@ type FederationCertificateServiceServer interface {
 	Get(context.Context, *GetFederationCertificateRequest) (*FederationCertificate, error)
 	ListByFederation(context.Context, *ListFederationCertificateByFederationRequest) (*ListFederationCertificateResponse, error)
 	Update(context.Context, *UpdateFederationCertificateRequest) (*v1.Operation, error)
+	// Replaces all federation's certificates with provided in the request. Certificates which are not presented will be removed.
+	UpdateBulk(context.Context, *UpdateBulkFederationCertificateRequest) (*v1.Operation, error)
 	Delete(context.Context, *DeleteFederationCertificateRequest) (*v1.Operation, error)
 }
 
@@ -117,6 +131,9 @@ func (UnimplementedFederationCertificateServiceServer) ListByFederation(context.
 }
 func (UnimplementedFederationCertificateServiceServer) Update(context.Context, *UpdateFederationCertificateRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedFederationCertificateServiceServer) UpdateBulk(context.Context, *UpdateBulkFederationCertificateRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBulk not implemented")
 }
 func (UnimplementedFederationCertificateServiceServer) Delete(context.Context, *DeleteFederationCertificateRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -205,6 +222,24 @@ func _FederationCertificateService_Update_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FederationCertificateService_UpdateBulk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBulkFederationCertificateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FederationCertificateServiceServer).UpdateBulk(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FederationCertificateService_UpdateBulk_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FederationCertificateServiceServer).UpdateBulk(ctx, req.(*UpdateBulkFederationCertificateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FederationCertificateService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteFederationCertificateRequest)
 	if err := dec(in); err != nil {
@@ -245,6 +280,10 @@ var FederationCertificateService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _FederationCertificateService_Update_Handler,
+		},
+		{
+			MethodName: "UpdateBulk",
+			Handler:    _FederationCertificateService_UpdateBulk_Handler,
 		},
 		{
 			MethodName: "Delete",

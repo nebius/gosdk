@@ -14,6 +14,9 @@ package v1
 // func (x *UpdateFederationCertificateRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *UpdateFederationCertificateRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *UpdateBulkFederationCertificateRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateBulkFederationCertificateRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *DeleteFederationCertificateRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DeleteFederationCertificateRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
