@@ -350,3 +350,47 @@ func (c *MockFederationCertificateServiceUpdateCall) DoAndReturn(f func(context.
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// UpdateBulk mocks base method.
+func (m *MockFederationCertificateService) UpdateBulk(arg0 context.Context, arg1 *v10.UpdateBulkFederationCertificateRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateBulk", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateBulk indicates an expected call of UpdateBulk.
+func (mr *MockFederationCertificateServiceMockRecorder) UpdateBulk(arg0, arg1 any, arg2 ...any) *MockFederationCertificateServiceUpdateBulkCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateBulk", reflect.TypeOf((*MockFederationCertificateService)(nil).UpdateBulk), varargs...)
+	return &MockFederationCertificateServiceUpdateBulkCall{Call: call}
+}
+
+// MockFederationCertificateServiceUpdateBulkCall wrap *gomock.Call
+type MockFederationCertificateServiceUpdateBulkCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockFederationCertificateServiceUpdateBulkCall) Return(arg0 operations.Operation, arg1 error) *MockFederationCertificateServiceUpdateBulkCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockFederationCertificateServiceUpdateBulkCall) Do(f func(context.Context, *v10.UpdateBulkFederationCertificateRequest, ...grpc.CallOption) (operations.Operation, error)) *MockFederationCertificateServiceUpdateBulkCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockFederationCertificateServiceUpdateBulkCall) DoAndReturn(f func(context.Context, *v10.UpdateBulkFederationCertificateRequest, ...grpc.CallOption) (operations.Operation, error)) *MockFederationCertificateServiceUpdateBulkCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}

@@ -235,6 +235,60 @@ func (x *UpdateFederationCertificateRequest) GetSpec() *FederationCertificateSpe
 	return nil
 }
 
+type UpdateBulkFederationCertificateRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Represents the parent federation ID. All certificates in update should have identical parent id.
+	FederationId string `protobuf:"bytes,1,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
+	// If target certificate contains id - the existing one will be updates, otherwise the new one will be created.
+	Updates       []*UpdateFederationCertificateRequest `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBulkFederationCertificateRequest) Reset() {
+	*x = UpdateBulkFederationCertificateRequest{}
+	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBulkFederationCertificateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBulkFederationCertificateRequest) ProtoMessage() {}
+
+func (x *UpdateBulkFederationCertificateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBulkFederationCertificateRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBulkFederationCertificateRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_iam_v1_federation_certificate_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateBulkFederationCertificateRequest) GetFederationId() string {
+	if x != nil {
+		return x.FederationId
+	}
+	return ""
+}
+
+func (x *UpdateBulkFederationCertificateRequest) GetUpdates() []*UpdateFederationCertificateRequest {
+	if x != nil {
+		return x.Updates
+	}
+	return nil
+}
+
 type DeleteFederationCertificateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -244,7 +298,7 @@ type DeleteFederationCertificateRequest struct {
 
 func (x *DeleteFederationCertificateRequest) Reset() {
 	*x = DeleteFederationCertificateRequest{}
-	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[4]
+	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -256,7 +310,7 @@ func (x *DeleteFederationCertificateRequest) String() string {
 func (*DeleteFederationCertificateRequest) ProtoMessage() {}
 
 func (x *DeleteFederationCertificateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[4]
+	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -269,7 +323,7 @@ func (x *DeleteFederationCertificateRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use DeleteFederationCertificateRequest.ProtoReflect.Descriptor instead.
 func (*DeleteFederationCertificateRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federation_certificate_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_iam_v1_federation_certificate_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteFederationCertificateRequest) GetId() string {
@@ -291,7 +345,7 @@ type ListFederationCertificateResponse struct {
 
 func (x *ListFederationCertificateResponse) Reset() {
 	*x = ListFederationCertificateResponse{}
-	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[5]
+	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -303,7 +357,7 @@ func (x *ListFederationCertificateResponse) String() string {
 func (*ListFederationCertificateResponse) ProtoMessage() {}
 
 func (x *ListFederationCertificateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[5]
+	mi := &file_nebius_iam_v1_federation_certificate_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -316,7 +370,7 @@ func (x *ListFederationCertificateResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ListFederationCertificateResponse.ProtoReflect.Descriptor instead.
 func (*ListFederationCertificateResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federation_certificate_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_iam_v1_federation_certificate_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ListFederationCertificateResponse) GetItems() []*FederationCertificate {
@@ -350,17 +404,22 @@ const file_nebius_iam_v1_federation_certificate_service_proto_rawDesc = "" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\xa2\x01\n" +
 	"\"UpdateFederationCertificateRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12<\n" +
-	"\x04spec\x18\x02 \x01(\v2(.nebius.iam.v1.FederationCertificateSpecR\x04spec\"4\n" +
+	"\x04spec\x18\x02 \x01(\v2(.nebius.iam.v1.FederationCertificateSpecR\x04spec\"\x9a\x01\n" +
+	"&UpdateBulkFederationCertificateRequest\x12#\n" +
+	"\rfederation_id\x18\x01 \x01(\tR\ffederationId\x12K\n" +
+	"\aupdates\x18\x02 \x03(\v21.nebius.iam.v1.UpdateFederationCertificateRequestR\aupdates\"4\n" +
 	"\"DeleteFederationCertificateRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"\x87\x01\n" +
 	"!ListFederationCertificateResponse\x12:\n" +
 	"\x05items\x18\x01 \x03(\v2$.nebius.iam.v1.FederationCertificateR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x99\x04\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xfb\x04\n" +
 	"\x1cFederationCertificateService\x12X\n" +
 	"\x06Create\x121.nebius.iam.v1.CreateFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x12[\n" +
 	"\x03Get\x12..nebius.iam.v1.GetFederationCertificateRequest\x1a$.nebius.iam.v1.FederationCertificate\x12\x81\x01\n" +
 	"\x10ListByFederation\x12;.nebius.iam.v1.ListFederationCertificateByFederationRequest\x1a0.nebius.iam.v1.ListFederationCertificateResponse\x12X\n" +
-	"\x06Update\x121.nebius.iam.v1.UpdateFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x12X\n" +
+	"\x06Update\x121.nebius.iam.v1.UpdateFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x12`\n" +
+	"\n" +
+	"UpdateBulk\x125.nebius.iam.v1.UpdateBulkFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x12X\n" +
 	"\x06Delete\x121.nebius.iam.v1.DeleteFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x1a\n" +
 	"\xbaJ\acpl.iamBh\n" +
 	"\x14ai.nebius.pub.iam.v1B!FederationCertificateServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
@@ -377,40 +436,44 @@ func file_nebius_iam_v1_federation_certificate_service_proto_rawDescGZIP() []byt
 	return file_nebius_iam_v1_federation_certificate_service_proto_rawDescData
 }
 
-var file_nebius_iam_v1_federation_certificate_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_nebius_iam_v1_federation_certificate_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_nebius_iam_v1_federation_certificate_service_proto_goTypes = []any{
 	(*CreateFederationCertificateRequest)(nil),           // 0: nebius.iam.v1.CreateFederationCertificateRequest
 	(*GetFederationCertificateRequest)(nil),              // 1: nebius.iam.v1.GetFederationCertificateRequest
 	(*ListFederationCertificateByFederationRequest)(nil), // 2: nebius.iam.v1.ListFederationCertificateByFederationRequest
 	(*UpdateFederationCertificateRequest)(nil),           // 3: nebius.iam.v1.UpdateFederationCertificateRequest
-	(*DeleteFederationCertificateRequest)(nil),           // 4: nebius.iam.v1.DeleteFederationCertificateRequest
-	(*ListFederationCertificateResponse)(nil),            // 5: nebius.iam.v1.ListFederationCertificateResponse
-	(*v1.ResourceMetadata)(nil),                          // 6: nebius.common.v1.ResourceMetadata
-	(*FederationCertificateSpec)(nil),                    // 7: nebius.iam.v1.FederationCertificateSpec
-	(*FederationCertificate)(nil),                        // 8: nebius.iam.v1.FederationCertificate
-	(*v1.Operation)(nil),                                 // 9: nebius.common.v1.Operation
+	(*UpdateBulkFederationCertificateRequest)(nil),       // 4: nebius.iam.v1.UpdateBulkFederationCertificateRequest
+	(*DeleteFederationCertificateRequest)(nil),           // 5: nebius.iam.v1.DeleteFederationCertificateRequest
+	(*ListFederationCertificateResponse)(nil),            // 6: nebius.iam.v1.ListFederationCertificateResponse
+	(*v1.ResourceMetadata)(nil),                          // 7: nebius.common.v1.ResourceMetadata
+	(*FederationCertificateSpec)(nil),                    // 8: nebius.iam.v1.FederationCertificateSpec
+	(*FederationCertificate)(nil),                        // 9: nebius.iam.v1.FederationCertificate
+	(*v1.Operation)(nil),                                 // 10: nebius.common.v1.Operation
 }
 var file_nebius_iam_v1_federation_certificate_service_proto_depIdxs = []int32{
-	6,  // 0: nebius.iam.v1.CreateFederationCertificateRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	7,  // 1: nebius.iam.v1.CreateFederationCertificateRequest.spec:type_name -> nebius.iam.v1.FederationCertificateSpec
-	6,  // 2: nebius.iam.v1.UpdateFederationCertificateRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	7,  // 3: nebius.iam.v1.UpdateFederationCertificateRequest.spec:type_name -> nebius.iam.v1.FederationCertificateSpec
-	8,  // 4: nebius.iam.v1.ListFederationCertificateResponse.items:type_name -> nebius.iam.v1.FederationCertificate
-	0,  // 5: nebius.iam.v1.FederationCertificateService.Create:input_type -> nebius.iam.v1.CreateFederationCertificateRequest
-	1,  // 6: nebius.iam.v1.FederationCertificateService.Get:input_type -> nebius.iam.v1.GetFederationCertificateRequest
-	2,  // 7: nebius.iam.v1.FederationCertificateService.ListByFederation:input_type -> nebius.iam.v1.ListFederationCertificateByFederationRequest
-	3,  // 8: nebius.iam.v1.FederationCertificateService.Update:input_type -> nebius.iam.v1.UpdateFederationCertificateRequest
-	4,  // 9: nebius.iam.v1.FederationCertificateService.Delete:input_type -> nebius.iam.v1.DeleteFederationCertificateRequest
-	9,  // 10: nebius.iam.v1.FederationCertificateService.Create:output_type -> nebius.common.v1.Operation
-	8,  // 11: nebius.iam.v1.FederationCertificateService.Get:output_type -> nebius.iam.v1.FederationCertificate
-	5,  // 12: nebius.iam.v1.FederationCertificateService.ListByFederation:output_type -> nebius.iam.v1.ListFederationCertificateResponse
-	9,  // 13: nebius.iam.v1.FederationCertificateService.Update:output_type -> nebius.common.v1.Operation
-	9,  // 14: nebius.iam.v1.FederationCertificateService.Delete:output_type -> nebius.common.v1.Operation
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	7,  // 0: nebius.iam.v1.CreateFederationCertificateRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	8,  // 1: nebius.iam.v1.CreateFederationCertificateRequest.spec:type_name -> nebius.iam.v1.FederationCertificateSpec
+	7,  // 2: nebius.iam.v1.UpdateFederationCertificateRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	8,  // 3: nebius.iam.v1.UpdateFederationCertificateRequest.spec:type_name -> nebius.iam.v1.FederationCertificateSpec
+	3,  // 4: nebius.iam.v1.UpdateBulkFederationCertificateRequest.updates:type_name -> nebius.iam.v1.UpdateFederationCertificateRequest
+	9,  // 5: nebius.iam.v1.ListFederationCertificateResponse.items:type_name -> nebius.iam.v1.FederationCertificate
+	0,  // 6: nebius.iam.v1.FederationCertificateService.Create:input_type -> nebius.iam.v1.CreateFederationCertificateRequest
+	1,  // 7: nebius.iam.v1.FederationCertificateService.Get:input_type -> nebius.iam.v1.GetFederationCertificateRequest
+	2,  // 8: nebius.iam.v1.FederationCertificateService.ListByFederation:input_type -> nebius.iam.v1.ListFederationCertificateByFederationRequest
+	3,  // 9: nebius.iam.v1.FederationCertificateService.Update:input_type -> nebius.iam.v1.UpdateFederationCertificateRequest
+	4,  // 10: nebius.iam.v1.FederationCertificateService.UpdateBulk:input_type -> nebius.iam.v1.UpdateBulkFederationCertificateRequest
+	5,  // 11: nebius.iam.v1.FederationCertificateService.Delete:input_type -> nebius.iam.v1.DeleteFederationCertificateRequest
+	10, // 12: nebius.iam.v1.FederationCertificateService.Create:output_type -> nebius.common.v1.Operation
+	9,  // 13: nebius.iam.v1.FederationCertificateService.Get:output_type -> nebius.iam.v1.FederationCertificate
+	6,  // 14: nebius.iam.v1.FederationCertificateService.ListByFederation:output_type -> nebius.iam.v1.ListFederationCertificateResponse
+	10, // 15: nebius.iam.v1.FederationCertificateService.Update:output_type -> nebius.common.v1.Operation
+	10, // 16: nebius.iam.v1.FederationCertificateService.UpdateBulk:output_type -> nebius.common.v1.Operation
+	10, // 17: nebius.iam.v1.FederationCertificateService.Delete:output_type -> nebius.common.v1.Operation
+	12, // [12:18] is the sub-list for method output_type
+	6,  // [6:12] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_federation_certificate_service_proto_init() }
@@ -425,7 +488,7 @@ func file_nebius_iam_v1_federation_certificate_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_iam_v1_federation_certificate_service_proto_rawDesc), len(file_nebius_iam_v1_federation_certificate_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
