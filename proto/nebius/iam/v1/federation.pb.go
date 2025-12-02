@@ -275,12 +275,12 @@ var File_nebius_iam_v1_federation_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_federation_proto_rawDesc = "" +
 	"\n" +
-	"\x1enebius/iam/v1/federation.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xd4\x01\n" +
+	"\x1enebius/iam/v1/federation.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xce\x01\n" +
 	"\n" +
 	"Federation\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.iam.v1.FederationSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.iam.v1.FederationStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02\"\xc2\x01\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.iam.v1.FederationStatusB\x04\xbaJ\x01\x05R\x06status\"\xc2\x01\n" +
 	"\x0eFederationSpec\x12;\n" +
 	"\x1auser_account_auto_creation\x18\x01 \x01(\bR\x17userAccountAutoCreation\x12\x16\n" +
 	"\x06active\x18\x04 \x01(\bR\x06active\x12B\n" +
