@@ -73,6 +73,119 @@ func (LifecycleRule_Status) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{1, 0}
 }
 
+type LifecycleAccessFilter_Condition_Type int32
+
+const (
+	LifecycleAccessFilter_Condition_TYPE_UNSPECIFIED LifecycleAccessFilter_Condition_Type = 0
+	// If an include type condition is the first condition that the request match, the request will be included in `days_since_last_access` calculation.
+	LifecycleAccessFilter_Condition_INCLUDE LifecycleAccessFilter_Condition_Type = 1
+	// If an exclude type condition is the first condition that the request match, the request will be ignored in `days_since_last_access` calculation.
+	LifecycleAccessFilter_Condition_EXCLUDE LifecycleAccessFilter_Condition_Type = 2
+)
+
+// Enum value maps for LifecycleAccessFilter_Condition_Type.
+var (
+	LifecycleAccessFilter_Condition_Type_name = map[int32]string{
+		0: "TYPE_UNSPECIFIED",
+		1: "INCLUDE",
+		2: "EXCLUDE",
+	}
+	LifecycleAccessFilter_Condition_Type_value = map[string]int32{
+		"TYPE_UNSPECIFIED": 0,
+		"INCLUDE":          1,
+		"EXCLUDE":          2,
+	}
+)
+
+func (x LifecycleAccessFilter_Condition_Type) Enum() *LifecycleAccessFilter_Condition_Type {
+	p := new(LifecycleAccessFilter_Condition_Type)
+	*p = x
+	return p
+}
+
+func (x LifecycleAccessFilter_Condition_Type) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LifecycleAccessFilter_Condition_Type) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_storage_v1_lifecycle_proto_enumTypes[1].Descriptor()
+}
+
+func (LifecycleAccessFilter_Condition_Type) Type() protoreflect.EnumType {
+	return &file_nebius_storage_v1_lifecycle_proto_enumTypes[1]
+}
+
+func (x LifecycleAccessFilter_Condition_Type) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LifecycleAccessFilter_Condition_Type.Descriptor instead.
+func (LifecycleAccessFilter_Condition_Type) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{3, 0, 0}
+}
+
+type LifecycleAccessFilter_Condition_Method int32
+
+const (
+	LifecycleAccessFilter_Condition_METHOD_UNSPECIFIED LifecycleAccessFilter_Condition_Method = 0
+	LifecycleAccessFilter_Condition_GET_OBJECT         LifecycleAccessFilter_Condition_Method = 1
+	LifecycleAccessFilter_Condition_HEAD_OBJECT        LifecycleAccessFilter_Condition_Method = 2
+	LifecycleAccessFilter_Condition_GET_OBJECT_TAGGING LifecycleAccessFilter_Condition_Method = 3
+	// Copy object method reads the source object.
+	// We account for those operations as source object accesses when calculating `days_since_last_access` for source object.
+	LifecycleAccessFilter_Condition_COPY_OBJECT LifecycleAccessFilter_Condition_Method = 4
+	// Upload part copy method reads the source object.
+	// We account for those operations as source object accesses when calculating `days_since_last_access` for source object.
+	LifecycleAccessFilter_Condition_UPLOAD_PART_COPY LifecycleAccessFilter_Condition_Method = 5
+)
+
+// Enum value maps for LifecycleAccessFilter_Condition_Method.
+var (
+	LifecycleAccessFilter_Condition_Method_name = map[int32]string{
+		0: "METHOD_UNSPECIFIED",
+		1: "GET_OBJECT",
+		2: "HEAD_OBJECT",
+		3: "GET_OBJECT_TAGGING",
+		4: "COPY_OBJECT",
+		5: "UPLOAD_PART_COPY",
+	}
+	LifecycleAccessFilter_Condition_Method_value = map[string]int32{
+		"METHOD_UNSPECIFIED": 0,
+		"GET_OBJECT":         1,
+		"HEAD_OBJECT":        2,
+		"GET_OBJECT_TAGGING": 3,
+		"COPY_OBJECT":        4,
+		"UPLOAD_PART_COPY":   5,
+	}
+)
+
+func (x LifecycleAccessFilter_Condition_Method) Enum() *LifecycleAccessFilter_Condition_Method {
+	p := new(LifecycleAccessFilter_Condition_Method)
+	*p = x
+	return p
+}
+
+func (x LifecycleAccessFilter_Condition_Method) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LifecycleAccessFilter_Condition_Method) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_storage_v1_lifecycle_proto_enumTypes[2].Descriptor()
+}
+
+func (LifecycleAccessFilter_Condition_Method) Type() protoreflect.EnumType {
+	return &file_nebius_storage_v1_lifecycle_proto_enumTypes[2]
+}
+
+func (x LifecycleAccessFilter_Condition_Method) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LifecycleAccessFilter_Condition_Method.Descriptor instead.
+func (LifecycleAccessFilter_Condition_Method) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{3, 0, 1}
+}
+
 // The lifecycle configuration consists of one or more rules.
 // An Lifecycle configuration can have up to 1,000 rules.
 // Each rule consists of the following:
@@ -85,10 +198,12 @@ func (LifecycleRule_Status) EnumDescriptor() ([]byte, []int) {
 //     object (one current version and zero or more noncurrent versions). The system provides predefined actions
 //     that you can specify for current and noncurrent object versions.
 type LifecycleConfiguration struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Rules         []*LifecycleRule       `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Rules []*LifecycleRule       `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
+	// Specifies which requests are included in `days_since_last_access` calculations for all transition rules.
+	LastAccessFilter *LifecycleAccessFilter `protobuf:"bytes,2,opt,name=last_access_filter,json=lastAccessFilter,proto3" json:"last_access_filter,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *LifecycleConfiguration) Reset() {
@@ -124,6 +239,13 @@ func (*LifecycleConfiguration) Descriptor() ([]byte, []int) {
 func (x *LifecycleConfiguration) GetRules() []*LifecycleRule {
 	if x != nil {
 		return x.Rules
+	}
+	return nil
+}
+
+func (x *LifecycleConfiguration) GetLastAccessFilter() *LifecycleAccessFilter {
+	if x != nil {
+		return x.LastAccessFilter
 	}
 	return nil
 }
@@ -307,6 +429,55 @@ func (x *LifecycleFilter) GetObjectSizeLessThanBytes() int64 {
 	return 0
 }
 
+// Specifies which requests are included in `days_since_last_access` calculations.
+type LifecycleAccessFilter struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// A request is included in `days_since_last_access` calculations if:
+	// - The first condition matching the request has `INCLUDE` type.
+	// OR
+	// - The request doesn't match any conditions
+	Conditions    []*LifecycleAccessFilter_Condition `protobuf:"bytes,1,rep,name=conditions,proto3" json:"conditions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LifecycleAccessFilter) Reset() {
+	*x = LifecycleAccessFilter{}
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LifecycleAccessFilter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LifecycleAccessFilter) ProtoMessage() {}
+
+func (x *LifecycleAccessFilter) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LifecycleAccessFilter.ProtoReflect.Descriptor instead.
+func (*LifecycleAccessFilter) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *LifecycleAccessFilter) GetConditions() []*LifecycleAccessFilter_Condition {
+	if x != nil {
+		return x.Conditions
+	}
+	return nil
+}
+
 type LifecycleExpiration struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to ExpiredWith:
@@ -325,7 +496,7 @@ type LifecycleExpiration struct {
 
 func (x *LifecycleExpiration) Reset() {
 	*x = LifecycleExpiration{}
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[3]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -337,7 +508,7 @@ func (x *LifecycleExpiration) String() string {
 func (*LifecycleExpiration) ProtoMessage() {}
 
 func (x *LifecycleExpiration) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[3]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -350,7 +521,7 @@ func (x *LifecycleExpiration) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LifecycleExpiration.ProtoReflect.Descriptor instead.
 func (*LifecycleExpiration) Descriptor() ([]byte, []int) {
-	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{3}
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *LifecycleExpiration) GetExpiredWith() isLifecycleExpiration_ExpiredWith {
@@ -416,7 +587,7 @@ type LifecycleNoncurrentVersionExpiration struct {
 
 func (x *LifecycleNoncurrentVersionExpiration) Reset() {
 	*x = LifecycleNoncurrentVersionExpiration{}
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[4]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -428,7 +599,7 @@ func (x *LifecycleNoncurrentVersionExpiration) String() string {
 func (*LifecycleNoncurrentVersionExpiration) ProtoMessage() {}
 
 func (x *LifecycleNoncurrentVersionExpiration) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[4]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -441,7 +612,7 @@ func (x *LifecycleNoncurrentVersionExpiration) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use LifecycleNoncurrentVersionExpiration.ProtoReflect.Descriptor instead.
 func (*LifecycleNoncurrentVersionExpiration) Descriptor() ([]byte, []int) {
-	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{4}
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *LifecycleNoncurrentVersionExpiration) GetNewerNoncurrentVersions() int32 {
@@ -469,7 +640,7 @@ type LifecycleAbortIncompleteMultipartUpload struct {
 
 func (x *LifecycleAbortIncompleteMultipartUpload) Reset() {
 	*x = LifecycleAbortIncompleteMultipartUpload{}
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[5]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -481,7 +652,7 @@ func (x *LifecycleAbortIncompleteMultipartUpload) String() string {
 func (*LifecycleAbortIncompleteMultipartUpload) ProtoMessage() {}
 
 func (x *LifecycleAbortIncompleteMultipartUpload) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[5]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -494,7 +665,7 @@ func (x *LifecycleAbortIncompleteMultipartUpload) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use LifecycleAbortIncompleteMultipartUpload.ProtoReflect.Descriptor instead.
 func (*LifecycleAbortIncompleteMultipartUpload) Descriptor() ([]byte, []int) {
-	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{5}
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *LifecycleAbortIncompleteMultipartUpload) GetDaysAfterInitiation() int32 {
@@ -510,6 +681,7 @@ type LifecycleTransition struct {
 	//
 	//	*LifecycleTransition_Date
 	//	*LifecycleTransition_Days
+	//	*LifecycleTransition_DaysSinceLastAccess
 	TransitedWith isLifecycleTransition_TransitedWith `protobuf_oneof:"transited_with"`
 	// Target storage class to transit to.
 	StorageClass  StorageClass `protobuf:"varint,3,opt,name=storage_class,json=storageClass,proto3,enum=nebius.storage.v1.StorageClass" json:"storage_class,omitempty"`
@@ -519,7 +691,7 @@ type LifecycleTransition struct {
 
 func (x *LifecycleTransition) Reset() {
 	*x = LifecycleTransition{}
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[6]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -531,7 +703,7 @@ func (x *LifecycleTransition) String() string {
 func (*LifecycleTransition) ProtoMessage() {}
 
 func (x *LifecycleTransition) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[6]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -544,7 +716,7 @@ func (x *LifecycleTransition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LifecycleTransition.ProtoReflect.Descriptor instead.
 func (*LifecycleTransition) Descriptor() ([]byte, []int) {
-	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{6}
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *LifecycleTransition) GetTransitedWith() isLifecycleTransition_TransitedWith {
@@ -572,6 +744,15 @@ func (x *LifecycleTransition) GetDays() int32 {
 	return 0
 }
 
+func (x *LifecycleTransition) GetDaysSinceLastAccess() int32 {
+	if x != nil {
+		if x, ok := x.TransitedWith.(*LifecycleTransition_DaysSinceLastAccess); ok {
+			return x.DaysSinceLastAccess
+		}
+	}
+	return 0
+}
+
 func (x *LifecycleTransition) GetStorageClass() StorageClass {
 	if x != nil {
 		return x.StorageClass
@@ -594,9 +775,16 @@ type LifecycleTransition_Days struct {
 	Days int32 `protobuf:"varint,2,opt,name=days,proto3,oneof"`
 }
 
+type LifecycleTransition_DaysSinceLastAccess struct {
+	// The number of days since the object was last accessed before it is transitioned.
+	DaysSinceLastAccess int32 `protobuf:"varint,4,opt,name=days_since_last_access,json=daysSinceLastAccess,proto3,oneof"`
+}
+
 func (*LifecycleTransition_Date) isLifecycleTransition_TransitedWith() {}
 
 func (*LifecycleTransition_Days) isLifecycleTransition_TransitedWith() {}
+
+func (*LifecycleTransition_DaysSinceLastAccess) isLifecycleTransition_TransitedWith() {}
 
 type LifecycleNoncurrentVersionTransition struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -612,7 +800,7 @@ type LifecycleNoncurrentVersionTransition struct {
 
 func (x *LifecycleNoncurrentVersionTransition) Reset() {
 	*x = LifecycleNoncurrentVersionTransition{}
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[7]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -624,7 +812,7 @@ func (x *LifecycleNoncurrentVersionTransition) String() string {
 func (*LifecycleNoncurrentVersionTransition) ProtoMessage() {}
 
 func (x *LifecycleNoncurrentVersionTransition) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[7]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -637,7 +825,7 @@ func (x *LifecycleNoncurrentVersionTransition) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use LifecycleNoncurrentVersionTransition.ProtoReflect.Descriptor instead.
 func (*LifecycleNoncurrentVersionTransition) Descriptor() ([]byte, []int) {
-	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{7}
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *LifecycleNoncurrentVersionTransition) GetNewerNoncurrentVersions() int32 {
@@ -661,13 +849,78 @@ func (x *LifecycleNoncurrentVersionTransition) GetStorageClass() StorageClass {
 	return StorageClass_STORAGE_CLASS_UNSPECIFIED
 }
 
+type LifecycleAccessFilter_Condition struct {
+	state protoimpl.MessageState               `protogen:"open.v1"`
+	Type  LifecycleAccessFilter_Condition_Type `protobuf:"varint,1,opt,name=type,proto3,enum=nebius.storage.v1.LifecycleAccessFilter_Condition_Type" json:"type,omitempty"`
+	// The s3 methods to match.
+	// An empty list matches all methods
+	Methods []LifecycleAccessFilter_Condition_Method `protobuf:"varint,2,rep,packed,name=methods,proto3,enum=nebius.storage.v1.LifecycleAccessFilter_Condition_Method" json:"methods,omitempty"`
+	// User agents to match. Condition is satisfied if the request's user agent contains any of these substrings.
+	// An empty list matches all user agents.
+	UserAgents    []string `protobuf:"bytes,3,rep,name=user_agents,json=userAgents,proto3" json:"user_agents,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LifecycleAccessFilter_Condition) Reset() {
+	*x = LifecycleAccessFilter_Condition{}
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LifecycleAccessFilter_Condition) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LifecycleAccessFilter_Condition) ProtoMessage() {}
+
+func (x *LifecycleAccessFilter_Condition) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LifecycleAccessFilter_Condition.ProtoReflect.Descriptor instead.
+func (*LifecycleAccessFilter_Condition) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *LifecycleAccessFilter_Condition) GetType() LifecycleAccessFilter_Condition_Type {
+	if x != nil {
+		return x.Type
+	}
+	return LifecycleAccessFilter_Condition_TYPE_UNSPECIFIED
+}
+
+func (x *LifecycleAccessFilter_Condition) GetMethods() []LifecycleAccessFilter_Condition_Method {
+	if x != nil {
+		return x.Methods
+	}
+	return nil
+}
+
+func (x *LifecycleAccessFilter_Condition) GetUserAgents() []string {
+	if x != nil {
+		return x.UserAgents
+	}
+	return nil
+}
+
 var File_nebius_storage_v1_lifecycle_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_lifecycle_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/storage/v1/lifecycle.proto\x12\x11nebius.storage.v1\x1a\x1cnebius/storage/v1/base.proto\x1a\x18nebius/annotations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"[\n" +
+	"!nebius/storage/v1/lifecycle.proto\x12\x11nebius.storage.v1\x1a\x1cnebius/storage/v1/base.proto\x1a\x18nebius/annotations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb3\x01\n" +
 	"\x16LifecycleConfiguration\x12A\n" +
-	"\x05rules\x18\x01 \x03(\v2 .nebius.storage.v1.LifecycleRuleB\t\xbaH\x06\x92\x01\x03\x10\xe8\aR\x05rules\"\x81\x06\n" +
+	"\x05rules\x18\x01 \x03(\v2 .nebius.storage.v1.LifecycleRuleB\t\xbaH\x06\x92\x01\x03\x10\xe8\aR\x05rules\x12V\n" +
+	"\x12last_access_filter\x18\x02 \x01(\v2(.nebius.storage.v1.LifecycleAccessFilterR\x10lastAccessFilter\"\x81\x06\n" +
 	"\rLifecycleRule\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12G\n" +
 	"\x06status\x18\x02 \x01(\x0e2'.nebius.storage.v1.LifecycleRule.StatusB\x06\xbaH\x03\xc8\x01\x01R\x06status\x12@\n" +
@@ -688,7 +941,29 @@ const file_nebius_storage_v1_lifecycle_proto_rawDesc = "" +
 	"\x0fLifecycleFilter\x12\x16\n" +
 	"\x06prefix\x18\x01 \x01(\tR\x06prefix\x12B\n" +
 	"\x1eobject_size_greater_than_bytes\x18\x02 \x01(\x03R\x1aobjectSizeGreaterThanBytes\x12<\n" +
-	"\x1bobject_size_less_than_bytes\x18\x03 \x01(\x03R\x17objectSizeLessThanBytes\"\xbb\x01\n" +
+	"\x1bobject_size_less_than_bytes\x18\x03 \x01(\x03R\x17objectSizeLessThanBytes\"\x9d\x04\n" +
+	"\x15LifecycleAccessFilter\x12\\\n" +
+	"\n" +
+	"conditions\x18\x01 \x03(\v22.nebius.storage.v1.LifecycleAccessFilter.ConditionB\b\xbaH\x05\x92\x01\x02\x10dR\n" +
+	"conditions\x1a\xa5\x03\n" +
+	"\tCondition\x12S\n" +
+	"\x04type\x18\x01 \x01(\x0e27.nebius.storage.v1.LifecycleAccessFilter.Condition.TypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12]\n" +
+	"\amethods\x18\x02 \x03(\x0e29.nebius.storage.v1.LifecycleAccessFilter.Condition.MethodB\b\xbaH\x05\x92\x01\x02\x10\n" +
+	"R\amethods\x12)\n" +
+	"\vuser_agents\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x10dR\n" +
+	"userAgents\"6\n" +
+	"\x04Type\x12\x14\n" +
+	"\x10TYPE_UNSPECIFIED\x10\x00\x12\v\n" +
+	"\aINCLUDE\x10\x01\x12\v\n" +
+	"\aEXCLUDE\x10\x02\"\x80\x01\n" +
+	"\x06Method\x12\x16\n" +
+	"\x12METHOD_UNSPECIFIED\x10\x00\x12\x0e\n" +
+	"\n" +
+	"GET_OBJECT\x10\x01\x12\x0f\n" +
+	"\vHEAD_OBJECT\x10\x02\x12\x16\n" +
+	"\x12GET_OBJECT_TAGGING\x10\x03\x12\x0f\n" +
+	"\vCOPY_OBJECT\x10\x04\x12\x14\n" +
+	"\x10UPLOAD_PART_COPY\x10\x05\"\xbb\x01\n" +
 	"\x13LifecycleExpiration\x120\n" +
 	"\x04date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\x04date\x12!\n" +
 	"\x04days\x18\x02 \x01(\x05B\v\xbaH\b\x1a\x06\x18ʎ\x01(\x01H\x00R\x04days\x12?\n" +
@@ -699,10 +974,11 @@ const file_nebius_storage_v1_lifecycle_proto_rawDesc = "" +
 	"\x0fnoncurrent_days\x18\x02 \x01(\x05B\v\xbaH\b\x1a\x06\x18ʎ\x01(\x01R\x0enoncurrentDaysB\x1c\n" +
 	"\x1a_newer_noncurrent_versions\"j\n" +
 	"'LifecycleAbortIncompleteMultipartUpload\x12?\n" +
-	"\x15days_after_initiation\x18\x01 \x01(\x05B\v\xbaH\b\x1a\x06\x18ʎ\x01(\x01R\x13daysAfterInitiation\"\xc2\x01\n" +
+	"\x15days_after_initiation\x18\x01 \x01(\x05B\v\xbaH\b\x1a\x06\x18ʎ\x01(\x01R\x13daysAfterInitiation\"\x86\x02\n" +
 	"\x13LifecycleTransition\x120\n" +
 	"\x04date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\x04date\x12!\n" +
-	"\x04days\x18\x02 \x01(\x05B\v\xbaH\b\x1a\x06\x18ʎ\x01(\x01H\x00R\x04days\x12D\n" +
+	"\x04days\x18\x02 \x01(\x05B\v\xbaH\b\x1a\x06\x18ʎ\x01(\x01H\x00R\x04days\x12B\n" +
+	"\x16days_since_last_access\x18\x04 \x01(\x05B\v\xbaH\b\x1a\x06\x18ʎ\x01(\x01H\x00R\x13daysSinceLastAccess\x12D\n" +
 	"\rstorage_class\x18\x03 \x01(\x0e2\x1f.nebius.storage.v1.StorageClassR\fstorageClassB\x10\n" +
 	"\x0etransited_with\"\x81\x02\n" +
 	"$LifecycleNoncurrentVersionTransition\x12?\n" +
@@ -724,39 +1000,47 @@ func file_nebius_storage_v1_lifecycle_proto_rawDescGZIP() []byte {
 	return file_nebius_storage_v1_lifecycle_proto_rawDescData
 }
 
-var file_nebius_storage_v1_lifecycle_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nebius_storage_v1_lifecycle_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_storage_v1_lifecycle_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_nebius_storage_v1_lifecycle_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_nebius_storage_v1_lifecycle_proto_goTypes = []any{
 	(LifecycleRule_Status)(0),                       // 0: nebius.storage.v1.LifecycleRule.Status
-	(*LifecycleConfiguration)(nil),                  // 1: nebius.storage.v1.LifecycleConfiguration
-	(*LifecycleRule)(nil),                           // 2: nebius.storage.v1.LifecycleRule
-	(*LifecycleFilter)(nil),                         // 3: nebius.storage.v1.LifecycleFilter
-	(*LifecycleExpiration)(nil),                     // 4: nebius.storage.v1.LifecycleExpiration
-	(*LifecycleNoncurrentVersionExpiration)(nil),    // 5: nebius.storage.v1.LifecycleNoncurrentVersionExpiration
-	(*LifecycleAbortIncompleteMultipartUpload)(nil), // 6: nebius.storage.v1.LifecycleAbortIncompleteMultipartUpload
-	(*LifecycleTransition)(nil),                     // 7: nebius.storage.v1.LifecycleTransition
-	(*LifecycleNoncurrentVersionTransition)(nil),    // 8: nebius.storage.v1.LifecycleNoncurrentVersionTransition
-	(*timestamppb.Timestamp)(nil),                   // 9: google.protobuf.Timestamp
-	(StorageClass)(0),                               // 10: nebius.storage.v1.StorageClass
+	(LifecycleAccessFilter_Condition_Type)(0),       // 1: nebius.storage.v1.LifecycleAccessFilter.Condition.Type
+	(LifecycleAccessFilter_Condition_Method)(0),     // 2: nebius.storage.v1.LifecycleAccessFilter.Condition.Method
+	(*LifecycleConfiguration)(nil),                  // 3: nebius.storage.v1.LifecycleConfiguration
+	(*LifecycleRule)(nil),                           // 4: nebius.storage.v1.LifecycleRule
+	(*LifecycleFilter)(nil),                         // 5: nebius.storage.v1.LifecycleFilter
+	(*LifecycleAccessFilter)(nil),                   // 6: nebius.storage.v1.LifecycleAccessFilter
+	(*LifecycleExpiration)(nil),                     // 7: nebius.storage.v1.LifecycleExpiration
+	(*LifecycleNoncurrentVersionExpiration)(nil),    // 8: nebius.storage.v1.LifecycleNoncurrentVersionExpiration
+	(*LifecycleAbortIncompleteMultipartUpload)(nil), // 9: nebius.storage.v1.LifecycleAbortIncompleteMultipartUpload
+	(*LifecycleTransition)(nil),                     // 10: nebius.storage.v1.LifecycleTransition
+	(*LifecycleNoncurrentVersionTransition)(nil),    // 11: nebius.storage.v1.LifecycleNoncurrentVersionTransition
+	(*LifecycleAccessFilter_Condition)(nil),         // 12: nebius.storage.v1.LifecycleAccessFilter.Condition
+	(*timestamppb.Timestamp)(nil),                   // 13: google.protobuf.Timestamp
+	(StorageClass)(0),                               // 14: nebius.storage.v1.StorageClass
 }
 var file_nebius_storage_v1_lifecycle_proto_depIdxs = []int32{
-	2,  // 0: nebius.storage.v1.LifecycleConfiguration.rules:type_name -> nebius.storage.v1.LifecycleRule
-	0,  // 1: nebius.storage.v1.LifecycleRule.status:type_name -> nebius.storage.v1.LifecycleRule.Status
-	3,  // 2: nebius.storage.v1.LifecycleRule.filter:type_name -> nebius.storage.v1.LifecycleFilter
-	4,  // 3: nebius.storage.v1.LifecycleRule.expiration:type_name -> nebius.storage.v1.LifecycleExpiration
-	5,  // 4: nebius.storage.v1.LifecycleRule.noncurrent_version_expiration:type_name -> nebius.storage.v1.LifecycleNoncurrentVersionExpiration
-	6,  // 5: nebius.storage.v1.LifecycleRule.abort_incomplete_multipart_upload:type_name -> nebius.storage.v1.LifecycleAbortIncompleteMultipartUpload
-	7,  // 6: nebius.storage.v1.LifecycleRule.transition:type_name -> nebius.storage.v1.LifecycleTransition
-	8,  // 7: nebius.storage.v1.LifecycleRule.noncurrent_version_transition:type_name -> nebius.storage.v1.LifecycleNoncurrentVersionTransition
-	9,  // 8: nebius.storage.v1.LifecycleExpiration.date:type_name -> google.protobuf.Timestamp
-	9,  // 9: nebius.storage.v1.LifecycleTransition.date:type_name -> google.protobuf.Timestamp
-	10, // 10: nebius.storage.v1.LifecycleTransition.storage_class:type_name -> nebius.storage.v1.StorageClass
-	10, // 11: nebius.storage.v1.LifecycleNoncurrentVersionTransition.storage_class:type_name -> nebius.storage.v1.StorageClass
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	4,  // 0: nebius.storage.v1.LifecycleConfiguration.rules:type_name -> nebius.storage.v1.LifecycleRule
+	6,  // 1: nebius.storage.v1.LifecycleConfiguration.last_access_filter:type_name -> nebius.storage.v1.LifecycleAccessFilter
+	0,  // 2: nebius.storage.v1.LifecycleRule.status:type_name -> nebius.storage.v1.LifecycleRule.Status
+	5,  // 3: nebius.storage.v1.LifecycleRule.filter:type_name -> nebius.storage.v1.LifecycleFilter
+	7,  // 4: nebius.storage.v1.LifecycleRule.expiration:type_name -> nebius.storage.v1.LifecycleExpiration
+	8,  // 5: nebius.storage.v1.LifecycleRule.noncurrent_version_expiration:type_name -> nebius.storage.v1.LifecycleNoncurrentVersionExpiration
+	9,  // 6: nebius.storage.v1.LifecycleRule.abort_incomplete_multipart_upload:type_name -> nebius.storage.v1.LifecycleAbortIncompleteMultipartUpload
+	10, // 7: nebius.storage.v1.LifecycleRule.transition:type_name -> nebius.storage.v1.LifecycleTransition
+	11, // 8: nebius.storage.v1.LifecycleRule.noncurrent_version_transition:type_name -> nebius.storage.v1.LifecycleNoncurrentVersionTransition
+	12, // 9: nebius.storage.v1.LifecycleAccessFilter.conditions:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition
+	13, // 10: nebius.storage.v1.LifecycleExpiration.date:type_name -> google.protobuf.Timestamp
+	13, // 11: nebius.storage.v1.LifecycleTransition.date:type_name -> google.protobuf.Timestamp
+	14, // 12: nebius.storage.v1.LifecycleTransition.storage_class:type_name -> nebius.storage.v1.StorageClass
+	14, // 13: nebius.storage.v1.LifecycleNoncurrentVersionTransition.storage_class:type_name -> nebius.storage.v1.StorageClass
+	1,  // 14: nebius.storage.v1.LifecycleAccessFilter.Condition.type:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition.Type
+	2,  // 15: nebius.storage.v1.LifecycleAccessFilter.Condition.methods:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition.Method
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_lifecycle_proto_init() }
@@ -765,23 +1049,24 @@ func file_nebius_storage_v1_lifecycle_proto_init() {
 		return
 	}
 	file_nebius_storage_v1_base_proto_init()
-	file_nebius_storage_v1_lifecycle_proto_msgTypes[3].OneofWrappers = []any{
+	file_nebius_storage_v1_lifecycle_proto_msgTypes[4].OneofWrappers = []any{
 		(*LifecycleExpiration_Date)(nil),
 		(*LifecycleExpiration_Days)(nil),
 	}
-	file_nebius_storage_v1_lifecycle_proto_msgTypes[4].OneofWrappers = []any{}
-	file_nebius_storage_v1_lifecycle_proto_msgTypes[6].OneofWrappers = []any{
+	file_nebius_storage_v1_lifecycle_proto_msgTypes[5].OneofWrappers = []any{}
+	file_nebius_storage_v1_lifecycle_proto_msgTypes[7].OneofWrappers = []any{
 		(*LifecycleTransition_Date)(nil),
 		(*LifecycleTransition_Days)(nil),
+		(*LifecycleTransition_DaysSinceLastAccess)(nil),
 	}
-	file_nebius_storage_v1_lifecycle_proto_msgTypes[7].OneofWrappers = []any{}
+	file_nebius_storage_v1_lifecycle_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_storage_v1_lifecycle_proto_rawDesc), len(file_nebius_storage_v1_lifecycle_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   8,
+			NumEnums:      3,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

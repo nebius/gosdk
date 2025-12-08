@@ -11,6 +11,9 @@ package v1
 // func (x *LifecycleFilter) Sanitize()            // is not generated as no sensitive fields found
 // func (x *LifecycleFilter) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *LifecycleAccessFilter) Sanitize()            // is not generated as no sensitive fields found
+// func (x *LifecycleAccessFilter) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *LifecycleExpiration) Sanitize()            // is not generated as no sensitive fields found
 // func (x *LifecycleExpiration) LogValue() slog.Value // is not generated as no sensitive fields found
 
