@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/registry/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -50,6 +52,11 @@ func (s registryService) Get(ctx context.Context, request *v1.GetRegistryRequest
 	*v1.Registry,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
 		return nil, err
@@ -67,6 +74,11 @@ func (s registryService) List(ctx context.Context, request *v1.ListRegistriesReq
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
@@ -116,6 +128,14 @@ func (s registryService) Create(ctx context.Context, request *v1.CreateRegistryR
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
 		return nil, err
@@ -139,6 +159,14 @@ func (s registryService) Update(ctx context.Context, request *v1.UpdateRegistryR
 	if err != nil {
 		return nil, err
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
 		return nil, err
@@ -158,6 +186,11 @@ func (s registryService) Delete(ctx context.Context, request *v1.DeleteRegistryR
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
 	if err != nil {
 		return nil, err

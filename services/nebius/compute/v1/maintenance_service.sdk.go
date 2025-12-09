@@ -4,10 +4,12 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	v1 "github.com/nebius/gosdk/proto/nebius/compute/v1"
 	grpc "google.golang.org/grpc"
+	slog "log/slog"
 )
 
 func init() {
@@ -39,6 +41,11 @@ func (s maintenanceService) GetByInstance(ctx context.Context, request *v1.GetMa
 	*v1.MaintenanceEvent,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err
@@ -54,6 +61,11 @@ func (s maintenanceService) ListActive(ctx context.Context, request *v1.ListMain
 	*v1.ListMaintenanceEventsResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err

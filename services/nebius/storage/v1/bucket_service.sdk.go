@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/storage/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -53,6 +55,11 @@ func (s bucketService) Get(ctx context.Context, request *v1.GetBucketRequest, op
 	*v1.Bucket,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -71,6 +78,11 @@ func (s bucketService) GetByName(ctx context.Context, request *v1.GetBucketByNam
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -88,6 +100,11 @@ func (s bucketService) List(ctx context.Context, request *v1.ListBucketsRequest,
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
@@ -137,6 +154,14 @@ func (s bucketService) Create(ctx context.Context, request *v1.CreateBucketReque
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -160,6 +185,14 @@ func (s bucketService) Update(ctx context.Context, request *v1.UpdateBucketReque
 	if err != nil {
 		return nil, err
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -179,6 +212,11 @@ func (s bucketService) Delete(ctx context.Context, request *v1.DeleteBucketReque
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -198,6 +236,11 @@ func (s bucketService) Purge(ctx context.Context, request *v1.PurgeBucketRequest
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err
@@ -217,6 +260,11 @@ func (s bucketService) Undelete(ctx context.Context, request *v1.UndeleteBucketR
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BucketServiceID)
 	if err != nil {
 		return nil, err

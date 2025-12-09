@@ -4,6 +4,7 @@ package v2
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v2 "github.com/nebius/gosdk/proto/nebius/iam/v2"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -49,6 +51,11 @@ func (s tenantService) Get(ctx context.Context, request *v2.GetTenantRequest, op
 	*v2.Tenant,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err
@@ -67,6 +74,11 @@ func (s tenantService) GetByName(ctx context.Context, request *v2.GetTenantByNam
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err
@@ -82,6 +94,11 @@ func (s tenantService) List(ctx context.Context, request *v2.ListTenantsRequest,
 	*v2.ListTenantsResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err
@@ -125,6 +142,14 @@ func (s tenantService) Update(ctx context.Context, request *v2.UpdateTenantReque
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {

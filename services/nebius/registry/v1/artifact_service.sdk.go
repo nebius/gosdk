@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -12,6 +13,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/registry/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -47,6 +49,11 @@ func (s artifactService) Get(ctx context.Context, request *v1.GetArtifactRequest
 	*v1.Artifact,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ArtifactServiceID)
 	if err != nil {
 		return nil, err
@@ -64,6 +71,11 @@ func (s artifactService) List(ctx context.Context, request *v1.ListArtifactsRequ
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, ArtifactServiceID)
 	if err != nil {
@@ -105,6 +117,11 @@ func (s artifactService) Delete(ctx context.Context, request *v1.DeleteArtifactR
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ArtifactServiceID)
 	if err != nil {
 		return nil, err

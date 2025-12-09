@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/vpc/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -53,6 +55,11 @@ func (s allocationService) Get(ctx context.Context, request *v1.GetAllocationReq
 	*v1.Allocation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -71,6 +78,11 @@ func (s allocationService) GetByName(ctx context.Context, request *v1.GetAllocat
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -88,6 +100,11 @@ func (s allocationService) List(ctx context.Context, request *v1.ListAllocations
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
@@ -129,6 +146,11 @@ func (s allocationService) ListByPool(ctx context.Context, request *v1.ListAlloc
 	*v1.ListAllocationsResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -144,6 +166,11 @@ func (s allocationService) ListBySubnet(ctx context.Context, request *v1.ListAll
 	*v1.ListAllocationsResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -166,6 +193,14 @@ func (s allocationService) Create(ctx context.Context, request *v1.CreateAllocat
 		}
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
@@ -190,6 +225,14 @@ func (s allocationService) Update(ctx context.Context, request *v1.UpdateAllocat
 	if err != nil {
 		return nil, err
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err
@@ -209,6 +252,11 @@ func (s allocationService) Delete(ctx context.Context, request *v1.DeleteAllocat
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
 	if err != nil {
 		return nil, err

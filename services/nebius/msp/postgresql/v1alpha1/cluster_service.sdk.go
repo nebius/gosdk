@@ -4,6 +4,7 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -14,6 +15,7 @@ import (
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -56,6 +58,11 @@ func (s clusterService) Get(ctx context.Context, request *v1alpha1.GetClusterReq
 	*v1alpha1.Cluster,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -74,6 +81,11 @@ func (s clusterService) GetByName(ctx context.Context, request *v1.GetByNameRequ
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -89,6 +101,11 @@ func (s clusterService) GetForBackup(ctx context.Context, request *v1alpha1.GetC
 	*v1alpha1.Cluster,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -106,6 +123,11 @@ func (s clusterService) List(ctx context.Context, request *v1alpha1.ListClusters
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
@@ -155,6 +177,14 @@ func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClus
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -174,6 +204,11 @@ func (s clusterService) Delete(ctx context.Context, request *v1alpha1.DeleteClus
 	*alphaops.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -196,6 +231,14 @@ func (s clusterService) Update(ctx context.Context, request *v1alpha1.UpdateClus
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
@@ -224,6 +267,14 @@ func (s clusterService) Restore(ctx context.Context, request *v1alpha1.RestoreCl
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -243,6 +294,11 @@ func (s clusterService) Stop(ctx context.Context, request *v1alpha1.StopClusterR
 	*alphaops.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -262,6 +318,11 @@ func (s clusterService) Start(ctx context.Context, request *v1alpha1.StartCluste
 	*alphaops.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
 	if err != nil {
 		return nil, err

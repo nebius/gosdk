@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	operations "github.com/nebius/gosdk/operations"
@@ -11,6 +12,7 @@ import (
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
+	slog "log/slog"
 )
 
 func init() {
@@ -56,6 +58,14 @@ func (s federationCertificateService) Create(ctx context.Context, request *v1.Cr
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -75,6 +85,11 @@ func (s federationCertificateService) Get(ctx context.Context, request *v1.GetFe
 	*v1.FederationCertificate,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -90,6 +105,11 @@ func (s federationCertificateService) ListByFederation(ctx context.Context, requ
 	*v1.ListFederationCertificateResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -108,6 +128,14 @@ func (s federationCertificateService) Update(ctx context.Context, request *v1.Up
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
@@ -128,6 +156,11 @@ func (s federationCertificateService) UpdateBulk(ctx context.Context, request *v
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -147,6 +180,11 @@ func (s federationCertificateService) Delete(ctx context.Context, request *v1.De
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err

@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -11,6 +12,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/dns/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -44,6 +46,11 @@ func (s recordService) Get(ctx context.Context, request *v1.GetRecordRequest, op
 	*v1.Record,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, RecordServiceID)
 	if err != nil {
 		return nil, err
@@ -62,6 +69,11 @@ func (s recordService) GetByName(ctx context.Context, request *v11.GetByNameRequ
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, RecordServiceID)
 	if err != nil {
 		return nil, err
@@ -79,6 +91,11 @@ func (s recordService) List(ctx context.Context, request *v1.ListRecordsRequest,
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, RecordServiceID)
 	if err != nil {

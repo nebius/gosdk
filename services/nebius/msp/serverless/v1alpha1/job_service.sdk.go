@@ -4,6 +4,7 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/v1alpha1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -50,6 +52,11 @@ func (s jobService) Get(ctx context.Context, request *v1alpha1.GetRequest, opts 
 	*v1alpha11.Job,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err
@@ -67,6 +74,11 @@ func (s jobService) List(ctx context.Context, request *v1alpha1.ListRequest, opt
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
@@ -116,6 +128,14 @@ func (s jobService) Create(ctx context.Context, request *v1alpha11.CreateJobRequ
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err
@@ -135,6 +155,11 @@ func (s jobService) Delete(ctx context.Context, request *v1alpha1.DeleteRequest,
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err
@@ -154,6 +179,11 @@ func (s jobService) Cancel(ctx context.Context, request *v1alpha11.CancelJobRequ
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, JobServiceID)
 	if err != nil {
 		return nil, err

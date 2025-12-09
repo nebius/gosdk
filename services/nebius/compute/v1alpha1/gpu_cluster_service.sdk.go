@@ -4,6 +4,7 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -14,6 +15,7 @@ import (
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/compute/v1alpha1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -53,6 +55,11 @@ func (s gpuClusterService) Get(ctx context.Context, request *v1alpha1.GetGpuClus
 	*v1alpha1.GpuCluster,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -71,6 +78,11 @@ func (s gpuClusterService) GetByName(ctx context.Context, request *v1.GetByNameR
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -88,6 +100,11 @@ func (s gpuClusterService) List(ctx context.Context, request *v1alpha1.ListGpuCl
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
@@ -137,6 +154,14 @@ func (s gpuClusterService) Create(ctx context.Context, request *v1alpha1.CreateG
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -160,6 +185,14 @@ func (s gpuClusterService) Update(ctx context.Context, request *v1alpha1.UpdateG
 	if err != nil {
 		return nil, err
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -179,6 +212,11 @@ func (s gpuClusterService) Delete(ctx context.Context, request *v1alpha1.DeleteG
 	*alphaops.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err
@@ -198,6 +236,11 @@ func (s gpuClusterService) ListOperationsByParent(ctx context.Context, request *
 	*v1alpha11.ListOperationsResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GpuClusterServiceID)
 	if err != nil {
 		return nil, err

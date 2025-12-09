@@ -4,6 +4,7 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -14,6 +15,7 @@ import (
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -53,6 +55,11 @@ func (s nodeGroupService) Get(ctx context.Context, request *v1alpha1.GetNodeGrou
 	*v1alpha1.NodeGroup,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -71,6 +78,11 @@ func (s nodeGroupService) GetByName(ctx context.Context, request *v1alpha1.GetNo
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -88,6 +100,11 @@ func (s nodeGroupService) List(ctx context.Context, request *v1alpha1.ListNodeGr
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
@@ -137,6 +154,14 @@ func (s nodeGroupService) Create(ctx context.Context, request *v1alpha1.CreateNo
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -160,6 +185,14 @@ func (s nodeGroupService) Update(ctx context.Context, request *v1alpha1.UpdateNo
 	if err != nil {
 		return nil, err
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -179,6 +212,11 @@ func (s nodeGroupService) Delete(ctx context.Context, request *v1alpha1.DeleteNo
 	*alphaops.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -198,6 +236,11 @@ func (s nodeGroupService) Upgrade(ctx context.Context, request *v1alpha1.Upgrade
 	*alphaops.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err

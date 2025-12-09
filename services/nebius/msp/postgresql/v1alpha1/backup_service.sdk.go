@@ -4,12 +4,14 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	alphaops "github.com/nebius/gosdk/operations/alphaops"
 	v1alpha11 "github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1"
 	grpc "google.golang.org/grpc"
+	slog "log/slog"
 )
 
 func init() {
@@ -46,6 +48,11 @@ func (s backupService) Get(ctx context.Context, request *v1alpha1.GetBackupReque
 	*v1alpha1.Backup,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -64,6 +71,11 @@ func (s backupService) List(ctx context.Context, request *v1alpha1.ListBackupsRe
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -79,6 +91,11 @@ func (s backupService) ListByCluster(ctx context.Context, request *v1alpha1.List
 	*v1alpha1.ListBackupsResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -94,6 +111,11 @@ func (s backupService) Create(ctx context.Context, request *v1alpha1.CreateBacku
 	*alphaops.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -113,6 +135,11 @@ func (s backupService) Delete(ctx context.Context, request *v1alpha1.DeleteBacku
 	*alphaops.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err

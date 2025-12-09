@@ -37,6 +37,7 @@ type SDK struct {
 	closes   []func() error
 	isClosed atomic.Bool
 	parentID string
+	logger   *slog.Logger
 }
 
 const (
@@ -336,6 +337,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		ctx:      sdkContext,
 		cancel:   cancel,
 		parentID: parentID,
+		logger:   logger,
 	}
 
 	if !explicitInit {
@@ -346,6 +348,10 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	}
 
 	return sdk, nil
+}
+
+func (s *SDK) GetLogger() *slog.Logger {
+	return s.logger
 }
 
 // Context returns a long-lived context for the internal SDK operations

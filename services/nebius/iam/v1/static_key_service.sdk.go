@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -12,6 +13,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -59,6 +61,14 @@ func (s staticKeyService) Issue(ctx context.Context, request *v1.IssueStaticKeyR
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -76,6 +86,11 @@ func (s staticKeyService) List(ctx context.Context, request *v1.ListStaticKeysRe
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
@@ -117,6 +132,11 @@ func (s staticKeyService) Get(ctx context.Context, request *v1.GetStaticKeyReque
 	*v1.StaticKey,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -135,6 +155,11 @@ func (s staticKeyService) GetByName(ctx context.Context, request *v1.GetStaticKe
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -150,6 +175,11 @@ func (s staticKeyService) Delete(ctx context.Context, request *v1.DeleteStaticKe
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -169,6 +199,11 @@ func (s staticKeyService) Find(ctx context.Context, request *v1.FindStaticKeyReq
 	*v1.FindStaticKeyResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -184,6 +219,11 @@ func (s staticKeyService) Revoke(ctx context.Context, request *v1.RevokeStaticKe
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, StaticKeyServiceID)
 	if err != nil {
 		return nil, err

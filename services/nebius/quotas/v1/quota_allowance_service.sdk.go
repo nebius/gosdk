@@ -4,12 +4,14 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
 	v1 "github.com/nebius/gosdk/proto/nebius/quotas/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -45,6 +47,11 @@ func (s quotaAllowanceService) List(ctx context.Context, request *v1.ListQuotaAl
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
@@ -86,6 +93,11 @@ func (s quotaAllowanceService) Get(ctx context.Context, request *v1.GetQuotaAllo
 	*v1.QuotaAllowance,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
 		return nil, err
@@ -103,6 +115,11 @@ func (s quotaAllowanceService) GetByName(ctx context.Context, request *v1.GetByN
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {

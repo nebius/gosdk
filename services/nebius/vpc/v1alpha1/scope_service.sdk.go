@@ -4,12 +4,14 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/vpc/v1alpha1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -43,6 +45,11 @@ func (s scopeService) Get(ctx context.Context, request *v1alpha1.GetScopeRequest
 	*v1alpha1.Scope,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ScopeServiceID)
 	if err != nil {
 		return nil, err
@@ -61,6 +68,11 @@ func (s scopeService) GetByName(ctx context.Context, request *v1alpha1.GetScopeB
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ScopeServiceID)
 	if err != nil {
 		return nil, err
@@ -78,6 +90,11 @@ func (s scopeService) List(ctx context.Context, request *v1alpha1.ListScopesRequ
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, ScopeServiceID)
 	if err != nil {

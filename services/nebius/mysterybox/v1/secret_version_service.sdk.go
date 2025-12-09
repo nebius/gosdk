@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -12,6 +13,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/mysterybox/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -57,6 +59,14 @@ func (s secretVersionService) Create(ctx context.Context, request *v1.CreateSecr
 		md.ParentId = s.sdk.ParentID()
 		request.Metadata = md
 	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), nil); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err
@@ -76,6 +86,11 @@ func (s secretVersionService) Get(ctx context.Context, request *v1.GetSecretVers
 	*v1.SecretVersion,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err
@@ -93,6 +108,11 @@ func (s secretVersionService) List(ctx context.Context, request *v1.ListSecretVe
 ) {
 	if request.GetParentId() == "" {
 		request.ParentId = s.sdk.ParentID()
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
@@ -134,6 +154,11 @@ func (s secretVersionService) Delete(ctx context.Context, request *v1.DeleteSecr
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err
@@ -153,6 +178,11 @@ func (s secretVersionService) Undelete(ctx context.Context, request *v1.Undelete
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, SecretVersionServiceID)
 	if err != nil {
 		return nil, err
