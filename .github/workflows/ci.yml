@@ -36,6 +36,7 @@ jobs:
         uses: mxschmitt/action-tmate@v3
       - run: make test-cover
       - uses: codecov/codecov-action@v5
+        if: ${{ !env.ACT }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -99,6 +100,7 @@ jobs:
     steps:
       - name: Post text to a Slack channel
         uses: slackapi/slack-github-action@v2.1.1
+        if: ${{ !env.ACT }}
         with:
           method: chat.postMessage
           token: ${{ secrets.SLACK_OAUTH_TOKEN }}
