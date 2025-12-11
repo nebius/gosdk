@@ -8,6 +8,7 @@ package v1
 
 import (
 	context "context"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -22,18 +23,29 @@ const (
 	QuotaAllowanceService_List_FullMethodName      = "/nebius.quotas.v1.QuotaAllowanceService/List"
 	QuotaAllowanceService_Get_FullMethodName       = "/nebius.quotas.v1.QuotaAllowanceService/Get"
 	QuotaAllowanceService_GetByName_FullMethodName = "/nebius.quotas.v1.QuotaAllowanceService/GetByName"
+	QuotaAllowanceService_Create_FullMethodName    = "/nebius.quotas.v1.QuotaAllowanceService/Create"
+	QuotaAllowanceService_Update_FullMethodName    = "/nebius.quotas.v1.QuotaAllowanceService/Update"
+	QuotaAllowanceService_Delete_FullMethodName    = "/nebius.quotas.v1.QuotaAllowanceService/Delete"
 )
 
 // QuotaAllowanceServiceClient is the client API for QuotaAllowanceService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QuotaAllowanceServiceClient interface {
-	// Lists quotas by an ID of a Tenant or a Project.
+	// Lists quota allowances for the specified Tenant or Project.
 	List(ctx context.Context, in *ListQuotaAllowancesRequest, opts ...grpc.CallOption) (*ListQuotaAllowancesResponse, error)
-	// Gets a quota by its ID.
+	// Gets a quota allowance by its ID.
 	Get(ctx context.Context, in *GetQuotaAllowanceRequest, opts ...grpc.CallOption) (*QuotaAllowance, error)
-	// Gets a quota by an ID of a Tenant or a Project, its region, and name.
+	// Gets a quota allowance for a Tenant or Project by container ID, region, and name.
 	GetByName(ctx context.Context, in *GetByNameRequest, opts ...grpc.CallOption) (*QuotaAllowance, error)
+	// Creates a quota allowance for a Project.
+	// If the quota already exists, its value is replaced with the provided one.
+	Create(ctx context.Context, in *CreateQuotaAllowanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates a quota allowance by its ID.
+	Update(ctx context.Context, in *UpdateQuotaAllowanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a quota by its ID.
+	// This is used to reset the quota value. It does not remove the quota entry.
+	Delete(ctx context.Context, in *DeleteQuotaAllowanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type quotaAllowanceServiceClient struct {
@@ -71,16 +83,51 @@ func (c *quotaAllowanceServiceClient) GetByName(ctx context.Context, in *GetByNa
 	return out, nil
 }
 
+func (c *quotaAllowanceServiceClient) Create(ctx context.Context, in *CreateQuotaAllowanceRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, QuotaAllowanceService_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *quotaAllowanceServiceClient) Update(ctx context.Context, in *UpdateQuotaAllowanceRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, QuotaAllowanceService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *quotaAllowanceServiceClient) Delete(ctx context.Context, in *DeleteQuotaAllowanceRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, QuotaAllowanceService_Delete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QuotaAllowanceServiceServer is the server API for QuotaAllowanceService service.
 // All implementations should embed UnimplementedQuotaAllowanceServiceServer
 // for forward compatibility
 type QuotaAllowanceServiceServer interface {
-	// Lists quotas by an ID of a Tenant or a Project.
+	// Lists quota allowances for the specified Tenant or Project.
 	List(context.Context, *ListQuotaAllowancesRequest) (*ListQuotaAllowancesResponse, error)
-	// Gets a quota by its ID.
+	// Gets a quota allowance by its ID.
 	Get(context.Context, *GetQuotaAllowanceRequest) (*QuotaAllowance, error)
-	// Gets a quota by an ID of a Tenant or a Project, its region, and name.
+	// Gets a quota allowance for a Tenant or Project by container ID, region, and name.
 	GetByName(context.Context, *GetByNameRequest) (*QuotaAllowance, error)
+	// Creates a quota allowance for a Project.
+	// If the quota already exists, its value is replaced with the provided one.
+	Create(context.Context, *CreateQuotaAllowanceRequest) (*v1.Operation, error)
+	// Updates a quota allowance by its ID.
+	Update(context.Context, *UpdateQuotaAllowanceRequest) (*v1.Operation, error)
+	// Deletes a quota by its ID.
+	// This is used to reset the quota value. It does not remove the quota entry.
+	Delete(context.Context, *DeleteQuotaAllowanceRequest) (*v1.Operation, error)
 }
 
 // UnimplementedQuotaAllowanceServiceServer should be embedded to have forward compatible implementations.
@@ -95,6 +142,15 @@ func (UnimplementedQuotaAllowanceServiceServer) Get(context.Context, *GetQuotaAl
 }
 func (UnimplementedQuotaAllowanceServiceServer) GetByName(context.Context, *GetByNameRequest) (*QuotaAllowance, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
+}
+func (UnimplementedQuotaAllowanceServiceServer) Create(context.Context, *CreateQuotaAllowanceRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedQuotaAllowanceServiceServer) Update(context.Context, *UpdateQuotaAllowanceRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedQuotaAllowanceServiceServer) Delete(context.Context, *DeleteQuotaAllowanceRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
 // UnsafeQuotaAllowanceServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -162,6 +218,60 @@ func _QuotaAllowanceService_GetByName_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _QuotaAllowanceService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateQuotaAllowanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuotaAllowanceServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QuotaAllowanceService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuotaAllowanceServiceServer).Create(ctx, req.(*CreateQuotaAllowanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _QuotaAllowanceService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateQuotaAllowanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuotaAllowanceServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QuotaAllowanceService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuotaAllowanceServiceServer).Update(ctx, req.(*UpdateQuotaAllowanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _QuotaAllowanceService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteQuotaAllowanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuotaAllowanceServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QuotaAllowanceService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuotaAllowanceServiceServer).Delete(ctx, req.(*DeleteQuotaAllowanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // QuotaAllowanceService_ServiceDesc is the grpc.ServiceDesc for QuotaAllowanceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -180,6 +290,18 @@ var QuotaAllowanceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByName",
 			Handler:    _QuotaAllowanceService_GetByName_Handler,
+		},
+		{
+			MethodName: "Create",
+			Handler:    _QuotaAllowanceService_Create_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _QuotaAllowanceService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _QuotaAllowanceService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

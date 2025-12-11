@@ -11,6 +11,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -266,9 +267,10 @@ type ImageStatus struct {
 	StorageSizeBytes int64                  `protobuf:"varint,3,opt,name=storage_size_bytes,json=storageSizeBytes,proto3" json:"storage_size_bytes,omitempty"`
 	MinDiskSizeBytes int64                  `protobuf:"varint,4,opt,name=min_disk_size_bytes,json=minDiskSizeBytes,proto3" json:"min_disk_size_bytes,omitempty"`
 	// Indicates whether there is an ongoing operation
-	Reconciling   bool `protobuf:"varint,5,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Reconciling            bool                                      `protobuf:"varint,5,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
+	ImageFamilyDeprecation *ImageStatus_ImageFamilyDeprecationStatus `protobuf:"bytes,6,opt,name=image_family_deprecation,json=imageFamilyDeprecation,proto3" json:"image_family_deprecation,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *ImageStatus) Reset() {
@@ -336,11 +338,71 @@ func (x *ImageStatus) GetReconciling() bool {
 	return false
 }
 
+func (x *ImageStatus) GetImageFamilyDeprecation() *ImageStatus_ImageFamilyDeprecationStatus {
+	if x != nil {
+		return x.ImageFamilyDeprecation
+	}
+	return nil
+}
+
+// Impossible create a disk using image family after the deprecation time, but still possible to create disk using image id.
+type ImageStatus_ImageFamilyDeprecationStatus struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DeprecatedAt  *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=deprecated_at,json=deprecatedAt,proto3" json:"deprecated_at,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ImageStatus_ImageFamilyDeprecationStatus) Reset() {
+	*x = ImageStatus_ImageFamilyDeprecationStatus{}
+	mi := &file_nebius_compute_v1_image_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ImageStatus_ImageFamilyDeprecationStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ImageStatus_ImageFamilyDeprecationStatus) ProtoMessage() {}
+
+func (x *ImageStatus_ImageFamilyDeprecationStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_image_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ImageStatus_ImageFamilyDeprecationStatus.ProtoReflect.Descriptor instead.
+func (*ImageStatus_ImageFamilyDeprecationStatus) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_image_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *ImageStatus_ImageFamilyDeprecationStatus) GetDeprecatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DeprecatedAt
+	}
+	return nil
+}
+
+func (x *ImageStatus_ImageFamilyDeprecationStatus) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_nebius_compute_v1_image_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_image_proto_rawDesc = "" +
 	"\n" +
-	"\x1dnebius/compute/v1/image.proto\x12\x11nebius.compute.v1\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xb1\x01\n" +
+	"\x1dnebius/compute/v1/image.proto\x12\x11nebius.compute.v1\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb1\x01\n" +
 	"\x05Image\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\x126\n" +
@@ -354,13 +416,17 @@ const file_nebius_compute_v1_image_proto_rawDesc = "" +
 	"\vUNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05AMD64\x10\x01\x12\t\n" +
 	"\x05ARM64\x10\x02B\x0e\n" +
-	"\f_description\"\xcf\x02\n" +
+	"\f_description\"\xc1\x04\n" +
 	"\vImageStatus\x12:\n" +
 	"\x05state\x18\x01 \x01(\x0e2$.nebius.compute.v1.ImageStatus.StateR\x05state\x12+\n" +
 	"\x11state_description\x18\x02 \x01(\tR\x10stateDescription\x12,\n" +
 	"\x12storage_size_bytes\x18\x03 \x01(\x03R\x10storageSizeBytes\x12-\n" +
 	"\x13min_disk_size_bytes\x18\x04 \x01(\x03R\x10minDiskSizeBytes\x12 \n" +
-	"\vreconciling\x18\x05 \x01(\bR\vreconciling\"X\n" +
+	"\vreconciling\x18\x05 \x01(\bR\vreconciling\x12u\n" +
+	"\x18image_family_deprecation\x18\x06 \x01(\v2;.nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatusR\x16imageFamilyDeprecation\x1ay\n" +
+	"\x1cImageFamilyDeprecationStatus\x12?\n" +
+	"\rdeprecated_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\fdeprecatedAt\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"X\n" +
 	"\x05State\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
@@ -384,26 +450,30 @@ func file_nebius_compute_v1_image_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_compute_v1_image_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_nebius_compute_v1_image_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_nebius_compute_v1_image_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_nebius_compute_v1_image_proto_goTypes = []any{
-	(ImageSpec_CPUArchitecture)(0), // 0: nebius.compute.v1.ImageSpec.CPUArchitecture
-	(ImageStatus_State)(0),         // 1: nebius.compute.v1.ImageStatus.State
-	(*Image)(nil),                  // 2: nebius.compute.v1.Image
-	(*ImageSpec)(nil),              // 3: nebius.compute.v1.ImageSpec
-	(*ImageStatus)(nil),            // 4: nebius.compute.v1.ImageStatus
-	(*v1.ResourceMetadata)(nil),    // 5: nebius.common.v1.ResourceMetadata
+	(ImageSpec_CPUArchitecture)(0),                   // 0: nebius.compute.v1.ImageSpec.CPUArchitecture
+	(ImageStatus_State)(0),                           // 1: nebius.compute.v1.ImageStatus.State
+	(*Image)(nil),                                    // 2: nebius.compute.v1.Image
+	(*ImageSpec)(nil),                                // 3: nebius.compute.v1.ImageSpec
+	(*ImageStatus)(nil),                              // 4: nebius.compute.v1.ImageStatus
+	(*ImageStatus_ImageFamilyDeprecationStatus)(nil), // 5: nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus
+	(*v1.ResourceMetadata)(nil),                      // 6: nebius.common.v1.ResourceMetadata
+	(*timestamppb.Timestamp)(nil),                    // 7: google.protobuf.Timestamp
 }
 var file_nebius_compute_v1_image_proto_depIdxs = []int32{
-	5, // 0: nebius.compute.v1.Image.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	6, // 0: nebius.compute.v1.Image.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	3, // 1: nebius.compute.v1.Image.spec:type_name -> nebius.compute.v1.ImageSpec
 	4, // 2: nebius.compute.v1.Image.status:type_name -> nebius.compute.v1.ImageStatus
 	0, // 3: nebius.compute.v1.ImageSpec.cpu_architecture:type_name -> nebius.compute.v1.ImageSpec.CPUArchitecture
 	1, // 4: nebius.compute.v1.ImageStatus.state:type_name -> nebius.compute.v1.ImageStatus.State
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	5, // 5: nebius.compute.v1.ImageStatus.image_family_deprecation:type_name -> nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus
+	7, // 6: nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus.deprecated_at:type_name -> google.protobuf.Timestamp
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_image_proto_init() }
@@ -418,7 +488,7 @@ func file_nebius_compute_v1_image_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_image_proto_rawDesc), len(file_nebius_compute_v1_image_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

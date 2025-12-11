@@ -33,6 +33,10 @@ const (
 	State_UNDELETING                        State = 6
 	State_PURGING                           State = 7
 	State_PURGED                            State = 8
+	State_CREATED                           State = 9
+	State_ACTIVATING                        State = 10
+	State_PARKING                           State = 11
+	State_PARKED                            State = 12
 	// DRAFT = 1000;
 	State_CREATING State = 1001
 )
@@ -49,6 +53,10 @@ var (
 		6:    "UNDELETING",
 		7:    "PURGING",
 		8:    "PURGED",
+		9:    "CREATED",
+		10:   "ACTIVATING",
+		11:   "PARKING",
+		12:   "PARKED",
 		1001: "CREATING",
 	}
 	State_value = map[string]int32{
@@ -61,6 +69,10 @@ var (
 		"UNDELETING":                        6,
 		"PURGING":                           7,
 		"PURGED":                            8,
+		"CREATED":                           9,
+		"ACTIVATING":                        10,
+		"PARKING":                           11,
+		"PARKED":                            12,
 		"CREATING":                          1001,
 	}
 )
@@ -96,7 +108,7 @@ var File_nebius_iam_v1_state_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_state_proto_rawDesc = "" +
 	"\n" +
-	"\x19nebius/iam/v1/state.proto\x12\rnebius.iam.v1*\xe8\x01\n" +
+	"\x19nebius/iam/v1/state.proto\x12\rnebius.iam.v1*\x9e\x02\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +
@@ -109,7 +121,14 @@ const file_nebius_iam_v1_state_proto_rawDesc = "" +
 	"UNDELETING\x10\x06\x12\v\n" +
 	"\aPURGING\x10\a\x12\n" +
 	"\n" +
-	"\x06PURGED\x10\b\x12\r\n" +
+	"\x06PURGED\x10\b\x12\v\n" +
+	"\aCREATED\x10\t\x12\x0e\n" +
+	"\n" +
+	"ACTIVATING\x10\n" +
+	"\x12\v\n" +
+	"\aPARKING\x10\v\x12\n" +
+	"\n" +
+	"\x06PARKED\x10\f\x12\r\n" +
 	"\bCREATING\x10\xe9\aBQ\n" +
 	"\x14ai.nebius.pub.iam.v1B\n" +
 	"StateProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"

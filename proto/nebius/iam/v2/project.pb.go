@@ -31,6 +31,10 @@ const (
 	ProjectStatus_CREATING          ProjectStatus_ProjectState = 1
 	ProjectStatus_ACTIVE            ProjectStatus_ProjectState = 2
 	ProjectStatus_PURGING           ProjectStatus_ProjectState = 3
+	ProjectStatus_CREATED           ProjectStatus_ProjectState = 4
+	ProjectStatus_ACTIVATING        ProjectStatus_ProjectState = 5
+	ProjectStatus_PARKING           ProjectStatus_ProjectState = 6
+	ProjectStatus_PARKED            ProjectStatus_ProjectState = 7
 )
 
 // Enum value maps for ProjectStatus_ProjectState.
@@ -40,12 +44,20 @@ var (
 		1: "CREATING",
 		2: "ACTIVE",
 		3: "PURGING",
+		4: "CREATED",
+		5: "ACTIVATING",
+		6: "PARKING",
+		7: "PARKED",
 	}
 	ProjectStatus_ProjectState_value = map[string]int32{
 		"STATE_UNSPECIFIED": 0,
 		"CREATING":          1,
 		"ACTIVE":            2,
 		"PURGING":           3,
+		"CREATED":           4,
+		"ACTIVATING":        5,
+		"PARKING":           6,
+		"PARKED":            7,
 	}
 )
 
@@ -237,15 +249,21 @@ const file_nebius_iam_v2_project_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.iam.v2.ProjectSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
 	"\x06status\x18\x03 \x01(\v2\x1c.nebius.iam.v2.ProjectStatusB\x04\xbaJ\x01\x05R\x06status\"%\n" +
 	"\vProjectSpec\x12\x16\n" +
-	"\x06region\x18\x01 \x01(\tR\x06region\"\xad\x01\n" +
+	"\x06region\x18\x01 \x01(\tR\x06region\"\xe4\x01\n" +
 	"\rProjectStatus\x12N\n" +
-	"\rproject_state\x18\x01 \x01(\x0e2).nebius.iam.v2.ProjectStatus.ProjectStateR\fprojectState\"L\n" +
+	"\rproject_state\x18\x01 \x01(\x0e2).nebius.iam.v2.ProjectStatus.ProjectStateR\fprojectState\"\x82\x01\n" +
 	"\fProjectState\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\n" +
 	"\n" +
 	"\x06ACTIVE\x10\x02\x12\v\n" +
-	"\aPURGING\x10\x03BS\n" +
+	"\aPURGING\x10\x03\x12\v\n" +
+	"\aCREATED\x10\x04\x12\x0e\n" +
+	"\n" +
+	"ACTIVATING\x10\x05\x12\v\n" +
+	"\aPARKING\x10\x06\x12\n" +
+	"\n" +
+	"\x06PARKED\x10\aBS\n" +
 	"\x14ai.nebius.pub.iam.v2B\fProjectProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v2b\x06proto3"
 
 var (
