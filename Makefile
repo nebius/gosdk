@@ -54,7 +54,7 @@ bash: build-docker-dev ## run bash inside container for development
  endif
 .PHONY: bash
 
-IMPORTS = find . -name '*.go' -not -path './.github/*' -exec sed -e '/^import (/,/^)/!d' {} + | sed -e '/\./!d' | grep -v "`head -n 1 go.mod | sed -e 's/module //'`" | sed -E -e 's/\t(.+ )?"/\t_ "/' | sort | uniq | xargs -0 printf 'package imports\n\nimport (\n%s)\n'
+IMPORTS = find . -name '*.go' -not -path './.github/*' -exec sed -e '/^import (/,/^)/!d' {} + | sed -e '/\./!d' | grep -v "`head -n 1 go.mod | sed -e 's/module //'`" | sed -E -e 's/\t(.+ )?"/\t_ "/' | LC_ALL=C sort -u | xargs -0 printf 'package imports\n\nimport (\n%s)\n'
 
 tidy: ## keep go.mod and .github/latest-deps tidy
 	@echo "+ $@"
