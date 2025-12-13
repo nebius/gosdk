@@ -37,6 +37,7 @@ type SDK struct {
 	closes   []func() error
 	isClosed atomic.Bool
 	parentID string
+	logger   *slog.Logger
 }
 
 const (
@@ -152,6 +153,9 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 				return iam.NewTokenExchangeService(sdk), nil
 			}),
 		)
+		if err := configReader.LoadIfNeeded(ctx); err != nil {
+			return nil, fmt.Errorf("load config: %w", err)
+		}
 
 		if domain == "" {
 			if configReader.Endpoint() == "" {
@@ -336,6 +340,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		ctx:      sdkContext,
 		cancel:   cancel,
 		parentID: parentID,
+		logger:   logger,
 	}
 
 	if !explicitInit {
@@ -346,6 +351,10 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	}
 
 	return sdk, nil
+}
+
+func (s *SDK) GetLogger() *slog.Logger {
+	return s.logger
 }
 
 // Context returns a long-lived context for the internal SDK operations

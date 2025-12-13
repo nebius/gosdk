@@ -4,10 +4,12 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	v1 "github.com/nebius/gosdk/proto/nebius/mysterybox/v1"
 	grpc "google.golang.org/grpc"
+	slog "log/slog"
 )
 
 func init() {
@@ -39,6 +41,11 @@ func (s payloadService) Get(ctx context.Context, request *v1.GetPayloadRequest, 
 	*v1.SecretPayload,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, PayloadServiceID)
 	if err != nil {
 		return nil, err
@@ -54,6 +61,11 @@ func (s payloadService) GetByKey(ctx context.Context, request *v1.GetPayloadByKe
 	*v1.SecretPayloadEntry,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, PayloadServiceID)
 	if err != nil {
 		return nil, err

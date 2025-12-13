@@ -4,6 +4,7 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/v1alpha1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -52,6 +54,11 @@ func (s endpointService) Get(ctx context.Context, request *v1alpha1.GetRequest, 
 	*v1alpha11.Endpoint,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -68,7 +75,16 @@ func (s endpointService) GetByName(ctx context.Context, request *v1alpha1.GetByN
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
@@ -86,7 +102,16 @@ func (s endpointService) List(ctx context.Context, request *v1alpha1.ListRequest
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
@@ -128,13 +153,26 @@ func (s endpointService) Create(ctx context.Context, request *v1alpha11.CreateEn
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
-		md := request.GetMetadata()
-		if md == nil {
-			md = &v1.ResourceMetadata{}
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v1.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
 		}
-		md.ParentId = s.sdk.ParentID()
-		request.Metadata = md
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
@@ -155,6 +193,11 @@ func (s endpointService) Delete(ctx context.Context, request *v1alpha1.DeleteReq
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -174,6 +217,11 @@ func (s endpointService) Start(ctx context.Context, request *v1alpha1.StartReque
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err
@@ -193,6 +241,11 @@ func (s endpointService) Stop(ctx context.Context, request *v1alpha1.StopRequest
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
 	if err != nil {
 		return nil, err

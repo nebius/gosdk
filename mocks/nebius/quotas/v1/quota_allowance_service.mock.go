@@ -14,7 +14,9 @@ import (
 	reflect "reflect"
 
 	iter "github.com/nebius/gosdk/iter"
-	v1 "github.com/nebius/gosdk/proto/nebius/quotas/v1"
+	operations "github.com/nebius/gosdk/operations"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
+	v10 "github.com/nebius/gosdk/proto/nebius/quotas/v1"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"
 )
@@ -42,15 +44,103 @@ func (m *MockQuotaAllowanceService) EXPECT() *MockQuotaAllowanceServiceMockRecor
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockQuotaAllowanceService) Create(arg0 context.Context, arg1 *v10.CreateQuotaAllowanceRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockQuotaAllowanceServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockQuotaAllowanceServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockQuotaAllowanceService)(nil).Create), varargs...)
+	return &MockQuotaAllowanceServiceCreateCall{Call: call}
+}
+
+// MockQuotaAllowanceServiceCreateCall wrap *gomock.Call
+type MockQuotaAllowanceServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockQuotaAllowanceServiceCreateCall) Return(arg0 operations.Operation, arg1 error) *MockQuotaAllowanceServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockQuotaAllowanceServiceCreateCall) Do(f func(context.Context, *v10.CreateQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)) *MockQuotaAllowanceServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockQuotaAllowanceServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreateQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)) *MockQuotaAllowanceServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *MockQuotaAllowanceService) Delete(arg0 context.Context, arg1 *v10.DeleteQuotaAllowanceRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockQuotaAllowanceServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockQuotaAllowanceServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockQuotaAllowanceService)(nil).Delete), varargs...)
+	return &MockQuotaAllowanceServiceDeleteCall{Call: call}
+}
+
+// MockQuotaAllowanceServiceDeleteCall wrap *gomock.Call
+type MockQuotaAllowanceServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockQuotaAllowanceServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockQuotaAllowanceServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockQuotaAllowanceServiceDeleteCall) Do(f func(context.Context, *v10.DeleteQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)) *MockQuotaAllowanceServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockQuotaAllowanceServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeleteQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)) *MockQuotaAllowanceServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Filter mocks base method.
-func (m *MockQuotaAllowanceService) Filter(arg0 context.Context, arg1 *v1.ListQuotaAllowancesRequest, arg2 ...grpc.CallOption) iter.Seq2[*v1.QuotaAllowance, error] {
+func (m *MockQuotaAllowanceService) Filter(arg0 context.Context, arg1 *v10.ListQuotaAllowancesRequest, arg2 ...grpc.CallOption) iter.Seq2[*v10.QuotaAllowance, error] {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Filter", varargs...)
-	ret0, _ := ret[0].(iter.Seq2[*v1.QuotaAllowance, error])
+	ret0, _ := ret[0].(iter.Seq2[*v10.QuotaAllowance, error])
 	return ret0
 }
 
@@ -68,32 +158,32 @@ type MockQuotaAllowanceServiceFilterCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockQuotaAllowanceServiceFilterCall) Return(arg0 iter.Seq2[*v1.QuotaAllowance, error]) *MockQuotaAllowanceServiceFilterCall {
+func (c *MockQuotaAllowanceServiceFilterCall) Return(arg0 iter.Seq2[*v10.QuotaAllowance, error]) *MockQuotaAllowanceServiceFilterCall {
 	c.Call = c.Call.Return(arg0)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockQuotaAllowanceServiceFilterCall) Do(f func(context.Context, *v1.ListQuotaAllowancesRequest, ...grpc.CallOption) iter.Seq2[*v1.QuotaAllowance, error]) *MockQuotaAllowanceServiceFilterCall {
+func (c *MockQuotaAllowanceServiceFilterCall) Do(f func(context.Context, *v10.ListQuotaAllowancesRequest, ...grpc.CallOption) iter.Seq2[*v10.QuotaAllowance, error]) *MockQuotaAllowanceServiceFilterCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockQuotaAllowanceServiceFilterCall) DoAndReturn(f func(context.Context, *v1.ListQuotaAllowancesRequest, ...grpc.CallOption) iter.Seq2[*v1.QuotaAllowance, error]) *MockQuotaAllowanceServiceFilterCall {
+func (c *MockQuotaAllowanceServiceFilterCall) DoAndReturn(f func(context.Context, *v10.ListQuotaAllowancesRequest, ...grpc.CallOption) iter.Seq2[*v10.QuotaAllowance, error]) *MockQuotaAllowanceServiceFilterCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // Get mocks base method.
-func (m *MockQuotaAllowanceService) Get(arg0 context.Context, arg1 *v1.GetQuotaAllowanceRequest, arg2 ...grpc.CallOption) (*v1.QuotaAllowance, error) {
+func (m *MockQuotaAllowanceService) Get(arg0 context.Context, arg1 *v10.GetQuotaAllowanceRequest, arg2 ...grpc.CallOption) (*v10.QuotaAllowance, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Get", varargs...)
-	ret0, _ := ret[0].(*v1.QuotaAllowance)
+	ret0, _ := ret[0].(*v10.QuotaAllowance)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -112,32 +202,32 @@ type MockQuotaAllowanceServiceGetCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockQuotaAllowanceServiceGetCall) Return(arg0 *v1.QuotaAllowance, arg1 error) *MockQuotaAllowanceServiceGetCall {
+func (c *MockQuotaAllowanceServiceGetCall) Return(arg0 *v10.QuotaAllowance, arg1 error) *MockQuotaAllowanceServiceGetCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockQuotaAllowanceServiceGetCall) Do(f func(context.Context, *v1.GetQuotaAllowanceRequest, ...grpc.CallOption) (*v1.QuotaAllowance, error)) *MockQuotaAllowanceServiceGetCall {
+func (c *MockQuotaAllowanceServiceGetCall) Do(f func(context.Context, *v10.GetQuotaAllowanceRequest, ...grpc.CallOption) (*v10.QuotaAllowance, error)) *MockQuotaAllowanceServiceGetCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockQuotaAllowanceServiceGetCall) DoAndReturn(f func(context.Context, *v1.GetQuotaAllowanceRequest, ...grpc.CallOption) (*v1.QuotaAllowance, error)) *MockQuotaAllowanceServiceGetCall {
+func (c *MockQuotaAllowanceServiceGetCall) DoAndReturn(f func(context.Context, *v10.GetQuotaAllowanceRequest, ...grpc.CallOption) (*v10.QuotaAllowance, error)) *MockQuotaAllowanceServiceGetCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // GetByName mocks base method.
-func (m *MockQuotaAllowanceService) GetByName(arg0 context.Context, arg1 *v1.GetByNameRequest, arg2 ...grpc.CallOption) (*v1.QuotaAllowance, error) {
+func (m *MockQuotaAllowanceService) GetByName(arg0 context.Context, arg1 *v10.GetByNameRequest, arg2 ...grpc.CallOption) (*v10.QuotaAllowance, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GetByName", varargs...)
-	ret0, _ := ret[0].(*v1.QuotaAllowance)
+	ret0, _ := ret[0].(*v10.QuotaAllowance)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,32 +246,76 @@ type MockQuotaAllowanceServiceGetByNameCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockQuotaAllowanceServiceGetByNameCall) Return(arg0 *v1.QuotaAllowance, arg1 error) *MockQuotaAllowanceServiceGetByNameCall {
+func (c *MockQuotaAllowanceServiceGetByNameCall) Return(arg0 *v10.QuotaAllowance, arg1 error) *MockQuotaAllowanceServiceGetByNameCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockQuotaAllowanceServiceGetByNameCall) Do(f func(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v1.QuotaAllowance, error)) *MockQuotaAllowanceServiceGetByNameCall {
+func (c *MockQuotaAllowanceServiceGetByNameCall) Do(f func(context.Context, *v10.GetByNameRequest, ...grpc.CallOption) (*v10.QuotaAllowance, error)) *MockQuotaAllowanceServiceGetByNameCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockQuotaAllowanceServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v1.QuotaAllowance, error)) *MockQuotaAllowanceServiceGetByNameCall {
+func (c *MockQuotaAllowanceServiceGetByNameCall) DoAndReturn(f func(context.Context, *v10.GetByNameRequest, ...grpc.CallOption) (*v10.QuotaAllowance, error)) *MockQuotaAllowanceServiceGetByNameCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// GetOperation mocks base method.
+func (m *MockQuotaAllowanceService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockQuotaAllowanceServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockQuotaAllowanceServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockQuotaAllowanceService)(nil).GetOperation), varargs...)
+	return &MockQuotaAllowanceServiceGetOperationCall{Call: call}
+}
+
+// MockQuotaAllowanceServiceGetOperationCall wrap *gomock.Call
+type MockQuotaAllowanceServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockQuotaAllowanceServiceGetOperationCall) Return(arg0 operations.Operation, arg1 error) *MockQuotaAllowanceServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockQuotaAllowanceServiceGetOperationCall) Do(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockQuotaAllowanceServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockQuotaAllowanceServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockQuotaAllowanceServiceGetOperationCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // List mocks base method.
-func (m *MockQuotaAllowanceService) List(arg0 context.Context, arg1 *v1.ListQuotaAllowancesRequest, arg2 ...grpc.CallOption) (*v1.ListQuotaAllowancesResponse, error) {
+func (m *MockQuotaAllowanceService) List(arg0 context.Context, arg1 *v10.ListQuotaAllowancesRequest, arg2 ...grpc.CallOption) (*v10.ListQuotaAllowancesResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].(*v1.ListQuotaAllowancesResponse)
+	ret0, _ := ret[0].(*v10.ListQuotaAllowancesResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -200,19 +334,107 @@ type MockQuotaAllowanceServiceListCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *MockQuotaAllowanceServiceListCall) Return(arg0 *v1.ListQuotaAllowancesResponse, arg1 error) *MockQuotaAllowanceServiceListCall {
+func (c *MockQuotaAllowanceServiceListCall) Return(arg0 *v10.ListQuotaAllowancesResponse, arg1 error) *MockQuotaAllowanceServiceListCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockQuotaAllowanceServiceListCall) Do(f func(context.Context, *v1.ListQuotaAllowancesRequest, ...grpc.CallOption) (*v1.ListQuotaAllowancesResponse, error)) *MockQuotaAllowanceServiceListCall {
+func (c *MockQuotaAllowanceServiceListCall) Do(f func(context.Context, *v10.ListQuotaAllowancesRequest, ...grpc.CallOption) (*v10.ListQuotaAllowancesResponse, error)) *MockQuotaAllowanceServiceListCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockQuotaAllowanceServiceListCall) DoAndReturn(f func(context.Context, *v1.ListQuotaAllowancesRequest, ...grpc.CallOption) (*v1.ListQuotaAllowancesResponse, error)) *MockQuotaAllowanceServiceListCall {
+func (c *MockQuotaAllowanceServiceListCall) DoAndReturn(f func(context.Context, *v10.ListQuotaAllowancesRequest, ...grpc.CallOption) (*v10.ListQuotaAllowancesResponse, error)) *MockQuotaAllowanceServiceListCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockQuotaAllowanceService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockQuotaAllowanceServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockQuotaAllowanceServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockQuotaAllowanceService)(nil).ListOperations), varargs...)
+	return &MockQuotaAllowanceServiceListOperationsCall{Call: call}
+}
+
+// MockQuotaAllowanceServiceListOperationsCall wrap *gomock.Call
+type MockQuotaAllowanceServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockQuotaAllowanceServiceListOperationsCall) Return(arg0 *v1.ListOperationsResponse, arg1 error) *MockQuotaAllowanceServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockQuotaAllowanceServiceListOperationsCall) Do(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockQuotaAllowanceServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockQuotaAllowanceServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockQuotaAllowanceServiceListOperationsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Update mocks base method.
+func (m *MockQuotaAllowanceService) Update(arg0 context.Context, arg1 *v10.UpdateQuotaAllowanceRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockQuotaAllowanceServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockQuotaAllowanceServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockQuotaAllowanceService)(nil).Update), varargs...)
+	return &MockQuotaAllowanceServiceUpdateCall{Call: call}
+}
+
+// MockQuotaAllowanceServiceUpdateCall wrap *gomock.Call
+type MockQuotaAllowanceServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockQuotaAllowanceServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockQuotaAllowanceServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockQuotaAllowanceServiceUpdateCall) Do(f func(context.Context, *v10.UpdateQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)) *MockQuotaAllowanceServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockQuotaAllowanceServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)) *MockQuotaAllowanceServiceUpdateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

@@ -4,12 +4,17 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
+	operations "github.com/nebius/gosdk/operations"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
+	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/quotas/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -27,6 +32,11 @@ type QuotaAllowanceService interface {
 	Filter(context.Context, *v1.ListQuotaAllowancesRequest, ...grpc.CallOption) iter.Seq2[*v1.QuotaAllowance, error]
 	Get(context.Context, *v1.GetQuotaAllowanceRequest, ...grpc.CallOption) (*v1.QuotaAllowance, error)
 	GetByName(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v1.QuotaAllowance, error)
+	Create(context.Context, *v1.CreateQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)
+	Update(context.Context, *v1.UpdateQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)
+	Delete(context.Context, *v1.DeleteQuotaAllowanceRequest, ...grpc.CallOption) (operations.Operation, error)
+	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
+	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
 
 type quotaAllowanceService struct {
@@ -44,7 +54,16 @@ func (s quotaAllowanceService) List(ctx context.Context, request *v1.ListQuotaAl
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
@@ -86,6 +105,11 @@ func (s quotaAllowanceService) Get(ctx context.Context, request *v1.GetQuotaAllo
 	*v1.QuotaAllowance,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
 		return nil, err
@@ -102,7 +126,16 @@ func (s quotaAllowanceService) GetByName(ctx context.Context, request *v1.GetByN
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
@@ -113,4 +146,129 @@ func (s quotaAllowanceService) GetByName(ctx context.Context, request *v1.GetByN
 		return nil, err
 	}
 	return v1.NewQuotaAllowanceServiceClient(con).GetByName(ctx, request, opts...)
+}
+
+func (s quotaAllowanceService) Create(ctx context.Context, request *v1.CreateQuotaAllowanceRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	var metadataParentTypes []string
+	if request.GetMetadata().GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewQuotaAllowanceServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s quotaAllowanceService) Update(ctx context.Context, request *v1.UpdateQuotaAllowanceRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	var metadataParentTypes []string
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewQuotaAllowanceServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s quotaAllowanceService) Delete(ctx context.Context, request *v1.DeleteQuotaAllowanceRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewQuotaAllowanceServiceClient(con).Delete(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s quotaAllowanceService) GetOperation(ctx context.Context, request *v11.GetOperationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	client := v11.NewOperationServiceClient(con)
+	op, err := client.Get(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, client)
+}
+
+func (s quotaAllowanceService) ListOperations(ctx context.Context, request *v11.ListOperationsRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v11.NewOperationServiceClient(con).List(ctx, request, opts...)
 }

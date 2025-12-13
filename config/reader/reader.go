@@ -49,6 +49,8 @@ type configReader struct {
 	cachedTokenRetryMultiplier   float64
 	cachedTokenMaxRetryDelay     time.Duration
 	tokenSafetyMargin            time.Duration
+
+	configParsed bool
 }
 
 func NewConfigReader(options ...config.Option) config.ConfigInterface {
@@ -73,6 +75,15 @@ func NewConfigReader(options ...config.Option) config.ConfigInterface {
 	}
 	return r
 }
+
+func (r *configReader) LoadIfNeeded(ctx context.Context) error {
+	if r.configParsed {
+		r.logger.DebugContext(ctx, "configuration already loaded, skipping")
+		return nil
+	}
+	return r.Load(ctx)
+}
+
 func (r *configReader) Load(ctx context.Context) error {
 	if r.preloadedConfig {
 		r.logger.DebugContext(ctx, "config is preloaded, skipping file load")
@@ -120,6 +131,7 @@ func (r *configReader) Load(ctx context.Context) error {
 			return fmt.Errorf("expand cache file name: %w", err)
 		}
 	}
+	r.configParsed = true
 	return nil
 }
 

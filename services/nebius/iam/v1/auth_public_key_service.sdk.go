@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -53,13 +55,26 @@ func (s authPublicKeyService) Create(ctx context.Context, request *v1.CreateAuth
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
-		md := request.GetMetadata()
-		if md == nil {
-			md = &v11.ResourceMetadata{}
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
 		}
-		md.ParentId = s.sdk.ParentID()
-		request.Metadata = md
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
@@ -80,6 +95,11 @@ func (s authPublicKeyService) Get(ctx context.Context, request *v1.GetAuthPublic
 	*v1.AuthPublicKey,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -96,7 +116,16 @@ func (s authPublicKeyService) List(ctx context.Context, request *v1.ListAuthPubl
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
@@ -138,6 +167,11 @@ func (s authPublicKeyService) ListByAccount(ctx context.Context, request *v1.Lis
 	*v1.ListAuthPublicKeyResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -153,9 +187,18 @@ func (s authPublicKeyService) Update(ctx context.Context, request *v1.UpdateAuth
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
@@ -176,6 +219,11 @@ func (s authPublicKeyService) Activate(ctx context.Context, request *v1.Activate
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -195,6 +243,11 @@ func (s authPublicKeyService) Deactivate(ctx context.Context, request *v1.Deacti
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -214,6 +267,11 @@ func (s authPublicKeyService) Delete(ctx context.Context, request *v1.DeleteAuth
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckNIDFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
 	if err != nil {
 		return nil, err

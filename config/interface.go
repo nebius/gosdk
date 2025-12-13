@@ -19,6 +19,7 @@ type ConfigInterface interface {
 	GetConfig() *Config
 	GetConfigPath() (string, error)
 	Load(context.Context) error
+	LoadIfNeeded(context.Context) error
 	CurrentProfileName() string
 }
 

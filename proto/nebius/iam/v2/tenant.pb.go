@@ -30,6 +30,10 @@ const (
 	TenantStatus_STATE_UNSPECIFIED TenantStatus_TenantState = 0
 	TenantStatus_CREATING          TenantStatus_TenantState = 1
 	TenantStatus_ACTIVE            TenantStatus_TenantState = 2
+	TenantStatus_CREATED           TenantStatus_TenantState = 3
+	TenantStatus_ACTIVATING        TenantStatus_TenantState = 4
+	TenantStatus_PARKING           TenantStatus_TenantState = 5
+	TenantStatus_PARKED            TenantStatus_TenantState = 6
 )
 
 // Enum value maps for TenantStatus_TenantState.
@@ -38,11 +42,19 @@ var (
 		0: "STATE_UNSPECIFIED",
 		1: "CREATING",
 		2: "ACTIVE",
+		3: "CREATED",
+		4: "ACTIVATING",
+		5: "PARKING",
+		6: "PARKED",
 	}
 	TenantStatus_TenantState_value = map[string]int32{
 		"STATE_UNSPECIFIED": 0,
 		"CREATING":          1,
 		"ACTIVE":            2,
+		"CREATED":           3,
+		"ACTIVATING":        4,
+		"PARKING":           5,
+		"PARKED":            6,
 	}
 )
 
@@ -223,14 +235,20 @@ const file_nebius_iam_v2_tenant_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2\x19.nebius.iam.v2.TenantSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x129\n" +
 	"\x06status\x18\x03 \x01(\v2\x1b.nebius.iam.v2.TenantStatusB\x04\xbaJ\x01\x05R\x06status\"\f\n" +
 	"\n" +
-	"TenantSpec\"\x9a\x01\n" +
+	"TenantSpec\"\xd0\x01\n" +
 	"\fTenantStatus\x12J\n" +
-	"\ftenant_state\x18\x01 \x01(\x0e2'.nebius.iam.v2.TenantStatus.TenantStateR\vtenantState\">\n" +
+	"\ftenant_state\x18\x01 \x01(\x0e2'.nebius.iam.v2.TenantStatus.TenantStateR\vtenantState\"t\n" +
 	"\vTenantState\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\n" +
 	"\n" +
-	"\x06ACTIVE\x10\x02BR\n" +
+	"\x06ACTIVE\x10\x02\x12\v\n" +
+	"\aCREATED\x10\x03\x12\x0e\n" +
+	"\n" +
+	"ACTIVATING\x10\x04\x12\v\n" +
+	"\aPARKING\x10\x05\x12\n" +
+	"\n" +
+	"\x06PARKED\x10\x06BR\n" +
 	"\x14ai.nebius.pub.iam.v2B\vTenantProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v2b\x06proto3"
 
 var (
