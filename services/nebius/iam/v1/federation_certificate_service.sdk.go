@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	operations "github.com/nebius/gosdk/operations"
@@ -11,6 +12,7 @@ import (
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
+	slog "log/slog"
 )
 
 func init() {
@@ -48,13 +50,26 @@ func (s federationCertificateService) Create(ctx context.Context, request *v1.Cr
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
-		md := request.GetMetadata()
-		if md == nil {
-			md = &v11.ResourceMetadata{}
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
 		}
-		md.ParentId = s.sdk.ParentID()
-		request.Metadata = md
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
@@ -75,6 +90,11 @@ func (s federationCertificateService) Get(ctx context.Context, request *v1.GetFe
 	*v1.FederationCertificate,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -90,6 +110,11 @@ func (s federationCertificateService) ListByFederation(ctx context.Context, requ
 	*v1.ListFederationCertificateResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -105,9 +130,18 @@ func (s federationCertificateService) Update(ctx context.Context, request *v1.Up
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
@@ -128,6 +162,11 @@ func (s federationCertificateService) UpdateBulk(ctx context.Context, request *v
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err
@@ -147,6 +186,11 @@ func (s federationCertificateService) Delete(ctx context.Context, request *v1.De
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationCertificateServiceID)
 	if err != nil {
 		return nil, err

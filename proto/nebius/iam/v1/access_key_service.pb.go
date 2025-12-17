@@ -763,7 +763,7 @@ const file_nebius_iam_v1_access_key_service_proto_rawDesc = "" +
 	"\x06secret\x18\x01 \x01(\tB\x03\xc0J\x01R\x06secret\"p\n" +
 	"\x16ListAccessKeysResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.iam.v1.AccessKeyR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xfc\a\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xfa\b\n" +
 	"\x10AccessKeyService\x12L\n" +
 	"\x06Create\x12%.nebius.iam.v1.CreateAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12S\n" +
 	"\x04List\x12$.nebius.iam.v1.ListAccessKeysRequest\x1a%.nebius.iam.v1.ListAccessKeysResponse\x12e\n" +
@@ -776,9 +776,9 @@ const file_nebius_iam_v1_access_key_service_proto_rawDesc = "" +
 	"\bActivate\x12'.nebius.iam.v1.ActivateAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12T\n" +
 	"\n" +
 	"Deactivate\x12).nebius.iam.v1.DeactivateAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12L\n" +
-	"\x06Delete\x12%.nebius.iam.v1.DeleteAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x8b\x01\xbaJ\acpl.iam\xd2J{\n" +
+	"\x06Delete\x12%.nebius.iam.v1.DeleteAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x89\x02\xbaJ\acpl.iam\xd2J\xf8\x01\n" +
 	"\n" +
-	"2026-09-01\x12mAccess keys API v1 is deprecated, use the v2 version instead. Keys produced by API v1 are available using v2.\x88\x02\x01B\\\n" +
+	"2026-09-01\x12xAccess keys v1 API is deprecated. Please use the v2 API instead. All existing keys remain accessible through the v2 API.\x1apPlease use the 'iam v2 access-key' command instead. All existing keys remain accessible through the new command.\x88\x02\x01B\\\n" +
 	"\x14ai.nebius.pub.iam.v1B\x15AccessKeyServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
 
 var (

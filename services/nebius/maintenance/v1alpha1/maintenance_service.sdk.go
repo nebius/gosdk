@@ -4,11 +4,13 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/maintenance/v1alpha1"
 	grpc "google.golang.org/grpc"
+	slog "log/slog"
 )
 
 func init() {
@@ -41,6 +43,11 @@ func (s maintenanceService) Get(ctx context.Context, request *v1alpha1.GetMainte
 	*v1alpha1.Maintenance,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err
@@ -57,7 +64,16 @@ func (s maintenanceService) List(ctx context.Context, request *v1alpha1.ListMain
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
@@ -74,9 +90,18 @@ func (s maintenanceService) Update(ctx context.Context, request *v1alpha1.Update
 	*v1alpha1.UpdateMaintenanceResponse,
 	error,
 ) {
+	var metadataParentTypes []string
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {

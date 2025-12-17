@@ -2,6 +2,15 @@
 
 package v1
 
+// func (x *CreateQuotaAllowanceRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreateQuotaAllowanceRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateQuotaAllowanceRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateQuotaAllowanceRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DeleteQuotaAllowanceRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DeleteQuotaAllowanceRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ListQuotaAllowancesRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListQuotaAllowancesRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 

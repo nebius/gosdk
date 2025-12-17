@@ -24,6 +24,58 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type EventType int32
+
+const (
+	// Unspecified event type.
+	EventType_EVENT_TYPE_UNSPECIFIED EventType = 0
+	// Control plane events.
+	EventType_CONTROL_PLANE EventType = 1
+	// Data plane events (S3).
+	EventType_DATA_PLANE EventType = 2
+)
+
+// Enum value maps for EventType.
+var (
+	EventType_name = map[int32]string{
+		0: "EVENT_TYPE_UNSPECIFIED",
+		1: "CONTROL_PLANE",
+		2: "DATA_PLANE",
+	}
+	EventType_value = map[string]int32{
+		"EVENT_TYPE_UNSPECIFIED": 0,
+		"CONTROL_PLANE":          1,
+		"DATA_PLANE":             2,
+	}
+)
+
+func (x EventType) Enum() *EventType {
+	p := new(EventType)
+	*p = x
+	return p
+}
+
+func (x EventType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EventType) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_audit_v2_audit_event_service_proto_enumTypes[0].Descriptor()
+}
+
+func (EventType) Type() protoreflect.EnumType {
+	return &file_nebius_audit_v2_audit_event_service_proto_enumTypes[0]
+}
+
+func (x EventType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use EventType.Descriptor instead.
+func (EventType) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_audit_v2_audit_event_service_proto_rawDescGZIP(), []int{0}
+}
+
 type ListAuditEventRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// A tenant id must be provided
@@ -57,7 +109,9 @@ type ListAuditEventRequest struct {
 	// service.name
 	// type
 	// status
-	Filter        string `protobuf:"bytes,6,opt,name=filter,proto3" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,6,opt,name=filter,proto3" json:"filter,omitempty"`
+	// Type of audit event to filter by.
+	EventType     EventType `protobuf:"varint,7,opt,name=event_type,json=eventType,proto3,enum=nebius.audit.v2.EventType" json:"event_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -134,6 +188,13 @@ func (x *ListAuditEventRequest) GetFilter() string {
 	return ""
 }
 
+func (x *ListAuditEventRequest) GetEventType() EventType {
+	if x != nil {
+		return x.EventType
+	}
+	return EventType_EVENT_TYPE_UNSPECIFIED
+}
+
 type ListAuditEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*AuditEvent          `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -190,7 +251,7 @@ var File_nebius_audit_v2_audit_event_service_proto protoreflect.FileDescriptor
 
 const file_nebius_audit_v2_audit_event_service_proto_rawDesc = "" +
 	"\n" +
-	")nebius/audit/v2/audit_event_service.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a!nebius/audit/v2/audit_event.proto\"\x91\x02\n" +
+	")nebius/audit/v2/audit_event_service.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a!nebius/audit/v2/audit_event.proto\"\xcc\x02\n" +
 	"\x15ListAuditEventRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12'\n" +
 	"\tpage_size\x18\x02 \x01(\x03B\n" +
@@ -199,10 +260,17 @@ const file_nebius_audit_v2_audit_event_service_proto_rawDesc = "" +
 	"\x03end\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\x03end\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x05 \x01(\tR\tpageToken\x12\x1b\n" +
-	"\x06filter\x18\x06 \x01(\tB\x03\xc0J\x01R\x06filter\"s\n" +
+	"\x06filter\x18\x06 \x01(\tB\x03\xc0J\x01R\x06filter\x129\n" +
+	"\n" +
+	"event_type\x18\a \x01(\x0e2\x1a.nebius.audit.v2.EventTypeR\teventType\"s\n" +
 	"\x16ListAuditEventResponse\x121\n" +
 	"\x05items\x18\x01 \x03(\v2\x1b.nebius.audit.v2.AuditEventR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2v\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken*J\n" +
+	"\tEventType\x12\x1a\n" +
+	"\x16EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x11\n" +
+	"\rCONTROL_PLANE\x10\x01\x12\x0e\n" +
+	"\n" +
+	"DATA_PLANE\x10\x022v\n" +
 	"\x11AuditEventService\x12W\n" +
 	"\x04List\x12&.nebius.audit.v2.ListAuditEventRequest\x1a'.nebius.audit.v2.ListAuditEventResponse\x1a\b\xbaJ\x05auditBa\n" +
 	"\x16ai.nebius.pub.audit.v2B\x16AuditEventServiceProtoP\x01Z-github.com/nebius/gosdk/proto/nebius/audit/v2b\x06proto3"
@@ -219,24 +287,27 @@ func file_nebius_audit_v2_audit_event_service_proto_rawDescGZIP() []byte {
 	return file_nebius_audit_v2_audit_event_service_proto_rawDescData
 }
 
+var file_nebius_audit_v2_audit_event_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_nebius_audit_v2_audit_event_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_nebius_audit_v2_audit_event_service_proto_goTypes = []any{
-	(*ListAuditEventRequest)(nil),  // 0: nebius.audit.v2.ListAuditEventRequest
-	(*ListAuditEventResponse)(nil), // 1: nebius.audit.v2.ListAuditEventResponse
-	(*timestamppb.Timestamp)(nil),  // 2: google.protobuf.Timestamp
-	(*AuditEvent)(nil),             // 3: nebius.audit.v2.AuditEvent
+	(EventType)(0),                 // 0: nebius.audit.v2.EventType
+	(*ListAuditEventRequest)(nil),  // 1: nebius.audit.v2.ListAuditEventRequest
+	(*ListAuditEventResponse)(nil), // 2: nebius.audit.v2.ListAuditEventResponse
+	(*timestamppb.Timestamp)(nil),  // 3: google.protobuf.Timestamp
+	(*AuditEvent)(nil),             // 4: nebius.audit.v2.AuditEvent
 }
 var file_nebius_audit_v2_audit_event_service_proto_depIdxs = []int32{
-	2, // 0: nebius.audit.v2.ListAuditEventRequest.start:type_name -> google.protobuf.Timestamp
-	2, // 1: nebius.audit.v2.ListAuditEventRequest.end:type_name -> google.protobuf.Timestamp
-	3, // 2: nebius.audit.v2.ListAuditEventResponse.items:type_name -> nebius.audit.v2.AuditEvent
-	0, // 3: nebius.audit.v2.AuditEventService.List:input_type -> nebius.audit.v2.ListAuditEventRequest
-	1, // 4: nebius.audit.v2.AuditEventService.List:output_type -> nebius.audit.v2.ListAuditEventResponse
-	4, // [4:5] is the sub-list for method output_type
-	3, // [3:4] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 0: nebius.audit.v2.ListAuditEventRequest.start:type_name -> google.protobuf.Timestamp
+	3, // 1: nebius.audit.v2.ListAuditEventRequest.end:type_name -> google.protobuf.Timestamp
+	0, // 2: nebius.audit.v2.ListAuditEventRequest.event_type:type_name -> nebius.audit.v2.EventType
+	4, // 3: nebius.audit.v2.ListAuditEventResponse.items:type_name -> nebius.audit.v2.AuditEvent
+	1, // 4: nebius.audit.v2.AuditEventService.List:input_type -> nebius.audit.v2.ListAuditEventRequest
+	2, // 5: nebius.audit.v2.AuditEventService.List:output_type -> nebius.audit.v2.ListAuditEventResponse
+	5, // [5:6] is the sub-list for method output_type
+	4, // [4:5] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_nebius_audit_v2_audit_event_service_proto_init() }
@@ -250,13 +321,14 @@ func file_nebius_audit_v2_audit_event_service_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_audit_v2_audit_event_service_proto_rawDesc), len(file_nebius_audit_v2_audit_event_service_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_nebius_audit_v2_audit_event_service_proto_goTypes,
 		DependencyIndexes: file_nebius_audit_v2_audit_event_service_proto_depIdxs,
+		EnumInfos:         file_nebius_audit_v2_audit_event_service_proto_enumTypes,
 		MessageInfos:      file_nebius_audit_v2_audit_event_service_proto_msgTypes,
 	}.Build()
 	File_nebius_audit_v2_audit_event_service_proto = out.File

@@ -9,6 +9,7 @@ package v1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/nebius/gosdk/proto/nebius"
+	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -23,6 +24,159 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Request to create a quota allowance with the specified spec and metadata.
+type CreateQuotaAllowanceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec          *QuotaAllowanceSpec    `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateQuotaAllowanceRequest) Reset() {
+	*x = CreateQuotaAllowanceRequest{}
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateQuotaAllowanceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateQuotaAllowanceRequest) ProtoMessage() {}
+
+func (x *CreateQuotaAllowanceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateQuotaAllowanceRequest.ProtoReflect.Descriptor instead.
+func (*CreateQuotaAllowanceRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateQuotaAllowanceRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *CreateQuotaAllowanceRequest) GetSpec() *QuotaAllowanceSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
+// Request to update an existing quota allowance using its metadata and the new spec.
+type UpdateQuotaAllowanceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec          *QuotaAllowanceSpec    `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateQuotaAllowanceRequest) Reset() {
+	*x = UpdateQuotaAllowanceRequest{}
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateQuotaAllowanceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateQuotaAllowanceRequest) ProtoMessage() {}
+
+func (x *UpdateQuotaAllowanceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateQuotaAllowanceRequest.ProtoReflect.Descriptor instead.
+func (*UpdateQuotaAllowanceRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UpdateQuotaAllowanceRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *UpdateQuotaAllowanceRequest) GetSpec() *QuotaAllowanceSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
+// Request to delete a quota allowance by its identifier.
+type DeleteQuotaAllowanceRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the quota.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteQuotaAllowanceRequest) Reset() {
+	*x = DeleteQuotaAllowanceRequest{}
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteQuotaAllowanceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteQuotaAllowanceRequest) ProtoMessage() {}
+
+func (x *DeleteQuotaAllowanceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteQuotaAllowanceRequest.ProtoReflect.Descriptor instead.
+func (*DeleteQuotaAllowanceRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteQuotaAllowanceRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+// Request to list quota allowances under a container with pagination support.
 type ListQuotaAllowancesRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID of the Container to list quotas for.
@@ -38,7 +192,7 @@ type ListQuotaAllowancesRequest struct {
 
 func (x *ListQuotaAllowancesRequest) Reset() {
 	*x = ListQuotaAllowancesRequest{}
-	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[0]
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -50,7 +204,7 @@ func (x *ListQuotaAllowancesRequest) String() string {
 func (*ListQuotaAllowancesRequest) ProtoMessage() {}
 
 func (x *ListQuotaAllowancesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[0]
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -63,7 +217,7 @@ func (x *ListQuotaAllowancesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListQuotaAllowancesRequest.ProtoReflect.Descriptor instead.
 func (*ListQuotaAllowancesRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{0}
+	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListQuotaAllowancesRequest) GetParentId() string {
@@ -87,6 +241,7 @@ func (x *ListQuotaAllowancesRequest) GetPageToken() string {
 	return ""
 }
 
+// Request to get a quota allowance by its identifier.
 type GetQuotaAllowanceRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID of the quota.
@@ -97,7 +252,7 @@ type GetQuotaAllowanceRequest struct {
 
 func (x *GetQuotaAllowanceRequest) Reset() {
 	*x = GetQuotaAllowanceRequest{}
-	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[1]
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -109,7 +264,7 @@ func (x *GetQuotaAllowanceRequest) String() string {
 func (*GetQuotaAllowanceRequest) ProtoMessage() {}
 
 func (x *GetQuotaAllowanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[1]
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -122,7 +277,7 @@ func (x *GetQuotaAllowanceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetQuotaAllowanceRequest.ProtoReflect.Descriptor instead.
 func (*GetQuotaAllowanceRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{1}
+	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetQuotaAllowanceRequest) GetId() string {
@@ -132,9 +287,10 @@ func (x *GetQuotaAllowanceRequest) GetId() string {
 	return ""
 }
 
+// Response containing quota allowances and pagination token.
 type ListQuotaAllowancesResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// List of quotas on this result page.
+	// List of quota allowances on this result page.
 	Items []*QuotaAllowance `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	// Listing continuation token for the next page of results.
 	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
@@ -144,7 +300,7 @@ type ListQuotaAllowancesResponse struct {
 
 func (x *ListQuotaAllowancesResponse) Reset() {
 	*x = ListQuotaAllowancesResponse{}
-	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[2]
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -156,7 +312,7 @@ func (x *ListQuotaAllowancesResponse) String() string {
 func (*ListQuotaAllowancesResponse) ProtoMessage() {}
 
 func (x *ListQuotaAllowancesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[2]
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -169,7 +325,7 @@ func (x *ListQuotaAllowancesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListQuotaAllowancesResponse.ProtoReflect.Descriptor instead.
 func (*ListQuotaAllowancesResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{2}
+	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListQuotaAllowancesResponse) GetItems() []*QuotaAllowance {
@@ -186,6 +342,7 @@ func (x *ListQuotaAllowancesResponse) GetNextPageToken() string {
 	return ""
 }
 
+// Request to get a quota allowance by container, name, and region.
 type GetByNameRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID of the Container to list quotas for.
@@ -202,7 +359,7 @@ type GetByNameRequest struct {
 
 func (x *GetByNameRequest) Reset() {
 	*x = GetByNameRequest{}
-	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[3]
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -214,7 +371,7 @@ func (x *GetByNameRequest) String() string {
 func (*GetByNameRequest) ProtoMessage() {}
 
 func (x *GetByNameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[3]
+	mi := &file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -227,7 +384,7 @@ func (x *GetByNameRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetByNameRequest.ProtoReflect.Descriptor instead.
 func (*GetByNameRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *GetByNameRequest) GetParentId() string {
@@ -255,7 +412,16 @@ var File_nebius_quotas_v1_quota_allowance_service_proto protoreflect.FileDescrip
 
 const file_nebius_quotas_v1_quota_allowance_service_proto_rawDesc = "" +
 	"\n" +
-	".nebius/quotas/v1/quota_allowance_service.proto\x12\x10nebius.quotas.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a&nebius/quotas/v1/quota_allowance.proto\"}\n" +
+	".nebius/quotas/v1/quota_allowance_service.proto\x12\x10nebius.quotas.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a&nebius/quotas/v1/quota_allowance.proto\"\x9f\x01\n" +
+	"\x1bCreateQuotaAllowanceRequest\x12>\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12@\n" +
+	"\x04spec\x18\x02 \x01(\v2$.nebius.quotas.v1.QuotaAllowanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\x9f\x01\n" +
+	"\x1bUpdateQuotaAllowanceRequest\x12>\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12@\n" +
+	"\x04spec\x18\x02 \x01(\v2$.nebius.quotas.v1.QuotaAllowanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"9\n" +
+	"\x1bDeleteQuotaAllowanceRequest\x12\x1a\n" +
+	"\x02id\x18\x01 \x01(\tB\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x03R\x02id\"}\n" +
 	"\x1aListQuotaAllowancesRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
@@ -270,11 +436,14 @@ const file_nebius_quotas_v1_quota_allowance_service_proto_rawDesc = "" +
 	"\x10GetByNameRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
 	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x1e\n" +
-	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region2\xc5\x02\n" +
+	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region2\xc7\x04\n" +
 	"\x15QuotaAllowanceService\x12c\n" +
 	"\x04List\x12,.nebius.quotas.v1.ListQuotaAllowancesRequest\x1a-.nebius.quotas.v1.ListQuotaAllowancesResponse\x12S\n" +
 	"\x03Get\x12*.nebius.quotas.v1.GetQuotaAllowanceRequest\x1a .nebius.quotas.v1.QuotaAllowance\x12Q\n" +
-	"\tGetByName\x12\".nebius.quotas.v1.GetByNameRequest\x1a .nebius.quotas.v1.QuotaAllowance\x1a\x1f\xbaJ\x1cquota-dispatcher.billing-cplBg\n" +
+	"\tGetByName\x12\".nebius.quotas.v1.GetByNameRequest\x1a .nebius.quotas.v1.QuotaAllowance\x12T\n" +
+	"\x06Create\x12-.nebius.quotas.v1.CreateQuotaAllowanceRequest\x1a\x1b.nebius.common.v1.Operation\x12T\n" +
+	"\x06Update\x12-.nebius.quotas.v1.UpdateQuotaAllowanceRequest\x1a\x1b.nebius.common.v1.Operation\x12T\n" +
+	"\x06Delete\x12-.nebius.quotas.v1.DeleteQuotaAllowanceRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x1f\xbaJ\x1cquota-dispatcher.billing-cplBg\n" +
 	"\x17ai.nebius.pub.quotas.v1B\x1aQuotaAllowanceServiceProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/quotas/v1b\x06proto3"
 
 var (
@@ -289,27 +458,43 @@ func file_nebius_quotas_v1_quota_allowance_service_proto_rawDescGZIP() []byte {
 	return file_nebius_quotas_v1_quota_allowance_service_proto_rawDescData
 }
 
-var file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_nebius_quotas_v1_quota_allowance_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_nebius_quotas_v1_quota_allowance_service_proto_goTypes = []any{
-	(*ListQuotaAllowancesRequest)(nil),  // 0: nebius.quotas.v1.ListQuotaAllowancesRequest
-	(*GetQuotaAllowanceRequest)(nil),    // 1: nebius.quotas.v1.GetQuotaAllowanceRequest
-	(*ListQuotaAllowancesResponse)(nil), // 2: nebius.quotas.v1.ListQuotaAllowancesResponse
-	(*GetByNameRequest)(nil),            // 3: nebius.quotas.v1.GetByNameRequest
-	(*QuotaAllowance)(nil),              // 4: nebius.quotas.v1.QuotaAllowance
+	(*CreateQuotaAllowanceRequest)(nil), // 0: nebius.quotas.v1.CreateQuotaAllowanceRequest
+	(*UpdateQuotaAllowanceRequest)(nil), // 1: nebius.quotas.v1.UpdateQuotaAllowanceRequest
+	(*DeleteQuotaAllowanceRequest)(nil), // 2: nebius.quotas.v1.DeleteQuotaAllowanceRequest
+	(*ListQuotaAllowancesRequest)(nil),  // 3: nebius.quotas.v1.ListQuotaAllowancesRequest
+	(*GetQuotaAllowanceRequest)(nil),    // 4: nebius.quotas.v1.GetQuotaAllowanceRequest
+	(*ListQuotaAllowancesResponse)(nil), // 5: nebius.quotas.v1.ListQuotaAllowancesResponse
+	(*GetByNameRequest)(nil),            // 6: nebius.quotas.v1.GetByNameRequest
+	(*v1.ResourceMetadata)(nil),         // 7: nebius.common.v1.ResourceMetadata
+	(*QuotaAllowanceSpec)(nil),          // 8: nebius.quotas.v1.QuotaAllowanceSpec
+	(*QuotaAllowance)(nil),              // 9: nebius.quotas.v1.QuotaAllowance
+	(*v1.Operation)(nil),                // 10: nebius.common.v1.Operation
 }
 var file_nebius_quotas_v1_quota_allowance_service_proto_depIdxs = []int32{
-	4, // 0: nebius.quotas.v1.ListQuotaAllowancesResponse.items:type_name -> nebius.quotas.v1.QuotaAllowance
-	0, // 1: nebius.quotas.v1.QuotaAllowanceService.List:input_type -> nebius.quotas.v1.ListQuotaAllowancesRequest
-	1, // 2: nebius.quotas.v1.QuotaAllowanceService.Get:input_type -> nebius.quotas.v1.GetQuotaAllowanceRequest
-	3, // 3: nebius.quotas.v1.QuotaAllowanceService.GetByName:input_type -> nebius.quotas.v1.GetByNameRequest
-	2, // 4: nebius.quotas.v1.QuotaAllowanceService.List:output_type -> nebius.quotas.v1.ListQuotaAllowancesResponse
-	4, // 5: nebius.quotas.v1.QuotaAllowanceService.Get:output_type -> nebius.quotas.v1.QuotaAllowance
-	4, // 6: nebius.quotas.v1.QuotaAllowanceService.GetByName:output_type -> nebius.quotas.v1.QuotaAllowance
-	4, // [4:7] is the sub-list for method output_type
-	1, // [1:4] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	7,  // 0: nebius.quotas.v1.CreateQuotaAllowanceRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	8,  // 1: nebius.quotas.v1.CreateQuotaAllowanceRequest.spec:type_name -> nebius.quotas.v1.QuotaAllowanceSpec
+	7,  // 2: nebius.quotas.v1.UpdateQuotaAllowanceRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	8,  // 3: nebius.quotas.v1.UpdateQuotaAllowanceRequest.spec:type_name -> nebius.quotas.v1.QuotaAllowanceSpec
+	9,  // 4: nebius.quotas.v1.ListQuotaAllowancesResponse.items:type_name -> nebius.quotas.v1.QuotaAllowance
+	3,  // 5: nebius.quotas.v1.QuotaAllowanceService.List:input_type -> nebius.quotas.v1.ListQuotaAllowancesRequest
+	4,  // 6: nebius.quotas.v1.QuotaAllowanceService.Get:input_type -> nebius.quotas.v1.GetQuotaAllowanceRequest
+	6,  // 7: nebius.quotas.v1.QuotaAllowanceService.GetByName:input_type -> nebius.quotas.v1.GetByNameRequest
+	0,  // 8: nebius.quotas.v1.QuotaAllowanceService.Create:input_type -> nebius.quotas.v1.CreateQuotaAllowanceRequest
+	1,  // 9: nebius.quotas.v1.QuotaAllowanceService.Update:input_type -> nebius.quotas.v1.UpdateQuotaAllowanceRequest
+	2,  // 10: nebius.quotas.v1.QuotaAllowanceService.Delete:input_type -> nebius.quotas.v1.DeleteQuotaAllowanceRequest
+	5,  // 11: nebius.quotas.v1.QuotaAllowanceService.List:output_type -> nebius.quotas.v1.ListQuotaAllowancesResponse
+	9,  // 12: nebius.quotas.v1.QuotaAllowanceService.Get:output_type -> nebius.quotas.v1.QuotaAllowance
+	9,  // 13: nebius.quotas.v1.QuotaAllowanceService.GetByName:output_type -> nebius.quotas.v1.QuotaAllowance
+	10, // 14: nebius.quotas.v1.QuotaAllowanceService.Create:output_type -> nebius.common.v1.Operation
+	10, // 15: nebius.quotas.v1.QuotaAllowanceService.Update:output_type -> nebius.common.v1.Operation
+	10, // 16: nebius.quotas.v1.QuotaAllowanceService.Delete:output_type -> nebius.common.v1.Operation
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_nebius_quotas_v1_quota_allowance_service_proto_init() }
@@ -324,7 +509,7 @@ func file_nebius_quotas_v1_quota_allowance_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_quotas_v1_quota_allowance_service_proto_rawDesc), len(file_nebius_quotas_v1_quota_allowance_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -189,6 +189,7 @@ func (x *FederationCertificateSpec) GetData() string {
 type FederationCertificateStatus struct {
 	state         protoimpl.MessageState            `protogen:"open.v1"`
 	State         FederationCertificateStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.iam.v1.FederationCertificateStatus_State" json:"state,omitempty"`
+	Fingerprint   string                            `protobuf:"bytes,2,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
 	Algorithm     string                            `protobuf:"bytes,3,opt,name=algorithm,proto3" json:"algorithm,omitempty"`
 	KeySize       int64                             `protobuf:"varint,4,opt,name=key_size,json=keySize,proto3" json:"key_size,omitempty"`
 	NotBefore     *timestamppb.Timestamp            `protobuf:"bytes,5,opt,name=not_before,json=notBefore,proto3" json:"not_before,omitempty"`
@@ -234,6 +235,13 @@ func (x *FederationCertificateStatus) GetState() FederationCertificateStatus_Sta
 	return FederationCertificateStatus_STATE_UNSPECIFIED
 }
 
+func (x *FederationCertificateStatus) GetFingerprint() string {
+	if x != nil {
+		return x.Fingerprint
+	}
+	return ""
+}
+
 func (x *FederationCertificateStatus) GetAlgorithm() string {
 	if x != nil {
 		return x.Algorithm
@@ -273,9 +281,10 @@ const file_nebius_iam_v1_federation_certificate_proto_rawDesc = "" +
 	"\x06status\x18\x03 \x01(\v2*.nebius.iam.v1.FederationCertificateStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02\"W\n" +
 	"\x19FederationCertificateSpec\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x18\n" +
-	"\x04data\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\x04data\"\xcb\x02\n" +
+	"\x04data\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\x04data\"\xed\x02\n" +
 	"\x1bFederationCertificateStatus\x12F\n" +
-	"\x05state\x18\x01 \x01(\x0e20.nebius.iam.v1.FederationCertificateStatus.StateR\x05state\x12\x1c\n" +
+	"\x05state\x18\x01 \x01(\x0e20.nebius.iam.v1.FederationCertificateStatus.StateR\x05state\x12 \n" +
+	"\vfingerprint\x18\x02 \x01(\tR\vfingerprint\x12\x1c\n" +
 	"\talgorithm\x18\x03 \x01(\tR\talgorithm\x12\x19\n" +
 	"\bkey_size\x18\x04 \x01(\x03R\akeySize\x129\n" +
 	"\n" +

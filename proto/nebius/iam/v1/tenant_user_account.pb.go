@@ -466,7 +466,7 @@ type TenantUserAccountStatus struct {
 	// if a tenant user account is created during invitation it gets a reference to the invitation resource
 	// once invitation is accepted it looses this reference (and internally gets a reference to their global federated user account)
 	InvitationId string `protobuf:"bytes,2,opt,name=invitation_id,json=invitationId,proto3" json:"invitation_id,omitempty"`
-	// currently can only accept the values: custom, unknown, google, github.
+	// the federation id of the linked user account. Could be empty in a case of a tenant user account belongs to an invitation which wasn't accepted.
 	FederationId string `protobuf:"bytes,3,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
 	// user account state can help distinguish case when account is blocked globally
 	UserAccountState UserAccountStatus_State `protobuf:"varint,4,opt,name=user_account_state,json=userAccountState,proto3,enum=nebius.iam.v1.UserAccountStatus_State" json:"user_account_state,omitempty"`
