@@ -281,6 +281,64 @@ func (InstanceStatus_InstanceState) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{9, 0}
 }
 
+type ReservationPolicy_Policy int32
+
+const (
+	// 1) Will try to launch instance in any reservation_ids if provided.
+	// 2) Will try to launch instance in any of the available capacity block.
+	// 3) Will try to launch instance in PAYG if 1 & 2 are not satisfied.
+	ReservationPolicy_AUTO ReservationPolicy_Policy = 0
+	// The instance is launched only using on-demand (PAYG) capacity.
+	// No attempt is made to find or use a Capacity Block.
+	// It's an error to provide reservation_ids with policy = FORBID
+	ReservationPolicy_FORBID ReservationPolicy_Policy = 1
+	// 1) Will try to launch the instance in Capacity Blocks from reservation_ids if provided.
+	// 2) If reservation_ids are not provided will try to launch instance in suitable & available Capacity Block.
+	// 3) Fail otherwise.
+	ReservationPolicy_STRICT ReservationPolicy_Policy = 2
+)
+
+// Enum value maps for ReservationPolicy_Policy.
+var (
+	ReservationPolicy_Policy_name = map[int32]string{
+		0: "AUTO",
+		1: "FORBID",
+		2: "STRICT",
+	}
+	ReservationPolicy_Policy_value = map[string]int32{
+		"AUTO":   0,
+		"FORBID": 1,
+		"STRICT": 2,
+	}
+)
+
+func (x ReservationPolicy_Policy) Enum() *ReservationPolicy_Policy {
+	p := new(ReservationPolicy_Policy)
+	*p = x
+	return p
+}
+
+func (x ReservationPolicy_Policy) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ReservationPolicy_Policy) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_compute_v1_instance_proto_enumTypes[5].Descriptor()
+}
+
+func (ReservationPolicy_Policy) Type() protoreflect.EnumType {
+	return &file_nebius_compute_v1_instance_proto_enumTypes[5]
+}
+
+func (x ReservationPolicy_Policy) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ReservationPolicy_Policy.Descriptor instead.
+func (ReservationPolicy_Policy) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{11, 0}
+}
+
 type Instance struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
@@ -377,9 +435,10 @@ type InstanceSpec struct {
 	Preemptible *PreemptibleSpec `protobuf:"bytes,19,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
 	// Instance's hostname. Used to generate default DNS record in format `<hostname>.<network_id>.compute.internal.`
 	// or `<instance_id>.<network_id>.compute.internal.` if hostname is not specified.
-	Hostname      string `protobuf:"bytes,20,opt,name=hostname,proto3" json:"hostname,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Hostname          string             `protobuf:"bytes,20,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	ReservationPolicy *ReservationPolicy `protobuf:"bytes,23,opt,name=reservation_policy,json=reservationPolicy,proto3" json:"reservation_policy,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *InstanceSpec) Reset() {
@@ -494,6 +553,13 @@ func (x *InstanceSpec) GetHostname() string {
 		return x.Hostname
 	}
 	return ""
+}
+
+func (x *InstanceSpec) GetReservationPolicy() *ReservationPolicy {
+	if x != nil {
+		return x.ReservationPolicy
+	}
+	return nil
 }
 
 type PreemptibleSpec struct {
@@ -939,6 +1005,7 @@ type InstanceStatus struct {
 	//
 	//	*InstanceStatus_InfinibandTopologyPath
 	GpuClusterTopology isInstanceStatus_GpuClusterTopology `protobuf_oneof:"gpu_cluster_topology"`
+	ReservationId      string                              `protobuf:"bytes,12,opt,name=reservation_id,json=reservationId,proto3" json:"reservation_id,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -1017,6 +1084,13 @@ func (x *InstanceStatus) GetInfinibandTopologyPath() *InstanceStatusInfinibandTo
 	return nil
 }
 
+func (x *InstanceStatus) GetReservationId() string {
+	if x != nil {
+		return x.ReservationId
+	}
+	return ""
+}
+
 type isInstanceStatus_GpuClusterTopology interface {
 	isInstanceStatus_GpuClusterTopology()
 }
@@ -1071,6 +1145,59 @@ func (x *InstanceStatusInfinibandTopologyPath) GetPath() []string {
 	return nil
 }
 
+type ReservationPolicy struct {
+	state  protoimpl.MessageState   `protogen:"open.v1"`
+	Policy ReservationPolicy_Policy `protobuf:"varint,1,opt,name=policy,proto3,enum=nebius.compute.v1.ReservationPolicy_Policy" json:"policy,omitempty"`
+	// Capacity block groups, order matters
+	ReservationIds []string `protobuf:"bytes,2,rep,name=reservation_ids,json=reservationIds,proto3" json:"reservation_ids,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ReservationPolicy) Reset() {
+	*x = ReservationPolicy{}
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReservationPolicy) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReservationPolicy) ProtoMessage() {}
+
+func (x *ReservationPolicy) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReservationPolicy.ProtoReflect.Descriptor instead.
+func (*ReservationPolicy) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ReservationPolicy) GetPolicy() ReservationPolicy_Policy {
+	if x != nil {
+		return x.Policy
+	}
+	return ReservationPolicy_AUTO
+}
+
+func (x *ReservationPolicy) GetReservationIds() []string {
+	if x != nil {
+		return x.ReservationIds
+	}
+	return nil
+}
+
 var File_nebius_compute_v1_instance_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_instance_proto_rawDesc = "" +
@@ -1079,7 +1206,7 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\bInstance\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\xb9\a\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\x8e\b\n" +
 	"\fInstanceSpec\x122\n" +
 	"\x12service_account_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x10serviceAccountId\x12F\n" +
 	"\tresources\x18\x02 \x01(\v2 .nebius.compute.v1.ResourcesSpecB\x06\xbaH\x03\xc8\x01\x01R\tresources\x12P\n" +
@@ -1094,7 +1221,8 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x0frecovery_policy\x18\x0f \x01(\x0e2).nebius.compute.v1.InstanceRecoveryPolicyB\x04\xbaJ\x01\x02R\x0erecoveryPolicy\x12J\n" +
 	"\vpreemptible\x18\x13 \x01(\v2\".nebius.compute.v1.PreemptibleSpecB\x04\xbaJ\x01\x02R\vpreemptible\x12\x93\x01\n" +
 	"\bhostname\x18\x14 \x01(\tBw\xbaHt\xba\x01q\n" +
-	"\x0ehostname.valid\x12\x1evalue must be a valid hostname\x1a?this == '' || this.matches('^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$')R\bhostname\"\xce\x01\n" +
+	"\x0ehostname.valid\x12\x1evalue must be a valid hostname\x1a?this == '' || this.matches('^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$')R\bhostname\x12S\n" +
+	"\x12reservation_policy\x18\x17 \x01(\v2$.nebius.compute.v1.ReservationPolicyR\x11reservationPolicy\"\xce\x01\n" +
 	"\x0fPreemptibleSpec\x12d\n" +
 	"\ron_preemption\x18\x01 \x01(\x0e23.nebius.compute.v1.PreemptibleSpec.PreemptionPolicyB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\fonPreemption\x12&\n" +
@@ -1138,14 +1266,15 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\tREAD_ONLY\x10\x01\x12\x0e\n" +
 	"\n" +
 	"READ_WRITE\x10\x02B\r\n" +
-	"\x04type\x12\x05\xbaH\x02\b\x01\"\xa6\x04\n" +
+	"\x04type\x12\x05\xbaH\x02\b\x01\"\xcd\x04\n" +
 	"\x0eInstanceStatus\x12E\n" +
 	"\x05state\x18\x01 \x01(\x0e2/.nebius.compute.v1.InstanceStatus.InstanceStateR\x05state\x12X\n" +
 	"\x12network_interfaces\x18\x02 \x03(\v2).nebius.compute.v1.NetworkInterfaceStatusR\x11networkInterfaces\x12 \n" +
 	"\vreconciling\x18\x05 \x01(\bR\vreconciling\x120\n" +
 	"\x14maintenance_event_id\x18\a \x01(\tR\x12maintenanceEventId\x12s\n" +
 	"\x18infiniband_topology_path\x18\n" +
-	" \x01(\v27.nebius.compute.v1.InstanceStatusInfinibandTopologyPathH\x00R\x16infinibandTopologyPath\"\x8b\x01\n" +
+	" \x01(\v27.nebius.compute.v1.InstanceStatusInfinibandTopologyPathH\x00R\x16infinibandTopologyPath\x12%\n" +
+	"\x0ereservation_id\x18\f \x01(\tR\rreservationId\"\x8b\x01\n" +
 	"\rInstanceState\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\f\n" +
@@ -1158,7 +1287,16 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x05ERROR\x10\bB\x16\n" +
 	"\x14gpu_cluster_topologyJ\x04\b\x06\x10\a\":\n" +
 	"$InstanceStatusInfinibandTopologyPath\x12\x12\n" +
-	"\x04path\x18\x01 \x03(\tR\x04path*/\n" +
+	"\x04path\x18\x01 \x03(\tR\x04path\"\xad\x01\n" +
+	"\x11ReservationPolicy\x12C\n" +
+	"\x06policy\x18\x01 \x01(\x0e2+.nebius.compute.v1.ReservationPolicy.PolicyR\x06policy\x12'\n" +
+	"\x0freservation_ids\x18\x02 \x03(\tR\x0ereservationIds\"*\n" +
+	"\x06Policy\x12\b\n" +
+	"\x04AUTO\x10\x00\x12\n" +
+	"\n" +
+	"\x06FORBID\x10\x01\x12\n" +
+	"\n" +
+	"\x06STRICT\x10\x02*/\n" +
 	"\x16InstanceRecoveryPolicy\x12\v\n" +
 	"\aRECOVER\x10\x00\x12\b\n" +
 	"\x04FAIL\x10\x01B\\\n" +
@@ -1176,54 +1314,58 @@ func file_nebius_compute_v1_instance_proto_rawDescGZIP() []byte {
 	return file_nebius_compute_v1_instance_proto_rawDescData
 }
 
-var file_nebius_compute_v1_instance_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_nebius_compute_v1_instance_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_nebius_compute_v1_instance_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_nebius_compute_v1_instance_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_nebius_compute_v1_instance_proto_goTypes = []any{
 	(InstanceRecoveryPolicy)(0),                  // 0: nebius.compute.v1.InstanceRecoveryPolicy
 	(PreemptibleSpec_PreemptionPolicy)(0),        // 1: nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
 	(AttachedDiskSpec_AttachMode)(0),             // 2: nebius.compute.v1.AttachedDiskSpec.AttachMode
 	(AttachedFilesystemSpec_AttachMode)(0),       // 3: nebius.compute.v1.AttachedFilesystemSpec.AttachMode
 	(InstanceStatus_InstanceState)(0),            // 4: nebius.compute.v1.InstanceStatus.InstanceState
-	(*Instance)(nil),                             // 5: nebius.compute.v1.Instance
-	(*InstanceSpec)(nil),                         // 6: nebius.compute.v1.InstanceSpec
-	(*PreemptibleSpec)(nil),                      // 7: nebius.compute.v1.PreemptibleSpec
-	(*ResourcesSpec)(nil),                        // 8: nebius.compute.v1.ResourcesSpec
-	(*InstanceGpuClusterSpec)(nil),               // 9: nebius.compute.v1.InstanceGpuClusterSpec
-	(*AttachedDiskSpec)(nil),                     // 10: nebius.compute.v1.AttachedDiskSpec
-	(*ExistingDisk)(nil),                         // 11: nebius.compute.v1.ExistingDisk
-	(*ExistingFilesystem)(nil),                   // 12: nebius.compute.v1.ExistingFilesystem
-	(*AttachedFilesystemSpec)(nil),               // 13: nebius.compute.v1.AttachedFilesystemSpec
-	(*InstanceStatus)(nil),                       // 14: nebius.compute.v1.InstanceStatus
-	(*InstanceStatusInfinibandTopologyPath)(nil), // 15: nebius.compute.v1.InstanceStatusInfinibandTopologyPath
-	(*v1.ResourceMetadata)(nil),                  // 16: nebius.common.v1.ResourceMetadata
-	(*NetworkInterfaceSpec)(nil),                 // 17: nebius.compute.v1.NetworkInterfaceSpec
-	(*NetworkInterfaceStatus)(nil),               // 18: nebius.compute.v1.NetworkInterfaceStatus
+	(ReservationPolicy_Policy)(0),                // 5: nebius.compute.v1.ReservationPolicy.Policy
+	(*Instance)(nil),                             // 6: nebius.compute.v1.Instance
+	(*InstanceSpec)(nil),                         // 7: nebius.compute.v1.InstanceSpec
+	(*PreemptibleSpec)(nil),                      // 8: nebius.compute.v1.PreemptibleSpec
+	(*ResourcesSpec)(nil),                        // 9: nebius.compute.v1.ResourcesSpec
+	(*InstanceGpuClusterSpec)(nil),               // 10: nebius.compute.v1.InstanceGpuClusterSpec
+	(*AttachedDiskSpec)(nil),                     // 11: nebius.compute.v1.AttachedDiskSpec
+	(*ExistingDisk)(nil),                         // 12: nebius.compute.v1.ExistingDisk
+	(*ExistingFilesystem)(nil),                   // 13: nebius.compute.v1.ExistingFilesystem
+	(*AttachedFilesystemSpec)(nil),               // 14: nebius.compute.v1.AttachedFilesystemSpec
+	(*InstanceStatus)(nil),                       // 15: nebius.compute.v1.InstanceStatus
+	(*InstanceStatusInfinibandTopologyPath)(nil), // 16: nebius.compute.v1.InstanceStatusInfinibandTopologyPath
+	(*ReservationPolicy)(nil),                    // 17: nebius.compute.v1.ReservationPolicy
+	(*v1.ResourceMetadata)(nil),                  // 18: nebius.common.v1.ResourceMetadata
+	(*NetworkInterfaceSpec)(nil),                 // 19: nebius.compute.v1.NetworkInterfaceSpec
+	(*NetworkInterfaceStatus)(nil),               // 20: nebius.compute.v1.NetworkInterfaceStatus
 }
 var file_nebius_compute_v1_instance_proto_depIdxs = []int32{
-	16, // 0: nebius.compute.v1.Instance.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	6,  // 1: nebius.compute.v1.Instance.spec:type_name -> nebius.compute.v1.InstanceSpec
-	14, // 2: nebius.compute.v1.Instance.status:type_name -> nebius.compute.v1.InstanceStatus
-	8,  // 3: nebius.compute.v1.InstanceSpec.resources:type_name -> nebius.compute.v1.ResourcesSpec
-	9,  // 4: nebius.compute.v1.InstanceSpec.gpu_cluster:type_name -> nebius.compute.v1.InstanceGpuClusterSpec
-	17, // 5: nebius.compute.v1.InstanceSpec.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceSpec
-	10, // 6: nebius.compute.v1.InstanceSpec.boot_disk:type_name -> nebius.compute.v1.AttachedDiskSpec
-	10, // 7: nebius.compute.v1.InstanceSpec.secondary_disks:type_name -> nebius.compute.v1.AttachedDiskSpec
-	13, // 8: nebius.compute.v1.InstanceSpec.filesystems:type_name -> nebius.compute.v1.AttachedFilesystemSpec
+	18, // 0: nebius.compute.v1.Instance.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	7,  // 1: nebius.compute.v1.Instance.spec:type_name -> nebius.compute.v1.InstanceSpec
+	15, // 2: nebius.compute.v1.Instance.status:type_name -> nebius.compute.v1.InstanceStatus
+	9,  // 3: nebius.compute.v1.InstanceSpec.resources:type_name -> nebius.compute.v1.ResourcesSpec
+	10, // 4: nebius.compute.v1.InstanceSpec.gpu_cluster:type_name -> nebius.compute.v1.InstanceGpuClusterSpec
+	19, // 5: nebius.compute.v1.InstanceSpec.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceSpec
+	11, // 6: nebius.compute.v1.InstanceSpec.boot_disk:type_name -> nebius.compute.v1.AttachedDiskSpec
+	11, // 7: nebius.compute.v1.InstanceSpec.secondary_disks:type_name -> nebius.compute.v1.AttachedDiskSpec
+	14, // 8: nebius.compute.v1.InstanceSpec.filesystems:type_name -> nebius.compute.v1.AttachedFilesystemSpec
 	0,  // 9: nebius.compute.v1.InstanceSpec.recovery_policy:type_name -> nebius.compute.v1.InstanceRecoveryPolicy
-	7,  // 10: nebius.compute.v1.InstanceSpec.preemptible:type_name -> nebius.compute.v1.PreemptibleSpec
-	1,  // 11: nebius.compute.v1.PreemptibleSpec.on_preemption:type_name -> nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
-	2,  // 12: nebius.compute.v1.AttachedDiskSpec.attach_mode:type_name -> nebius.compute.v1.AttachedDiskSpec.AttachMode
-	11, // 13: nebius.compute.v1.AttachedDiskSpec.existing_disk:type_name -> nebius.compute.v1.ExistingDisk
-	3,  // 14: nebius.compute.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.compute.v1.AttachedFilesystemSpec.AttachMode
-	12, // 15: nebius.compute.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.compute.v1.ExistingFilesystem
-	4,  // 16: nebius.compute.v1.InstanceStatus.state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
-	18, // 17: nebius.compute.v1.InstanceStatus.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceStatus
-	15, // 18: nebius.compute.v1.InstanceStatus.infiniband_topology_path:type_name -> nebius.compute.v1.InstanceStatusInfinibandTopologyPath
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	8,  // 10: nebius.compute.v1.InstanceSpec.preemptible:type_name -> nebius.compute.v1.PreemptibleSpec
+	17, // 11: nebius.compute.v1.InstanceSpec.reservation_policy:type_name -> nebius.compute.v1.ReservationPolicy
+	1,  // 12: nebius.compute.v1.PreemptibleSpec.on_preemption:type_name -> nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
+	2,  // 13: nebius.compute.v1.AttachedDiskSpec.attach_mode:type_name -> nebius.compute.v1.AttachedDiskSpec.AttachMode
+	12, // 14: nebius.compute.v1.AttachedDiskSpec.existing_disk:type_name -> nebius.compute.v1.ExistingDisk
+	3,  // 15: nebius.compute.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.compute.v1.AttachedFilesystemSpec.AttachMode
+	13, // 16: nebius.compute.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.compute.v1.ExistingFilesystem
+	4,  // 17: nebius.compute.v1.InstanceStatus.state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	20, // 18: nebius.compute.v1.InstanceStatus.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceStatus
+	16, // 19: nebius.compute.v1.InstanceStatus.infiniband_topology_path:type_name -> nebius.compute.v1.InstanceStatusInfinibandTopologyPath
+	5,  // 20: nebius.compute.v1.ReservationPolicy.policy:type_name -> nebius.compute.v1.ReservationPolicy.Policy
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_instance_proto_init() }
@@ -1249,8 +1391,8 @@ func file_nebius_compute_v1_instance_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_instance_proto_rawDesc), len(file_nebius_compute_v1_instance_proto_rawDesc)),
-			NumEnums:      5,
-			NumMessages:   11,
+			NumEnums:      6,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

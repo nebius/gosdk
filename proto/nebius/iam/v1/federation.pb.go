@@ -228,10 +228,11 @@ func (x *SamlSettings) GetForceAuthn() bool {
 }
 
 type FederationStatus struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UsersCount    int32                  `protobuf:"varint,1,opt,name=users_count,json=usersCount,proto3" json:"users_count,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	UsersCount        int32                  `protobuf:"varint,1,opt,name=users_count,json=usersCount,proto3" json:"users_count,omitempty"`
+	CertificatesCount int32                  `protobuf:"varint,2,opt,name=certificates_count,json=certificatesCount,proto3" json:"certificates_count,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *FederationStatus) Reset() {
@@ -271,6 +272,13 @@ func (x *FederationStatus) GetUsersCount() int32 {
 	return 0
 }
 
+func (x *FederationStatus) GetCertificatesCount() int32 {
+	if x != nil {
+		return x.CertificatesCount
+	}
+	return 0
+}
+
 var File_nebius_iam_v1_federation_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_federation_proto_rawDesc = "" +
@@ -292,10 +300,11 @@ const file_nebius_iam_v1_federation_proto_rawDesc = "" +
 	"idp_issuer\x18\x01 \x01(\tR\tidpIssuer\x12\x17\n" +
 	"\asso_url\x18\x02 \x01(\tR\x06ssoUrl\x12\x1f\n" +
 	"\vforce_authn\x18\x03 \x01(\bR\n" +
-	"forceAuthn\"3\n" +
+	"forceAuthn\"b\n" +
 	"\x10FederationStatus\x12\x1f\n" +
 	"\vusers_count\x18\x01 \x01(\x05R\n" +
-	"usersCountBV\n" +
+	"usersCount\x12-\n" +
+	"\x12certificates_count\x18\x02 \x01(\x05R\x11certificatesCountBV\n" +
 	"\x14ai.nebius.pub.iam.v1B\x0fFederationProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
 
 var (

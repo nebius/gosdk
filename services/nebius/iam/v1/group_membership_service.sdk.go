@@ -4,12 +4,14 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	operations "github.com/nebius/gosdk/operations"
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
+	slog "log/slog"
 )
 
 func init() {
@@ -48,13 +50,26 @@ func (s groupMembershipService) Create(ctx context.Context, request *v1.CreateGr
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
-		md := request.GetMetadata()
-		if md == nil {
-			md = &v11.ResourceMetadata{}
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
 		}
-		md.ParentId = s.sdk.ParentID()
-		request.Metadata = md
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
@@ -75,6 +90,11 @@ func (s groupMembershipService) Get(ctx context.Context, request *v1.GetGroupMem
 	*v1.GroupMembership,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -90,6 +110,11 @@ func (s groupMembershipService) GetWithAttributes(ctx context.Context, request *
 	*v1.GroupMembershipWithAttributes,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -105,6 +130,11 @@ func (s groupMembershipService) Delete(ctx context.Context, request *v1.DeleteGr
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -124,6 +154,11 @@ func (s groupMembershipService) ListMembers(ctx context.Context, request *v1.Lis
 	*v1.ListGroupMembershipsResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -139,6 +174,11 @@ func (s groupMembershipService) ListMembersWithAttributes(ctx context.Context, r
 	*v1.ListGroupMembershipsWithAttributesResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -154,6 +194,11 @@ func (s groupMembershipService) ListMemberOf(ctx context.Context, request *v1.Li
 	*v1.ListMemberOfResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err

@@ -4,10 +4,12 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/billing/v1alpha1"
 	grpc "google.golang.org/grpc"
+	slog "log/slog"
 )
 
 func init() {
@@ -39,6 +41,11 @@ func (s calculatorService) Estimate(ctx context.Context, request *v1alpha1.Estim
 	*v1alpha1.EstimateResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, CalculatorServiceID)
 	if err != nil {
 		return nil, err
@@ -54,6 +61,11 @@ func (s calculatorService) EstimateBatch(ctx context.Context, request *v1alpha1.
 	*v1alpha1.EstimateBatchResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, CalculatorServiceID)
 	if err != nil {
 		return nil, err

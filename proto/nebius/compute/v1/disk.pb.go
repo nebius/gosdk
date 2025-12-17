@@ -198,7 +198,6 @@ const (
 	// No encryption is applied unless explicitly specified.
 	DiskEncryption_DISK_ENCRYPTION_UNSPECIFIED DiskEncryption_DiskEncryptionType = 0
 	// Enables encryption using the platform's default root key from KMS.
-	// Available for blank disks only.
 	// Available for disks with NETWORK_SSD_NON_REPLICATED and NETWORK_SSD_IO_M3 types only.
 	DiskEncryption_DISK_ENCRYPTION_MANAGED DiskEncryption_DiskEncryptionType = 1
 )
