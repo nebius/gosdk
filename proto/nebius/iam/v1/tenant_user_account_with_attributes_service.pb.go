@@ -72,7 +72,7 @@ type ListTenantUserAccountsWithAttributesRequest struct {
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Specifies the maximum number of items to return in the response.
 	// Default value: 10
-	PageSize *int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Token for pagination, allowing the retrieval of the next set of results.
 	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	Filter        string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
@@ -118,8 +118,8 @@ func (x *ListTenantUserAccountsWithAttributesRequest) GetParentId() string {
 }
 
 func (x *ListTenantUserAccountsWithAttributesRequest) GetPageSize() int64 {
-	if x != nil && x.PageSize != nil {
-		return *x.PageSize
+	if x != nil {
+		return x.PageSize
 	}
 	return 0
 }
@@ -198,15 +198,13 @@ const file_nebius_iam_v1_tenant_user_account_with_attributes_service_proto_rawDe
 	"\n" +
 	"?nebius/iam/v1/tenant_user_account_with_attributes_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a'nebius/iam/v1/tenant_user_account.proto\";\n" +
 	")GetTenantUserAccountWithAttributesRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xb6\x01\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xa3\x01\n" +
 	"+ListTenantUserAccountsWithAttributesRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12 \n" +
-	"\tpage_size\x18\x02 \x01(\x03H\x00R\bpageSize\x88\x01\x01\x12\x1d\n" +
+	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x1b\n" +
-	"\x06filter\x18\x04 \x01(\tB\x03\xc0J\x01R\x06filterB\f\n" +
-	"\n" +
-	"_page_size\"\x9c\x01\n" +
+	"\x06filter\x18\x04 \x01(\tB\x03\xc0J\x01R\x06filter\"\x9c\x01\n" +
 	",ListTenantUserAccountsWithAttributesResponse\x12D\n" +
 	"\x05items\x18\x01 \x03(\v2..nebius.iam.v1.TenantUserAccountWithAttributesR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa6\x02\n" +
@@ -254,7 +252,6 @@ func file_nebius_iam_v1_tenant_user_account_with_attributes_service_proto_init()
 		return
 	}
 	file_nebius_iam_v1_tenant_user_account_proto_init()
-	file_nebius_iam_v1_tenant_user_account_with_attributes_service_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

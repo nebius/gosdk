@@ -178,7 +178,7 @@ type ListServiceAccountRequest struct {
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Specifies the maximum number of items to return in the response.
 	// Default value: 10
-	PageSize *int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Token for pagination, allowing the retrieval of the next set of results.
 	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// A filter to narrow down the results based on specific criteria.
@@ -225,8 +225,8 @@ func (x *ListServiceAccountRequest) GetParentId() string {
 }
 
 func (x *ListServiceAccountRequest) GetPageSize() int64 {
-	if x != nil && x.PageSize != nil {
-		return *x.PageSize
+	if x != nil {
+		return x.PageSize
 	}
 	return 0
 }
@@ -407,15 +407,13 @@ const file_nebius_iam_v1_service_account_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"a\n" +
 	"\x1eGetServiceAccountByNameRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x9f\x01\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x8c\x01\n" +
 	"\x19ListServiceAccountRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12 \n" +
-	"\tpage_size\x18\x02 \x01(\x03H\x00R\bpageSize\x88\x01\x01\x12\x1d\n" +
+	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x04 \x01(\tR\x06filterB\f\n" +
-	"\n" +
-	"_page_size\"\x94\x01\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter\"\x94\x01\n" +
 	"\x1bUpdateServiceAccountRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x125\n" +
 	"\x04spec\x18\x02 \x01(\v2!.nebius.iam.v1.ServiceAccountSpecR\x04spec\"-\n" +
@@ -491,7 +489,6 @@ func file_nebius_iam_v1_service_account_service_proto_init() {
 		return
 	}
 	file_nebius_iam_v1_service_account_proto_init()
-	file_nebius_iam_v1_service_account_service_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

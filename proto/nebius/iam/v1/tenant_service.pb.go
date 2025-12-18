@@ -70,7 +70,7 @@ type ListTenantsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Specifies the maximum number of items to return in the response.
 	// Default value: 10
-	PageSize *int64 `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+	PageSize int64 `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Token for pagination, allowing the retrieval of the next set of results.
 	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// A filter to narrow down the results based on specific criteria.
@@ -110,8 +110,8 @@ func (*ListTenantsRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *ListTenantsRequest) GetPageSize() int64 {
-	if x != nil && x.PageSize != nil {
-		return *x.PageSize
+	if x != nil {
+		return x.PageSize
 	}
 	return 0
 }
@@ -189,14 +189,12 @@ const file_nebius_iam_v1_tenant_service_proto_rawDesc = "" +
 	"\n" +
 	"\"nebius/iam/v1/tenant_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a\x1dnebius/iam/v1/container.proto\"\"\n" +
 	"\x10GetTenantRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"{\n" +
-	"\x12ListTenantsRequest\x12 \n" +
-	"\tpage_size\x18\x01 \x01(\x03H\x00R\bpageSize\x88\x01\x01\x12\x1d\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"h\n" +
+	"\x12ListTenantsRequest\x12\x1b\n" +
+	"\tpage_size\x18\x01 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x02 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x03 \x01(\tR\x06filterB\f\n" +
-	"\n" +
-	"_page_size\"m\n" +
+	"\x06filter\x18\x03 \x01(\tR\x06filter\"m\n" +
 	"\x13ListTenantsResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.iam.v1.ContainerR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xac\x01\n" +
@@ -244,7 +242,6 @@ func file_nebius_iam_v1_tenant_service_proto_init() {
 		return
 	}
 	file_nebius_iam_v1_container_proto_init()
-	file_nebius_iam_v1_tenant_service_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

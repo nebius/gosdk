@@ -176,7 +176,7 @@ type ListGroupMembershipsRequest struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	ParentId string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Default value: 10
-	PageSize      *int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+	PageSize      int64  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	Filter        string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -221,8 +221,8 @@ func (x *ListGroupMembershipsRequest) GetParentId() string {
 }
 
 func (x *ListGroupMembershipsRequest) GetPageSize() int64 {
-	if x != nil && x.PageSize != nil {
-		return *x.PageSize
+	if x != nil {
+		return x.PageSize
 	}
 	return 0
 }
@@ -246,7 +246,7 @@ type ListMemberOfRequest struct {
 	// Requested subject id. Can be tenant user account id or service account id.
 	SubjectId string `protobuf:"bytes,1,opt,name=subject_id,json=subjectId,proto3" json:"subject_id,omitempty"`
 	// Default value: 10
-	PageSize      *int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+	PageSize      int64  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	Filter        string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -291,8 +291,8 @@ func (x *ListMemberOfRequest) GetSubjectId() string {
 }
 
 func (x *ListMemberOfRequest) GetPageSize() int64 {
-	if x != nil && x.PageSize != nil {
-		return *x.PageSize
+	if x != nil {
+		return x.PageSize
 	}
 	return 0
 }
@@ -485,24 +485,20 @@ const file_nebius_iam_v1_group_membership_service_proto_rawDesc = "" +
 	"\x1cDeleteGroupMembershipRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"3\n" +
 	"\x19GetGroupMembershipRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xa9\x01\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x96\x01\n" +
 	"\x1bListGroupMembershipsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12 \n" +
-	"\tpage_size\x18\x02 \x01(\x03H\x00R\bpageSize\x88\x01\x01\x12\x1d\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x04 \x01(\tR\x06filterB\f\n" +
-	"\n" +
-	"_page_size\"\xa3\x01\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter\"\x90\x01\n" +
 	"\x13ListMemberOfRequest\x12%\n" +
 	"\n" +
-	"subject_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tsubjectId\x12 \n" +
-	"\tpage_size\x18\x02 \x01(\x03H\x00R\bpageSize\x88\x01\x01\x12\x1d\n" +
+	"subject_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tsubjectId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x04 \x01(\tR\x06filterB\f\n" +
-	"\n" +
-	"_page_size\"\x88\x01\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter\"\x88\x01\n" +
 	"\x1cListGroupMembershipsResponse\x12@\n" +
 	"\vmemberships\x18\x01 \x03(\v2\x1e.nebius.iam.v1.GroupMembershipR\vmemberships\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa4\x01\n" +
@@ -586,8 +582,6 @@ func file_nebius_iam_v1_group_membership_service_proto_init() {
 	}
 	file_nebius_iam_v1_group_membership_proto_init()
 	file_nebius_iam_v1_group_proto_init()
-	file_nebius_iam_v1_group_membership_service_proto_msgTypes[3].OneofWrappers = []any{}
-	file_nebius_iam_v1_group_membership_service_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

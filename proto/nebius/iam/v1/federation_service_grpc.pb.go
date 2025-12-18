@@ -20,12 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	FederationService_Create_FullMethodName    = "/nebius.iam.v1.FederationService/Create"
-	FederationService_Get_FullMethodName       = "/nebius.iam.v1.FederationService/Get"
-	FederationService_GetByName_FullMethodName = "/nebius.iam.v1.FederationService/GetByName"
-	FederationService_List_FullMethodName      = "/nebius.iam.v1.FederationService/List"
-	FederationService_Update_FullMethodName    = "/nebius.iam.v1.FederationService/Update"
-	FederationService_Delete_FullMethodName    = "/nebius.iam.v1.FederationService/Delete"
+	FederationService_Create_FullMethodName     = "/nebius.iam.v1.FederationService/Create"
+	FederationService_Get_FullMethodName        = "/nebius.iam.v1.FederationService/Get"
+	FederationService_GetByName_FullMethodName  = "/nebius.iam.v1.FederationService/GetByName"
+	FederationService_List_FullMethodName       = "/nebius.iam.v1.FederationService/List"
+	FederationService_Update_FullMethodName     = "/nebius.iam.v1.FederationService/Update"
+	FederationService_Activate_FullMethodName   = "/nebius.iam.v1.FederationService/Activate"
+	FederationService_Deactivate_FullMethodName = "/nebius.iam.v1.FederationService/Deactivate"
+	FederationService_Delete_FullMethodName     = "/nebius.iam.v1.FederationService/Delete"
 )
 
 // FederationServiceClient is the client API for FederationService service.
@@ -37,6 +39,14 @@ type FederationServiceClient interface {
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Federation, error)
 	List(ctx context.Context, in *ListFederationsRequest, opts ...grpc.CallOption) (*ListFederationsResponse, error)
 	Update(ctx context.Context, in *UpdateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// *
+	// Activates an existing federation.
+	// By default, a newly created federation is in the active state.
+	Activate(ctx context.Context, in *ActivateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// *
+	// Deactivates an existing federation.
+	// When a federation is inactive, all users under it will be unable to authenticate.
+	Deactivate(ctx context.Context, in *DeactivateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Delete(ctx context.Context, in *DeleteFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -93,6 +103,24 @@ func (c *federationServiceClient) Update(ctx context.Context, in *UpdateFederati
 	return out, nil
 }
 
+func (c *federationServiceClient) Activate(ctx context.Context, in *ActivateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, FederationService_Activate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *federationServiceClient) Deactivate(ctx context.Context, in *DeactivateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, FederationService_Deactivate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *federationServiceClient) Delete(ctx context.Context, in *DeleteFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, FederationService_Delete_FullMethodName, in, out, opts...)
@@ -111,6 +139,14 @@ type FederationServiceServer interface {
 	GetByName(context.Context, *v1.GetByNameRequest) (*Federation, error)
 	List(context.Context, *ListFederationsRequest) (*ListFederationsResponse, error)
 	Update(context.Context, *UpdateFederationRequest) (*v1.Operation, error)
+	// *
+	// Activates an existing federation.
+	// By default, a newly created federation is in the active state.
+	Activate(context.Context, *ActivateFederationRequest) (*v1.Operation, error)
+	// *
+	// Deactivates an existing federation.
+	// When a federation is inactive, all users under it will be unable to authenticate.
+	Deactivate(context.Context, *DeactivateFederationRequest) (*v1.Operation, error)
 	Delete(context.Context, *DeleteFederationRequest) (*v1.Operation, error)
 }
 
@@ -132,6 +168,12 @@ func (UnimplementedFederationServiceServer) List(context.Context, *ListFederatio
 }
 func (UnimplementedFederationServiceServer) Update(context.Context, *UpdateFederationRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedFederationServiceServer) Activate(context.Context, *ActivateFederationRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Activate not implemented")
+}
+func (UnimplementedFederationServiceServer) Deactivate(context.Context, *DeactivateFederationRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Deactivate not implemented")
 }
 func (UnimplementedFederationServiceServer) Delete(context.Context, *DeleteFederationRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -238,6 +280,42 @@ func _FederationService_Update_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FederationService_Activate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateFederationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FederationServiceServer).Activate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FederationService_Activate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FederationServiceServer).Activate(ctx, req.(*ActivateFederationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FederationService_Deactivate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeactivateFederationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FederationServiceServer).Deactivate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FederationService_Deactivate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FederationServiceServer).Deactivate(ctx, req.(*DeactivateFederationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FederationService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteFederationRequest)
 	if err := dec(in); err != nil {
@@ -282,6 +360,14 @@ var FederationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _FederationService_Update_Handler,
+		},
+		{
+			MethodName: "Activate",
+			Handler:    _FederationService_Activate_Handler,
+		},
+		{
+			MethodName: "Deactivate",
+			Handler:    _FederationService_Deactivate_Handler,
 		},
 		{
 			MethodName: "Delete",

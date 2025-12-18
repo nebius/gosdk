@@ -176,7 +176,7 @@ type ListGroupsRequest struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	ParentId string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Default value: 10
-	PageSize      *int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+	PageSize      int64  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	Filter        string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -221,8 +221,8 @@ func (x *ListGroupsRequest) GetParentId() string {
 }
 
 func (x *ListGroupsRequest) GetPageSize() int64 {
-	if x != nil && x.PageSize != nil {
-		return *x.PageSize
+	if x != nil {
+		return x.PageSize
 	}
 	return 0
 }
@@ -401,15 +401,13 @@ const file_nebius_iam_v1_group_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"X\n" +
 	"\x15GetGroupByNameRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x9f\x01\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x8c\x01\n" +
 	"\x11ListGroupsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12 \n" +
-	"\tpage_size\x18\x02 \x01(\x03H\x00R\bpageSize\x88\x01\x01\x12\x1d\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x04 \x01(\tR\x06filterB\f\n" +
-	"\n" +
-	"_page_size\"h\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter\"h\n" +
 	"\x12ListGroupsResponse\x12*\n" +
 	"\x05items\x18\x01 \x03(\v2\x14.nebius.iam.v1.GroupR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\",\n" +
@@ -485,7 +483,6 @@ func file_nebius_iam_v1_group_service_proto_init() {
 		return
 	}
 	file_nebius_iam_v1_group_proto_init()
-	file_nebius_iam_v1_group_service_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
