@@ -24,6 +24,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type FederationStatus_State int32
+
+const (
+	FederationStatus_UNSPECIFIED FederationStatus_State = 0
+	FederationStatus_ACTIVE      FederationStatus_State = 1
+	FederationStatus_INACTIVE    FederationStatus_State = 2
+)
+
+// Enum value maps for FederationStatus_State.
+var (
+	FederationStatus_State_name = map[int32]string{
+		0: "UNSPECIFIED",
+		1: "ACTIVE",
+		2: "INACTIVE",
+	}
+	FederationStatus_State_value = map[string]int32{
+		"UNSPECIFIED": 0,
+		"ACTIVE":      1,
+		"INACTIVE":    2,
+	}
+)
+
+func (x FederationStatus_State) Enum() *FederationStatus_State {
+	p := new(FederationStatus_State)
+	*p = x
+	return p
+}
+
+func (x FederationStatus_State) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FederationStatus_State) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_iam_v1_federation_proto_enumTypes[0].Descriptor()
+}
+
+func (FederationStatus_State) Type() protoreflect.EnumType {
+	return &file_nebius_iam_v1_federation_proto_enumTypes[0]
+}
+
+func (x FederationStatus_State) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use FederationStatus_State.Descriptor instead.
+func (FederationStatus_State) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_iam_v1_federation_proto_rawDescGZIP(), []int{3, 0}
+}
+
 type Federation struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
@@ -87,7 +136,8 @@ func (x *Federation) GetStatus() *FederationStatus {
 type FederationSpec struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	UserAccountAutoCreation bool                   `protobuf:"varint,1,opt,name=user_account_auto_creation,json=userAccountAutoCreation,proto3" json:"user_account_auto_creation,omitempty"`
-	Active                  bool                   `protobuf:"varint,4,opt,name=active,proto3" json:"active,omitempty"`
+	// Deprecated: Marked as deprecated in nebius/iam/v1/federation.proto.
+	Active bool `protobuf:"varint,4,opt,name=active,proto3" json:"active,omitempty"`
 	// Types that are valid to be assigned to Settings:
 	//
 	//	*FederationSpec_SamlSettings
@@ -133,6 +183,7 @@ func (x *FederationSpec) GetUserAccountAutoCreation() bool {
 	return false
 }
 
+// Deprecated: Marked as deprecated in nebius/iam/v1/federation.proto.
 func (x *FederationSpec) GetActive() bool {
 	if x != nil {
 		return x.Active
@@ -229,6 +280,7 @@ func (x *SamlSettings) GetForceAuthn() bool {
 
 type FederationStatus struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
+	State             FederationStatus_State `protobuf:"varint,3,opt,name=state,proto3,enum=nebius.iam.v1.FederationStatus_State" json:"state,omitempty"`
 	UsersCount        int32                  `protobuf:"varint,1,opt,name=users_count,json=usersCount,proto3" json:"users_count,omitempty"`
 	CertificatesCount int32                  `protobuf:"varint,2,opt,name=certificates_count,json=certificatesCount,proto3" json:"certificates_count,omitempty"`
 	unknownFields     protoimpl.UnknownFields
@@ -265,6 +317,13 @@ func (*FederationStatus) Descriptor() ([]byte, []int) {
 	return file_nebius_iam_v1_federation_proto_rawDescGZIP(), []int{3}
 }
 
+func (x *FederationStatus) GetState() FederationStatus_State {
+	if x != nil {
+		return x.State
+	}
+	return FederationStatus_UNSPECIFIED
+}
+
 func (x *FederationStatus) GetUsersCount() int32 {
 	if x != nil {
 		return x.UsersCount
@@ -288,10 +347,10 @@ const file_nebius_iam_v1_federation_proto_rawDesc = "" +
 	"Federation\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.iam.v1.FederationSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.iam.v1.FederationStatusB\x04\xbaJ\x01\x05R\x06status\"\xc2\x01\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.iam.v1.FederationStatusB\x04\xbaJ\x01\x05R\x06status\"\xdc\x02\n" +
 	"\x0eFederationSpec\x12;\n" +
-	"\x1auser_account_auto_creation\x18\x01 \x01(\bR\x17userAccountAutoCreation\x12\x16\n" +
-	"\x06active\x18\x04 \x01(\bR\x06active\x12B\n" +
+	"\x1auser_account_auto_creation\x18\x01 \x01(\bR\x17userAccountAutoCreation\x12\xaf\x01\n" +
+	"\x06active\x18\x04 \x01(\bB\x96\x01\xd2J\x90\x01\x12\x8d\x01'active' field ignored. Use 'Activate/Deactivate' methods to manage federation state. A newly created federation is always active by default.\x18\x01R\x06active\x12B\n" +
 	"\rsaml_settings\x18\n" +
 	" \x01(\v2\x1b.nebius.iam.v1.SamlSettingsH\x00R\fsamlSettingsB\x11\n" +
 	"\bsettings\x12\x05\xbaH\x02\b\x01J\x04\b\x03\x10\x04\"g\n" +
@@ -300,11 +359,17 @@ const file_nebius_iam_v1_federation_proto_rawDesc = "" +
 	"idp_issuer\x18\x01 \x01(\tR\tidpIssuer\x12\x17\n" +
 	"\asso_url\x18\x02 \x01(\tR\x06ssoUrl\x12\x1f\n" +
 	"\vforce_authn\x18\x03 \x01(\bR\n" +
-	"forceAuthn\"b\n" +
-	"\x10FederationStatus\x12\x1f\n" +
+	"forceAuthn\"\xd3\x01\n" +
+	"\x10FederationStatus\x12;\n" +
+	"\x05state\x18\x03 \x01(\x0e2%.nebius.iam.v1.FederationStatus.StateR\x05state\x12\x1f\n" +
 	"\vusers_count\x18\x01 \x01(\x05R\n" +
 	"usersCount\x12-\n" +
-	"\x12certificates_count\x18\x02 \x01(\x05R\x11certificatesCountBV\n" +
+	"\x12certificates_count\x18\x02 \x01(\x05R\x11certificatesCount\"2\n" +
+	"\x05State\x12\x0f\n" +
+	"\vUNSPECIFIED\x10\x00\x12\n" +
+	"\n" +
+	"\x06ACTIVE\x10\x01\x12\f\n" +
+	"\bINACTIVE\x10\x02BV\n" +
 	"\x14ai.nebius.pub.iam.v1B\x0fFederationProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
 
 var (
@@ -319,24 +384,27 @@ func file_nebius_iam_v1_federation_proto_rawDescGZIP() []byte {
 	return file_nebius_iam_v1_federation_proto_rawDescData
 }
 
+var file_nebius_iam_v1_federation_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_nebius_iam_v1_federation_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_nebius_iam_v1_federation_proto_goTypes = []any{
-	(*Federation)(nil),          // 0: nebius.iam.v1.Federation
-	(*FederationSpec)(nil),      // 1: nebius.iam.v1.FederationSpec
-	(*SamlSettings)(nil),        // 2: nebius.iam.v1.SamlSettings
-	(*FederationStatus)(nil),    // 3: nebius.iam.v1.FederationStatus
-	(*v1.ResourceMetadata)(nil), // 4: nebius.common.v1.ResourceMetadata
+	(FederationStatus_State)(0), // 0: nebius.iam.v1.FederationStatus.State
+	(*Federation)(nil),          // 1: nebius.iam.v1.Federation
+	(*FederationSpec)(nil),      // 2: nebius.iam.v1.FederationSpec
+	(*SamlSettings)(nil),        // 3: nebius.iam.v1.SamlSettings
+	(*FederationStatus)(nil),    // 4: nebius.iam.v1.FederationStatus
+	(*v1.ResourceMetadata)(nil), // 5: nebius.common.v1.ResourceMetadata
 }
 var file_nebius_iam_v1_federation_proto_depIdxs = []int32{
-	4, // 0: nebius.iam.v1.Federation.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	1, // 1: nebius.iam.v1.Federation.spec:type_name -> nebius.iam.v1.FederationSpec
-	3, // 2: nebius.iam.v1.Federation.status:type_name -> nebius.iam.v1.FederationStatus
-	2, // 3: nebius.iam.v1.FederationSpec.saml_settings:type_name -> nebius.iam.v1.SamlSettings
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	5, // 0: nebius.iam.v1.Federation.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	2, // 1: nebius.iam.v1.Federation.spec:type_name -> nebius.iam.v1.FederationSpec
+	4, // 2: nebius.iam.v1.Federation.status:type_name -> nebius.iam.v1.FederationStatus
+	3, // 3: nebius.iam.v1.FederationSpec.saml_settings:type_name -> nebius.iam.v1.SamlSettings
+	0, // 4: nebius.iam.v1.FederationStatus.state:type_name -> nebius.iam.v1.FederationStatus.State
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_federation_proto_init() }
@@ -352,13 +420,14 @@ func file_nebius_iam_v1_federation_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_iam_v1_federation_proto_rawDesc), len(file_nebius_iam_v1_federation_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_nebius_iam_v1_federation_proto_goTypes,
 		DependencyIndexes: file_nebius_iam_v1_federation_proto_depIdxs,
+		EnumInfos:         file_nebius_iam_v1_federation_proto_enumTypes,
 		MessageInfos:      file_nebius_iam_v1_federation_proto_msgTypes,
 	}.Build()
 	File_nebius_iam_v1_federation_proto = out.File

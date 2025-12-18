@@ -198,8 +198,14 @@ type ImageSpec struct {
 	// part of identifier into the image family
 	Version         string                    `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
 	CpuArchitecture ImageSpec_CPUArchitecture `protobuf:"varint,6,opt,name=cpu_architecture,json=cpuArchitecture,proto3,enum=nebius.compute.v1.ImageSpec_CPUArchitecture" json:"cpu_architecture,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// human readable name for image family
+	ImageFamilyHumanReadable string `protobuf:"bytes,7,opt,name=image_family_human_readable,json=imageFamilyHumanReadable,proto3" json:"image_family_human_readable,omitempty"`
+	// list of platforms where this image is recommended to use
+	RecommendedPlatforms []string `protobuf:"bytes,8,rep,name=recommended_platforms,json=recommendedPlatforms,proto3" json:"recommended_platforms,omitempty"`
+	// list of platforms where this image is not supported with explanation
+	UnsupportedPlatforms map[string]string `protobuf:"bytes,9,rep,name=unsupported_platforms,json=unsupportedPlatforms,proto3" json:"unsupported_platforms,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *ImageSpec) Reset() {
@@ -258,6 +264,27 @@ func (x *ImageSpec) GetCpuArchitecture() ImageSpec_CPUArchitecture {
 		return x.CpuArchitecture
 	}
 	return ImageSpec_UNSPECIFIED
+}
+
+func (x *ImageSpec) GetImageFamilyHumanReadable() string {
+	if x != nil {
+		return x.ImageFamilyHumanReadable
+	}
+	return ""
+}
+
+func (x *ImageSpec) GetRecommendedPlatforms() []string {
+	if x != nil {
+		return x.RecommendedPlatforms
+	}
+	return nil
+}
+
+func (x *ImageSpec) GetUnsupportedPlatforms() map[string]string {
+	if x != nil {
+		return x.UnsupportedPlatforms
+	}
+	return nil
 }
 
 type ImageStatus struct {
@@ -356,7 +383,7 @@ type ImageStatus_ImageFamilyDeprecationStatus struct {
 
 func (x *ImageStatus_ImageFamilyDeprecationStatus) Reset() {
 	*x = ImageStatus_ImageFamilyDeprecationStatus{}
-	mi := &file_nebius_compute_v1_image_proto_msgTypes[3]
+	mi := &file_nebius_compute_v1_image_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -368,7 +395,7 @@ func (x *ImageStatus_ImageFamilyDeprecationStatus) String() string {
 func (*ImageStatus_ImageFamilyDeprecationStatus) ProtoMessage() {}
 
 func (x *ImageStatus_ImageFamilyDeprecationStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_image_proto_msgTypes[3]
+	mi := &file_nebius_compute_v1_image_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -406,12 +433,18 @@ const file_nebius_compute_v1_image_proto_rawDesc = "" +
 	"\x05Image\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\x126\n" +
-	"\x06status\x18\x03 \x01(\v2\x1e.nebius.compute.v1.ImageStatusR\x06status\"\xaa\x02\n" +
+	"\x06status\x18\x03 \x01(\v2\x1e.nebius.compute.v1.ImageStatusR\x06status\"\xe6\x04\n" +
 	"\tImageSpec\x12+\n" +
 	"\vdescription\x18\x01 \x01(\tB\x04\xbaJ\x01\x02H\x00R\vdescription\x88\x01\x01\x12'\n" +
 	"\fimage_family\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\vimageFamily\x12\x1e\n" +
 	"\aversion\x18\x03 \x01(\tB\x04\xbaJ\x01\x02R\aversion\x12]\n" +
-	"\x10cpu_architecture\x18\x06 \x01(\x0e2,.nebius.compute.v1.ImageSpec.CPUArchitectureB\x04\xbaJ\x01\x02R\x0fcpuArchitecture\"8\n" +
+	"\x10cpu_architecture\x18\x06 \x01(\x0e2,.nebius.compute.v1.ImageSpec.CPUArchitectureB\x04\xbaJ\x01\x02R\x0fcpuArchitecture\x12C\n" +
+	"\x1bimage_family_human_readable\x18\a \x01(\tB\x04\xbaJ\x01\x02R\x18imageFamilyHumanReadable\x129\n" +
+	"\x15recommended_platforms\x18\b \x03(\tB\x04\xbaJ\x01\x02R\x14recommendedPlatforms\x12q\n" +
+	"\x15unsupported_platforms\x18\t \x03(\v26.nebius.compute.v1.ImageSpec.UnsupportedPlatformsEntryB\x04\xbaJ\x01\x02R\x14unsupportedPlatforms\x1aG\n" +
+	"\x19UnsupportedPlatformsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"8\n" +
 	"\x0fCPUArchitecture\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05AMD64\x10\x01\x12\t\n" +
@@ -450,30 +483,32 @@ func file_nebius_compute_v1_image_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_compute_v1_image_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_nebius_compute_v1_image_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_nebius_compute_v1_image_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_nebius_compute_v1_image_proto_goTypes = []any{
-	(ImageSpec_CPUArchitecture)(0),                   // 0: nebius.compute.v1.ImageSpec.CPUArchitecture
-	(ImageStatus_State)(0),                           // 1: nebius.compute.v1.ImageStatus.State
-	(*Image)(nil),                                    // 2: nebius.compute.v1.Image
-	(*ImageSpec)(nil),                                // 3: nebius.compute.v1.ImageSpec
-	(*ImageStatus)(nil),                              // 4: nebius.compute.v1.ImageStatus
-	(*ImageStatus_ImageFamilyDeprecationStatus)(nil), // 5: nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus
-	(*v1.ResourceMetadata)(nil),                      // 6: nebius.common.v1.ResourceMetadata
-	(*timestamppb.Timestamp)(nil),                    // 7: google.protobuf.Timestamp
+	(ImageSpec_CPUArchitecture)(0), // 0: nebius.compute.v1.ImageSpec.CPUArchitecture
+	(ImageStatus_State)(0),         // 1: nebius.compute.v1.ImageStatus.State
+	(*Image)(nil),                  // 2: nebius.compute.v1.Image
+	(*ImageSpec)(nil),              // 3: nebius.compute.v1.ImageSpec
+	(*ImageStatus)(nil),            // 4: nebius.compute.v1.ImageStatus
+	nil,                            // 5: nebius.compute.v1.ImageSpec.UnsupportedPlatformsEntry
+	(*ImageStatus_ImageFamilyDeprecationStatus)(nil), // 6: nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus
+	(*v1.ResourceMetadata)(nil),                      // 7: nebius.common.v1.ResourceMetadata
+	(*timestamppb.Timestamp)(nil),                    // 8: google.protobuf.Timestamp
 }
 var file_nebius_compute_v1_image_proto_depIdxs = []int32{
-	6, // 0: nebius.compute.v1.Image.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	7, // 0: nebius.compute.v1.Image.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	3, // 1: nebius.compute.v1.Image.spec:type_name -> nebius.compute.v1.ImageSpec
 	4, // 2: nebius.compute.v1.Image.status:type_name -> nebius.compute.v1.ImageStatus
 	0, // 3: nebius.compute.v1.ImageSpec.cpu_architecture:type_name -> nebius.compute.v1.ImageSpec.CPUArchitecture
-	1, // 4: nebius.compute.v1.ImageStatus.state:type_name -> nebius.compute.v1.ImageStatus.State
-	5, // 5: nebius.compute.v1.ImageStatus.image_family_deprecation:type_name -> nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus
-	7, // 6: nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus.deprecated_at:type_name -> google.protobuf.Timestamp
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	5, // 4: nebius.compute.v1.ImageSpec.unsupported_platforms:type_name -> nebius.compute.v1.ImageSpec.UnsupportedPlatformsEntry
+	1, // 5: nebius.compute.v1.ImageStatus.state:type_name -> nebius.compute.v1.ImageStatus.State
+	6, // 6: nebius.compute.v1.ImageStatus.image_family_deprecation:type_name -> nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus
+	8, // 7: nebius.compute.v1.ImageStatus.ImageFamilyDeprecationStatus.deprecated_at:type_name -> google.protobuf.Timestamp
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_image_proto_init() }
@@ -488,7 +523,7 @@ func file_nebius_compute_v1_image_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_image_proto_rawDesc), len(file_nebius_compute_v1_image_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

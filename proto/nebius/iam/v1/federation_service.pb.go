@@ -242,10 +242,11 @@ func (x *ListFederationsResponse) GetNextPageToken() string {
 }
 
 type UpdateFederationRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *FederationSpec        `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	Status        *FederationStatus      `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Metadata *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec     *FederationSpec        `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	// Deprecated: Marked as deprecated in nebius/iam/v1/federation_service.proto.
+	Status        *FederationStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -294,11 +295,100 @@ func (x *UpdateFederationRequest) GetSpec() *FederationSpec {
 	return nil
 }
 
+// Deprecated: Marked as deprecated in nebius/iam/v1/federation_service.proto.
 func (x *UpdateFederationRequest) GetStatus() *FederationStatus {
 	if x != nil {
 		return x.Status
 	}
 	return nil
+}
+
+type ActivateFederationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FederationId  string                 `protobuf:"bytes,1,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateFederationRequest) Reset() {
+	*x = ActivateFederationRequest{}
+	mi := &file_nebius_iam_v1_federation_service_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateFederationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateFederationRequest) ProtoMessage() {}
+
+func (x *ActivateFederationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_iam_v1_federation_service_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateFederationRequest.ProtoReflect.Descriptor instead.
+func (*ActivateFederationRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_iam_v1_federation_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ActivateFederationRequest) GetFederationId() string {
+	if x != nil {
+		return x.FederationId
+	}
+	return ""
+}
+
+type DeactivateFederationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FederationId  string                 `protobuf:"bytes,1,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeactivateFederationRequest) Reset() {
+	*x = DeactivateFederationRequest{}
+	mi := &file_nebius_iam_v1_federation_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateFederationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateFederationRequest) ProtoMessage() {}
+
+func (x *DeactivateFederationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_iam_v1_federation_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateFederationRequest.ProtoReflect.Descriptor instead.
+func (*DeactivateFederationRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_iam_v1_federation_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *DeactivateFederationRequest) GetFederationId() string {
+	if x != nil {
+		return x.FederationId
+	}
+	return ""
 }
 
 type DeleteFederationRequest struct {
@@ -310,7 +400,7 @@ type DeleteFederationRequest struct {
 
 func (x *DeleteFederationRequest) Reset() {
 	*x = DeleteFederationRequest{}
-	mi := &file_nebius_iam_v1_federation_service_proto_msgTypes[5]
+	mi := &file_nebius_iam_v1_federation_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -322,7 +412,7 @@ func (x *DeleteFederationRequest) String() string {
 func (*DeleteFederationRequest) ProtoMessage() {}
 
 func (x *DeleteFederationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_iam_v1_federation_service_proto_msgTypes[5]
+	mi := &file_nebius_iam_v1_federation_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -335,7 +425,7 @@ func (x *DeleteFederationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFederationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteFederationRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_iam_v1_federation_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_iam_v1_federation_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *DeleteFederationRequest) GetId() string {
@@ -363,19 +453,26 @@ const file_nebius_iam_v1_federation_service_proto_rawDesc = "" +
 	"\x06filter\x18\x04 \x01(\tR\x06filter\"r\n" +
 	"\x17ListFederationsResponse\x12/\n" +
 	"\x05items\x18\x01 \x03(\v2\x19.nebius.iam.v1.FederationR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xc5\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xf6\x01\n" +
 	"\x17UpdateFederationRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.iam.v1.FederationSpecR\x04spec\x127\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.iam.v1.FederationStatusR\x06status\"1\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.iam.v1.FederationSpecR\x04spec\x12h\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.iam.v1.FederationStatusB/\xd2J*\x12('status' is ignored for update requests.\x18\x01R\x06status\"H\n" +
+	"\x19ActivateFederationRequest\x12+\n" +
+	"\rfederation_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\ffederationId\"J\n" +
+	"\x1bDeactivateFederationRequest\x12+\n" +
+	"\rfederation_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\ffederationId\"1\n" +
 	"\x17DeleteFederationRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xf6\x03\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xa0\x05\n" +
 	"\x11FederationService\x12M\n" +
 	"\x06Create\x12&.nebius.iam.v1.CreateFederationRequest\x1a\x1b.nebius.common.v1.Operation\x12E\n" +
 	"\x03Get\x12#.nebius.iam.v1.GetFederationRequest\x1a\x19.nebius.iam.v1.Federation\x12J\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x19.nebius.iam.v1.Federation\x12U\n" +
 	"\x04List\x12%.nebius.iam.v1.ListFederationsRequest\x1a&.nebius.iam.v1.ListFederationsResponse\x12M\n" +
-	"\x06Update\x12&.nebius.iam.v1.UpdateFederationRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
+	"\x06Update\x12&.nebius.iam.v1.UpdateFederationRequest\x1a\x1b.nebius.common.v1.Operation\x12Q\n" +
+	"\bActivate\x12(.nebius.iam.v1.ActivateFederationRequest\x1a\x1b.nebius.common.v1.Operation\x12U\n" +
+	"\n" +
+	"Deactivate\x12*.nebius.iam.v1.DeactivateFederationRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Delete\x12&.nebius.iam.v1.DeleteFederationRequest\x1a\x1b.nebius.common.v1.Operation\x1a\n" +
 	"\xbaJ\acpl.iamB]\n" +
 	"\x14ai.nebius.pub.iam.v1B\x16FederationServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
@@ -392,42 +489,48 @@ func file_nebius_iam_v1_federation_service_proto_rawDescGZIP() []byte {
 	return file_nebius_iam_v1_federation_service_proto_rawDescData
 }
 
-var file_nebius_iam_v1_federation_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_nebius_iam_v1_federation_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_iam_v1_federation_service_proto_goTypes = []any{
-	(*CreateFederationRequest)(nil), // 0: nebius.iam.v1.CreateFederationRequest
-	(*GetFederationRequest)(nil),    // 1: nebius.iam.v1.GetFederationRequest
-	(*ListFederationsRequest)(nil),  // 2: nebius.iam.v1.ListFederationsRequest
-	(*ListFederationsResponse)(nil), // 3: nebius.iam.v1.ListFederationsResponse
-	(*UpdateFederationRequest)(nil), // 4: nebius.iam.v1.UpdateFederationRequest
-	(*DeleteFederationRequest)(nil), // 5: nebius.iam.v1.DeleteFederationRequest
-	(*v1.ResourceMetadata)(nil),     // 6: nebius.common.v1.ResourceMetadata
-	(*FederationSpec)(nil),          // 7: nebius.iam.v1.FederationSpec
-	(*Federation)(nil),              // 8: nebius.iam.v1.Federation
-	(*FederationStatus)(nil),        // 9: nebius.iam.v1.FederationStatus
-	(*v1.GetByNameRequest)(nil),     // 10: nebius.common.v1.GetByNameRequest
-	(*v1.Operation)(nil),            // 11: nebius.common.v1.Operation
+	(*CreateFederationRequest)(nil),     // 0: nebius.iam.v1.CreateFederationRequest
+	(*GetFederationRequest)(nil),        // 1: nebius.iam.v1.GetFederationRequest
+	(*ListFederationsRequest)(nil),      // 2: nebius.iam.v1.ListFederationsRequest
+	(*ListFederationsResponse)(nil),     // 3: nebius.iam.v1.ListFederationsResponse
+	(*UpdateFederationRequest)(nil),     // 4: nebius.iam.v1.UpdateFederationRequest
+	(*ActivateFederationRequest)(nil),   // 5: nebius.iam.v1.ActivateFederationRequest
+	(*DeactivateFederationRequest)(nil), // 6: nebius.iam.v1.DeactivateFederationRequest
+	(*DeleteFederationRequest)(nil),     // 7: nebius.iam.v1.DeleteFederationRequest
+	(*v1.ResourceMetadata)(nil),         // 8: nebius.common.v1.ResourceMetadata
+	(*FederationSpec)(nil),              // 9: nebius.iam.v1.FederationSpec
+	(*Federation)(nil),                  // 10: nebius.iam.v1.Federation
+	(*FederationStatus)(nil),            // 11: nebius.iam.v1.FederationStatus
+	(*v1.GetByNameRequest)(nil),         // 12: nebius.common.v1.GetByNameRequest
+	(*v1.Operation)(nil),                // 13: nebius.common.v1.Operation
 }
 var file_nebius_iam_v1_federation_service_proto_depIdxs = []int32{
-	6,  // 0: nebius.iam.v1.CreateFederationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	7,  // 1: nebius.iam.v1.CreateFederationRequest.spec:type_name -> nebius.iam.v1.FederationSpec
-	8,  // 2: nebius.iam.v1.ListFederationsResponse.items:type_name -> nebius.iam.v1.Federation
-	6,  // 3: nebius.iam.v1.UpdateFederationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	7,  // 4: nebius.iam.v1.UpdateFederationRequest.spec:type_name -> nebius.iam.v1.FederationSpec
-	9,  // 5: nebius.iam.v1.UpdateFederationRequest.status:type_name -> nebius.iam.v1.FederationStatus
+	8,  // 0: nebius.iam.v1.CreateFederationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	9,  // 1: nebius.iam.v1.CreateFederationRequest.spec:type_name -> nebius.iam.v1.FederationSpec
+	10, // 2: nebius.iam.v1.ListFederationsResponse.items:type_name -> nebius.iam.v1.Federation
+	8,  // 3: nebius.iam.v1.UpdateFederationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	9,  // 4: nebius.iam.v1.UpdateFederationRequest.spec:type_name -> nebius.iam.v1.FederationSpec
+	11, // 5: nebius.iam.v1.UpdateFederationRequest.status:type_name -> nebius.iam.v1.FederationStatus
 	0,  // 6: nebius.iam.v1.FederationService.Create:input_type -> nebius.iam.v1.CreateFederationRequest
 	1,  // 7: nebius.iam.v1.FederationService.Get:input_type -> nebius.iam.v1.GetFederationRequest
-	10, // 8: nebius.iam.v1.FederationService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	12, // 8: nebius.iam.v1.FederationService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
 	2,  // 9: nebius.iam.v1.FederationService.List:input_type -> nebius.iam.v1.ListFederationsRequest
 	4,  // 10: nebius.iam.v1.FederationService.Update:input_type -> nebius.iam.v1.UpdateFederationRequest
-	5,  // 11: nebius.iam.v1.FederationService.Delete:input_type -> nebius.iam.v1.DeleteFederationRequest
-	11, // 12: nebius.iam.v1.FederationService.Create:output_type -> nebius.common.v1.Operation
-	8,  // 13: nebius.iam.v1.FederationService.Get:output_type -> nebius.iam.v1.Federation
-	8,  // 14: nebius.iam.v1.FederationService.GetByName:output_type -> nebius.iam.v1.Federation
-	3,  // 15: nebius.iam.v1.FederationService.List:output_type -> nebius.iam.v1.ListFederationsResponse
-	11, // 16: nebius.iam.v1.FederationService.Update:output_type -> nebius.common.v1.Operation
-	11, // 17: nebius.iam.v1.FederationService.Delete:output_type -> nebius.common.v1.Operation
-	12, // [12:18] is the sub-list for method output_type
-	6,  // [6:12] is the sub-list for method input_type
+	5,  // 11: nebius.iam.v1.FederationService.Activate:input_type -> nebius.iam.v1.ActivateFederationRequest
+	6,  // 12: nebius.iam.v1.FederationService.Deactivate:input_type -> nebius.iam.v1.DeactivateFederationRequest
+	7,  // 13: nebius.iam.v1.FederationService.Delete:input_type -> nebius.iam.v1.DeleteFederationRequest
+	13, // 14: nebius.iam.v1.FederationService.Create:output_type -> nebius.common.v1.Operation
+	10, // 15: nebius.iam.v1.FederationService.Get:output_type -> nebius.iam.v1.Federation
+	10, // 16: nebius.iam.v1.FederationService.GetByName:output_type -> nebius.iam.v1.Federation
+	3,  // 17: nebius.iam.v1.FederationService.List:output_type -> nebius.iam.v1.ListFederationsResponse
+	13, // 18: nebius.iam.v1.FederationService.Update:output_type -> nebius.common.v1.Operation
+	13, // 19: nebius.iam.v1.FederationService.Activate:output_type -> nebius.common.v1.Operation
+	13, // 20: nebius.iam.v1.FederationService.Deactivate:output_type -> nebius.common.v1.Operation
+	13, // 21: nebius.iam.v1.FederationService.Delete:output_type -> nebius.common.v1.Operation
+	14, // [14:22] is the sub-list for method output_type
+	6,  // [6:14] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
@@ -445,7 +548,7 @@ func file_nebius_iam_v1_federation_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_iam_v1_federation_service_proto_rawDesc), len(file_nebius_iam_v1_federation_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
