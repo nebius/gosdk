@@ -13,3 +13,6 @@ package v1
 
 // func (x *ListImagesResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListImagesResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ListPublicRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListPublicRequest) LogValue() slog.Value // is not generated as no sensitive fields found
