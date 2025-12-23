@@ -25,6 +25,7 @@ const (
 	ImageService_GetLatestByFamily_FullMethodName      = "/nebius.compute.v1.ImageService/GetLatestByFamily"
 	ImageService_List_FullMethodName                   = "/nebius.compute.v1.ImageService/List"
 	ImageService_ListOperationsByParent_FullMethodName = "/nebius.compute.v1.ImageService/ListOperationsByParent"
+	ImageService_ListPublic_FullMethodName             = "/nebius.compute.v1.ImageService/ListPublic"
 )
 
 // ImageServiceClient is the client API for ImageService service.
@@ -42,6 +43,11 @@ type ImageServiceClient interface {
 	List(ctx context.Context, in *ListImagesRequest, opts ...grpc.CallOption) (*ListImagesResponse, error)
 	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(ctx context.Context, in *ListOperationsByParentRequest, opts ...grpc.CallOption) (*v1.ListOperationsResponse, error)
+	// Lists all public images available in a specific region. Regions doc https://docs.nebius.com/overview/regions
+	// Public images can contain specific labels in metadata like:
+	// "os_name: Ubuntu", "os_version: 22.04 LTS", "linux_kernel: 5.15", "cuda_toolkit: 13.0"
+	// "nvidia_gpu_drivers: 550", "networking_package: OFED 23.10"
+	ListPublic(ctx context.Context, in *ListPublicRequest, opts ...grpc.CallOption) (*ListImagesResponse, error)
 }
 
 type imageServiceClient struct {
@@ -97,6 +103,15 @@ func (c *imageServiceClient) ListOperationsByParent(ctx context.Context, in *Lis
 	return out, nil
 }
 
+func (c *imageServiceClient) ListPublic(ctx context.Context, in *ListPublicRequest, opts ...grpc.CallOption) (*ListImagesResponse, error) {
+	out := new(ListImagesResponse)
+	err := c.cc.Invoke(ctx, ImageService_ListPublic_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImageServiceServer is the server API for ImageService service.
 // All implementations should embed UnimplementedImageServiceServer
 // for forward compatibility
@@ -112,6 +127,11 @@ type ImageServiceServer interface {
 	List(context.Context, *ListImagesRequest) (*ListImagesResponse, error)
 	// Lists all operations that were performed within a specific parent resource.
 	ListOperationsByParent(context.Context, *ListOperationsByParentRequest) (*v1.ListOperationsResponse, error)
+	// Lists all public images available in a specific region. Regions doc https://docs.nebius.com/overview/regions
+	// Public images can contain specific labels in metadata like:
+	// "os_name: Ubuntu", "os_version: 22.04 LTS", "linux_kernel: 5.15", "cuda_toolkit: 13.0"
+	// "nvidia_gpu_drivers: 550", "networking_package: OFED 23.10"
+	ListPublic(context.Context, *ListPublicRequest) (*ListImagesResponse, error)
 }
 
 // UnimplementedImageServiceServer should be embedded to have forward compatible implementations.
@@ -132,6 +152,9 @@ func (UnimplementedImageServiceServer) List(context.Context, *ListImagesRequest)
 }
 func (UnimplementedImageServiceServer) ListOperationsByParent(context.Context, *ListOperationsByParentRequest) (*v1.ListOperationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOperationsByParent not implemented")
+}
+func (UnimplementedImageServiceServer) ListPublic(context.Context, *ListPublicRequest) (*ListImagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPublic not implemented")
 }
 
 // UnsafeImageServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -235,6 +258,24 @@ func _ImageService_ListOperationsByParent_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImageService_ListPublic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPublicRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImageServiceServer).ListPublic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImageService_ListPublic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImageServiceServer).ListPublic(ctx, req.(*ListPublicRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImageService_ServiceDesc is the grpc.ServiceDesc for ImageService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -261,6 +302,10 @@ var ImageService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListOperationsByParent",
 			Handler:    _ImageService_ListOperationsByParent_Handler,
+		},
+		{
+			MethodName: "ListPublic",
+			Handler:    _ImageService_ListPublic_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

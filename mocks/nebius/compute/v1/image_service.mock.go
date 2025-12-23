@@ -305,3 +305,47 @@ func (c *MockImageServiceListOperationsByParentCall) DoAndReturn(f func(context.
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// ListPublic mocks base method.
+func (m *MockImageService) ListPublic(arg0 context.Context, arg1 *v10.ListPublicRequest, arg2 ...grpc.CallOption) (*v10.ListImagesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListPublic", varargs...)
+	ret0, _ := ret[0].(*v10.ListImagesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListPublic indicates an expected call of ListPublic.
+func (mr *MockImageServiceMockRecorder) ListPublic(arg0, arg1 any, arg2 ...any) *MockImageServiceListPublicCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPublic", reflect.TypeOf((*MockImageService)(nil).ListPublic), varargs...)
+	return &MockImageServiceListPublicCall{Call: call}
+}
+
+// MockImageServiceListPublicCall wrap *gomock.Call
+type MockImageServiceListPublicCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockImageServiceListPublicCall) Return(arg0 *v10.ListImagesResponse, arg1 error) *MockImageServiceListPublicCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockImageServiceListPublicCall) Do(f func(context.Context, *v10.ListPublicRequest, ...grpc.CallOption) (*v10.ListImagesResponse, error)) *MockImageServiceListPublicCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockImageServiceListPublicCall) DoAndReturn(f func(context.Context, *v10.ListPublicRequest, ...grpc.CallOption) (*v10.ListImagesResponse, error)) *MockImageServiceListPublicCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}

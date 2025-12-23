@@ -32,6 +32,7 @@ type ImageService interface {
 	List(context.Context, *v1.ListImagesRequest, ...grpc.CallOption) (*v1.ListImagesResponse, error)
 	Filter(context.Context, *v1.ListImagesRequest, ...grpc.CallOption) iter.Seq2[*v1.Image, error]
 	ListOperationsByParent(context.Context, *v1.ListOperationsByParentRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
+	ListPublic(context.Context, *v1.ListPublicRequest, ...grpc.CallOption) (*v1.ListImagesResponse, error)
 }
 
 type imageService struct {
@@ -181,4 +182,24 @@ func (s imageService) ListOperationsByParent(ctx context.Context, request *v1.Li
 		return nil, err
 	}
 	return v1.NewImageServiceClient(con).ListOperationsByParent(ctx, request, opts...)
+}
+
+func (s imageService) ListPublic(ctx context.Context, request *v1.ListPublicRequest, opts ...grpc.CallOption) (
+	*v1.ListImagesResponse,
+	error,
+) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, ImageServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewImageServiceClient(con).ListPublic(ctx, request, opts...)
 }
