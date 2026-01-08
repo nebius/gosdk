@@ -233,6 +233,13 @@ func (r *configReader) ParentID() string {
 	return r.profile.ParentID
 }
 
+func (r *configReader) TenantID() string {
+	if r.noParentID {
+		return ""
+	}
+	return r.profile.TenantID
+}
+
 func (r *configReader) Endpoint() string {
 	if r.customEndpoint != "" {
 		return r.customEndpoint

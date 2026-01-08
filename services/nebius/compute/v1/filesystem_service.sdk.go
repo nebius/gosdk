@@ -80,6 +80,13 @@ func (s filesystemService) GetByName(ctx context.Context, request *v11.GetByName
 				request.ParentId = parentID
 			}
 		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
 		for path, warning := range check_nid.CheckMessageFields(request) {
@@ -105,6 +112,13 @@ func (s filesystemService) List(ctx context.Context, request *v1.ListFilesystems
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, nil) == "" {
 				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
 			}
 		}
 	}
@@ -155,6 +169,16 @@ func (s filesystemService) Create(ctx context.Context, request *v1.CreateFilesys
 ) {
 	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
+		if tenantID := s.sdk.TenantID(); tenantID != "" {
+			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = tenantID
+				request.Metadata = md
+			}
+		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
 				md := request.GetMetadata()

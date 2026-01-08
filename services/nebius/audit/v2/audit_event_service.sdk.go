@@ -49,6 +49,13 @@ func (s auditEventService) List(ctx context.Context, request *v2.ListAuditEventR
 				request.ParentId = parentID
 			}
 		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
 		for path, warning := range check_nid.CheckMessageFields(request) {

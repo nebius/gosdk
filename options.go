@@ -152,6 +152,15 @@ func WithoutParentID() Option {
 	return optionNoParentID(true)
 }
 
+// WithTenantID sets the default tenant ID for all requests that need a tenant as a parent ID.
+// This can be overridden by methods that accept a parent ID parameter.
+//
+// If no tenant ID is set (the default), methods that require a tenant as a parent ID will
+// return an error if the parent ID is not provided in the method call.
+func WithTenantID(tenantID string) Option {
+	return optionTenantID(tenantID)
+}
+
 type (
 	optionCredentials    struct{ creds Credentials }
 	optionLogger         struct{ handler slog.Handler }
@@ -174,6 +183,7 @@ type (
 	optionConfigReader struct{ configReader config.ConfigInterface }
 	optionParentID     string
 	optionNoParentID   bool
+	optionTenantID     string
 )
 
 func (optionCredentials) option()    {}
@@ -193,6 +203,7 @@ func (optionConfigReader) option()    {}
 func (optionParentID) option()        {}
 func (optionAuthTimeout) option()     {}
 func (optionNoParentID) option()      {}
+func (optionTenantID) option()        {}
 
 type NoopHandler struct{}
 

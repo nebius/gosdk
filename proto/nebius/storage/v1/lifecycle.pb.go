@@ -941,16 +941,16 @@ const file_nebius_storage_v1_lifecycle_proto_rawDesc = "" +
 	"\x0fLifecycleFilter\x12\x16\n" +
 	"\x06prefix\x18\x01 \x01(\tR\x06prefix\x12B\n" +
 	"\x1eobject_size_greater_than_bytes\x18\x02 \x01(\x03R\x1aobjectSizeGreaterThanBytes\x12<\n" +
-	"\x1bobject_size_less_than_bytes\x18\x03 \x01(\x03R\x17objectSizeLessThanBytes\"\x9d\x04\n" +
+	"\x1bobject_size_less_than_bytes\x18\x03 \x01(\x03R\x17objectSizeLessThanBytes\"\xa4\x04\n" +
 	"\x15LifecycleAccessFilter\x12\\\n" +
 	"\n" +
 	"conditions\x18\x01 \x03(\v22.nebius.storage.v1.LifecycleAccessFilter.ConditionB\b\xbaH\x05\x92\x01\x02\x10dR\n" +
-	"conditions\x1a\xa5\x03\n" +
+	"conditions\x1a\xac\x03\n" +
 	"\tCondition\x12S\n" +
 	"\x04type\x18\x01 \x01(\x0e27.nebius.storage.v1.LifecycleAccessFilter.Condition.TypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12]\n" +
 	"\amethods\x18\x02 \x03(\x0e29.nebius.storage.v1.LifecycleAccessFilter.Condition.MethodB\b\xbaH\x05\x92\x01\x02\x10\n" +
-	"R\amethods\x12)\n" +
-	"\vuser_agents\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x10dR\n" +
+	"R\amethods\x120\n" +
+	"\vuser_agents\x18\x03 \x03(\tB\x0f\xbaH\f\x92\x01\t\x10d\"\x05r\x03\x18\xc8\x01R\n" +
 	"userAgents\"6\n" +
 	"\x04Type\x12\x14\n" +
 	"\x10TYPE_UNSPECIFIED\x10\x00\x12\v\n" +

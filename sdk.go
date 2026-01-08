@@ -37,6 +37,7 @@ type SDK struct {
 	closes   []func() error
 	isClosed atomic.Bool
 	parentID string
+	tenantID string
 	logger   *slog.Logger
 }
 
@@ -86,6 +87,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var configReader config.ConfigInterface = nil
 	var parentID string
 	var noParentID bool
+	var tenantID string
 	retryOpts := []retry.CallOption{}
 	for _, opt := range opts {
 		switch o := opt.(type) {
@@ -139,6 +141,8 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			noParentID = false // to ensure that WithParentID overrides the previous WithNoParentID
 		case optionNoParentID:
 			noParentID = bool(o)
+		case optionTenantID:
+			tenantID = string(o)
 		}
 	}
 	logger := slog.New(handler)
@@ -186,6 +190,9 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		}
 		if parentID == "" {
 			parentID = configReader.ParentID()
+		}
+		if tenantID == "" {
+			tenantID = configReader.TenantID()
 		}
 
 	}
@@ -319,7 +326,8 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 
 	if noParentID {
 		parentID = ""
-		logger.DebugContext(ctx, "parent ID is disabled by options")
+		tenantID = ""
+		logger.DebugContext(ctx, "parent and tenant ID are disabled by options")
 	}
 
 	sdk = &SDK{
@@ -340,6 +348,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		ctx:      sdkContext,
 		cancel:   cancel,
 		parentID: parentID,
+		tenantID: tenantID,
 		logger:   logger,
 	}
 
@@ -383,6 +392,11 @@ func (s *SDK) Init(ctx context.Context) error {
 // ParentID returns the parent ID saved in the SDK, if any.
 func (s *SDK) ParentID() string {
 	return s.parentID
+}
+
+// TenantID returns the tenant ID saved in the SDK, if any.
+func (s *SDK) TenantID() string {
+	return s.tenantID
 }
 
 // Services is a fluent interface to get a Nebius service client.

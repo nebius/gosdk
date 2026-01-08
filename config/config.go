@@ -41,6 +41,7 @@ type Profile struct {
 	FederatedSubjectCredentialsFilePath string `yaml:"federated-subject-credentials-file-path,omitempty"`
 
 	ParentID string `yaml:"parent-id,omitempty"`
+	TenantID string `yaml:"tenant-id,omitempty"`
 }
 
 func (p *Profile) LogValue() slog.Value {
@@ -58,6 +59,7 @@ func (p *Profile) LogValue() slog.Value {
 		"federated-subject-credentials-file-path": p.FederatedSubjectCredentialsFilePath,
 		"auth-type":  p.AuthType,
 		"parent-id":  p.ParentID,
+		"tenant-id":  p.TenantID,
 		"token-file": p.TokenFile,
 	})
 }

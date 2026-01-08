@@ -12,6 +12,7 @@ type Option interface {
 
 type ConfigInterface interface {
 	ParentID() string
+	TenantID() string
 	Endpoint() string
 	GetCredentials(context.Context) (auth.BearerTokener, error)
 	GetAuthType() AuthType
