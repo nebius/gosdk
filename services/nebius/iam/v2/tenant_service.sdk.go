@@ -77,6 +77,13 @@ func (s tenantService) GetByName(ctx context.Context, request *v2.GetTenantByNam
 				request.ParentId = parentID
 			}
 		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
 		for path, warning := range check_nid.CheckMessageFields(request) {

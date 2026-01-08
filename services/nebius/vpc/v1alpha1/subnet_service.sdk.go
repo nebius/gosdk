@@ -72,6 +72,13 @@ func (s subnetService) GetByName(ctx context.Context, request *v1alpha1.GetSubne
 				request.ParentId = parentID
 			}
 		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
 		for path, warning := range check_nid.CheckMessageFields(request) {
@@ -97,6 +104,13 @@ func (s subnetService) List(ctx context.Context, request *v1alpha1.ListSubnetsRe
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, nil) == "" {
 				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
 			}
 		}
 	}

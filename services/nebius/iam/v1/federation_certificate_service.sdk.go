@@ -52,6 +52,16 @@ func (s federationCertificateService) Create(ctx context.Context, request *v1.Cr
 ) {
 	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
+		if tenantID := s.sdk.TenantID(); tenantID != "" {
+			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = tenantID
+				request.Metadata = md
+			}
+		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
 				md := request.GetMetadata()

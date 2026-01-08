@@ -53,6 +53,16 @@ func (s secretVersionService) Create(ctx context.Context, request *v1.CreateSecr
 ) {
 	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
+		if tenantID := s.sdk.TenantID(); tenantID != "" {
+			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = tenantID
+				request.Metadata = md
+			}
+		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
 				md := request.GetMetadata()
@@ -115,6 +125,13 @@ func (s secretVersionService) List(ctx context.Context, request *v1.ListSecretVe
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, nil) == "" {
 				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
 			}
 		}
 	}

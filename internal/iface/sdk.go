@@ -19,6 +19,7 @@ type SDKWithParentID interface {
 	SDK
 	WithLogger
 	ParentID() string
+	TenantID() string
 }
 
 var _ SDKWithParentID = (*SDKWithNoParentID)(nil)
@@ -29,6 +30,9 @@ type SDKWithNoParentID struct {
 }
 
 func (s *SDKWithNoParentID) ParentID() string {
+	return ""
+}
+func (s *SDKWithNoParentID) TenantID() string {
 	return ""
 }
 

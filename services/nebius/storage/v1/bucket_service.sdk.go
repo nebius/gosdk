@@ -81,6 +81,13 @@ func (s bucketService) GetByName(ctx context.Context, request *v1.GetBucketByNam
 				request.ParentId = parentID
 			}
 		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
 		for path, warning := range check_nid.CheckMessageFields(request) {
@@ -106,6 +113,13 @@ func (s bucketService) List(ctx context.Context, request *v1.ListBucketsRequest,
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, nil) == "" {
 				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
 			}
 		}
 	}
@@ -156,6 +170,16 @@ func (s bucketService) Create(ctx context.Context, request *v1.CreateBucketReque
 ) {
 	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
+		if tenantID := s.sdk.TenantID(); tenantID != "" {
+			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = tenantID
+				request.Metadata = md
+			}
+		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
 				md := request.GetMetadata()
