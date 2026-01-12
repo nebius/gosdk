@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 
 	iter "github.com/nebius/gosdk/iter"
+	operations "github.com/nebius/gosdk/operations"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v10 "github.com/nebius/gosdk/proto/nebius/compute/v1"
 	gomock "go.uber.org/mock/gomock"
@@ -41,6 +42,50 @@ func NewMockImageService(ctrl *gomock.Controller) *MockImageService {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockImageService) EXPECT() *MockImageServiceMockRecorder {
 	return m.recorder
+}
+
+// Create mocks base method.
+func (m *MockImageService) Create(arg0 context.Context, arg1 *v10.CreateImageRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockImageServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockImageServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockImageService)(nil).Create), varargs...)
+	return &MockImageServiceCreateCall{Call: call}
+}
+
+// MockImageServiceCreateCall wrap *gomock.Call
+type MockImageServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockImageServiceCreateCall) Return(arg0 operations.Operation, arg1 error) *MockImageServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockImageServiceCreateCall) Do(f func(context.Context, *v10.CreateImageRequest, ...grpc.CallOption) (operations.Operation, error)) *MockImageServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockImageServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreateImageRequest, ...grpc.CallOption) (operations.Operation, error)) *MockImageServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
 }
 
 // Filter mocks base method.
@@ -218,6 +263,50 @@ func (c *MockImageServiceGetLatestByFamilyCall) DoAndReturn(f func(context.Conte
 	return c
 }
 
+// GetOperation mocks base method.
+func (m *MockImageService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockImageServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockImageServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockImageService)(nil).GetOperation), varargs...)
+	return &MockImageServiceGetOperationCall{Call: call}
+}
+
+// MockImageServiceGetOperationCall wrap *gomock.Call
+type MockImageServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockImageServiceGetOperationCall) Return(arg0 operations.Operation, arg1 error) *MockImageServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockImageServiceGetOperationCall) Do(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockImageServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockImageServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockImageServiceGetOperationCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // List mocks base method.
 func (m *MockImageService) List(arg0 context.Context, arg1 *v10.ListImagesRequest, arg2 ...grpc.CallOption) (*v10.ListImagesResponse, error) {
 	m.ctrl.T.Helper()
@@ -258,6 +347,50 @@ func (c *MockImageServiceListCall) Do(f func(context.Context, *v10.ListImagesReq
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockImageServiceListCall) DoAndReturn(f func(context.Context, *v10.ListImagesRequest, ...grpc.CallOption) (*v10.ListImagesResponse, error)) *MockImageServiceListCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockImageService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockImageServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockImageServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockImageService)(nil).ListOperations), varargs...)
+	return &MockImageServiceListOperationsCall{Call: call}
+}
+
+// MockImageServiceListOperationsCall wrap *gomock.Call
+type MockImageServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockImageServiceListOperationsCall) Return(arg0 *v1.ListOperationsResponse, arg1 error) *MockImageServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockImageServiceListOperationsCall) Do(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockImageServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockImageServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockImageServiceListOperationsCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

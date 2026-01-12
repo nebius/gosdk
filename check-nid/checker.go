@@ -96,15 +96,17 @@ func validateAnnotatedField(
 	settings *nebius.NIDFieldSettings,
 	warnings map[string]string,
 ) {
+	permittedTypes := settings.GetResource()
+
 	switch {
 	case fd.Kind() == protoreflect.StringKind && !fd.IsList():
-		if warning := ValidateNIDString(val.String(), settings.GetResource()); warning != "" {
+		if warning := ValidateNIDString(val.String(), permittedTypes); warning != "" {
 			warnings[path] = warning
 		}
 	case fd.IsList() && fd.Kind() == protoreflect.StringKind:
 		list := val.List()
 		for i := range list.Len() {
-			if warning := ValidateNIDString(list.Get(i).String(), settings.GetResource()); warning != "" {
+			if warning := ValidateNIDString(list.Get(i).String(), permittedTypes); warning != "" {
 				warnings[indexPath(path, i)] = warning
 			}
 		}
@@ -112,7 +114,7 @@ func validateAnnotatedField(
 		valueDesc := fd.MapValue()
 		if valueDesc.Kind() == protoreflect.StringKind {
 			val.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
-				if warning := ValidateNIDString(v.String(), settings.GetResource()); warning != "" {
+				if warning := ValidateNIDString(v.String(), permittedTypes); warning != "" {
 					warnings[mapPath(path, k.String())] = warning
 				}
 				return true

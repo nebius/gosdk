@@ -8,6 +8,7 @@ import (
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
+	operations "github.com/nebius/gosdk/operations"
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/compute/v1"
 	grpc "google.golang.org/grpc"
@@ -31,8 +32,11 @@ type ImageService interface {
 	GetLatestByFamily(context.Context, *v1.GetImageLatestByFamilyRequest, ...grpc.CallOption) (*v1.Image, error)
 	List(context.Context, *v1.ListImagesRequest, ...grpc.CallOption) (*v1.ListImagesResponse, error)
 	Filter(context.Context, *v1.ListImagesRequest, ...grpc.CallOption) iter.Seq2[*v1.Image, error]
+	Create(context.Context, *v1.CreateImageRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperationsByParent(context.Context, *v1.ListOperationsByParentRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 	ListPublic(context.Context, *v1.ListPublicRequest, ...grpc.CallOption) (*v1.ListImagesResponse, error)
+	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
+	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
 
 type imageService struct {
@@ -178,6 +182,56 @@ func (s imageService) Filter(ctx context.Context, request *v1.ListImagesRequest,
 	}
 }
 
+func (s imageService) Create(ctx context.Context, request *v1.CreateImageRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	var metadataParentTypes []string
+	if request.GetMetadata().GetParentId() == "" {
+		if tenantID := s.sdk.TenantID(); tenantID != "" {
+			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = tenantID
+				request.Metadata = md
+			}
+		}
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, ImageServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewImageServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
 func (s imageService) ListOperationsByParent(ctx context.Context, request *v1.ListOperationsByParentRequest, opts ...grpc.CallOption) (
 	*v11.ListOperationsResponse,
 	error,
@@ -216,4 +270,33 @@ func (s imageService) ListPublic(ctx context.Context, request *v1.ListPublicRequ
 		return nil, err
 	}
 	return v1.NewImageServiceClient(con).ListPublic(ctx, request, opts...)
+}
+
+func (s imageService) GetOperation(ctx context.Context, request *v11.GetOperationRequest, opts ...grpc.CallOption) (operations.Operation, error) {
+	address, err := s.sdk.Resolve(ctx, ImageServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	client := v11.NewOperationServiceClient(con)
+	op, err := client.Get(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, client)
+}
+
+func (s imageService) ListOperations(ctx context.Context, request *v11.ListOperationsRequest, opts ...grpc.CallOption) (*v11.ListOperationsResponse, error) {
+	address, err := s.sdk.Resolve(ctx, ImageServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v11.NewOperationServiceClient(con).List(ctx, request, opts...)
 }
