@@ -7,6 +7,7 @@
 package v1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/nebius/gosdk/proto/nebius"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -192,11 +193,17 @@ func (x *Image) GetStatus() *ImageStatus {
 }
 
 type ImageSpec struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	Description *string                `protobuf:"bytes,1,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	ImageFamily string                 `protobuf:"bytes,2,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: Marked as deprecated in nebius/compute/v1/image.proto.
+	Description *string `protobuf:"bytes,1,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	ImageFamily string  `protobuf:"bytes,2,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
 	// part of identifier into the image family
-	Version         string                    `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	Version string `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	// Types that are valid to be assigned to Source:
+	//
+	//	*ImageSpec_SourceDiskId
+	Source isImageSpec_Source `protobuf_oneof:"source"`
+	// CPU architecture supported by the image
 	CpuArchitecture ImageSpec_CPUArchitecture `protobuf:"varint,6,opt,name=cpu_architecture,json=cpuArchitecture,proto3,enum=nebius.compute.v1.ImageSpec_CPUArchitecture" json:"cpu_architecture,omitempty"`
 	// human readable name for image family
 	ImageFamilyHumanReadable string `protobuf:"bytes,7,opt,name=image_family_human_readable,json=imageFamilyHumanReadable,proto3" json:"image_family_human_readable,omitempty"`
@@ -238,6 +245,7 @@ func (*ImageSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_compute_v1_image_proto_rawDescGZIP(), []int{1}
 }
 
+// Deprecated: Marked as deprecated in nebius/compute/v1/image.proto.
 func (x *ImageSpec) GetDescription() string {
 	if x != nil && x.Description != nil {
 		return *x.Description
@@ -255,6 +263,22 @@ func (x *ImageSpec) GetImageFamily() string {
 func (x *ImageSpec) GetVersion() string {
 	if x != nil {
 		return x.Version
+	}
+	return ""
+}
+
+func (x *ImageSpec) GetSource() isImageSpec_Source {
+	if x != nil {
+		return x.Source
+	}
+	return nil
+}
+
+func (x *ImageSpec) GetSourceDiskId() string {
+	if x != nil {
+		if x, ok := x.Source.(*ImageSpec_SourceDiskId); ok {
+			return x.SourceDiskId
+		}
 	}
 	return ""
 }
@@ -286,6 +310,17 @@ func (x *ImageSpec) GetUnsupportedPlatforms() map[string]string {
 	}
 	return nil
 }
+
+type isImageSpec_Source interface {
+	isImageSpec_Source()
+}
+
+type ImageSpec_SourceDiskId struct {
+	// ID of the disk to create the image from
+	SourceDiskId string `protobuf:"bytes,4,opt,name=source_disk_id,json=sourceDiskId,proto3,oneof"`
+}
+
+func (*ImageSpec_SourceDiskId) isImageSpec_Source() {}
 
 type ImageStatus struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
@@ -429,15 +464,18 @@ var File_nebius_compute_v1_image_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_image_proto_rawDesc = "" +
 	"\n" +
-	"\x1dnebius/compute/v1/image.proto\x12\x11nebius.compute.v1\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb1\x01\n" +
+	"\x1dnebius/compute/v1/image.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb1\x01\n" +
 	"\x05Image\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\x126\n" +
-	"\x06status\x18\x03 \x01(\v2\x1e.nebius.compute.v1.ImageStatusR\x06status\"\xe6\x04\n" +
-	"\tImageSpec\x12+\n" +
-	"\vdescription\x18\x01 \x01(\tB\x04\xbaJ\x01\x02H\x00R\vdescription\x88\x01\x01\x12'\n" +
+	"\x06status\x18\x03 \x01(\v2\x1e.nebius.compute.v1.ImageStatusR\x06status\"\xca\x05\n" +
+	"\tImageSpec\x12P\n" +
+	"\vdescription\x18\x01 \x01(\tB)\xbaJ\x01\x02\xd2J \n" +
+	"\n" +
+	"2026-01-01\x12\x12The field is empty\x18\x01H\x01R\vdescription\x88\x01\x01\x12'\n" +
 	"\fimage_family\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\vimageFamily\x12\x1e\n" +
-	"\aversion\x18\x03 \x01(\tB\x04\xbaJ\x01\x02R\aversion\x12]\n" +
+	"\aversion\x18\x03 \x01(\tB\x04\xbaJ\x01\x02R\aversion\x12,\n" +
+	"\x0esource_disk_id\x18\x04 \x01(\tB\x04\xbaJ\x01\x02H\x00R\fsourceDiskId\x12]\n" +
 	"\x10cpu_architecture\x18\x06 \x01(\x0e2,.nebius.compute.v1.ImageSpec.CPUArchitectureB\x04\xbaJ\x01\x02R\x0fcpuArchitecture\x12C\n" +
 	"\x1bimage_family_human_readable\x18\a \x01(\tB\x04\xbaJ\x01\x02R\x18imageFamilyHumanReadable\x129\n" +
 	"\x15recommended_platforms\x18\b \x03(\tB\x04\xbaJ\x01\x02R\x14recommendedPlatforms\x12q\n" +
@@ -448,7 +486,8 @@ const file_nebius_compute_v1_image_proto_rawDesc = "" +
 	"\x0fCPUArchitecture\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05AMD64\x10\x01\x12\t\n" +
-	"\x05ARM64\x10\x02B\x0e\n" +
+	"\x05ARM64\x10\x02B\x0f\n" +
+	"\x06source\x12\x05\xbaH\x02\b\x01B\x0e\n" +
 	"\f_description\"\xc1\x04\n" +
 	"\vImageStatus\x12:\n" +
 	"\x05state\x18\x01 \x01(\x0e2$.nebius.compute.v1.ImageStatus.StateR\x05state\x12+\n" +
@@ -516,7 +555,9 @@ func file_nebius_compute_v1_image_proto_init() {
 	if File_nebius_compute_v1_image_proto != nil {
 		return
 	}
-	file_nebius_compute_v1_image_proto_msgTypes[1].OneofWrappers = []any{}
+	file_nebius_compute_v1_image_proto_msgTypes[1].OneofWrappers = []any{
+		(*ImageSpec_SourceDiskId)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

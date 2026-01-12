@@ -190,6 +190,58 @@ func (x *ListImagesRequest) GetFilter() string {
 	return ""
 }
 
+type CreateImageRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec          *ImageSpec             `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateImageRequest) Reset() {
+	*x = CreateImageRequest{}
+	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateImageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateImageRequest) ProtoMessage() {}
+
+func (x *CreateImageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateImageRequest.ProtoReflect.Descriptor instead.
+func (*CreateImageRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_image_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CreateImageRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *CreateImageRequest) GetSpec() *ImageSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
 type ListImagesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Image               `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -200,7 +252,7 @@ type ListImagesResponse struct {
 
 func (x *ListImagesResponse) Reset() {
 	*x = ListImagesResponse{}
-	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[3]
+	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -212,7 +264,7 @@ func (x *ListImagesResponse) String() string {
 func (*ListImagesResponse) ProtoMessage() {}
 
 func (x *ListImagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[3]
+	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +277,7 @@ func (x *ListImagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListImagesResponse.ProtoReflect.Descriptor instead.
 func (*ListImagesResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_image_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_compute_v1_image_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListImagesResponse) GetItems() []*Image {
@@ -255,7 +307,7 @@ type ListPublicRequest struct {
 
 func (x *ListPublicRequest) Reset() {
 	*x = ListPublicRequest{}
-	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[4]
+	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -267,7 +319,7 @@ func (x *ListPublicRequest) String() string {
 func (*ListPublicRequest) ProtoMessage() {}
 
 func (x *ListPublicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[4]
+	mi := &file_nebius_compute_v1_image_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -280,7 +332,7 @@ func (x *ListPublicRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPublicRequest.ProtoReflect.Descriptor instead.
 func (*ListPublicRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_image_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_compute_v1_image_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListPublicRequest) GetRegion() string {
@@ -308,7 +360,7 @@ var File_nebius_compute_v1_image_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_image_service_proto_rawDesc = "" +
 	"\n" +
-	"%nebius/compute/v1/image_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a(nebius/common/v1/operation_service.proto\x1a\x1dnebius/compute/v1/image.proto\x1a)nebius/compute/v1/operation_service.proto\"!\n" +
+	"%nebius/compute/v1/image_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a\x1dnebius/compute/v1/image.proto\x1a)nebius/compute/v1/operation_service.proto\"!\n" +
 	"\x0fGetImageRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"_\n" +
 	"\x1dGetImageLatestByFamilyRequest\x12!\n" +
@@ -321,7 +373,10 @@ const file_nebius_compute_v1_image_service_proto_rawDesc = "" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12h\n" +
 	"\x06filter\x18\x04 \x01(\tBP\xd2JK\n" +
 	"\n" +
-	"2025-06-16\x12=it is not implemented, filtering could be done on client side\x18\x01R\x06filter\"l\n" +
+	"2025-06-16\x12=it is not implemented, filtering could be done on client side\x18\x01R\x06filter\"\x86\x01\n" +
+	"\x12CreateImageRequest\x12>\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\"l\n" +
 	"\x12ListImagesResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.compute.v1.ImageR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"o\n" +
@@ -329,12 +384,13 @@ const file_nebius_compute_v1_image_service_proto_rawDesc = "" +
 	"\x06region\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken2\xb1\x04\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken2\xff\x04\n" +
 	"\fImageService\x12C\n" +
 	"\x03Get\x12\".nebius.compute.v1.GetImageRequest\x1a\x18.nebius.compute.v1.Image\x12I\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x18.nebius.compute.v1.Image\x12_\n" +
 	"\x11GetLatestByFamily\x120.nebius.compute.v1.GetImageLatestByFamilyRequest\x1a\x18.nebius.compute.v1.Image\x12S\n" +
-	"\x04List\x12$.nebius.compute.v1.ListImagesRequest\x1a%.nebius.compute.v1.ListImagesResponse\x12t\n" +
+	"\x04List\x12$.nebius.compute.v1.ListImagesRequest\x1a%.nebius.compute.v1.ListImagesResponse\x12L\n" +
+	"\x06Create\x12%.nebius.compute.v1.CreateImageRequest\x1a\x1b.nebius.common.v1.Operation\x12t\n" +
 	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\x12Y\n" +
 	"\n" +
 	"ListPublic\x12$.nebius.compute.v1.ListPublicRequest\x1a%.nebius.compute.v1.ListImagesResponse\x1a\n" +
@@ -353,37 +409,45 @@ func file_nebius_compute_v1_image_service_proto_rawDescGZIP() []byte {
 	return file_nebius_compute_v1_image_service_proto_rawDescData
 }
 
-var file_nebius_compute_v1_image_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_nebius_compute_v1_image_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_nebius_compute_v1_image_service_proto_goTypes = []any{
 	(*GetImageRequest)(nil),               // 0: nebius.compute.v1.GetImageRequest
 	(*GetImageLatestByFamilyRequest)(nil), // 1: nebius.compute.v1.GetImageLatestByFamilyRequest
 	(*ListImagesRequest)(nil),             // 2: nebius.compute.v1.ListImagesRequest
-	(*ListImagesResponse)(nil),            // 3: nebius.compute.v1.ListImagesResponse
-	(*ListPublicRequest)(nil),             // 4: nebius.compute.v1.ListPublicRequest
-	(*Image)(nil),                         // 5: nebius.compute.v1.Image
-	(*v1.GetByNameRequest)(nil),           // 6: nebius.common.v1.GetByNameRequest
-	(*ListOperationsByParentRequest)(nil), // 7: nebius.compute.v1.ListOperationsByParentRequest
-	(*v1.ListOperationsResponse)(nil),     // 8: nebius.common.v1.ListOperationsResponse
+	(*CreateImageRequest)(nil),            // 3: nebius.compute.v1.CreateImageRequest
+	(*ListImagesResponse)(nil),            // 4: nebius.compute.v1.ListImagesResponse
+	(*ListPublicRequest)(nil),             // 5: nebius.compute.v1.ListPublicRequest
+	(*v1.ResourceMetadata)(nil),           // 6: nebius.common.v1.ResourceMetadata
+	(*ImageSpec)(nil),                     // 7: nebius.compute.v1.ImageSpec
+	(*Image)(nil),                         // 8: nebius.compute.v1.Image
+	(*v1.GetByNameRequest)(nil),           // 9: nebius.common.v1.GetByNameRequest
+	(*ListOperationsByParentRequest)(nil), // 10: nebius.compute.v1.ListOperationsByParentRequest
+	(*v1.Operation)(nil),                  // 11: nebius.common.v1.Operation
+	(*v1.ListOperationsResponse)(nil),     // 12: nebius.common.v1.ListOperationsResponse
 }
 var file_nebius_compute_v1_image_service_proto_depIdxs = []int32{
-	5, // 0: nebius.compute.v1.ListImagesResponse.items:type_name -> nebius.compute.v1.Image
-	0, // 1: nebius.compute.v1.ImageService.Get:input_type -> nebius.compute.v1.GetImageRequest
-	6, // 2: nebius.compute.v1.ImageService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
-	1, // 3: nebius.compute.v1.ImageService.GetLatestByFamily:input_type -> nebius.compute.v1.GetImageLatestByFamilyRequest
-	2, // 4: nebius.compute.v1.ImageService.List:input_type -> nebius.compute.v1.ListImagesRequest
-	7, // 5: nebius.compute.v1.ImageService.ListOperationsByParent:input_type -> nebius.compute.v1.ListOperationsByParentRequest
-	4, // 6: nebius.compute.v1.ImageService.ListPublic:input_type -> nebius.compute.v1.ListPublicRequest
-	5, // 7: nebius.compute.v1.ImageService.Get:output_type -> nebius.compute.v1.Image
-	5, // 8: nebius.compute.v1.ImageService.GetByName:output_type -> nebius.compute.v1.Image
-	5, // 9: nebius.compute.v1.ImageService.GetLatestByFamily:output_type -> nebius.compute.v1.Image
-	3, // 10: nebius.compute.v1.ImageService.List:output_type -> nebius.compute.v1.ListImagesResponse
-	8, // 11: nebius.compute.v1.ImageService.ListOperationsByParent:output_type -> nebius.common.v1.ListOperationsResponse
-	3, // 12: nebius.compute.v1.ImageService.ListPublic:output_type -> nebius.compute.v1.ListImagesResponse
-	7, // [7:13] is the sub-list for method output_type
-	1, // [1:7] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	6,  // 0: nebius.compute.v1.CreateImageRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	7,  // 1: nebius.compute.v1.CreateImageRequest.spec:type_name -> nebius.compute.v1.ImageSpec
+	8,  // 2: nebius.compute.v1.ListImagesResponse.items:type_name -> nebius.compute.v1.Image
+	0,  // 3: nebius.compute.v1.ImageService.Get:input_type -> nebius.compute.v1.GetImageRequest
+	9,  // 4: nebius.compute.v1.ImageService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	1,  // 5: nebius.compute.v1.ImageService.GetLatestByFamily:input_type -> nebius.compute.v1.GetImageLatestByFamilyRequest
+	2,  // 6: nebius.compute.v1.ImageService.List:input_type -> nebius.compute.v1.ListImagesRequest
+	3,  // 7: nebius.compute.v1.ImageService.Create:input_type -> nebius.compute.v1.CreateImageRequest
+	10, // 8: nebius.compute.v1.ImageService.ListOperationsByParent:input_type -> nebius.compute.v1.ListOperationsByParentRequest
+	5,  // 9: nebius.compute.v1.ImageService.ListPublic:input_type -> nebius.compute.v1.ListPublicRequest
+	8,  // 10: nebius.compute.v1.ImageService.Get:output_type -> nebius.compute.v1.Image
+	8,  // 11: nebius.compute.v1.ImageService.GetByName:output_type -> nebius.compute.v1.Image
+	8,  // 12: nebius.compute.v1.ImageService.GetLatestByFamily:output_type -> nebius.compute.v1.Image
+	4,  // 13: nebius.compute.v1.ImageService.List:output_type -> nebius.compute.v1.ListImagesResponse
+	11, // 14: nebius.compute.v1.ImageService.Create:output_type -> nebius.common.v1.Operation
+	12, // 15: nebius.compute.v1.ImageService.ListOperationsByParent:output_type -> nebius.common.v1.ListOperationsResponse
+	4,  // 16: nebius.compute.v1.ImageService.ListPublic:output_type -> nebius.compute.v1.ListImagesResponse
+	10, // [10:17] is the sub-list for method output_type
+	3,  // [3:10] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_image_service_proto_init() }
@@ -399,7 +463,7 @@ func file_nebius_compute_v1_image_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_image_service_proto_rawDesc), len(file_nebius_compute_v1_image_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

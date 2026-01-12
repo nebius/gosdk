@@ -568,8 +568,10 @@ type DiskStatus struct {
 	Reconciling                bool                                  `protobuf:"varint,7,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
 	BlockSizeBytes             int64                                 `protobuf:"varint,8,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
 	SourceImageCpuArchitecture DiskStatus_SourceImageCPUArchitecture `protobuf:"varint,9,opt,name=source_image_cpu_architecture,json=sourceImageCpuArchitecture,proto3,enum=nebius.compute.v1.DiskStatus_SourceImageCPUArchitecture" json:"source_image_cpu_architecture,omitempty"`
-	unknownFields              protoimpl.UnknownFields
-	sizeCache                  protoimpl.SizeCache
+	// Indicates resources that prevent the disk from being attached as read-write.
+	LockState     *DiskStatus_LockState `protobuf:"bytes,11,opt,name=lock_state,json=lockState,proto3" json:"lock_state,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DiskStatus) Reset() {
@@ -665,6 +667,13 @@ func (x *DiskStatus) GetSourceImageCpuArchitecture() DiskStatus_SourceImageCPUAr
 	return DiskStatus_SOURCE_IMAGE_CPU_UNSPECIFIED
 }
 
+func (x *DiskStatus) GetLockState() *DiskStatus_LockState {
+	if x != nil {
+		return x.LockState
+	}
+	return nil
+}
+
 type DiskEncryption struct {
 	state         protoimpl.MessageState            `protogen:"open.v1"`
 	Type          DiskEncryption_DiskEncryptionType `protobuf:"varint,1,opt,name=type,proto3,enum=nebius.compute.v1.DiskEncryption_DiskEncryptionType" json:"type,omitempty"`
@@ -709,6 +718,50 @@ func (x *DiskEncryption) GetType() DiskEncryption_DiskEncryptionType {
 	return DiskEncryption_DISK_ENCRYPTION_UNSPECIFIED
 }
 
+type DiskStatus_LockState struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Images        []string               `protobuf:"bytes,1,rep,name=images,proto3" json:"images,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DiskStatus_LockState) Reset() {
+	*x = DiskStatus_LockState{}
+	mi := &file_nebius_compute_v1_disk_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DiskStatus_LockState) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DiskStatus_LockState) ProtoMessage() {}
+
+func (x *DiskStatus_LockState) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_disk_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DiskStatus_LockState.ProtoReflect.Descriptor instead.
+func (*DiskStatus_LockState) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_disk_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *DiskStatus_LockState) GetImages() []string {
+	if x != nil {
+		return x.Images
+	}
+	return nil
+}
+
 var File_nebius_compute_v1_disk_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_disk_proto_rawDesc = "" +
@@ -742,7 +795,7 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\"[\n" +
 	"\x11SourceImageFamily\x12)\n" +
 	"\fimage_family\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vimageFamily\x12\x1b\n" +
-	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xa8\x05\n" +
+	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\x95\x06\n" +
 	"\n" +
 	"DiskStatus\x129\n" +
 	"\x05state\x18\x01 \x01(\x0e2#.nebius.compute.v1.DiskStatus.StateR\x05state\x12+\n" +
@@ -754,7 +807,11 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"size_bytes\x18\x06 \x01(\x03R\tsizeBytes\x12 \n" +
 	"\vreconciling\x18\a \x01(\bR\vreconciling\x12(\n" +
 	"\x10block_size_bytes\x18\b \x01(\x03R\x0eblockSizeBytes\x12{\n" +
-	"\x1dsource_image_cpu_architecture\x18\t \x01(\x0e28.nebius.compute.v1.DiskStatus.SourceImageCPUArchitectureR\x1asourceImageCpuArchitecture\"d\n" +
+	"\x1dsource_image_cpu_architecture\x18\t \x01(\x0e28.nebius.compute.v1.DiskStatus.SourceImageCPUArchitectureR\x1asourceImageCpuArchitecture\x12F\n" +
+	"\n" +
+	"lock_state\x18\v \x01(\v2'.nebius.compute.v1.DiskStatus.LockStateR\tlockState\x1a#\n" +
+	"\tLockState\x12\x16\n" +
+	"\x06images\x18\x01 \x03(\tR\x06images\"d\n" +
 	"\x05State\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
@@ -788,7 +845,7 @@ func file_nebius_compute_v1_disk_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_compute_v1_disk_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_nebius_compute_v1_disk_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_nebius_compute_v1_disk_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_nebius_compute_v1_disk_proto_goTypes = []any{
 	(DiskSpec_DiskType)(0),                     // 0: nebius.compute.v1.DiskSpec.DiskType
 	(DiskStatus_State)(0),                      // 1: nebius.compute.v1.DiskStatus.State
@@ -799,23 +856,25 @@ var file_nebius_compute_v1_disk_proto_goTypes = []any{
 	(*SourceImageFamily)(nil),                  // 6: nebius.compute.v1.SourceImageFamily
 	(*DiskStatus)(nil),                         // 7: nebius.compute.v1.DiskStatus
 	(*DiskEncryption)(nil),                     // 8: nebius.compute.v1.DiskEncryption
-	(*v1.ResourceMetadata)(nil),                // 9: nebius.common.v1.ResourceMetadata
+	(*DiskStatus_LockState)(nil),               // 9: nebius.compute.v1.DiskStatus.LockState
+	(*v1.ResourceMetadata)(nil),                // 10: nebius.common.v1.ResourceMetadata
 }
 var file_nebius_compute_v1_disk_proto_depIdxs = []int32{
-	9, // 0: nebius.compute.v1.Disk.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	5, // 1: nebius.compute.v1.Disk.spec:type_name -> nebius.compute.v1.DiskSpec
-	7, // 2: nebius.compute.v1.Disk.status:type_name -> nebius.compute.v1.DiskStatus
-	0, // 3: nebius.compute.v1.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
-	6, // 4: nebius.compute.v1.DiskSpec.source_image_family:type_name -> nebius.compute.v1.SourceImageFamily
-	8, // 5: nebius.compute.v1.DiskSpec.disk_encryption:type_name -> nebius.compute.v1.DiskEncryption
-	1, // 6: nebius.compute.v1.DiskStatus.state:type_name -> nebius.compute.v1.DiskStatus.State
-	2, // 7: nebius.compute.v1.DiskStatus.source_image_cpu_architecture:type_name -> nebius.compute.v1.DiskStatus.SourceImageCPUArchitecture
-	3, // 8: nebius.compute.v1.DiskEncryption.type:type_name -> nebius.compute.v1.DiskEncryption.DiskEncryptionType
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	10, // 0: nebius.compute.v1.Disk.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	5,  // 1: nebius.compute.v1.Disk.spec:type_name -> nebius.compute.v1.DiskSpec
+	7,  // 2: nebius.compute.v1.Disk.status:type_name -> nebius.compute.v1.DiskStatus
+	0,  // 3: nebius.compute.v1.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
+	6,  // 4: nebius.compute.v1.DiskSpec.source_image_family:type_name -> nebius.compute.v1.SourceImageFamily
+	8,  // 5: nebius.compute.v1.DiskSpec.disk_encryption:type_name -> nebius.compute.v1.DiskEncryption
+	1,  // 6: nebius.compute.v1.DiskStatus.state:type_name -> nebius.compute.v1.DiskStatus.State
+	2,  // 7: nebius.compute.v1.DiskStatus.source_image_cpu_architecture:type_name -> nebius.compute.v1.DiskStatus.SourceImageCPUArchitecture
+	9,  // 8: nebius.compute.v1.DiskStatus.lock_state:type_name -> nebius.compute.v1.DiskStatus.LockState
+	3,  // 9: nebius.compute.v1.DiskEncryption.type:type_name -> nebius.compute.v1.DiskEncryption.DiskEncryptionType
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_disk_proto_init() }
@@ -837,7 +896,7 @@ func file_nebius_compute_v1_disk_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_disk_proto_rawDesc), len(file_nebius_compute_v1_disk_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
