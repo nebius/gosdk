@@ -357,17 +357,19 @@ const file_nebius_msp_mlflow_v1alpha1_cluster_proto_rawDesc = "" +
 	"\aCluster\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12C\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.msp.mlflow.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12M\n" +
-	"\x06status\x18\x03 \x01(\v2/.nebius.msp.mlflow.v1alpha1.MlflowClusterStatusB\x04\xbaJ\x01\x05R\x06status\"\xea\x02\n" +
+	"\x06status\x18\x03 \x01(\v2/.nebius.msp.mlflow.v1alpha1.MlflowClusterStatusB\x04\xbaJ\x01\x05R\x06status\"\x8c\x03\n" +
 	"\vClusterSpec\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12#\n" +
 	"\rpublic_access\x18\x02 \x01(\bR\fpublicAccess\x12-\n" +
 	"\x0eadmin_username\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\radminUsername\x124\n" +
-	"\x0eadmin_password\x18\x05 \x01(\tB\r\xbaH\x03\xc8\x01\x01\xbaJ\x01\x04\xc0J\x01R\radminPassword\x124\n" +
-	"\x12service_account_id\x18\x06 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x10serviceAccountId\x12.\n" +
-	"\x13storage_bucket_name\x18\a \x01(\tR\x11storageBucketName\x12)\n" +
+	"\x0eadmin_password\x18\x05 \x01(\tB\r\xbaH\x03\xc8\x01\x01\xbaJ\x01\x04\xc0J\x01R\radminPassword\x12G\n" +
+	"\x12service_account_id\x18\x06 \x01(\tB\x19\xbaH\x03\xc8\x01\x01\xe2J\x10\n" +
+	"\x0eserviceaccountR\x10serviceAccountId\x12.\n" +
+	"\x13storage_bucket_name\x18\a \x01(\tR\x11storageBucketName\x128\n" +
 	"\n" +
-	"network_id\x18\b \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\tnetworkId\x12\x18\n" +
+	"network_id\x18\b \x01(\tB\x19\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\x12\x18\n" +
 	"\x04size\x18\t \x01(\tB\x04\xbaJ\x01\aR\x04sizeJ\x04\b\x03\x10\x04\"\xaf\x03\n" +
 	"\x13MlflowClusterStatus\x12>\n" +
 	"\x05phase\x18\x01 \x01(\x0e2(.nebius.msp.v1alpha1.ClusterStatus.PhaseR\x05phase\x12>\n" +

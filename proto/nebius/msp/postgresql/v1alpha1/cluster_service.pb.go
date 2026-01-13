@@ -577,11 +577,15 @@ var File_nebius_msp_postgresql_v1alpha1_cluster_service_proto protoreflect.FileD
 
 const file_nebius_msp_postgresql_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\n" +
-	"4nebius/msp/postgresql/v1alpha1/cluster_service.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a,nebius/msp/postgresql/v1alpha1/cluster.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a\x18nebius/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"+\n" +
-	"\x11GetClusterRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"Y\n" +
-	"\x1aGetClusterForBackupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12#\n" +
+	"4nebius/msp/postgresql/v1alpha1/cluster_service.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a,nebius/msp/postgresql/v1alpha1/cluster.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a\x18nebius/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\":\n" +
+	"\x11GetClusterRequest\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\x02id\"h\n" +
+	"\x1aGetClusterForBackupRequest\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\x02id\x12#\n" +
 	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\"v\n" +
 	"\x13ListClustersRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
@@ -593,22 +597,30 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa7\x01\n" +
 	"\x14CreateClusterRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12G\n" +
-	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xc2\x02\n" +
+	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xd1\x02\n" +
 	"\x15RestoreClusterRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12G\n" +
 	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12#\n" +
-	"\tbackup_id\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\x122\n" +
-	"\x11source_cluster_id\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0fsourceClusterId\x12?\n" +
-	"\rrecovery_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\frecoveryTime\"&\n" +
-	"\x14DeleteClusterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x9f\x01\n" +
+	"\tbackup_id\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\x12A\n" +
+	"\x11source_cluster_id\x18\x04 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\x0fsourceClusterId\x12?\n" +
+	"\rrecovery_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\frecoveryTime\"7\n" +
+	"\x14DeleteClusterRequest\x12\x1f\n" +
+	"\x02id\x18\x01 \x01(\tB\x0f\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\x02id\"\x9f\x01\n" +
 	"\x14UpdateClusterRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12?\n" +
-	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecR\x04spec\",\n" +
-	"\x12StopClusterRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"-\n" +
-	"\x13StartClusterRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x96\b\n" +
+	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecR\x04spec\";\n" +
+	"\x12StopClusterRequest\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\x02id\"<\n" +
+	"\x13StartClusterRequest\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\x02id2\x96\b\n" +
 	"\x0eClusterService\x12a\n" +
 	"\x03Get\x121.nebius.msp.postgresql.v1alpha1.GetClusterRequest\x1a'.nebius.msp.postgresql.v1alpha1.Cluster\x12X\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a'.nebius.msp.postgresql.v1alpha1.Cluster\x12s\n" +

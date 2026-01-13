@@ -344,9 +344,10 @@ var File_nebius_msp_mlflow_v1alpha1_cluster_service_proto protoreflect.FileDescr
 
 const file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\n" +
-	"0nebius/msp/mlflow/v1alpha1/cluster_service.proto\x12\x1anebius.msp.mlflow.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a(nebius/msp/mlflow/v1alpha1/cluster.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a\x18nebius/annotations.proto\"+\n" +
-	"\x11GetClusterRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"Z\n" +
+	"0nebius/msp/mlflow/v1alpha1/cluster_service.proto\x12\x1anebius.msp.mlflow.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a(nebius/msp/mlflow/v1alpha1/cluster.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a\x18nebius/annotations.proto\"6\n" +
+	"\x11GetClusterRequest\x12!\n" +
+	"\x02id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +
+	"\x06mlflowR\x02id\"Z\n" +
 	"\x17GetClusterByNameRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
 	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"v\n" +
@@ -362,9 +363,10 @@ const file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12C\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.msp.mlflow.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec:\xad\x01\xbaH\xa9\x01\x1aZ\n" +
 	"\x12metadata.parent_id\x12&metadata.parent_id should not be empty\x1a\x1chas(this.metadata.parent_id)\x1aK\n" +
-	"\rmetadata.name\x12!metadata.name should not be empty\x1a\x17has(this.metadata.name)\".\n" +
-	"\x14DeleteClusterRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x8a\x04\n" +
+	"\rmetadata.name\x12!metadata.name should not be empty\x1a\x17has(this.metadata.name)\"9\n" +
+	"\x14DeleteClusterRequest\x12!\n" +
+	"\x02id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +
+	"\x06mlflowR\x02id2\x8a\x04\n" +
 	"\x0eClusterService\x12Y\n" +
 	"\x03Get\x12-.nebius.msp.mlflow.v1alpha1.GetClusterRequest\x1a#.nebius.msp.mlflow.v1alpha1.Cluster\x12e\n" +
 	"\tGetByName\x123.nebius.msp.mlflow.v1alpha1.GetClusterByNameRequest\x1a#.nebius.msp.mlflow.v1alpha1.Cluster\x12i\n" +

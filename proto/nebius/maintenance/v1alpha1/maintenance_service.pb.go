@@ -268,11 +268,13 @@ const file_nebius_maintenance_v1alpha1_maintenance_service_proto_rawDesc = "" +
 	"\x17ListMaintenancesRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\"Z\n" +
 	"\x18ListMaintenancesResponse\x12>\n" +
-	"\x05items\x18\x01 \x03(\v2(.nebius.maintenance.v1alpha1.MaintenanceR\x05items\"/\n" +
-	"\x15GetMaintenanceRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xfa\x01\n" +
-	"\x18UpdateMaintenanceRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12@\n" +
+	"\x05items\x18\x01 \x03(\v2(.nebius.maintenance.v1alpha1.MaintenanceR\x05items\"?\n" +
+	"\x15GetMaintenanceRequest\x12&\n" +
+	"\x02id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
+	"\vmaintenanceR\x02id\"\x8a\x02\n" +
+	"\x18UpdateMaintenanceRequest\x12V\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
+	"\vmaintenanceR\bmetadata\x12@\n" +
 	"\x04spec\x18\x02 \x01(\v2,.nebius.maintenance.v1alpha1.MaintenanceSpecR\x04spec:T\xbaHQ\x1aO\n" +
 	"\x1bupdate_maintenance.metadata\x12\x19'metadata' must have 'id'\x1a\x15has(this.metadata.id)\"g\n" +
 	"\x19UpdateMaintenanceResponse\x12J\n" +

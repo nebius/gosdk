@@ -654,12 +654,13 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\x18POOLING_MODE_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aSESSION\x10\x01\x12\x0f\n" +
 	"\vTRANSACTION\x10\x02B\x10\n" +
-	"\x0e_max_pool_size\"\xd3\x02\n" +
+	"\x0e_max_pool_size\"\xe2\x02\n" +
 	"\vClusterSpec\x12.\n" +
-	"\vdescription\x18\x01 \x01(\tB\f\xbaH\x05r\x03\x18\x80\x02\xbaJ\x01\x02R\vdescription\x12)\n" +
+	"\vdescription\x18\x01 \x01(\tB\f\xbaH\x05r\x03\x18\x80\x02\xbaJ\x01\x02R\vdescription\x128\n" +
 	"\n" +
-	"network_id\x18\x06 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\tnetworkId\x12J\n" +
+	"network_id\x18\x06 \x01(\tB\x19\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\x12J\n" +
 	"\x06config\x18\x03 \x01(\v2*.nebius.msp.postgresql.v1alpha1.ConfigSpecB\x06\xbaH\x03\xc8\x01\x01R\x06config\x12S\n" +
 	"\tbootstrap\x18\x04 \x01(\v2-.nebius.msp.postgresql.v1alpha1.BootstrapSpecB\x06\xbaH\x03\xc8\x01\x01R\tbootstrap\x12H\n" +
 	"\x06backup\x18\x05 \x01(\v2*.nebius.msp.postgresql.v1alpha1.BackupSpecB\x04\xbaJ\x01\x02R\x06backup\"\xc1\x02\n" +
