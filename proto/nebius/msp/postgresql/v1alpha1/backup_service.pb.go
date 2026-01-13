@@ -316,24 +316,32 @@ var File_nebius_msp_postgresql_v1alpha1_backup_service_proto protoreflect.FileDe
 
 const file_nebius_msp_postgresql_v1alpha1_backup_service_proto_rawDesc = "" +
 	"\n" +
-	"3nebius/msp/postgresql/v1alpha1/backup_service.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a+nebius/msp/postgresql/v1alpha1/backup.proto\x1a\x18nebius/annotations.proto\"^\n" +
-	"\x10GetBackupRequest\x12%\n" +
+	"3nebius/msp/postgresql/v1alpha1/backup_service.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a+nebius/msp/postgresql/v1alpha1/backup.proto\x1a\x18nebius/annotations.proto\"m\n" +
+	"\x10GetBackupRequest\x124\n" +
 	"\n" +
-	"cluster_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tclusterId\x12#\n" +
+	"cluster_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\tclusterId\x12#\n" +
 	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\"9\n" +
 	"\x12ListBackupsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\"D\n" +
-	"\x1bListBackupsByClusterRequest\x12%\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\"S\n" +
+	"\x1bListBackupsByClusterRequest\x124\n" +
 	"\n" +
-	"cluster_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tclusterId\"W\n" +
+	"cluster_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\tclusterId\"W\n" +
 	"\x13ListBackupsResponse\x12@\n" +
-	"\abackups\x18\x01 \x03(\v2&.nebius.msp.postgresql.v1alpha1.BackupR\abackups\"<\n" +
-	"\x13CreateBackupRequest\x12%\n" +
+	"\abackups\x18\x01 \x03(\v2&.nebius.msp.postgresql.v1alpha1.BackupR\abackups\"K\n" +
+	"\x13CreateBackupRequest\x124\n" +
 	"\n" +
-	"cluster_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tclusterId\"a\n" +
-	"\x13DeleteBackupRequest\x12%\n" +
+	"cluster_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
 	"\n" +
-	"cluster_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tclusterId\x12#\n" +
+	"postgresqlR\tclusterId\"p\n" +
+	"\x13DeleteBackupRequest\x124\n" +
+	"\n" +
+	"cluster_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"postgresqlR\tclusterId\x12#\n" +
 	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId2\xbc\x04\n" +
 	"\rBackupService\x12_\n" +
 	"\x03Get\x120.nebius.msp.postgresql.v1alpha1.GetBackupRequest\x1a&.nebius.msp.postgresql.v1alpha1.Backup\x12o\n" +
