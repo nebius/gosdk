@@ -766,7 +766,7 @@ var File_nebius_compute_v1_disk_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\n" +
-	"\x1cnebius/compute/v1/disk.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xae\x01\n" +
+	"\x1cnebius/compute/v1/disk.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xae\x01\n" +
 	"\x04Disk\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12/\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\x125\n" +

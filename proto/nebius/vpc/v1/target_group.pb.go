@@ -422,7 +422,7 @@ var File_nebius_vpc_v1_target_group_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_target_group_proto_rawDesc = "" +
 	"\n" +
-	" nebius/vpc/v1/target_group.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xbb\x01\n" +
+	" nebius/vpc/v1/target_group.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbb\x01\n" +
 	"\vTargetGroup\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x122\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1e.nebius.vpc.v1.TargetGroupSpecR\x04spec\x128\n" +

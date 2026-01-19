@@ -539,7 +539,7 @@ var File_nebius_storage_v1_bucket_service_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_service_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/storage/v1/bucket_service.proto\x12\x11nebius.storage.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/storage/v1/bucket.proto\"0\n" +
+	"&nebius/storage/v1/bucket_service.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/storage/v1/bucket.proto\"0\n" +
 	"\x10GetBucketRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02idJ\x04\b\x02\x10\x03\"W\n" +
 	"\x16GetBucketByNameRequest\x12\x1b\n" +

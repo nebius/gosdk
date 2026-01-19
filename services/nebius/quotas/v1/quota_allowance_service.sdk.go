@@ -55,13 +55,13 @@ func (s quotaAllowanceService) List(ctx context.Context, request *v1.ListQuotaAl
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -134,13 +134,13 @@ func (s quotaAllowanceService) GetByName(ctx context.Context, request *v1.GetByN
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -166,7 +166,7 @@ func (s quotaAllowanceService) Create(ctx context.Context, request *v1.CreateQuo
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
 			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
@@ -216,7 +216,7 @@ func (s quotaAllowanceService) Update(ctx context.Context, request *v1.UpdateQuo
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

@@ -361,7 +361,7 @@ var File_nebius_mysterybox_v1_secret_version_service_proto protoreflect.FileDesc
 
 const file_nebius_mysterybox_v1_secret_version_service_proto_rawDesc = "" +
 	"\n" +
-	"1nebius/mysterybox/v1/secret_version_service.proto\x12\x14nebius.mysterybox.v1\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1bbuf/validate/validate.proto\x1a)nebius/mysterybox/v1/secret_version.proto\x1a\x18nebius/annotations.proto\"\x99\x01\n" +
+	"1nebius/mysterybox/v1/secret_version_service.proto\x12\x14nebius.mysterybox.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a)nebius/mysterybox/v1/secret_version.proto\"\x99\x01\n" +
 	"\x1aCreateSecretVersionRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.mysterybox.v1.SecretVersionSpecR\x04spec\"p\n" +

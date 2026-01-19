@@ -917,7 +917,7 @@ var File_nebius_storage_v1_lifecycle_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_lifecycle_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/storage/v1/lifecycle.proto\x12\x11nebius.storage.v1\x1a\x1cnebius/storage/v1/base.proto\x1a\x18nebius/annotations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb3\x01\n" +
+	"!nebius/storage/v1/lifecycle.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1cnebius/storage/v1/base.proto\"\xb3\x01\n" +
 	"\x16LifecycleConfiguration\x12A\n" +
 	"\x05rules\x18\x01 \x03(\v2 .nebius.storage.v1.LifecycleRuleB\t\xbaH\x06\x92\x01\x03\x10\xe8\aR\x05rules\x12V\n" +
 	"\x12last_access_filter\x18\x02 \x01(\v2(.nebius.storage.v1.LifecycleAccessFilterR\x10lastAccessFilter\"\x81\x06\n" +

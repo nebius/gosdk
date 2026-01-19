@@ -721,7 +721,7 @@ var File_nebius_iam_v1_access_key_service_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_access_key_service_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/iam/v1/access_key_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/iam/v1/access_key.proto\x1a\x1anebius/iam/v1/access.proto\"\x8a\x01\n" +
+	"&nebius/iam/v1/access_key_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1anebius/iam/v1/access.proto\x1a\x1enebius/iam/v1/access_key.proto\"\x8a\x01\n" +
 	"\x16CreateAccessKeyRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.iam.v1.AccessKeySpecR\x04spec\"X\n" +
@@ -854,8 +854,8 @@ func file_nebius_iam_v1_access_key_service_proto_init() {
 	if File_nebius_iam_v1_access_key_service_proto != nil {
 		return
 	}
-	file_nebius_iam_v1_access_key_proto_init()
 	file_nebius_iam_v1_access_proto_init()
+	file_nebius_iam_v1_access_key_proto_init()
 	file_nebius_iam_v1_access_key_service_proto_msgTypes[1].OneofWrappers = []any{
 		(*KeyIdentity_Id)(nil),
 		(*KeyIdentity_AwsAccessKeyId)(nil),

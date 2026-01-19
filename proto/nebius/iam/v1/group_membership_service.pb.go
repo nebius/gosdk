@@ -477,7 +477,7 @@ var File_nebius_iam_v1_group_membership_service_proto protoreflect.FileDescripto
 
 const file_nebius_iam_v1_group_membership_service_proto_rawDesc = "" +
 	"\n" +
-	",nebius/iam/v1/group_membership_service.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a$nebius/iam/v1/group_membership.proto\x1a\x19nebius/iam/v1/group.proto\"\xcc\x01\n" +
+	",nebius/iam/v1/group_membership_service.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x19nebius/iam/v1/group.proto\x1a$nebius/iam/v1/group_membership.proto\"\xcc\x01\n" +
 	"\x1cCreateGroupMembershipRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\".nebius.iam.v1.GroupMembershipSpecR\x04spec\x12,\n" +
@@ -580,8 +580,8 @@ func file_nebius_iam_v1_group_membership_service_proto_init() {
 	if File_nebius_iam_v1_group_membership_service_proto != nil {
 		return
 	}
-	file_nebius_iam_v1_group_membership_proto_init()
 	file_nebius_iam_v1_group_proto_init()
+	file_nebius_iam_v1_group_membership_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

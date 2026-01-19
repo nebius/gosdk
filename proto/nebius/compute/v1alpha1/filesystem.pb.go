@@ -465,7 +465,7 @@ var File_nebius_compute_v1alpha1_filesystem_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1alpha1_filesystem_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/compute/v1alpha1/filesystem.proto\x12\x17nebius.compute.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xcc\x01\n" +
+	"(nebius/compute/v1alpha1/filesystem.proto\x12\x17nebius.compute.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xcc\x01\n" +
 	"\n" +
 	"Filesystem\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +

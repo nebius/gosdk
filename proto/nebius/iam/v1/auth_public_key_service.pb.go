@@ -507,7 +507,7 @@ var File_nebius_iam_v1_auth_public_key_service_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_auth_public_key_service_proto_rawDesc = "" +
 	"\n" +
-	"+nebius/iam/v1/auth_public_key_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a#nebius/iam/v1/auth_public_key.proto\x1a\x1anebius/iam/v1/access.proto\"\x92\x01\n" +
+	"+nebius/iam/v1/auth_public_key_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1anebius/iam/v1/access.proto\x1a#nebius/iam/v1/auth_public_key.proto\"\x92\x01\n" +
 	"\x1aCreateAuthPublicKeyRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.iam.v1.AuthPublicKeySpecR\x04spec\")\n" +
@@ -614,8 +614,8 @@ func file_nebius_iam_v1_auth_public_key_service_proto_init() {
 	if File_nebius_iam_v1_auth_public_key_service_proto != nil {
 		return
 	}
-	file_nebius_iam_v1_auth_public_key_proto_init()
 	file_nebius_iam_v1_access_proto_init()
+	file_nebius_iam_v1_auth_public_key_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

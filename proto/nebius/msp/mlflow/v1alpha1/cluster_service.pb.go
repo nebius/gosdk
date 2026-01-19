@@ -344,7 +344,7 @@ var File_nebius_msp_mlflow_v1alpha1_cluster_service_proto protoreflect.FileDescr
 
 const file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\n" +
-	"0nebius/msp/mlflow/v1alpha1/cluster_service.proto\x12\x1anebius.msp.mlflow.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a(nebius/msp/mlflow/v1alpha1/cluster.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a\x18nebius/annotations.proto\"6\n" +
+	"0nebius/msp/mlflow/v1alpha1/cluster_service.proto\x12\x1anebius.msp.mlflow.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a(nebius/msp/mlflow/v1alpha1/cluster.proto\"6\n" +
 	"\x11GetClusterRequest\x12!\n" +
 	"\x02id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +
 	"\x06mlflowR\x02id\"Z\n" +

@@ -189,7 +189,7 @@ var File_nebius_compute_v1_node_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_node_service_proto_rawDesc = "" +
 	"\n" +
-	"$nebius/compute/v1/node_service.proto\x12\x11nebius.compute.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xf1\x02\n" +
+	"$nebius/compute/v1/node_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\"\xf1\x02\n" +
 	"\x17NodeSetUnhealthyRequest\x12'\n" +
 	"\vinstance_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"instanceId\x12n\n" +

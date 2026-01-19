@@ -313,7 +313,7 @@ var File_nebius_compute_v1_gpu_cluster_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_gpu_cluster_proto_rawDesc = "" +
 	"\n" +
-	"#nebius/compute/v1/gpu_cluster.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xc0\x01\n" +
+	"#nebius/compute/v1/gpu_cluster.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc0\x01\n" +
 	"\n" +
 	"GpuCluster\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x125\n" +

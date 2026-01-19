@@ -316,7 +316,7 @@ var File_nebius_msp_postgresql_v1alpha1_backup_service_proto protoreflect.FileDe
 
 const file_nebius_msp_postgresql_v1alpha1_backup_service_proto_rawDesc = "" +
 	"\n" +
-	"3nebius/msp/postgresql/v1alpha1/backup_service.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a+nebius/msp/postgresql/v1alpha1/backup.proto\x1a\x18nebius/annotations.proto\"m\n" +
+	"3nebius/msp/postgresql/v1alpha1/backup_service.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a+nebius/msp/postgresql/v1alpha1/backup.proto\"m\n" +
 	"\x10GetBackupRequest\x124\n" +
 	"\n" +
 	"cluster_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
