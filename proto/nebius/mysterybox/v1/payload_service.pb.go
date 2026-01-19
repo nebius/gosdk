@@ -248,7 +248,7 @@ var File_nebius_mysterybox_v1_payload_service_proto protoreflect.FileDescriptor
 
 const file_nebius_mysterybox_v1_payload_service_proto_rawDesc = "" +
 	"\n" +
-	"*nebius/mysterybox/v1/payload_service.proto\x12\x14nebius.mysterybox.v1\x1a\"nebius/mysterybox/v1/payload.proto\x1a\x18nebius/annotations.proto\x1a\x1bbuf/validate/validate.proto\"U\n" +
+	"*nebius/mysterybox/v1/payload_service.proto\x12\x14nebius.mysterybox.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\"nebius/mysterybox/v1/payload.proto\"U\n" +
 	"\x11GetPayloadRequest\x12\x1b\n" +
 	"\tsecret_id\x18\x01 \x01(\tR\bsecretId\x12#\n" +
 	"\n" +

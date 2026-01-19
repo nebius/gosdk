@@ -412,29 +412,39 @@ var File_nebius_quotas_v1_quota_allowance_service_proto protoreflect.FileDescrip
 
 const file_nebius_quotas_v1_quota_allowance_service_proto_rawDesc = "" +
 	"\n" +
-	".nebius/quotas/v1/quota_allowance_service.proto\x12\x10nebius.quotas.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a&nebius/quotas/v1/quota_allowance.proto\"\x9f\x01\n" +
-	"\x1bCreateQuotaAllowanceRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12@\n" +
+	".nebius/quotas/v1/quota_allowance_service.proto\x12\x10nebius.quotas.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a&nebius/quotas/v1/quota_allowance.proto\"\xd8\x01\n" +
+	"\x1bCreateQuotaAllowanceRequest\x12w\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB7\xe2J4\x12\x06tenant\x12\baitenant\x12\ftractotenant\x12\aproject\x12\taiprojectR\bmetadata\x12@\n" +
 	"\x04spec\x18\x02 \x01(\v2$.nebius.quotas.v1.QuotaAllowanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\x9f\x01\n" +
 	"\x1bUpdateQuotaAllowanceRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12@\n" +
-	"\x04spec\x18\x02 \x01(\v2$.nebius.quotas.v1.QuotaAllowanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"9\n" +
-	"\x1bDeleteQuotaAllowanceRequest\x12\x1a\n" +
-	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x03R\x02id\"}\n" +
-	"\x1aListQuotaAllowancesRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\x04spec\x18\x02 \x01(\v2$.nebius.quotas.v1.QuotaAllowanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"L\n" +
+	"\x1bDeleteQuotaAllowanceRequest\x12-\n" +
+	"\x02id\x18\x01 \x01(\tB\x1d\xbaH\x03\xc8\x01\x01\xbaJ\x01\x03\xe2J\x10\n" +
+	"\x0equotaallowanceR\x02id\"\xb4\x01\n" +
+	"\x1aListQuotaAllowancesRequest\x12Z\n" +
+	"\tparent_id\x18\x01 \x01(\tB=\xbaH\x03\xc8\x01\x01\xe2J4\n" +
+	"\x06tenant\n" +
+	"\baitenant\n" +
+	"\ftractotenant\n" +
+	"\aproject\n" +
+	"\taiprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"6\n" +
-	"\x18GetQuotaAllowanceRequest\x12\x1a\n" +
-	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x03R\x02id\"}\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"I\n" +
+	"\x18GetQuotaAllowanceRequest\x12-\n" +
+	"\x02id\x18\x01 \x01(\tB\x1d\xbaH\x03\xc8\x01\x01\xbaJ\x01\x03\xe2J\x10\n" +
+	"\x0equotaallowanceR\x02id\"}\n" +
 	"\x1bListQuotaAllowancesResponse\x126\n" +
 	"\x05items\x18\x01 \x03(\v2 .nebius.quotas.v1.QuotaAllowanceR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"s\n" +
-	"\x10GetByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xaa\x01\n" +
+	"\x10GetByNameRequest\x12Z\n" +
+	"\tparent_id\x18\x01 \x01(\tB=\xbaH\x03\xc8\x01\x01\xe2J4\n" +
+	"\x06tenant\n" +
+	"\baitenant\n" +
+	"\ftractotenant\n" +
+	"\aproject\n" +
+	"\taiprojectR\bparentId\x12\x1a\n" +
 	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x1e\n" +
 	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region2\xc7\x04\n" +
 	"\x15QuotaAllowanceService\x12c\n" +

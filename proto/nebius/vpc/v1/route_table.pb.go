@@ -297,7 +297,7 @@ var File_nebius_vpc_v1_route_table_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_route_table_proto_rawDesc = "" +
 	"\n" +
-	"\x1fnebius/vpc/v1/route_table.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xb8\x01\n" +
+	"\x1fnebius/vpc/v1/route_table.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xb8\x01\n" +
 	"\n" +
 	"RouteTable\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +

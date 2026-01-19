@@ -574,7 +574,7 @@ var File_nebius_vpc_v1_subnet_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
 	"\n" +
-	"\x1anebius/vpc/v1/subnet.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/vpc/v1/pool.proto\x1a\x18nebius/annotations.proto\"\xac\x01\n" +
+	"\x1anebius/vpc/v1/subnet.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/vpc/v1/pool.proto\"\xac\x01\n" +
 	"\x06Subnet\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12-\n" +
 	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecR\x04spec\x123\n" +

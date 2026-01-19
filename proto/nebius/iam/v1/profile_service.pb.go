@@ -398,7 +398,7 @@ var File_nebius_iam_v1_profile_service_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_profile_service_proto_rawDesc = "" +
 	"\n" +
-	"#nebius/iam/v1/profile_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a'nebius/iam/v1/tenant_user_account.proto\x1a#nebius/iam/v1/service_account.proto\x1a nebius/iam/v1/user_account.proto\"\x13\n" +
+	"#nebius/iam/v1/profile_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a#nebius/iam/v1/service_account.proto\x1a'nebius/iam/v1/tenant_user_account.proto\x1a nebius/iam/v1/user_account.proto\"\x13\n" +
 	"\x11GetProfileRequest\"\x90\x02\n" +
 	"\x12GetProfileResponse\x12?\n" +
 	"\fuser_profile\x18\x01 \x01(\v2\x1a.nebius.iam.v1.UserProfileH\x00R\vuserProfile\x12^\n" +
@@ -473,8 +473,8 @@ func file_nebius_iam_v1_profile_service_proto_init() {
 	if File_nebius_iam_v1_profile_service_proto != nil {
 		return
 	}
-	file_nebius_iam_v1_tenant_user_account_proto_init()
 	file_nebius_iam_v1_service_account_proto_init()
+	file_nebius_iam_v1_tenant_user_account_proto_init()
 	file_nebius_iam_v1_user_account_proto_init()
 	file_nebius_iam_v1_profile_service_proto_msgTypes[1].OneofWrappers = []any{
 		(*GetProfileResponse_UserProfile)(nil),

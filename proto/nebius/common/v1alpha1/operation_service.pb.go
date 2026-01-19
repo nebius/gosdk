@@ -309,7 +309,7 @@ var File_nebius_common_v1alpha1_operation_service_proto protoreflect.FileDescrip
 
 const file_nebius_common_v1alpha1_operation_service_proto_rawDesc = "" +
 	"\n" +
-	".nebius/common/v1alpha1/operation_service.proto\x12\x16nebius.common.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a\x18nebius/annotations.proto\"J\n" +
+	".nebius/common/v1alpha1/operation_service.proto\x12\x16nebius.common.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a&nebius/common/v1alpha1/operation.proto\"J\n" +
 	"\x13GetOperationRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id:\x1b\xd2J\x16\x12\x14migrate to common/v1\x18\x01\"\xb1\x01\n" +
 	"\x15ListOperationsRequest\x12'\n" +

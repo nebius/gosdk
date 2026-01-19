@@ -1212,7 +1212,7 @@ var File_nebius_storage_v1alpha1_transfer_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/storage/v1alpha1/transfer.proto\x12\x17nebius.storage.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\"\xdc\x01\n" +
+	"&nebius/storage/v1alpha1/transfer.proto\x12\x17nebius.storage.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xdc\x01\n" +
 	"\bTransfer\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12A\n" +
 	"\x04spec\x18\x02 \x01(\v2%.nebius.storage.v1alpha1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12E\n" +

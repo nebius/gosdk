@@ -477,7 +477,7 @@ var File_nebius_mysterybox_v1_secret_service_proto protoreflect.FileDescriptor
 
 const file_nebius_mysterybox_v1_secret_service_proto_rawDesc = "" +
 	"\n" +
-	")nebius/mysterybox/v1/secret_service.proto\x12\x14nebius.mysterybox.v1\x1a!nebius/mysterybox/v1/secret.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\x8b\x01\n" +
+	")nebius/mysterybox/v1/secret_service.proto\x12\x14nebius.mysterybox.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/mysterybox/v1/secret.proto\"\x8b\x01\n" +
 	"\x13CreateSecretRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.mysterybox.v1.SecretSpecR\x04spec\"\x8b\x01\n" +

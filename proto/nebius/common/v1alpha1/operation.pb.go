@@ -286,7 +286,7 @@ var File_nebius_common_v1alpha1_operation_proto protoreflect.FileDescriptor
 
 const file_nebius_common_v1alpha1_operation_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/common/v1alpha1/operation.proto\x12\x16nebius.common.v1alpha1\x1a\x19google/protobuf/any.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xfe\x05\n" +
+	"&nebius/common/v1alpha1/operation.proto\x12\x16nebius.common.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x19google/protobuf/any.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x18nebius/annotations.proto\"\xfe\x05\n" +
 	"\tOperation\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x129\n" +

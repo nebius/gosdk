@@ -641,7 +641,7 @@ var File_nebius_msp_postgresql_v1alpha1_cluster_proto protoreflect.FileDescripto
 
 const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\n" +
-	",nebius/msp/postgresql/v1alpha1/cluster.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a!nebius/msp/v1alpha1/cluster.proto\x1a6nebius/msp/postgresql/v1alpha1/config/postgresql.proto\x1a-nebius/msp/postgresql/v1alpha1/template.proto\x1a+nebius/msp/v1alpha1/resource/template.proto\x1a\x18nebius/annotations.proto\"\xe7\x01\n" +
+	",nebius/msp/postgresql/v1alpha1/cluster.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a6nebius/msp/postgresql/v1alpha1/config/postgresql.proto\x1a-nebius/msp/postgresql/v1alpha1/template.proto\x1a!nebius/msp/v1alpha1/cluster.proto\x1a+nebius/msp/v1alpha1/resource/template.proto\"\xe7\x01\n" +
 	"\aCluster\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12G\n" +
 	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12K\n" +

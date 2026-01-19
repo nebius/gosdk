@@ -406,9 +406,9 @@ const file_nebius_quotas_v1_quota_allowance_proto_rawDesc = "" +
 	"\x10USAGE_STATE_USED\x10\x01\x12\x18\n" +
 	"\x14USAGE_STATE_NOT_USED\x10\x02\x12\x17\n" +
 	"\x13USAGE_STATE_UNKNOWN\x10\x03\x12\x1e\n" +
-	"\x1aUSAGE_STATE_NOT_APPLICABLE\x10\x04\"\xe6\x01\n" +
-	"\x0eQuotaAllowance\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12@\n" +
+	"\x1aUSAGE_STATE_NOT_APPLICABLE\x10\x04\"\x9d\x02\n" +
+	"\x0eQuotaAllowance\x12}\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB=\xbaH\x03\xc8\x01\x01\xe2J4\x12\x06tenant\x12\baitenant\x12\ftractotenant\x12\aproject\x12\taiprojectR\bmetadata\x12@\n" +
 	"\x04spec\x18\x02 \x01(\v2$.nebius.quotas.v1.QuotaAllowanceSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12D\n" +
 	"\x06status\x18\x03 \x01(\v2&.nebius.quotas.v1.QuotaAllowanceStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02B`\n" +
 	"\x17ai.nebius.pub.quotas.v1B\x13QuotaAllowanceProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/quotas/v1b\x06proto3"

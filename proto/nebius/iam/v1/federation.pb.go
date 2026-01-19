@@ -342,7 +342,7 @@ var File_nebius_iam_v1_federation_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_federation_proto_rawDesc = "" +
 	"\n" +
-	"\x1enebius/iam/v1/federation.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xce\x01\n" +
+	"\x1enebius/iam/v1/federation.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xce\x01\n" +
 	"\n" +
 	"Federation\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +

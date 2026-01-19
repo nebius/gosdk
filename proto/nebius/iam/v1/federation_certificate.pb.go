@@ -274,7 +274,7 @@ var File_nebius_iam_v1_federation_certificate_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_federation_certificate_proto_rawDesc = "" +
 	"\n" +
-	"*nebius/iam/v1/federation_certificate.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/annotations.proto\"\xf5\x01\n" +
+	"*nebius/iam/v1/federation_certificate.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xf5\x01\n" +
 	"\x15FederationCertificate\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12D\n" +
 	"\x04spec\x18\x02 \x01(\v2(.nebius.iam.v1.FederationCertificateSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12H\n" +
