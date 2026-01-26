@@ -191,6 +191,9 @@ func (w *wrapperNodeTemplate) ProtoReflect() protoreflect.Message {
 // func (x *PreemptibleSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PreemptibleSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *ReservationPolicy) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ReservationPolicy) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // Sanitize mutates [NodeGroupStatus] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].
 //

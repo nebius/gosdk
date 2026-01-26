@@ -72,6 +72,12 @@ type Operation interface {
 	// Must be nil after operation is done.
 	ProgressData() proto.Message
 
+	// ProgressTracker returns a ProgressTracker for this operation.
+	// Information about this operation's progress, if this operation tracks its progress.
+	// If the operation tracks its progress, `ProgressTracker` will be present both
+	// while the operation is running and after it has been completed.
+	ProgressTracker() OperationProgressTracker
+
 	// Status returns the status of the completed operation and nil otherwise.
 	// The operation is successful if `Status() != nil && Status().Code() == codes.OK`.
 	Status() *status.Status
@@ -258,6 +264,16 @@ func (o *opWrapper) ProgressData() proto.Message {
 	o.mu.RLock()
 	defer o.mu.RUnlock()
 	return o.unmarshalled.progressData
+}
+
+// ProgressTracker returns a ProgressTracker for this operation.
+// Information about this operation's progress, if this operation tracks its progress.
+// If the operation tracks its progress, `ProgressTracker` will be present both
+// while the operation is running and after it has been completed.
+func (o *opWrapper) ProgressTracker() OperationProgressTracker {
+	o.mu.RLock()
+	defer o.mu.RUnlock()
+	return WrapProgressTracker(o)
 }
 
 // Status returns the status of the completed operation and nil otherwise.
