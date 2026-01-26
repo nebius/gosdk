@@ -63,6 +63,10 @@ type Operation struct {
 	//   - [status.code] must belong to an Operation-compatible subset of GRPC codes:
 	//     OK, CANCELLED, PERMISSION_DENIED, RESOURCE_EXHAUSTED, FAILED_PRECONDITION, ABORTED, INTERNAL
 	Status *status.Status `protobuf:"bytes,10,opt,name=status,proto3" json:"status,omitempty"`
+	// Information about this operation's progress, if this operation tracks its progress.
+	// If the operation tracks its progress, `progress_tracker` MUST be present both while
+	// the operation is running and after it has been completed.
+	ProgressTracker *ProgressTracker `protobuf:"bytes,12,opt,name=progress_tracker,json=progressTracker,proto3" json:"progress_tracker,omitempty"`
 	// Extra information about this operation's progress. MAY be absent while the operation is running, MUST be absent after the operation has completed.
 	//
 	// Type of message that's stored inside [progress_data] is service-dependent.
@@ -164,6 +168,13 @@ func (x *Operation) GetStatus() *status.Status {
 	return nil
 }
 
+func (x *Operation) GetProgressTracker() *ProgressTracker {
+	if x != nil {
+		return x.ProgressTracker
+	}
+	return nil
+}
+
 func (x *Operation) GetProgressData() *anypb.Any {
 	if x != nil {
 		return x.ProgressData
@@ -221,7 +232,7 @@ var File_nebius_common_v1_operation_proto protoreflect.FileDescriptor
 
 const file_nebius_common_v1_operation_proto_rawDesc = "" +
 	"\n" +
-	" nebius/common/v1/operation.proto\x12\x10nebius.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19google/protobuf/any.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x18nebius/annotations.proto\"\xa1\x05\n" +
+	" nebius/common/v1/operation.proto\x12\x10nebius.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19google/protobuf/any.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x18nebius/annotations.proto\x1a'nebius/common/v1/progress_tracker.proto\"\xef\x05\n" +
 	"\tOperation\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x129\n" +
@@ -236,7 +247,8 @@ const file_nebius_common_v1_operation_proto_rawDesc = "" +
 	"\vresource_id\x18\a \x01(\tR\n" +
 	"resourceId\x120\n" +
 	"\x06status\x18\n" +
-	" \x01(\v2\x12.google.rpc.StatusB\x04\xbaJ\x01\x06R\x06status\x129\n" +
+	" \x01(\v2\x12.google.rpc.StatusB\x04\xbaJ\x01\x06R\x06status\x12L\n" +
+	"\x10progress_tracker\x18\f \x01(\v2!.nebius.common.v1.ProgressTrackerR\x0fprogressTracker\x129\n" +
 	"\rprogress_data\x18\t \x01(\v2\x14.google.protobuf.AnyR\fprogressData\x1a'\n" +
 	"\rRequestHeader\x12\x16\n" +
 	"\x06values\x18\x01 \x03(\tR\x06values\x1al\n" +
@@ -265,6 +277,7 @@ var file_nebius_common_v1_operation_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),   // 3: google.protobuf.Timestamp
 	(*anypb.Any)(nil),               // 4: google.protobuf.Any
 	(*status.Status)(nil),           // 5: google.rpc.Status
+	(*ProgressTracker)(nil),         // 6: nebius.common.v1.ProgressTracker
 }
 var file_nebius_common_v1_operation_proto_depIdxs = []int32{
 	3, // 0: nebius.common.v1.Operation.created_at:type_name -> google.protobuf.Timestamp
@@ -272,13 +285,14 @@ var file_nebius_common_v1_operation_proto_depIdxs = []int32{
 	4, // 2: nebius.common.v1.Operation.request:type_name -> google.protobuf.Any
 	2, // 3: nebius.common.v1.Operation.request_headers:type_name -> nebius.common.v1.Operation.RequestHeadersEntry
 	5, // 4: nebius.common.v1.Operation.status:type_name -> google.rpc.Status
-	4, // 5: nebius.common.v1.Operation.progress_data:type_name -> google.protobuf.Any
-	1, // 6: nebius.common.v1.Operation.RequestHeadersEntry.value:type_name -> nebius.common.v1.Operation.RequestHeader
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	6, // 5: nebius.common.v1.Operation.progress_tracker:type_name -> nebius.common.v1.ProgressTracker
+	4, // 6: nebius.common.v1.Operation.progress_data:type_name -> google.protobuf.Any
+	1, // 7: nebius.common.v1.Operation.RequestHeadersEntry.value:type_name -> nebius.common.v1.Operation.RequestHeader
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_nebius_common_v1_operation_proto_init() }
@@ -286,6 +300,7 @@ func file_nebius_common_v1_operation_proto_init() {
 	if File_nebius_common_v1_operation_proto != nil {
 		return
 	}
+	file_nebius_common_v1_progress_tracker_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

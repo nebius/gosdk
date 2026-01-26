@@ -20,6 +20,9 @@ package v1
 // func (x *KubeNetworkSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *KubeNetworkSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *AuditLogsSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *AuditLogsSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ClusterStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ClusterStatus) LogValue() slog.Value // is not generated as no sensitive fields found
 
