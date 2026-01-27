@@ -518,9 +518,9 @@ var File_nebius_dns_v1_zone_proto protoreflect.FileDescriptor
 
 const file_nebius_dns_v1_zone_proto_rawDesc = "" +
 	"\n" +
-	"\x18nebius/dns/v1/zone.proto\x12\rnebius.dns.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xa6\x01\n" +
-	"\x04Zone\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12+\n" +
+	"\x18nebius/dns/v1/zone.proto\x12\rnebius.dns.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xb4\x01\n" +
+	"\x04Zone\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12+\n" +
 	"\x04spec\x18\x02 \x01(\v2\x17.nebius.dns.v1.ZoneSpecR\x04spec\x121\n" +
 	"\x06status\x18\x03 \x01(\v2\x19.nebius.dns.v1.ZoneStatusR\x06status\"\xd6\x02\n" +
 	"\bZoneSpec\x12\xd5\x01\n" +
@@ -529,21 +529,24 @@ const file_nebius_dns_v1_zone_proto_rawDesc = "" +
 	"domainName\x12/\n" +
 	"\x03vpc\x18\f \x01(\v2\x1b.nebius.dns.v1.VpcZoneScopeH\x00R\x03vpc\x121\n" +
 	"\bsoa_spec\x18\x1e \x01(\v2\x16.nebius.dns.v1.SoaSpecR\asoaSpecB\x0e\n" +
-	"\x05scope\x12\x05\xbaH\x02\b\x01\"H\n" +
-	"\fVpcZoneScope\x128\n" +
-	"\x12primary_network_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x10primaryNetworkId\",\n" +
+	"\x05scope\x12\x05\xbaH\x02\b\x01\"W\n" +
+	"\fVpcZoneScope\x12G\n" +
+	"\x12primary_network_id\x18\x01 \x01(\tB\x19\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\x10primaryNetworkId\",\n" +
 	"\aSoaSpec\x12!\n" +
 	"\fnegative_ttl\x18\x1e \x01(\x03R\vnegativeTtl\"Q\n" +
 	"\n" +
 	"ZoneStatus\x12!\n" +
 	"\frecord_count\x18\x14 \x01(\x03R\vrecordCount\x12 \n" +
-	"\vreconciling\x18d \x01(\bR\vreconciling\"\\\n" +
-	"\x0eGetZoneRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x122\n" +
-	"\x10resource_version\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fresourceVersion\"s\n" +
-	"\x10ListZonesRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\vreconciling\x18d \x01(\bR\vreconciling\"h\n" +
+	"\x0eGetZoneRequest\x12\"\n" +
+	"\x02id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\adnszoneR\x02id\x122\n" +
+	"\x10resource_version\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fresourceVersion\"\x7f\n" +
+	"\x10ListZonesRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"f\n" +
