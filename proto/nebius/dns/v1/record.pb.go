@@ -520,9 +520,9 @@ var File_nebius_dns_v1_record_proto protoreflect.FileDescriptor
 
 const file_nebius_dns_v1_record_proto_rawDesc = "" +
 	"\n" +
-	"\x1anebius/dns/v1/record.proto\x12\rnebius.dns.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xac\x01\n" +
-	"\x06Record\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12-\n" +
+	"\x1anebius/dns/v1/record.proto\x12\rnebius.dns.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xba\x01\n" +
+	"\x06Record\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\adnszoneR\bmetadata\x12-\n" +
 	"\x04spec\x18\x02 \x01(\v2\x19.nebius.dns.v1.RecordSpecR\x04spec\x123\n" +
 	"\x06status\x18\x03 \x01(\v2\x1b.nebius.dns.v1.RecordStatusR\x06status\"\x83\x05\n" +
 	"\n" +
@@ -553,12 +553,14 @@ const file_nebius_dns_v1_record_proto_rawDesc = "" +
 	"\fRecordStatus\x12(\n" +
 	"\x10zone_domain_name\x18\x01 \x01(\tR\x0ezoneDomainName\x12%\n" +
 	"\x0eeffective_fqdn\x18\x02 \x01(\tR\reffectiveFqdn\x12 \n" +
-	"\vreconciling\x18d \x01(\bR\vreconciling\"^\n" +
-	"\x10GetRecordRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x122\n" +
-	"\x10resource_version\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fresourceVersion\"u\n" +
-	"\x12ListRecordsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\vreconciling\x18d \x01(\bR\vreconciling\"l\n" +
+	"\x10GetRecordRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tdnsrecordR\x02id\x122\n" +
+	"\x10resource_version\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fresourceVersion\"\x81\x01\n" +
+	"\x12ListRecordsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\adnszoneR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"j\n" +
