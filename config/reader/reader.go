@@ -273,6 +273,16 @@ func (r *configReader) GetCredentials(ctx context.Context) (auth.BearerTokener, 
 		return tokener, nil
 	}
 
+	// 3. Raw token endpoint
+	if r.profile.TokenEndpoint != "" {
+		r.logger.DebugContext(ctx, "using token from imds", slog.String("endpoint", r.profile.TokenEndpoint))
+		tokener, err := auth.NewIMDSTokenizer(r.profile.TokenEndpoint, constants.HTTPMaxAttempts, constants.HTTPBaseBackoff)
+		if err != nil {
+			return nil, fmt.Errorf("create token endpoint reader %q: %w", r.profile.TokenEndpoint, err)
+		}
+		return tokener, nil
+	}
+
 	switch r.profile.AuthType {
 	case config.AuthTypeServiceAccount:
 		return r.getServiceAccountCredentials(ctx)

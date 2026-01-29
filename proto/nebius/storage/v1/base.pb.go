@@ -27,6 +27,7 @@ const (
 	StorageClass_STORAGE_CLASS_UNSPECIFIED StorageClass = 0
 	StorageClass_STANDARD                  StorageClass = 1
 	StorageClass_ENHANCED_THROUGHPUT       StorageClass = 2
+	StorageClass_INTELLIGENT_TIERING       StorageClass = 3
 )
 
 // Enum value maps for StorageClass.
@@ -35,11 +36,13 @@ var (
 		0: "STORAGE_CLASS_UNSPECIFIED",
 		1: "STANDARD",
 		2: "ENHANCED_THROUGHPUT",
+		3: "INTELLIGENT_TIERING",
 	}
 	StorageClass_value = map[string]int32{
 		"STORAGE_CLASS_UNSPECIFIED": 0,
 		"STANDARD":                  1,
 		"ENHANCED_THROUGHPUT":       2,
+		"INTELLIGENT_TIERING":       3,
 	}
 )
 
@@ -126,11 +129,12 @@ var File_nebius_storage_v1_base_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_base_proto_rawDesc = "" +
 	"\n" +
-	"\x1cnebius/storage/v1/base.proto\x12\x11nebius.storage.v1*T\n" +
+	"\x1cnebius/storage/v1/base.proto\x12\x11nebius.storage.v1*m\n" +
 	"\fStorageClass\x12\x1d\n" +
 	"\x19STORAGE_CLASS_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bSTANDARD\x10\x01\x12\x17\n" +
-	"\x13ENHANCED_THROUGHPUT\x10\x02*_\n" +
+	"\x13ENHANCED_THROUGHPUT\x10\x02\x12\x17\n" +
+	"\x13INTELLIGENT_TIERING\x10\x03*_\n" +
 	"\x10VersioningPolicy\x12!\n" +
 	"\x1dVERSIONING_POLICY_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bDISABLED\x10\x01\x12\v\n" +

@@ -355,7 +355,7 @@ type NodeGroupSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Version is desired Kubernetes version of the cluster. For now only acceptable format is
 	// `<major>.<minor>` like "1.31". Option for patch version update will be added later.
-	// By default the cluster control plane <major>.<minor> version will be used.
+	// By default the cluster control plane `<major>.<minor>` version will be used.
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Types that are valid to be assigned to Size:
 	//
@@ -1167,8 +1167,10 @@ type NodeGroupDeploymentStrategy struct {
 	// Defaults to 1.
 	// Example: If set to 25%, the node group can scale up by an additional 25% during the update,
 	// allowing new nodes to be added before old nodes are removed, which helps minimize workload disruption.
-	// NOTE: it is user responsibility to ensure that there are enough quota for provision nodes above the desired number.
 	//
+	// NOTE:
+	//
+	//	it is user responsibility to ensure that there are enough quota for provision nodes above the desired number.
 	//	Available quota effectively limits `max_surge`.
 	//	In case of not enough quota even for one extra node, update operation will hung because of quota exhausted error.
 	//	Such error will be visible in Operation.progress_data.
@@ -1558,7 +1560,7 @@ type NodeGroupStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	State NodeGroupStatus_State  `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1.NodeGroupStatus_State" json:"state,omitempty"`
 	// Actual version of NodeGroup. Have format `<major>.<minor>.<patch>-nebius-node.<infra_version>` like "1.30.0-nebius-node.10".
-	// Where <major>.<minor>.<patch> is Kubernetes version and <infra_version> is version of Node infrastructure and configuration,
+	// Where `<major>.<minor>.<patch>` is Kubernetes version and `<infra_version>` is version of Node infrastructure and configuration,
 	// which update may include bug fixes, security updates and new features depending on worker node configuration.
 	Version string `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	// Desired total number of nodes that should be in the node group.

@@ -31,7 +31,7 @@ type AuditEvent struct {
 	Source string `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
 	// Version of CloudEvents spec. See https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#specversion
 	SpecVersion string `protobuf:"bytes,3,opt,name=spec_version,json=specVersion,proto3" json:"spec_version,omitempty"`
-	// The type of event related to the originating occurrence. Formed according to template: "ai.nebius.<serviceName>.<resourceType>.<action>"
+	// The type of event related to the originating occurrence. Formed according to template: `ai.nebius.<serviceName>.<resourceType>.<action>`
 	Type string `protobuf:"bytes,4,opt,name=type,proto3" json:"type,omitempty"`
 	// Indicates the service that generated the event.
 	Service *Service `protobuf:"bytes,5,opt,name=service,proto3" json:"service,omitempty"`

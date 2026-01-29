@@ -25,6 +25,7 @@ type Profile struct {
 
 	Endpoint           string   `yaml:"endpoint,omitempty"`
 	TokenFile          string   `yaml:"token-file,omitempty"`
+	TokenEndpoint      string   `yaml:"token-endpoint,omitempty"`
 	AuthType           AuthType `yaml:"auth-type,omitempty"`
 	FederationEndpoint string   `yaml:"federation-endpoint,omitempty"`
 	FederationID       string   `yaml:"federation-id,omitempty"`
@@ -57,10 +58,11 @@ func (p *Profile) LogValue() slog.Value {
 		"private-key-file-path":                   p.PrivateKeyFilePath,
 		"service-account-credentials-file-path":   p.ServiceAccountCredentialsFilePath,
 		"federated-subject-credentials-file-path": p.FederatedSubjectCredentialsFilePath,
-		"auth-type":  p.AuthType,
-		"parent-id":  p.ParentID,
-		"tenant-id":  p.TenantID,
-		"token-file": p.TokenFile,
+		"auth-type":      p.AuthType,
+		"parent-id":      p.ParentID,
+		"tenant-id":      p.TenantID,
+		"token-file":     p.TokenFile,
+		"token-endpoint": p.TokenEndpoint,
 	})
 }
 
