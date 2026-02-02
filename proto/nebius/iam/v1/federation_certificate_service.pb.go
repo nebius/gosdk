@@ -396,9 +396,11 @@ const file_nebius_iam_v1_federation_certificate_service_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12<\n" +
 	"\x04spec\x18\x02 \x01(\v2(.nebius.iam.v1.FederationCertificateSpecR\x04spec\"1\n" +
 	"\x1fGetFederationCertificateRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x8f\x01\n" +
-	",ListFederationCertificateByFederationRequest\x12#\n" +
-	"\rfederation_id\x18\x01 \x01(\tR\ffederationId\x12\x1b\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xa0\x01\n" +
+	",ListFederationCertificateByFederationRequest\x124\n" +
+	"\rfederation_id\x18\x01 \x01(\tB\x0f\xe2J\f\n" +
+	"\n" +
+	"federationR\ffederationId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\xa2\x01\n" +

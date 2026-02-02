@@ -516,14 +516,16 @@ const file_nebius_vpc_v1_allocation_service_proto_rawDesc = "" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"{\n" +
-	"\x1cListAllocationsByPoolRequest\x12\x1f\n" +
-	"\apool_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06poolId\x12\x1b\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x87\x01\n" +
+	"\x1cListAllocationsByPoolRequest\x12+\n" +
+	"\apool_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\avpcpoolR\x06poolId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\x81\x01\n" +
-	"\x1eListAllocationsBySubnetRequest\x12#\n" +
-	"\tsubnet_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bsubnetId\x12\x1b\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x8f\x01\n" +
+	"\x1eListAllocationsBySubnetRequest\x121\n" +
+	"\tsubnet_id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tvpcsubnetR\bsubnetId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"r\n" +
