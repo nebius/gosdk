@@ -456,10 +456,12 @@ const file_nebius_vpc_v1_route_table_service_proto_rawDesc = "" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\x84\x01\n" +
-	"\x1fListRouteTablesByNetworkRequest\x12%\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x93\x01\n" +
+	"\x1fListRouteTablesByNetworkRequest\x124\n" +
 	"\n" +
-	"network_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tnetworkId\x12\x1b\n" +
+	"network_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"r\n" +
