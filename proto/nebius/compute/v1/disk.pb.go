@@ -719,8 +719,10 @@ func (x *DiskEncryption) GetType() DiskEncryption_DiskEncryptionType {
 }
 
 type DiskStatus_LockState struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Images        []string               `protobuf:"bytes,1,rep,name=images,proto3" json:"images,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Disk is locked for deletion and for read-write operations while image is being created.
+	// Here is the list of these images.
+	Images        []string `protobuf:"bytes,1,rep,name=images,proto3" json:"images,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
