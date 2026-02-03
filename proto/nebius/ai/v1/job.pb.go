@@ -1093,7 +1093,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x03Job\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xae\r\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xb7\r\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1112,8 +1112,8 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\tsubnet_id\x18\x18 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x12\x1b\n" +
 	"\tpublic_ip\x18\x19 \x01(\bR\bpublicIp\x12.\n" +
-	"\x13ssh_authorized_keys\x18\x1a \x03(\tR\x11sshAuthorizedKeys\x122\n" +
-	"\x10restart_attempts\x18\x1e \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0frestartAttempts\x123\n" +
+	"\x13ssh_authorized_keys\x18\x1a \x03(\tR\x11sshAuthorizedKeys\x12;\n" +
+	"\x10restart_attempts\x18\x1e \x01(\x03B\x10\xbaH\r\"\v(\xff\xff\xff\xff\xff\xff\xff\xff\xff\x01R\x0frestartAttempts\x123\n" +
 	"\atimeout\x18\x1f \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1aL\n" +
 	"\x13EnvironmentVariable\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x19\n" +

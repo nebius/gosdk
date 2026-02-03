@@ -172,7 +172,6 @@ func (*FederatedCredentialsSpec_OidcProvider) isFederatedCredentialsSpec_Credent
 
 type OidcCredentialsProvider struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// *
 	// It's not required provider OIDC issuer should be real OIDC provider, but should expose OIDC configuration
 	// with "/.well-known/openid-configuration" endpoint. Configuration should contains the "jwks_uri" endpoint
 	// where the JSON Web Key Set (JWKS) can be found; this set contains public keys used to verify
@@ -183,7 +182,6 @@ type OidcCredentialsProvider struct {
 	// the only first 50  will be used for signature verifying.
 	// - response size for jwks_uri and "/.well-known/openid-configuration limited by 100KB.
 	IssuerUrl string `protobuf:"bytes,1,opt,name=issuer_url,json=issuerUrl,proto3" json:"issuer_url,omitempty"`
-	// *
 	// Literally json, which represents JWKS with public keys for JWT verification.
 	// It worth mentioned that in a case of adding/rotating keys the jwk_set_json also should be updated here.
 	// Besides, the "issuer" parameter should be set even if the JWKS will be resolved locally.

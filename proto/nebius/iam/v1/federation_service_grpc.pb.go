@@ -39,11 +39,9 @@ type FederationServiceClient interface {
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Federation, error)
 	List(ctx context.Context, in *ListFederationsRequest, opts ...grpc.CallOption) (*ListFederationsResponse, error)
 	Update(ctx context.Context, in *UpdateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
-	// *
 	// Activates an existing federation.
 	// By default, a newly created federation is in the active state.
 	Activate(ctx context.Context, in *ActivateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
-	// *
 	// Deactivates an existing federation.
 	// When a federation is inactive, all users under it will be unable to authenticate.
 	Deactivate(ctx context.Context, in *DeactivateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
@@ -139,11 +137,9 @@ type FederationServiceServer interface {
 	GetByName(context.Context, *v1.GetByNameRequest) (*Federation, error)
 	List(context.Context, *ListFederationsRequest) (*ListFederationsResponse, error)
 	Update(context.Context, *UpdateFederationRequest) (*v1.Operation, error)
-	// *
 	// Activates an existing federation.
 	// By default, a newly created federation is in the active state.
 	Activate(context.Context, *ActivateFederationRequest) (*v1.Operation, error)
-	// *
 	// Deactivates an existing federation.
 	// When a federation is inactive, all users under it will be unable to authenticate.
 	Deactivate(context.Context, *DeactivateFederationRequest) (*v1.Operation, error)
