@@ -13,3 +13,9 @@ package v1
 
 // func (x *ListCapacityBlockGroupsResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListCapacityBlockGroupsResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ListCapacityBlockGroupResourcesRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListCapacityBlockGroupResourcesRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ListCapacityBlockGroupResourcesResponse) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListCapacityBlockGroupResourcesResponse) LogValue() slog.Value // is not generated as no sensitive fields found

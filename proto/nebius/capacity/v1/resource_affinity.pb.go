@@ -149,9 +149,9 @@ var File_nebius_capacity_v1_resource_affinity_proto protoreflect.FileDescriptor
 
 const file_nebius_capacity_v1_resource_affinity_proto_rawDesc = "" +
 	"\n" +
-	"*nebius/capacity/v1/resource_affinity.proto\x12\x12nebius.capacity.v1\x1a\x1bbuf/validate/validate.proto\"_\n" +
-	"\x19ResourceAffinityComputeV1\x12\x1e\n" +
-	"\x06fabric\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06fabric\x12\"\n" +
+	"*nebius/capacity/v1/resource_affinity.proto\x12\x12nebius.capacity.v1\x1a\x1bbuf/validate/validate.proto\"W\n" +
+	"\x19ResourceAffinityComputeV1\x12\x16\n" +
+	"\x06fabric\x18\x01 \x01(\tR\x06fabric\x12\"\n" +
 	"\bplatform\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bplatform\"n\n" +
 	"\x10ResourceAffinity\x12N\n" +
 	"\n" +

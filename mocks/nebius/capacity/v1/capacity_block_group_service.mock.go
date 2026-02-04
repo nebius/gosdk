@@ -216,3 +216,47 @@ func (c *MockCapacityBlockGroupServiceListCall) DoAndReturn(f func(context.Conte
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// ListResources mocks base method.
+func (m *MockCapacityBlockGroupService) ListResources(arg0 context.Context, arg1 *v1.ListCapacityBlockGroupResourcesRequest, arg2 ...grpc.CallOption) (*v1.ListCapacityBlockGroupResourcesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListResources", varargs...)
+	ret0, _ := ret[0].(*v1.ListCapacityBlockGroupResourcesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListResources indicates an expected call of ListResources.
+func (mr *MockCapacityBlockGroupServiceMockRecorder) ListResources(arg0, arg1 any, arg2 ...any) *MockCapacityBlockGroupServiceListResourcesCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListResources", reflect.TypeOf((*MockCapacityBlockGroupService)(nil).ListResources), varargs...)
+	return &MockCapacityBlockGroupServiceListResourcesCall{Call: call}
+}
+
+// MockCapacityBlockGroupServiceListResourcesCall wrap *gomock.Call
+type MockCapacityBlockGroupServiceListResourcesCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockCapacityBlockGroupServiceListResourcesCall) Return(arg0 *v1.ListCapacityBlockGroupResourcesResponse, arg1 error) *MockCapacityBlockGroupServiceListResourcesCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockCapacityBlockGroupServiceListResourcesCall) Do(f func(context.Context, *v1.ListCapacityBlockGroupResourcesRequest, ...grpc.CallOption) (*v1.ListCapacityBlockGroupResourcesResponse, error)) *MockCapacityBlockGroupServiceListResourcesCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockCapacityBlockGroupServiceListResourcesCall) DoAndReturn(f func(context.Context, *v1.ListCapacityBlockGroupResourcesRequest, ...grpc.CallOption) (*v1.ListCapacityBlockGroupResourcesResponse, error)) *MockCapacityBlockGroupServiceListResourcesCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}

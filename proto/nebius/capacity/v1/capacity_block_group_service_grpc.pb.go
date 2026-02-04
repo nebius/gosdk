@@ -22,6 +22,7 @@ const (
 	CapacityBlockGroupService_Get_FullMethodName                   = "/nebius.capacity.v1.CapacityBlockGroupService/Get"
 	CapacityBlockGroupService_GetByResourceAffinity_FullMethodName = "/nebius.capacity.v1.CapacityBlockGroupService/GetByResourceAffinity"
 	CapacityBlockGroupService_List_FullMethodName                  = "/nebius.capacity.v1.CapacityBlockGroupService/List"
+	CapacityBlockGroupService_ListResources_FullMethodName         = "/nebius.capacity.v1.CapacityBlockGroupService/ListResources"
 )
 
 // CapacityBlockGroupServiceClient is the client API for CapacityBlockGroupService service.
@@ -34,6 +35,8 @@ type CapacityBlockGroupServiceClient interface {
 	GetByResourceAffinity(ctx context.Context, in *GetCapacityBlockGroupByResourceAffinityRequest, opts ...grpc.CallOption) (*CapacityBlockGroup, error)
 	// List all Capacity Block Groups for the specified Tenant.
 	List(ctx context.Context, in *ListCapacityBlockGroupsRequest, opts ...grpc.CallOption) (*ListCapacityBlockGroupsResponse, error)
+	// List virtual machines instances' IDs that occupy a Capacity Block Group by its ID.
+	ListResources(ctx context.Context, in *ListCapacityBlockGroupResourcesRequest, opts ...grpc.CallOption) (*ListCapacityBlockGroupResourcesResponse, error)
 }
 
 type capacityBlockGroupServiceClient struct {
@@ -71,6 +74,15 @@ func (c *capacityBlockGroupServiceClient) List(ctx context.Context, in *ListCapa
 	return out, nil
 }
 
+func (c *capacityBlockGroupServiceClient) ListResources(ctx context.Context, in *ListCapacityBlockGroupResourcesRequest, opts ...grpc.CallOption) (*ListCapacityBlockGroupResourcesResponse, error) {
+	out := new(ListCapacityBlockGroupResourcesResponse)
+	err := c.cc.Invoke(ctx, CapacityBlockGroupService_ListResources_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CapacityBlockGroupServiceServer is the server API for CapacityBlockGroupService service.
 // All implementations should embed UnimplementedCapacityBlockGroupServiceServer
 // for forward compatibility
@@ -81,6 +93,8 @@ type CapacityBlockGroupServiceServer interface {
 	GetByResourceAffinity(context.Context, *GetCapacityBlockGroupByResourceAffinityRequest) (*CapacityBlockGroup, error)
 	// List all Capacity Block Groups for the specified Tenant.
 	List(context.Context, *ListCapacityBlockGroupsRequest) (*ListCapacityBlockGroupsResponse, error)
+	// List virtual machines instances' IDs that occupy a Capacity Block Group by its ID.
+	ListResources(context.Context, *ListCapacityBlockGroupResourcesRequest) (*ListCapacityBlockGroupResourcesResponse, error)
 }
 
 // UnimplementedCapacityBlockGroupServiceServer should be embedded to have forward compatible implementations.
@@ -95,6 +109,9 @@ func (UnimplementedCapacityBlockGroupServiceServer) GetByResourceAffinity(contex
 }
 func (UnimplementedCapacityBlockGroupServiceServer) List(context.Context, *ListCapacityBlockGroupsRequest) (*ListCapacityBlockGroupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedCapacityBlockGroupServiceServer) ListResources(context.Context, *ListCapacityBlockGroupResourcesRequest) (*ListCapacityBlockGroupResourcesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListResources not implemented")
 }
 
 // UnsafeCapacityBlockGroupServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -162,6 +179,24 @@ func _CapacityBlockGroupService_List_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CapacityBlockGroupService_ListResources_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCapacityBlockGroupResourcesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CapacityBlockGroupServiceServer).ListResources(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CapacityBlockGroupService_ListResources_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CapacityBlockGroupServiceServer).ListResources(ctx, req.(*ListCapacityBlockGroupResourcesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CapacityBlockGroupService_ServiceDesc is the grpc.ServiceDesc for CapacityBlockGroupService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -180,6 +215,10 @@ var CapacityBlockGroupService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _CapacityBlockGroupService_List_Handler,
+		},
+		{
+			MethodName: "ListResources",
+			Handler:    _CapacityBlockGroupService_ListResources_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

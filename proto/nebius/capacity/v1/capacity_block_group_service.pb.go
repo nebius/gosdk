@@ -254,6 +254,98 @@ func (x *ListCapacityBlockGroupsResponse) GetNextPageToken() string {
 	return ""
 }
 
+// List reservations instances in a Capacity Block Group by its ID.
+type ListCapacityBlockGroupResourcesRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of a Capacity Block Group.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListCapacityBlockGroupResourcesRequest) Reset() {
+	*x = ListCapacityBlockGroupResourcesRequest{}
+	mi := &file_nebius_capacity_v1_capacity_block_group_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListCapacityBlockGroupResourcesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListCapacityBlockGroupResourcesRequest) ProtoMessage() {}
+
+func (x *ListCapacityBlockGroupResourcesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_capacity_v1_capacity_block_group_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListCapacityBlockGroupResourcesRequest.ProtoReflect.Descriptor instead.
+func (*ListCapacityBlockGroupResourcesRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_capacity_v1_capacity_block_group_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListCapacityBlockGroupResourcesRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+// All VM instances' IDs that occupy the Capacity Block Group.
+type ListCapacityBlockGroupResourcesResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// List of instances' IDs.
+	ResourceIds   []string `protobuf:"bytes,1,rep,name=resource_ids,json=resourceIds,proto3" json:"resource_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListCapacityBlockGroupResourcesResponse) Reset() {
+	*x = ListCapacityBlockGroupResourcesResponse{}
+	mi := &file_nebius_capacity_v1_capacity_block_group_service_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListCapacityBlockGroupResourcesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListCapacityBlockGroupResourcesResponse) ProtoMessage() {}
+
+func (x *ListCapacityBlockGroupResourcesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_capacity_v1_capacity_block_group_service_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListCapacityBlockGroupResourcesResponse.ProtoReflect.Descriptor instead.
+func (*ListCapacityBlockGroupResourcesResponse) Descriptor() ([]byte, []int) {
+	return file_nebius_capacity_v1_capacity_block_group_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListCapacityBlockGroupResourcesResponse) GetResourceIds() []string {
+	if x != nil {
+		return x.ResourceIds
+	}
+	return nil
+}
+
 var File_nebius_capacity_v1_capacity_block_group_service_proto protoreflect.FileDescriptor
 
 const file_nebius_capacity_v1_capacity_block_group_service_proto_rawDesc = "" +
@@ -276,11 +368,17 @@ const file_nebius_capacity_v1_capacity_block_group_service_proto_rawDesc = "" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x87\x01\n" +
 	"\x1fListCapacityBlockGroupsResponse\x12<\n" +
 	"\x05items\x18\x01 \x03(\v2&.nebius.capacity.v1.CapacityBlockGroupR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x93\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"[\n" +
+	"&ListCapacityBlockGroupResourcesRequest\x121\n" +
+	"\x02id\x18\x01 \x01(\tB!\xbaH\x03\xc8\x01\x01\xbaJ\x01\x03\xe2J\x14\n" +
+	"\x12capacityblockgroupR\x02id\"L\n" +
+	"'ListCapacityBlockGroupResourcesResponse\x12!\n" +
+	"\fresource_ids\x18\x01 \x03(\tR\vresourceIds2\x9e\x04\n" +
 	"\x19CapacityBlockGroupService\x12_\n" +
 	"\x03Get\x120.nebius.capacity.v1.GetCapacityBlockGroupRequest\x1a&.nebius.capacity.v1.CapacityBlockGroup\x12\x83\x01\n" +
 	"\x15GetByResourceAffinity\x12B.nebius.capacity.v1.GetCapacityBlockGroupByResourceAffinityRequest\x1a&.nebius.capacity.v1.CapacityBlockGroup\x12o\n" +
-	"\x04List\x122.nebius.capacity.v1.ListCapacityBlockGroupsRequest\x1a3.nebius.capacity.v1.ListCapacityBlockGroupsResponse\x1a\x1e\xbaJ\x1bcapacity-blocks.billing-cplBo\n" +
+	"\x04List\x122.nebius.capacity.v1.ListCapacityBlockGroupsRequest\x1a3.nebius.capacity.v1.ListCapacityBlockGroupsResponse\x12\x88\x01\n" +
+	"\rListResources\x12:.nebius.capacity.v1.ListCapacityBlockGroupResourcesRequest\x1a;.nebius.capacity.v1.ListCapacityBlockGroupResourcesResponse\x1a\x1e\xbaJ\x1bcapacity-blocks.billing-cplBo\n" +
 	"\x19ai.nebius.pub.capacity.v1B\x1eCapacityBlockGroupServiceProtoP\x01Z0github.com/nebius/gosdk/proto/nebius/capacity/v1b\x06proto3"
 
 var (
@@ -295,26 +393,30 @@ func file_nebius_capacity_v1_capacity_block_group_service_proto_rawDescGZIP() []
 	return file_nebius_capacity_v1_capacity_block_group_service_proto_rawDescData
 }
 
-var file_nebius_capacity_v1_capacity_block_group_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_nebius_capacity_v1_capacity_block_group_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_nebius_capacity_v1_capacity_block_group_service_proto_goTypes = []any{
 	(*GetCapacityBlockGroupRequest)(nil),                   // 0: nebius.capacity.v1.GetCapacityBlockGroupRequest
 	(*GetCapacityBlockGroupByResourceAffinityRequest)(nil), // 1: nebius.capacity.v1.GetCapacityBlockGroupByResourceAffinityRequest
 	(*ListCapacityBlockGroupsRequest)(nil),                 // 2: nebius.capacity.v1.ListCapacityBlockGroupsRequest
 	(*ListCapacityBlockGroupsResponse)(nil),                // 3: nebius.capacity.v1.ListCapacityBlockGroupsResponse
-	(*ResourceAffinity)(nil),                               // 4: nebius.capacity.v1.ResourceAffinity
-	(*CapacityBlockGroup)(nil),                             // 5: nebius.capacity.v1.CapacityBlockGroup
+	(*ListCapacityBlockGroupResourcesRequest)(nil),         // 4: nebius.capacity.v1.ListCapacityBlockGroupResourcesRequest
+	(*ListCapacityBlockGroupResourcesResponse)(nil),        // 5: nebius.capacity.v1.ListCapacityBlockGroupResourcesResponse
+	(*ResourceAffinity)(nil),                               // 6: nebius.capacity.v1.ResourceAffinity
+	(*CapacityBlockGroup)(nil),                             // 7: nebius.capacity.v1.CapacityBlockGroup
 }
 var file_nebius_capacity_v1_capacity_block_group_service_proto_depIdxs = []int32{
-	4, // 0: nebius.capacity.v1.GetCapacityBlockGroupByResourceAffinityRequest.resource_affinity:type_name -> nebius.capacity.v1.ResourceAffinity
-	5, // 1: nebius.capacity.v1.ListCapacityBlockGroupsResponse.items:type_name -> nebius.capacity.v1.CapacityBlockGroup
+	6, // 0: nebius.capacity.v1.GetCapacityBlockGroupByResourceAffinityRequest.resource_affinity:type_name -> nebius.capacity.v1.ResourceAffinity
+	7, // 1: nebius.capacity.v1.ListCapacityBlockGroupsResponse.items:type_name -> nebius.capacity.v1.CapacityBlockGroup
 	0, // 2: nebius.capacity.v1.CapacityBlockGroupService.Get:input_type -> nebius.capacity.v1.GetCapacityBlockGroupRequest
 	1, // 3: nebius.capacity.v1.CapacityBlockGroupService.GetByResourceAffinity:input_type -> nebius.capacity.v1.GetCapacityBlockGroupByResourceAffinityRequest
 	2, // 4: nebius.capacity.v1.CapacityBlockGroupService.List:input_type -> nebius.capacity.v1.ListCapacityBlockGroupsRequest
-	5, // 5: nebius.capacity.v1.CapacityBlockGroupService.Get:output_type -> nebius.capacity.v1.CapacityBlockGroup
-	5, // 6: nebius.capacity.v1.CapacityBlockGroupService.GetByResourceAffinity:output_type -> nebius.capacity.v1.CapacityBlockGroup
-	3, // 7: nebius.capacity.v1.CapacityBlockGroupService.List:output_type -> nebius.capacity.v1.ListCapacityBlockGroupsResponse
-	5, // [5:8] is the sub-list for method output_type
-	2, // [2:5] is the sub-list for method input_type
+	4, // 5: nebius.capacity.v1.CapacityBlockGroupService.ListResources:input_type -> nebius.capacity.v1.ListCapacityBlockGroupResourcesRequest
+	7, // 6: nebius.capacity.v1.CapacityBlockGroupService.Get:output_type -> nebius.capacity.v1.CapacityBlockGroup
+	7, // 7: nebius.capacity.v1.CapacityBlockGroupService.GetByResourceAffinity:output_type -> nebius.capacity.v1.CapacityBlockGroup
+	3, // 8: nebius.capacity.v1.CapacityBlockGroupService.List:output_type -> nebius.capacity.v1.ListCapacityBlockGroupsResponse
+	5, // 9: nebius.capacity.v1.CapacityBlockGroupService.ListResources:output_type -> nebius.capacity.v1.ListCapacityBlockGroupResourcesResponse
+	6, // [6:10] is the sub-list for method output_type
+	2, // [2:6] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
 	2, // [2:2] is the sub-list for extension extendee
 	0, // [0:2] is the sub-list for field type_name
@@ -333,7 +435,7 @@ func file_nebius_capacity_v1_capacity_block_group_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_capacity_v1_capacity_block_group_service_proto_rawDesc), len(file_nebius_capacity_v1_capacity_block_group_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

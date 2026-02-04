@@ -29,6 +29,7 @@ type CapacityBlockGroupService interface {
 	GetByResourceAffinity(context.Context, *v1.GetCapacityBlockGroupByResourceAffinityRequest, ...grpc.CallOption) (*v1.CapacityBlockGroup, error)
 	List(context.Context, *v1.ListCapacityBlockGroupsRequest, ...grpc.CallOption) (*v1.ListCapacityBlockGroupsResponse, error)
 	Filter(context.Context, *v1.ListCapacityBlockGroupsRequest, ...grpc.CallOption) iter.Seq2[*v1.CapacityBlockGroup, error]
+	ListResources(context.Context, *v1.ListCapacityBlockGroupResourcesRequest, ...grpc.CallOption) (*v1.ListCapacityBlockGroupResourcesResponse, error)
 }
 
 type capacityBlockGroupService struct {
@@ -138,4 +139,24 @@ func (s capacityBlockGroupService) Filter(ctx context.Context, request *v1.ListC
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s capacityBlockGroupService) ListResources(ctx context.Context, request *v1.ListCapacityBlockGroupResourcesRequest, opts ...grpc.CallOption) (
+	*v1.ListCapacityBlockGroupResourcesResponse,
+	error,
+) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, CapacityBlockGroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewCapacityBlockGroupServiceClient(con).ListResources(ctx, request, opts...)
 }
