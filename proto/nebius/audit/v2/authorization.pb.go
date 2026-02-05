@@ -23,7 +23,8 @@ const (
 
 type Authorization struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Field is required. We do not use «(buf.validate.field).required = true» here as false value considered as unset (validation violation)
+	// Field is required. We do not use `(buf.validate.field).required = true` here as false value
+	// considered as unset (validation violation)
 	Authorized    bool `protobuf:"varint,1,opt,name=authorized,proto3" json:"authorized,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

@@ -52,7 +52,8 @@ const (
 	RecordSpec_CAA RecordSpec_RecordType = 10
 	// `SVCB` record: service binding. See [RFC 9460, section 2.3](https://www.rfc-editor.org/rfc/rfc9460.html#section-2.3)
 	RecordSpec_SVCB RecordSpec_RecordType = 11
-	// `HTTPS` record: service binding with HTTPS protocol configuration. See [RFC 9460, section 9.1](https://www.rfc-editor.org/rfc/rfc9460.html#section-9.1)
+	// `HTTPS` record: service binding with HTTPS protocol configuration.
+	// See [RFC 9460, section 9.1](https://www.rfc-editor.org/rfc/rfc9460.html#section-9.1)
 	RecordSpec_HTTPS RecordSpec_RecordType = 12
 )
 
@@ -198,7 +199,9 @@ type RecordSpec struct {
 	Ttl int64 `protobuf:"varint,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
 	// Record data in text format
 	//
-	// This should be the RDATA part of this Resource Record's [presentation (zonefile) format](https://datatracker.ietf.org/doc/html/rfc9499#name-resource-records). E.g., `10 xyz.tuv` for a `@ 600 IN MX 10 xyz.tuv.` resource record in a zonefile
+	// This should be the RDATA part of this Resource Record's
+	// [presentation (zonefile) format](https://datatracker.ietf.org/doc/html/rfc9499#name-resource-records).
+	// E.g., `10 xyz.tuv` for a `@ 600 IN MX 10 xyz.tuv.` resource record in a zonefile
 	Data string `protobuf:"bytes,4,opt,name=data,proto3" json:"data,omitempty"`
 	// Mark this record as delete-protected
 	// Delete-protected records can *only* be deleted by explicitly calling `RecordService/Delete` API with `force` flag set to `true`
@@ -342,8 +345,9 @@ type GetRecordRequest struct {
 	// Record ID
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// Optional: expected record version (`metadata.resource_version`)
-	// - If specified, the requested version will be returned if possible (if the version has changed, you will get a `FAILED_PRECONDITION` error)
-	// - If not specified or set to `0`, the latest version will be returned
+	//   - If specified, the requested version will be returned if possible
+	//     (if the version has changed, you will get a `FAILED_PRECONDITION` error)
+	//   - If not specified or set to `0`, the latest version will be returned
 	ResourceVersion int64 `protobuf:"varint,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache

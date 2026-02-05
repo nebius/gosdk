@@ -67,7 +67,8 @@ type Operation struct {
 	// If the operation tracks its progress, `progress_tracker` MUST be present both while
 	// the operation is running and after it has been completed.
 	ProgressTracker *ProgressTracker `protobuf:"bytes,12,opt,name=progress_tracker,json=progressTracker,proto3" json:"progress_tracker,omitempty"`
-	// Extra information about this operation's progress. MAY be absent while the operation is running, MUST be absent after the operation has completed.
+	// Extra information about this operation's progress. MAY be absent while the operation is running, MUST be absent after the operation has
+	// completed.
 	//
 	// Type of message that's stored inside [progress_data] is service-dependent.
 	ProgressData  *anypb.Any `protobuf:"bytes,9,opt,name=progress_data,json=progressData,proto3" json:"progress_data,omitempty"`
@@ -182,7 +183,8 @@ func (x *Operation) GetProgressData() *anypb.Any {
 	return nil
 }
 
-// Request header is a container for all the values of a particular header of a request because there is no such thing as `map<string, repeated string>`
+// Request header is a container for all the values of a particular header of a request because there is no such thing as
+// `map<string, repeated string>`
 type Operation_RequestHeader struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The values of a particular header from a request

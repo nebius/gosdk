@@ -689,7 +689,11 @@ type OSInfo struct {
 	// Example: "Ubuntu 22.04.4 LTS"
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Detailed system information from uname command.
-	// Example: "Linux computeimage-abcdef 6.5.0-44-generic #44~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Jun 18 14:36:16 UTC 2 x86_64 x86_64 x86_64 GNU/Linux"
+	//
+	// Example:
+	// ```
+	// Linux computeimage-abcdef 6.5.0-44-generic #44~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Jun 18 14:36:16 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+	// ```
 	Uname string `protobuf:"bytes,2,opt,name=uname,proto3" json:"uname,omitempty"`
 	// System architecture.
 	Architecture  string `protobuf:"bytes,3,opt,name=architecture,proto3" json:"architecture,omitempty"`

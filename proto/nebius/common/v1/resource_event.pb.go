@@ -34,7 +34,8 @@ const (
 	ResourceEvent_DEBUG ResourceEvent_Level = 1
 	// A normal event or state change. Informs what is happening with the API resource. Does not require user attention or interaction
 	ResourceEvent_INFO ResourceEvent_Level = 2
-	// Warning event. Indicates a potential or minor problem with the API resource and/or the corresponding processes. Needs user attention, but requires no immediate action (yet)
+	// Warning event. Indicates a potential or minor problem with the API resource and/or the corresponding processes. Needs user attention,
+	// but requires no immediate action (yet)
 	ResourceEvent_WARN ResourceEvent_Level = 3
 	// Error event. Indicates a serious problem with the API resource and/or the corresponding processes. Requires immediate user action
 	ResourceEvent_ERROR ResourceEvent_Level = 4
@@ -85,7 +86,8 @@ func (ResourceEvent_Level) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_common_v1_resource_event_proto_rawDescGZIP(), []int{0, 0}
 }
 
-// Represents an API Resource-related event which is potentially important to the end-user. What exactly constitutes an *event* to be reported is service-dependent
+// Represents an API Resource-related event which is potentially important to the end-user. What exactly constitutes an *event* to be
+// reported is service-dependent
 type ResourceEvent struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Time at which the event has occurred
@@ -94,9 +96,12 @@ type ResourceEvent struct {
 	Level ResourceEvent_Level `protobuf:"varint,2,opt,name=level,proto3,enum=nebius.common.v1.ResourceEvent_Level" json:"level,omitempty"`
 	// Event code (unique within the API service), in UpperCamelCase, e.g. `"DiskAttached"`
 	Code string `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
-	// A human-readable message describing what has happened (and suggested actions for the user, if this is a `WARN`- or `ERROR`-level event)
+	// A human-readable message describing what has happened
+	// (and suggested actions for the user, if this is a `WARN` or `ERROR` level event)
 	Message string `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
-	// Describes a GRPC error status associated with an `ERROR`- or `WARN`-level event, if known. The `error` **must** have a standard GRPC `code` (which **must not** be `OK` (0)) and a human-readable `message`. A standard `common.v1.ServiceError` **should** also be included in `details`
+	// Describes a GRPC error status associated with an `ERROR` or `WARN` level event, if known. The `error` **must** have a standard GRPC
+	// `code` (which **must not** be `OK` (0)) and a human-readable `message`. A standard `common.v1.ServiceError` **should** also be
+	// included in `details`
 	Error         *status.Status `protobuf:"bytes,10,opt,name=error,proto3" json:"error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

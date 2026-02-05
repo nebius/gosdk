@@ -77,9 +77,11 @@ type LifecycleAccessFilter_Condition_Type int32
 
 const (
 	LifecycleAccessFilter_Condition_TYPE_UNSPECIFIED LifecycleAccessFilter_Condition_Type = 0
-	// If an include type condition is the first condition that the request match, the request will be included in `days_since_last_access` calculation.
+	// If an include type condition is the first condition that the request match, the request will be included in
+	// `days_since_last_access` calculation.
 	LifecycleAccessFilter_Condition_INCLUDE LifecycleAccessFilter_Condition_Type = 1
-	// If an exclude type condition is the first condition that the request match, the request will be ignored in `days_since_last_access` calculation.
+	// If an exclude type condition is the first condition that the request match, the request will be ignored in `days_since_last_access`
+	// calculation.
 	LifecycleAccessFilter_Condition_EXCLUDE LifecycleAccessFilter_Condition_Type = 2
 )
 

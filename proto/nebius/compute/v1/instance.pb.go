@@ -425,10 +425,12 @@ type InstanceSpec struct {
 	CloudInitUserData string `protobuf:"bytes,8,opt,name=cloud_init_user_data,json=cloudInitUserData,proto3" json:"cloud_init_user_data,omitempty"`
 	// Indicates whether the instance should be stopped.
 	Stopped bool `protobuf:"varint,13,opt,name=stopped,proto3" json:"stopped,omitempty"`
-	// Recovery policy defines how the instance will be treated in case of a failure. Common source of failure is a host failure, but it can be any other failure.
-	// Instance undergoing a guest shutdown (poweroff, etc.) will be subject to recovery policy, meaning that it could be restarted and billed accordingly. Stop instance via API or UI to stop it to avoid recovering.
-	// If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.
-	// If set to FAIL, instance will be stopped and not restarted.
+	// Recovery policy defines how the instance will be treated in case of a failure.
+	// Common source of failure is a host failure, but it can be any other failure.
+	// Instance undergoing a guest shutdown (poweroff, etc.) will be subject to recovery policy, meaning that it could
+	// be restarted and billed accordingly. Stop instance via API or UI to stop it to avoid recovering.
+	// - If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.
+	// - If set to FAIL, instance will be stopped and not restarted.
 	RecoveryPolicy InstanceRecoveryPolicy `protobuf:"varint,15,opt,name=recovery_policy,json=recoveryPolicy,proto3,enum=nebius.compute.v1.InstanceRecoveryPolicy" json:"recovery_policy,omitempty"`
 	// Include these parameters to create a Preemptible VM and omit them to create a Regular VM
 	// For details, see https://docs.nebius.com/compute/virtual-machines/preemptible

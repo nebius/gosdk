@@ -14,6 +14,9 @@ package v1
 // func (x *CreateImageRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *CreateImageRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *DeleteImageRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DeleteImageRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ListImagesResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListImagesResponse) LogValue() slog.Value // is not generated as no sensitive fields found
 
