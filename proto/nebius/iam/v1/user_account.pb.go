@@ -30,7 +30,8 @@ const (
 	UserAccountStatus_ACTIVE UserAccountStatus_State = 1
 	// federated user can be blocked (manually or by any specific automated process), in this state user cannot log into the system
 	UserAccountStatus_INACTIVE UserAccountStatus_State = 2
-	// federated user can be deleted/forgot, in this state user cannot log into the system and various internal removal interactions are in progress
+	// federated user can be deleted/forgot, in this state user cannot log into the system and various internal removal interactions are in
+	// progress
 	UserAccountStatus_DELETING UserAccountStatus_State = 3
 )
 

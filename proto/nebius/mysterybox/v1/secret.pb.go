@@ -143,7 +143,8 @@ type SecretSpec struct {
 	Description string `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
 	// Specifies the primary version of the secret to update its payload. This parameter should only be provided during update operations.
 	PrimaryVersionId *string `protobuf:"bytes,3,opt,name=primary_version_id,json=primaryVersionId,proto3,oneof" json:"primary_version_id,omitempty"`
-	// Secret's version specification, defines the secret version, including its payload. This parameter must be specified only during create operations.
+	// Secret's version specification, defines the secret version, including its payload. This parameter must be specified only during create
+	// operations.
 	SecretVersion *SecretVersionSpec `protobuf:"bytes,4,opt,name=secret_version,json=secretVersion,proto3" json:"secret_version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

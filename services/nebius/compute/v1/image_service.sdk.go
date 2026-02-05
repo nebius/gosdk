@@ -33,6 +33,7 @@ type ImageService interface {
 	List(context.Context, *v1.ListImagesRequest, ...grpc.CallOption) (*v1.ListImagesResponse, error)
 	Filter(context.Context, *v1.ListImagesRequest, ...grpc.CallOption) iter.Seq2[*v1.Image, error]
 	Create(context.Context, *v1.CreateImageRequest, ...grpc.CallOption) (operations.Operation, error)
+	Delete(context.Context, *v1.DeleteImageRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperationsByParent(context.Context, *v1.ListOperationsByParentRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 	ListPublic(context.Context, *v1.ListPublicRequest, ...grpc.CallOption) (*v1.ListImagesResponse, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -226,6 +227,30 @@ func (s imageService) Create(ctx context.Context, request *v1.CreateImageRequest
 		return nil, err
 	}
 	op, err := v1.NewImageServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s imageService) Delete(ctx context.Context, request *v1.DeleteImageRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, ImageServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewImageServiceClient(con).Delete(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}

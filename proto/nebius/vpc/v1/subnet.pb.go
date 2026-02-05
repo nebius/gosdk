@@ -382,7 +382,7 @@ type SubnetCidr struct {
 	// If prefix length is specified, the CIDR block will be auto-allocated
 	// from the network's available space.
 	Cidr string `protobuf:"bytes,1,opt,name=cidr,proto3" json:"cidr,omitempty"`
-	// Controls provisioning of IP addresses from the CIDR block . Defaults to AVAILABLE.
+	// Controls provisioning of IP addresses from the CIDR block. Defaults to AVAILABLE.
 	State AddressBlockState `protobuf:"varint,2,opt,name=state,proto3,enum=nebius.vpc.v1.AddressBlockState" json:"state,omitempty"`
 	// Maximum mask length for an allocation from this block. Defaults to /32 for IPv4.
 	MaxMaskLength int64 `protobuf:"varint,3,opt,name=max_mask_length,json=maxMaskLength,proto3" json:"max_mask_length,omitempty"`

@@ -530,7 +530,8 @@ type NodeTemplate struct {
 	// Should contain at least one SSH key.
 	CloudInitUserData string `protobuf:"bytes,6,opt,name=cloud_init_user_data,json=cloudInitUserData,proto3" json:"cloud_init_user_data,omitempty"`
 	// the Nebius service account whose credentials will be available on the nodes of the group.
-	// With these credentials, it is possible to make `nebius` CLI or public API requests from the nodes without the need for extra authentication.
+	// With these credentials, it is possible to make `nebius` CLI or public API requests from the nodes
+	// without the need for extra authentication.
 	// This service account is also used to make requests to container registry.
 	//
 	// `resource.serviceaccount.issueAccessToken` permission is required to use this field.
@@ -1153,27 +1154,37 @@ func (x *NodeTaint) GetEffect() NodeTaint_Effect {
 type NodeGroupDeploymentStrategy struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The maximum number of nodes that can be simultaneously unavailable during the update process.
-	// This value can be specified either as an absolute number (for example 3) or as a percentage of the desired number of nodes (for example 5%).
+	//
+	// This value can be specified either as an absolute number (for example 3) or as a percentage of the desired
+	// number of nodes (for example 5%).
+	//
 	// When specified as a percentage, the actual number is calculated by rounding down to the nearest whole number.
 	// This value cannot be 0 if `max_surge` is also set to 0.
+	//
 	// Defaults to 0.
+	//
 	// Example: If set to 20%, up to 20% of the nodes can be taken offline at once during the update,
 	// ensuring that at least 80% of the desired nodes remain operational.
 	MaxUnavailable *PercentOrCount `protobuf:"bytes,1,opt,name=max_unavailable,json=maxUnavailable,proto3" json:"max_unavailable,omitempty"`
 	// The maximum number of additional nodes that can be provisioned above the desired number of nodes during the update process.
-	// This value can be specified either as an absolute number (for example 3) or as a percentage of the desired number of nodes (for example 5%).
+	//
+	// This value can be specified either as an absolute number (for example 3) or as a percentage of the desired
+	// number of nodes (for example 5%).
+	//
 	// When specified as a percentage, the actual number is calculated by rounding up to the nearest whole number.
 	// This value cannot be 0 if `max_unavailable` is also set to 0.
+	//
 	// Defaults to 1.
+	//
 	// Example: If set to 25%, the node group can scale up by an additional 25% during the update,
 	// allowing new nodes to be added before old nodes are removed, which helps minimize workload disruption.
 	//
 	// NOTE:
 	//
-	//	it is user responsibility to ensure that there are enough quota for provision nodes above the desired number.
-	//	Available quota effectively limits `max_surge`.
-	//	In case of not enough quota even for one extra node, update operation will hung because of quota exhausted error.
-	//	Such error will be visible in Operation.progress_data.
+	// it is user responsibility to ensure that there are enough quota for provision nodes above the desired number.
+	// Available quota effectively limits `max_surge`.
+	// In case of not enough quota even for one extra node, update operation will hung because of quota exhausted error.
+	// Such error will be visible in Operation.progress_data.
 	MaxSurge *PercentOrCount `protobuf:"bytes,2,opt,name=max_surge,json=maxSurge,proto3" json:"max_surge,omitempty"`
 	// Maximum amount of time that the service will spend on attempting gracefully draining a node (evicting it's pods), before
 	// falling back to pod deletion.

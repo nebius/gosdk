@@ -88,6 +88,50 @@ func (c *MockImageServiceCreateCall) DoAndReturn(f func(context.Context, *v10.Cr
 	return c
 }
 
+// Delete mocks base method.
+func (m *MockImageService) Delete(arg0 context.Context, arg1 *v10.DeleteImageRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockImageServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockImageServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockImageService)(nil).Delete), varargs...)
+	return &MockImageServiceDeleteCall{Call: call}
+}
+
+// MockImageServiceDeleteCall wrap *gomock.Call
+type MockImageServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockImageServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockImageServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockImageServiceDeleteCall) Do(f func(context.Context, *v10.DeleteImageRequest, ...grpc.CallOption) (operations.Operation, error)) *MockImageServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockImageServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeleteImageRequest, ...grpc.CallOption) (operations.Operation, error)) *MockImageServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Filter mocks base method.
 func (m *MockImageService) Filter(arg0 context.Context, arg1 *v10.ListImagesRequest, arg2 ...grpc.CallOption) iter.Seq2[*v10.Image, error] {
 	m.ctrl.T.Helper()

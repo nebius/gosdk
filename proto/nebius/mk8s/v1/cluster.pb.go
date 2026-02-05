@@ -508,9 +508,10 @@ func (x *ClusterStatus) GetReconciling() bool {
 type ControlPlaneStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Actual Kubernetes and configuration version.
-	// Version have format `<major>.<minor>.<patch>-nebius-cp.<infra_version>` like "1.30.0-nebius-cp.3".
-	// Where `<major>.<minor>.<patch>` is Kubernetes version and `<infra_version>` is version of control plane infrastructure and configuration,
-	// which update may include bug fixes, security updates and new features of components running on control plane, like CCM or Cluster Autoscaler.
+	// Version has format `<major>.<minor>.<patch>-nebius-cp.<infra_version>` like
+	// "1.30.0-nebius-cp.3", where `<major>.<minor>.<patch>` is Kubernetes version and `<infra_version>` is version of control plane
+	// infrastructure and configuration, updating of which may include bug fixes, security updates and new features of components running on
+	// control plane, like CCM or Cluster Autoscaler.
 	Version   string                       `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	Endpoints *ControlPlaneStatusEndpoints `protobuf:"bytes,2,opt,name=endpoints,proto3" json:"endpoints,omitempty"`
 	// Number of instances in etcd cluster.

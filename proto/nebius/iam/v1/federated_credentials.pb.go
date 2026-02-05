@@ -179,7 +179,7 @@ type OidcCredentialsProvider struct {
 	//
 	// Limitations for external OIDC providers:
 	// - token service limits the number of handled keys by 50. If your JWKS return more than 50,
-	// the only first 50  will be used for signature verifying.
+	// the only first 50 will be used for signature verifying.
 	// - response size for jwks_uri and "/.well-known/openid-configuration limited by 100KB.
 	IssuerUrl string `protobuf:"bytes,1,opt,name=issuer_url,json=issuerUrl,proto3" json:"issuer_url,omitempty"`
 	// Literally json, which represents JWKS with public keys for JWT verification.

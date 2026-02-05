@@ -468,30 +468,32 @@ type NodeTemplate struct {
 	GpuSettings *GpuSettings `protobuf:"bytes,13,opt,name=gpu_settings,json=gpuSettings,proto3" json:"gpu_settings,omitempty"`
 	// OS version that will be used to create the boot disk of Compute Instances in the NodeGroup.
 	// Supported platform / k8s version /  OS / driver presets combinations
+	// - gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm, cpu-e1, cpu-e2, cpu-d3:
+	//   - drivers_preset: ""
+	//   - k8s: 1.30 → "ubuntu22.04"
+	//   - k8s: 1.31 → "ubuntu22.04" (default), "ubuntu24.04"
 	//
-	//	gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm, cpu-e1, cpu-e2, cpu-d3:
-	//	  drivers_preset: ""
-	//	    k8s: 1.30 → "ubuntu22.04"
-	//	    k8s: 1.31 → "ubuntu22.04" (default), "ubuntu24.04"
-	//	gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm:
-	//	  drivers_preset: "cuda12" (CUDA 12.4)
-	//	    k8s: 1.30, 1.31 → "ubuntu22.04"
-	//	  drivers_preset: "cuda12.4"
-	//	    k8s: 1.31 → "ubuntu22.04"
-	//	  drivers_preset: "cuda12.8"
-	//	    k8s: 1.31 → "ubuntu24.04"
-	//	gpu-b200-sxm:
-	//	  drivers_preset: ""
-	//	    k8s: 1.30, 1.31 → "ubuntu24.04"
-	//	  drivers_preset: "cuda12" (CUDA 12.8)
-	//	    k8s: 1.30, 1.31 → "ubuntu24.04"
-	//	  drivers_preset: "cuda12.8"
-	//	    k8s: 1.31 → "ubuntu24.04"
-	//	gpu-b200-sxm-a:
-	//	  drivers_preset: ""
-	//	    k8s: 1.31 → "ubuntu24.04"
-	//	  drivers_preset: "cuda12.8"
-	//	    k8s: 1.31 → "ubuntu24.04"
+	// - gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm:
+	//   - drivers_preset: "cuda12" (CUDA 12.4)
+	//   - k8s: 1.30, 1.31 → "ubuntu22.04"
+	//   - drivers_preset: "cuda12.4"
+	//   - k8s: 1.31 → "ubuntu22.04"
+	//   - drivers_preset: "cuda12.8"
+	//   - k8s: 1.31 → "ubuntu24.04"
+	//
+	// - gpu-b200-sxm:
+	//   - drivers_preset: ""
+	//   - k8s: 1.30, 1.31 → "ubuntu24.04"
+	//   - drivers_preset: "cuda12" (CUDA 12.8)
+	//   - k8s: 1.30, 1.31 → "ubuntu24.04"
+	//   - drivers_preset: "cuda12.8"
+	//   - k8s: 1.31 → "ubuntu24.04"
+	//
+	// - gpu-b200-sxm-a:
+	//   - drivers_preset: ""
+	//   - k8s: 1.31 → "ubuntu24.04"
+	//   - drivers_preset: "cuda12.8"
+	//   - k8s: 1.31 → "ubuntu24.04"
 	//
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Os string `protobuf:"bytes,16,opt,name=os,proto3" json:"os,omitempty"`
@@ -505,9 +507,9 @@ type NodeTemplate struct {
 	//
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	CloudInitUserData string `protobuf:"bytes,6,opt,name=cloud_init_user_data,json=cloudInitUserData,proto3" json:"cloud_init_user_data,omitempty"`
-	// the Nebius service account whose credentials will be available on the nodes of the group.
-	// With these credentials, it is possible to make `nebius` CLI or public API requests from the nodes without the need for extra authentication.
-	// This service account is also used to make requests to container registry.
+	// the Nebius service account whose credentials will be available on the nodes of the group. With these credentials, it is possible to
+	// make `nebius` CLI or public API requests from the nodes without the need for extra authentication. This service account is also used to
+	// make requests to container registry.
 	//
 	// `resource.serviceaccount.issueAccessToken` permission is required to use this field.
 	//
@@ -706,14 +708,15 @@ type GpuSettings struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the predefined set of drivers included in the ComputeImage deployed on ComputeInstances that are part of the NodeGroup.
 	// Supported presets for different platform / k8s version combinations:
+	// - gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm:
+	//   - k8s: 1.30 → "cuda12" (CUDA 12.4)
+	//   - k8s: 1.31 → "cuda12" (CUDA 12.4), "cuda12.4", "cuda12.8"
 	//
-	//	gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm:
-	//	  k8s: 1.30 → "cuda12" (CUDA 12.4)
-	//	  k8s: 1.31 → "cuda12" (CUDA 12.4), "cuda12.4", "cuda12.8"
-	//	gpu-b200-sxm:
-	//	  k8s: 1.31 → "cuda12" (CUDA 12.8), "cuda12.8"
-	//	gpu-b200-sxm-a:
-	//	  k8s: 1.31 → "cuda12.8"
+	// - gpu-b200-sxm:
+	//   - k8s: 1.31 → "cuda12" (CUDA 12.8), "cuda12.8"
+	//
+	// - gpu-b200-sxm-a:
+	//   - k8s: 1.31 → "cuda12.8"
 	//
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	DriversPreset string `protobuf:"bytes,1,opt,name=drivers_preset,json=driversPreset,proto3" json:"drivers_preset,omitempty"`
@@ -813,7 +816,7 @@ type NetworkInterfaceTemplate struct {
 	//
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	PublicIpAddress *PublicIPAddress `protobuf:"bytes,1,opt,name=public_ip_address,json=publicIpAddress,proto3" json:"public_ip_address,omitempty"`
-	// Subnet ID that will be attached to a node cloud intstance network interface.
+	// Subnet ID that will be attached to a node cloud instance network interface.
 	// By default control plane subnet_id used.
 	// Subnet should be located in the same network with control plane and have same parent ID as cluster.
 	//

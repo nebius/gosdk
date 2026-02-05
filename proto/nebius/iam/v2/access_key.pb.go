@@ -205,7 +205,8 @@ type AccessKeySpec struct {
 	Account     *v11.Account           `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
 	ExpiresAt   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 	Description string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	// Specifies how the secret will be delivered upon creation. This field is immutable — it cannot be changed after the resource is created.
+	// Specifies how the secret will be delivered upon creation. This field is immutable — it cannot be changed after the resource is
+	// created.
 	SecretDeliveryMode SecretDeliveryMode `protobuf:"varint,4,opt,name=secret_delivery_mode,json=secretDeliveryMode,proto3,enum=nebius.iam.v2.SecretDeliveryMode" json:"secret_delivery_mode,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache

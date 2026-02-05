@@ -444,9 +444,12 @@ func (x *AuditEventExportParams) GetEventType() EventType {
 type AuditEventExportStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Current state of audit logs export.
-	State         AuditEventExportState `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.audit.v2.AuditEventExportState" json:"state,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	State AuditEventExportState `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.audit.v2.AuditEventExportState" json:"state,omitempty"`
+	// Identifier of the audit logs export operation.
+	// This value is used as the final path prefix for exported files in the destination object storage bucket.
+	ExportOperationId string `protobuf:"bytes,2,opt,name=export_operation_id,json=exportOperationId,proto3" json:"export_operation_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *AuditEventExportStatus) Reset() {
@@ -486,6 +489,13 @@ func (x *AuditEventExportStatus) GetState() AuditEventExportState {
 	return AuditEventExportState_AUDIT_EVENT_EXPORT_STATE_UNSPECIFIED
 }
 
+func (x *AuditEventExportStatus) GetExportOperationId() string {
+	if x != nil {
+		return x.ExportOperationId
+	}
+	return ""
+}
+
 var File_nebius_audit_v2_audit_event_export_proto protoreflect.FileDescriptor
 
 const file_nebius_audit_v2_audit_event_export_proto_rawDesc = "" +
@@ -512,9 +522,10 @@ const file_nebius_audit_v2_audit_event_export_proto_rawDesc = "" +
 	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\x02to\x12\x1b\n" +
 	"\x06filter\x18\x03 \x01(\tB\x03\xc0J\x01R\x06filter\x12A\n" +
 	"\n" +
-	"event_type\x18\x04 \x01(\x0e2\x1a.nebius.audit.v2.EventTypeB\x06\xbaH\x03\xc8\x01\x01R\teventType\"V\n" +
+	"event_type\x18\x04 \x01(\x0e2\x1a.nebius.audit.v2.EventTypeB\x06\xbaH\x03\xc8\x01\x01R\teventType\"\x86\x01\n" +
 	"\x16AuditEventExportStatus\x12<\n" +
-	"\x05state\x18\x01 \x01(\x0e2&.nebius.audit.v2.AuditEventExportStateR\x05state*\xd6\x01\n" +
+	"\x05state\x18\x01 \x01(\x0e2&.nebius.audit.v2.AuditEventExportStateR\x05state\x12.\n" +
+	"\x13export_operation_id\x18\x02 \x01(\tR\x11exportOperationId*\xd6\x01\n" +
 	"\x15AuditEventExportState\x12(\n" +
 	"$AUDIT_EVENT_EXPORT_STATE_UNSPECIFIED\x10\x00\x12$\n" +
 	" AUDIT_EVENT_EXPORT_STATE_RUNNING\x10\x01\x12%\n" +

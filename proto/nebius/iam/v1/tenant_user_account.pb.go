@@ -28,13 +28,16 @@ type TenantUserAccountStatus_State int32
 
 const (
 	TenantUserAccountStatus_STATE_UNSPECIFIED TenantUserAccountStatus_State = 0
-	// in case of ordinary tenant user account a corresponding user can log into the system and use granted tenant resources
-	// in case of invited tenant user account once the invitation is accepted a corresponding user can start using granted resources immediately
+	//   - in case of ordinary tenant user account a corresponding user can log into the system and use granted tenant resources
+	//   - in case of invited tenant user account once the invitation is accepted a corresponding user can start using granted resources
+	//     immediately
 	TenantUserAccountStatus_ACTIVE TenantUserAccountStatus_State = 1
 	// unused
 	TenantUserAccountStatus_INACTIVE TenantUserAccountStatus_State = 2
-	// in case of ordinary tenant user account a corresponding user can log into the system but cannot be authorized to use tenant resources
-	// in case of invited tenant user account once the invitation is accepted a corresponding user cannot start using granted resources until is unblocked
+	//   - in case of ordinary tenant user account a corresponding user can log into the system but cannot be authorized to use tenant
+	//     resources
+	//   - in case of invited tenant user account once the invitation is accepted a corresponding user cannot start using granted resources
+	//     until is unblocked
 	TenantUserAccountStatus_BLOCKED TenantUserAccountStatus_State = 3
 )
 
@@ -466,7 +469,8 @@ type TenantUserAccountStatus struct {
 	// if a tenant user account is created during invitation it gets a reference to the invitation resource
 	// once invitation is accepted it looses this reference (and internally gets a reference to their global federated user account)
 	InvitationId string `protobuf:"bytes,2,opt,name=invitation_id,json=invitationId,proto3" json:"invitation_id,omitempty"`
-	// the federation id of the linked user account. Could be empty in a case of a tenant user account belongs to an invitation which wasn't accepted.
+	// the federation id of the linked user account. Could be empty in a case of a tenant user account belongs to an invitation which wasn't
+	// accepted.
 	FederationId string `protobuf:"bytes,3,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
 	// user account state can help distinguish case when account is blocked globally
 	UserAccountState UserAccountStatus_State `protobuf:"varint,4,opt,name=user_account_state,json=userAccountState,proto3,enum=nebius.iam.v1.UserAccountStatus_State" json:"user_account_state,omitempty"`

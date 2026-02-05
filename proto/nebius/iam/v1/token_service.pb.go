@@ -31,11 +31,14 @@ type ExchangeTokenRequest struct {
 	SubjectTokenType   string                 `protobuf:"bytes,4,opt,name=subject_token_type,json=subjectTokenType,proto3" json:"subject_token_type,omitempty"`       // required, in case of jwt - urn:ietf:params:oauth:token-type:jwt
 	Scopes             []string               `protobuf:"bytes,5,rep,name=scopes,proto3" json:"scopes,omitempty"`                                                     // optional (scopes of the token)
 	Audience           string                 `protobuf:"bytes,6,opt,name=audience,proto3" json:"audience,omitempty"`                                                 // optional, name of the oauth client id on which this token will be used
-	ActorToken         string                 `protobuf:"bytes,7,opt,name=actor_token,json=actorToken,proto3" json:"actor_token,omitempty"`                           // optional, subject token for impersonation/delegation (who want to impersonate/delegate) in subject_token.
-	ActorTokenType     string                 `protobuf:"bytes,8,opt,name=actor_token_type,json=actorTokenType,proto3" json:"actor_token_type,omitempty"`             // optional, token type for the impersonation/delegation (who want to impersonate/delegate). Usually it's urn:ietf:params:oauth:token-type:access_token
-	Resource           []string               `protobuf:"bytes,9,rep,name=resource,proto3" json:"resource,omitempty"`                                                 // optional, list of resources approved to use by token, if applicable
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// optional, subject token for impersonation/delegation (who want to impersonate/delegate) in subject_token.
+	ActorToken string `protobuf:"bytes,7,opt,name=actor_token,json=actorToken,proto3" json:"actor_token,omitempty"`
+	// optional, token type for the impersonation/delegation (who want to impersonate/delegate). Usually it's
+	// urn:ietf:params:oauth:token-type:access_token
+	ActorTokenType string   `protobuf:"bytes,8,opt,name=actor_token_type,json=actorTokenType,proto3" json:"actor_token_type,omitempty"`
+	Resource       []string `protobuf:"bytes,9,rep,name=resource,proto3" json:"resource,omitempty"` // optional, list of resources approved to use by token, if applicable
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ExchangeTokenRequest) Reset() {

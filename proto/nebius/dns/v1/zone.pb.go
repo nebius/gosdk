@@ -26,9 +26,12 @@ const (
 
 // API Resource: *DNS zone*, a container for DNS data
 //
-// Each DNS zone starts at a particular domain within the hierarchical DNS namespace tree, e.g., `example.com.`, and can also include its subdomains, e.g., `sales.example.com.`
-// DNS Zones contain *Resource Records* (RRs), which are individual information entries about the domain(s), e.g., a domain's IP address
-// See the [graphical explanation of DNS zones and Resource Records on Wikipedia](https://en.wikipedia.org/wiki/Domain_Name_System#/media/File:Domain_name_space.svg)
+// Each DNS zone starts at a particular domain within the hierarchical DNS namespace tree,
+// e.g., `example.com.`, and can also include its subdomains,
+// e.g., `sales.example.com.` DNS Zones contain *Resource Records* (RRs), which are individual information entries about the domain(s),
+// e.g., a domain's IP address
+// See the [graphical explanation of DNS zones and Resource Records on
+// Wikipedia](https://en.wikipedia.org/wiki/Domain_Name_System#/media/File:Domain_name_space.svg)
 //
 // A Resource Record is represented in this API by the `Record` API Resource which is managed by the `RecordService`
 type Zone struct {
@@ -340,8 +343,9 @@ type GetZoneRequest struct {
 	// Zone ID
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// Optional: expected zone version (`metadata.resource_version`)
-	// - If specified, the requested version will be returned if possible (if the version has changed, you will get a `FAILED_PRECONDITION` error)
-	// - If not specified or set to `0`, the latest zone version will be returned
+	//   - If specified, the requested version will be returned if possible (if the version has changed, you will get a `FAILED_PRECONDITION`
+	//     error)
+	//   - If not specified or set to `0`, the latest zone version will be returned
 	ResourceVersion int64 `protobuf:"varint,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
