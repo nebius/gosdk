@@ -46,7 +46,8 @@ type InstanceServiceClient interface {
 	Create(ctx context.Context, in *CreateInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Updates an existing VM instance with new configuration parameters.
 	Update(ctx context.Context, in *UpdateInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
-	// Deletes a VM instance by its ID.
+	// Deletes a VM instance by its ID. Also deletes all the managed disks, declared in the instance spec.
+	// Fails if cannot delete any of the managed disks.
 	Delete(ctx context.Context, in *DeleteInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Starts a stopped VM instance.
 	Start(ctx context.Context, in *StartInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
@@ -160,7 +161,8 @@ type InstanceServiceServer interface {
 	Create(context.Context, *CreateInstanceRequest) (*v1.Operation, error)
 	// Updates an existing VM instance with new configuration parameters.
 	Update(context.Context, *UpdateInstanceRequest) (*v1.Operation, error)
-	// Deletes a VM instance by its ID.
+	// Deletes a VM instance by its ID. Also deletes all the managed disks, declared in the instance spec.
+	// Fails if cannot delete any of the managed disks.
 	Delete(context.Context, *DeleteInstanceRequest) (*v1.Operation, error)
 	// Starts a stopped VM instance.
 	Start(context.Context, *StartInstanceRequest) (*v1.Operation, error)
