@@ -210,12 +210,13 @@ type Warning struct {
 	DetailsFallback string `protobuf:"bytes,6,opt,name=details_fallback,json=detailsFallback,proto3" json:"details_fallback,omitempty"`
 	// Contains a Full Service/Method name or a select mask for a field.
 	// Examples:
-	//
-	//	nebius.compute.v1.InstanceService
-	//	nebius.compute.v1.InstanceService/Get
-	//	spec.control_plane.version
-	//	spec.network_interfaces.0.subnet_id
-	//	items.0.spec.control_plane.version
+	// ```
+	// nebius.compute.v1.InstanceService
+	// nebius.compute.v1.InstanceService/Get
+	// spec.control_plane.version
+	// spec.network_interfaces.0.subnet_id
+	// items.0.spec.control_plane.version
+	// ```
 	Path          string `protobuf:"bytes,7,opt,name=path,proto3" json:"path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
