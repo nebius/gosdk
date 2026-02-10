@@ -25,6 +25,7 @@ const (
 	ImageService_GetLatestByFamily_FullMethodName      = "/nebius.compute.v1.ImageService/GetLatestByFamily"
 	ImageService_List_FullMethodName                   = "/nebius.compute.v1.ImageService/List"
 	ImageService_Create_FullMethodName                 = "/nebius.compute.v1.ImageService/Create"
+	ImageService_Update_FullMethodName                 = "/nebius.compute.v1.ImageService/Update"
 	ImageService_Delete_FullMethodName                 = "/nebius.compute.v1.ImageService/Delete"
 	ImageService_ListOperationsByParent_FullMethodName = "/nebius.compute.v1.ImageService/ListOperationsByParent"
 	ImageService_ListPublic_FullMethodName             = "/nebius.compute.v1.ImageService/ListPublic"
@@ -45,6 +46,8 @@ type ImageServiceClient interface {
 	List(ctx context.Context, in *ListImagesRequest, opts ...grpc.CallOption) (*ListImagesResponse, error)
 	// Creates a new image resource.
 	Create(ctx context.Context, in *CreateImageRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing image resource. Only specific fields can be updated, such as labels and name.
+	Update(ctx context.Context, in *UpdateImageRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Deletes an existing image resource by its ID.
 	Delete(ctx context.Context, in *DeleteImageRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Lists all operations that were performed within a specific parent resource.
@@ -109,6 +112,15 @@ func (c *imageServiceClient) Create(ctx context.Context, in *CreateImageRequest,
 	return out, nil
 }
 
+func (c *imageServiceClient) Update(ctx context.Context, in *UpdateImageRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, ImageService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *imageServiceClient) Delete(ctx context.Context, in *DeleteImageRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, ImageService_Delete_FullMethodName, in, out, opts...)
@@ -151,6 +163,8 @@ type ImageServiceServer interface {
 	List(context.Context, *ListImagesRequest) (*ListImagesResponse, error)
 	// Creates a new image resource.
 	Create(context.Context, *CreateImageRequest) (*v1.Operation, error)
+	// Updates an existing image resource. Only specific fields can be updated, such as labels and name.
+	Update(context.Context, *UpdateImageRequest) (*v1.Operation, error)
 	// Deletes an existing image resource by its ID.
 	Delete(context.Context, *DeleteImageRequest) (*v1.Operation, error)
 	// Lists all operations that were performed within a specific parent resource.
@@ -180,6 +194,9 @@ func (UnimplementedImageServiceServer) List(context.Context, *ListImagesRequest)
 }
 func (UnimplementedImageServiceServer) Create(context.Context, *CreateImageRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedImageServiceServer) Update(context.Context, *UpdateImageRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedImageServiceServer) Delete(context.Context, *DeleteImageRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -292,6 +309,24 @@ func _ImageService_Create_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImageService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateImageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImageServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImageService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImageServiceServer).Update(ctx, req.(*UpdateImageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ImageService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteImageRequest)
 	if err := dec(in); err != nil {
@@ -372,6 +407,10 @@ var ImageService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Create",
 			Handler:    _ImageService_Create_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _ImageService_Update_Handler,
 		},
 		{
 			MethodName: "Delete",

@@ -526,3 +526,47 @@ func (c *MockImageServiceListPublicCall) DoAndReturn(f func(context.Context, *v1
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// Update mocks base method.
+func (m *MockImageService) Update(arg0 context.Context, arg1 *v10.UpdateImageRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockImageServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockImageServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockImageService)(nil).Update), varargs...)
+	return &MockImageServiceUpdateCall{Call: call}
+}
+
+// MockImageServiceUpdateCall wrap *gomock.Call
+type MockImageServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockImageServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockImageServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockImageServiceUpdateCall) Do(f func(context.Context, *v10.UpdateImageRequest, ...grpc.CallOption) (operations.Operation, error)) *MockImageServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockImageServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateImageRequest, ...grpc.CallOption) (operations.Operation, error)) *MockImageServiceUpdateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}

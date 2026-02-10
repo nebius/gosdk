@@ -549,9 +549,10 @@ var File_nebius_storage_v1alpha1_transfer_service_proto protoreflect.FileDescrip
 
 const file_nebius_storage_v1alpha1_transfer_service_proto_rawDesc = "" +
 	"\n" +
-	".nebius/storage/v1alpha1/transfer_service.proto\x12\x17nebius.storage.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a&nebius/storage/v1alpha1/transfer.proto\",\n" +
-	"\x12GetTransferRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"w\n" +
+	".nebius/storage/v1alpha1/transfer_service.proto\x12\x17nebius.storage.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a&nebius/storage/v1alpha1/transfer.proto\"@\n" +
+	"\x12GetTransferRequest\x12*\n" +
+	"\x02id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fstoragetransferR\x02id\"w\n" +
 	"\x14ListTransfersRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
@@ -565,16 +566,20 @@ const file_nebius_storage_v1alpha1_transfer_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2%.nebius.storage.v1alpha1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xa2\x01\n" +
 	"\x15UpdateTransferRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12A\n" +
-	"\x04spec\x18\x02 \x01(\v2%.nebius.storage.v1alpha1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"-\n" +
-	"\x13StopTransferRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"/\n" +
-	"\x15ResumeTransferRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"Z\n" +
-	"\x15DeleteTransferRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12)\n" +
-	"\x10resource_version\x18\x02 \x01(\x03R\x0fresourceVersion\"\x81\x01\n" +
-	"\x1aGetIterationHistoryRequest\x12'\n" +
-	"\vtransfer_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"\x04spec\x18\x02 \x01(\v2%.nebius.storage.v1alpha1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"A\n" +
+	"\x13StopTransferRequest\x12*\n" +
+	"\x02id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fstoragetransferR\x02id\"C\n" +
+	"\x15ResumeTransferRequest\x12*\n" +
+	"\x02id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fstoragetransferR\x02id\"n\n" +
+	"\x15DeleteTransferRequest\x12*\n" +
+	"\x02id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fstoragetransferR\x02id\x12)\n" +
+	"\x10resource_version\x18\x02 \x01(\x03R\x0fresourceVersion\"\x95\x01\n" +
+	"\x1aGetIterationHistoryRequest\x12;\n" +
+	"\vtransfer_id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fstoragetransferR\n" +
 	"transferId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +

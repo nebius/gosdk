@@ -539,9 +539,10 @@ var File_nebius_storage_v1_bucket_service_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_service_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/storage/v1/bucket_service.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/storage/v1/bucket.proto\"0\n" +
-	"\x10GetBucketRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02idJ\x04\b\x02\x10\x03\"W\n" +
+	"&nebius/storage/v1/bucket_service.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/storage/v1/bucket.proto\"B\n" +
+	"\x10GetBucketRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rstoragebucketR\x02idJ\x04\b\x02\x10\x03\"W\n" +
 	"\x16GetBucketByNameRequest\x12\x1b\n" +
 	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1a\n" +
 	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04nameJ\x04\b\x03\x10\x04\"\x96\x01\n" +
@@ -555,11 +556,13 @@ const file_nebius_storage_v1_bucket_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x127\n" +
 	"\bpurge_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\apurgeAt\x12-\n" +
 	"\x03ttl\x18\x04 \x01(\v2\x19.google.protobuf.DurationH\x00R\x03ttlB\a\n" +
-	"\x05purgeJ\x04\b\x02\x10\x03\",\n" +
-	"\x12PurgeBucketRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"/\n" +
-	"\x15UndeleteBucketRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x93\x01\n" +
+	"\x05purgeJ\x04\b\x02\x10\x03\">\n" +
+	"\x12PurgeBucketRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rstoragebucketR\x02id\"A\n" +
+	"\x15UndeleteBucketRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rstoragebucketR\x02id\"\x93\x01\n" +
 	"\x12ListBucketsRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +

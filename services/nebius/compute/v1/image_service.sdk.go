@@ -9,6 +9,7 @@ import (
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
 	operations "github.com/nebius/gosdk/operations"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/compute/v1"
 	grpc "google.golang.org/grpc"
@@ -33,6 +34,7 @@ type ImageService interface {
 	List(context.Context, *v1.ListImagesRequest, ...grpc.CallOption) (*v1.ListImagesResponse, error)
 	Filter(context.Context, *v1.ListImagesRequest, ...grpc.CallOption) iter.Seq2[*v1.Image, error]
 	Create(context.Context, *v1.CreateImageRequest, ...grpc.CallOption) (operations.Operation, error)
+	Update(context.Context, *v1.UpdateImageRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteImageRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperationsByParent(context.Context, *v1.ListOperationsByParentRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 	ListPublic(context.Context, *v1.ListPublicRequest, ...grpc.CallOption) (*v1.ListImagesResponse, error)
@@ -227,6 +229,38 @@ func (s imageService) Create(ctx context.Context, request *v1.CreateImageRequest
 		return nil, err
 	}
 	op, err := v1.NewImageServiceClient(con).Create(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s imageService) Update(ctx context.Context, request *v1.UpdateImageRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	var metadataParentTypes []string
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, ImageServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewImageServiceClient(con).Update(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}
