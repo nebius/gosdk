@@ -216,15 +216,17 @@ var File_nebius_storage_v1_bucket_policy_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_policy_proto_rawDesc = "" +
 	"\n" +
-	"%nebius/storage/v1/bucket_policy.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xb0\x02\n" +
+	"%nebius/storage/v1/bucket_policy.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xbc\x02\n" +
 	"\fBucketPolicy\x12D\n" +
 	"\x05rules\x18\x01 \x03(\v2$.nebius.storage.v1.BucketPolicy.RuleB\b\xbaH\x05\x92\x01\x02\x10\n" +
-	"R\x05rules\x1a\xd9\x01\n" +
+	"R\x05rules\x1a\xe5\x01\n" +
 	"\x04Rule\x12\x1e\n" +
 	"\x05paths\x18\x01 \x03(\tB\b\xbaH\x05\x92\x01\x02\x10\n" +
 	"R\x05paths\x12\x14\n" +
-	"\x05roles\x18\x02 \x03(\tR\x05roles\x12\x1b\n" +
-	"\bgroup_id\x18\x04 \x01(\tH\x00R\agroupId\x12Z\n" +
+	"\x05roles\x18\x02 \x03(\tR\x05roles\x12'\n" +
+	"\bgroup_id\x18\x04 \x01(\tB\n" +
+	"\xe2J\a\n" +
+	"\x05groupH\x00R\agroupId\x12Z\n" +
 	"\tanonymous\x18\x05 \x01(\v24.nebius.storage.v1.BucketPolicy.Rule.AnonymousAccessB\x04\xbaJ\x01\x06H\x00R\tanonymous\x1a\x11\n" +
 	"\x0fAnonymousAccessB\t\n" +
 	"\asubjectJ\x04\b\x03\x10\x04B`\n" +
