@@ -278,10 +278,10 @@ const file_nebius_iam_v1_federated_credentials_proto_rawDesc = "" +
 	"\x14FederatedCredentials\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12C\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.iam.v1.FederatedCredentialsSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12G\n" +
-	"\x06status\x18\x03 \x01(\v2).nebius.iam.v1.FederatedCredentialsStatusB\x04\xbaJ\x01\x05R\x06status\"\xe9\x01\n" +
+	"\x06status\x18\x03 \x01(\v2).nebius.iam.v1.FederatedCredentialsStatusB\x04\xbaJ\x01\x05R\x06status\"\xe1\x01\n" +
 	"\x18FederatedCredentialsSpec\x12M\n" +
-	"\roidc_provider\x18\x01 \x01(\v2&.nebius.iam.v1.OidcCredentialsProviderH\x00R\foidcProvider\x128\n" +
-	"\x14federated_subject_id\x18e \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x12federatedSubjectId\x12%\n" +
+	"\roidc_provider\x18\x01 \x01(\v2&.nebius.iam.v1.OidcCredentialsProviderH\x00R\foidcProvider\x120\n" +
+	"\x14federated_subject_id\x18e \x01(\tR\x12federatedSubjectId\x12%\n" +
 	"\n" +
 	"subject_id\x18o \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tsubjectIdB\x1d\n" +
 	"\x14credentials_provider\x12\x05\xbaH\x02\b\x01\"b\n" +
