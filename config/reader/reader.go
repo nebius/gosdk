@@ -312,7 +312,7 @@ func (r *configReader) GetCredentials(ctx context.Context) (auth.BearerTokener, 
 			r.noBrowserOpen,
 		)
 		r.logger.DebugContext(ctx, "using file-cached federation tokener", slog.String("cache_file", r.cacheFileName))
-		return auth.NewFileCachedTokener(r.cacheFileName, tokener, r.tokenSafetyMargin, r.logger), nil
+		return auth.NewInAppSyncTokener(auth.NewFileCachedTokener(r.cacheFileName, tokener, r.tokenSafetyMargin, r.logger)), nil
 	default:
 		return nil, config.NewError(fmt.Errorf("unsupported auth type: %s", r.profile.AuthType))
 	}
