@@ -25,3 +25,6 @@ package v1
 
 // func (x *IPAliasesStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *IPAliasesStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *SecurityGroup) Sanitize()            // is not generated as no sensitive fields found
+// func (x *SecurityGroup) LogValue() slog.Value // is not generated as no sensitive fields found
