@@ -193,10 +193,9 @@ func (x *Image) GetStatus() *ImageStatus {
 }
 
 type ImageSpec struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Deprecated: Marked as deprecated in nebius/compute/v1/image.proto.
-	Description *string `protobuf:"bytes,1,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	ImageFamily string  `protobuf:"bytes,2,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Description string                 `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
+	ImageFamily string                 `protobuf:"bytes,2,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
 	// part of identifier into the image family
 	Version string `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
 	// Types that are valid to be assigned to Source:
@@ -245,10 +244,9 @@ func (*ImageSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_compute_v1_image_proto_rawDescGZIP(), []int{1}
 }
 
-// Deprecated: Marked as deprecated in nebius/compute/v1/image.proto.
 func (x *ImageSpec) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -468,11 +466,9 @@ const file_nebius_compute_v1_image_proto_rawDesc = "" +
 	"\x05Image\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\x126\n" +
-	"\x06status\x18\x03 \x01(\v2\x1e.nebius.compute.v1.ImageStatusR\x06status\"\xca\x05\n" +
-	"\tImageSpec\x12P\n" +
-	"\vdescription\x18\x01 \x01(\tB)\xbaJ\x01\x02\xd2J \n" +
-	"\n" +
-	"2026-01-01\x12\x12The field is empty\x18\x01H\x01R\vdescription\x88\x01\x01\x12'\n" +
+	"\x06status\x18\x03 \x01(\v2\x1e.nebius.compute.v1.ImageStatusR\x06status\"\x8a\x05\n" +
+	"\tImageSpec\x12 \n" +
+	"\vdescription\x18\x01 \x01(\tR\vdescription\x12'\n" +
 	"\fimage_family\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\vimageFamily\x12\x1e\n" +
 	"\aversion\x18\x03 \x01(\tB\x04\xbaJ\x01\x02R\aversion\x12,\n" +
 	"\x0esource_disk_id\x18\x04 \x01(\tB\x04\xbaJ\x01\x02H\x00R\fsourceDiskId\x12]\n" +
@@ -487,8 +483,7 @@ const file_nebius_compute_v1_image_proto_rawDesc = "" +
 	"\vUNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05AMD64\x10\x01\x12\t\n" +
 	"\x05ARM64\x10\x02B\x0f\n" +
-	"\x06source\x12\x05\xbaH\x02\b\x01B\x0e\n" +
-	"\f_description\"\xc1\x04\n" +
+	"\x06source\x12\x05\xbaH\x02\b\x01\"\xc1\x04\n" +
 	"\vImageStatus\x12:\n" +
 	"\x05state\x18\x01 \x01(\x0e2$.nebius.compute.v1.ImageStatus.StateR\x05state\x12+\n" +
 	"\x11state_description\x18\x02 \x01(\tR\x10stateDescription\x12,\n" +

@@ -721,14 +721,6 @@ var file_nebius_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 	},
 	{
 		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
-		ExtensionType: (*bool)(nil),
-		Field:         1196,
-		Name:          "nebius.send_reset_mask",
-		Tag:           "varint,1196,opt,name=send_reset_mask",
-		Filename:      "nebius/annotations.proto",
-	},
-	{
-		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
 		ExtensionType: ([]MethodBehavior)(nil),
 		Field:         1197,
 		Name:          "nebius.method_behavior",
@@ -892,14 +884,6 @@ var (
 	E_MethodDeprecationDetails = &file_nebius_annotations_proto_extTypes[4]
 	// optional nebius.MethodPySDKSettings method_py_sdk = 1195;
 	E_MethodPySdk = &file_nebius_annotations_proto_extTypes[5]
-	// Deprecated. Until removed, use along `(method_behavior) = METHOD_UPDATER`.
-	// If true, the method requires the reset mask to be sent along with the request.
-	// If false, the reset mask will be sent only in resource Update methods by default.
-	// If set, the reset mask will be calculated relative to the root of the request,
-	// the mask sanitization will be applied on the gateway as usual.
-	//
-	// optional bool send_reset_mask = 1196;
-	E_SendResetMask = &file_nebius_annotations_proto_extTypes[6]
 	// method_behavior describes how the method behaves, if its behavior differs
 	// from the default one.
 	//
@@ -913,20 +897,20 @@ var (
 	// Read `MethodBehavior` enum for more details and examples.
 	//
 	// repeated nebius.MethodBehavior method_behavior = 1197;
-	E_MethodBehavior = &file_nebius_annotations_proto_extTypes[7]
+	E_MethodBehavior = &file_nebius_annotations_proto_extTypes[6]
 )
 
 // Extension fields to descriptorpb.MessageOptions.
 var (
 	// repeated nebius.ResourceBehavior resource_behavior = 1191;
-	E_ResourceBehavior = &file_nebius_annotations_proto_extTypes[8]
+	E_ResourceBehavior = &file_nebius_annotations_proto_extTypes[7]
 	// Contains additional information about the planned deprecation of a message.
 	// Used along with `option deprecated = true`.
 	//
 	// optional nebius.DeprecationDetails message_deprecation_details = 1194;
-	E_MessageDeprecationDetails = &file_nebius_annotations_proto_extTypes[9]
+	E_MessageDeprecationDetails = &file_nebius_annotations_proto_extTypes[8]
 	// optional nebius.MessagePySDKSettings message_py_sdk = 1195;
-	E_MessagePySdk = &file_nebius_annotations_proto_extTypes[10]
+	E_MessagePySdk = &file_nebius_annotations_proto_extTypes[9]
 )
 
 // Extension fields to descriptorpb.FieldOptions.
@@ -934,24 +918,24 @@ var (
 	// Field behavior describes how the field behaves on input or output.
 	//
 	// repeated nebius.FieldBehavior field_behavior = 1191;
-	E_FieldBehavior = &file_nebius_annotations_proto_extTypes[11]
+	E_FieldBehavior = &file_nebius_annotations_proto_extTypes[10]
 	// Sensitive field is masked/removed from the message while logging, storing in DB and
 	// on all others persistent layers (except specialized storage like PDS).
 	//
 	// optional bool sensitive = 1192;
-	E_Sensitive = &file_nebius_annotations_proto_extTypes[12]
+	E_Sensitive = &file_nebius_annotations_proto_extTypes[11]
 	// Credentials field is masked access tokens/jwt/session from the message while logging, storing in DB and
 	// on all others persistent layers
 	//
 	// optional bool credentials = 1193;
-	E_Credentials = &file_nebius_annotations_proto_extTypes[13]
+	E_Credentials = &file_nebius_annotations_proto_extTypes[12]
 	// Contains additional information about the planned deprecation of a field.
 	// Used along with `[deprecated = true]`.
 	//
 	// optional nebius.DeprecationDetails field_deprecation_details = 1194;
-	E_FieldDeprecationDetails = &file_nebius_annotations_proto_extTypes[14]
+	E_FieldDeprecationDetails = &file_nebius_annotations_proto_extTypes[13]
 	// optional nebius.FieldPySDKSettings field_py_sdk = 1195;
-	E_FieldPySdk = &file_nebius_annotations_proto_extTypes[15]
+	E_FieldPySdk = &file_nebius_annotations_proto_extTypes[14]
 	// Field NID settings for fields annotated with this option.
 	// When present on string fields (including lists and maps), values are treated as NIDs and
 	// warnings are emitted when they are not valid. These warnings are separate from server-side validation.
@@ -962,7 +946,7 @@ var (
 	// See `NIDFieldSettings` for more details.
 	//
 	// optional nebius.NIDFieldSettings nid = 1196;
-	E_Nid = &file_nebius_annotations_proto_extTypes[16]
+	E_Nid = &file_nebius_annotations_proto_extTypes[15]
 )
 
 // Extension fields to descriptorpb.OneofOptions.
@@ -970,20 +954,20 @@ var (
 	// Field behavior describes how oneof behaves on input or output.
 	//
 	// repeated nebius.FieldBehavior oneof_behavior = 1191;
-	E_OneofBehavior = &file_nebius_annotations_proto_extTypes[17]
+	E_OneofBehavior = &file_nebius_annotations_proto_extTypes[16]
 	// optional nebius.OneofPySDKSettings oneof_py_sdk = 1192;
-	E_OneofPySdk = &file_nebius_annotations_proto_extTypes[18]
+	E_OneofPySdk = &file_nebius_annotations_proto_extTypes[17]
 )
 
 // Extension fields to descriptorpb.EnumOptions.
 var (
 	// optional nebius.EnumPySDKSettings enum_py_sdk = 1191;
-	E_EnumPySdk = &file_nebius_annotations_proto_extTypes[19]
+	E_EnumPySdk = &file_nebius_annotations_proto_extTypes[18]
 	// Contains additional information about the planned deprecation of an enum.
 	// Used along with `option deprecated = true`.
 	//
 	// optional nebius.DeprecationDetails enum_deprecation_details = 1194;
-	E_EnumDeprecationDetails = &file_nebius_annotations_proto_extTypes[20]
+	E_EnumDeprecationDetails = &file_nebius_annotations_proto_extTypes[19]
 )
 
 // Extension fields to descriptorpb.EnumValueOptions.
@@ -992,9 +976,9 @@ var (
 	// Used along with `[deprecated = true]`.
 	//
 	// optional nebius.DeprecationDetails enum_value_deprecation_details = 1194;
-	E_EnumValueDeprecationDetails = &file_nebius_annotations_proto_extTypes[21]
+	E_EnumValueDeprecationDetails = &file_nebius_annotations_proto_extTypes[20]
 	// optional nebius.EnumValuePySDKSettings enum_value_py_sdk = 1195;
-	E_EnumValuePySdk = &file_nebius_annotations_proto_extTypes[22]
+	E_EnumValuePySdk = &file_nebius_annotations_proto_extTypes[21]
 )
 
 var File_nebius_annotations_proto protoreflect.FileDescriptor
@@ -1048,8 +1032,7 @@ const file_nebius_annotations_proto_rawDesc = "" +
 	"\x1bservice_deprecation_details\x12\x1f.google.protobuf.ServiceOptions\x18\xaa\t \x01(\v2\x1a.nebius.DeprecationDetailsR\x19serviceDeprecationDetails:d\n" +
 	"\x0eservice_py_sdk\x12\x1f.google.protobuf.ServiceOptions\x18\xab\t \x01(\v2\x1c.nebius.ServicePySDKSettingsR\fservicePySdk:y\n" +
 	"\x1amethod_deprecation_details\x12\x1e.google.protobuf.MethodOptions\x18\xaa\t \x01(\v2\x1a.nebius.DeprecationDetailsR\x18methodDeprecationDetails:`\n" +
-	"\rmethod_py_sdk\x12\x1e.google.protobuf.MethodOptions\x18\xab\t \x01(\v2\x1b.nebius.MethodPySDKSettingsR\vmethodPySdk:G\n" +
-	"\x0fsend_reset_mask\x12\x1e.google.protobuf.MethodOptions\x18\xac\t \x01(\bR\rsendResetMask:`\n" +
+	"\rmethod_py_sdk\x12\x1e.google.protobuf.MethodOptions\x18\xab\t \x01(\v2\x1b.nebius.MethodPySDKSettingsR\vmethodPySdk:`\n" +
 	"\x0fmethod_behavior\x12\x1e.google.protobuf.MethodOptions\x18\xad\t \x03(\x0e2\x16.nebius.MethodBehaviorR\x0emethodBehavior:g\n" +
 	"\x11resource_behavior\x12\x1f.google.protobuf.MessageOptions\x18\xa7\t \x03(\x0e2\x18.nebius.ResourceBehaviorR\x10resourceBehavior:|\n" +
 	"\x1bmessage_deprecation_details\x12\x1f.google.protobuf.MessageOptions\x18\xaa\t \x01(\v2\x1a.nebius.DeprecationDetailsR\x19messageDeprecationDetails:d\n" +
@@ -1113,46 +1096,45 @@ var file_nebius_annotations_proto_depIdxs = []int32{
 	13, // 3: nebius.service_py_sdk:extendee -> google.protobuf.ServiceOptions
 	14, // 4: nebius.method_deprecation_details:extendee -> google.protobuf.MethodOptions
 	14, // 5: nebius.method_py_sdk:extendee -> google.protobuf.MethodOptions
-	14, // 6: nebius.send_reset_mask:extendee -> google.protobuf.MethodOptions
-	14, // 7: nebius.method_behavior:extendee -> google.protobuf.MethodOptions
-	15, // 8: nebius.resource_behavior:extendee -> google.protobuf.MessageOptions
-	15, // 9: nebius.message_deprecation_details:extendee -> google.protobuf.MessageOptions
-	15, // 10: nebius.message_py_sdk:extendee -> google.protobuf.MessageOptions
-	16, // 11: nebius.field_behavior:extendee -> google.protobuf.FieldOptions
-	16, // 12: nebius.sensitive:extendee -> google.protobuf.FieldOptions
-	16, // 13: nebius.credentials:extendee -> google.protobuf.FieldOptions
-	16, // 14: nebius.field_deprecation_details:extendee -> google.protobuf.FieldOptions
-	16, // 15: nebius.field_py_sdk:extendee -> google.protobuf.FieldOptions
-	16, // 16: nebius.nid:extendee -> google.protobuf.FieldOptions
-	17, // 17: nebius.oneof_behavior:extendee -> google.protobuf.OneofOptions
-	17, // 18: nebius.oneof_py_sdk:extendee -> google.protobuf.OneofOptions
-	18, // 19: nebius.enum_py_sdk:extendee -> google.protobuf.EnumOptions
-	18, // 20: nebius.enum_deprecation_details:extendee -> google.protobuf.EnumOptions
-	19, // 21: nebius.enum_value_deprecation_details:extendee -> google.protobuf.EnumValueOptions
-	19, // 22: nebius.enum_value_py_sdk:extendee -> google.protobuf.EnumValueOptions
-	10, // 23: nebius.file_deprecation_details:type_name -> nebius.DeprecationDetails
-	10, // 24: nebius.service_deprecation_details:type_name -> nebius.DeprecationDetails
-	3,  // 25: nebius.service_py_sdk:type_name -> nebius.ServicePySDKSettings
-	10, // 26: nebius.method_deprecation_details:type_name -> nebius.DeprecationDetails
-	4,  // 27: nebius.method_py_sdk:type_name -> nebius.MethodPySDKSettings
-	2,  // 28: nebius.method_behavior:type_name -> nebius.MethodBehavior
-	0,  // 29: nebius.resource_behavior:type_name -> nebius.ResourceBehavior
-	10, // 30: nebius.message_deprecation_details:type_name -> nebius.DeprecationDetails
-	6,  // 31: nebius.message_py_sdk:type_name -> nebius.MessagePySDKSettings
-	1,  // 32: nebius.field_behavior:type_name -> nebius.FieldBehavior
-	10, // 33: nebius.field_deprecation_details:type_name -> nebius.DeprecationDetails
-	5,  // 34: nebius.field_py_sdk:type_name -> nebius.FieldPySDKSettings
-	11, // 35: nebius.nid:type_name -> nebius.NIDFieldSettings
-	1,  // 36: nebius.oneof_behavior:type_name -> nebius.FieldBehavior
-	7,  // 37: nebius.oneof_py_sdk:type_name -> nebius.OneofPySDKSettings
-	8,  // 38: nebius.enum_py_sdk:type_name -> nebius.EnumPySDKSettings
-	10, // 39: nebius.enum_deprecation_details:type_name -> nebius.DeprecationDetails
-	10, // 40: nebius.enum_value_deprecation_details:type_name -> nebius.DeprecationDetails
-	9,  // 41: nebius.enum_value_py_sdk:type_name -> nebius.EnumValuePySDKSettings
-	42, // [42:42] is the sub-list for method output_type
-	42, // [42:42] is the sub-list for method input_type
-	23, // [23:42] is the sub-list for extension type_name
-	0,  // [0:23] is the sub-list for extension extendee
+	14, // 6: nebius.method_behavior:extendee -> google.protobuf.MethodOptions
+	15, // 7: nebius.resource_behavior:extendee -> google.protobuf.MessageOptions
+	15, // 8: nebius.message_deprecation_details:extendee -> google.protobuf.MessageOptions
+	15, // 9: nebius.message_py_sdk:extendee -> google.protobuf.MessageOptions
+	16, // 10: nebius.field_behavior:extendee -> google.protobuf.FieldOptions
+	16, // 11: nebius.sensitive:extendee -> google.protobuf.FieldOptions
+	16, // 12: nebius.credentials:extendee -> google.protobuf.FieldOptions
+	16, // 13: nebius.field_deprecation_details:extendee -> google.protobuf.FieldOptions
+	16, // 14: nebius.field_py_sdk:extendee -> google.protobuf.FieldOptions
+	16, // 15: nebius.nid:extendee -> google.protobuf.FieldOptions
+	17, // 16: nebius.oneof_behavior:extendee -> google.protobuf.OneofOptions
+	17, // 17: nebius.oneof_py_sdk:extendee -> google.protobuf.OneofOptions
+	18, // 18: nebius.enum_py_sdk:extendee -> google.protobuf.EnumOptions
+	18, // 19: nebius.enum_deprecation_details:extendee -> google.protobuf.EnumOptions
+	19, // 20: nebius.enum_value_deprecation_details:extendee -> google.protobuf.EnumValueOptions
+	19, // 21: nebius.enum_value_py_sdk:extendee -> google.protobuf.EnumValueOptions
+	10, // 22: nebius.file_deprecation_details:type_name -> nebius.DeprecationDetails
+	10, // 23: nebius.service_deprecation_details:type_name -> nebius.DeprecationDetails
+	3,  // 24: nebius.service_py_sdk:type_name -> nebius.ServicePySDKSettings
+	10, // 25: nebius.method_deprecation_details:type_name -> nebius.DeprecationDetails
+	4,  // 26: nebius.method_py_sdk:type_name -> nebius.MethodPySDKSettings
+	2,  // 27: nebius.method_behavior:type_name -> nebius.MethodBehavior
+	0,  // 28: nebius.resource_behavior:type_name -> nebius.ResourceBehavior
+	10, // 29: nebius.message_deprecation_details:type_name -> nebius.DeprecationDetails
+	6,  // 30: nebius.message_py_sdk:type_name -> nebius.MessagePySDKSettings
+	1,  // 31: nebius.field_behavior:type_name -> nebius.FieldBehavior
+	10, // 32: nebius.field_deprecation_details:type_name -> nebius.DeprecationDetails
+	5,  // 33: nebius.field_py_sdk:type_name -> nebius.FieldPySDKSettings
+	11, // 34: nebius.nid:type_name -> nebius.NIDFieldSettings
+	1,  // 35: nebius.oneof_behavior:type_name -> nebius.FieldBehavior
+	7,  // 36: nebius.oneof_py_sdk:type_name -> nebius.OneofPySDKSettings
+	8,  // 37: nebius.enum_py_sdk:type_name -> nebius.EnumPySDKSettings
+	10, // 38: nebius.enum_deprecation_details:type_name -> nebius.DeprecationDetails
+	10, // 39: nebius.enum_value_deprecation_details:type_name -> nebius.DeprecationDetails
+	9,  // 40: nebius.enum_value_py_sdk:type_name -> nebius.EnumValuePySDKSettings
+	41, // [41:41] is the sub-list for method output_type
+	41, // [41:41] is the sub-list for method input_type
+	22, // [22:41] is the sub-list for extension type_name
+	0,  // [0:22] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
 }
 
@@ -1168,7 +1150,7 @@ func file_nebius_annotations_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_annotations_proto_rawDesc), len(file_nebius_annotations_proto_rawDesc)),
 			NumEnums:      3,
 			NumMessages:   9,
-			NumExtensions: 23,
+			NumExtensions: 22,
 			NumServices:   0,
 		},
 		GoTypes:           file_nebius_annotations_proto_goTypes,

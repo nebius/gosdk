@@ -392,9 +392,12 @@ type BucketStatus struct {
 	// and contains only the FQDN address.
 	DomainName string `protobuf:"bytes,6,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
 	// The name of the region where the bucket is located for use with S3 clients, i.e. "eu-west1".
-	Region        string `protobuf:"bytes,8,opt,name=region,proto3" json:"region,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Region string `protobuf:"bytes,8,opt,name=region,proto3" json:"region,omitempty"`
+	// Indicator flag showing whether the bucket has any BucketPolicy rule
+	// that grants anonymous access to any object, prefix, or the entire bucket.
+	AnonymousAccessEnabled bool `protobuf:"varint,9,opt,name=anonymous_access_enabled,json=anonymousAccessEnabled,proto3" json:"anonymous_access_enabled,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *BucketStatus) Reset() {
@@ -476,6 +479,13 @@ func (x *BucketStatus) GetRegion() string {
 	return ""
 }
 
+func (x *BucketStatus) GetAnonymousAccessEnabled() bool {
+	if x != nil {
+		return x.AnonymousAccessEnabled
+	}
+	return false
+}
+
 var File_nebius_storage_v1_bucket_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
@@ -503,7 +513,7 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	" OBJECT_AUDIT_LOGGING_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04NONE\x10\x01\x12\x0f\n" +
 	"\vMUTATE_ONLY\x10\x02\x12\a\n" +
-	"\x03ALL\x10\x03\"\xcc\x04\n" +
+	"\x03ALL\x10\x03\"\x86\x05\n" +
 	"\fBucketStatus\x12=\n" +
 	"\bcounters\x18\x01 \x03(\v2!.nebius.storage.v1.BucketCountersR\bcounters\x12;\n" +
 	"\x05state\x18\x02 \x01(\x0e2%.nebius.storage.v1.BucketStatus.StateR\x05state\x12Z\n" +
@@ -513,7 +523,8 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\bpurge_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\apurgeAt\x12\x1f\n" +
 	"\vdomain_name\x18\x06 \x01(\tR\n" +
 	"domainName\x12\x16\n" +
-	"\x06region\x18\b \x01(\tR\x06region\"b\n" +
+	"\x06region\x18\b \x01(\tR\x06region\x128\n" +
+	"\x18anonymous_access_enabled\x18\t \x01(\bR\x16anonymousAccessEnabled\"b\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\n" +
