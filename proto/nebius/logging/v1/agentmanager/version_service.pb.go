@@ -764,7 +764,9 @@ type GetVersionResponse struct {
 	//	*GetVersionResponse_Nop
 	//	*GetVersionResponse_Update
 	//	*GetVersionResponse_Restart
-	Response      isGetVersionResponse_Response `protobuf_oneof:"response"`
+	Response isGetVersionResponse_Response `protobuf_oneof:"response"`
+	// Feature flags for the agent. Keys are UPPER_CASE flag names, values are flag values (typically "true"/"false").
+	FeatureFlags  map[string]string `protobuf:"bytes,5,rep,name=feature_flags,json=featureFlags,proto3" json:"feature_flags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -836,6 +838,13 @@ func (x *GetVersionResponse) GetRestart() *RestartActionParams {
 		if x, ok := x.Response.(*GetVersionResponse_Restart); ok {
 			return x.Restart
 		}
+	}
+	return nil
+}
+
+func (x *GetVersionResponse) GetFeatureFlags() map[string]string {
+	if x != nil {
+		return x.FeatureFlags
 	}
 	return nil
 }
@@ -1048,12 +1057,16 @@ const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\x06OSInfo\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05uname\x18\x02 \x01(\tR\x05uname\x12\"\n" +
-	"\farchitecture\x18\x03 \x01(\tR\farchitecture\"\xc4\x02\n" +
+	"\farchitecture\x18\x03 \x01(\tR\farchitecture\"\xf0\x03\n" +
 	"\x12GetVersionResponse\x12>\n" +
 	"\x06action\x18\x01 \x01(\x0e2&.nebius.logging.agentmanager.v1.ActionR\x06action\x12C\n" +
 	"\x03nop\x18\x02 \x01(\v2/.nebius.logging.agentmanager.v1.NopActionParamsH\x00R\x03nop\x12L\n" +
 	"\x06update\x18\x03 \x01(\v22.nebius.logging.agentmanager.v1.UpdateActionParamsH\x00R\x06update\x12O\n" +
-	"\arestart\x18\x04 \x01(\v23.nebius.logging.agentmanager.v1.RestartActionParamsH\x00R\arestartB\n" +
+	"\arestart\x18\x04 \x01(\v23.nebius.logging.agentmanager.v1.RestartActionParamsH\x00R\arestart\x12i\n" +
+	"\rfeature_flags\x18\x05 \x03(\v2D.nebius.logging.agentmanager.v1.GetVersionResponse.FeatureFlagsEntryR\ffeatureFlags\x1a?\n" +
+	"\x11FeatureFlagsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\n" +
 	"\n" +
 	"\bresponse\"\x11\n" +
 	"\x0fNopActionParams\"I\n" +
@@ -1094,7 +1107,7 @@ func file_nebius_logging_v1_agentmanager_version_service_proto_rawDescGZIP() []b
 }
 
 var file_nebius_logging_v1_agentmanager_version_service_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_nebius_logging_v1_agentmanager_version_service_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_nebius_logging_v1_agentmanager_version_service_proto_goTypes = []any{
 	(AgentType)(0),              // 0: nebius.logging.agentmanager.v1.AgentType
 	(AgentState)(0),             // 1: nebius.logging.agentmanager.v1.AgentState
@@ -1109,15 +1122,16 @@ var file_nebius_logging_v1_agentmanager_version_service_proto_goTypes = []any{
 	(*NopActionParams)(nil),     // 10: nebius.logging.agentmanager.v1.NopActionParams
 	(*UpdateActionParams)(nil),  // 11: nebius.logging.agentmanager.v1.UpdateActionParams
 	(*RestartActionParams)(nil), // 12: nebius.logging.agentmanager.v1.RestartActionParams
-	(*durationpb.Duration)(nil), // 13: google.protobuf.Duration
+	nil,                         // 13: nebius.logging.agentmanager.v1.GetVersionResponse.FeatureFlagsEntry
+	(*durationpb.Duration)(nil), // 14: google.protobuf.Duration
 }
 var file_nebius_logging_v1_agentmanager_version_service_proto_depIdxs = []int32{
 	0,  // 0: nebius.logging.agentmanager.v1.GetVersionRequest.type:type_name -> nebius.logging.agentmanager.v1.AgentType
 	8,  // 1: nebius.logging.agentmanager.v1.GetVersionRequest.os_info:type_name -> nebius.logging.agentmanager.v1.OSInfo
 	1,  // 2: nebius.logging.agentmanager.v1.GetVersionRequest.agent_state:type_name -> nebius.logging.agentmanager.v1.AgentState
-	13, // 3: nebius.logging.agentmanager.v1.GetVersionRequest.agent_uptime:type_name -> google.protobuf.Duration
-	13, // 4: nebius.logging.agentmanager.v1.GetVersionRequest.system_uptime:type_name -> google.protobuf.Duration
-	13, // 5: nebius.logging.agentmanager.v1.GetVersionRequest.updater_uptime:type_name -> google.protobuf.Duration
+	14, // 3: nebius.logging.agentmanager.v1.GetVersionRequest.agent_uptime:type_name -> google.protobuf.Duration
+	14, // 4: nebius.logging.agentmanager.v1.GetVersionRequest.system_uptime:type_name -> google.protobuf.Duration
+	14, // 5: nebius.logging.agentmanager.v1.GetVersionRequest.updater_uptime:type_name -> google.protobuf.Duration
 	4,  // 6: nebius.logging.agentmanager.v1.GetVersionRequest.modules_health:type_name -> nebius.logging.agentmanager.v1.ModulesHealth
 	5,  // 7: nebius.logging.agentmanager.v1.GetVersionRequest.healthcheck_logs:type_name -> nebius.logging.agentmanager.v1.HealthCheckLogs
 	6,  // 8: nebius.logging.agentmanager.v1.ModulesHealth.process:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
@@ -1133,13 +1147,14 @@ var file_nebius_logging_v1_agentmanager_version_service_proto_depIdxs = []int32{
 	10, // 18: nebius.logging.agentmanager.v1.GetVersionResponse.nop:type_name -> nebius.logging.agentmanager.v1.NopActionParams
 	11, // 19: nebius.logging.agentmanager.v1.GetVersionResponse.update:type_name -> nebius.logging.agentmanager.v1.UpdateActionParams
 	12, // 20: nebius.logging.agentmanager.v1.GetVersionResponse.restart:type_name -> nebius.logging.agentmanager.v1.RestartActionParams
-	3,  // 21: nebius.logging.agentmanager.v1.VersionService.GetVersion:input_type -> nebius.logging.agentmanager.v1.GetVersionRequest
-	9,  // 22: nebius.logging.agentmanager.v1.VersionService.GetVersion:output_type -> nebius.logging.agentmanager.v1.GetVersionResponse
-	22, // [22:23] is the sub-list for method output_type
-	21, // [21:22] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	13, // 21: nebius.logging.agentmanager.v1.GetVersionResponse.feature_flags:type_name -> nebius.logging.agentmanager.v1.GetVersionResponse.FeatureFlagsEntry
+	3,  // 22: nebius.logging.agentmanager.v1.VersionService.GetVersion:input_type -> nebius.logging.agentmanager.v1.GetVersionRequest
+	9,  // 23: nebius.logging.agentmanager.v1.VersionService.GetVersion:output_type -> nebius.logging.agentmanager.v1.GetVersionResponse
+	23, // [23:24] is the sub-list for method output_type
+	22, // [22:23] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_nebius_logging_v1_agentmanager_version_service_proto_init() }
@@ -1158,7 +1173,7 @@ func file_nebius_logging_v1_agentmanager_version_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc), len(file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

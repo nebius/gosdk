@@ -9,7 +9,6 @@ import (
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
 	operations "github.com/nebius/gosdk/operations"
-	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v1 "github.com/nebius/gosdk/proto/nebius/ai/v1"
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	grpc "google.golang.org/grpc"
@@ -34,7 +33,6 @@ type EndpointService interface {
 	Filter(context.Context, *v1.ListEndpointsRequest, ...grpc.CallOption) iter.Seq2[*v1.Endpoint, error]
 	Create(context.Context, *v1.CreateEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
-	Update(context.Context, *v1.UpdateEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
 	Start(context.Context, *v1.StartEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
 	Stop(context.Context, *v1.StopEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -232,38 +230,6 @@ func (s endpointService) Delete(ctx context.Context, request *v1.DeleteEndpointR
 		return nil, err
 	}
 	op, err := v1.NewEndpointServiceClient(con).Delete(ctx, request, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return operations.New(op, v11.NewOperationServiceClient(con))
-}
-
-func (s endpointService) Update(ctx context.Context, request *v1.UpdateEndpointRequest, opts ...grpc.CallOption) (
-	operations.Operation,
-	error,
-) {
-	var metadataParentTypes []string
-	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
-	if err != nil {
-		return nil, err
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
-		}
-	}
-	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
-	if err != nil {
-		return nil, err
-	}
-	con, err := s.sdk.Dial(ctx, address)
-	if err != nil {
-		return nil, err
-	}
-	op, err := v1.NewEndpointServiceClient(con).Update(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}

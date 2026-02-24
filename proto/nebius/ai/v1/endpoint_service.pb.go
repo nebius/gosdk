@@ -285,58 +285,6 @@ func (x *DeleteEndpointRequest) GetId() string {
 	return ""
 }
 
-type UpdateEndpointRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *EndpointSpec          `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateEndpointRequest) Reset() {
-	*x = UpdateEndpointRequest{}
-	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateEndpointRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateEndpointRequest) ProtoMessage() {}
-
-func (x *UpdateEndpointRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateEndpointRequest.ProtoReflect.Descriptor instead.
-func (*UpdateEndpointRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_ai_v1_endpoint_service_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *UpdateEndpointRequest) GetMetadata() *v1.ResourceMetadata {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
-func (x *UpdateEndpointRequest) GetSpec() *EndpointSpec {
-	if x != nil {
-		return x.Spec
-	}
-	return nil
-}
-
 type StartEndpointRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -346,7 +294,7 @@ type StartEndpointRequest struct {
 
 func (x *StartEndpointRequest) Reset() {
 	*x = StartEndpointRequest{}
-	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[6]
+	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -358,7 +306,7 @@ func (x *StartEndpointRequest) String() string {
 func (*StartEndpointRequest) ProtoMessage() {}
 
 func (x *StartEndpointRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[6]
+	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -371,7 +319,7 @@ func (x *StartEndpointRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartEndpointRequest.ProtoReflect.Descriptor instead.
 func (*StartEndpointRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_ai_v1_endpoint_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_ai_v1_endpoint_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *StartEndpointRequest) GetId() string {
@@ -390,7 +338,7 @@ type StopEndpointRequest struct {
 
 func (x *StopEndpointRequest) Reset() {
 	*x = StopEndpointRequest{}
-	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[7]
+	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -402,7 +350,7 @@ func (x *StopEndpointRequest) String() string {
 func (*StopEndpointRequest) ProtoMessage() {}
 
 func (x *StopEndpointRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[7]
+	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -415,7 +363,7 @@ func (x *StopEndpointRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StopEndpointRequest.ProtoReflect.Descriptor instead.
 func (*StopEndpointRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_ai_v1_endpoint_service_proto_rawDescGZIP(), []int{7}
+	return file_nebius_ai_v1_endpoint_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *StopEndpointRequest) GetId() string {
@@ -435,7 +383,7 @@ type ListEndpointsResponse struct {
 
 func (x *ListEndpointsResponse) Reset() {
 	*x = ListEndpointsResponse{}
-	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[8]
+	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -447,7 +395,7 @@ func (x *ListEndpointsResponse) String() string {
 func (*ListEndpointsResponse) ProtoMessage() {}
 
 func (x *ListEndpointsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[8]
+	mi := &file_nebius_ai_v1_endpoint_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -460,7 +408,7 @@ func (x *ListEndpointsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEndpointsResponse.ProtoReflect.Descriptor instead.
 func (*ListEndpointsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_ai_v1_endpoint_service_proto_rawDescGZIP(), []int{8}
+	return file_nebius_ai_v1_endpoint_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListEndpointsResponse) GetItems() []*Endpoint {
@@ -501,10 +449,7 @@ const file_nebius_ai_v1_endpoint_service_proto_rawDesc = "" +
 	"\x15DeleteEndpointRequest\x12%\n" +
 	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
 	"\n" +
-	"aiendpointR\x02id\"\x97\x01\n" +
-	"\x15UpdateEndpointRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x126\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"=\n" +
+	"aiendpointR\x02id\"=\n" +
 	"\x14StartEndpointRequest\x12%\n" +
 	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
 	"\n" +
@@ -515,14 +460,13 @@ const file_nebius_ai_v1_endpoint_service_proto_rawDesc = "" +
 	"aiendpointR\x02id\"m\n" +
 	"\x15ListEndpointsResponse\x12,\n" +
 	"\x05items\x18\x01 \x03(\v2\x16.nebius.ai.v1.EndpointR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xf3\x04\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa7\x04\n" +
 	"\x0fEndpointService\x12?\n" +
 	"\x03Get\x12 .nebius.ai.v1.GetEndpointRequest\x1a\x16.nebius.ai.v1.Endpoint\x12K\n" +
 	"\tGetByName\x12&.nebius.ai.v1.GetEndpointByNameRequest\x1a\x16.nebius.ai.v1.Endpoint\x12O\n" +
 	"\x04List\x12\".nebius.ai.v1.ListEndpointsRequest\x1a#.nebius.ai.v1.ListEndpointsResponse\x12J\n" +
 	"\x06Create\x12#.nebius.ai.v1.CreateEndpointRequest\x1a\x1b.nebius.common.v1.Operation\x12J\n" +
-	"\x06Delete\x12#.nebius.ai.v1.DeleteEndpointRequest\x1a\x1b.nebius.common.v1.Operation\x12J\n" +
-	"\x06Update\x12#.nebius.ai.v1.UpdateEndpointRequest\x1a\x1b.nebius.common.v1.Operation\x12H\n" +
+	"\x06Delete\x12#.nebius.ai.v1.DeleteEndpointRequest\x1a\x1b.nebius.common.v1.Operation\x12H\n" +
 	"\x05Start\x12\".nebius.ai.v1.StartEndpointRequest\x1a\x1b.nebius.common.v1.Operation\x12F\n" +
 	"\x04Stop\x12!.nebius.ai.v1.StopEndpointRequest\x1a\x1b.nebius.common.v1.Operation\x1a\v\xbaJ\bapps.mspBY\n" +
 	"\x13ai.nebius.pub.ai.v1B\x14EndpointServiceProtoP\x01Z*github.com/nebius/gosdk/proto/nebius/ai/v1b\x06proto3"
@@ -539,49 +483,44 @@ func file_nebius_ai_v1_endpoint_service_proto_rawDescGZIP() []byte {
 	return file_nebius_ai_v1_endpoint_service_proto_rawDescData
 }
 
-var file_nebius_ai_v1_endpoint_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_nebius_ai_v1_endpoint_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_ai_v1_endpoint_service_proto_goTypes = []any{
 	(*GetEndpointRequest)(nil),       // 0: nebius.ai.v1.GetEndpointRequest
 	(*GetEndpointByNameRequest)(nil), // 1: nebius.ai.v1.GetEndpointByNameRequest
 	(*ListEndpointsRequest)(nil),     // 2: nebius.ai.v1.ListEndpointsRequest
 	(*CreateEndpointRequest)(nil),    // 3: nebius.ai.v1.CreateEndpointRequest
 	(*DeleteEndpointRequest)(nil),    // 4: nebius.ai.v1.DeleteEndpointRequest
-	(*UpdateEndpointRequest)(nil),    // 5: nebius.ai.v1.UpdateEndpointRequest
-	(*StartEndpointRequest)(nil),     // 6: nebius.ai.v1.StartEndpointRequest
-	(*StopEndpointRequest)(nil),      // 7: nebius.ai.v1.StopEndpointRequest
-	(*ListEndpointsResponse)(nil),    // 8: nebius.ai.v1.ListEndpointsResponse
-	(*v1.ResourceMetadata)(nil),      // 9: nebius.common.v1.ResourceMetadata
-	(*EndpointSpec)(nil),             // 10: nebius.ai.v1.EndpointSpec
-	(*Endpoint)(nil),                 // 11: nebius.ai.v1.Endpoint
-	(*v1.Operation)(nil),             // 12: nebius.common.v1.Operation
+	(*StartEndpointRequest)(nil),     // 5: nebius.ai.v1.StartEndpointRequest
+	(*StopEndpointRequest)(nil),      // 6: nebius.ai.v1.StopEndpointRequest
+	(*ListEndpointsResponse)(nil),    // 7: nebius.ai.v1.ListEndpointsResponse
+	(*v1.ResourceMetadata)(nil),      // 8: nebius.common.v1.ResourceMetadata
+	(*EndpointSpec)(nil),             // 9: nebius.ai.v1.EndpointSpec
+	(*Endpoint)(nil),                 // 10: nebius.ai.v1.Endpoint
+	(*v1.Operation)(nil),             // 11: nebius.common.v1.Operation
 }
 var file_nebius_ai_v1_endpoint_service_proto_depIdxs = []int32{
-	9,  // 0: nebius.ai.v1.CreateEndpointRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 1: nebius.ai.v1.CreateEndpointRequest.spec:type_name -> nebius.ai.v1.EndpointSpec
-	9,  // 2: nebius.ai.v1.UpdateEndpointRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 3: nebius.ai.v1.UpdateEndpointRequest.spec:type_name -> nebius.ai.v1.EndpointSpec
-	11, // 4: nebius.ai.v1.ListEndpointsResponse.items:type_name -> nebius.ai.v1.Endpoint
-	0,  // 5: nebius.ai.v1.EndpointService.Get:input_type -> nebius.ai.v1.GetEndpointRequest
-	1,  // 6: nebius.ai.v1.EndpointService.GetByName:input_type -> nebius.ai.v1.GetEndpointByNameRequest
-	2,  // 7: nebius.ai.v1.EndpointService.List:input_type -> nebius.ai.v1.ListEndpointsRequest
-	3,  // 8: nebius.ai.v1.EndpointService.Create:input_type -> nebius.ai.v1.CreateEndpointRequest
-	4,  // 9: nebius.ai.v1.EndpointService.Delete:input_type -> nebius.ai.v1.DeleteEndpointRequest
-	5,  // 10: nebius.ai.v1.EndpointService.Update:input_type -> nebius.ai.v1.UpdateEndpointRequest
-	6,  // 11: nebius.ai.v1.EndpointService.Start:input_type -> nebius.ai.v1.StartEndpointRequest
-	7,  // 12: nebius.ai.v1.EndpointService.Stop:input_type -> nebius.ai.v1.StopEndpointRequest
-	11, // 13: nebius.ai.v1.EndpointService.Get:output_type -> nebius.ai.v1.Endpoint
-	11, // 14: nebius.ai.v1.EndpointService.GetByName:output_type -> nebius.ai.v1.Endpoint
-	8,  // 15: nebius.ai.v1.EndpointService.List:output_type -> nebius.ai.v1.ListEndpointsResponse
-	12, // 16: nebius.ai.v1.EndpointService.Create:output_type -> nebius.common.v1.Operation
-	12, // 17: nebius.ai.v1.EndpointService.Delete:output_type -> nebius.common.v1.Operation
-	12, // 18: nebius.ai.v1.EndpointService.Update:output_type -> nebius.common.v1.Operation
-	12, // 19: nebius.ai.v1.EndpointService.Start:output_type -> nebius.common.v1.Operation
-	12, // 20: nebius.ai.v1.EndpointService.Stop:output_type -> nebius.common.v1.Operation
-	13, // [13:21] is the sub-list for method output_type
-	5,  // [5:13] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	8,  // 0: nebius.ai.v1.CreateEndpointRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	9,  // 1: nebius.ai.v1.CreateEndpointRequest.spec:type_name -> nebius.ai.v1.EndpointSpec
+	10, // 2: nebius.ai.v1.ListEndpointsResponse.items:type_name -> nebius.ai.v1.Endpoint
+	0,  // 3: nebius.ai.v1.EndpointService.Get:input_type -> nebius.ai.v1.GetEndpointRequest
+	1,  // 4: nebius.ai.v1.EndpointService.GetByName:input_type -> nebius.ai.v1.GetEndpointByNameRequest
+	2,  // 5: nebius.ai.v1.EndpointService.List:input_type -> nebius.ai.v1.ListEndpointsRequest
+	3,  // 6: nebius.ai.v1.EndpointService.Create:input_type -> nebius.ai.v1.CreateEndpointRequest
+	4,  // 7: nebius.ai.v1.EndpointService.Delete:input_type -> nebius.ai.v1.DeleteEndpointRequest
+	5,  // 8: nebius.ai.v1.EndpointService.Start:input_type -> nebius.ai.v1.StartEndpointRequest
+	6,  // 9: nebius.ai.v1.EndpointService.Stop:input_type -> nebius.ai.v1.StopEndpointRequest
+	10, // 10: nebius.ai.v1.EndpointService.Get:output_type -> nebius.ai.v1.Endpoint
+	10, // 11: nebius.ai.v1.EndpointService.GetByName:output_type -> nebius.ai.v1.Endpoint
+	7,  // 12: nebius.ai.v1.EndpointService.List:output_type -> nebius.ai.v1.ListEndpointsResponse
+	11, // 13: nebius.ai.v1.EndpointService.Create:output_type -> nebius.common.v1.Operation
+	11, // 14: nebius.ai.v1.EndpointService.Delete:output_type -> nebius.common.v1.Operation
+	11, // 15: nebius.ai.v1.EndpointService.Start:output_type -> nebius.common.v1.Operation
+	11, // 16: nebius.ai.v1.EndpointService.Stop:output_type -> nebius.common.v1.Operation
+	10, // [10:17] is the sub-list for method output_type
+	3,  // [3:10] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_nebius_ai_v1_endpoint_service_proto_init() }
@@ -596,7 +535,7 @@ func file_nebius_ai_v1_endpoint_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_ai_v1_endpoint_service_proto_rawDesc), len(file_nebius_ai_v1_endpoint_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
