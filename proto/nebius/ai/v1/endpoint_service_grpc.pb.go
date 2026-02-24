@@ -25,7 +25,6 @@ const (
 	EndpointService_List_FullMethodName      = "/nebius.ai.v1.EndpointService/List"
 	EndpointService_Create_FullMethodName    = "/nebius.ai.v1.EndpointService/Create"
 	EndpointService_Delete_FullMethodName    = "/nebius.ai.v1.EndpointService/Delete"
-	EndpointService_Update_FullMethodName    = "/nebius.ai.v1.EndpointService/Update"
 	EndpointService_Start_FullMethodName     = "/nebius.ai.v1.EndpointService/Start"
 	EndpointService_Stop_FullMethodName      = "/nebius.ai.v1.EndpointService/Stop"
 )
@@ -44,8 +43,6 @@ type EndpointServiceClient interface {
 	Create(ctx context.Context, in *CreateEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Deletes an endpoint.
 	Delete(ctx context.Context, in *DeleteEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error)
-	// Updates an endpoint.
-	Update(ctx context.Context, in *UpdateEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Starts an endpoint.
 	Start(ctx context.Context, in *StartEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Stops an endpoint.
@@ -105,15 +102,6 @@ func (c *endpointServiceClient) Delete(ctx context.Context, in *DeleteEndpointRe
 	return out, nil
 }
 
-func (c *endpointServiceClient) Update(ctx context.Context, in *UpdateEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
-	out := new(v1.Operation)
-	err := c.cc.Invoke(ctx, EndpointService_Update_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *endpointServiceClient) Start(ctx context.Context, in *StartEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, EndpointService_Start_FullMethodName, in, out, opts...)
@@ -146,8 +134,6 @@ type EndpointServiceServer interface {
 	Create(context.Context, *CreateEndpointRequest) (*v1.Operation, error)
 	// Deletes an endpoint.
 	Delete(context.Context, *DeleteEndpointRequest) (*v1.Operation, error)
-	// Updates an endpoint.
-	Update(context.Context, *UpdateEndpointRequest) (*v1.Operation, error)
 	// Starts an endpoint.
 	Start(context.Context, *StartEndpointRequest) (*v1.Operation, error)
 	// Stops an endpoint.
@@ -172,9 +158,6 @@ func (UnimplementedEndpointServiceServer) Create(context.Context, *CreateEndpoin
 }
 func (UnimplementedEndpointServiceServer) Delete(context.Context, *DeleteEndpointRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
-}
-func (UnimplementedEndpointServiceServer) Update(context.Context, *UpdateEndpointRequest) (*v1.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedEndpointServiceServer) Start(context.Context, *StartEndpointRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Start not implemented")
@@ -284,24 +267,6 @@ func _EndpointService_Delete_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _EndpointService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateEndpointRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(EndpointServiceServer).Update(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: EndpointService_Update_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EndpointServiceServer).Update(ctx, req.(*UpdateEndpointRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _EndpointService_Start_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StartEndpointRequest)
 	if err := dec(in); err != nil {
@@ -364,10 +329,6 @@ var EndpointService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _EndpointService_Delete_Handler,
-		},
-		{
-			MethodName: "Update",
-			Handler:    _EndpointService_Update_Handler,
 		},
 		{
 			MethodName: "Start",
