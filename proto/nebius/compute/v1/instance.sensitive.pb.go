@@ -122,3 +122,6 @@ func (w *wrapperInstanceSpec) ProtoReflect() protoreflect.Message {
 
 // func (x *InstanceStatusInfinibandTopologyPath) Sanitize()            // is not generated as no sensitive fields found
 // func (x *InstanceStatusInfinibandTopologyPath) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ReservationPolicy) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ReservationPolicy) LogValue() slog.Value // is not generated as no sensitive fields found

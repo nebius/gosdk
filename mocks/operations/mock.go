@@ -356,6 +356,44 @@ func (c *MockOperationProgressDataCall) DoAndReturn(f func() proto.Message) *Moc
 	return c
 }
 
+// ProgressTracker mocks base method.
+func (m *MockOperation) ProgressTracker() operations.OperationProgressTracker {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ProgressTracker")
+	ret0, _ := ret[0].(operations.OperationProgressTracker)
+	return ret0
+}
+
+// ProgressTracker indicates an expected call of ProgressTracker.
+func (mr *MockOperationMockRecorder) ProgressTracker() *MockOperationProgressTrackerCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProgressTracker", reflect.TypeOf((*MockOperation)(nil).ProgressTracker))
+	return &MockOperationProgressTrackerCall{Call: call}
+}
+
+// MockOperationProgressTrackerCall wrap *gomock.Call
+type MockOperationProgressTrackerCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockOperationProgressTrackerCall) Return(arg0 operations.OperationProgressTracker) *MockOperationProgressTrackerCall {
+	c.Call = c.Call.Return(arg0)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockOperationProgressTrackerCall) Do(f func() operations.OperationProgressTracker) *MockOperationProgressTrackerCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockOperationProgressTrackerCall) DoAndReturn(f func() operations.OperationProgressTracker) *MockOperationProgressTrackerCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Raw mocks base method.
 func (m *MockOperation) Raw() *v1.Operation {
 	m.ctrl.T.Helper()

@@ -8,6 +8,9 @@ package agentmanager
 // func (x *ModulesHealth) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ModulesHealth) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *HealthCheckLogs) Sanitize()            // is not generated as no sensitive fields found
+// func (x *HealthCheckLogs) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ModuleHealth) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ModuleHealth) LogValue() slog.Value // is not generated as no sensitive fields found
 

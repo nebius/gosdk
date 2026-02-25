@@ -4,6 +4,7 @@ package v2
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v2 "github.com/nebius/gosdk/proto/nebius/iam/v2"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -58,13 +60,36 @@ func (s accessKeyService) Create(ctx context.Context, request *v2.CreateAccessKe
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
-		md := request.GetMetadata()
-		if md == nil {
-			md = &v1.ResourceMetadata{}
+		if tenantID := s.sdk.TenantID(); tenantID != "" {
+			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v1.ResourceMetadata{}
+				}
+				md.ParentId = tenantID
+				request.Metadata = md
+			}
 		}
-		md.ParentId = s.sdk.ParentID()
-		request.Metadata = md
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v1.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
@@ -85,6 +110,11 @@ func (s accessKeyService) Get(ctx context.Context, request *v2.GetAccessKeyReque
 	*v2.AccessKey,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -100,6 +130,11 @@ func (s accessKeyService) GetSecret(ctx context.Context, request *v2.GetAccessKe
 	*v2.GetAccessKeySecretResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -116,7 +151,23 @@ func (s accessKeyService) List(ctx context.Context, request *v2.ListAccessKeysRe
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
@@ -158,9 +209,18 @@ func (s accessKeyService) Update(ctx context.Context, request *v2.UpdateAccessKe
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
@@ -181,6 +241,11 @@ func (s accessKeyService) Delete(ctx context.Context, request *v2.DeleteAccessKe
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -200,6 +265,11 @@ func (s accessKeyService) Activate(ctx context.Context, request *v2.ActivateAcce
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -219,6 +289,11 @@ func (s accessKeyService) Deactivate(ctx context.Context, request *v2.Deactivate
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -238,6 +313,11 @@ func (s accessKeyService) ListByAccount(ctx context.Context, request *v2.ListAcc
 	*v2.ListAccessKeysResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -253,6 +333,11 @@ func (s accessKeyService) GetByAwsId(ctx context.Context, request *v2.GetAccessK
 	*v2.AccessKey,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -268,6 +353,11 @@ func (s accessKeyService) DeleteByAwsId(ctx context.Context, request *v2.DeleteA
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -287,6 +377,11 @@ func (s accessKeyService) ActivateByAwsId(ctx context.Context, request *v2.Activ
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err
@@ -306,6 +401,11 @@ func (s accessKeyService) DeactivateByAwsId(ctx context.Context, request *v2.Dea
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
 	if err != nil {
 		return nil, err

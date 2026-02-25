@@ -49,6 +49,8 @@ type configReader struct {
 	cachedTokenRetryMultiplier   float64
 	cachedTokenMaxRetryDelay     time.Duration
 	tokenSafetyMargin            time.Duration
+
+	configParsed bool
 }
 
 func NewConfigReader(options ...config.Option) config.ConfigInterface {
@@ -73,6 +75,15 @@ func NewConfigReader(options ...config.Option) config.ConfigInterface {
 	}
 	return r
 }
+
+func (r *configReader) LoadIfNeeded(ctx context.Context) error {
+	if r.configParsed {
+		r.logger.DebugContext(ctx, "configuration already loaded, skipping")
+		return nil
+	}
+	return r.Load(ctx)
+}
+
 func (r *configReader) Load(ctx context.Context) error {
 	if r.preloadedConfig {
 		r.logger.DebugContext(ctx, "config is preloaded, skipping file load")
@@ -120,6 +131,7 @@ func (r *configReader) Load(ctx context.Context) error {
 			return fmt.Errorf("expand cache file name: %w", err)
 		}
 	}
+	r.configParsed = true
 	return nil
 }
 
@@ -221,6 +233,13 @@ func (r *configReader) ParentID() string {
 	return r.profile.ParentID
 }
 
+func (r *configReader) TenantID() string {
+	if r.noParentID {
+		return ""
+	}
+	return r.profile.TenantID
+}
+
 func (r *configReader) Endpoint() string {
 	if r.customEndpoint != "" {
 		return r.customEndpoint
@@ -254,6 +273,16 @@ func (r *configReader) GetCredentials(ctx context.Context) (auth.BearerTokener, 
 		return tokener, nil
 	}
 
+	// 3. Raw token endpoint
+	if r.profile.TokenEndpoint != "" {
+		r.logger.DebugContext(ctx, "using token from imds", slog.String("endpoint", r.profile.TokenEndpoint))
+		tokener, err := auth.NewIMDSTokenizer(r.profile.TokenEndpoint, constants.HTTPMaxAttempts, constants.HTTPBaseBackoff)
+		if err != nil {
+			return nil, fmt.Errorf("create token endpoint reader %q: %w", r.profile.TokenEndpoint, err)
+		}
+		return tokener, nil
+	}
+
 	switch r.profile.AuthType {
 	case config.AuthTypeServiceAccount:
 		return r.getServiceAccountCredentials(ctx)
@@ -283,7 +312,7 @@ func (r *configReader) GetCredentials(ctx context.Context) (auth.BearerTokener, 
 			r.noBrowserOpen,
 		)
 		r.logger.DebugContext(ctx, "using file-cached federation tokener", slog.String("cache_file", r.cacheFileName))
-		return auth.NewFileCachedTokener(r.cacheFileName, tokener, r.tokenSafetyMargin, r.logger), nil
+		return auth.NewInAppSyncTokener(auth.NewFileCachedTokener(r.cacheFileName, tokener, r.tokenSafetyMargin, r.logger)), nil
 	default:
 		return nil, config.NewError(fmt.Errorf("unsupported auth type: %s", r.profile.AuthType))
 	}

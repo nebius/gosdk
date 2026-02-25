@@ -1,4 +1,4 @@
-# Based on https://gist.github.com/maratori/47a4d00457a92aa426dbd48a18776322
+# Based on https://github.com/maratori/golangci-lint-config
 
 version: "2"
 

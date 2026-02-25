@@ -4,6 +4,7 @@ package v1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -13,6 +14,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -32,6 +34,8 @@ type FederationService interface {
 	List(context.Context, *v1.ListFederationsRequest, ...grpc.CallOption) (*v1.ListFederationsResponse, error)
 	Filter(context.Context, *v1.ListFederationsRequest, ...grpc.CallOption) iter.Seq2[*v1.Federation, error]
 	Update(context.Context, *v1.UpdateFederationRequest, ...grpc.CallOption) (operations.Operation, error)
+	Activate(context.Context, *v1.ActivateFederationRequest, ...grpc.CallOption) (operations.Operation, error)
+	Deactivate(context.Context, *v1.DeactivateFederationRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteFederationRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
@@ -51,13 +55,36 @@ func (s federationService) Create(ctx context.Context, request *v1.CreateFederat
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	if request.GetMetadata().GetParentId() == "" {
-		md := request.GetMetadata()
-		if md == nil {
-			md = &v11.ResourceMetadata{}
+		if tenantID := s.sdk.TenantID(); tenantID != "" {
+			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = tenantID
+				request.Metadata = md
+			}
 		}
-		md.ParentId = s.sdk.ParentID()
-		request.Metadata = md
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
@@ -78,6 +105,11 @@ func (s federationService) Get(ctx context.Context, request *v1.GetFederationReq
 	*v1.Federation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err
@@ -94,7 +126,23 @@ func (s federationService) GetByName(ctx context.Context, request *v11.GetByName
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
@@ -112,7 +160,23 @@ func (s federationService) List(ctx context.Context, request *v1.ListFederations
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
@@ -154,9 +218,18 @@ func (s federationService) Update(ctx context.Context, request *v1.UpdateFederat
 	operations.Operation,
 	error,
 ) {
+	var metadataParentTypes []string
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
+			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
@@ -173,10 +246,63 @@ func (s federationService) Update(ctx context.Context, request *v1.UpdateFederat
 	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
+func (s federationService) Activate(ctx context.Context, request *v1.ActivateFederationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, FederationServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewFederationServiceClient(con).Activate(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s federationService) Deactivate(ctx context.Context, request *v1.DeactivateFederationRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, FederationServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewFederationServiceClient(con).Deactivate(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
 func (s federationService) Delete(ctx context.Context, request *v1.DeleteFederationRequest, opts ...grpc.CallOption) (
 	operations.Operation,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err

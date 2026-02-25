@@ -44,6 +44,50 @@ func (m *MockFederationService) EXPECT() *MockFederationServiceMockRecorder {
 	return m.recorder
 }
 
+// Activate mocks base method.
+func (m *MockFederationService) Activate(arg0 context.Context, arg1 *v10.ActivateFederationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Activate", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Activate indicates an expected call of Activate.
+func (mr *MockFederationServiceMockRecorder) Activate(arg0, arg1 any, arg2 ...any) *MockFederationServiceActivateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Activate", reflect.TypeOf((*MockFederationService)(nil).Activate), varargs...)
+	return &MockFederationServiceActivateCall{Call: call}
+}
+
+// MockFederationServiceActivateCall wrap *gomock.Call
+type MockFederationServiceActivateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockFederationServiceActivateCall) Return(arg0 operations.Operation, arg1 error) *MockFederationServiceActivateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockFederationServiceActivateCall) Do(f func(context.Context, *v10.ActivateFederationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockFederationServiceActivateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockFederationServiceActivateCall) DoAndReturn(f func(context.Context, *v10.ActivateFederationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockFederationServiceActivateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Create mocks base method.
 func (m *MockFederationService) Create(arg0 context.Context, arg1 *v10.CreateFederationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()
@@ -84,6 +128,50 @@ func (c *MockFederationServiceCreateCall) Do(f func(context.Context, *v10.Create
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockFederationServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreateFederationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockFederationServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Deactivate mocks base method.
+func (m *MockFederationService) Deactivate(arg0 context.Context, arg1 *v10.DeactivateFederationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Deactivate", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Deactivate indicates an expected call of Deactivate.
+func (mr *MockFederationServiceMockRecorder) Deactivate(arg0, arg1 any, arg2 ...any) *MockFederationServiceDeactivateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Deactivate", reflect.TypeOf((*MockFederationService)(nil).Deactivate), varargs...)
+	return &MockFederationServiceDeactivateCall{Call: call}
+}
+
+// MockFederationServiceDeactivateCall wrap *gomock.Call
+type MockFederationServiceDeactivateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockFederationServiceDeactivateCall) Return(arg0 operations.Operation, arg1 error) *MockFederationServiceDeactivateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockFederationServiceDeactivateCall) Do(f func(context.Context, *v10.DeactivateFederationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockFederationServiceDeactivateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockFederationServiceDeactivateCall) DoAndReturn(f func(context.Context, *v10.DeactivateFederationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockFederationServiceDeactivateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

@@ -4,6 +4,7 @@ package v1alpha1
 
 import (
 	context "context"
+	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	iter "github.com/nebius/gosdk/iter"
@@ -12,6 +13,7 @@ import (
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/compute/v1alpha1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	slog "log/slog"
 )
 
 func init() {
@@ -47,6 +49,11 @@ func (s imageService) Get(ctx context.Context, request *v1alpha1.GetImageRequest
 	*v1alpha1.Image,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
 		return nil, err
@@ -63,7 +70,23 @@ func (s imageService) GetByName(ctx context.Context, request *v1.GetByNameReques
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
@@ -80,6 +103,11 @@ func (s imageService) GetLatestByFamily(ctx context.Context, request *v1alpha1.G
 	*v1alpha1.Image,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
 		return nil, err
@@ -96,7 +124,23 @@ func (s imageService) List(ctx context.Context, request *v1alpha1.ListImagesRequ
 	error,
 ) {
 	if request.GetParentId() == "" {
-		request.ParentId = s.sdk.ParentID()
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
 	}
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
@@ -138,6 +182,11 @@ func (s imageService) ListOperationsByParent(ctx context.Context, request *v1alp
 	*v1alpha11.ListOperationsResponse,
 	error,
 ) {
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
 	address, err := s.sdk.Resolve(ctx, ImageServiceID)
 	if err != nil {
 		return nil, err
