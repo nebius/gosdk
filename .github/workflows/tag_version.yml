@@ -1,0 +1,99 @@
+name: Tag Version
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Optional commit SHA to process (defaults to current SHA)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  tag-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Tag commits with version from version.go
+        id: create_tags
+        env:
+          AFTER_SHA: ${{ github.sha }}
+          INPUT_COMMIT_SHA: ${{ inputs.commit_sha }}
+        run: |
+          set -euo pipefail
+
+          git fetch --tags origin
+
+          target_commit="${INPUT_COMMIT_SHA:-${AFTER_SHA}}"
+
+          if ! git cat-file -e "${target_commit}^{commit}" 2>/dev/null; then
+            echo "::warning::Skipping ${target_commit}: commit is not available in this checkout"
+            echo "has_created_tags=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! git cat-file -e "${target_commit}:version.go" 2>/dev/null; then
+            echo "::warning::Skipping ${target_commit}: version.go not found in commit"
+            echo "has_created_tags=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          version="$(
+            git show "${target_commit}:version.go" \
+              | sed -nE 's/^const Version = "([^"]+)"$/\1/p' \
+              | head -n1
+          )"
+
+          if [[ -z "${version}" ]]; then
+            echo "::warning::Skipping ${target_commit}: could not extract Version from version.go"
+            echo "has_created_tags=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          tag="${version#v}"
+          tag="v${tag}"
+
+          if git ls-remote --tags --exit-code origin "refs/tags/${tag}" >/dev/null 2>&1 \
+            || git rev-parse -q --verify "refs/tags/${tag}" >/dev/null 2>&1; then
+            echo "Tag ${tag} already exists; skipping ${target_commit}."
+            echo "has_created_tags=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git tag "${tag}" "${target_commit}"
+          echo "Created local tag ${tag} for ${target_commit}."
+          echo "has_created_tags=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push created tags
+        if: steps.create_tags.outputs.has_created_tags == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
+
+  notify-slack-on-failure:
+    name: Notify Slack on failure
+    if: failure()
+    needs: [tag-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post text to a Slack channel
+        uses: slackapi/slack-github-action@v2.1.1
+        if: ${{ !env.ACT }}
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_OAUTH_TOKEN }}
+          payload: |
+            channel: ${{ secrets.SLACK_CHANNEL }}
+            text: |
+              🚨 Workflow *${{ github.workflow }}* failed on <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>
+              <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>
