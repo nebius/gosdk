@@ -1,3 +1,3 @@
 package gosdk
 
-const Version = "not found"
+const Version = "0.1.0"
