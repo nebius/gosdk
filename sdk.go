@@ -67,6 +67,10 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	authTimeout := DefaultAuthTimeout
 
 	userAgent := "nebius-gosdk"
+
+	if Version != "" {
+		userAgent += "/" + Version
+	}
 	goVer := runtime.Version()
 	if goVer != "" {
 		goVer = goVer[2:]
