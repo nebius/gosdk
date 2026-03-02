@@ -18,6 +18,7 @@ func GenerateRandomString() (string, error) {
 		if err != nil {
 			return "", err
 		}
+		//nolint:gosec // false positive, as n is always less than len(letterBytes)
 		buf[i] = letterBytes[n.Int64()]
 	}
 	return string(buf[:]), nil

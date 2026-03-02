@@ -11,6 +11,7 @@ import (
 )
 
 type Token struct {
+	//nolint:gosec // This is a token acquisition result structure, not a credential storage, so it's safe to have access token here.
 	AccessToken string    `json:"access_token"`
 	ExpiresAt   time.Time `json:"expires_at"`
 }
@@ -47,6 +48,7 @@ func (t *IMDSTokenizer) BearerToken(ctx context.Context) (BearerToken, error) {
 			return BearerToken{}, fmt.Errorf("build IMDS token request: %w", err)
 		}
 		req.Header.Set("Metadata", "true")
+		//nolint:gosec // This is an intentional choice to give a user control over the IMDS endpoint.
 		resp, err := t.client.Do(req)
 		if err != nil {
 			return BearerToken{}, fmt.Errorf("request IMDS token: %w", err)

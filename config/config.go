@@ -32,6 +32,7 @@ type Profile struct {
 	// TODO: move the following 4 values to a nested struct (config command doesn't support that)
 	ServiceAccountID string `yaml:"service-account-id,omitempty"`
 	PublicKeyID      string `yaml:"public-key-id,omitempty"`
+	//nolint:gosec // This is up to a user to decide whether to put a private key in config or not.
 	PrivateKey       string `yaml:"private-key,omitempty"`
 	// PrivateKeyFilePath points to a file containing a PEM encoded PKCS1 or PKCS8 private key.
 	PrivateKeyFilePath string `yaml:"private-key-file-path,omitempty"`

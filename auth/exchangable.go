@@ -149,6 +149,7 @@ func (s ServiceAccountExchangeTokenRequester) GetExchangeTokenRequest(
 		return nil, fmt.Errorf("sign JWT: %w", err)
 	}
 
+	//nolint:gosec // JWT is signed with a secure algorithm and short TTL, so it's safe to use here
 	return &iampb.ExchangeTokenRequest{
 		GrantType:          "urn:ietf:params:oauth:grant-type:token-exchange",
 		RequestedTokenType: "urn:ietf:params:oauth:token-type:access_token",

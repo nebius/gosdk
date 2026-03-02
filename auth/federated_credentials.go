@@ -33,6 +33,7 @@ func (f *FederatedCredentialsTokenRequester) GetExchangeTokenRequest(ctx context
 		return nil, fmt.Errorf("get federated credentials: %w", err)
 	}
 
+	//nolint:gosec // JWT is signed with a secure algorithm and short TTL, so it's safe to use here
 	return &iampb.ExchangeTokenRequest{
 		GrantType:          "urn:ietf:params:oauth:grant-type:token-exchange",
 		RequestedTokenType: "urn:ietf:params:oauth:token-type:access_token",
