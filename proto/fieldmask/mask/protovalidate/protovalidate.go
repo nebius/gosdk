@@ -14,7 +14,7 @@ func FieldPathFromProto(protoPath *validate.FieldPath) (*mask.FieldPath, error) 
 		return nil, nil
 	}
 
-	ret := make(mask.FieldPath, 0, len(protoPath.GetElements())*2)
+	ret := make(mask.FieldPath, 0, len(protoPath.GetElements()))
 	for i, element := range protoPath.GetElements() {
 		if element == nil {
 			return nil, fmt.Errorf("field path element %d is nil", i)

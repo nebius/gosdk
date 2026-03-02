@@ -2,9 +2,9 @@ package conn
 
 import (
 	"fmt"
+	"maps"
 	"strings"
 
-	"golang.org/x/exp/maps"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

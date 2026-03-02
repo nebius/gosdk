@@ -1,7 +1,7 @@
 package config
 
 import (
-	"golang.org/x/exp/maps"
+	"maps"
 )
 
 type Error struct {
