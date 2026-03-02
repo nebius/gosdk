@@ -2,6 +2,7 @@ package config
 
 import (
 	"maps"
+	"slices"
 )
 
 type Error struct {
@@ -57,7 +58,7 @@ func NewGetProfileError(err error, profiles ProfilesConfig) *GetProfileError {
 	}
 	return &GetProfileError{
 		err:               err,
-		availableProfiles: maps.Keys(profiles),
+		availableProfiles: slices.AppendSeq(make([]string, 0, len(profiles)), maps.Keys(profiles)),
 	}
 }
 
