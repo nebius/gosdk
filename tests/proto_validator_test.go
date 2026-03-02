@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/bufbuild/protovalidate-go"
+	"buf.build/go/protovalidate"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -28,7 +28,7 @@ func TestProtoValidator(t *testing.T) {
 	})
 	require.Error(t, err)
 	assertViolation(t, err, "metadata.parent_id", "required")
-	assertViolation(t, err, "metadata.resource_version", "int64.gte")
+	assertViolation(t, err, "metadata.resource_version", "value must be greater than or equal to 0")
 	assertViolation(t, err, "spec.size", "required")
 	assertViolation(t, err, "spec.type", "required")
 }

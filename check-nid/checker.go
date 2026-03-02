@@ -207,5 +207,5 @@ func isNilProtoMessage(msg proto.Message) bool {
 	}
 
 	rv := reflect.ValueOf(msg)
-	return rv.Kind() == reflect.Ptr && rv.IsNil()
+	return rv.Kind() == reflect.Pointer && rv.IsNil()
 }
