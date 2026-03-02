@@ -12,7 +12,6 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.1
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/mock v0.6.0
-	golang.org/x/exp v0.0.0-20250813145105-42675adae3e6
 	golang.org/x/net v0.46.0
 	golang.org/x/sync v0.17.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250811230008-5f3141c8851a
@@ -28,6 +27,7 @@ require (
 	github.com/google/cel-go v0.27.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
+	golang.org/x/exp v0.0.0-20250813145105-42675adae3e6 // indirect
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250811230008-5f3141c8851a // indirect
