@@ -88,7 +88,7 @@ func ParseResolverAndDialOptions(value string) (Resolver, []grpc.DialOption, err
 		}
 	}
 
-	return resultResolver, slices.AppendSeq(make([]grpc.DialOption, 0, len(dialOptions)), maps.Values(dialOptions)), err
+	return resultResolver, slices.Collect(maps.Values(dialOptions)), err
 }
 
 // ParseResolver parses value, usually env, and creates resolver.
