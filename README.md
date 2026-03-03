@@ -20,8 +20,10 @@ go get -u github.com/nebius/gosdk
 
 ## Supported Go Versions
 
-- **Minimum Supported Version**: Go 1.22
+- **Minimum Supported Version**: Go 1.24
 - The SDK is regularly tested against the latest Go release.
+- New SDK versions include several breaking changes in the underlying libraries and work with go>=1.24.
+- If you need the older version, pin to `~v0.1,<v0.2` in your `go.mod` dependency constraints.
 
 ## Getting Started
 

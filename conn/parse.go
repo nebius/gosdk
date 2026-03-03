@@ -2,9 +2,10 @@ package conn
 
 import (
 	"fmt"
+	"maps"
+	"slices"
 	"strings"
 
-	"golang.org/x/exp/maps"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -87,7 +88,7 @@ func ParseResolverAndDialOptions(value string) (Resolver, []grpc.DialOption, err
 		}
 	}
 
-	return resultResolver, maps.Values(dialOptions), err
+	return resultResolver, slices.AppendSeq(make([]grpc.DialOption, 0, len(dialOptions)), maps.Values(dialOptions)), err
 }
 
 // ParseResolver parses value, usually env, and creates resolver.

@@ -2,7 +2,7 @@ package imports
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/bufbuild/protovalidate-go"
+	_ "buf.build/go/protovalidate"
 	_ "github.com/cenkalti/backoff/v4"
 	_ "github.com/gofrs/flock"
 	_ "github.com/golang-jwt/jwt/v4"
@@ -12,7 +12,6 @@ import (
 	_ "github.com/stretchr/testify/assert"
 	_ "github.com/stretchr/testify/require"
 	_ "go.uber.org/mock/gomock"
-	_ "golang.org/x/exp/maps"
 	_ "golang.org/x/net/http2"
 	_ "golang.org/x/sync/singleflight"
 	_ "google.golang.org/genproto/googleapis/rpc/code"
