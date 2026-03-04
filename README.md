@@ -274,8 +274,6 @@ if list.GetNextPageToken() != "" {
 
 ### Filter Resources
 
-> ⚠️ Requires Go 1.23 or `GOEXPERIMENT=rangefunc` in Go 1.22.
-
 The `Filter` method simplifies resource listing by iterating over items across pages in a single loop.
 
 ```go
