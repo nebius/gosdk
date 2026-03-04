@@ -34,7 +34,7 @@ func TestProtoValidator(t *testing.T) {
 }
 
 func assertViolation(t *testing.T, err error, field string, expectedConstraint string) {
-	for line := range strings.SplitSeq(err.Error(), "\n") {
+	for _, line := range strings.Split(err.Error(), "\n") {
 		_, after, found := strings.Cut(line, field)
 		if found && !strings.HasPrefix(after, ".") {
 			assert.Contains(t, line, expectedConstraint, "field %s", field)
