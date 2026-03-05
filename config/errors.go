@@ -58,7 +58,7 @@ func NewGetProfileError(err error, profiles ProfilesConfig) *GetProfileError {
 	}
 	return &GetProfileError{
 		err:               err,
-		availableProfiles: slices.AppendSeq(make([]string, 0, len(profiles)), maps.Keys(profiles)),
+		availableProfiles: slices.Collect(maps.Keys(profiles)),
 	}
 }
 
