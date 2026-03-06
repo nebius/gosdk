@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"google.golang.org/protobuf/proto"
 
 	checknid "github.com/nebius/gosdk/check-nid"
 	common "github.com/nebius/gosdk/proto/nebius/common/v1"
@@ -12,11 +11,6 @@ import (
 
 func TestCheckMetadataParentNID(t *testing.T) {
 	t.Parallel()
-
-	// Trigger the newexpr rule
-	// TODO: Remove before merge
-	checkPointer := proto.String("project-e0tabc")
-	assert.NotNil(t, checkPointer)
 
 	metadata := &common.ResourceMetadata{
 		ParentId: "project-e0tabc",
