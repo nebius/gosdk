@@ -19,6 +19,6 @@ linters:
       - text: 'stringsseq: Ranging over SplitSeq is more efficient' # remove after go 1.24+
         linters:
           - modernize
-      - text: 'newexpr: call of [a-zA-Z0-9_]+\(\) can be simplified to new' # remove after go 1.26+
+      - text: 'newexpr: call of .* can be simplified to new' # remove after go 1.26+
         linters:
           - modernize
