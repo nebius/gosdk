@@ -11,9 +11,9 @@ package v2
 
 import (
 	context "context"
+	iter "iter"
 	reflect "reflect"
 
-	iter "github.com/nebius/gosdk/iter"
 	v2 "github.com/nebius/gosdk/proto/nebius/audit/v2"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"

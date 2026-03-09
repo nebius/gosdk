@@ -7,12 +7,12 @@ import (
 	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
-	iter "github.com/nebius/gosdk/iter"
 	operations "github.com/nebius/gosdk/operations"
 	v1 "github.com/nebius/gosdk/proto/nebius/ai/v1"
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	iter "iter"
 	slog "log/slog"
 )
 
