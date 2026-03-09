@@ -11,9 +11,9 @@ package v2
 
 import (
 	context "context"
+	iter "iter"
 	reflect "reflect"
 
-	iter "github.com/nebius/gosdk/iter"
 	operations "github.com/nebius/gosdk/operations"
 	v2 "github.com/nebius/gosdk/proto/nebius/audit/v2"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"

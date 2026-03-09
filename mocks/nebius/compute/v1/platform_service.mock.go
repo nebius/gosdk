@@ -11,9 +11,9 @@ package v1
 
 import (
 	context "context"
+	iter "iter"
 	reflect "reflect"
 
-	iter "github.com/nebius/gosdk/iter"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v10 "github.com/nebius/gosdk/proto/nebius/compute/v1"
 	gomock "go.uber.org/mock/gomock"

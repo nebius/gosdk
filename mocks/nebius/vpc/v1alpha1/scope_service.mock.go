@@ -11,9 +11,9 @@ package v1alpha1
 
 import (
 	context "context"
+	iter "iter"
 	reflect "reflect"
 
-	iter "github.com/nebius/gosdk/iter"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/vpc/v1alpha1"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"

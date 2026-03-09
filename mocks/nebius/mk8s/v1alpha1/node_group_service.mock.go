@@ -11,9 +11,9 @@ package v1alpha1
 
 import (
 	context "context"
+	iter "iter"
 	reflect "reflect"
 
-	iter "github.com/nebius/gosdk/iter"
 	alphaops "github.com/nebius/gosdk/operations/alphaops"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 	v1alpha10 "github.com/nebius/gosdk/proto/nebius/mk8s/v1alpha1"

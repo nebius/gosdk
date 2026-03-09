@@ -7,7 +7,6 @@ import (
 	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
-	iter "github.com/nebius/gosdk/iter"
 	alphaops "github.com/nebius/gosdk/operations/alphaops"
 	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
@@ -15,6 +14,7 @@ import (
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
+	iter "iter"
 	slog "log/slog"
 )
 
