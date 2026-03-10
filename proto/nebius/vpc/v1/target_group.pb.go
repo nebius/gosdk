@@ -422,24 +422,27 @@ var File_nebius_vpc_v1_target_group_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_target_group_proto_rawDesc = "" +
 	"\n" +
-	" nebius/vpc/v1/target_group.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbb\x01\n" +
-	"\vTargetGroup\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x122\n" +
+	" nebius/vpc/v1/target_group.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc9\x01\n" +
+	"\vTargetGroup\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x122\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1e.nebius.vpc.v1.TargetGroupSpecR\x04spec\x128\n" +
 	"\x06status\x18\x03 \x01(\v2 .nebius.vpc.v1.TargetGroupStatusR\x06status\"B\n" +
 	"\x0fTargetGroupSpec\x12/\n" +
 	"\atargets\x18\x01 \x03(\v2\x15.nebius.vpc.v1.TargetR\atargets\"f\n" +
 	"\x06Target\x12K\n" +
 	"\x10compute_instance\x18\x01 \x01(\v2\x1e.nebius.vpc.v1.ComputeInstanceH\x00R\x0fcomputeInstanceB\x0f\n" +
-	"\x06target\x12\x05\xbaH\x02\b\x01\"e\n" +
-	"\x0fComputeInstance\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12:\n" +
-	"\x16network_interface_name\x18\x02 \x01(\tB\x04\xbaJ\x01\aR\x14networkInterfaceName\"\x85\x01\n" +
-	"\x11TargetGroupStatus\x12*\n" +
-	"\x11load_balancer_ids\x18\x01 \x03(\tR\x0floadBalancerIds\x12D\n" +
-	"\x0ftarget_statuses\x18\x02 \x03(\v2\x1b.nebius.vpc.v1.TargetStatusR\x0etargetStatuses\"\xdd\x01\n" +
-	"\fTargetStatus\x12.\n" +
-	"\x13compute_instance_id\x18\x01 \x01(\tR\x11computeInstanceId\x12J\n" +
+	"\x06target\x12\x05\xbaH\x02\b\x01\"y\n" +
+	"\x0fComputeInstance\x12*\n" +
+	"\x02id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x02id\x12:\n" +
+	"\x16network_interface_name\x18\x02 \x01(\tB\x04\xbaJ\x01\aR\x14networkInterfaceName\"\x9b\x01\n" +
+	"\x11TargetGroupStatus\x12@\n" +
+	"\x11load_balancer_ids\x18\x01 \x03(\tB\x14\xe2J\x11\n" +
+	"\x0fvpcloadbalancerR\x0floadBalancerIds\x12D\n" +
+	"\x0ftarget_statuses\x18\x02 \x03(\v2\x1b.nebius.vpc.v1.TargetStatusR\x0etargetStatuses\"\xf3\x01\n" +
+	"\fTargetStatus\x12D\n" +
+	"\x13compute_instance_id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x11computeInstanceId\x12J\n" +
 	"\ftarget_state\x18\x02 \x01(\x0e2'.nebius.vpc.v1.TargetStatus.TargetStateR\vtargetState\"Q\n" +
 	"\vTargetState\x12\x1c\n" +
 	"\x18TARGET_STATE_UNSPECIFIED\x10\x00\x12\t\n" +

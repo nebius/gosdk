@@ -393,9 +393,9 @@ var File_nebius_vpc_v1_network_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_network_proto_rawDesc = "" +
 	"\n" +
-	"\x1bnebius/vpc/v1/network.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xaf\x01\n" +
-	"\aNetwork\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12.\n" +
+	"\x1bnebius/vpc/v1/network.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbd\x01\n" +
+	"\aNetwork\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12.\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.vpc.v1.NetworkSpecR\x04spec\x124\n" +
 	"\x06status\x18\x03 \x01(\v2\x1c.nebius.vpc.v1.NetworkStatusR\x06status\"\xc2\x01\n" +
 	"\vNetworkSpec\x12Z\n" +
@@ -404,12 +404,14 @@ const file_nebius_vpc_v1_network_proto_rawDesc = "" +
 	"\x17IPv4PrivateNetworkPools\x120\n" +
 	"\x05pools\x18\x01 \x03(\v2\x1a.nebius.vpc.v1.NetworkPoolR\x05pools\"J\n" +
 	"\x16IPv4PublicNetworkPools\x120\n" +
-	"\x05pools\x18\x01 \x03(\v2\x1a.nebius.vpc.v1.NetworkPoolR\x05pools\"%\n" +
-	"\vNetworkPool\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xc5\x01\n" +
+	"\x05pools\x18\x01 \x03(\v2\x1a.nebius.vpc.v1.NetworkPoolR\x05pools\"1\n" +
+	"\vNetworkPool\x12\"\n" +
+	"\x02id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\avpcpoolR\x02id\"\xd9\x01\n" +
 	"\rNetworkStatus\x128\n" +
-	"\x05state\x18\x01 \x01(\x0e2\".nebius.vpc.v1.NetworkStatus.StateR\x05state\x123\n" +
-	"\x16default_route_table_id\x18\x05 \x01(\tR\x13defaultRouteTableId\"E\n" +
+	"\x05state\x18\x01 \x01(\x0e2\".nebius.vpc.v1.NetworkStatus.StateR\x05state\x12G\n" +
+	"\x16default_route_table_id\x18\x05 \x01(\tB\x12\xe2J\x0f\n" +
+	"\rvpcroutetableR\x13defaultRouteTableId\"E\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +

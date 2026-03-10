@@ -574,18 +574,21 @@ var File_nebius_vpc_v1_subnet_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
 	"\n" +
-	"\x1anebius/vpc/v1/subnet.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/vpc/v1/pool.proto\"\xac\x01\n" +
-	"\x06Subnet\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12-\n" +
+	"\x1anebius/vpc/v1/subnet.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x18nebius/vpc/v1/pool.proto\"\xba\x01\n" +
+	"\x06Subnet\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12-\n" +
 	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecR\x04spec\x123\n" +
-	"\x06status\x18\x03 \x01(\v2\x1b.nebius.vpc.v1.SubnetStatusR\x06status\"\x8c\x02\n" +
+	"\x06status\x18\x03 \x01(\v2\x1b.nebius.vpc.v1.SubnetStatusR\x06status\"\xaf\x02\n" +
 	"\n" +
-	"SubnetSpec\x12%\n" +
+	"SubnetSpec\x124\n" +
 	"\n" +
-	"network_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tnetworkId\x12Y\n" +
+	"network_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\x12Y\n" +
 	"\x12ipv4_private_pools\x18\x02 \x01(\v2%.nebius.vpc.v1.IPv4PrivateSubnetPoolsB\x04\xbaJ\x01\aR\x10ipv4PrivatePools\x12V\n" +
-	"\x11ipv4_public_pools\x18\x03 \x01(\v2$.nebius.vpc.v1.IPv4PublicSubnetPoolsB\x04\xbaJ\x01\aR\x0fipv4PublicPools\x12$\n" +
-	"\x0eroute_table_id\x18\x05 \x01(\tR\frouteTableId\"u\n" +
+	"\x11ipv4_public_pools\x18\x03 \x01(\v2$.nebius.vpc.v1.IPv4PublicSubnetPoolsB\x04\xbaJ\x01\aR\x0fipv4PublicPools\x128\n" +
+	"\x0eroute_table_id\x18\x05 \x01(\tB\x12\xe2J\x0f\n" +
+	"\rvpcroutetableR\frouteTableId\"u\n" +
 	"\x16IPv4PrivateSubnetPools\x12/\n" +
 	"\x05pools\x18\x01 \x03(\v2\x19.nebius.vpc.v1.SubnetPoolR\x05pools\x12*\n" +
 	"\x11use_network_pools\x18\x02 \x01(\bR\x0fuseNetworkPools\"t\n" +
@@ -613,9 +616,10 @@ const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
 	"\x05READY\x10\x02\x12\f\n" +
-	"\bDELETING\x10\x03\"F\n" +
-	"\x1aSubnetAssociatedRouteTable\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\bDELETING\x10\x03\"Z\n" +
+	"\x1aSubnetAssociatedRouteTable\x12\"\n" +
+	"\x02id\x18\x01 \x01(\tB\x12\xe2J\x0f\n" +
+	"\rvpcroutetableR\x02id\x12\x18\n" +
 	"\adefault\x18\x02 \x01(\bR\adefaultBR\n" +
 	"\x14ai.nebius.pub.vpc.v1B\vSubnetProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/vpc/v1b\x06proto3"
 

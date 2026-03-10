@@ -8,6 +8,7 @@ package v1alpha1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/nebius/gosdk/proto/nebius"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -290,18 +291,21 @@ var File_nebius_vpc_v1alpha1_network_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_network_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/vpc/v1alpha1/network.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbb\x01\n" +
-	"\aNetwork\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
+	"!nebius/vpc/v1alpha1/network.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc9\x01\n" +
+	"\aNetwork\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.vpc.v1alpha1.NetworkSpecR\x04spec\x12:\n" +
 	"\x06status\x18\x03 \x01(\v2\".nebius.vpc.v1alpha1.NetworkStatusR\x06status\"E\n" +
 	"\vNetworkSpec\x126\n" +
-	"\x05pools\x18\x01 \x03(\v2 .nebius.vpc.v1alpha1.NetworkPoolR\x05pools\".\n" +
-	"\vNetworkPool\x12\x1f\n" +
-	"\apool_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06poolId\"\xb1\x01\n" +
+	"\x05pools\x18\x01 \x03(\v2 .nebius.vpc.v1alpha1.NetworkPoolR\x05pools\":\n" +
+	"\vNetworkPool\x12+\n" +
+	"\apool_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\avpcpoolR\x06poolId\"\xc0\x01\n" +
 	"\rNetworkStatus\x12>\n" +
-	"\x05state\x18\x01 \x01(\x0e2(.nebius.vpc.v1alpha1.NetworkStatus.StateR\x05state\x12\x19\n" +
-	"\bscope_id\x18\x02 \x01(\tR\ascopeId\"E\n" +
+	"\x05state\x18\x01 \x01(\x0e2(.nebius.vpc.v1alpha1.NetworkStatus.StateR\x05state\x12(\n" +
+	"\bscope_id\x18\x02 \x01(\tB\r\xe2J\n" +
+	"\n" +
+	"\bvpcscopeR\ascopeId\"E\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +

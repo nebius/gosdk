@@ -613,9 +613,9 @@ var File_nebius_vpc_v1_route_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_route_proto_rawDesc = "" +
 	"\n" +
-	"\x19nebius/vpc/v1/route.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xa9\x01\n" +
-	"\x05Route\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12,\n" +
+	"\x19nebius/vpc/v1/route.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbd\x01\n" +
+	"\x05Route\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xe2J\x0f\x12\rvpcroutetableR\bmetadata\x12,\n" +
 	"\x04spec\x18\x02 \x01(\v2\x18.nebius.vpc.v1.RouteSpecR\x04spec\x122\n" +
 	"\x06status\x18\x03 \x01(\v2\x1a.nebius.vpc.v1.RouteStatusR\x06status\"\xbb\x01\n" +
 	"\tRouteSpec\x12 \n" +
@@ -632,9 +632,10 @@ const file_nebius_vpc_v1_route_proto_rawDesc = "" +
 	"allocation\x18\x01 \x01(\v2 .nebius.vpc.v1.AllocationNextHopH\x00R\n" +
 	"allocation\x126\n" +
 	"\x16default_egress_gateway\x18\x02 \x01(\bH\x00R\x14defaultEgressGatewayB\x11\n" +
-	"\bnext_hop\x12\x05\xbaH\x02\b\x01\"+\n" +
-	"\x11AllocationNextHop\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xa8\x01\n" +
+	"\bnext_hop\x12\x05\xbaH\x02\b\x01\"=\n" +
+	"\x11AllocationNextHop\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rvpcallocationR\x02id\"\xa8\x01\n" +
 	"\vRouteStatus\x126\n" +
 	"\x05state\x18\x01 \x01(\x0e2 .nebius.vpc.v1.RouteStatus.StateR\x05state\x126\n" +
 	"\bnext_hop\x18\x02 \x01(\v2\x1b.nebius.vpc.v1.NextHopStateR\anextHop\")\n" +

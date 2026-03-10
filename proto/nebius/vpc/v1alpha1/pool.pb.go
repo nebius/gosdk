@@ -473,14 +473,17 @@ var File_nebius_vpc_v1alpha1_pool_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_pool_proto_rawDesc = "" +
 	"\n" +
-	"\x1enebius/vpc/v1alpha1/pool.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xb2\x01\n" +
-	"\x04Pool\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +
+	"\x1enebius/vpc/v1alpha1/pool.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc0\x01\n" +
+	"\x04Pool\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.vpc.v1alpha1.PoolSpecR\x04spec\x127\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.vpc.v1alpha1.PoolStatusR\x06status\"\xf4\x01\n" +
-	"\bPoolSpec\x12,\n" +
-	"\x0esource_pool_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02H\x00R\fsourcePoolId\x12.\n" +
-	"\x0fsource_scope_id\x18\x02 \x01(\tB\x04\xbaJ\x01\x02H\x00R\rsourceScopeId\x12D\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.vpc.v1alpha1.PoolStatusR\x06status\"\x8d\x02\n" +
+	"\bPoolSpec\x128\n" +
+	"\x0esource_pool_id\x18\x01 \x01(\tB\x10\xbaJ\x01\x02\xe2J\t\n" +
+	"\avpcpoolH\x00R\fsourcePoolId\x12;\n" +
+	"\x0fsource_scope_id\x18\x02 \x01(\tB\x11\xbaJ\x01\x02\xe2J\n" +
+	"\n" +
+	"\bvpcscopeH\x00R\rsourceScopeId\x12D\n" +
 	"\aversion\x18\x03 \x01(\x0e2\x1e.nebius.vpc.v1alpha1.IpVersionB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\aversion\x123\n" +
 	"\x05cidrs\x18\x04 \x03(\v2\x1d.nebius.vpc.v1alpha1.PoolCidrR\x05cidrsB\x0f\n" +
@@ -492,12 +495,14 @@ const file_nebius_vpc_v1alpha1_pool_proto_rawDesc = "" +
 	"this != ''\xc8\x01\x01R\x04cidr\x12@\n" +
 	"\x05state\x18\x02 \x01(\x0e2\".nebius.vpc.v1alpha1.PoolCidrStateB\x06\xbaH\x03\xc8\x01\x01R\x05state\x120\n" +
 	"\fallowed_mask\x18\x03 \x01(\x03B\r\xbaH\n" +
-	"\xc8\x01\x01\"\x05\x18\x80\x01(\x00R\vallowedMask\"\xc1\x01\n" +
+	"\xc8\x01\x01\"\x05\x18\x80\x01(\x00R\vallowedMask\"\xd0\x01\n" +
 	"\n" +
 	"PoolStatus\x12;\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.vpc.v1alpha1.PoolStatus.StateR\x05state\x12\x14\n" +
-	"\x05cidrs\x18\x02 \x03(\tR\x05cidrs\x12\x19\n" +
-	"\bscope_id\x18\x03 \x01(\tR\ascopeId\"E\n" +
+	"\x05cidrs\x18\x02 \x03(\tR\x05cidrs\x12(\n" +
+	"\bscope_id\x18\x03 \x01(\tB\r\xe2J\n" +
+	"\n" +
+	"\bvpcscopeR\ascopeId\"E\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +

@@ -1699,7 +1699,7 @@ const file_nebius_mk8s_v1alpha1_node_group_proto_rawDesc = "" +
 	"\bstrategy\x18\x04 \x01(\v21.nebius.mk8s.v1alpha1.NodeGroupDeploymentStrategyR\bstrategy\x12N\n" +
 	"\vauto_repair\x18\x06 \x01(\v2-.nebius.mk8s.v1alpha1.NodeGroupAutoRepairSpecR\n" +
 	"autoRepairB\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\xa2\x06\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\xaa\x06\n" +
 	"\fNodeTemplate\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2*.nebius.mk8s.v1alpha1.NodeMetadataTemplateR\bmetadata\x127\n" +
 	"\x06taints\x18\x02 \x03(\v2\x1f.nebius.mk8s.v1alpha1.NodeTaintR\x06taints\x12I\n" +
@@ -1708,8 +1708,8 @@ const file_nebius_mk8s_v1alpha1_node_group_proto_rawDesc = "" +
 	"\fgpu_settings\x18\r \x01(\v2!.nebius.mk8s.v1alpha1.GpuSettingsR\vgpuSettings\x12\x0e\n" +
 	"\x02os\x18\x10 \x01(\tR\x02os\x12E\n" +
 	"\vgpu_cluster\x18\x04 \x01(\v2$.nebius.mk8s.v1alpha1.GpuClusterSpecR\n" +
-	"gpuCluster\x12c\n" +
-	"\x12network_interfaces\x18\x05 \x03(\v2..nebius.mk8s.v1alpha1.NetworkInterfaceTemplateB\x04\xbaJ\x01\aR\x11networkInterfaces\x12N\n" +
+	"gpuCluster\x12k\n" +
+	"\x12network_interfaces\x18\x05 \x03(\v2..nebius.mk8s.v1alpha1.NetworkInterfaceTemplateB\f\xbaH\x05\x92\x01\x02\x10\x01\xbaJ\x01\aR\x11networkInterfaces\x12N\n" +
 	"\vfilesystems\x18\a \x03(\v2,.nebius.mk8s.v1alpha1.AttachedFilesystemSpecR\vfilesystems\x124\n" +
 	"\x14cloud_init_user_data\x18\x06 \x01(\tB\x03\xc0J\x01R\x11cloudInitUserData\x12,\n" +
 	"\x12service_account_id\x18\n" +

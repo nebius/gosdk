@@ -75,13 +75,13 @@ func (s routeService) GetByName(ctx context.Context, request *v1.GetRouteByNameR
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"vpcroutetable"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"vpcroutetable"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -109,13 +109,13 @@ func (s routeService) List(ctx context.Context, request *v1.ListRoutesRequest, o
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"vpcroutetable"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"vpcroutetable"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -166,7 +166,7 @@ func (s routeService) Create(ctx context.Context, request *v1.CreateRouteRequest
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"vpcroutetable"}
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
 			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
@@ -216,7 +216,7 @@ func (s routeService) Update(ctx context.Context, request *v1.UpdateRouteRequest
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"vpcroutetable"}
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
