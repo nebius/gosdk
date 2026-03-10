@@ -242,15 +242,16 @@ var File_nebius_vpc_v1_security_group_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_security_group_proto_rawDesc = "" +
 	"\n" +
-	"\"nebius/vpc/v1/security_group.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc1\x01\n" +
-	"\rSecurityGroup\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
+	"\"nebius/vpc/v1/security_group.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xcf\x01\n" +
+	"\rSecurityGroup\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.vpc.v1.SecurityGroupSpecR\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\".nebius.vpc.v1.SecurityGroupStatusR\x06status\">\n" +
-	"\x11SecurityGroupSpec\x12)\n" +
+	"\x06status\x18\x03 \x01(\v2\".nebius.vpc.v1.SecurityGroupStatusR\x06status\"M\n" +
+	"\x11SecurityGroupSpec\x128\n" +
 	"\n" +
-	"network_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\tnetworkId\"\x9a\x01\n" +
+	"network_id\x18\x01 \x01(\tB\x19\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\"\x9a\x01\n" +
 	"\x13SecurityGroupStatus\x12>\n" +
 	"\x05state\x18\x01 \x01(\x0e2(.nebius.vpc.v1.SecurityGroupStatus.StateR\x05state\x12\x18\n" +
 	"\adefault\x18\x02 \x01(\bR\adefault\")\n" +

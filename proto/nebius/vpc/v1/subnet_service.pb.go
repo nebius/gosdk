@@ -446,14 +446,17 @@ var File_nebius_vpc_v1_subnet_service_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_subnet_service_proto_rawDesc = "" +
 	"\n" +
-	"\"nebius/vpc/v1/subnet_service.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1anebius/vpc/v1/subnet.proto\"*\n" +
-	"\x10GetSubnetRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"Y\n" +
-	"\x16GetSubnetByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"u\n" +
-	"\x12ListSubnetsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\"nebius/vpc/v1/subnet_service.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1anebius/vpc/v1/subnet.proto\"8\n" +
+	"\x10GetSubnetRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tvpcsubnetR\x02id\"e\n" +
+	"\x16GetSubnetByNameRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x81\x01\n" +
+	"\x12ListSubnetsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x8f\x01\n" +
@@ -467,17 +470,18 @@ const file_nebius_vpc_v1_subnet_service_proto_rawDesc = "" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"j\n" +
 	"\x13ListSubnetsResponse\x12+\n" +
 	"\x05items\x18\x01 \x03(\v2\x15.nebius.vpc.v1.SubnetR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xd9\x02\n" +
-	"\x13CreateSubnetRequest\x12\x8a\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xc9\x01\xbaH\xc5\x01\xba\x01\xbe\x01\n" +
-	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xc8\x01\x01R\bmetadata\x125\n" +
-	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xce\x02\n" +
-	"\x13UpdateSubnetRequest\x12\x87\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xc6\x01\xbaH\xc2\x01\xba\x01\xbe\x01\n" +
-	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')R\bmetadata\x12-\n" +
-	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecR\x04spec\"%\n" +
-	"\x13DeleteSubnetRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\xb2\x04\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xe5\x02\n" +
+	"\x13CreateSubnetRequest\x12\x96\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xd5\x01\xbaH\xc5\x01\xba\x01\xbe\x01\n" +
+	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x125\n" +
+	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xda\x02\n" +
+	"\x13UpdateSubnetRequest\x12\x93\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xd2\x01\xbaH\xc2\x01\xba\x01\xbe\x01\n" +
+	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xe2J\t\x12\aprojectR\bmetadata\x12-\n" +
+	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecR\x04spec\"5\n" +
+	"\x13DeleteSubnetRequest\x12\x1e\n" +
+	"\x02id\x18\x01 \x01(\tB\x0e\xe2J\v\n" +
+	"\tvpcsubnetR\x02id2\xb2\x04\n" +
 	"\rSubnetService\x12=\n" +
 	"\x03Get\x12\x1f.nebius.vpc.v1.GetSubnetRequest\x1a\x15.nebius.vpc.v1.Subnet\x12I\n" +
 	"\tGetByName\x12%.nebius.vpc.v1.GetSubnetByNameRequest\x1a\x15.nebius.vpc.v1.Subnet\x12M\n" +

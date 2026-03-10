@@ -76,13 +76,13 @@ func (s subnetService) GetByName(ctx context.Context, request *v1.GetSubnetByNam
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -110,13 +110,13 @@ func (s subnetService) List(ctx context.Context, request *v1.ListSubnetsRequest,
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -187,7 +187,7 @@ func (s subnetService) Create(ctx context.Context, request *v1.CreateSubnetReque
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"project"}
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
 			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
@@ -237,7 +237,7 @@ func (s subnetService) Update(ctx context.Context, request *v1.UpdateSubnetReque
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"project"}
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

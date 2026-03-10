@@ -704,27 +704,30 @@ var File_nebius_vpc_v1alpha1_allocation_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_allocation_proto_rawDesc = "" +
 	"\n" +
-	"$nebius/vpc/v1alpha1/allocation.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1enebius/vpc/v1alpha1/pool.proto\"\xc4\x01\n" +
+	"$nebius/vpc/v1alpha1/allocation.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1enebius/vpc/v1alpha1/pool.proto\"\xd2\x01\n" +
 	"\n" +
-	"Allocation\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x127\n" +
+	"Allocation\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x127\n" +
 	"\x04spec\x18\x02 \x01(\v2#.nebius.vpc.v1alpha1.AllocationSpecR\x04spec\x12=\n" +
 	"\x06status\x18\x03 \x01(\v2%.nebius.vpc.v1alpha1.AllocationStatusR\x06status\"\xd5\x01\n" +
 	"\x0eAllocationSpec\x12Y\n" +
 	"\fipv4_private\x18\x01 \x01(\v2..nebius.vpc.v1alpha1.IPv4PrivateAllocationSpecB\x04\xbaJ\x01\x06H\x00R\vipv4Private\x12V\n" +
 	"\vipv4_public\x18\x02 \x01(\v2-.nebius.vpc.v1alpha1.IPv4PublicAllocationSpecB\x04\xbaJ\x01\x06H\x00R\n" +
 	"ipv4PublicB\x10\n" +
-	"\aip_spec\x12\x05\xbaH\x02\b\x01\"\xbf\x02\n" +
+	"\aip_spec\x12\x05\xbaH\x02\b\x01\"\xd9\x02\n" +
 	"\x19IPv4PrivateAllocationSpec\x12\xcc\x01\n" +
 	"\x04cidr\x18\x01 \x01(\tB\xb7\x01\xbaH\xaf\x01\xba\x01\xab\x01\n" +
-	"\x11string.valid_cidr\x12.value must be a valid IP address, CIDR or mask\x1afthis == '' || this.matches('^/([0-9]|[1-2][0-9]|3[0-2])$') || this.isIp(4) || this.isIpPrefix(4, true)\xbaJ\x01\x02R\x04cidr\x12#\n" +
-	"\tsubnet_id\x18\x02 \x01(\tB\x04\xbaJ\x01\x02H\x00R\bsubnetId\x12\x1f\n" +
-	"\apool_id\x18\x03 \x01(\tB\x04\xbaJ\x01\x02H\x00R\x06poolIdB\r\n" +
-	"\x04pool\x12\x05\xbaH\x02\b\x01\"\x88\x02\n" +
+	"\x11string.valid_cidr\x12.value must be a valid IP address, CIDR or mask\x1afthis == '' || this.matches('^/([0-9]|[1-2][0-9]|3[0-2])$') || this.isIp(4) || this.isIpPrefix(4, true)\xbaJ\x01\x02R\x04cidr\x121\n" +
+	"\tsubnet_id\x18\x02 \x01(\tB\x12\xbaJ\x01\x02\xe2J\v\n" +
+	"\tvpcsubnetH\x00R\bsubnetId\x12+\n" +
+	"\apool_id\x18\x03 \x01(\tB\x10\xbaJ\x01\x02\xe2J\t\n" +
+	"\avpcpoolH\x00R\x06poolIdB\r\n" +
+	"\x04pool\x12\x05\xbaH\x02\b\x01\"\x94\x02\n" +
 	"\x18IPv4PublicAllocationSpec\x12\xcc\x01\n" +
 	"\x04cidr\x18\x01 \x01(\tB\xb7\x01\xbaH\xaf\x01\xba\x01\xab\x01\n" +
-	"\x11string.valid_cidr\x12.value must be a valid IP address, CIDR or mask\x1afthis == '' || this.matches('^/([0-9]|[1-2][0-9]|3[0-2])$') || this.isIp(4) || this.isIpPrefix(4, true)\xbaJ\x01\x02R\x04cidr\x12\x1d\n" +
-	"\apool_id\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\x06poolId\"\xc9\x02\n" +
+	"\x11string.valid_cidr\x12.value must be a valid IP address, CIDR or mask\x1afthis == '' || this.matches('^/([0-9]|[1-2][0-9]|3[0-2])$') || this.isIp(4) || this.isIpPrefix(4, true)\xbaJ\x01\x02R\x04cidr\x12)\n" +
+	"\apool_id\x18\x02 \x01(\tB\x10\xbaJ\x01\x02\xe2J\t\n" +
+	"\avpcpoolR\x06poolId\"\xc9\x02\n" +
 	"\x10AllocationStatus\x12A\n" +
 	"\x05state\x18\x01 \x01(\x0e2+.nebius.vpc.v1alpha1.AllocationStatus.StateR\x05state\x12@\n" +
 	"\adetails\x18\x02 \x01(\v2&.nebius.vpc.v1alpha1.AllocationDetailsR\adetails\x12?\n" +
@@ -737,22 +740,25 @@ const file_nebius_vpc_v1alpha1_allocation_proto_rawDesc = "" +
 	"\bCREATING\x10\x01\x12\r\n" +
 	"\tALLOCATED\x10\x02\x12\f\n" +
 	"\bASSIGNED\x10\x03\x12\f\n" +
-	"\bDELETING\x10\x04\"\x8d\x01\n" +
+	"\bDELETING\x10\x04\"\x9b\x01\n" +
 	"\x11AllocationDetails\x12%\n" +
-	"\x0eallocated_cidr\x18\x01 \x01(\tR\rallocatedCidr\x12\x17\n" +
-	"\apool_id\x18\x02 \x01(\tR\x06poolId\x128\n" +
+	"\x0eallocated_cidr\x18\x01 \x01(\tR\rallocatedCidr\x12%\n" +
+	"\apool_id\x18\x02 \x01(\tB\f\xe2J\t\n" +
+	"\avpcpoolR\x06poolId\x128\n" +
 	"\aversion\x18\x04 \x01(\x0e2\x1e.nebius.vpc.v1alpha1.IpVersionR\aversion\"\xc8\x01\n" +
 	"\n" +
 	"Assignment\x12^\n" +
 	"\x11network_interface\x18\x01 \x01(\v2/.nebius.vpc.v1alpha1.NetworkInterfaceAssignmentH\x00R\x10networkInterface\x12R\n" +
 	"\rload_balancer\x18\x02 \x01(\v2+.nebius.vpc.v1alpha1.LoadBalancerAssignmentH\x00R\floadBalancerB\x06\n" +
-	"\x04type\"Q\n" +
-	"\x1aNetworkInterfaceAssignment\x12\x1f\n" +
-	"\vinstance_id\x18\x01 \x01(\tR\n" +
+	"\x04type\"g\n" +
+	"\x1aNetworkInterfaceAssignment\x125\n" +
+	"\vinstance_id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\n" +
 	"instanceId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"(\n" +
-	"\x16LoadBalancerAssignment\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02idBb\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\">\n" +
+	"\x16LoadBalancerAssignment\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fvpcloadbalancerR\x02idBb\n" +
 	"\x1aai.nebius.pub.vpc.v1alpha1B\x0fAllocationProtoP\x01Z1github.com/nebius/gosdk/proto/nebius/vpc/v1alpha1b\x06proto3"
 
 var (

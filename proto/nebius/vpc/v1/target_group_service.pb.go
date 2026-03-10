@@ -124,12 +124,13 @@ var File_nebius_vpc_v1_target_group_service_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_target_group_service_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/vpc/v1/target_group_service.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a nebius/vpc/v1/target_group.proto\"/\n" +
-	"\x15GetTargetGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xd8\x02\n" +
-	"\x18UpdateTargetGroupRequest\x12\x87\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xc6\x01\xbaH\xc2\x01\xba\x01\xbe\x01\n" +
-	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')R\bmetadata\x122\n" +
+	"(nebius/vpc/v1/target_group_service.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a nebius/vpc/v1/target_group.proto\"B\n" +
+	"\x15GetTargetGroupRequest\x12)\n" +
+	"\x02id\x18\x01 \x01(\tB\x19\xbaH\x03\xc8\x01\x01\xe2J\x10\n" +
+	"\x0evpctargetgroupR\x02id\"\xe4\x02\n" +
+	"\x18UpdateTargetGroupRequest\x12\x93\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xd2\x01\xbaH\xc2\x01\xba\x01\xbe\x01\n" +
+	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xe2J\t\x12\aprojectR\bmetadata\x122\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1e.nebius.vpc.v1.TargetGroupSpecR\x04spec2\xb5\x01\n" +
 	"\x12TargetGroupService\x12G\n" +
 	"\x03Get\x12$.nebius.vpc.v1.GetTargetGroupRequest\x1a\x1a.nebius.vpc.v1.TargetGroup\x12N\n" +

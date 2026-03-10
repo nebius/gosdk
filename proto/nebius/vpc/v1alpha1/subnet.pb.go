@@ -8,6 +8,7 @@ package v1alpha1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/nebius/gosdk/proto/nebius"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -461,21 +462,24 @@ var File_nebius_vpc_v1alpha1_subnet_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_subnet_proto_rawDesc = "" +
 	"\n" +
-	" nebius/vpc/v1alpha1/subnet.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1enebius/vpc/v1alpha1/pool.proto\"\xb8\x01\n" +
-	"\x06Subnet\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
+	" nebius/vpc/v1alpha1/subnet.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1enebius/vpc/v1alpha1/pool.proto\"\xc6\x01\n" +
+	"\x06Subnet\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.vpc.v1alpha1.SubnetSpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.vpc.v1alpha1.SubnetStatusR\x06status\"\x9e\x01\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.vpc.v1alpha1.SubnetStatusR\x06status\"\xad\x01\n" +
 	"\n" +
-	"SubnetSpec\x12%\n" +
+	"SubnetSpec\x124\n" +
 	"\n" +
-	"network_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tnetworkId\x12=\n" +
+	"network_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\x12=\n" +
 	"\x05pools\x18\x02 \x03(\v2\x1f.nebius.vpc.v1alpha1.SubnetPoolB\x06\xbaH\x03\xc8\x01\x01R\x05pools\x12*\n" +
-	"\x11enable_egress_nat\x18\x03 \x01(\bR\x0fenableEgressNat\"q\n" +
+	"\x11enable_egress_nat\x18\x03 \x01(\bR\x0fenableEgressNat\"\x7f\n" +
 	"\n" +
 	"SubnetPool\x129\n" +
-	"\x04spec\x18\x01 \x01(\v2#.nebius.vpc.v1alpha1.SubnetPoolSpecH\x00R\x04spec\x12\x19\n" +
-	"\apool_id\x18\x02 \x01(\tH\x00R\x06poolIdB\r\n" +
+	"\x04spec\x18\x01 \x01(\v2#.nebius.vpc.v1alpha1.SubnetPoolSpecH\x00R\x04spec\x12'\n" +
+	"\apool_id\x18\x02 \x01(\tB\f\xe2J\t\n" +
+	"\avpcpoolH\x00R\x06poolIdB\r\n" +
 	"\x04pool\x12\x05\xbaH\x02\b\x01\"\x89\x01\n" +
 	"\x0eSubnetPoolSpec\x12@\n" +
 	"\aversion\x18\x01 \x01(\x0e2\x1e.nebius.vpc.v1alpha1.IpVersionB\x06\xbaH\x03\xc8\x01\x01R\aversion\x125\n" +

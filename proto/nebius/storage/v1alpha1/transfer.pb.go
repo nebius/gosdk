@@ -742,7 +742,12 @@ type TransferSpec_DestinationBucket struct {
 	Prefix string `protobuf:"bytes,3,opt,name=prefix,proto3" json:"prefix,omitempty"`
 	// Credentials for accessing the destination bucket. These credentials must have head and write permissions.
 	// This parameter must be specified only during create operations.
-	Credentials   *TransferSpec_BucketCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"`
+	Credentials *TransferSpec_BucketCredentials `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"`
+	// The endpoint must be in the form of a URL, starting with the protocol (https),
+	// followed by the endpoint address without a trailing slash.
+	// Example: https://storage.us-central1.nebius.cloud
+	Endpoint      string `protobuf:"bytes,10,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Region        string `protobuf:"bytes,11,opt,name=region,proto3" json:"region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -796,6 +801,20 @@ func (x *TransferSpec_DestinationBucket) GetCredentials() *TransferSpec_BucketCr
 		return x.Credentials
 	}
 	return nil
+}
+
+func (x *TransferSpec_DestinationBucket) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *TransferSpec_DestinationBucket) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
 }
 
 type TransferSpec_BucketCredentials struct {
@@ -1216,7 +1235,7 @@ const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
 	"\bTransfer\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12A\n" +
 	"\x04spec\x18\x02 \x01(\v2%.nebius.storage.v1alpha1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12E\n" +
-	"\x06status\x18\x03 \x01(\v2'.nebius.storage.v1alpha1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\xae\x12\n" +
+	"\x06status\x18\x03 \x01(\v2'.nebius.storage.v1alpha1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\xee\x12\n" +
 	"\fTransferSpec\x12R\n" +
 	"\x06source\x18\x01 \x01(\v22.nebius.storage.v1alpha1.TransferSpec.SourceBucketB\x06\xbaH\x03\xc8\x01\x01R\x06source\x12a\n" +
 	"\vdestination\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.DestinationBucketB\x06\xbaH\x03\xc8\x01\x01R\vdestination\x12|\n" +
@@ -1235,13 +1254,16 @@ const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x06region\x12\x1c\n" +
 	"\x06prefix\x18\x06 \x01(\tB\x04\xbaJ\x01\x02R\x06prefix\x12_\n" +
 	"\vcredentials\x18\x04 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.BucketCredentialsB\x04\xbaJ\x01\x04R\vcredentials\x12J\n" +
-	"\blimiters\x18\x05 \x01(\v2..nebius.storage.v1alpha1.TransferSpec.LimitersR\blimiters\x1a\xbf\x01\n" +
+	"\blimiters\x18\x05 \x01(\v2..nebius.storage.v1alpha1.TransferSpec.LimitersR\blimiters\x1a\xff\x01\n" +
 	"\x11DestinationBucket\x12+\n" +
 	"\vbucket_name\x18\x01 \x01(\tB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\n" +
 	"bucketName\x12\x1c\n" +
 	"\x06prefix\x18\x03 \x01(\tB\x04\xbaJ\x01\x02R\x06prefix\x12_\n" +
-	"\vcredentials\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.BucketCredentialsB\x04\xbaJ\x01\x04R\vcredentials\x1a\x80\x05\n" +
+	"\vcredentials\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.BucketCredentialsB\x04\xbaJ\x01\x04R\vcredentials\x12 \n" +
+	"\bendpoint\x18\n" +
+	" \x01(\tB\x04\xbaJ\x01\x02R\bendpoint\x12\x1c\n" +
+	"\x06region\x18\v \x01(\tB\x04\xbaJ\x01\x02R\x06region\x1a\x80\x05\n" +
 	"\x11BucketCredentials\x12r\n" +
 	"\tanonymous\x18\x01 \x01(\v2L.nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAnonymousB\x04\xbaJ\x01\x06H\x00R\tanonymous\x12m\n" +
 	"\n" +

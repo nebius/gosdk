@@ -75,13 +75,13 @@ func (s securityRuleService) GetByName(ctx context.Context, request *v1.GetSecur
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"vpcsecuritygroup"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"vpcsecuritygroup"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -109,13 +109,13 @@ func (s securityRuleService) List(ctx context.Context, request *v1.ListSecurityR
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"vpcsecuritygroup"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"vpcsecuritygroup"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -166,7 +166,7 @@ func (s securityRuleService) Create(ctx context.Context, request *v1.CreateSecur
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"vpcsecuritygroup"}
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
 			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
@@ -216,7 +216,7 @@ func (s securityRuleService) Update(ctx context.Context, request *v1.UpdateSecur
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"vpcsecuritygroup"}
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

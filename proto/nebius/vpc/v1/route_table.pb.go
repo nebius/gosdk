@@ -297,16 +297,17 @@ var File_nebius_vpc_v1_route_table_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_route_table_proto_rawDesc = "" +
 	"\n" +
-	"\x1fnebius/vpc/v1/route_table.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xb8\x01\n" +
+	"\x1fnebius/vpc/v1/route_table.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc6\x01\n" +
 	"\n" +
-	"RouteTable\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +
+	"RouteTable\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.vpc.v1.RouteTableSpecR\x04spec\x127\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.vpc.v1.RouteTableStatusR\x06status\";\n" +
-	"\x0eRouteTableSpec\x12)\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.vpc.v1.RouteTableStatusR\x06status\"J\n" +
+	"\x0eRouteTableSpec\x128\n" +
 	"\n" +
-	"network_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\tnetworkId\"\xd9\x01\n" +
+	"network_id\x18\x01 \x01(\tB\x19\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\"\xd9\x01\n" +
 	"\x10RouteTableStatus\x12;\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.vpc.v1.RouteTableStatus.StateR\x05state\x12\x18\n" +
 	"\adefault\x18\x02 \x01(\bR\adefault\x12C\n" +
@@ -316,9 +317,10 @@ const file_nebius_vpc_v1_route_table_proto_rawDesc = "" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05READY\x10\n" +
-	"\"0\n" +
-	"\x14RouteTableAssignment\x12\x18\n" +
-	"\asubnets\x18\x01 \x03(\tR\asubnetsBV\n" +
+	"\"@\n" +
+	"\x14RouteTableAssignment\x12(\n" +
+	"\asubnets\x18\x01 \x03(\tB\x0e\xe2J\v\n" +
+	"\tvpcsubnetR\asubnetsBV\n" +
 	"\x14ai.nebius.pub.vpc.v1B\x0fRouteTableProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/vpc/v1b\x06proto3"
 
 var (

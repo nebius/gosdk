@@ -386,30 +386,34 @@ var File_nebius_vpc_v1_security_rule_service_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_security_rule_service_proto_rawDesc = "" +
 	"\n" +
-	")nebius/vpc/v1/security_rule_service.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/vpc/v1/security_rule.proto\"0\n" +
-	"\x16GetSecurityRuleRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"_\n" +
-	"\x1cGetSecurityRuleByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"{\n" +
-	"\x18ListSecurityRulesRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	")nebius/vpc/v1/security_rule_service.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/vpc/v1/security_rule.proto\"D\n" +
+	"\x16GetSecurityRuleRequest\x12*\n" +
+	"\x02id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fvpcsecurityruleR\x02id\"t\n" +
+	"\x1cGetSecurityRuleByNameRequest\x128\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x1b\xbaH\x03\xc8\x01\x01\xe2J\x12\n" +
+	"\x10vpcsecuritygroupR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x90\x01\n" +
+	"\x18ListSecurityRulesRequest\x128\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x1b\xbaH\x03\xc8\x01\x01\xe2J\x12\n" +
+	"\x10vpcsecuritygroupR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"v\n" +
 	"\x19ListSecurityRulesResponse\x121\n" +
 	"\x05items\x18\x01 \x03(\v2\x1b.nebius.vpc.v1.SecurityRuleR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xe5\x02\n" +
-	"\x19CreateSecurityRuleRequest\x12\x8a\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xc9\x01\xbaH\xc5\x01\xba\x01\xbe\x01\n" +
-	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xc8\x01\x01R\bmetadata\x12;\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.vpc.v1.SecurityRuleSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xda\x02\n" +
-	"\x19UpdateSecurityRuleRequest\x12\x87\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xc6\x01\xbaH\xc2\x01\xba\x01\xbe\x01\n" +
-	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')R\bmetadata\x123\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.vpc.v1.SecurityRuleSpecR\x04spec\"3\n" +
-	"\x19DeleteSecurityRuleRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x8d\x04\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xfa\x02\n" +
+	"\x19CreateSecurityRuleRequest\x12\x9f\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xde\x01\xbaH\xc5\x01\xba\x01\xbe\x01\n" +
+	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xc8\x01\x01\xe2J\x12\x12\x10vpcsecuritygroupR\bmetadata\x12;\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.vpc.v1.SecurityRuleSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xef\x02\n" +
+	"\x19UpdateSecurityRuleRequest\x12\x9c\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xdb\x01\xbaH\xc2\x01\xba\x01\xbe\x01\n" +
+	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xe2J\x12\x12\x10vpcsecuritygroupR\bmetadata\x123\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.vpc.v1.SecurityRuleSpecR\x04spec\"G\n" +
+	"\x19DeleteSecurityRuleRequest\x12*\n" +
+	"\x02id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fvpcsecurityruleR\x02id2\x8d\x04\n" +
 	"\x13SecurityRuleService\x12I\n" +
 	"\x03Get\x12%.nebius.vpc.v1.GetSecurityRuleRequest\x1a\x1b.nebius.vpc.v1.SecurityRule\x12U\n" +
 	"\tGetByName\x12+.nebius.vpc.v1.GetSecurityRuleByNameRequest\x1a\x1b.nebius.vpc.v1.SecurityRule\x12Y\n" +

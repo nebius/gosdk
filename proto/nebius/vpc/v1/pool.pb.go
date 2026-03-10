@@ -561,13 +561,14 @@ var File_nebius_vpc_v1_pool_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_pool_proto_rawDesc = "" +
 	"\n" +
-	"\x18nebius/vpc/v1/pool.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xa6\x01\n" +
-	"\x04Pool\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12+\n" +
+	"\x18nebius/vpc/v1/pool.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xb4\x01\n" +
+	"\x04Pool\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12+\n" +
 	"\x04spec\x18\x02 \x01(\v2\x17.nebius.vpc.v1.PoolSpecR\x04spec\x121\n" +
-	"\x06status\x18\x03 \x01(\v2\x19.nebius.vpc.v1.PoolStatusR\x06status\"\xee\x01\n" +
-	"\bPoolSpec\x12*\n" +
-	"\x0esource_pool_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\fsourcePoolId\x12>\n" +
+	"\x06status\x18\x03 \x01(\v2\x19.nebius.vpc.v1.PoolStatusR\x06status\"\xfa\x01\n" +
+	"\bPoolSpec\x126\n" +
+	"\x0esource_pool_id\x18\x01 \x01(\tB\x10\xbaJ\x01\x02\xe2J\t\n" +
+	"\avpcpoolR\fsourcePoolId\x12>\n" +
 	"\aversion\x18\x03 \x01(\x0e2\x18.nebius.vpc.v1.IpVersionB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\aversion\x12G\n" +
 	"\n" +
@@ -581,12 +582,14 @@ const file_nebius_vpc_v1_pool_proto_rawDesc = "" +
 	"\x0fstring.ip_empty\x12/value is empty, which is not a valid IP address\x1a\n" +
 	"this != ''\xc8\x01\x01R\x04cidr\x12<\n" +
 	"\x05state\x18\x02 \x01(\x0e2 .nebius.vpc.v1.AddressBlockStateB\x04\xbaJ\x01\aR\x05state\x126\n" +
-	"\x0fmax_mask_length\x18\x03 \x01(\x03B\x0e\xbaH\a\"\x05\x18\x80\x01(\x00\xbaJ\x01\aR\rmaxMaskLength\"\xfa\x01\n" +
+	"\x0fmax_mask_length\x18\x03 \x01(\x03B\x0e\xbaH\a\"\x05\x18\x80\x01(\x00\xbaJ\x01\aR\rmaxMaskLength\"\x89\x02\n" +
 	"\n" +
 	"PoolStatus\x125\n" +
 	"\x05state\x18\x01 \x01(\x0e2\x1f.nebius.vpc.v1.PoolStatus.StateR\x05state\x12\x14\n" +
-	"\x05cidrs\x18\x02 \x03(\tR\x05cidrs\x12\x19\n" +
-	"\bscope_id\x18\x03 \x01(\tR\ascopeId\x12=\n" +
+	"\x05cidrs\x18\x02 \x03(\tR\x05cidrs\x12(\n" +
+	"\bscope_id\x18\x03 \x01(\tB\r\xe2J\n" +
+	"\n" +
+	"\bvpcscopeR\ascopeId\x12=\n" +
 	"\n" +
 	"assignment\x18\x04 \x01(\v2\x1d.nebius.vpc.v1.PoolAssignmentR\n" +
 	"assignment\"E\n" +
@@ -594,10 +597,13 @@ const file_nebius_vpc_v1_pool_proto_rawDesc = "" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
 	"\x05READY\x10\x02\x12\f\n" +
-	"\bDELETING\x10\x03\"F\n" +
-	"\x0ePoolAssignment\x12\x1a\n" +
-	"\bnetworks\x18\x01 \x03(\tR\bnetworks\x12\x18\n" +
-	"\asubnets\x18\x02 \x03(\tR\asubnets*G\n" +
+	"\bDELETING\x10\x03\"g\n" +
+	"\x0ePoolAssignment\x12+\n" +
+	"\bnetworks\x18\x01 \x03(\tB\x0f\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\bnetworks\x12(\n" +
+	"\asubnets\x18\x02 \x03(\tB\x0e\xe2J\v\n" +
+	"\tvpcsubnetR\asubnets*G\n" +
 	"\x11AddressBlockState\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\r\n" +
 	"\tAVAILABLE\x10\x01\x12\f\n" +
