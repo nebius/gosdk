@@ -447,14 +447,17 @@ var File_nebius_vpc_v1_security_group_service_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_security_group_service_proto_rawDesc = "" +
 	"\n" +
-	"*nebius/vpc/v1/security_group_service.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\"nebius/vpc/v1/security_group.proto\"1\n" +
-	"\x17GetSecurityGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"`\n" +
-	"\x1dGetSecurityGroupByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"|\n" +
-	"\x19ListSecurityGroupsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"*nebius/vpc/v1/security_group_service.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\"nebius/vpc/v1/security_group.proto\"F\n" +
+	"\x17GetSecurityGroupRequest\x12+\n" +
+	"\x02id\x18\x01 \x01(\tB\x1b\xbaH\x03\xc8\x01\x01\xe2J\x12\n" +
+	"\x10vpcsecuritygroupR\x02id\"l\n" +
+	"\x1dGetSecurityGroupByNameRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x88\x01\n" +
+	"\x19ListSecurityGroupsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x96\x01\n" +
@@ -468,17 +471,18 @@ const file_nebius_vpc_v1_security_group_service_proto_rawDesc = "" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"x\n" +
 	"\x1aListSecurityGroupsResponse\x122\n" +
 	"\x05items\x18\x01 \x03(\v2\x1c.nebius.vpc.v1.SecurityGroupR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xe7\x02\n" +
-	"\x1aCreateSecurityGroupRequest\x12\x8a\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xc9\x01\xbaH\xc5\x01\xba\x01\xbe\x01\n" +
-	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xc8\x01\x01R\bmetadata\x12<\n" +
-	"\x04spec\x18\x02 \x01(\v2 .nebius.vpc.v1.SecurityGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xdc\x02\n" +
-	"\x1aUpdateSecurityGroupRequest\x12\x87\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xc6\x01\xbaH\xc2\x01\xba\x01\xbe\x01\n" +
-	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')R\bmetadata\x124\n" +
-	"\x04spec\x18\x02 \x01(\v2 .nebius.vpc.v1.SecurityGroupSpecR\x04spec\"4\n" +
-	"\x1aDeleteSecurityGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x86\x05\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xf3\x02\n" +
+	"\x1aCreateSecurityGroupRequest\x12\x96\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xd5\x01\xbaH\xc5\x01\xba\x01\xbe\x01\n" +
+	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12<\n" +
+	"\x04spec\x18\x02 \x01(\v2 .nebius.vpc.v1.SecurityGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xe8\x02\n" +
+	"\x1aUpdateSecurityGroupRequest\x12\x93\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\xd2\x01\xbaH\xc2\x01\xba\x01\xbe\x01\n" +
+	"\rmetadata_name\x12s'name' must start with a letter or digit, allow '-', '_', '.', '/', and have a length between 2 and 255 characters.\x1a8this.name.matches('^[a-zA-Z0-9][-_./a-zA-Z0-9]{1,254}$')\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
+	"\x04spec\x18\x02 \x01(\v2 .nebius.vpc.v1.SecurityGroupSpecR\x04spec\"I\n" +
+	"\x1aDeleteSecurityGroupRequest\x12+\n" +
+	"\x02id\x18\x01 \x01(\tB\x1b\xbaH\x03\xc8\x01\x01\xe2J\x12\n" +
+	"\x10vpcsecuritygroupR\x02id2\x86\x05\n" +
 	"\x14SecurityGroupService\x12K\n" +
 	"\x03Get\x12&.nebius.vpc.v1.GetSecurityGroupRequest\x1a\x1c.nebius.vpc.v1.SecurityGroup\x12W\n" +
 	"\tGetByName\x12,.nebius.vpc.v1.GetSecurityGroupByNameRequest\x1a\x1c.nebius.vpc.v1.SecurityGroup\x12[\n" +

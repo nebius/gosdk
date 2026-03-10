@@ -311,21 +311,26 @@ var File_nebius_vpc_v1alpha1_subnet_service_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_subnet_service_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/vpc/v1alpha1/subnet_service.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a nebius/vpc/v1alpha1/subnet.proto\"*\n" +
-	"\x10GetSubnetRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"Y\n" +
-	"\x16GetSubnetByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x8d\x01\n" +
-	"\x12ListSubnetsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"(nebius/vpc/v1alpha1/subnet_service.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a nebius/vpc/v1alpha1/subnet.proto\"8\n" +
+	"\x10GetSubnetRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tvpcsubnetR\x02id\"e\n" +
+	"\x16GetSubnetByNameRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x99\x01\n" +
+	"\x12ListSubnetsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x04 \x01(\tR\x06filter\"\x98\x01\n" +
-	"\x1bListSubnetsByNetworkRequest\x12%\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter\"\xa7\x01\n" +
+	"\x1bListSubnetsByNetworkRequest\x124\n" +
 	"\n" +
-	"network_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\tnetworkId\x12\x1b\n" +
+	"network_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +

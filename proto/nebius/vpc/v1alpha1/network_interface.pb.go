@@ -527,24 +527,27 @@ var File_nebius_vpc_v1alpha1_network_interface_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc = "" +
 	"\n" +
-	"+nebius/vpc/v1alpha1/network_interface.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xcc\x02\n" +
-	"\x14NetworkInterfaceSpec\x12'\n" +
-	"\tsubnet_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\bsubnetId\x126\n" +
+	"+nebius/vpc/v1alpha1/network_interface.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xda\x02\n" +
+	"\x14NetworkInterfaceSpec\x125\n" +
+	"\tsubnet_id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\v\n" +
+	"\tvpcsubnetR\bsubnetId\x126\n" +
 	"\x04name\x18\x02 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a\x10\x01\x18<2\x14^[0-9a-z][0-9a-z-]*$R\x04name\x12C\n" +
 	"\n" +
 	"ip_address\x18\x03 \x01(\v2\x1e.nebius.vpc.v1alpha1.IPAddressB\x04\xbaJ\x01\x06R\tipAddress\x12V\n" +
 	"\x11public_ip_address\x18\x04 \x01(\v2$.nebius.vpc.v1alpha1.PublicIPAddressB\x04\xbaJ\x01\x06R\x0fpublicIpAddress\x126\n" +
-	"\aaliases\x18\x06 \x03(\v2\x1c.nebius.vpc.v1alpha1.IPAliasR\aaliases\"0\n" +
-	"\tIPAddress\x12#\n" +
-	"\rallocation_id\x18\x01 \x01(\tR\fallocationId\"^\n" +
-	"\x0fPublicIPAddress\x12%\n" +
-	"\rallocation_id\x18\x01 \x01(\tH\x00R\fallocationId\x12\x16\n" +
+	"\aaliases\x18\x06 \x03(\v2\x1c.nebius.vpc.v1alpha1.IPAliasR\aaliases\"D\n" +
+	"\tIPAddress\x127\n" +
+	"\rallocation_id\x18\x01 \x01(\tB\x12\xe2J\x0f\n" +
+	"\rvpcallocationR\fallocationId\"r\n" +
+	"\x0fPublicIPAddress\x129\n" +
+	"\rallocation_id\x18\x01 \x01(\tB\x12\xe2J\x0f\n" +
+	"\rvpcallocationH\x00R\fallocationId\x12\x16\n" +
 	"\x06static\x18\x03 \x01(\bR\x06staticB\f\n" +
 	"\n" +
-	"allocation\"6\n" +
-	"\aIPAlias\x12+\n" +
-	"\rallocation_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fallocationId\"\xc0\x02\n" +
+	"allocation\"H\n" +
+	"\aIPAlias\x12=\n" +
+	"\rallocation_id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rvpcallocationR\fallocationId\"\xc0\x02\n" +
 	"\x16NetworkInterfaceStatus\x12\x14\n" +
 	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12C\n" +
@@ -553,13 +556,15 @@ const file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc = "" +
 	"\x11public_ip_address\x18\x04 \x01(\v2*.nebius.vpc.v1alpha1.PublicIPAddressStatusR\x0fpublicIpAddress\x12>\n" +
 	"\aaliases\x18\x06 \x01(\v2$.nebius.vpc.v1alpha1.IPAliasesStatusR\aaliases\x12\x1f\n" +
 	"\vmac_address\x18\a \x01(\tR\n" +
-	"macAddress\"P\n" +
+	"macAddress\"d\n" +
 	"\x0fIPAddressStatus\x12\x18\n" +
-	"\aaddress\x18\x01 \x01(\tR\aaddress\x12#\n" +
-	"\rallocation_id\x18\x02 \x01(\tR\fallocationId\"V\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x127\n" +
+	"\rallocation_id\x18\x02 \x01(\tB\x12\xe2J\x0f\n" +
+	"\rvpcallocationR\fallocationId\"j\n" +
 	"\x15PublicIPAddressStatus\x12\x18\n" +
-	"\aaddress\x18\x01 \x01(\tR\aaddress\x12#\n" +
-	"\rallocation_id\x18\x02 \x01(\tR\fallocationId\"'\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x127\n" +
+	"\rallocation_id\x18\x02 \x01(\tB\x12\xe2J\x0f\n" +
+	"\rvpcallocationR\fallocationId\"'\n" +
 	"\x0fIPAliasesStatus\x12\x14\n" +
 	"\x05cidrs\x18\x02 \x03(\tR\x05cidrsBh\n" +
 	"\x1aai.nebius.pub.vpc.v1alpha1B\x15NetworkInterfaceProtoP\x01Z1github.com/nebius/gosdk/proto/nebius/vpc/v1alpha1b\x06proto3"

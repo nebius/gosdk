@@ -8,6 +8,7 @@ package v1alpha1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/nebius/gosdk/proto/nebius"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -284,9 +285,9 @@ var File_nebius_vpc_v1alpha1_scope_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_scope_proto_rawDesc = "" +
 	"\n" +
-	"\x1fnebius/vpc/v1alpha1/scope.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xb5\x01\n" +
-	"\x05Scope\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x122\n" +
+	"\x1fnebius/vpc/v1alpha1/scope.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc3\x01\n" +
+	"\x05Scope\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x122\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1e.nebius.vpc.v1alpha1.ScopeSpecR\x04spec\x128\n" +
 	"\x06status\x18\x03 \x01(\v2 .nebius.vpc.v1alpha1.ScopeStatusR\x06status\"\x89\x01\n" +
 	"\tScopeSpec\x12?\n" +

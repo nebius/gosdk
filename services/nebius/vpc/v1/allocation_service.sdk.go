@@ -77,13 +77,13 @@ func (s allocationService) GetByName(ctx context.Context, request *v1.GetAllocat
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -111,13 +111,13 @@ func (s allocationService) List(ctx context.Context, request *v1.ListAllocations
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -208,7 +208,7 @@ func (s allocationService) Create(ctx context.Context, request *v1.CreateAllocat
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"project"}
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
 			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
@@ -258,7 +258,7 @@ func (s allocationService) Update(ctx context.Context, request *v1.UpdateAllocat
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"project"}
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

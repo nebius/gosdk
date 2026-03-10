@@ -76,13 +76,13 @@ func (s securityGroupService) GetByName(ctx context.Context, request *v1.GetSecu
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -110,13 +110,13 @@ func (s securityGroupService) List(ctx context.Context, request *v1.ListSecurity
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -187,7 +187,7 @@ func (s securityGroupService) Create(ctx context.Context, request *v1.CreateSecu
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"project"}
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
 			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
@@ -237,7 +237,7 @@ func (s securityGroupService) Update(ctx context.Context, request *v1.UpdateSecu
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"project"}
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

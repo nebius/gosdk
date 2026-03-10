@@ -66,7 +66,7 @@ func (s targetGroupService) Update(ctx context.Context, request *v1.UpdateTarget
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	metadataParentTypes := []string{"project"}
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err

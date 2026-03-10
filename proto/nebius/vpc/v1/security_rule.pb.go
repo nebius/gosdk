@@ -768,9 +768,9 @@ var File_nebius_vpc_v1_security_rule_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1_security_rule_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/vpc/v1/security_rule.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbe\x01\n" +
-	"\fSecurityRule\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
+	"!nebius/vpc/v1/security_rule.proto\x12\rnebius.vpc.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xd5\x01\n" +
+	"\fSecurityRule\x12U\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x15\xe2J\x12\x12\x10vpcsecuritygroupR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.vpc.v1.SecurityRuleSpecR\x04spec\x129\n" +
 	"\x06status\x18\x03 \x01(\v2!.nebius.vpc.v1.SecurityRuleStatusR\x06status\"\x8a\x03\n" +
 	"\x10SecurityRuleSpec\x12C\n" +
@@ -782,15 +782,17 @@ const file_nebius_vpc_v1_security_rule_proto_rawDesc = "" +
 	"\aingress\x18\x04 \x01(\v2\x1a.nebius.vpc.v1.RuleIngressB\x04\xbaJ\x01\x02H\x00R\aingress\x129\n" +
 	"\x06egress\x18\x05 \x01(\v2\x19.nebius.vpc.v1.RuleEgressB\x04\xbaJ\x01\x02H\x00R\x06egress\x122\n" +
 	"\x04type\x18\x06 \x01(\x0e2\x17.nebius.vpc.v1.RuleTypeB\x05\xbaJ\x02\x02\aR\x04typeB\x12\n" +
-	"\x05match\x12\t\xbaH\x02\b\x01\xbaJ\x01\x02\"\xff\x01\n" +
-	"\vRuleIngress\x127\n" +
-	"\x18source_security_group_id\x18\x01 \x01(\tR\x15sourceSecurityGroupId\x12v\n" +
+	"\x05match\x12\t\xbaH\x02\b\x01\xbaJ\x01\x02\"\x96\x02\n" +
+	"\vRuleIngress\x12N\n" +
+	"\x18source_security_group_id\x18\x01 \x01(\tB\x15\xe2J\x12\n" +
+	"\x10vpcsecuritygroupR\x15sourceSecurityGroupId\x12v\n" +
 	"\fsource_cidrs\x18\x02 \x03(\tBS\xbaHP\x92\x01M\x10\b\"I\xba\x01F\n" +
 	"\x11string.valid_cidr\x12\x1avalue must be a valid CIDR\x1a\x15this.isIpPrefix(true)R\vsourceCidrs\x12?\n" +
-	"\x11destination_ports\x18\x03 \x03(\x05B\x12\xbaH\x0f\x92\x01\f\x10\b\"\b\x1a\x06\x18\xff\xff\x03(\x01R\x10destinationPorts\"\x93\x02\n" +
+	"\x11destination_ports\x18\x03 \x03(\x05B\x12\xbaH\x0f\x92\x01\f\x10\b\"\b\x1a\x06\x18\xff\xff\x03(\x01R\x10destinationPorts\"\xaa\x02\n" +
 	"\n" +
-	"RuleEgress\x12A\n" +
-	"\x1ddestination_security_group_id\x18\x01 \x01(\tR\x1adestinationSecurityGroupId\x12\x80\x01\n" +
+	"RuleEgress\x12X\n" +
+	"\x1ddestination_security_group_id\x18\x01 \x01(\tB\x15\xe2J\x12\n" +
+	"\x10vpcsecuritygroupR\x1adestinationSecurityGroupId\x12\x80\x01\n" +
 	"\x11destination_cidrs\x18\x02 \x03(\tBS\xbaHP\x92\x01M\x10\b\"I\xba\x01F\n" +
 	"\x11string.valid_cidr\x12\x1avalue must be a valid CIDR\x1a\x15this.isIpPrefix(true)R\x10destinationCidrs\x12?\n" +
 	"\x11destination_ports\x18\x03 \x03(\x05B\x12\xbaH\x0f\x92\x01\f\x10\b\"\b\x1a\x06\x18\xff\xff\x03(\x01R\x10destinationPorts\"\xff\x02\n" +
@@ -804,9 +806,10 @@ const file_nebius_vpc_v1_security_rule_proto_rawDesc = "" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
 	"\x05READY\x10\x02\x12\f\n" +
-	"\bDELETING\x10\x03\"i\n" +
-	"\x0fRuleMatchStatus\x12*\n" +
-	"\x11security_group_id\x18\x01 \x01(\tR\x0fsecurityGroupId\x12\x14\n" +
+	"\bDELETING\x10\x03\"\x80\x01\n" +
+	"\x0fRuleMatchStatus\x12A\n" +
+	"\x11security_group_id\x18\x01 \x01(\tB\x15\xe2J\x12\n" +
+	"\x10vpcsecuritygroupR\x0fsecurityGroupId\x12\x14\n" +
 	"\x05cidrs\x18\x02 \x03(\tR\x05cidrs\x12\x14\n" +
 	"\x05ports\x18\x03 \x03(\x05R\x05ports*C\n" +
 	"\rRuleDirection\x12\x19\n" +
