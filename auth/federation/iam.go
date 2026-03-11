@@ -61,8 +61,13 @@ func getCode(
 	query.Set("code_challenge_method", pkceCode.Method())
 	authURL.RawQuery = query.Encode()
 
+	cmd, err := browserOpenCommand(ctx, authURL.String())
+	if err != nil {
+		logger.WarnContext(ctx, "no command found to open browser", slog.String("error", err.Error()))
+	}
+
 	var browserErr <-chan error
-	if noBrowserOpen {
+	if noBrowserOpen || cmd == nil {
 		text := fmt.Sprintf(
 			"To complete the authentication process, open the following link "+
 				"in your browser: %s",
@@ -88,7 +93,7 @@ func getCode(
 		if err != nil {
 			return "", "", err
 		}
-		browserErr = openBrowser(ctx, logger, authURL.String())
+		browserErr = openBrowser(ctx, logger, cmd)
 	}
 
 	select {
@@ -201,49 +206,9 @@ func Authorize(
 	return token, nil
 }
 
-func openBrowser(ctx context.Context, logger *slog.Logger, url string) <-chan error {
+func openBrowser(ctx context.Context, logger *slog.Logger, cmd *exec.Cmd) <-chan error {
 	ch := make(chan error, 1)
 
-	var cmd *exec.Cmd
-	switch runtime.GOOS {
-	case "linux":
-		if IsWSL() {
-			//nolint:gosec // we trust url
-			cmd = exec.CommandContext(ctx, "cmd.exe", "/c", "start", strings.ReplaceAll(url, "&", "^&"))
-			home, err := paths.UserHomeDir()
-			if err != nil {
-				ch <- err
-				return ch
-			}
-			cmd.Dir = home
-		} else {
-			providers := []string{"xdg-open", "x-www-browser", "www-browser"}
-			for _, provider := range providers {
-				_, err := exec.LookPath(provider)
-				if err != nil {
-					continue
-				}
-				cmd = exec.CommandContext(ctx, provider, url)
-				break
-			}
-			if cmd == nil {
-				logger.DebugContext(
-					ctx,
-					"browser provider not found, choosing xdg-open to fail",
-				)
-				cmd = exec.CommandContext(ctx, "xdg-open", url)
-			}
-		}
-	case "freebsd", "openbsd", "netbsd":
-		cmd = exec.CommandContext(ctx, "xdg-open", url)
-	case "windows":
-		cmd = exec.CommandContext(ctx, "rundll32", "url.dll,FileProtocolHandler", url)
-	case "darwin":
-		cmd = exec.CommandContext(ctx, "open", url)
-	default:
-		ch <- errors.New("unsupported platform")
-		return ch
-	}
 	logger.DebugContext(ctx, "exec browser command", slog.String("cmd", cmd.String()))
 
 	go func() {
@@ -260,6 +225,48 @@ func openBrowser(ctx context.Context, logger *slog.Logger, url string) <-chan er
 	}()
 
 	return ch
+}
+
+func browserOpenCommand(ctx context.Context, url string) (*exec.Cmd, error) {
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "linux":
+		if IsWSL() {
+			//nolint:gosec // we trust url
+			cmd = exec.CommandContext(ctx, "cmd.exe", "/c", "start", strings.ReplaceAll(url, "&", "^&"))
+			home, err := paths.UserHomeDir()
+			if err != nil {
+				return nil, err
+			}
+			cmd.Dir = home
+			return cmd, nil
+		}
+		providers := []string{"xdg-open", "x-www-browser", "www-browser"}
+		for _, provider := range providers {
+			_, err := exec.LookPath(provider)
+			if err != nil {
+				continue
+			}
+			cmd = exec.CommandContext(ctx, provider, url)
+			break
+		}
+		if cmd == nil {
+			return nil, errors.New("browser provider not found")
+		}
+	case "freebsd", "openbsd", "netbsd":
+		cmd = exec.CommandContext(ctx, "xdg-open", url)
+	case "windows":
+		cmd = exec.CommandContext(ctx, "rundll32", "url.dll,FileProtocolHandler", url)
+	case "darwin":
+		cmd = exec.CommandContext(ctx, "open", url)
+	default:
+		return nil, errors.New("unsupported platform")
+	}
+	_, err := exec.LookPath(cmd.Path)
+	if err != nil {
+		return nil, err
+	}
+	return cmd, nil
 }
 
 func httpsURL(url string) string {

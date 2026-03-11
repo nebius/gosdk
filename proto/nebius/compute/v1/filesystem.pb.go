@@ -217,9 +217,11 @@ type FilesystemSpec struct {
 	BlockSizeBytes int64 `protobuf:"varint,5,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
 	// The Shared Filesystem type determines its limits and performance characteristics.
 	// For details, see https://docs.nebius.com/compute/storage/types#filesystems-types
-	Type          FilesystemSpec_FilesystemType `protobuf:"varint,6,opt,name=type,proto3,enum=nebius.compute.v1.FilesystemSpec_FilesystemType" json:"type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Type FilesystemSpec_FilesystemType `protobuf:"varint,6,opt,name=type,proto3,enum=nebius.compute.v1.FilesystemSpec_FilesystemType" json:"type,omitempty"`
+	// Prevents deletion whilst set
+	ForbidDeletion bool `protobuf:"varint,7,opt,name=forbid_deletion,json=forbidDeletion,proto3" json:"forbid_deletion,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *FilesystemSpec) Reset() {
@@ -307,6 +309,13 @@ func (x *FilesystemSpec) GetType() FilesystemSpec_FilesystemType {
 		return x.Type
 	}
 	return FilesystemSpec_UNSPECIFIED
+}
+
+func (x *FilesystemSpec) GetForbidDeletion() bool {
+	if x != nil {
+		return x.ForbidDeletion
+	}
+	return false
 }
 
 type isFilesystemSpec_Size interface {
@@ -439,7 +448,7 @@ const file_nebius_compute_v1_filesystem_proto_rawDesc = "" +
 	"Filesystem\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x125\n" +
 	"\x04spec\x18\x02 \x01(\v2!.nebius.compute.v1.FilesystemSpecR\x04spec\x12;\n" +
-	"\x06status\x18\x03 \x01(\v2#.nebius.compute.v1.FilesystemStatusR\x06status\"\x96\x03\n" +
+	"\x06status\x18\x03 \x01(\v2#.nebius.compute.v1.FilesystemStatusR\x06status\"\xbf\x03\n" +
 	"\x0eFilesystemSpec\x12\x1f\n" +
 	"\n" +
 	"size_bytes\x18\x01 \x01(\x03H\x00R\tsizeBytes\x12'\n" +
@@ -448,7 +457,8 @@ const file_nebius_compute_v1_filesystem_proto_rawDesc = "" +
 	"\x0esize_gibibytes\x18\x04 \x01(\x03H\x00R\rsizeGibibytes\x12.\n" +
 	"\x10block_size_bytes\x18\x05 \x01(\x03B\x04\xbaJ\x01\x02R\x0eblockSizeBytes\x12P\n" +
 	"\x04type\x18\x06 \x01(\x0e20.nebius.compute.v1.FilesystemSpec.FilesystemTypeB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04type\"W\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04type\x12'\n" +
+	"\x0fforbid_deletion\x18\a \x01(\bR\x0eforbidDeletion\"W\n" +
 	"\x0eFilesystemType\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vNETWORK_SSD\x10\x01\x12\x0f\n" +
