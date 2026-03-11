@@ -331,6 +331,8 @@ type DiskSpec struct {
 	Source isDiskSpec_Source `protobuf_oneof:"source"`
 	// Defines how data on the disk is encrypted. By default, no encryption is applied.
 	DiskEncryption *DiskEncryption `protobuf:"bytes,11,opt,name=disk_encryption,json=diskEncryption,proto3" json:"disk_encryption,omitempty"`
+	// Prevents deletion whilst set
+	ForbidDeletion bool `protobuf:"varint,12,opt,name=forbid_deletion,json=forbidDeletion,proto3" json:"forbid_deletion,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -452,6 +454,13 @@ func (x *DiskSpec) GetDiskEncryption() *DiskEncryption {
 		return x.DiskEncryption
 	}
 	return nil
+}
+
+func (x *DiskSpec) GetForbidDeletion() bool {
+	if x != nil {
+		return x.ForbidDeletion
+	}
+	return false
 }
 
 type isDiskSpec_Size interface {
@@ -772,7 +781,7 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\x04Disk\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12/\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x1d.nebius.compute.v1.DiskStatusR\x06status\"\x97\x05\n" +
+	"\x06status\x18\x03 \x01(\v2\x1d.nebius.compute.v1.DiskStatusR\x06status\"\xc0\x05\n" +
 	"\bDiskSpec\x12\x1f\n" +
 	"\n" +
 	"size_bytes\x18\x01 \x01(\x03H\x00R\tsizeBytes\x12'\n" +
@@ -785,7 +794,8 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\x0fsource_image_id\x18\b \x01(\tB\x04\xbaJ\x01\x02H\x01R\rsourceImageId\x12\\\n" +
 	"\x13source_image_family\x18\n" +
 	" \x01(\v2$.nebius.compute.v1.SourceImageFamilyB\x04\xbaJ\x01\x02H\x01R\x11sourceImageFamily\x12P\n" +
-	"\x0fdisk_encryption\x18\v \x01(\v2!.nebius.compute.v1.DiskEncryptionB\x04\xbaJ\x01\x02R\x0ediskEncryption\"t\n" +
+	"\x0fdisk_encryption\x18\v \x01(\v2!.nebius.compute.v1.DiskEncryptionB\x04\xbaJ\x01\x02R\x0ediskEncryption\x12'\n" +
+	"\x0fforbid_deletion\x18\f \x01(\bR\x0eforbidDeletion\"t\n" +
 	"\bDiskType\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vNETWORK_SSD\x10\x01\x12\x0f\n" +
