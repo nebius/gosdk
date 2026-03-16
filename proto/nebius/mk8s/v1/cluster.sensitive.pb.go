@@ -23,6 +23,9 @@ package v1
 // func (x *AuditLogsSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *AuditLogsSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *Karpenter) Sanitize()            // is not generated as no sensitive fields found
+// func (x *Karpenter) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ClusterStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ClusterStatus) LogValue() slog.Value // is not generated as no sensitive fields found
 

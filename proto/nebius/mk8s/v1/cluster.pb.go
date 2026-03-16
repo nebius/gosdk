@@ -73,7 +73,7 @@ func (x ClusterStatus_State) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ClusterStatus_State.Descriptor instead.
 func (ClusterStatus_State) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{7, 0}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{8, 0}
 }
 
 type Cluster struct {
@@ -206,7 +206,15 @@ type ControlPlaneSpec struct {
 	EtcdClusterSize int64 `protobuf:"varint,4,opt,name=etcd_cluster_size,json=etcdClusterSize,proto3" json:"etcd_cluster_size,omitempty"`
 	// Specify configuration of the pushing k8s audit logs into service logs and show it in the UI.
 	// By default cluster will be created without it.
-	AuditLogs     *AuditLogsSpec `protobuf:"bytes,5,opt,name=audit_logs,json=auditLogs,proto3" json:"audit_logs,omitempty"`
+	AuditLogs *AuditLogsSpec `protobuf:"bytes,5,opt,name=audit_logs,json=auditLogs,proto3" json:"audit_logs,omitempty"`
+	// Enables installation of the Karpenter inside a cluster.
+	// Karpenter will be installed as a helm chart inside cluster
+	// so it requires creation of at least one CPU public node group.
+	//
+	// Please note that there is no feature parity between Karpenter node pools and
+	// public node groups.
+	// By default cluster will be created without it.
+	Karpenter     *Karpenter `protobuf:"bytes,6,opt,name=karpenter,proto3" json:"karpenter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -272,6 +280,13 @@ func (x *ControlPlaneSpec) GetEtcdClusterSize() int64 {
 func (x *ControlPlaneSpec) GetAuditLogs() *AuditLogsSpec {
 	if x != nil {
 		return x.AuditLogs
+	}
+	return nil
+}
+
+func (x *ControlPlaneSpec) GetKarpenter() *Karpenter {
+	if x != nil {
+		return x.Karpenter
 	}
 	return nil
 }
@@ -444,6 +459,42 @@ func (*AuditLogsSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{6}
 }
 
+type Karpenter struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Karpenter) Reset() {
+	*x = Karpenter{}
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Karpenter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Karpenter) ProtoMessage() {}
+
+func (x *Karpenter) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Karpenter.ProtoReflect.Descriptor instead.
+func (*Karpenter) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{7}
+}
+
 type ClusterStatus struct {
 	state        protoimpl.MessageState `protogen:"open.v1"`
 	State        ClusterStatus_State    `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1.ClusterStatus_State" json:"state,omitempty"`
@@ -456,7 +507,7 @@ type ClusterStatus struct {
 
 func (x *ClusterStatus) Reset() {
 	*x = ClusterStatus{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[7]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -468,7 +519,7 @@ func (x *ClusterStatus) String() string {
 func (*ClusterStatus) ProtoMessage() {}
 
 func (x *ClusterStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[7]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -481,7 +532,7 @@ func (x *ClusterStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClusterStatus.ProtoReflect.Descriptor instead.
 func (*ClusterStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{7}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ClusterStatus) GetState() ClusterStatus_State {
@@ -523,7 +574,7 @@ type ControlPlaneStatus struct {
 
 func (x *ControlPlaneStatus) Reset() {
 	*x = ControlPlaneStatus{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[8]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -535,7 +586,7 @@ func (x *ControlPlaneStatus) String() string {
 func (*ControlPlaneStatus) ProtoMessage() {}
 
 func (x *ControlPlaneStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[8]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -548,7 +599,7 @@ func (x *ControlPlaneStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPlaneStatus.ProtoReflect.Descriptor instead.
 func (*ControlPlaneStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{8}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ControlPlaneStatus) GetVersion() string {
@@ -592,7 +643,7 @@ type ControlPlaneStatusEndpoints struct {
 
 func (x *ControlPlaneStatusEndpoints) Reset() {
 	*x = ControlPlaneStatusEndpoints{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[9]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -604,7 +655,7 @@ func (x *ControlPlaneStatusEndpoints) String() string {
 func (*ControlPlaneStatusEndpoints) ProtoMessage() {}
 
 func (x *ControlPlaneStatusEndpoints) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[9]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -617,7 +668,7 @@ func (x *ControlPlaneStatusEndpoints) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPlaneStatusEndpoints.ProtoReflect.Descriptor instead.
 func (*ControlPlaneStatusEndpoints) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{9}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ControlPlaneStatusEndpoints) GetPublicEndpoint() string {
@@ -644,7 +695,7 @@ type ControlPlaneStatusAuth struct {
 
 func (x *ControlPlaneStatusAuth) Reset() {
 	*x = ControlPlaneStatusAuth{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[10]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -656,7 +707,7 @@ func (x *ControlPlaneStatusAuth) String() string {
 func (*ControlPlaneStatusAuth) ProtoMessage() {}
 
 func (x *ControlPlaneStatusAuth) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[10]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -669,7 +720,7 @@ func (x *ControlPlaneStatusAuth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPlaneStatusAuth.ProtoReflect.Descriptor instead.
 func (*ControlPlaneStatusAuth) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{10}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ControlPlaneStatusAuth) GetClusterCaCertificate() string {
@@ -690,7 +741,7 @@ const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"\x06status\x18\x03 \x01(\v2\x1d.nebius.mk8s.v1.ClusterStatusR\x06status\"\xa0\x01\n" +
 	"\vClusterSpec\x12M\n" +
 	"\rcontrol_plane\x18\x02 \x01(\v2 .nebius.mk8s.v1.ControlPlaneSpecB\x06\xbaH\x03\xc8\x01\x01R\fcontrolPlane\x12B\n" +
-	"\fkube_network\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.KubeNetworkSpecR\vkubeNetwork\"\xaf\x02\n" +
+	"\fkube_network\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.KubeNetworkSpecR\vkubeNetwork\"\xee\x02\n" +
 	"\x10ControlPlaneSpec\x12,\n" +
 	"\aversion\x18\x01 \x01(\tB\x12\xbaH\x0fr\r2\v|^\\d\\.\\d\\d$R\aversion\x12'\n" +
 	"\tsubnet_id\x18\x02 \x01(\tB\n" +
@@ -698,14 +749,16 @@ const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"\tendpoints\x18\x03 \x01(\v2).nebius.mk8s.v1.ControlPlaneEndpointsSpecR\tendpoints\x127\n" +
 	"\x11etcd_cluster_size\x18\x04 \x01(\x03B\v\xbaH\b\"\x060\x000\x010\x03R\x0fetcdClusterSize\x12B\n" +
 	"\n" +
-	"audit_logs\x18\x05 \x01(\v2\x1d.nebius.mk8s.v1.AuditLogsSpecB\x04\xbaJ\x01\x06R\tauditLogs\"n\n" +
+	"audit_logs\x18\x05 \x01(\v2\x1d.nebius.mk8s.v1.AuditLogsSpecB\x04\xbaJ\x01\x06R\tauditLogs\x12=\n" +
+	"\tkarpenter\x18\x06 \x01(\v2\x19.nebius.mk8s.v1.KarpenterB\x04\xbaJ\x01\x06R\tkarpenter\"n\n" +
 	"\x19ControlPlaneEndpointsSpec\x12Q\n" +
 	"\x0fpublic_endpoint\x18\x01 \x01(\v2\".nebius.mk8s.v1.PublicEndpointSpecB\x04\xbaJ\x01\x06R\x0epublicEndpoint\"\x14\n" +
 	"\x12PublicEndpointSpec\"\xd1\x01\n" +
 	"\x0fKubeNetworkSpec\x12\xbd\x01\n" +
 	"\rservice_cidrs\x18\x01 \x03(\tB\x97\x01\xbaH\x8f\x01\xba\x01\x86\x01\n" +
 	"\x11string.valid_cidr\x12?value must be a CIDR block or prefix length from \"/12\" to \"/28\"\x1a0this.all(x, x.matches('^(.*)/(1[2-9]|2[0-8])$'))\x92\x01\x02\x10\x01\xbaJ\x01\x02R\fserviceCidrs\"\x0f\n" +
-	"\rAuditLogsSpec\"\x82\x02\n" +
+	"\rAuditLogsSpec\"\v\n" +
+	"\tKarpenter\"\x82\x02\n" +
 	"\rClusterStatus\x129\n" +
 	"\x05state\x18\x01 \x01(\x0e2#.nebius.mk8s.v1.ClusterStatus.StateR\x05state\x12G\n" +
 	"\rcontrol_plane\x18\x02 \x01(\v2\".nebius.mk8s.v1.ControlPlaneStatusR\fcontrolPlane\x12 \n" +
@@ -740,7 +793,7 @@ func file_nebius_mk8s_v1_cluster_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_mk8s_v1_cluster_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nebius_mk8s_v1_cluster_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_nebius_mk8s_v1_cluster_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_nebius_mk8s_v1_cluster_proto_goTypes = []any{
 	(ClusterStatus_State)(0),            // 0: nebius.mk8s.v1.ClusterStatus.State
 	(*Cluster)(nil),                     // 1: nebius.mk8s.v1.Cluster
@@ -750,30 +803,32 @@ var file_nebius_mk8s_v1_cluster_proto_goTypes = []any{
 	(*PublicEndpointSpec)(nil),          // 5: nebius.mk8s.v1.PublicEndpointSpec
 	(*KubeNetworkSpec)(nil),             // 6: nebius.mk8s.v1.KubeNetworkSpec
 	(*AuditLogsSpec)(nil),               // 7: nebius.mk8s.v1.AuditLogsSpec
-	(*ClusterStatus)(nil),               // 8: nebius.mk8s.v1.ClusterStatus
-	(*ControlPlaneStatus)(nil),          // 9: nebius.mk8s.v1.ControlPlaneStatus
-	(*ControlPlaneStatusEndpoints)(nil), // 10: nebius.mk8s.v1.ControlPlaneStatusEndpoints
-	(*ControlPlaneStatusAuth)(nil),      // 11: nebius.mk8s.v1.ControlPlaneStatusAuth
-	(*v1.ResourceMetadata)(nil),         // 12: nebius.common.v1.ResourceMetadata
+	(*Karpenter)(nil),                   // 8: nebius.mk8s.v1.Karpenter
+	(*ClusterStatus)(nil),               // 9: nebius.mk8s.v1.ClusterStatus
+	(*ControlPlaneStatus)(nil),          // 10: nebius.mk8s.v1.ControlPlaneStatus
+	(*ControlPlaneStatusEndpoints)(nil), // 11: nebius.mk8s.v1.ControlPlaneStatusEndpoints
+	(*ControlPlaneStatusAuth)(nil),      // 12: nebius.mk8s.v1.ControlPlaneStatusAuth
+	(*v1.ResourceMetadata)(nil),         // 13: nebius.common.v1.ResourceMetadata
 }
 var file_nebius_mk8s_v1_cluster_proto_depIdxs = []int32{
-	12, // 0: nebius.mk8s.v1.Cluster.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	13, // 0: nebius.mk8s.v1.Cluster.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	2,  // 1: nebius.mk8s.v1.Cluster.spec:type_name -> nebius.mk8s.v1.ClusterSpec
-	8,  // 2: nebius.mk8s.v1.Cluster.status:type_name -> nebius.mk8s.v1.ClusterStatus
+	9,  // 2: nebius.mk8s.v1.Cluster.status:type_name -> nebius.mk8s.v1.ClusterStatus
 	3,  // 3: nebius.mk8s.v1.ClusterSpec.control_plane:type_name -> nebius.mk8s.v1.ControlPlaneSpec
 	6,  // 4: nebius.mk8s.v1.ClusterSpec.kube_network:type_name -> nebius.mk8s.v1.KubeNetworkSpec
 	4,  // 5: nebius.mk8s.v1.ControlPlaneSpec.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneEndpointsSpec
 	7,  // 6: nebius.mk8s.v1.ControlPlaneSpec.audit_logs:type_name -> nebius.mk8s.v1.AuditLogsSpec
-	5,  // 7: nebius.mk8s.v1.ControlPlaneEndpointsSpec.public_endpoint:type_name -> nebius.mk8s.v1.PublicEndpointSpec
-	0,  // 8: nebius.mk8s.v1.ClusterStatus.state:type_name -> nebius.mk8s.v1.ClusterStatus.State
-	9,  // 9: nebius.mk8s.v1.ClusterStatus.control_plane:type_name -> nebius.mk8s.v1.ControlPlaneStatus
-	10, // 10: nebius.mk8s.v1.ControlPlaneStatus.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneStatusEndpoints
-	11, // 11: nebius.mk8s.v1.ControlPlaneStatus.auth:type_name -> nebius.mk8s.v1.ControlPlaneStatusAuth
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	8,  // 7: nebius.mk8s.v1.ControlPlaneSpec.karpenter:type_name -> nebius.mk8s.v1.Karpenter
+	5,  // 8: nebius.mk8s.v1.ControlPlaneEndpointsSpec.public_endpoint:type_name -> nebius.mk8s.v1.PublicEndpointSpec
+	0,  // 9: nebius.mk8s.v1.ClusterStatus.state:type_name -> nebius.mk8s.v1.ClusterStatus.State
+	10, // 10: nebius.mk8s.v1.ClusterStatus.control_plane:type_name -> nebius.mk8s.v1.ControlPlaneStatus
+	11, // 11: nebius.mk8s.v1.ControlPlaneStatus.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneStatusEndpoints
+	12, // 12: nebius.mk8s.v1.ControlPlaneStatus.auth:type_name -> nebius.mk8s.v1.ControlPlaneStatusAuth
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_cluster_proto_init() }
@@ -787,7 +842,7 @@ func file_nebius_mk8s_v1_cluster_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1_cluster_proto_rawDesc), len(file_nebius_mk8s_v1_cluster_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

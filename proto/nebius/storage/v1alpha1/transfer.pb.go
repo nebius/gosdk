@@ -1235,7 +1235,7 @@ const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
 	"\bTransfer\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12A\n" +
 	"\x04spec\x18\x02 \x01(\v2%.nebius.storage.v1alpha1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12E\n" +
-	"\x06status\x18\x03 \x01(\v2'.nebius.storage.v1alpha1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\xee\x12\n" +
+	"\x06status\x18\x03 \x01(\v2'.nebius.storage.v1alpha1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\xb3\x13\n" +
 	"\fTransferSpec\x12R\n" +
 	"\x06source\x18\x01 \x01(\v22.nebius.storage.v1alpha1.TransferSpec.SourceBucketB\x06\xbaH\x03\xc8\x01\x01R\x06source\x12a\n" +
 	"\vdestination\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.DestinationBucketB\x06\xbaH\x03\xc8\x01\x01R\vdestination\x12|\n" +
@@ -1243,40 +1243,36 @@ const file_nebius_storage_v1alpha1_transfer_proto_rawDesc = "" +
 	"\x18after_n_empty_iterations\x18\x04 \x01(\v2H.nebius.storage.v1alpha1.TransferSpec.StopConditionAfterNEmptyIterationsH\x00R\x15afterNEmptyIterations\x12_\n" +
 	"\binfinite\x18\x05 \x01(\v2;.nebius.storage.v1alpha1.TransferSpec.StopConditionInfiniteB\x04\xbaJ\x01\x06H\x00R\binfinite\x12a\n" +
 	"\x18inter_iteration_interval\x18\x06 \x01(\v2\x19.google.protobuf.DurationB\f\xbaH\x05\xaa\x01\x022\x00\xbaJ\x01\aR\x16interIterationInterval\x12n\n" +
-	"\x12overwrite_strategy\x18\a \x01(\x0e27.nebius.storage.v1alpha1.TransferSpec.OverwriteStrategyB\x06\xbaH\x03\xc8\x01\x01R\x11overwriteStrategy\x1a\xd2\x02\n" +
-	"\fSourceBucket\x12&\n" +
-	"\bendpoint\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\bendpoint\x12+\n" +
-	"\vbucket_name\x18\x02 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\n" +
-	"bucketName\x12\"\n" +
-	"\x06region\x18\x03 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x06region\x12\x1c\n" +
-	"\x06prefix\x18\x06 \x01(\tB\x04\xbaJ\x01\x02R\x06prefix\x12_\n" +
+	"\x12overwrite_strategy\x18\a \x01(\x0e27.nebius.storage.v1alpha1.TransferSpec.OverwriteStrategyB\x06\xbaH\x03\xc8\x01\x01R\x11overwriteStrategy\x1a\xe7\x02\n" +
+	"\fSourceBucket\x12+\n" +
+	"\bendpoint\x18\x01 \x01(\tB\x0f\xbaH\b\xc8\x01\x01r\x03\x18\xe8\a\xbaJ\x01\x02R\bendpoint\x12/\n" +
+	"\vbucket_name\x18\x02 \x01(\tB\x0e\xbaH\a\xc8\x01\x01r\x02\x18d\xbaJ\x01\x02R\n" +
+	"bucketName\x12&\n" +
+	"\x06region\x18\x03 \x01(\tB\x0e\xbaH\a\xc8\x01\x01r\x02\x182\xbaJ\x01\x02R\x06region\x12$\n" +
+	"\x06prefix\x18\x06 \x01(\tB\f\xbaH\x05r\x03\x18\xe8\a\xbaJ\x01\x02R\x06prefix\x12_\n" +
 	"\vcredentials\x18\x04 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.BucketCredentialsB\x04\xbaJ\x01\x04R\vcredentials\x12J\n" +
-	"\blimiters\x18\x05 \x01(\v2..nebius.storage.v1alpha1.TransferSpec.LimitersR\blimiters\x1a\xff\x01\n" +
-	"\x11DestinationBucket\x12+\n" +
-	"\vbucket_name\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\n" +
-	"bucketName\x12\x1c\n" +
-	"\x06prefix\x18\x03 \x01(\tB\x04\xbaJ\x01\x02R\x06prefix\x12_\n" +
-	"\vcredentials\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.BucketCredentialsB\x04\xbaJ\x01\x04R\vcredentials\x12 \n" +
+	"\blimiters\x18\x05 \x01(\v2..nebius.storage.v1alpha1.TransferSpec.LimitersR\blimiters\x1a\x9a\x02\n" +
+	"\x11DestinationBucket\x12/\n" +
+	"\vbucket_name\x18\x01 \x01(\tB\x0e\xbaH\a\xc8\x01\x01r\x02\x18d\xbaJ\x01\x02R\n" +
+	"bucketName\x12$\n" +
+	"\x06prefix\x18\x03 \x01(\tB\f\xbaH\x05r\x03\x18\xe8\a\xbaJ\x01\x02R\x06prefix\x12_\n" +
+	"\vcredentials\x18\x02 \x01(\v27.nebius.storage.v1alpha1.TransferSpec.BucketCredentialsB\x04\xbaJ\x01\x04R\vcredentials\x12(\n" +
 	"\bendpoint\x18\n" +
-	" \x01(\tB\x04\xbaJ\x01\x02R\bendpoint\x12\x1c\n" +
-	"\x06region\x18\v \x01(\tB\x04\xbaJ\x01\x02R\x06region\x1a\x80\x05\n" +
+	" \x01(\tB\f\xbaH\x05r\x03\x18\xe8\a\xbaJ\x01\x02R\bendpoint\x12#\n" +
+	"\x06region\x18\v \x01(\tB\v\xbaH\x04r\x02\x182\xbaJ\x01\x02R\x06region\x1a\x95\x05\n" +
 	"\x11BucketCredentials\x12r\n" +
 	"\tanonymous\x18\x01 \x01(\v2L.nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAnonymousB\x04\xbaJ\x01\x06H\x00R\tanonymous\x12m\n" +
 	"\n" +
 	"access_key\x18\x02 \x01(\v2L.nebius.storage.v1alpha1.TransferSpec.BucketCredentials.CredentialsAccessKeyH\x00R\taccessKey\x12r\n" +
 	"\x10azure_access_key\x18\x03 \x01(\v2F.nebius.storage.v1alpha1.TransferSpec.BucketCredentials.AzureAccessKeyH\x00R\x0eazureAccessKey\x1a\x16\n" +
-	"\x14CredentialsAnonymous\x1a|\n" +
-	"\x14CredentialsAccessKey\x12-\n" +
-	"\raccess_key_id\x18\x01 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\vaccessKeyId\x125\n" +
-	"\x11secret_access_key\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\x0fsecretAccessKey\x1ah\n" +
-	"\x0eAzureAccessKey\x12,\n" +
-	"\faccount_name\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\vaccountName\x12(\n" +
+	"\x14CredentialsAnonymous\x1a\x86\x01\n" +
+	"\x14CredentialsAccessKey\x122\n" +
+	"\raccess_key_id\x18\x01 \x01(\tB\x0e\xbaH\b\xc8\x01\x01r\x03\x18\xe8\a\xc0J\x01R\vaccessKeyId\x12:\n" +
+	"\x11secret_access_key\x18\x02 \x01(\tB\x0e\xbaH\b\xc8\x01\x01r\x03\x18\xe8\a\xc0J\x01R\x0fsecretAccessKey\x1ar\n" +
+	"\x0eAzureAccessKey\x121\n" +
+	"\faccount_name\x18\x02 \x01(\tB\x0e\xbaH\b\xc8\x01\x01r\x03\x18\xe8\a\xc0J\x01R\vaccountName\x12-\n" +
 	"\n" +
-	"access_key\x18\x01 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\taccessKeyB\x14\n" +
+	"access_key\x18\x01 \x01(\tB\x0e\xbaH\b\xc8\x01\x01r\x03\x18\xe8\a\xc0J\x01R\taccessKeyB\x14\n" +
 	"\vcredentials\x12\x05\xbaH\x02\b\x01\x1aw\n" +
 	"\bLimiters\x12;\n" +
 	"\x1abandwidth_bytes_per_second\x18\x01 \x01(\x04R\x17bandwidthBytesPerSecond\x12.\n" +
