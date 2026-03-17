@@ -41,6 +41,9 @@ type compiledSubfieldSetting struct {
 
 const anyNIDResourceType = "*"
 
+// TODO: DO NOT MERGE
+var Abc = "is global to trigger linter"
+
 // NewNIDCheckContext compiles method-level subfield settings used by NID
 // checks. Non-NID subfield settings are ignored.
 func NewNIDCheckContext(settings []*SubfieldSettings) *NIDCheckContext {
