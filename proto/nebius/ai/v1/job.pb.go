@@ -903,7 +903,8 @@ type JobSpec_VolumeMount struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Source of the volume mount.
 	//
-	// Can be a name of an ID of Nebius Storage bucket or filesystem.
+	// Can be a name or an ID of Nebius Storage bucket or filesystem,
+	// or an S3 URI (e.g. "s3://bucket-name") when using external S3 storage.
 	Source string `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`
 	// Path inside the source volume.
 	//
@@ -914,7 +915,13 @@ type JobSpec_VolumeMount struct {
 	// Must be an absolute path.
 	ContainerPath string `protobuf:"bytes,3,opt,name=container_path,json=containerPath,proto3" json:"container_path,omitempty"`
 	// Mount mode.
-	Mode          JobSpec_VolumeMount_Mode `protobuf:"varint,4,opt,name=mode,proto3,enum=nebius.ai.v1.JobSpec_VolumeMount_Mode" json:"mode,omitempty"`
+	Mode JobSpec_VolumeMount_Mode `protobuf:"varint,4,opt,name=mode,proto3,enum=nebius.ai.v1.JobSpec_VolumeMount_Mode" json:"mode,omitempty"`
+	// Source Config
+	//
+	// Types that are valid to be assigned to SourceConfig:
+	//
+	//	*JobSpec_VolumeMount_S3Config_
+	SourceConfig  isJobSpec_VolumeMount_SourceConfig `protobuf_oneof:"source_config"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -976,6 +983,32 @@ func (x *JobSpec_VolumeMount) GetMode() JobSpec_VolumeMount_Mode {
 	}
 	return JobSpec_VolumeMount_MODE_UNSPECIFIED
 }
+
+func (x *JobSpec_VolumeMount) GetSourceConfig() isJobSpec_VolumeMount_SourceConfig {
+	if x != nil {
+		return x.SourceConfig
+	}
+	return nil
+}
+
+func (x *JobSpec_VolumeMount) GetS3Config() *JobSpec_VolumeMount_S3Config {
+	if x != nil {
+		if x, ok := x.SourceConfig.(*JobSpec_VolumeMount_S3Config_); ok {
+			return x.S3Config
+		}
+	}
+	return nil
+}
+
+type isJobSpec_VolumeMount_SourceConfig interface {
+	isJobSpec_VolumeMount_SourceConfig()
+}
+
+type JobSpec_VolumeMount_S3Config_ struct {
+	S3Config *JobSpec_VolumeMount_S3Config `protobuf:"bytes,5,opt,name=s3_config,json=s3Config,proto3,oneof"`
+}
+
+func (*JobSpec_VolumeMount_S3Config_) isJobSpec_VolumeMount_SourceConfig() {}
 
 type JobSpec_DiskSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1095,6 +1128,160 @@ func (x *JobSpec_RegistryCredentials) GetMysteryboxSecretVersion() string {
 	return ""
 }
 
+// Config for accessing an external S3-compatible storage.
+//
+// The bucket name is specified in the `source` field as an S3 URI.
+type JobSpec_VolumeMount_S3Config struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// S3-compatible endpoint URL (e.g. "https://s3.amazonaws.com").
+	Endpoint string `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	// S3 region.
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
+	// Authentication method.
+	//
+	// Types that are valid to be assigned to Auth:
+	//
+	//	*JobSpec_VolumeMount_S3Config_Credentials
+	Auth          isJobSpec_VolumeMount_S3Config_Auth `protobuf_oneof:"auth"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JobSpec_VolumeMount_S3Config) Reset() {
+	*x = JobSpec_VolumeMount_S3Config{}
+	mi := &file_nebius_ai_v1_job_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JobSpec_VolumeMount_S3Config) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JobSpec_VolumeMount_S3Config) ProtoMessage() {}
+
+func (x *JobSpec_VolumeMount_S3Config) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_ai_v1_job_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JobSpec_VolumeMount_S3Config.ProtoReflect.Descriptor instead.
+func (*JobSpec_VolumeMount_S3Config) Descriptor() ([]byte, []int) {
+	return file_nebius_ai_v1_job_proto_rawDescGZIP(), []int{1, 2, 0}
+}
+
+func (x *JobSpec_VolumeMount_S3Config) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *JobSpec_VolumeMount_S3Config) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *JobSpec_VolumeMount_S3Config) GetAuth() isJobSpec_VolumeMount_S3Config_Auth {
+	if x != nil {
+		return x.Auth
+	}
+	return nil
+}
+
+func (x *JobSpec_VolumeMount_S3Config) GetCredentials() *JobSpec_VolumeMount_S3Config_S3Credentials {
+	if x != nil {
+		if x, ok := x.Auth.(*JobSpec_VolumeMount_S3Config_Credentials); ok {
+			return x.Credentials
+		}
+	}
+	return nil
+}
+
+type isJobSpec_VolumeMount_S3Config_Auth interface {
+	isJobSpec_VolumeMount_S3Config_Auth()
+}
+
+type JobSpec_VolumeMount_S3Config_Credentials struct {
+	// Inline S3 credentials.
+	Credentials *JobSpec_VolumeMount_S3Config_S3Credentials `protobuf:"bytes,4,opt,name=credentials,proto3,oneof"`
+}
+
+func (*JobSpec_VolumeMount_S3Config_Credentials) isJobSpec_VolumeMount_S3Config_Auth() {}
+
+// Inline S3 credentials.
+type JobSpec_VolumeMount_S3Config_S3Credentials struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Access key ID.
+	AccessKeyId string `protobuf:"bytes,1,opt,name=access_key_id,json=accessKeyId,proto3" json:"access_key_id,omitempty"`
+	// Secret access key.
+	SecretAccessKey string `protobuf:"bytes,2,opt,name=secret_access_key,json=secretAccessKey,proto3" json:"secret_access_key,omitempty"`
+	// Session token (optional, for temporary credentials).
+	SessionToken  string `protobuf:"bytes,3,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JobSpec_VolumeMount_S3Config_S3Credentials) Reset() {
+	*x = JobSpec_VolumeMount_S3Config_S3Credentials{}
+	mi := &file_nebius_ai_v1_job_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JobSpec_VolumeMount_S3Config_S3Credentials) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JobSpec_VolumeMount_S3Config_S3Credentials) ProtoMessage() {}
+
+func (x *JobSpec_VolumeMount_S3Config_S3Credentials) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_ai_v1_job_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JobSpec_VolumeMount_S3Config_S3Credentials.ProtoReflect.Descriptor instead.
+func (*JobSpec_VolumeMount_S3Config_S3Credentials) Descriptor() ([]byte, []int) {
+	return file_nebius_ai_v1_job_proto_rawDescGZIP(), []int{1, 2, 0, 0}
+}
+
+func (x *JobSpec_VolumeMount_S3Config_S3Credentials) GetAccessKeyId() string {
+	if x != nil {
+		return x.AccessKeyId
+	}
+	return ""
+}
+
+func (x *JobSpec_VolumeMount_S3Config_S3Credentials) GetSecretAccessKey() string {
+	if x != nil {
+		return x.SecretAccessKey
+	}
+	return ""
+}
+
+func (x *JobSpec_VolumeMount_S3Config_S3Credentials) GetSessionToken() string {
+	if x != nil {
+		return x.SessionToken
+	}
+	return ""
+}
+
 var File_nebius_ai_v1_job_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_job_proto_rawDesc = "" +
@@ -1103,7 +1290,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x03Job\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xb2\r\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xf5\x10\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1137,18 +1324,29 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x14PROTOCOL_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04HTTP\x10\x01\x12\a\n" +
 	"\x03TCP\x10\x02\x12\a\n" +
-	"\x03UDP\x10\x03\x1a\xee\x01\n" +
+	"\x03UDP\x10\x03\x1a\xb1\x05\n" +
 	"\vVolumeMount\x12\x16\n" +
 	"\x06source\x18\x01 \x01(\tR\x06source\x12\x1f\n" +
 	"\vsource_path\x18\x02 \x01(\tR\n" +
 	"sourcePath\x12%\n" +
 	"\x0econtainer_path\x18\x03 \x01(\tR\rcontainerPath\x12B\n" +
-	"\x04mode\x18\x04 \x01(\x0e2&.nebius.ai.v1.JobSpec.VolumeMount.ModeB\x06\xbaH\x03\xc8\x01\x01R\x04mode\";\n" +
+	"\x04mode\x18\x04 \x01(\x0e2&.nebius.ai.v1.JobSpec.VolumeMount.ModeB\x06\xbaH\x03\xc8\x01\x01R\x04mode\x12I\n" +
+	"\ts3_config\x18\x05 \x01(\v2*.nebius.ai.v1.JobSpec.VolumeMount.S3ConfigH\x00R\bs3Config\x1a\xe4\x02\n" +
+	"\bS3Config\x12\"\n" +
+	"\bendpoint\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bendpoint\x12\x1e\n" +
+	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\\\n" +
+	"\vcredentials\x18\x04 \x01(\v28.nebius.ai.v1.JobSpec.VolumeMount.S3Config.S3CredentialsH\x00R\vcredentials\x1a\x9f\x01\n" +
+	"\rS3Credentials\x12-\n" +
+	"\raccess_key_id\x18\x01 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\vaccessKeyId\x125\n" +
+	"\x11secret_access_key\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\x0fsecretAccessKey\x12(\n" +
+	"\rsession_token\x18\x03 \x01(\tB\x03\xc0J\x01R\fsessionTokenB\x06\n" +
+	"\x04authJ\x04\b\x02\x10\x03R\x06bucket\";\n" +
 	"\x04Mode\x12\x14\n" +
 	"\x10MODE_UNSPECIFIED\x10\x00\x12\x0e\n" +
 	"\n" +
 	"READ_WRITE\x10\x01\x12\r\n" +
-	"\tREAD_ONLY\x10\x02\x1ak\n" +
+	"\tREAD_ONLY\x10\x02B\x0f\n" +
+	"\rsource_config\x1ak\n" +
 	"\bDiskSpec\x12@\n" +
 	"\x04type\x18\x01 \x01(\x0e2$.nebius.compute.v1.DiskSpec.DiskTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12\x1d\n" +
 	"\n" +
@@ -1220,29 +1418,31 @@ func file_nebius_ai_v1_job_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_ai_v1_job_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_nebius_ai_v1_job_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_nebius_ai_v1_job_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_nebius_ai_v1_job_proto_goTypes = []any{
-	(JobSpec_Port_Protocol)(0),            // 0: nebius.ai.v1.JobSpec.Port.Protocol
-	(JobSpec_VolumeMount_Mode)(0),         // 1: nebius.ai.v1.JobSpec.VolumeMount.Mode
-	(JobStatus_State)(0),                  // 2: nebius.ai.v1.JobStatus.State
-	(JobInstanceStatus_State)(0),          // 3: nebius.ai.v1.JobInstanceStatus.State
-	(*Job)(nil),                           // 4: nebius.ai.v1.Job
-	(*JobSpec)(nil),                       // 5: nebius.ai.v1.JobSpec
-	(*JobStatus)(nil),                     // 6: nebius.ai.v1.JobStatus
-	(*JobStateDetails)(nil),               // 7: nebius.ai.v1.JobStateDetails
-	(*JobInstanceStatus)(nil),             // 8: nebius.ai.v1.JobInstanceStatus
-	(*JobSpec_EnvironmentVariable)(nil),   // 9: nebius.ai.v1.JobSpec.EnvironmentVariable
-	(*JobSpec_Port)(nil),                  // 10: nebius.ai.v1.JobSpec.Port
-	(*JobSpec_VolumeMount)(nil),           // 11: nebius.ai.v1.JobSpec.VolumeMount
-	(*JobSpec_DiskSpec)(nil),              // 12: nebius.ai.v1.JobSpec.DiskSpec
-	(*JobSpec_RegistryCredentials)(nil),   // 13: nebius.ai.v1.JobSpec.RegistryCredentials
-	(*v1.ResourceMetadata)(nil),           // 14: nebius.common.v1.ResourceMetadata
-	(*durationpb.Duration)(nil),           // 15: google.protobuf.Duration
-	(v11.InstanceStatus_InstanceState)(0), // 16: nebius.compute.v1.InstanceStatus.InstanceState
-	(v11.DiskSpec_DiskType)(0),            // 17: nebius.compute.v1.DiskSpec.DiskType
+	(JobSpec_Port_Protocol)(0),                         // 0: nebius.ai.v1.JobSpec.Port.Protocol
+	(JobSpec_VolumeMount_Mode)(0),                      // 1: nebius.ai.v1.JobSpec.VolumeMount.Mode
+	(JobStatus_State)(0),                               // 2: nebius.ai.v1.JobStatus.State
+	(JobInstanceStatus_State)(0),                       // 3: nebius.ai.v1.JobInstanceStatus.State
+	(*Job)(nil),                                        // 4: nebius.ai.v1.Job
+	(*JobSpec)(nil),                                    // 5: nebius.ai.v1.JobSpec
+	(*JobStatus)(nil),                                  // 6: nebius.ai.v1.JobStatus
+	(*JobStateDetails)(nil),                            // 7: nebius.ai.v1.JobStateDetails
+	(*JobInstanceStatus)(nil),                          // 8: nebius.ai.v1.JobInstanceStatus
+	(*JobSpec_EnvironmentVariable)(nil),                // 9: nebius.ai.v1.JobSpec.EnvironmentVariable
+	(*JobSpec_Port)(nil),                               // 10: nebius.ai.v1.JobSpec.Port
+	(*JobSpec_VolumeMount)(nil),                        // 11: nebius.ai.v1.JobSpec.VolumeMount
+	(*JobSpec_DiskSpec)(nil),                           // 12: nebius.ai.v1.JobSpec.DiskSpec
+	(*JobSpec_RegistryCredentials)(nil),                // 13: nebius.ai.v1.JobSpec.RegistryCredentials
+	(*JobSpec_VolumeMount_S3Config)(nil),               // 14: nebius.ai.v1.JobSpec.VolumeMount.S3Config
+	(*JobSpec_VolumeMount_S3Config_S3Credentials)(nil), // 15: nebius.ai.v1.JobSpec.VolumeMount.S3Config.S3Credentials
+	(*v1.ResourceMetadata)(nil),                        // 16: nebius.common.v1.ResourceMetadata
+	(*durationpb.Duration)(nil),                        // 17: google.protobuf.Duration
+	(v11.InstanceStatus_InstanceState)(0),              // 18: nebius.compute.v1.InstanceStatus.InstanceState
+	(v11.DiskSpec_DiskType)(0),                         // 19: nebius.compute.v1.DiskSpec.DiskType
 }
 var file_nebius_ai_v1_job_proto_depIdxs = []int32{
-	14, // 0: nebius.ai.v1.Job.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	16, // 0: nebius.ai.v1.Job.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	5,  // 1: nebius.ai.v1.Job.spec:type_name -> nebius.ai.v1.JobSpec
 	6,  // 2: nebius.ai.v1.Job.status:type_name -> nebius.ai.v1.JobStatus
 	9,  // 3: nebius.ai.v1.JobSpec.environment_variables:type_name -> nebius.ai.v1.JobSpec.EnvironmentVariable
@@ -1250,20 +1450,22 @@ var file_nebius_ai_v1_job_proto_depIdxs = []int32{
 	11, // 5: nebius.ai.v1.JobSpec.volumes:type_name -> nebius.ai.v1.JobSpec.VolumeMount
 	13, // 6: nebius.ai.v1.JobSpec.registry_credentials:type_name -> nebius.ai.v1.JobSpec.RegistryCredentials
 	12, // 7: nebius.ai.v1.JobSpec.disk:type_name -> nebius.ai.v1.JobSpec.DiskSpec
-	15, // 8: nebius.ai.v1.JobSpec.timeout:type_name -> google.protobuf.Duration
+	17, // 8: nebius.ai.v1.JobSpec.timeout:type_name -> google.protobuf.Duration
 	8,  // 9: nebius.ai.v1.JobStatus.instances:type_name -> nebius.ai.v1.JobInstanceStatus
 	2,  // 10: nebius.ai.v1.JobStatus.state:type_name -> nebius.ai.v1.JobStatus.State
 	7,  // 11: nebius.ai.v1.JobStatus.state_details:type_name -> nebius.ai.v1.JobStateDetails
 	3,  // 12: nebius.ai.v1.JobInstanceStatus.state:type_name -> nebius.ai.v1.JobInstanceStatus.State
-	16, // 13: nebius.ai.v1.JobInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	18, // 13: nebius.ai.v1.JobInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
 	0,  // 14: nebius.ai.v1.JobSpec.Port.protocol:type_name -> nebius.ai.v1.JobSpec.Port.Protocol
 	1,  // 15: nebius.ai.v1.JobSpec.VolumeMount.mode:type_name -> nebius.ai.v1.JobSpec.VolumeMount.Mode
-	17, // 16: nebius.ai.v1.JobSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	14, // 16: nebius.ai.v1.JobSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config
+	19, // 17: nebius.ai.v1.JobSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
+	15, // 18: nebius.ai.v1.JobSpec.VolumeMount.S3Config.credentials:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.S3Credentials
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_nebius_ai_v1_job_proto_init() }
@@ -1271,13 +1473,19 @@ func file_nebius_ai_v1_job_proto_init() {
 	if File_nebius_ai_v1_job_proto != nil {
 		return
 	}
+	file_nebius_ai_v1_job_proto_msgTypes[7].OneofWrappers = []any{
+		(*JobSpec_VolumeMount_S3Config_)(nil),
+	}
+	file_nebius_ai_v1_job_proto_msgTypes[10].OneofWrappers = []any{
+		(*JobSpec_VolumeMount_S3Config_Credentials)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_ai_v1_job_proto_rawDesc), len(file_nebius_ai_v1_job_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -89,6 +89,7 @@ func (c credsAuthenticator) LogValue() slog.Value {
 func (c credsServiceAccount) LogValue() slog.Value {
 	return slog.AnyValue(fmt.Sprintf("ServiceAccountReader(%v)", c.reader))
 }
+
 func (c credsOneOf) LogValue() slog.Value {
 	return slog.AnyValue(fmt.Sprintf("OneOfCredentials(%d options)", len(c)))
 }
@@ -98,5 +99,6 @@ func (credsNoCreds) credentials()        {}
 func (credsTokener) credentials()        {}
 func (credsAuthenticator) credentials()  {}
 func (credsServiceAccount) credentials() {}
-func (credsOneOf) credentials()          {}
-func (credsPropagate) credentials()      {}
+
+func (credsOneOf) credentials()     {}
+func (credsPropagate) credentials() {}

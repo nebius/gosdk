@@ -45,8 +45,9 @@ func (s poolService) Get(ctx context.Context, request *v1alpha1.GetPoolRequest, 
 	*v1alpha1.Pool,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -65,6 +66,7 @@ func (s poolService) GetByName(ctx context.Context, request *v1alpha1.GetPoolByN
 	*v1alpha1.Pool,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
@@ -80,7 +82,7 @@ func (s poolService) GetByName(ctx context.Context, request *v1alpha1.GetPoolByN
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -99,6 +101,7 @@ func (s poolService) List(ctx context.Context, request *v1alpha1.ListPoolsReques
 	*v1alpha1.ListPoolsResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
@@ -114,7 +117,7 @@ func (s poolService) List(ctx context.Context, request *v1alpha1.ListPoolsReques
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}

@@ -61,6 +61,9 @@ func (x *JobSpec) Sanitize() {
 	for _, y := range x.EnvironmentVariables {
 		y.Sanitize()
 	}
+	for _, y := range x.Volumes {
+		y.Sanitize()
+	}
 	x.RegistryCredentials.Sanitize()
 }
 
@@ -146,8 +149,143 @@ func (w *wrapperJobSpec_EnvironmentVariable) ProtoReflect() protoreflect.Message
 // func (x *JobSpec_Port) Sanitize()            // is not generated as no sensitive fields found
 // func (x *JobSpec_Port) LogValue() slog.Value // is not generated as no sensitive fields found
 
-// func (x *JobSpec_VolumeMount) Sanitize()            // is not generated as no sensitive fields found
-// func (x *JobSpec_VolumeMount) LogValue() slog.Value // is not generated as no sensitive fields found
+// Sanitize mutates [JobSpec_VolumeMount] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *JobSpec_VolumeMount) Sanitize() {
+	if x == nil {
+		return
+	}
+	if o, ok := x.SourceConfig.(*JobSpec_VolumeMount_S3Config_); ok && o != nil {
+		o.S3Config.Sanitize()
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [JobSpec_VolumeMount].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *JobSpec_VolumeMount
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [JobSpec_VolumeMount], use the following code:
+//
+//	var original *JobSpec_VolumeMount
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*JobSpec_VolumeMount)
+func (x *JobSpec_VolumeMount) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*JobSpec_VolumeMount) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperJobSpec_VolumeMount)(c))
+}
+
+// wrapperJobSpec_VolumeMount is used to return [JobSpec_VolumeMount] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperJobSpec_VolumeMount JobSpec_VolumeMount
+
+func (w *wrapperJobSpec_VolumeMount) String() string {
+	return (*JobSpec_VolumeMount)(w).String()
+}
+
+func (*wrapperJobSpec_VolumeMount) ProtoMessage() {}
+
+func (w *wrapperJobSpec_VolumeMount) ProtoReflect() protoreflect.Message {
+	return (*JobSpec_VolumeMount)(w).ProtoReflect()
+}
+
+// Sanitize mutates [JobSpec_VolumeMount_S3Config] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *JobSpec_VolumeMount_S3Config) Sanitize() {
+	if x == nil {
+		return
+	}
+	if o, ok := x.Auth.(*JobSpec_VolumeMount_S3Config_Credentials); ok && o != nil {
+		o.Credentials.Sanitize()
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [JobSpec_VolumeMount_S3Config].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *JobSpec_VolumeMount_S3Config
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [JobSpec_VolumeMount_S3Config], use the following code:
+//
+//	var original *JobSpec_VolumeMount_S3Config
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*JobSpec_VolumeMount_S3Config)
+func (x *JobSpec_VolumeMount_S3Config) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*JobSpec_VolumeMount_S3Config) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperJobSpec_VolumeMount_S3Config)(c))
+}
+
+// wrapperJobSpec_VolumeMount_S3Config is used to return [JobSpec_VolumeMount_S3Config] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperJobSpec_VolumeMount_S3Config JobSpec_VolumeMount_S3Config
+
+func (w *wrapperJobSpec_VolumeMount_S3Config) String() string {
+	return (*JobSpec_VolumeMount_S3Config)(w).String()
+}
+
+func (*wrapperJobSpec_VolumeMount_S3Config) ProtoMessage() {}
+
+func (w *wrapperJobSpec_VolumeMount_S3Config) ProtoReflect() protoreflect.Message {
+	return (*JobSpec_VolumeMount_S3Config)(w).ProtoReflect()
+}
+
+// Sanitize mutates [JobSpec_VolumeMount_S3Config_S3Credentials] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *JobSpec_VolumeMount_S3Config_S3Credentials) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.AccessKeyId = "**HIDDEN**"
+	x.SecretAccessKey = "**HIDDEN**"
+	x.SessionToken = "**HIDDEN**"
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [JobSpec_VolumeMount_S3Config_S3Credentials].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *JobSpec_VolumeMount_S3Config_S3Credentials
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [JobSpec_VolumeMount_S3Config_S3Credentials], use the following code:
+//
+//	var original *JobSpec_VolumeMount_S3Config_S3Credentials
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*JobSpec_VolumeMount_S3Config_S3Credentials)
+func (x *JobSpec_VolumeMount_S3Config_S3Credentials) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*JobSpec_VolumeMount_S3Config_S3Credentials) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperJobSpec_VolumeMount_S3Config_S3Credentials)(c))
+}
+
+// wrapperJobSpec_VolumeMount_S3Config_S3Credentials is used to return [JobSpec_VolumeMount_S3Config_S3Credentials] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperJobSpec_VolumeMount_S3Config_S3Credentials JobSpec_VolumeMount_S3Config_S3Credentials
+
+func (w *wrapperJobSpec_VolumeMount_S3Config_S3Credentials) String() string {
+	return (*JobSpec_VolumeMount_S3Config_S3Credentials)(w).String()
+}
+
+func (*wrapperJobSpec_VolumeMount_S3Config_S3Credentials) ProtoMessage() {}
+
+func (w *wrapperJobSpec_VolumeMount_S3Config_S3Credentials) ProtoReflect() protoreflect.Message {
+	return (*JobSpec_VolumeMount_S3Config_S3Credentials)(w).ProtoReflect()
+}
 
 // func (x *JobSpec_DiskSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *JobSpec_DiskSpec) LogValue() slog.Value // is not generated as no sensitive fields found

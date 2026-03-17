@@ -54,10 +54,10 @@ func (s secretService) Create(ctx context.Context, request *v1.CreateSecretReque
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(tenantID, nil) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -67,7 +67,7 @@ func (s secretService) Create(ctx context.Context, request *v1.CreateSecretReque
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -78,11 +78,8 @@ func (s secretService) Create(ctx context.Context, request *v1.CreateSecretReque
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, SecretServiceID)
@@ -104,17 +101,14 @@ func (s secretService) Update(ctx context.Context, request *v1.UpdateSecretReque
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, SecretServiceID)
@@ -136,8 +130,9 @@ func (s secretService) Get(ctx context.Context, request *v1.GetSecretRequest, op
 	*v1.Secret,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -156,6 +151,7 @@ func (s secretService) GetByName(ctx context.Context, request *v1.GetSecretByNam
 	*v1.Secret,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, nil) == "" {
@@ -171,7 +167,7 @@ func (s secretService) GetByName(ctx context.Context, request *v1.GetSecretByNam
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -190,6 +186,7 @@ func (s secretService) List(ctx context.Context, request *v1.ListSecretsRequest,
 	*v1.ListSecretsResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, nil) == "" {
@@ -205,7 +202,7 @@ func (s secretService) List(ctx context.Context, request *v1.ListSecretsRequest,
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -249,8 +246,9 @@ func (s secretService) Delete(ctx context.Context, request *v1.DeleteSecretReque
 	operations.Operation,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -273,8 +271,9 @@ func (s secretService) Undelete(ctx context.Context, request *v1.UndeleteSecretR
 	operations.Operation,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}

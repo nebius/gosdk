@@ -50,10 +50,10 @@ func (s auditEventExportService) Start(ctx context.Context, request *v2.StartReq
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(tenantID, nil) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -63,7 +63,7 @@ func (s auditEventExportService) Start(ctx context.Context, request *v2.StartReq
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -74,11 +74,8 @@ func (s auditEventExportService) Start(ctx context.Context, request *v2.StartReq
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, AuditEventExportServiceID)
@@ -100,8 +97,9 @@ func (s auditEventExportService) Cancel(ctx context.Context, request *v2.CancelR
 	operations.Operation,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -124,8 +122,9 @@ func (s auditEventExportService) Get(ctx context.Context, request *v2.GetRequest
 	*v2.AuditEventExport,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -144,6 +143,7 @@ func (s auditEventExportService) List(ctx context.Context, request *v2.ListReque
 	*v2.ListAuditEventExportResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, nil) == "" {
@@ -159,7 +159,7 @@ func (s auditEventExportService) List(ctx context.Context, request *v2.ListReque
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}

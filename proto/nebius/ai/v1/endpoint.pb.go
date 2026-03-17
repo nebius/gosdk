@@ -881,7 +881,8 @@ type EndpointSpec_VolumeMount struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Source of the volume mount.
 	//
-	// Can be a name of an ID of Nebius Storage bucket or filesystem.
+	// Can be a name or an ID of Nebius Storage bucket or filesystem,
+	// or an S3 URI (e.g. "s3://bucket-name") when using external S3 storage.
 	Source string `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`
 	// Path inside the source volume.
 	//
@@ -892,7 +893,13 @@ type EndpointSpec_VolumeMount struct {
 	// Must be an absolute path.
 	ContainerPath string `protobuf:"bytes,3,opt,name=container_path,json=containerPath,proto3" json:"container_path,omitempty"`
 	// Mount mode.
-	Mode          EndpointSpec_VolumeMount_Mode `protobuf:"varint,4,opt,name=mode,proto3,enum=nebius.ai.v1.EndpointSpec_VolumeMount_Mode" json:"mode,omitempty"`
+	Mode EndpointSpec_VolumeMount_Mode `protobuf:"varint,4,opt,name=mode,proto3,enum=nebius.ai.v1.EndpointSpec_VolumeMount_Mode" json:"mode,omitempty"`
+	// Source Config
+	//
+	// Types that are valid to be assigned to SourceConfig:
+	//
+	//	*EndpointSpec_VolumeMount_S3Config_
+	SourceConfig  isEndpointSpec_VolumeMount_SourceConfig `protobuf_oneof:"source_config"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -954,6 +961,32 @@ func (x *EndpointSpec_VolumeMount) GetMode() EndpointSpec_VolumeMount_Mode {
 	}
 	return EndpointSpec_VolumeMount_MODE_UNSPECIFIED
 }
+
+func (x *EndpointSpec_VolumeMount) GetSourceConfig() isEndpointSpec_VolumeMount_SourceConfig {
+	if x != nil {
+		return x.SourceConfig
+	}
+	return nil
+}
+
+func (x *EndpointSpec_VolumeMount) GetS3Config() *EndpointSpec_VolumeMount_S3Config {
+	if x != nil {
+		if x, ok := x.SourceConfig.(*EndpointSpec_VolumeMount_S3Config_); ok {
+			return x.S3Config
+		}
+	}
+	return nil
+}
+
+type isEndpointSpec_VolumeMount_SourceConfig interface {
+	isEndpointSpec_VolumeMount_SourceConfig()
+}
+
+type EndpointSpec_VolumeMount_S3Config_ struct {
+	S3Config *EndpointSpec_VolumeMount_S3Config `protobuf:"bytes,5,opt,name=s3_config,json=s3Config,proto3,oneof"`
+}
+
+func (*EndpointSpec_VolumeMount_S3Config_) isEndpointSpec_VolumeMount_SourceConfig() {}
 
 type EndpointSpec_DiskSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1073,6 +1106,160 @@ func (x *EndpointSpec_RegistryCredentials) GetMysteryboxSecretVersion() string {
 	return ""
 }
 
+// Config for accessing an external S3-compatible storage.
+//
+// The bucket name is specified in the `source` field as an S3 URI.
+type EndpointSpec_VolumeMount_S3Config struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// S3-compatible endpoint URL (e.g. "https://s3.amazonaws.com").
+	Endpoint string `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	// S3 region.
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
+	// Authentication method.
+	//
+	// Types that are valid to be assigned to Auth:
+	//
+	//	*EndpointSpec_VolumeMount_S3Config_Credentials
+	Auth          isEndpointSpec_VolumeMount_S3Config_Auth `protobuf_oneof:"auth"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config) Reset() {
+	*x = EndpointSpec_VolumeMount_S3Config{}
+	mi := &file_nebius_ai_v1_endpoint_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EndpointSpec_VolumeMount_S3Config) ProtoMessage() {}
+
+func (x *EndpointSpec_VolumeMount_S3Config) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_ai_v1_endpoint_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EndpointSpec_VolumeMount_S3Config.ProtoReflect.Descriptor instead.
+func (*EndpointSpec_VolumeMount_S3Config) Descriptor() ([]byte, []int) {
+	return file_nebius_ai_v1_endpoint_proto_rawDescGZIP(), []int{1, 2, 0}
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config) GetAuth() isEndpointSpec_VolumeMount_S3Config_Auth {
+	if x != nil {
+		return x.Auth
+	}
+	return nil
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config) GetCredentials() *EndpointSpec_VolumeMount_S3Config_S3Credentials {
+	if x != nil {
+		if x, ok := x.Auth.(*EndpointSpec_VolumeMount_S3Config_Credentials); ok {
+			return x.Credentials
+		}
+	}
+	return nil
+}
+
+type isEndpointSpec_VolumeMount_S3Config_Auth interface {
+	isEndpointSpec_VolumeMount_S3Config_Auth()
+}
+
+type EndpointSpec_VolumeMount_S3Config_Credentials struct {
+	// Inline S3 credentials.
+	Credentials *EndpointSpec_VolumeMount_S3Config_S3Credentials `protobuf:"bytes,4,opt,name=credentials,proto3,oneof"`
+}
+
+func (*EndpointSpec_VolumeMount_S3Config_Credentials) isEndpointSpec_VolumeMount_S3Config_Auth() {}
+
+// Inline S3 credentials.
+type EndpointSpec_VolumeMount_S3Config_S3Credentials struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Access key ID.
+	AccessKeyId string `protobuf:"bytes,1,opt,name=access_key_id,json=accessKeyId,proto3" json:"access_key_id,omitempty"`
+	// Secret access key.
+	SecretAccessKey string `protobuf:"bytes,2,opt,name=secret_access_key,json=secretAccessKey,proto3" json:"secret_access_key,omitempty"`
+	// Session token (optional, for temporary credentials).
+	SessionToken  string `protobuf:"bytes,3,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) Reset() {
+	*x = EndpointSpec_VolumeMount_S3Config_S3Credentials{}
+	mi := &file_nebius_ai_v1_endpoint_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EndpointSpec_VolumeMount_S3Config_S3Credentials) ProtoMessage() {}
+
+func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_ai_v1_endpoint_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EndpointSpec_VolumeMount_S3Config_S3Credentials.ProtoReflect.Descriptor instead.
+func (*EndpointSpec_VolumeMount_S3Config_S3Credentials) Descriptor() ([]byte, []int) {
+	return file_nebius_ai_v1_endpoint_proto_rawDescGZIP(), []int{1, 2, 0, 0}
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) GetAccessKeyId() string {
+	if x != nil {
+		return x.AccessKeyId
+	}
+	return ""
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) GetSecretAccessKey() string {
+	if x != nil {
+		return x.SecretAccessKey
+	}
+	return ""
+}
+
+func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) GetSessionToken() string {
+	if x != nil {
+		return x.SessionToken
+	}
+	return ""
+}
+
 var File_nebius_ai_v1_endpoint_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
@@ -1081,7 +1268,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\x8c\r\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xd9\x10\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1115,18 +1302,29 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\x14PROTOCOL_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04HTTP\x10\x01\x12\a\n" +
 	"\x03TCP\x10\x02\x12\a\n" +
-	"\x03UDP\x10\x03\x1a\xf3\x01\n" +
+	"\x03UDP\x10\x03\x1a\xc0\x05\n" +
 	"\vVolumeMount\x12\x16\n" +
 	"\x06source\x18\x01 \x01(\tR\x06source\x12\x1f\n" +
 	"\vsource_path\x18\x02 \x01(\tR\n" +
 	"sourcePath\x12%\n" +
 	"\x0econtainer_path\x18\x03 \x01(\tR\rcontainerPath\x12G\n" +
-	"\x04mode\x18\x04 \x01(\x0e2+.nebius.ai.v1.EndpointSpec.VolumeMount.ModeB\x06\xbaH\x03\xc8\x01\x01R\x04mode\";\n" +
+	"\x04mode\x18\x04 \x01(\x0e2+.nebius.ai.v1.EndpointSpec.VolumeMount.ModeB\x06\xbaH\x03\xc8\x01\x01R\x04mode\x12N\n" +
+	"\ts3_config\x18\x05 \x01(\v2/.nebius.ai.v1.EndpointSpec.VolumeMount.S3ConfigH\x00R\bs3Config\x1a\xe9\x02\n" +
+	"\bS3Config\x12\"\n" +
+	"\bendpoint\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bendpoint\x12\x1e\n" +
+	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12a\n" +
+	"\vcredentials\x18\x04 \x01(\v2=.nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.S3CredentialsH\x00R\vcredentials\x1a\x9f\x01\n" +
+	"\rS3Credentials\x12-\n" +
+	"\raccess_key_id\x18\x01 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\vaccessKeyId\x125\n" +
+	"\x11secret_access_key\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\x0fsecretAccessKey\x12(\n" +
+	"\rsession_token\x18\x03 \x01(\tB\x03\xc0J\x01R\fsessionTokenB\x06\n" +
+	"\x04authJ\x04\b\x02\x10\x03R\x06bucket\";\n" +
 	"\x04Mode\x12\x14\n" +
 	"\x10MODE_UNSPECIFIED\x10\x00\x12\r\n" +
 	"\tREAD_ONLY\x10\x01\x12\x0e\n" +
 	"\n" +
-	"READ_WRITE\x10\x02\x1ak\n" +
+	"READ_WRITE\x10\x02B\x0f\n" +
+	"\rsource_config\x1ak\n" +
 	"\bDiskSpec\x12@\n" +
 	"\x04type\x18\x01 \x01(\x0e2$.nebius.compute.v1.DiskSpec.DiskTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12\x1d\n" +
 	"\n" +
@@ -1189,28 +1387,30 @@ func file_nebius_ai_v1_endpoint_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_ai_v1_endpoint_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_nebius_ai_v1_endpoint_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_nebius_ai_v1_endpoint_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_nebius_ai_v1_endpoint_proto_goTypes = []any{
-	(EndpointSpec_Port_Protocol)(0),          // 0: nebius.ai.v1.EndpointSpec.Port.Protocol
-	(EndpointSpec_VolumeMount_Mode)(0),       // 1: nebius.ai.v1.EndpointSpec.VolumeMount.Mode
-	(EndpointStatus_State)(0),                // 2: nebius.ai.v1.EndpointStatus.State
-	(EndpointInstanceStatus_State)(0),        // 3: nebius.ai.v1.EndpointInstanceStatus.State
-	(*Endpoint)(nil),                         // 4: nebius.ai.v1.Endpoint
-	(*EndpointSpec)(nil),                     // 5: nebius.ai.v1.EndpointSpec
-	(*EndpointStatus)(nil),                   // 6: nebius.ai.v1.EndpointStatus
-	(*EndpointStateDetails)(nil),             // 7: nebius.ai.v1.EndpointStateDetails
-	(*EndpointInstanceStatus)(nil),           // 8: nebius.ai.v1.EndpointInstanceStatus
-	(*EndpointSpec_EnvironmentVariable)(nil), // 9: nebius.ai.v1.EndpointSpec.EnvironmentVariable
-	(*EndpointSpec_Port)(nil),                // 10: nebius.ai.v1.EndpointSpec.Port
-	(*EndpointSpec_VolumeMount)(nil),         // 11: nebius.ai.v1.EndpointSpec.VolumeMount
-	(*EndpointSpec_DiskSpec)(nil),            // 12: nebius.ai.v1.EndpointSpec.DiskSpec
-	(*EndpointSpec_RegistryCredentials)(nil), // 13: nebius.ai.v1.EndpointSpec.RegistryCredentials
-	(*v1.ResourceMetadata)(nil),              // 14: nebius.common.v1.ResourceMetadata
-	(v11.InstanceStatus_InstanceState)(0),    // 15: nebius.compute.v1.InstanceStatus.InstanceState
-	(v11.DiskSpec_DiskType)(0),               // 16: nebius.compute.v1.DiskSpec.DiskType
+	(EndpointSpec_Port_Protocol)(0),                         // 0: nebius.ai.v1.EndpointSpec.Port.Protocol
+	(EndpointSpec_VolumeMount_Mode)(0),                      // 1: nebius.ai.v1.EndpointSpec.VolumeMount.Mode
+	(EndpointStatus_State)(0),                               // 2: nebius.ai.v1.EndpointStatus.State
+	(EndpointInstanceStatus_State)(0),                       // 3: nebius.ai.v1.EndpointInstanceStatus.State
+	(*Endpoint)(nil),                                        // 4: nebius.ai.v1.Endpoint
+	(*EndpointSpec)(nil),                                    // 5: nebius.ai.v1.EndpointSpec
+	(*EndpointStatus)(nil),                                  // 6: nebius.ai.v1.EndpointStatus
+	(*EndpointStateDetails)(nil),                            // 7: nebius.ai.v1.EndpointStateDetails
+	(*EndpointInstanceStatus)(nil),                          // 8: nebius.ai.v1.EndpointInstanceStatus
+	(*EndpointSpec_EnvironmentVariable)(nil),                // 9: nebius.ai.v1.EndpointSpec.EnvironmentVariable
+	(*EndpointSpec_Port)(nil),                               // 10: nebius.ai.v1.EndpointSpec.Port
+	(*EndpointSpec_VolumeMount)(nil),                        // 11: nebius.ai.v1.EndpointSpec.VolumeMount
+	(*EndpointSpec_DiskSpec)(nil),                           // 12: nebius.ai.v1.EndpointSpec.DiskSpec
+	(*EndpointSpec_RegistryCredentials)(nil),                // 13: nebius.ai.v1.EndpointSpec.RegistryCredentials
+	(*EndpointSpec_VolumeMount_S3Config)(nil),               // 14: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config
+	(*EndpointSpec_VolumeMount_S3Config_S3Credentials)(nil), // 15: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.S3Credentials
+	(*v1.ResourceMetadata)(nil),                             // 16: nebius.common.v1.ResourceMetadata
+	(v11.InstanceStatus_InstanceState)(0),                   // 17: nebius.compute.v1.InstanceStatus.InstanceState
+	(v11.DiskSpec_DiskType)(0),                              // 18: nebius.compute.v1.DiskSpec.DiskType
 }
 var file_nebius_ai_v1_endpoint_proto_depIdxs = []int32{
-	14, // 0: nebius.ai.v1.Endpoint.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	16, // 0: nebius.ai.v1.Endpoint.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	5,  // 1: nebius.ai.v1.Endpoint.spec:type_name -> nebius.ai.v1.EndpointSpec
 	6,  // 2: nebius.ai.v1.Endpoint.status:type_name -> nebius.ai.v1.EndpointStatus
 	9,  // 3: nebius.ai.v1.EndpointSpec.environment_variables:type_name -> nebius.ai.v1.EndpointSpec.EnvironmentVariable
@@ -1222,15 +1422,17 @@ var file_nebius_ai_v1_endpoint_proto_depIdxs = []int32{
 	2,  // 9: nebius.ai.v1.EndpointStatus.state:type_name -> nebius.ai.v1.EndpointStatus.State
 	7,  // 10: nebius.ai.v1.EndpointStatus.state_details:type_name -> nebius.ai.v1.EndpointStateDetails
 	3,  // 11: nebius.ai.v1.EndpointInstanceStatus.state:type_name -> nebius.ai.v1.EndpointInstanceStatus.State
-	15, // 12: nebius.ai.v1.EndpointInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	17, // 12: nebius.ai.v1.EndpointInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
 	0,  // 13: nebius.ai.v1.EndpointSpec.Port.protocol:type_name -> nebius.ai.v1.EndpointSpec.Port.Protocol
 	1,  // 14: nebius.ai.v1.EndpointSpec.VolumeMount.mode:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.Mode
-	16, // 15: nebius.ai.v1.EndpointSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
-	16, // [16:16] is the sub-list for method output_type
-	16, // [16:16] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	14, // 15: nebius.ai.v1.EndpointSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.S3Config
+	18, // 16: nebius.ai.v1.EndpointSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
+	15, // 17: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.credentials:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.S3Credentials
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_nebius_ai_v1_endpoint_proto_init() }
@@ -1238,13 +1440,19 @@ func file_nebius_ai_v1_endpoint_proto_init() {
 	if File_nebius_ai_v1_endpoint_proto != nil {
 		return
 	}
+	file_nebius_ai_v1_endpoint_proto_msgTypes[7].OneofWrappers = []any{
+		(*EndpointSpec_VolumeMount_S3Config_)(nil),
+	}
+	file_nebius_ai_v1_endpoint_proto_msgTypes[10].OneofWrappers = []any{
+		(*EndpointSpec_VolumeMount_S3Config_Credentials)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_ai_v1_endpoint_proto_rawDesc), len(file_nebius_ai_v1_endpoint_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

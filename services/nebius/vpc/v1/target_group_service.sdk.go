@@ -46,8 +46,9 @@ func (s targetGroupService) Get(ctx context.Context, request *v1.GetTargetGroupR
 	*v1.TargetGroup,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -66,17 +67,14 @@ func (s targetGroupService) Update(ctx context.Context, request *v1.UpdateTarget
 	operations.Operation,
 	error,
 ) {
-	metadataParentTypes := []string{"project"}
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"project"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, TargetGroupServiceID)

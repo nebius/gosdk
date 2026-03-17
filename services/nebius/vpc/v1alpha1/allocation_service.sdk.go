@@ -54,8 +54,9 @@ func (s allocationService) Get(ctx context.Context, request *v1alpha1.GetAllocat
 	*v1alpha1.Allocation,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -74,6 +75,7 @@ func (s allocationService) GetByName(ctx context.Context, request *v1alpha1.GetA
 	*v1alpha1.Allocation,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
@@ -89,7 +91,7 @@ func (s allocationService) GetByName(ctx context.Context, request *v1alpha1.GetA
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -108,6 +110,7 @@ func (s allocationService) List(ctx context.Context, request *v1alpha1.ListAlloc
 	*v1alpha1.ListAllocationsResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
@@ -123,7 +126,7 @@ func (s allocationService) List(ctx context.Context, request *v1alpha1.ListAlloc
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -167,10 +170,10 @@ func (s allocationService) Create(ctx context.Context, request *v1alpha1.CreateA
 	*alphaops.Operation,
 	error,
 ) {
-	metadataParentTypes := []string{"project"}
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"project"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -180,7 +183,7 @@ func (s allocationService) Create(ctx context.Context, request *v1alpha1.CreateA
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -191,11 +194,8 @@ func (s allocationService) Create(ctx context.Context, request *v1alpha1.CreateA
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
@@ -217,17 +217,14 @@ func (s allocationService) Update(ctx context.Context, request *v1alpha1.UpdateA
 	*alphaops.Operation,
 	error,
 ) {
-	metadataParentTypes := []string{"project"}
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"project"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
@@ -249,8 +246,9 @@ func (s allocationService) Delete(ctx context.Context, request *v1alpha1.DeleteA
 	*alphaops.Operation,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}

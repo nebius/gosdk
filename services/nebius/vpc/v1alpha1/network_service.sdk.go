@@ -45,8 +45,9 @@ func (s networkService) Get(ctx context.Context, request *v1alpha1.GetNetworkReq
 	*v1alpha1.Network,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -65,6 +66,7 @@ func (s networkService) GetByName(ctx context.Context, request *v1alpha1.GetNetw
 	*v1alpha1.Network,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
@@ -80,7 +82,7 @@ func (s networkService) GetByName(ctx context.Context, request *v1alpha1.GetNetw
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -99,6 +101,7 @@ func (s networkService) List(ctx context.Context, request *v1alpha1.ListNetworks
 	*v1alpha1.ListNetworksResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
@@ -114,7 +117,7 @@ func (s networkService) List(ctx context.Context, request *v1alpha1.ListNetworks
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}

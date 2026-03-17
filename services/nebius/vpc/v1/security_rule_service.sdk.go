@@ -53,8 +53,9 @@ func (s securityRuleService) Get(ctx context.Context, request *v1.GetSecurityRul
 	*v1.SecurityRule,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -73,6 +74,7 @@ func (s securityRuleService) GetByName(ctx context.Context, request *v1.GetSecur
 	*v1.SecurityRule,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"vpcsecuritygroup"}) == "" {
@@ -88,7 +90,7 @@ func (s securityRuleService) GetByName(ctx context.Context, request *v1.GetSecur
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -107,6 +109,7 @@ func (s securityRuleService) List(ctx context.Context, request *v1.ListSecurityR
 	*v1.ListSecurityRulesResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"vpcsecuritygroup"}) == "" {
@@ -122,7 +125,7 @@ func (s securityRuleService) List(ctx context.Context, request *v1.ListSecurityR
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -166,10 +169,10 @@ func (s securityRuleService) Create(ctx context.Context, request *v1.CreateSecur
 	operations.Operation,
 	error,
 ) {
-	metadataParentTypes := []string{"vpcsecuritygroup"}
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"vpcsecuritygroup"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(tenantID, []string{"vpcsecuritygroup"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -179,7 +182,7 @@ func (s securityRuleService) Create(ctx context.Context, request *v1.CreateSecur
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"vpcsecuritygroup"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -190,11 +193,8 @@ func (s securityRuleService) Create(ctx context.Context, request *v1.CreateSecur
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, SecurityRuleServiceID)
@@ -216,17 +216,14 @@ func (s securityRuleService) Update(ctx context.Context, request *v1.UpdateSecur
 	operations.Operation,
 	error,
 ) {
-	metadataParentTypes := []string{"vpcsecuritygroup"}
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"vpcsecuritygroup"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, SecurityRuleServiceID)
@@ -248,8 +245,9 @@ func (s securityRuleService) Delete(ctx context.Context, request *v1.DeleteSecur
 	operations.Operation,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}

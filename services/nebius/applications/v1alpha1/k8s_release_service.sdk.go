@@ -52,8 +52,9 @@ func (s k8SReleaseService) Get(ctx context.Context, request *v1alpha1.GetK8SRele
 	*v1alpha1.K8SRelease,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -72,6 +73,7 @@ func (s k8SReleaseService) List(ctx context.Context, request *v1alpha1.ListK8SRe
 	*v1alpha1.ListK8SReleasesResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, nil) == "" {
@@ -87,7 +89,7 @@ func (s k8SReleaseService) List(ctx context.Context, request *v1alpha1.ListK8SRe
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -131,10 +133,10 @@ func (s k8SReleaseService) Create(ctx context.Context, request *v1alpha1.CreateK
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(tenantID, nil) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -144,7 +146,7 @@ func (s k8SReleaseService) Create(ctx context.Context, request *v1alpha1.CreateK
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, metadataParentTypes) == "" {
+			if check_nid.ValidateNIDString(parentID, nil) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -155,11 +157,8 @@ func (s k8SReleaseService) Create(ctx context.Context, request *v1alpha1.CreateK
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, K8SReleaseServiceID)
@@ -181,17 +180,14 @@ func (s k8SReleaseService) Update(ctx context.Context, request *v1alpha1.UpdateK
 	operations.Operation,
 	error,
 ) {
-	var metadataParentTypes []string
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-		if warning := check_nid.CheckMetadataParentNID(request.GetMetadata(), metadataParentTypes); warning != "" {
-			logger.WarnContext(ctx, warning, slog.String("path", "metadata.parent_id"))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, K8SReleaseServiceID)
@@ -213,8 +209,9 @@ func (s k8SReleaseService) Delete(ctx context.Context, request *v1alpha1.DeleteK
 	operations.Operation,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}

@@ -315,9 +315,8 @@ type ServiceAccountCredentials struct {
 }
 
 type SubjectCredentials struct {
-	Type string `json:"type,omitempty"`
-	Alg  string `json:"alg"`
-	//nolint:gosec // This is a credentials structure, it must contain a private key to be useful, so it's safe to have access token here.
+	Type       string `json:"type,omitempty"`
+	Alg        string `json:"alg"`
 	PrivateKey string `json:"private-key"` // PrivateKey is a PEM-encoded PKCS8 string.
 	KeyID      string `json:"kid"`
 	Issuer     string `json:"iss"`

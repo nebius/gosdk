@@ -121,7 +121,6 @@ func writeOrLog(ctx context.Context, logger *slog.Logger, writer io.Writer, text
 }
 
 type GetTokenResult struct {
-	//nolint:gosec // This is a token acquisition result structure, not a credential storage, so it's safe to have access token here.
 	AccessToken string `json:"access_token"`
 	ExpiresIn   int    `json:"expires_in"`
 }
@@ -146,7 +145,6 @@ func getToken(
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-	//nolint:gosec // This is an intentional choice to give a user control over the token endpoints.
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return GetTokenResult{}, err

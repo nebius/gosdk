@@ -102,6 +102,7 @@ func (x *Zone) GetStatus() *ZoneStatus {
 type ZoneSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Fully qualified domain name of this zone, including `.` at the end
+	// Cannot be changed after creating the zone
 	DomainName string `protobuf:"bytes,1,opt,name=domain_name,json=domainName,proto3" json:"domain_name,omitempty"`
 	// Scope for this zone
 	// The scope is chosen at zone creation time and cannot be changed, but scope's attributes can sometimes be changed
@@ -526,10 +527,10 @@ const file_nebius_dns_v1_zone_proto_rawDesc = "" +
 	"\x04Zone\x12L\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12+\n" +
 	"\x04spec\x18\x02 \x01(\v2\x17.nebius.dns.v1.ZoneSpecR\x04spec\x121\n" +
-	"\x06status\x18\x03 \x01(\v2\x19.nebius.dns.v1.ZoneStatusR\x06status\"\xd6\x02\n" +
-	"\bZoneSpec\x12\xd5\x01\n" +
-	"\vdomain_name\x18\x01 \x01(\tB\xb3\x01\xbaH\xaf\x01\xba\x01\xa8\x01\n" +
-	"\x12domain_name_format\x12Tdomain_name must be a fully-qualified domain name with '.' at the end, e.g. 'x.y.z.'\x1a<size(this) < 253 && this.matches('^[a-z0-9][-a-z0-9.]*[.]$')\xc8\x01\x01R\n" +
+	"\x06status\x18\x03 \x01(\v2\x19.nebius.dns.v1.ZoneStatusR\x06status\"\xda\x02\n" +
+	"\bZoneSpec\x12\xd9\x01\n" +
+	"\vdomain_name\x18\x01 \x01(\tB\xb7\x01\xbaH\xaf\x01\xba\x01\xa8\x01\n" +
+	"\x12domain_name_format\x12Tdomain_name must be a fully-qualified domain name with '.' at the end, e.g. 'x.y.z.'\x1a<size(this) < 253 && this.matches('^[a-z0-9][-a-z0-9.]*[.]$')\xc8\x01\x01\xbaJ\x01\x02R\n" +
 	"domainName\x12/\n" +
 	"\x03vpc\x18\f \x01(\v2\x1b.nebius.dns.v1.VpcZoneScopeH\x00R\x03vpc\x121\n" +
 	"\bsoa_spec\x18\x1e \x01(\v2\x16.nebius.dns.v1.SoaSpecR\asoaSpecB\x0e\n" +

@@ -125,3 +125,9 @@ func (w *wrapperInstanceSpec) ProtoReflect() protoreflect.Message {
 
 // func (x *ReservationPolicy) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ReservationPolicy) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *LocalDisksSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *LocalDisksSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *PassthroughGroupRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *PassthroughGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found

@@ -61,6 +61,9 @@ func (x *EndpointSpec) Sanitize() {
 	for _, y := range x.EnvironmentVariables {
 		y.Sanitize()
 	}
+	for _, y := range x.Volumes {
+		y.Sanitize()
+	}
 	x.RegistryCredentials.Sanitize()
 	x.AuthToken = "**HIDDEN**"
 }
@@ -147,8 +150,143 @@ func (w *wrapperEndpointSpec_EnvironmentVariable) ProtoReflect() protoreflect.Me
 // func (x *EndpointSpec_Port) Sanitize()            // is not generated as no sensitive fields found
 // func (x *EndpointSpec_Port) LogValue() slog.Value // is not generated as no sensitive fields found
 
-// func (x *EndpointSpec_VolumeMount) Sanitize()            // is not generated as no sensitive fields found
-// func (x *EndpointSpec_VolumeMount) LogValue() slog.Value // is not generated as no sensitive fields found
+// Sanitize mutates [EndpointSpec_VolumeMount] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *EndpointSpec_VolumeMount) Sanitize() {
+	if x == nil {
+		return
+	}
+	if o, ok := x.SourceConfig.(*EndpointSpec_VolumeMount_S3Config_); ok && o != nil {
+		o.S3Config.Sanitize()
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [EndpointSpec_VolumeMount].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *EndpointSpec_VolumeMount
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [EndpointSpec_VolumeMount], use the following code:
+//
+//	var original *EndpointSpec_VolumeMount
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*EndpointSpec_VolumeMount)
+func (x *EndpointSpec_VolumeMount) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*EndpointSpec_VolumeMount) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperEndpointSpec_VolumeMount)(c))
+}
+
+// wrapperEndpointSpec_VolumeMount is used to return [EndpointSpec_VolumeMount] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperEndpointSpec_VolumeMount EndpointSpec_VolumeMount
+
+func (w *wrapperEndpointSpec_VolumeMount) String() string {
+	return (*EndpointSpec_VolumeMount)(w).String()
+}
+
+func (*wrapperEndpointSpec_VolumeMount) ProtoMessage() {}
+
+func (w *wrapperEndpointSpec_VolumeMount) ProtoReflect() protoreflect.Message {
+	return (*EndpointSpec_VolumeMount)(w).ProtoReflect()
+}
+
+// Sanitize mutates [EndpointSpec_VolumeMount_S3Config] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *EndpointSpec_VolumeMount_S3Config) Sanitize() {
+	if x == nil {
+		return
+	}
+	if o, ok := x.Auth.(*EndpointSpec_VolumeMount_S3Config_Credentials); ok && o != nil {
+		o.Credentials.Sanitize()
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [EndpointSpec_VolumeMount_S3Config].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *EndpointSpec_VolumeMount_S3Config
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [EndpointSpec_VolumeMount_S3Config], use the following code:
+//
+//	var original *EndpointSpec_VolumeMount_S3Config
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*EndpointSpec_VolumeMount_S3Config)
+func (x *EndpointSpec_VolumeMount_S3Config) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*EndpointSpec_VolumeMount_S3Config) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperEndpointSpec_VolumeMount_S3Config)(c))
+}
+
+// wrapperEndpointSpec_VolumeMount_S3Config is used to return [EndpointSpec_VolumeMount_S3Config] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperEndpointSpec_VolumeMount_S3Config EndpointSpec_VolumeMount_S3Config
+
+func (w *wrapperEndpointSpec_VolumeMount_S3Config) String() string {
+	return (*EndpointSpec_VolumeMount_S3Config)(w).String()
+}
+
+func (*wrapperEndpointSpec_VolumeMount_S3Config) ProtoMessage() {}
+
+func (w *wrapperEndpointSpec_VolumeMount_S3Config) ProtoReflect() protoreflect.Message {
+	return (*EndpointSpec_VolumeMount_S3Config)(w).ProtoReflect()
+}
+
+// Sanitize mutates [EndpointSpec_VolumeMount_S3Config_S3Credentials] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.AccessKeyId = "**HIDDEN**"
+	x.SecretAccessKey = "**HIDDEN**"
+	x.SessionToken = "**HIDDEN**"
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [EndpointSpec_VolumeMount_S3Config_S3Credentials].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *EndpointSpec_VolumeMount_S3Config_S3Credentials
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [EndpointSpec_VolumeMount_S3Config_S3Credentials], use the following code:
+//
+//	var original *EndpointSpec_VolumeMount_S3Config_S3Credentials
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*EndpointSpec_VolumeMount_S3Config_S3Credentials)
+func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*EndpointSpec_VolumeMount_S3Config_S3Credentials) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperEndpointSpec_VolumeMount_S3Config_S3Credentials)(c))
+}
+
+// wrapperEndpointSpec_VolumeMount_S3Config_S3Credentials is used to return [EndpointSpec_VolumeMount_S3Config_S3Credentials] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperEndpointSpec_VolumeMount_S3Config_S3Credentials EndpointSpec_VolumeMount_S3Config_S3Credentials
+
+func (w *wrapperEndpointSpec_VolumeMount_S3Config_S3Credentials) String() string {
+	return (*EndpointSpec_VolumeMount_S3Config_S3Credentials)(w).String()
+}
+
+func (*wrapperEndpointSpec_VolumeMount_S3Config_S3Credentials) ProtoMessage() {}
+
+func (w *wrapperEndpointSpec_VolumeMount_S3Config_S3Credentials) ProtoReflect() protoreflect.Message {
+	return (*EndpointSpec_VolumeMount_S3Config_S3Credentials)(w).ProtoReflect()
+}
 
 // func (x *EndpointSpec_DiskSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *EndpointSpec_DiskSpec) LogValue() slog.Value // is not generated as no sensitive fields found
