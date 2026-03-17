@@ -439,8 +439,15 @@ type InstanceSpec struct {
 	// or `<instance_id>.<network_id>.compute.internal.` if hostname is not specified.
 	Hostname          string             `protobuf:"bytes,20,opt,name=hostname,proto3" json:"hostname,omitempty"`
 	ReservationPolicy *ReservationPolicy `protobuf:"bytes,23,opt,name=reservation_policy,json=reservationPolicy,proto3" json:"reservation_policy,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// Local disks are meaningfully different from regular (remote) disks:
+	// they are provided by the underlying host and are tied to a particular VM run.
+	// Local disk data is not preserved across Stop-Start initiated via Compute API.
+	// Local disks are not provided by default. To get them, explicitly request them via this field.
+	// Availability depends on the selected platform, preset and region.
+	// Changing this field will result in disks change and content loss, but only after stop and start the instance.
+	LocalDisks    *LocalDisksSpec `protobuf:"bytes,24,opt,name=local_disks,json=localDisks,proto3" json:"local_disks,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *InstanceSpec) Reset() {
@@ -560,6 +567,13 @@ func (x *InstanceSpec) GetHostname() string {
 func (x *InstanceSpec) GetReservationPolicy() *ReservationPolicy {
 	if x != nil {
 		return x.ReservationPolicy
+	}
+	return nil
+}
+
+func (x *InstanceSpec) GetLocalDisks() *LocalDisksSpec {
+	if x != nil {
+		return x.LocalDisks
 	}
 	return nil
 }
@@ -1213,6 +1227,124 @@ func (x *ReservationPolicy) GetReservationIds() []string {
 	return nil
 }
 
+type LocalDisksSpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Request:
+	//
+	//	*LocalDisksSpec_PassthroughGroup
+	Request       isLocalDisksSpec_Request `protobuf_oneof:"request"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LocalDisksSpec) Reset() {
+	*x = LocalDisksSpec{}
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LocalDisksSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LocalDisksSpec) ProtoMessage() {}
+
+func (x *LocalDisksSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LocalDisksSpec.ProtoReflect.Descriptor instead.
+func (*LocalDisksSpec) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *LocalDisksSpec) GetRequest() isLocalDisksSpec_Request {
+	if x != nil {
+		return x.Request
+	}
+	return nil
+}
+
+func (x *LocalDisksSpec) GetPassthroughGroup() *PassthroughGroupRequest {
+	if x != nil {
+		if x, ok := x.Request.(*LocalDisksSpec_PassthroughGroup); ok {
+			return x.PassthroughGroup
+		}
+	}
+	return nil
+}
+
+type isLocalDisksSpec_Request interface {
+	isLocalDisksSpec_Request()
+}
+
+type LocalDisksSpec_PassthroughGroup struct {
+	// Requests passthrough local disks from the host.
+	// Topology of the provided disks is preserved during stop and start
+	// for every instance of a specific platform and preset in the region.
+	PassthroughGroup *PassthroughGroupRequest `protobuf:"bytes,1,opt,name=passthrough_group,json=passthroughGroup,proto3,oneof"`
+}
+
+func (*LocalDisksSpec_PassthroughGroup) isLocalDisksSpec_Request() {}
+
+type PassthroughGroupRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Passthrough local disks from the underlying host.
+	//
+	// Devices are expected to appear in the guest as NVMe devices (nvme0, nvme1, ...),
+	// but the exact number depends on the preset.
+	// Enabled only when this field is explicitly set.
+	Requested     bool `protobuf:"varint,1,opt,name=requested,proto3" json:"requested,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PassthroughGroupRequest) Reset() {
+	*x = PassthroughGroupRequest{}
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PassthroughGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PassthroughGroupRequest) ProtoMessage() {}
+
+func (x *PassthroughGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PassthroughGroupRequest.ProtoReflect.Descriptor instead.
+func (*PassthroughGroupRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *PassthroughGroupRequest) GetRequested() bool {
+	if x != nil {
+		return x.Requested
+	}
+	return false
+}
+
 var File_nebius_compute_v1_instance_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_instance_proto_rawDesc = "" +
@@ -1221,14 +1353,14 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\bInstance\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\x8e\b\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\xcc\b\n" +
 	"\fInstanceSpec\x122\n" +
 	"\x12service_account_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x10serviceAccountId\x12F\n" +
 	"\tresources\x18\x02 \x01(\v2 .nebius.compute.v1.ResourcesSpecB\x06\xbaH\x03\xc8\x01\x01R\tresources\x12P\n" +
 	"\vgpu_cluster\x18\x03 \x01(\v2).nebius.compute.v1.InstanceGpuClusterSpecB\x04\xbaJ\x01\x02R\n" +
 	"gpuCluster\x12c\n" +
-	"\x12network_interfaces\x18\x04 \x03(\v2'.nebius.compute.v1.NetworkInterfaceSpecB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\x10\bR\x11networkInterfaces\x12F\n" +
-	"\tboot_disk\x18\x05 \x01(\v2#.nebius.compute.v1.AttachedDiskSpecB\x04\xbaJ\x01\x02R\bbootDisk\x12L\n" +
+	"\x12network_interfaces\x18\x04 \x03(\v2'.nebius.compute.v1.NetworkInterfaceSpecB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\x10\bR\x11networkInterfaces\x12@\n" +
+	"\tboot_disk\x18\x05 \x01(\v2#.nebius.compute.v1.AttachedDiskSpecR\bbootDisk\x12L\n" +
 	"\x0fsecondary_disks\x18\x06 \x03(\v2#.nebius.compute.v1.AttachedDiskSpecR\x0esecondaryDisks\x12K\n" +
 	"\vfilesystems\x18\a \x03(\v2).nebius.compute.v1.AttachedFilesystemSpecR\vfilesystems\x12=\n" +
 	"\x14cloud_init_user_data\x18\b \x01(\tB\f\xbaH\x06r\x04\x18\x80\x80\x02\xc0J\x01R\x11cloudInitUserData\x12\x18\n" +
@@ -1237,7 +1369,9 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\vpreemptible\x18\x13 \x01(\v2\".nebius.compute.v1.PreemptibleSpecB\x04\xbaJ\x01\x02R\vpreemptible\x12\x93\x01\n" +
 	"\bhostname\x18\x14 \x01(\tBw\xbaHt\xba\x01q\n" +
 	"\x0ehostname.valid\x12\x1evalue must be a valid hostname\x1a?this == '' || this.matches('^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$')R\bhostname\x12S\n" +
-	"\x12reservation_policy\x18\x17 \x01(\v2$.nebius.compute.v1.ReservationPolicyR\x11reservationPolicy\"\xce\x01\n" +
+	"\x12reservation_policy\x18\x17 \x01(\v2$.nebius.compute.v1.ReservationPolicyR\x11reservationPolicy\x12B\n" +
+	"\vlocal_disks\x18\x18 \x01(\v2!.nebius.compute.v1.LocalDisksSpecR\n" +
+	"localDisks\"\xce\x01\n" +
 	"\x0fPreemptibleSpec\x12d\n" +
 	"\ron_preemption\x18\x01 \x01(\x0e23.nebius.compute.v1.PreemptibleSpec.PreemptionPolicyB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\fonPreemption\x12&\n" +
@@ -1311,7 +1445,12 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\n" +
 	"\x06FORBID\x10\x01\x12\n" +
 	"\n" +
-	"\x06STRICT\x10\x02*/\n" +
+	"\x06STRICT\x10\x02\"}\n" +
+	"\x0eLocalDisksSpec\x12Y\n" +
+	"\x11passthrough_group\x18\x01 \x01(\v2*.nebius.compute.v1.PassthroughGroupRequestH\x00R\x10passthroughGroupB\x10\n" +
+	"\arequest\x12\x05\xbaH\x02\b\x01\"7\n" +
+	"\x17PassthroughGroupRequest\x12\x1c\n" +
+	"\trequested\x18\x01 \x01(\bR\trequested*/\n" +
 	"\x16InstanceRecoveryPolicy\x12\v\n" +
 	"\aRECOVER\x10\x00\x12\b\n" +
 	"\x04FAIL\x10\x01B\\\n" +
@@ -1330,7 +1469,7 @@ func file_nebius_compute_v1_instance_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_compute_v1_instance_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_nebius_compute_v1_instance_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_nebius_compute_v1_instance_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_nebius_compute_v1_instance_proto_goTypes = []any{
 	(InstanceRecoveryPolicy)(0),                  // 0: nebius.compute.v1.InstanceRecoveryPolicy
 	(PreemptibleSpec_PreemptionPolicy)(0),        // 1: nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
@@ -1350,37 +1489,41 @@ var file_nebius_compute_v1_instance_proto_goTypes = []any{
 	(*InstanceStatus)(nil),                       // 15: nebius.compute.v1.InstanceStatus
 	(*InstanceStatusInfinibandTopologyPath)(nil), // 16: nebius.compute.v1.InstanceStatusInfinibandTopologyPath
 	(*ReservationPolicy)(nil),                    // 17: nebius.compute.v1.ReservationPolicy
-	(*v1.ResourceMetadata)(nil),                  // 18: nebius.common.v1.ResourceMetadata
-	(*NetworkInterfaceSpec)(nil),                 // 19: nebius.compute.v1.NetworkInterfaceSpec
-	(*NetworkInterfaceStatus)(nil),               // 20: nebius.compute.v1.NetworkInterfaceStatus
+	(*LocalDisksSpec)(nil),                       // 18: nebius.compute.v1.LocalDisksSpec
+	(*PassthroughGroupRequest)(nil),              // 19: nebius.compute.v1.PassthroughGroupRequest
+	(*v1.ResourceMetadata)(nil),                  // 20: nebius.common.v1.ResourceMetadata
+	(*NetworkInterfaceSpec)(nil),                 // 21: nebius.compute.v1.NetworkInterfaceSpec
+	(*NetworkInterfaceStatus)(nil),               // 22: nebius.compute.v1.NetworkInterfaceStatus
 }
 var file_nebius_compute_v1_instance_proto_depIdxs = []int32{
-	18, // 0: nebius.compute.v1.Instance.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	20, // 0: nebius.compute.v1.Instance.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	7,  // 1: nebius.compute.v1.Instance.spec:type_name -> nebius.compute.v1.InstanceSpec
 	15, // 2: nebius.compute.v1.Instance.status:type_name -> nebius.compute.v1.InstanceStatus
 	9,  // 3: nebius.compute.v1.InstanceSpec.resources:type_name -> nebius.compute.v1.ResourcesSpec
 	10, // 4: nebius.compute.v1.InstanceSpec.gpu_cluster:type_name -> nebius.compute.v1.InstanceGpuClusterSpec
-	19, // 5: nebius.compute.v1.InstanceSpec.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceSpec
+	21, // 5: nebius.compute.v1.InstanceSpec.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceSpec
 	11, // 6: nebius.compute.v1.InstanceSpec.boot_disk:type_name -> nebius.compute.v1.AttachedDiskSpec
 	11, // 7: nebius.compute.v1.InstanceSpec.secondary_disks:type_name -> nebius.compute.v1.AttachedDiskSpec
 	14, // 8: nebius.compute.v1.InstanceSpec.filesystems:type_name -> nebius.compute.v1.AttachedFilesystemSpec
 	0,  // 9: nebius.compute.v1.InstanceSpec.recovery_policy:type_name -> nebius.compute.v1.InstanceRecoveryPolicy
 	8,  // 10: nebius.compute.v1.InstanceSpec.preemptible:type_name -> nebius.compute.v1.PreemptibleSpec
 	17, // 11: nebius.compute.v1.InstanceSpec.reservation_policy:type_name -> nebius.compute.v1.ReservationPolicy
-	1,  // 12: nebius.compute.v1.PreemptibleSpec.on_preemption:type_name -> nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
-	2,  // 13: nebius.compute.v1.AttachedDiskSpec.attach_mode:type_name -> nebius.compute.v1.AttachedDiskSpec.AttachMode
-	12, // 14: nebius.compute.v1.AttachedDiskSpec.existing_disk:type_name -> nebius.compute.v1.ExistingDisk
-	3,  // 15: nebius.compute.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.compute.v1.AttachedFilesystemSpec.AttachMode
-	13, // 16: nebius.compute.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.compute.v1.ExistingFilesystem
-	4,  // 17: nebius.compute.v1.InstanceStatus.state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
-	20, // 18: nebius.compute.v1.InstanceStatus.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceStatus
-	16, // 19: nebius.compute.v1.InstanceStatus.infiniband_topology_path:type_name -> nebius.compute.v1.InstanceStatusInfinibandTopologyPath
-	5,  // 20: nebius.compute.v1.ReservationPolicy.policy:type_name -> nebius.compute.v1.ReservationPolicy.Policy
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	18, // 12: nebius.compute.v1.InstanceSpec.local_disks:type_name -> nebius.compute.v1.LocalDisksSpec
+	1,  // 13: nebius.compute.v1.PreemptibleSpec.on_preemption:type_name -> nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
+	2,  // 14: nebius.compute.v1.AttachedDiskSpec.attach_mode:type_name -> nebius.compute.v1.AttachedDiskSpec.AttachMode
+	12, // 15: nebius.compute.v1.AttachedDiskSpec.existing_disk:type_name -> nebius.compute.v1.ExistingDisk
+	3,  // 16: nebius.compute.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.compute.v1.AttachedFilesystemSpec.AttachMode
+	13, // 17: nebius.compute.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.compute.v1.ExistingFilesystem
+	4,  // 18: nebius.compute.v1.InstanceStatus.state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	22, // 19: nebius.compute.v1.InstanceStatus.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceStatus
+	16, // 20: nebius.compute.v1.InstanceStatus.infiniband_topology_path:type_name -> nebius.compute.v1.InstanceStatusInfinibandTopologyPath
+	5,  // 21: nebius.compute.v1.ReservationPolicy.policy:type_name -> nebius.compute.v1.ReservationPolicy.Policy
+	19, // 22: nebius.compute.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.compute.v1.PassthroughGroupRequest
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_instance_proto_init() }
@@ -1401,13 +1544,16 @@ func file_nebius_compute_v1_instance_proto_init() {
 	file_nebius_compute_v1_instance_proto_msgTypes[9].OneofWrappers = []any{
 		(*InstanceStatus_InfinibandTopologyPath)(nil),
 	}
+	file_nebius_compute_v1_instance_proto_msgTypes[12].OneofWrappers = []any{
+		(*LocalDisksSpec_PassthroughGroup)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_instance_proto_rawDesc), len(file_nebius_compute_v1_instance_proto_rawDesc)),
 			NumEnums:      6,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

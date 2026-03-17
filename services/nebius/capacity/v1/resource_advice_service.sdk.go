@@ -43,6 +43,7 @@ func (s resourceAdviceService) List(ctx context.Context, request *v1.ListResourc
 	*v1.ListResourceAdviceResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"tenant"}) == "" {
@@ -58,7 +59,7 @@ func (s resourceAdviceService) List(ctx context.Context, request *v1.ListResourc
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}

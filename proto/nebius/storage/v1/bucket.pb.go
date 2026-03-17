@@ -268,12 +268,6 @@ type BucketSpec struct {
 	// Storage class to use by default for uploads to the bucket. It may be overridden by `x-amz-storage-class` header.
 	// If not set - STANDARD is used as a default storage class.
 	DefaultStorageClass StorageClass `protobuf:"varint,9,opt,name=default_storage_class,json=defaultStorageClass,proto3,enum=nebius.storage.v1.StorageClass" json:"default_storage_class,omitempty"`
-	// Storage class to override any other storage class of uploading objects. It overrides the storage class regardless
-	// of how the original storage class was specified - either the default storage class
-	// or the one provided via the `x-amz-storage-class` header.
-	//
-	// Deprecated: Marked as deprecated in nebius/storage/v1/bucket.proto.
-	OverrideStorageClass StorageClass `protobuf:"varint,10,opt,name=override_storage_class,json=overrideStorageClass,proto3,enum=nebius.storage.v1.StorageClass" json:"override_storage_class,omitempty"`
 	// Flag to force usage of default_storage_class, ignoring `x-amz-storage-class` header.
 	ForceStorageClass bool `protobuf:"varint,11,opt,name=force_storage_class,json=forceStorageClass,proto3" json:"force_storage_class,omitempty"`
 	// Object audit logging specifies which requests must be logged - none, all or mutational only.
@@ -345,14 +339,6 @@ func (x *BucketSpec) GetCors() *CORSConfiguration {
 func (x *BucketSpec) GetDefaultStorageClass() StorageClass {
 	if x != nil {
 		return x.DefaultStorageClass
-	}
-	return StorageClass_STORAGE_CLASS_UNSPECIFIED
-}
-
-// Deprecated: Marked as deprecated in nebius/storage/v1/bucket.proto.
-func (x *BucketSpec) GetOverrideStorageClass() StorageClass {
-	if x != nil {
-		return x.OverrideStorageClass
 	}
 	return StorageClass_STORAGE_CLASS_UNSPECIFIED
 }
@@ -494,18 +480,14 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x06Bucket\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\xe2\x06\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\xc3\x05\n" +
 	"\n" +
 	"BucketSpec\x12V\n" +
 	"\x11versioning_policy\x18\x02 \x01(\x0e2#.nebius.storage.v1.VersioningPolicyB\x04\xbaJ\x01\aR\x10versioningPolicy\x12$\n" +
 	"\x0emax_size_bytes\x18\x04 \x01(\x03R\fmaxSizeBytes\x12b\n" +
 	"\x17lifecycle_configuration\x18\x05 \x01(\v2).nebius.storage.v1.LifecycleConfigurationR\x16lifecycleConfiguration\x128\n" +
 	"\x04cors\x18\b \x01(\v2$.nebius.storage.v1.CORSConfigurationR\x04cors\x12S\n" +
-	"\x15default_storage_class\x18\t \x01(\x0e2\x1f.nebius.storage.v1.StorageClassR\x13defaultStorageClass\x12\xa8\x01\n" +
-	"\x16override_storage_class\x18\n" +
-	" \x01(\x0e2\x1f.nebius.storage.v1.StorageClassBQ\xd2JL\n" +
-	"\n" +
-	"2025-12-01\x12>Use `default_storage_class` with `force_storage_class` instead\x18\x01R\x14overrideStorageClass\x12.\n" +
+	"\x15default_storage_class\x18\t \x01(\x0e2\x1f.nebius.storage.v1.StorageClassR\x13defaultStorageClass\x12.\n" +
 	"\x13force_storage_class\x18\v \x01(\bR\x11forceStorageClass\x12b\n" +
 	"\x14object_audit_logging\x18\f \x01(\x0e20.nebius.storage.v1.BucketSpec.ObjectAuditLoggingR\x12objectAuditLogging\x12D\n" +
 	"\rbucket_policy\x18\r \x01(\v2\x1f.nebius.storage.v1.BucketPolicyR\fbucketPolicy\"^\n" +
@@ -513,7 +495,8 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	" OBJECT_AUDIT_LOGGING_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04NONE\x10\x01\x12\x0f\n" +
 	"\vMUTATE_ONLY\x10\x02\x12\a\n" +
-	"\x03ALL\x10\x03\"\x86\x05\n" +
+	"\x03ALL\x10\x03J\x04\b\x03\x10\x04J\x04\b\n" +
+	"\x10\v\"\x86\x05\n" +
 	"\fBucketStatus\x12=\n" +
 	"\bcounters\x18\x01 \x03(\v2!.nebius.storage.v1.BucketCountersR\bcounters\x12;\n" +
 	"\x05state\x18\x02 \x01(\x0e2%.nebius.storage.v1.BucketStatus.StateR\x05state\x12Z\n" +
@@ -576,19 +559,18 @@ var file_nebius_storage_v1_bucket_proto_depIdxs = []int32{
 	8,  // 4: nebius.storage.v1.BucketSpec.lifecycle_configuration:type_name -> nebius.storage.v1.LifecycleConfiguration
 	9,  // 5: nebius.storage.v1.BucketSpec.cors:type_name -> nebius.storage.v1.CORSConfiguration
 	10, // 6: nebius.storage.v1.BucketSpec.default_storage_class:type_name -> nebius.storage.v1.StorageClass
-	10, // 7: nebius.storage.v1.BucketSpec.override_storage_class:type_name -> nebius.storage.v1.StorageClass
-	0,  // 8: nebius.storage.v1.BucketSpec.object_audit_logging:type_name -> nebius.storage.v1.BucketSpec.ObjectAuditLogging
-	11, // 9: nebius.storage.v1.BucketSpec.bucket_policy:type_name -> nebius.storage.v1.BucketPolicy
-	12, // 10: nebius.storage.v1.BucketStatus.counters:type_name -> nebius.storage.v1.BucketCounters
-	1,  // 11: nebius.storage.v1.BucketStatus.state:type_name -> nebius.storage.v1.BucketStatus.State
-	2,  // 12: nebius.storage.v1.BucketStatus.suspension_state:type_name -> nebius.storage.v1.BucketStatus.SuspensionState
-	13, // 13: nebius.storage.v1.BucketStatus.deleted_at:type_name -> google.protobuf.Timestamp
-	13, // 14: nebius.storage.v1.BucketStatus.purge_at:type_name -> google.protobuf.Timestamp
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	0,  // 7: nebius.storage.v1.BucketSpec.object_audit_logging:type_name -> nebius.storage.v1.BucketSpec.ObjectAuditLogging
+	11, // 8: nebius.storage.v1.BucketSpec.bucket_policy:type_name -> nebius.storage.v1.BucketPolicy
+	12, // 9: nebius.storage.v1.BucketStatus.counters:type_name -> nebius.storage.v1.BucketCounters
+	1,  // 10: nebius.storage.v1.BucketStatus.state:type_name -> nebius.storage.v1.BucketStatus.State
+	2,  // 11: nebius.storage.v1.BucketStatus.suspension_state:type_name -> nebius.storage.v1.BucketStatus.SuspensionState
+	13, // 12: nebius.storage.v1.BucketStatus.deleted_at:type_name -> google.protobuf.Timestamp
+	13, // 13: nebius.storage.v1.BucketStatus.purge_at:type_name -> google.protobuf.Timestamp
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_bucket_proto_init() }

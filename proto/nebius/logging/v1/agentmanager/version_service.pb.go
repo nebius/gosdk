@@ -425,8 +425,14 @@ type ModulesHealth struct {
 	CommonServiceLogsPipeline *ModuleHealth `protobuf:"bytes,6,opt,name=common_service_logs_pipeline,json=commonServiceLogsPipeline,proto3" json:"common_service_logs_pipeline,omitempty"`
 	// Health status of the vm service logs pipeline module.
 	VmServiceLogsPipeline *ModuleHealth `protobuf:"bytes,7,opt,name=vm_service_logs_pipeline,json=vmServiceLogsPipeline,proto3" json:"vm_service_logs_pipeline,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	// Health status of the compute GPU logs pipeline module.
+	ComputeGpuLogsPipeline *ModuleHealth `protobuf:"bytes,8,opt,name=compute_gpu_logs_pipeline,json=computeGpuLogsPipeline,proto3" json:"compute_gpu_logs_pipeline,omitempty"`
+	// Health status of the journald pipeline module.
+	JournaldPipeline *ModuleHealth `protobuf:"bytes,9,opt,name=journald_pipeline,json=journaldPipeline,proto3" json:"journald_pipeline,omitempty"`
+	// Health status of the NCCL metrics pipeline module.
+	NcclMetricsPipeline *ModuleHealth `protobuf:"bytes,10,opt,name=nccl_metrics_pipeline,json=ncclMetricsPipeline,proto3" json:"nccl_metrics_pipeline,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *ModulesHealth) Reset() {
@@ -504,6 +510,27 @@ func (x *ModulesHealth) GetCommonServiceLogsPipeline() *ModuleHealth {
 func (x *ModulesHealth) GetVmServiceLogsPipeline() *ModuleHealth {
 	if x != nil {
 		return x.VmServiceLogsPipeline
+	}
+	return nil
+}
+
+func (x *ModulesHealth) GetComputeGpuLogsPipeline() *ModuleHealth {
+	if x != nil {
+		return x.ComputeGpuLogsPipeline
+	}
+	return nil
+}
+
+func (x *ModulesHealth) GetJournaldPipeline() *ModuleHealth {
+	if x != nil {
+		return x.JournaldPipeline
+	}
+	return nil
+}
+
+func (x *ModulesHealth) GetNcclMetricsPipeline() *ModuleHealth {
+	if x != nil {
+		return x.NcclMetricsPipeline
 	}
 	return nil
 }
@@ -1033,7 +1060,7 @@ const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\n" +
 	"gpu_number\x18\x13 \x01(\x05R\tgpuNumber\x12!\n" +
 	"\fdcgm_version\x18\x14 \x01(\tR\vdcgmVersion\x12Z\n" +
-	"\x10healthcheck_logs\x18\x15 \x01(\v2/.nebius.logging.agentmanager.v1.HealthCheckLogsR\x0fhealthcheckLogs\"\xfd\x04\n" +
+	"\x10healthcheck_logs\x18\x15 \x01(\v2/.nebius.logging.agentmanager.v1.HealthCheckLogsR\x0fhealthcheckLogs\"\xa3\a\n" +
 	"\rModulesHealth\x12F\n" +
 	"\aprocess\x18\x01 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\aprocess\x12O\n" +
 	"\fgpu_pipeline\x18\x02 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\vgpuPipeline\x12O\n" +
@@ -1041,7 +1068,11 @@ const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\x0fcilium_pipeline\x18\x04 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x0eciliumPipeline\x12U\n" +
 	"\x0fvmapps_pipeline\x18\x05 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x0evmappsPipeline\x12m\n" +
 	"\x1ccommon_service_logs_pipeline\x18\x06 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x19commonServiceLogsPipeline\x12e\n" +
-	"\x18vm_service_logs_pipeline\x18\a \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x15vmServiceLogsPipeline\"y\n" +
+	"\x18vm_service_logs_pipeline\x18\a \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x15vmServiceLogsPipeline\x12g\n" +
+	"\x19compute_gpu_logs_pipeline\x18\b \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x16computeGpuLogsPipeline\x12Y\n" +
+	"\x11journald_pipeline\x18\t \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x10journaldPipeline\x12`\n" +
+	"\x15nccl_metrics_pipeline\x18\n" +
+	" \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\x13ncclMetricsPipeline\"y\n" +
 	"\x0fHealthCheckLogs\x120\n" +
 	"\x14directory_size_bytes\x18\x01 \x01(\x03R\x12directorySizeBytes\x124\n" +
 	"\x16mountpoint_total_bytes\x18\x02 \x01(\x03R\x14mountpointTotalBytes\"\xb7\x01\n" +
@@ -1141,20 +1172,23 @@ var file_nebius_logging_v1_agentmanager_version_service_proto_depIdxs = []int32{
 	6,  // 12: nebius.logging.agentmanager.v1.ModulesHealth.vmapps_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
 	6,  // 13: nebius.logging.agentmanager.v1.ModulesHealth.common_service_logs_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
 	6,  // 14: nebius.logging.agentmanager.v1.ModulesHealth.vm_service_logs_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
-	1,  // 15: nebius.logging.agentmanager.v1.ModuleHealth.state:type_name -> nebius.logging.agentmanager.v1.AgentState
-	7,  // 16: nebius.logging.agentmanager.v1.ModuleHealth.parameters:type_name -> nebius.logging.agentmanager.v1.Parameter
-	2,  // 17: nebius.logging.agentmanager.v1.GetVersionResponse.action:type_name -> nebius.logging.agentmanager.v1.Action
-	10, // 18: nebius.logging.agentmanager.v1.GetVersionResponse.nop:type_name -> nebius.logging.agentmanager.v1.NopActionParams
-	11, // 19: nebius.logging.agentmanager.v1.GetVersionResponse.update:type_name -> nebius.logging.agentmanager.v1.UpdateActionParams
-	12, // 20: nebius.logging.agentmanager.v1.GetVersionResponse.restart:type_name -> nebius.logging.agentmanager.v1.RestartActionParams
-	13, // 21: nebius.logging.agentmanager.v1.GetVersionResponse.feature_flags:type_name -> nebius.logging.agentmanager.v1.GetVersionResponse.FeatureFlagsEntry
-	3,  // 22: nebius.logging.agentmanager.v1.VersionService.GetVersion:input_type -> nebius.logging.agentmanager.v1.GetVersionRequest
-	9,  // 23: nebius.logging.agentmanager.v1.VersionService.GetVersion:output_type -> nebius.logging.agentmanager.v1.GetVersionResponse
-	23, // [23:24] is the sub-list for method output_type
-	22, // [22:23] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	6,  // 15: nebius.logging.agentmanager.v1.ModulesHealth.compute_gpu_logs_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
+	6,  // 16: nebius.logging.agentmanager.v1.ModulesHealth.journald_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
+	6,  // 17: nebius.logging.agentmanager.v1.ModulesHealth.nccl_metrics_pipeline:type_name -> nebius.logging.agentmanager.v1.ModuleHealth
+	1,  // 18: nebius.logging.agentmanager.v1.ModuleHealth.state:type_name -> nebius.logging.agentmanager.v1.AgentState
+	7,  // 19: nebius.logging.agentmanager.v1.ModuleHealth.parameters:type_name -> nebius.logging.agentmanager.v1.Parameter
+	2,  // 20: nebius.logging.agentmanager.v1.GetVersionResponse.action:type_name -> nebius.logging.agentmanager.v1.Action
+	10, // 21: nebius.logging.agentmanager.v1.GetVersionResponse.nop:type_name -> nebius.logging.agentmanager.v1.NopActionParams
+	11, // 22: nebius.logging.agentmanager.v1.GetVersionResponse.update:type_name -> nebius.logging.agentmanager.v1.UpdateActionParams
+	12, // 23: nebius.logging.agentmanager.v1.GetVersionResponse.restart:type_name -> nebius.logging.agentmanager.v1.RestartActionParams
+	13, // 24: nebius.logging.agentmanager.v1.GetVersionResponse.feature_flags:type_name -> nebius.logging.agentmanager.v1.GetVersionResponse.FeatureFlagsEntry
+	3,  // 25: nebius.logging.agentmanager.v1.VersionService.GetVersion:input_type -> nebius.logging.agentmanager.v1.GetVersionRequest
+	9,  // 26: nebius.logging.agentmanager.v1.VersionService.GetVersion:output_type -> nebius.logging.agentmanager.v1.GetVersionResponse
+	26, // [26:27] is the sub-list for method output_type
+	25, // [25:26] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_nebius_logging_v1_agentmanager_version_service_proto_init() }

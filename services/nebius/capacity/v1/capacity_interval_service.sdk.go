@@ -44,8 +44,9 @@ func (s capacityIntervalService) Get(ctx context.Context, request *v1.GetCapacit
 	*v1.CapacityInterval,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
@@ -64,6 +65,7 @@ func (s capacityIntervalService) List(ctx context.Context, request *v1.ListCapac
 	*v1.ListCapacityIntervalsResponse,
 	error,
 ) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
 			if check_nid.ValidateNIDString(parentID, []string{"capacityblockgroup"}) == "" {
@@ -79,7 +81,7 @@ func (s capacityIntervalService) List(ctx context.Context, request *v1.ListCapac
 		}
 	}
 	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request) {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
