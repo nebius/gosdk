@@ -7,8 +7,10 @@
 package v1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/nebius/gosdk/proto/nebius"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
+	status "google.golang.org/genproto/googleapis/rpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -415,11 +417,185 @@ func (x *StopInstanceRequest) GetId() string {
 	return ""
 }
 
+type BatchGetRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// List of instances to fetch.
+	InstanceIds   []string `protobuf:"bytes,1,rep,name=instance_ids,json=instanceIds,proto3" json:"instance_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchGetRequest) Reset() {
+	*x = BatchGetRequest{}
+	mi := &file_nebius_compute_v1_instance_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchGetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchGetRequest) ProtoMessage() {}
+
+func (x *BatchGetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchGetRequest.ProtoReflect.Descriptor instead.
+func (*BatchGetRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *BatchGetRequest) GetInstanceIds() []string {
+	if x != nil {
+		return x.InstanceIds
+	}
+	return nil
+}
+
+type BatchGetResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Map where key is instance id from original request array.
+	Items         map[string]*BatchGetResponse_BatchGetResult `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchGetResponse) Reset() {
+	*x = BatchGetResponse{}
+	mi := &file_nebius_compute_v1_instance_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchGetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchGetResponse) ProtoMessage() {}
+
+func (x *BatchGetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchGetResponse.ProtoReflect.Descriptor instead.
+func (*BatchGetResponse) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *BatchGetResponse) GetItems() map[string]*BatchGetResponse_BatchGetResult {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type BatchGetResponse_BatchGetResult struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Result:
+	//
+	//	*BatchGetResponse_BatchGetResult_Instance
+	//	*BatchGetResponse_BatchGetResult_Error
+	Result        isBatchGetResponse_BatchGetResult_Result `protobuf_oneof:"result"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BatchGetResponse_BatchGetResult) Reset() {
+	*x = BatchGetResponse_BatchGetResult{}
+	mi := &file_nebius_compute_v1_instance_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BatchGetResponse_BatchGetResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchGetResponse_BatchGetResult) ProtoMessage() {}
+
+func (x *BatchGetResponse_BatchGetResult) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchGetResponse_BatchGetResult.ProtoReflect.Descriptor instead.
+func (*BatchGetResponse_BatchGetResult) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_service_proto_rawDescGZIP(), []int{9, 0}
+}
+
+func (x *BatchGetResponse_BatchGetResult) GetResult() isBatchGetResponse_BatchGetResult_Result {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
+func (x *BatchGetResponse_BatchGetResult) GetInstance() *Instance {
+	if x != nil {
+		if x, ok := x.Result.(*BatchGetResponse_BatchGetResult_Instance); ok {
+			return x.Instance
+		}
+	}
+	return nil
+}
+
+func (x *BatchGetResponse_BatchGetResult) GetError() *status.Status {
+	if x != nil {
+		if x, ok := x.Result.(*BatchGetResponse_BatchGetResult_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isBatchGetResponse_BatchGetResult_Result interface {
+	isBatchGetResponse_BatchGetResult_Result()
+}
+
+type BatchGetResponse_BatchGetResult_Instance struct {
+	// Will be set if we successfully fetched instance info.
+	Instance *Instance `protobuf:"bytes,1,opt,name=instance,proto3,oneof"`
+}
+
+type BatchGetResponse_BatchGetResult_Error struct {
+	// Will be set if any error happened during instance info fetch (not found, permission denied).
+	Error *status.Status `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*BatchGetResponse_BatchGetResult_Instance) isBatchGetResponse_BatchGetResult_Result() {}
+
+func (*BatchGetResponse_BatchGetResult_Error) isBatchGetResponse_BatchGetResult_Result() {}
+
 var File_nebius_compute_v1_instance_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_instance_service_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/compute/v1/instance_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a nebius/compute/v1/instance.proto\x1a)nebius/compute/v1/operation_service.proto\"$\n" +
+	"(nebius/compute/v1/instance_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x17google/rpc/status.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a nebius/compute/v1/instance.proto\x1a)nebius/compute/v1/operation_service.proto\"$\n" +
 	"\x12GetInstanceRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"o\n" +
 	"\x14ListInstancesRequest\x12\x1b\n" +
@@ -441,10 +617,23 @@ const file_nebius_compute_v1_instance_service_proto_rawDesc = "" +
 	"\x14StartInstanceRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"%\n" +
 	"\x13StopInstanceRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\x96\x06\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"B\n" +
+	"\x0fBatchGetRequest\x12/\n" +
+	"\finstance_ids\x18\x01 \x03(\tB\f\xbaH\t\xc8\x01\x01\x92\x01\x03\x10\xe8\aR\vinstanceIds\"\xca\x02\n" +
+	"\x10BatchGetResponse\x12D\n" +
+	"\x05items\x18\x01 \x03(\v2..nebius.compute.v1.BatchGetResponse.ItemsEntryR\x05items\x1a\x81\x01\n" +
+	"\x0eBatchGetResult\x129\n" +
+	"\binstance\x18\x01 \x01(\v2\x1b.nebius.compute.v1.InstanceH\x00R\binstance\x12*\n" +
+	"\x05error\x18\x02 \x01(\v2\x12.google.rpc.StatusH\x00R\x05errorB\b\n" +
+	"\x06result\x1al\n" +
+	"\n" +
+	"ItemsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12H\n" +
+	"\x05value\x18\x02 \x01(\v22.nebius.compute.v1.BatchGetResponse.BatchGetResultR\x05value:\x028\x012\xeb\x06\n" +
 	"\x0fInstanceService\x12I\n" +
 	"\x03Get\x12%.nebius.compute.v1.GetInstanceRequest\x1a\x1b.nebius.compute.v1.Instance\x12L\n" +
-	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1b.nebius.compute.v1.Instance\x12Y\n" +
+	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1b.nebius.compute.v1.Instance\x12S\n" +
+	"\bBatchGet\x12\".nebius.compute.v1.BatchGetRequest\x1a#.nebius.compute.v1.BatchGetResponse\x12Y\n" +
 	"\x04List\x12'.nebius.compute.v1.ListInstancesRequest\x1a(.nebius.compute.v1.ListInstancesResponse\x12O\n" +
 	"\x06Create\x12(.nebius.compute.v1.CreateInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12O\n" +
 	"\x06Update\x12(.nebius.compute.v1.UpdateInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12O\n" +
@@ -467,53 +656,64 @@ func file_nebius_compute_v1_instance_service_proto_rawDescGZIP() []byte {
 	return file_nebius_compute_v1_instance_service_proto_rawDescData
 }
 
-var file_nebius_compute_v1_instance_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_compute_v1_instance_service_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_nebius_compute_v1_instance_service_proto_goTypes = []any{
-	(*GetInstanceRequest)(nil),            // 0: nebius.compute.v1.GetInstanceRequest
-	(*ListInstancesRequest)(nil),          // 1: nebius.compute.v1.ListInstancesRequest
-	(*CreateInstanceRequest)(nil),         // 2: nebius.compute.v1.CreateInstanceRequest
-	(*UpdateInstanceRequest)(nil),         // 3: nebius.compute.v1.UpdateInstanceRequest
-	(*DeleteInstanceRequest)(nil),         // 4: nebius.compute.v1.DeleteInstanceRequest
-	(*ListInstancesResponse)(nil),         // 5: nebius.compute.v1.ListInstancesResponse
-	(*StartInstanceRequest)(nil),          // 6: nebius.compute.v1.StartInstanceRequest
-	(*StopInstanceRequest)(nil),           // 7: nebius.compute.v1.StopInstanceRequest
-	(*v1.ResourceMetadata)(nil),           // 8: nebius.common.v1.ResourceMetadata
-	(*InstanceSpec)(nil),                  // 9: nebius.compute.v1.InstanceSpec
-	(*Instance)(nil),                      // 10: nebius.compute.v1.Instance
-	(*v1.GetByNameRequest)(nil),           // 11: nebius.common.v1.GetByNameRequest
-	(*ListOperationsByParentRequest)(nil), // 12: nebius.compute.v1.ListOperationsByParentRequest
-	(*v1.Operation)(nil),                  // 13: nebius.common.v1.Operation
-	(*v1.ListOperationsResponse)(nil),     // 14: nebius.common.v1.ListOperationsResponse
+	(*GetInstanceRequest)(nil),              // 0: nebius.compute.v1.GetInstanceRequest
+	(*ListInstancesRequest)(nil),            // 1: nebius.compute.v1.ListInstancesRequest
+	(*CreateInstanceRequest)(nil),           // 2: nebius.compute.v1.CreateInstanceRequest
+	(*UpdateInstanceRequest)(nil),           // 3: nebius.compute.v1.UpdateInstanceRequest
+	(*DeleteInstanceRequest)(nil),           // 4: nebius.compute.v1.DeleteInstanceRequest
+	(*ListInstancesResponse)(nil),           // 5: nebius.compute.v1.ListInstancesResponse
+	(*StartInstanceRequest)(nil),            // 6: nebius.compute.v1.StartInstanceRequest
+	(*StopInstanceRequest)(nil),             // 7: nebius.compute.v1.StopInstanceRequest
+	(*BatchGetRequest)(nil),                 // 8: nebius.compute.v1.BatchGetRequest
+	(*BatchGetResponse)(nil),                // 9: nebius.compute.v1.BatchGetResponse
+	(*BatchGetResponse_BatchGetResult)(nil), // 10: nebius.compute.v1.BatchGetResponse.BatchGetResult
+	nil,                                     // 11: nebius.compute.v1.BatchGetResponse.ItemsEntry
+	(*v1.ResourceMetadata)(nil),             // 12: nebius.common.v1.ResourceMetadata
+	(*InstanceSpec)(nil),                    // 13: nebius.compute.v1.InstanceSpec
+	(*Instance)(nil),                        // 14: nebius.compute.v1.Instance
+	(*status.Status)(nil),                   // 15: google.rpc.Status
+	(*v1.GetByNameRequest)(nil),             // 16: nebius.common.v1.GetByNameRequest
+	(*ListOperationsByParentRequest)(nil),   // 17: nebius.compute.v1.ListOperationsByParentRequest
+	(*v1.Operation)(nil),                    // 18: nebius.common.v1.Operation
+	(*v1.ListOperationsResponse)(nil),       // 19: nebius.common.v1.ListOperationsResponse
 }
 var file_nebius_compute_v1_instance_service_proto_depIdxs = []int32{
-	8,  // 0: nebius.compute.v1.CreateInstanceRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	9,  // 1: nebius.compute.v1.CreateInstanceRequest.spec:type_name -> nebius.compute.v1.InstanceSpec
-	8,  // 2: nebius.compute.v1.UpdateInstanceRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	9,  // 3: nebius.compute.v1.UpdateInstanceRequest.spec:type_name -> nebius.compute.v1.InstanceSpec
-	10, // 4: nebius.compute.v1.ListInstancesResponse.items:type_name -> nebius.compute.v1.Instance
-	0,  // 5: nebius.compute.v1.InstanceService.Get:input_type -> nebius.compute.v1.GetInstanceRequest
-	11, // 6: nebius.compute.v1.InstanceService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
-	1,  // 7: nebius.compute.v1.InstanceService.List:input_type -> nebius.compute.v1.ListInstancesRequest
-	2,  // 8: nebius.compute.v1.InstanceService.Create:input_type -> nebius.compute.v1.CreateInstanceRequest
-	3,  // 9: nebius.compute.v1.InstanceService.Update:input_type -> nebius.compute.v1.UpdateInstanceRequest
-	4,  // 10: nebius.compute.v1.InstanceService.Delete:input_type -> nebius.compute.v1.DeleteInstanceRequest
-	6,  // 11: nebius.compute.v1.InstanceService.Start:input_type -> nebius.compute.v1.StartInstanceRequest
-	7,  // 12: nebius.compute.v1.InstanceService.Stop:input_type -> nebius.compute.v1.StopInstanceRequest
-	12, // 13: nebius.compute.v1.InstanceService.ListOperationsByParent:input_type -> nebius.compute.v1.ListOperationsByParentRequest
-	10, // 14: nebius.compute.v1.InstanceService.Get:output_type -> nebius.compute.v1.Instance
-	10, // 15: nebius.compute.v1.InstanceService.GetByName:output_type -> nebius.compute.v1.Instance
-	5,  // 16: nebius.compute.v1.InstanceService.List:output_type -> nebius.compute.v1.ListInstancesResponse
-	13, // 17: nebius.compute.v1.InstanceService.Create:output_type -> nebius.common.v1.Operation
-	13, // 18: nebius.compute.v1.InstanceService.Update:output_type -> nebius.common.v1.Operation
-	13, // 19: nebius.compute.v1.InstanceService.Delete:output_type -> nebius.common.v1.Operation
-	13, // 20: nebius.compute.v1.InstanceService.Start:output_type -> nebius.common.v1.Operation
-	13, // 21: nebius.compute.v1.InstanceService.Stop:output_type -> nebius.common.v1.Operation
-	14, // 22: nebius.compute.v1.InstanceService.ListOperationsByParent:output_type -> nebius.common.v1.ListOperationsResponse
-	14, // [14:23] is the sub-list for method output_type
-	5,  // [5:14] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	12, // 0: nebius.compute.v1.CreateInstanceRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	13, // 1: nebius.compute.v1.CreateInstanceRequest.spec:type_name -> nebius.compute.v1.InstanceSpec
+	12, // 2: nebius.compute.v1.UpdateInstanceRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	13, // 3: nebius.compute.v1.UpdateInstanceRequest.spec:type_name -> nebius.compute.v1.InstanceSpec
+	14, // 4: nebius.compute.v1.ListInstancesResponse.items:type_name -> nebius.compute.v1.Instance
+	11, // 5: nebius.compute.v1.BatchGetResponse.items:type_name -> nebius.compute.v1.BatchGetResponse.ItemsEntry
+	14, // 6: nebius.compute.v1.BatchGetResponse.BatchGetResult.instance:type_name -> nebius.compute.v1.Instance
+	15, // 7: nebius.compute.v1.BatchGetResponse.BatchGetResult.error:type_name -> google.rpc.Status
+	10, // 8: nebius.compute.v1.BatchGetResponse.ItemsEntry.value:type_name -> nebius.compute.v1.BatchGetResponse.BatchGetResult
+	0,  // 9: nebius.compute.v1.InstanceService.Get:input_type -> nebius.compute.v1.GetInstanceRequest
+	16, // 10: nebius.compute.v1.InstanceService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	8,  // 11: nebius.compute.v1.InstanceService.BatchGet:input_type -> nebius.compute.v1.BatchGetRequest
+	1,  // 12: nebius.compute.v1.InstanceService.List:input_type -> nebius.compute.v1.ListInstancesRequest
+	2,  // 13: nebius.compute.v1.InstanceService.Create:input_type -> nebius.compute.v1.CreateInstanceRequest
+	3,  // 14: nebius.compute.v1.InstanceService.Update:input_type -> nebius.compute.v1.UpdateInstanceRequest
+	4,  // 15: nebius.compute.v1.InstanceService.Delete:input_type -> nebius.compute.v1.DeleteInstanceRequest
+	6,  // 16: nebius.compute.v1.InstanceService.Start:input_type -> nebius.compute.v1.StartInstanceRequest
+	7,  // 17: nebius.compute.v1.InstanceService.Stop:input_type -> nebius.compute.v1.StopInstanceRequest
+	17, // 18: nebius.compute.v1.InstanceService.ListOperationsByParent:input_type -> nebius.compute.v1.ListOperationsByParentRequest
+	14, // 19: nebius.compute.v1.InstanceService.Get:output_type -> nebius.compute.v1.Instance
+	14, // 20: nebius.compute.v1.InstanceService.GetByName:output_type -> nebius.compute.v1.Instance
+	9,  // 21: nebius.compute.v1.InstanceService.BatchGet:output_type -> nebius.compute.v1.BatchGetResponse
+	5,  // 22: nebius.compute.v1.InstanceService.List:output_type -> nebius.compute.v1.ListInstancesResponse
+	18, // 23: nebius.compute.v1.InstanceService.Create:output_type -> nebius.common.v1.Operation
+	18, // 24: nebius.compute.v1.InstanceService.Update:output_type -> nebius.common.v1.Operation
+	18, // 25: nebius.compute.v1.InstanceService.Delete:output_type -> nebius.common.v1.Operation
+	18, // 26: nebius.compute.v1.InstanceService.Start:output_type -> nebius.common.v1.Operation
+	18, // 27: nebius.compute.v1.InstanceService.Stop:output_type -> nebius.common.v1.Operation
+	19, // 28: nebius.compute.v1.InstanceService.ListOperationsByParent:output_type -> nebius.common.v1.ListOperationsResponse
+	19, // [19:29] is the sub-list for method output_type
+	9,  // [9:19] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_instance_service_proto_init() }
@@ -523,13 +723,17 @@ func file_nebius_compute_v1_instance_service_proto_init() {
 	}
 	file_nebius_compute_v1_instance_proto_init()
 	file_nebius_compute_v1_operation_service_proto_init()
+	file_nebius_compute_v1_instance_service_proto_msgTypes[10].OneofWrappers = []any{
+		(*BatchGetResponse_BatchGetResult_Instance)(nil),
+		(*BatchGetResponse_BatchGetResult_Error)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_instance_service_proto_rawDesc), len(file_nebius_compute_v1_instance_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	InstanceService_Get_FullMethodName                    = "/nebius.compute.v1.InstanceService/Get"
 	InstanceService_GetByName_FullMethodName              = "/nebius.compute.v1.InstanceService/GetByName"
+	InstanceService_BatchGet_FullMethodName               = "/nebius.compute.v1.InstanceService/BatchGet"
 	InstanceService_List_FullMethodName                   = "/nebius.compute.v1.InstanceService/List"
 	InstanceService_Create_FullMethodName                 = "/nebius.compute.v1.InstanceService/Create"
 	InstanceService_Update_FullMethodName                 = "/nebius.compute.v1.InstanceService/Update"
@@ -39,6 +40,9 @@ type InstanceServiceClient interface {
 	Get(ctx context.Context, in *GetInstanceRequest, opts ...grpc.CallOption) (*Instance, error)
 	// Retrieves detailed information about a specific VM instance by its parent and name.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Instance, error)
+	// Retrieves detailed information about specific VMs by their IDs.
+	// If instance cannot be retrieved (e.g. not found) error is returned in place of instance instead.
+	BatchGet(ctx context.Context, in *BatchGetRequest, opts ...grpc.CallOption) (*BatchGetResponse, error)
 	// Lists all VM instances within a specified parent.
 	List(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
 	// Creates a new VM instance based on the provided specification.
@@ -77,6 +81,15 @@ func (c *instanceServiceClient) Get(ctx context.Context, in *GetInstanceRequest,
 func (c *instanceServiceClient) GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Instance, error) {
 	out := new(Instance)
 	err := c.cc.Invoke(ctx, InstanceService_GetByName_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instanceServiceClient) BatchGet(ctx context.Context, in *BatchGetRequest, opts ...grpc.CallOption) (*BatchGetResponse, error) {
+	out := new(BatchGetResponse)
+	err := c.cc.Invoke(ctx, InstanceService_BatchGet_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -154,6 +167,9 @@ type InstanceServiceServer interface {
 	Get(context.Context, *GetInstanceRequest) (*Instance, error)
 	// Retrieves detailed information about a specific VM instance by its parent and name.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Instance, error)
+	// Retrieves detailed information about specific VMs by their IDs.
+	// If instance cannot be retrieved (e.g. not found) error is returned in place of instance instead.
+	BatchGet(context.Context, *BatchGetRequest) (*BatchGetResponse, error)
 	// Lists all VM instances within a specified parent.
 	List(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
 	// Creates a new VM instance based on the provided specification.
@@ -181,6 +197,9 @@ func (UnimplementedInstanceServiceServer) Get(context.Context, *GetInstanceReque
 }
 func (UnimplementedInstanceServiceServer) GetByName(context.Context, *v1.GetByNameRequest) (*Instance, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
+}
+func (UnimplementedInstanceServiceServer) BatchGet(context.Context, *BatchGetRequest) (*BatchGetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchGet not implemented")
 }
 func (UnimplementedInstanceServiceServer) List(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
@@ -247,6 +266,24 @@ func _InstanceService_GetByName_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InstanceServiceServer).GetByName(ctx, req.(*v1.GetByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstanceService_BatchGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchGetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstanceServiceServer).BatchGet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstanceService_BatchGet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstanceServiceServer).BatchGet(ctx, req.(*BatchGetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -391,6 +428,10 @@ var InstanceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByName",
 			Handler:    _InstanceService_GetByName_Handler,
+		},
+		{
+			MethodName: "BatchGet",
+			Handler:    _InstanceService_BatchGet_Handler,
 		},
 		{
 			MethodName: "List",
