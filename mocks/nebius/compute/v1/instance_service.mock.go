@@ -44,6 +44,50 @@ func (m *MockInstanceService) EXPECT() *MockInstanceServiceMockRecorder {
 	return m.recorder
 }
 
+// BatchGet mocks base method.
+func (m *MockInstanceService) BatchGet(arg0 context.Context, arg1 *v10.BatchGetRequest, arg2 ...grpc.CallOption) (*v10.BatchGetResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGet", varargs...)
+	ret0, _ := ret[0].(*v10.BatchGetResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGet indicates an expected call of BatchGet.
+func (mr *MockInstanceServiceMockRecorder) BatchGet(arg0, arg1 any, arg2 ...any) *MockInstanceServiceBatchGetCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGet", reflect.TypeOf((*MockInstanceService)(nil).BatchGet), varargs...)
+	return &MockInstanceServiceBatchGetCall{Call: call}
+}
+
+// MockInstanceServiceBatchGetCall wrap *gomock.Call
+type MockInstanceServiceBatchGetCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockInstanceServiceBatchGetCall) Return(arg0 *v10.BatchGetResponse, arg1 error) *MockInstanceServiceBatchGetCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockInstanceServiceBatchGetCall) Do(f func(context.Context, *v10.BatchGetRequest, ...grpc.CallOption) (*v10.BatchGetResponse, error)) *MockInstanceServiceBatchGetCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockInstanceServiceBatchGetCall) DoAndReturn(f func(context.Context, *v10.BatchGetRequest, ...grpc.CallOption) (*v10.BatchGetResponse, error)) *MockInstanceServiceBatchGetCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Create mocks base method.
 func (m *MockInstanceService) Create(arg0 context.Context, arg1 *v10.CreateInstanceRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()

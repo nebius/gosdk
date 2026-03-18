@@ -30,6 +30,7 @@ const InstanceServiceID conn.ServiceID = "nebius.compute.v1.InstanceService"
 type InstanceService interface {
 	Get(context.Context, *v1.GetInstanceRequest, ...grpc.CallOption) (*v1.Instance, error)
 	GetByName(context.Context, *v11.GetByNameRequest, ...grpc.CallOption) (*v1.Instance, error)
+	BatchGet(context.Context, *v1.BatchGetRequest, ...grpc.CallOption) (*v1.BatchGetResponse, error)
 	List(context.Context, *v1.ListInstancesRequest, ...grpc.CallOption) (*v1.ListInstancesResponse, error)
 	Filter(context.Context, *v1.ListInstancesRequest, ...grpc.CallOption) iter.Seq2[*v1.Instance, error]
 	Create(context.Context, *v1.CreateInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -106,6 +107,27 @@ func (s instanceService) GetByName(ctx context.Context, request *v11.GetByNameRe
 		return nil, err
 	}
 	return v1.NewInstanceServiceClient(con).GetByName(ctx, request, opts...)
+}
+
+func (s instanceService) BatchGet(ctx context.Context, request *v1.BatchGetRequest, opts ...grpc.CallOption) (
+	*v1.BatchGetResponse,
+	error,
+) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewInstanceServiceClient(con).BatchGet(ctx, request, opts...)
 }
 
 func (s instanceService) List(ctx context.Context, request *v1.ListInstancesRequest, opts ...grpc.CallOption) (

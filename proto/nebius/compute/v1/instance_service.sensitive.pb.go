@@ -5,6 +5,7 @@ package v1
 import (
 	proto "google.golang.org/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	anypb "google.golang.org/protobuf/types/known/anypb"
 	slog "log/slog"
 )
 
@@ -156,3 +157,138 @@ func (w *wrapperListInstancesResponse) ProtoReflect() protoreflect.Message {
 
 // func (x *StopInstanceRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *StopInstanceRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *BatchGetRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *BatchGetRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// Sanitize mutates [BatchGetResponse] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+func (x *BatchGetResponse) Sanitize() {
+	if x == nil {
+		return
+	}
+	for _, y := range x.Items {
+		y.Sanitize()
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [BatchGetResponse].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *BatchGetResponse
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [BatchGetResponse], use the following code:
+//
+//	var original *BatchGetResponse
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*BatchGetResponse)
+func (x *BatchGetResponse) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*BatchGetResponse) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperBatchGetResponse)(c))
+}
+
+// wrapperBatchGetResponse is used to return [BatchGetResponse] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperBatchGetResponse BatchGetResponse
+
+func (w *wrapperBatchGetResponse) String() string {
+	return (*BatchGetResponse)(w).String()
+}
+
+func (*wrapperBatchGetResponse) ProtoMessage() {}
+
+func (w *wrapperBatchGetResponse) ProtoReflect() protoreflect.Message {
+	return (*BatchGetResponse)(w).ProtoReflect()
+}
+
+// Sanitize mutates [BatchGetResponse_BatchGetResult] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+func (x *BatchGetResponse_BatchGetResult) Sanitize() {
+	if x == nil {
+		return
+	}
+	sanitizeAny := func(a *anypb.Any) {
+		if a == nil {
+			return
+		}
+		p, err := anypb.UnmarshalNew(a, proto.UnmarshalOptions{DiscardUnknown: true})
+		if err != nil {
+			a.TypeUrl = "type.googleapis.com/google.protobuf.Empty"
+			a.Value = nil
+			return
+		}
+		if s, ok := p.(interface{ Sanitize() }); ok {
+			s.Sanitize()
+		}
+		err = a.MarshalFrom(p)
+		if err != nil {
+			a.TypeUrl = "type.googleapis.com/google.protobuf.Empty"
+			a.Value = nil
+		}
+	}
+	if o, ok := x.Result.(*BatchGetResponse_BatchGetResult_Instance); ok && o != nil {
+		o.Instance.Sanitize()
+	}
+	if o, ok := x.Result.(*BatchGetResponse_BatchGetResult_Error); ok && o != nil {
+		for _, y := range o.Error.GetDetails() {
+			sanitizeAny(y)
+		}
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [BatchGetResponse_BatchGetResult].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *BatchGetResponse_BatchGetResult
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [BatchGetResponse_BatchGetResult], use the following code:
+//
+//	var original *BatchGetResponse_BatchGetResult
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*BatchGetResponse_BatchGetResult)
+func (x *BatchGetResponse_BatchGetResult) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*BatchGetResponse_BatchGetResult) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperBatchGetResponse_BatchGetResult)(c))
+}
+
+// wrapperBatchGetResponse_BatchGetResult is used to return [BatchGetResponse_BatchGetResult] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperBatchGetResponse_BatchGetResult BatchGetResponse_BatchGetResult
+
+func (w *wrapperBatchGetResponse_BatchGetResult) String() string {
+	return (*BatchGetResponse_BatchGetResult)(w).String()
+}
+
+func (*wrapperBatchGetResponse_BatchGetResult) ProtoMessage() {}
+
+func (w *wrapperBatchGetResponse_BatchGetResult) ProtoReflect() protoreflect.Message {
+	return (*BatchGetResponse_BatchGetResult)(w).ProtoReflect()
+}
