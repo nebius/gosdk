@@ -285,7 +285,7 @@ func (x NodeGroupStatus_State) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use NodeGroupStatus_State.Descriptor instead.
 func (NodeGroupStatus_State) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{18, 0}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{21, 0}
 }
 
 // NodeGroup represents Kubernetes node pool - set of worker machines having the same configuration.
@@ -541,8 +541,11 @@ type NodeTemplate struct {
 	Preemptible *PreemptibleSpec `protobuf:"bytes,15,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
 	// reservation_policy is an interface of the "capacity block" (or "capacity block group") mechanism of Nebius Compute.
 	ReservationPolicy *ReservationPolicy `protobuf:"bytes,18,opt,name=reservation_policy,json=reservationPolicy,proto3" json:"reservation_policy,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// local_disks enables the provisioning of fast local drives.
+	// This type of storage is strictly ephemeral: on node restart, all data is erased, similar to RAM.
+	LocalDisks    *LocalDisksSpec `protobuf:"bytes,19,opt,name=local_disks,json=localDisks,proto3" json:"local_disks,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *NodeTemplate) Reset() {
@@ -662,6 +665,13 @@ func (x *NodeTemplate) GetPreemptible() *PreemptibleSpec {
 func (x *NodeTemplate) GetReservationPolicy() *ReservationPolicy {
 	if x != nil {
 		return x.ReservationPolicy
+	}
+	return nil
+}
+
+func (x *NodeTemplate) GetLocalDisks() *LocalDisksSpec {
+	if x != nil {
+		return x.LocalDisks
 	}
 	return nil
 }
@@ -1567,6 +1577,203 @@ func (x *ReservationPolicy) GetReservationIds() []string {
 	return nil
 }
 
+type LocalDisksSpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Request:
+	//
+	//	*LocalDisksSpec_PassthroughGroup
+	Request isLocalDisksSpec_Request `protobuf_oneof:"request"`
+	// config defines actions that managed Kubernetes service performs on mounted local disks
+	// to provide them inside Kubernetes cluster with a convenient interface.
+	Config        *LocalDisksSpecConfig `protobuf:"bytes,101,opt,name=config,proto3" json:"config,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LocalDisksSpec) Reset() {
+	*x = LocalDisksSpec{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LocalDisksSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LocalDisksSpec) ProtoMessage() {}
+
+func (x *LocalDisksSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LocalDisksSpec.ProtoReflect.Descriptor instead.
+func (*LocalDisksSpec) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *LocalDisksSpec) GetRequest() isLocalDisksSpec_Request {
+	if x != nil {
+		return x.Request
+	}
+	return nil
+}
+
+func (x *LocalDisksSpec) GetPassthroughGroup() *PassthroughGroupRequest {
+	if x != nil {
+		if x, ok := x.Request.(*LocalDisksSpec_PassthroughGroup); ok {
+			return x.PassthroughGroup
+		}
+	}
+	return nil
+}
+
+func (x *LocalDisksSpec) GetConfig() *LocalDisksSpecConfig {
+	if x != nil {
+		return x.Config
+	}
+	return nil
+}
+
+type isLocalDisksSpec_Request interface {
+	isLocalDisksSpec_Request()
+}
+
+type LocalDisksSpec_PassthroughGroup struct {
+	// Requests passthrough local disks from the host.
+	// Topology of the provided disks is preserved during stop and start
+	// for every instance of a specific platform and preset in the region.
+	PassthroughGroup *PassthroughGroupRequest `protobuf:"bytes,1,opt,name=passthrough_group,json=passthroughGroup,proto3,oneof"`
+}
+
+func (*LocalDisksSpec_PassthroughGroup) isLocalDisksSpec_Request() {}
+
+type PassthroughGroupRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Passthrough local disks from the underlying host.
+	//
+	// Devices are expected to appear in the guest as NVMe devices (nvme0, nvme1, ...),
+	// but the exact number depends on the preset.
+	// Enabled only when this field is explicitly set.
+	Requested     bool `protobuf:"varint,1,opt,name=requested,proto3" json:"requested,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PassthroughGroupRequest) Reset() {
+	*x = PassthroughGroupRequest{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PassthroughGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PassthroughGroupRequest) ProtoMessage() {}
+
+func (x *PassthroughGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PassthroughGroupRequest.ProtoReflect.Descriptor instead.
+func (*PassthroughGroupRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *PassthroughGroupRequest) GetRequested() bool {
+	if x != nil {
+		return x.Requested
+	}
+	return false
+}
+
+// LocalDisksSpecConfig defines actions that managed Kubernetes service performs on mounted local disks
+// to provide them inside Kubernetes cluster with a convenient interface.
+type LocalDisksSpecConfig struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Type:
+	//
+	//	*LocalDisksSpecConfig_None
+	Type          isLocalDisksSpecConfig_Type `protobuf_oneof:"type"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LocalDisksSpecConfig) Reset() {
+	*x = LocalDisksSpecConfig{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LocalDisksSpecConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LocalDisksSpecConfig) ProtoMessage() {}
+
+func (x *LocalDisksSpecConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LocalDisksSpecConfig.ProtoReflect.Descriptor instead.
+func (*LocalDisksSpecConfig) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *LocalDisksSpecConfig) GetType() isLocalDisksSpecConfig_Type {
+	if x != nil {
+		return x.Type
+	}
+	return nil
+}
+
+func (x *LocalDisksSpecConfig) GetNone() bool {
+	if x != nil {
+		if x, ok := x.Type.(*LocalDisksSpecConfig_None); ok {
+			return x.None
+		}
+	}
+	return false
+}
+
+type isLocalDisksSpecConfig_Type interface {
+	isLocalDisksSpecConfig_Type()
+}
+
+type LocalDisksSpecConfig_None struct {
+	// none: "do nothing" - local disks will be provisioned as on a regular compute instance.
+	None bool `protobuf:"varint,1,opt,name=none,proto3,oneof"`
+}
+
+func (*LocalDisksSpecConfig_None) isLocalDisksSpecConfig_Type() {}
+
 type NodeGroupStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	State NodeGroupStatus_State  `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1.NodeGroupStatus_State" json:"state,omitempty"`
@@ -1596,7 +1803,7 @@ type NodeGroupStatus struct {
 
 func (x *NodeGroupStatus) Reset() {
 	*x = NodeGroupStatus{}
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[18]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1608,7 +1815,7 @@ func (x *NodeGroupStatus) String() string {
 func (*NodeGroupStatus) ProtoMessage() {}
 
 func (x *NodeGroupStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[18]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1621,7 +1828,7 @@ func (x *NodeGroupStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NodeGroupStatus.ProtoReflect.Descriptor instead.
 func (*NodeGroupStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{18}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *NodeGroupStatus) GetState() NodeGroupStatus_State {
@@ -1697,7 +1904,7 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\bstrategy\x18\x04 \x01(\v2+.nebius.mk8s.v1.NodeGroupDeploymentStrategyR\bstrategy\x12H\n" +
 	"\vauto_repair\x18\x06 \x01(\v2'.nebius.mk8s.v1.NodeGroupAutoRepairSpecR\n" +
 	"autoRepairB\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\xd0\x06\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\x91\a\n" +
 	"\fNodeTemplate\x12@\n" +
 	"\bmetadata\x18\x01 \x01(\v2$.nebius.mk8s.v1.NodeMetadataTemplateR\bmetadata\x12;\n" +
 	"\x06taints\x18\x02 \x03(\v2\x19.nebius.mk8s.v1.NodeTaintB\b\xbaH\x05\x92\x01\x02\x10dR\x06taints\x12C\n" +
@@ -1713,7 +1920,9 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\x12service_account_id\x18\n" +
 	" \x01(\tR\x10serviceAccountId\x12G\n" +
 	"\vpreemptible\x18\x0f \x01(\v2\x1f.nebius.mk8s.v1.PreemptibleSpecB\x04\xbaJ\x01\x06R\vpreemptible\x12P\n" +
-	"\x12reservation_policy\x18\x12 \x01(\v2!.nebius.mk8s.v1.ReservationPolicyR\x11reservationPolicy\"\xa5\x01\n" +
+	"\x12reservation_policy\x18\x12 \x01(\v2!.nebius.mk8s.v1.ReservationPolicyR\x11reservationPolicy\x12?\n" +
+	"\vlocal_disks\x18\x13 \x01(\v2\x1e.nebius.mk8s.v1.LocalDisksSpecR\n" +
+	"localDisks\"\xa5\x01\n" +
 	"\x14NodeMetadataTemplate\x12R\n" +
 	"\x06labels\x18\x01 \x03(\v20.nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntryB\b\xbaH\x05\x9a\x01\x02\x10dR\x06labels\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
@@ -1782,7 +1991,16 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\n" +
 	"\x06FORBID\x10\x01\x12\n" +
 	"\n" +
-	"\x06STRICT\x10\x02\"\xbe\x03\n" +
+	"\x06STRICT\x10\x02\"\xc0\x01\n" +
+	"\x0eLocalDisksSpec\x12V\n" +
+	"\x11passthrough_group\x18\x01 \x01(\v2'.nebius.mk8s.v1.PassthroughGroupRequestH\x00R\x10passthroughGroup\x12D\n" +
+	"\x06config\x18e \x01(\v2$.nebius.mk8s.v1.LocalDisksSpecConfigB\x06\xbaH\x03\xc8\x01\x01R\x06configB\x10\n" +
+	"\arequest\x12\x05\xbaH\x02\b\x01\"7\n" +
+	"\x17PassthroughGroupRequest\x12\x1c\n" +
+	"\trequested\x18\x01 \x01(\bR\trequested\";\n" +
+	"\x14LocalDisksSpecConfig\x12\x14\n" +
+	"\x04none\x18\x01 \x01(\bH\x00R\x04noneB\r\n" +
+	"\x04type\x12\x05\xbaH\x02\b\x01\"\xbe\x03\n" +
 	"\x0fNodeGroupStatus\x12;\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.mk8s.v1.NodeGroupStatus.StateR\x05state\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12*\n" +
@@ -1818,7 +2036,7 @@ func file_nebius_mk8s_v1_node_group_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_mk8s_v1_node_group_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_nebius_mk8s_v1_node_group_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_nebius_mk8s_v1_node_group_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_nebius_mk8s_v1_node_group_proto_goTypes = []any{
 	(ConditionStatus)(0),                   // 0: nebius.mk8s.v1.ConditionStatus
 	(AttachedFilesystemSpec_AttachMode)(0), // 1: nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
@@ -1843,51 +2061,57 @@ var file_nebius_mk8s_v1_node_group_proto_goTypes = []any{
 	(*NodeAutoRepairCondition)(nil),        // 20: nebius.mk8s.v1.NodeAutoRepairCondition
 	(*PreemptibleSpec)(nil),                // 21: nebius.mk8s.v1.PreemptibleSpec
 	(*ReservationPolicy)(nil),              // 22: nebius.mk8s.v1.ReservationPolicy
-	(*NodeGroupStatus)(nil),                // 23: nebius.mk8s.v1.NodeGroupStatus
-	nil,                                    // 24: nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
-	(*v1.ResourceMetadata)(nil),            // 25: nebius.common.v1.ResourceMetadata
-	(*ResourcesSpec)(nil),                  // 26: nebius.mk8s.v1.ResourcesSpec
-	(*DiskSpec)(nil),                       // 27: nebius.mk8s.v1.DiskSpec
-	(*durationpb.Duration)(nil),            // 28: google.protobuf.Duration
-	(*v1.RecurrentResourceEvent)(nil),      // 29: nebius.common.v1.RecurrentResourceEvent
+	(*LocalDisksSpec)(nil),                 // 23: nebius.mk8s.v1.LocalDisksSpec
+	(*PassthroughGroupRequest)(nil),        // 24: nebius.mk8s.v1.PassthroughGroupRequest
+	(*LocalDisksSpecConfig)(nil),           // 25: nebius.mk8s.v1.LocalDisksSpecConfig
+	(*NodeGroupStatus)(nil),                // 26: nebius.mk8s.v1.NodeGroupStatus
+	nil,                                    // 27: nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
+	(*v1.ResourceMetadata)(nil),            // 28: nebius.common.v1.ResourceMetadata
+	(*ResourcesSpec)(nil),                  // 29: nebius.mk8s.v1.ResourcesSpec
+	(*DiskSpec)(nil),                       // 30: nebius.mk8s.v1.DiskSpec
+	(*durationpb.Duration)(nil),            // 31: google.protobuf.Duration
+	(*v1.RecurrentResourceEvent)(nil),      // 32: nebius.common.v1.RecurrentResourceEvent
 }
 var file_nebius_mk8s_v1_node_group_proto_depIdxs = []int32{
-	25, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	28, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	6,  // 1: nebius.mk8s.v1.NodeGroup.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
-	23, // 2: nebius.mk8s.v1.NodeGroup.status:type_name -> nebius.mk8s.v1.NodeGroupStatus
+	26, // 2: nebius.mk8s.v1.NodeGroup.status:type_name -> nebius.mk8s.v1.NodeGroupStatus
 	15, // 3: nebius.mk8s.v1.NodeGroupSpec.autoscaling:type_name -> nebius.mk8s.v1.NodeGroupAutoscalingSpec
 	7,  // 4: nebius.mk8s.v1.NodeGroupSpec.template:type_name -> nebius.mk8s.v1.NodeTemplate
 	17, // 5: nebius.mk8s.v1.NodeGroupSpec.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
 	19, // 6: nebius.mk8s.v1.NodeGroupSpec.auto_repair:type_name -> nebius.mk8s.v1.NodeGroupAutoRepairSpec
 	8,  // 7: nebius.mk8s.v1.NodeTemplate.metadata:type_name -> nebius.mk8s.v1.NodeMetadataTemplate
 	16, // 8: nebius.mk8s.v1.NodeTemplate.taints:type_name -> nebius.mk8s.v1.NodeTaint
-	26, // 9: nebius.mk8s.v1.NodeTemplate.resources:type_name -> nebius.mk8s.v1.ResourcesSpec
-	27, // 10: nebius.mk8s.v1.NodeTemplate.boot_disk:type_name -> nebius.mk8s.v1.DiskSpec
+	29, // 9: nebius.mk8s.v1.NodeTemplate.resources:type_name -> nebius.mk8s.v1.ResourcesSpec
+	30, // 10: nebius.mk8s.v1.NodeTemplate.boot_disk:type_name -> nebius.mk8s.v1.DiskSpec
 	9,  // 11: nebius.mk8s.v1.NodeTemplate.gpu_settings:type_name -> nebius.mk8s.v1.GpuSettings
 	10, // 12: nebius.mk8s.v1.NodeTemplate.gpu_cluster:type_name -> nebius.mk8s.v1.GpuClusterSpec
 	11, // 13: nebius.mk8s.v1.NodeTemplate.network_interfaces:type_name -> nebius.mk8s.v1.NetworkInterfaceTemplate
 	13, // 14: nebius.mk8s.v1.NodeTemplate.filesystems:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec
 	21, // 15: nebius.mk8s.v1.NodeTemplate.preemptible:type_name -> nebius.mk8s.v1.PreemptibleSpec
 	22, // 16: nebius.mk8s.v1.NodeTemplate.reservation_policy:type_name -> nebius.mk8s.v1.ReservationPolicy
-	24, // 17: nebius.mk8s.v1.NodeMetadataTemplate.labels:type_name -> nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
-	12, // 18: nebius.mk8s.v1.NetworkInterfaceTemplate.public_ip_address:type_name -> nebius.mk8s.v1.PublicIPAddress
-	1,  // 19: nebius.mk8s.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
-	14, // 20: nebius.mk8s.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.mk8s.v1.ExistingFilesystem
-	2,  // 21: nebius.mk8s.v1.NodeTaint.effect:type_name -> nebius.mk8s.v1.NodeTaint.Effect
-	18, // 22: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_unavailable:type_name -> nebius.mk8s.v1.PercentOrCount
-	18, // 23: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_surge:type_name -> nebius.mk8s.v1.PercentOrCount
-	28, // 24: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
-	20, // 25: nebius.mk8s.v1.NodeGroupAutoRepairSpec.conditions:type_name -> nebius.mk8s.v1.NodeAutoRepairCondition
-	0,  // 26: nebius.mk8s.v1.NodeAutoRepairCondition.status:type_name -> nebius.mk8s.v1.ConditionStatus
-	28, // 27: nebius.mk8s.v1.NodeAutoRepairCondition.timeout:type_name -> google.protobuf.Duration
-	3,  // 28: nebius.mk8s.v1.ReservationPolicy.policy:type_name -> nebius.mk8s.v1.ReservationPolicy.Policy
-	4,  // 29: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
-	29, // 30: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
-	31, // [31:31] is the sub-list for method output_type
-	31, // [31:31] is the sub-list for method input_type
-	31, // [31:31] is the sub-list for extension type_name
-	31, // [31:31] is the sub-list for extension extendee
-	0,  // [0:31] is the sub-list for field type_name
+	23, // 17: nebius.mk8s.v1.NodeTemplate.local_disks:type_name -> nebius.mk8s.v1.LocalDisksSpec
+	27, // 18: nebius.mk8s.v1.NodeMetadataTemplate.labels:type_name -> nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
+	12, // 19: nebius.mk8s.v1.NetworkInterfaceTemplate.public_ip_address:type_name -> nebius.mk8s.v1.PublicIPAddress
+	1,  // 20: nebius.mk8s.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
+	14, // 21: nebius.mk8s.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.mk8s.v1.ExistingFilesystem
+	2,  // 22: nebius.mk8s.v1.NodeTaint.effect:type_name -> nebius.mk8s.v1.NodeTaint.Effect
+	18, // 23: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_unavailable:type_name -> nebius.mk8s.v1.PercentOrCount
+	18, // 24: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_surge:type_name -> nebius.mk8s.v1.PercentOrCount
+	31, // 25: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
+	20, // 26: nebius.mk8s.v1.NodeGroupAutoRepairSpec.conditions:type_name -> nebius.mk8s.v1.NodeAutoRepairCondition
+	0,  // 27: nebius.mk8s.v1.NodeAutoRepairCondition.status:type_name -> nebius.mk8s.v1.ConditionStatus
+	31, // 28: nebius.mk8s.v1.NodeAutoRepairCondition.timeout:type_name -> google.protobuf.Duration
+	3,  // 29: nebius.mk8s.v1.ReservationPolicy.policy:type_name -> nebius.mk8s.v1.ReservationPolicy.Policy
+	24, // 30: nebius.mk8s.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.mk8s.v1.PassthroughGroupRequest
+	25, // 31: nebius.mk8s.v1.LocalDisksSpec.config:type_name -> nebius.mk8s.v1.LocalDisksSpecConfig
+	4,  // 32: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
+	32, // 33: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
+	34, // [34:34] is the sub-list for method output_type
+	34, // [34:34] is the sub-list for method input_type
+	34, // [34:34] is the sub-list for extension type_name
+	34, // [34:34] is the sub-list for extension extendee
+	0,  // [0:34] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_node_group_proto_init() }
@@ -1911,13 +2135,19 @@ func file_nebius_mk8s_v1_node_group_proto_init() {
 		(*NodeAutoRepairCondition_Timeout)(nil),
 		(*NodeAutoRepairCondition_Disabled)(nil),
 	}
+	file_nebius_mk8s_v1_node_group_proto_msgTypes[18].OneofWrappers = []any{
+		(*LocalDisksSpec_PassthroughGroup)(nil),
+	}
+	file_nebius_mk8s_v1_node_group_proto_msgTypes[20].OneofWrappers = []any{
+		(*LocalDisksSpecConfig_None)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1_node_group_proto_rawDesc), len(file_nebius_mk8s_v1_node_group_proto_rawDesc)),
 			NumEnums:      5,
-			NumMessages:   20,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

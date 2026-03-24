@@ -466,16 +466,16 @@ const file_nebius_compute_v1_image_proto_rawDesc = "" +
 	"\x05Image\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\x126\n" +
-	"\x06status\x18\x03 \x01(\v2\x1e.nebius.compute.v1.ImageStatusR\x06status\"\x94\x05\n" +
+	"\x06status\x18\x03 \x01(\v2\x1e.nebius.compute.v1.ImageStatusR\x06status\"\x88\x05\n" +
 	"\tImageSpec\x12*\n" +
 	"\vdescription\x18\x01 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\vdescription\x12'\n" +
 	"\fimage_family\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\vimageFamily\x12\x1e\n" +
 	"\aversion\x18\x03 \x01(\tB\x04\xbaJ\x01\x02R\aversion\x12,\n" +
 	"\x0esource_disk_id\x18\x04 \x01(\tB\x04\xbaJ\x01\x02H\x00R\fsourceDiskId\x12]\n" +
 	"\x10cpu_architecture\x18\x06 \x01(\x0e2,.nebius.compute.v1.ImageSpec.CPUArchitectureB\x04\xbaJ\x01\x02R\x0fcpuArchitecture\x12C\n" +
-	"\x1bimage_family_human_readable\x18\a \x01(\tB\x04\xbaJ\x01\x02R\x18imageFamilyHumanReadable\x129\n" +
-	"\x15recommended_platforms\x18\b \x03(\tB\x04\xbaJ\x01\x02R\x14recommendedPlatforms\x12q\n" +
-	"\x15unsupported_platforms\x18\t \x03(\v26.nebius.compute.v1.ImageSpec.UnsupportedPlatformsEntryB\x04\xbaJ\x01\x02R\x14unsupportedPlatforms\x1aG\n" +
+	"\x1bimage_family_human_readable\x18\a \x01(\tB\x04\xbaJ\x01\x02R\x18imageFamilyHumanReadable\x123\n" +
+	"\x15recommended_platforms\x18\b \x03(\tR\x14recommendedPlatforms\x12k\n" +
+	"\x15unsupported_platforms\x18\t \x03(\v26.nebius.compute.v1.ImageSpec.UnsupportedPlatformsEntryR\x14unsupportedPlatforms\x1aG\n" +
 	"\x19UnsupportedPlatformsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"8\n" +
