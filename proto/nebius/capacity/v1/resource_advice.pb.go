@@ -82,6 +82,71 @@ func (ResourceAdviceStatus_Availability_DataState) EnumDescriptor() ([]byte, []i
 	return file_nebius_capacity_v1_resource_advice_proto_rawDescGZIP(), []int{3, 0, 0}
 }
 
+// Indicates the likelihood of a successful allocation.
+type ResourceAdviceStatus_Availability_AvailabilityLevel int32
+
+const (
+	// Shouldn't ever happen.
+	ResourceAdviceStatus_Availability_AVAILABILITY_LEVEL_UNSPECIFIED ResourceAdviceStatus_Availability_AvailabilityLevel = 0
+	// Plenty of room for large requests.
+	ResourceAdviceStatus_Availability_AVAILABILITY_LEVEL_HIGH ResourceAdviceStatus_Availability_AvailabilityLevel = 1
+	// Room for medium requests.
+	ResourceAdviceStatus_Availability_AVAILABILITY_LEVEL_MEDIUM ResourceAdviceStatus_Availability_AvailabilityLevel = 2
+	// High risk of Not Enough Resources (NER).
+	ResourceAdviceStatus_Availability_AVAILABILITY_LEVEL_LOW ResourceAdviceStatus_Availability_AvailabilityLevel = 3
+	// Not enough quota or capacity block on the customer's side.
+	ResourceAdviceStatus_Availability_AVAILABILITY_LEVEL_LIMIT_REACHED ResourceAdviceStatus_Availability_AvailabilityLevel = 4
+	// Failed to retrieve data.
+	ResourceAdviceStatus_Availability_AVAILABILITY_LEVEL_UNKNOWN ResourceAdviceStatus_Availability_AvailabilityLevel = 5
+)
+
+// Enum value maps for ResourceAdviceStatus_Availability_AvailabilityLevel.
+var (
+	ResourceAdviceStatus_Availability_AvailabilityLevel_name = map[int32]string{
+		0: "AVAILABILITY_LEVEL_UNSPECIFIED",
+		1: "AVAILABILITY_LEVEL_HIGH",
+		2: "AVAILABILITY_LEVEL_MEDIUM",
+		3: "AVAILABILITY_LEVEL_LOW",
+		4: "AVAILABILITY_LEVEL_LIMIT_REACHED",
+		5: "AVAILABILITY_LEVEL_UNKNOWN",
+	}
+	ResourceAdviceStatus_Availability_AvailabilityLevel_value = map[string]int32{
+		"AVAILABILITY_LEVEL_UNSPECIFIED":   0,
+		"AVAILABILITY_LEVEL_HIGH":          1,
+		"AVAILABILITY_LEVEL_MEDIUM":        2,
+		"AVAILABILITY_LEVEL_LOW":           3,
+		"AVAILABILITY_LEVEL_LIMIT_REACHED": 4,
+		"AVAILABILITY_LEVEL_UNKNOWN":       5,
+	}
+)
+
+func (x ResourceAdviceStatus_Availability_AvailabilityLevel) Enum() *ResourceAdviceStatus_Availability_AvailabilityLevel {
+	p := new(ResourceAdviceStatus_Availability_AvailabilityLevel)
+	*p = x
+	return p
+}
+
+func (x ResourceAdviceStatus_Availability_AvailabilityLevel) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ResourceAdviceStatus_Availability_AvailabilityLevel) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_capacity_v1_resource_advice_proto_enumTypes[1].Descriptor()
+}
+
+func (ResourceAdviceStatus_Availability_AvailabilityLevel) Type() protoreflect.EnumType {
+	return &file_nebius_capacity_v1_resource_advice_proto_enumTypes[1]
+}
+
+func (x ResourceAdviceStatus_Availability_AvailabilityLevel) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ResourceAdviceStatus_Availability_AvailabilityLevel.Descriptor instead.
+func (ResourceAdviceStatus_Availability_AvailabilityLevel) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_capacity_v1_resource_advice_proto_rawDescGZIP(), []int{3, 0, 1}
+}
+
 // ResourceAdvice is a virtual resource representing the availability
 // of a specific technical configuration in a specific scope.
 type ResourceAdvice struct {
@@ -490,6 +555,8 @@ type ResourceAdviceStatus_Availability struct {
 	Available uint32 `protobuf:"varint,2,opt,name=available,proto3" json:"available,omitempty"`
 	// The user's maximum quota limit for this resource type.
 	Limit uint32 `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Categorical indicator for resources availability.
+	AvailabilityLevel ResourceAdviceStatus_Availability_AvailabilityLevel `protobuf:"varint,5,opt,name=availability_level,json=availabilityLevel,proto3,enum=nebius.capacity.v1.ResourceAdviceStatus_Availability_AvailabilityLevel" json:"availability_level,omitempty"`
 	// The timestamp of the actual infrastructure measurement.
 	EffectiveAt   *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=effective_at,json=effectiveAt,proto3" json:"effective_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -547,6 +614,13 @@ func (x *ResourceAdviceStatus_Availability) GetLimit() uint32 {
 	return 0
 }
 
+func (x *ResourceAdviceStatus_Availability) GetAvailabilityLevel() ResourceAdviceStatus_Availability_AvailabilityLevel {
+	if x != nil {
+		return x.AvailabilityLevel
+	}
+	return ResourceAdviceStatus_Availability_AVAILABILITY_LEVEL_UNSPECIFIED
+}
+
 func (x *ResourceAdviceStatus_Availability) GetEffectiveAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.EffectiveAt
@@ -580,16 +654,17 @@ const file_nebius_capacity_v1_resource_advice_proto_rawDesc = "" +
 	"\n" +
 	"vcpu_count\x18\x01 \x01(\x05R\tvcpuCount\x12)\n" +
 	"\x10memory_gibibytes\x18\x02 \x01(\x05R\x0fmemoryGibibytes\x12\x1b\n" +
-	"\tgpu_count\x18\x03 \x01(\x05R\bgpuCount\"\xe7\x04\n" +
+	"\tgpu_count\x18\x03 \x01(\x05R\bgpuCount\"\xb7\a\n" +
 	"\x14ResourceAdviceStatus\x12Q\n" +
 	"\breserved\x18\x01 \x01(\v25.nebius.capacity.v1.ResourceAdviceStatus.AvailabilityR\breserved\x12R\n" +
 	"\ton_demand\x18\x02 \x01(\v25.nebius.capacity.v1.ResourceAdviceStatus.AvailabilityR\bonDemand\x12W\n" +
-	"\vpreemptible\x18\x03 \x01(\v25.nebius.capacity.v1.ResourceAdviceStatus.AvailabilityR\vpreemptible\x1a\xce\x02\n" +
+	"\vpreemptible\x18\x03 \x01(\v25.nebius.capacity.v1.ResourceAdviceStatus.AvailabilityR\vpreemptible\x1a\x9e\x05\n" +
 	"\fAvailability\x12^\n" +
 	"\n" +
 	"data_state\x18\x01 \x01(\x0e2?.nebius.capacity.v1.ResourceAdviceStatus.Availability.DataStateR\tdataState\x12\x1c\n" +
 	"\tavailable\x18\x02 \x01(\rR\tavailable\x12\x14\n" +
-	"\x05limit\x18\x04 \x01(\rR\x05limit\x12=\n" +
+	"\x05limit\x18\x04 \x01(\rR\x05limit\x12v\n" +
+	"\x12availability_level\x18\x05 \x01(\x0e2G.nebius.capacity.v1.ResourceAdviceStatus.Availability.AvailabilityLevelR\x11availabilityLevel\x12=\n" +
 	"\feffective_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\veffectiveAt\"k\n" +
 	"\tDataState\x12\x1a\n" +
@@ -597,7 +672,14 @@ const file_nebius_capacity_v1_resource_advice_proto_rawDesc = "" +
 	"\x10DATA_STATE_FRESH\x10\x01\x12\x14\n" +
 	"\x10DATA_STATE_STALE\x10\x02\x12\x16\n" +
 	"\x12DATA_STATE_UNKNOWN\x10\n" +
-	"Bd\n" +
+	"\"\xd5\x01\n" +
+	"\x11AvailabilityLevel\x12\"\n" +
+	"\x1eAVAILABILITY_LEVEL_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17AVAILABILITY_LEVEL_HIGH\x10\x01\x12\x1d\n" +
+	"\x19AVAILABILITY_LEVEL_MEDIUM\x10\x02\x12\x1a\n" +
+	"\x16AVAILABILITY_LEVEL_LOW\x10\x03\x12$\n" +
+	" AVAILABILITY_LEVEL_LIMIT_REACHED\x10\x04\x12\x1e\n" +
+	"\x1aAVAILABILITY_LEVEL_UNKNOWN\x10\x05Bd\n" +
 	"\x19ai.nebius.pub.capacity.v1B\x13ResourceAdviceProtoP\x01Z0github.com/nebius/gosdk/proto/nebius/capacity/v1b\x06proto3"
 
 var (
@@ -612,37 +694,39 @@ func file_nebius_capacity_v1_resource_advice_proto_rawDescGZIP() []byte {
 	return file_nebius_capacity_v1_resource_advice_proto_rawDescData
 }
 
-var file_nebius_capacity_v1_resource_advice_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_nebius_capacity_v1_resource_advice_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_nebius_capacity_v1_resource_advice_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_nebius_capacity_v1_resource_advice_proto_goTypes = []any{
-	(ResourceAdviceStatus_Availability_DataState)(0), // 0: nebius.capacity.v1.ResourceAdviceStatus.Availability.DataState
-	(*ResourceAdvice)(nil),                           // 1: nebius.capacity.v1.ResourceAdvice
-	(*ResourceAdviceSpec)(nil),                       // 2: nebius.capacity.v1.ResourceAdviceSpec
-	(*ComputeInstanceDetails)(nil),                   // 3: nebius.capacity.v1.ComputeInstanceDetails
-	(*ResourceAdviceStatus)(nil),                     // 4: nebius.capacity.v1.ResourceAdviceStatus
-	(*ComputeInstanceDetails_Preset)(nil),            // 5: nebius.capacity.v1.ComputeInstanceDetails.Preset
-	(*ComputeInstanceDetails_Preset_Resources)(nil),  // 6: nebius.capacity.v1.ComputeInstanceDetails.Preset.Resources
-	(*ResourceAdviceStatus_Availability)(nil),        // 7: nebius.capacity.v1.ResourceAdviceStatus.Availability
-	(*v1.ResourceMetadata)(nil),                      // 8: nebius.common.v1.ResourceMetadata
-	(*timestamppb.Timestamp)(nil),                    // 9: google.protobuf.Timestamp
+	(ResourceAdviceStatus_Availability_DataState)(0),         // 0: nebius.capacity.v1.ResourceAdviceStatus.Availability.DataState
+	(ResourceAdviceStatus_Availability_AvailabilityLevel)(0), // 1: nebius.capacity.v1.ResourceAdviceStatus.Availability.AvailabilityLevel
+	(*ResourceAdvice)(nil),                                   // 2: nebius.capacity.v1.ResourceAdvice
+	(*ResourceAdviceSpec)(nil),                               // 3: nebius.capacity.v1.ResourceAdviceSpec
+	(*ComputeInstanceDetails)(nil),                           // 4: nebius.capacity.v1.ComputeInstanceDetails
+	(*ResourceAdviceStatus)(nil),                             // 5: nebius.capacity.v1.ResourceAdviceStatus
+	(*ComputeInstanceDetails_Preset)(nil),                    // 6: nebius.capacity.v1.ComputeInstanceDetails.Preset
+	(*ComputeInstanceDetails_Preset_Resources)(nil),          // 7: nebius.capacity.v1.ComputeInstanceDetails.Preset.Resources
+	(*ResourceAdviceStatus_Availability)(nil),                // 8: nebius.capacity.v1.ResourceAdviceStatus.Availability
+	(*v1.ResourceMetadata)(nil),                              // 9: nebius.common.v1.ResourceMetadata
+	(*timestamppb.Timestamp)(nil),                            // 10: google.protobuf.Timestamp
 }
 var file_nebius_capacity_v1_resource_advice_proto_depIdxs = []int32{
-	8,  // 0: nebius.capacity.v1.ResourceAdvice.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	2,  // 1: nebius.capacity.v1.ResourceAdvice.spec:type_name -> nebius.capacity.v1.ResourceAdviceSpec
-	4,  // 2: nebius.capacity.v1.ResourceAdvice.status:type_name -> nebius.capacity.v1.ResourceAdviceStatus
-	3,  // 3: nebius.capacity.v1.ResourceAdviceSpec.compute_instance:type_name -> nebius.capacity.v1.ComputeInstanceDetails
-	5,  // 4: nebius.capacity.v1.ComputeInstanceDetails.preset:type_name -> nebius.capacity.v1.ComputeInstanceDetails.Preset
-	7,  // 5: nebius.capacity.v1.ResourceAdviceStatus.reserved:type_name -> nebius.capacity.v1.ResourceAdviceStatus.Availability
-	7,  // 6: nebius.capacity.v1.ResourceAdviceStatus.on_demand:type_name -> nebius.capacity.v1.ResourceAdviceStatus.Availability
-	7,  // 7: nebius.capacity.v1.ResourceAdviceStatus.preemptible:type_name -> nebius.capacity.v1.ResourceAdviceStatus.Availability
-	6,  // 8: nebius.capacity.v1.ComputeInstanceDetails.Preset.resources:type_name -> nebius.capacity.v1.ComputeInstanceDetails.Preset.Resources
+	9,  // 0: nebius.capacity.v1.ResourceAdvice.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	3,  // 1: nebius.capacity.v1.ResourceAdvice.spec:type_name -> nebius.capacity.v1.ResourceAdviceSpec
+	5,  // 2: nebius.capacity.v1.ResourceAdvice.status:type_name -> nebius.capacity.v1.ResourceAdviceStatus
+	4,  // 3: nebius.capacity.v1.ResourceAdviceSpec.compute_instance:type_name -> nebius.capacity.v1.ComputeInstanceDetails
+	6,  // 4: nebius.capacity.v1.ComputeInstanceDetails.preset:type_name -> nebius.capacity.v1.ComputeInstanceDetails.Preset
+	8,  // 5: nebius.capacity.v1.ResourceAdviceStatus.reserved:type_name -> nebius.capacity.v1.ResourceAdviceStatus.Availability
+	8,  // 6: nebius.capacity.v1.ResourceAdviceStatus.on_demand:type_name -> nebius.capacity.v1.ResourceAdviceStatus.Availability
+	8,  // 7: nebius.capacity.v1.ResourceAdviceStatus.preemptible:type_name -> nebius.capacity.v1.ResourceAdviceStatus.Availability
+	7,  // 8: nebius.capacity.v1.ComputeInstanceDetails.Preset.resources:type_name -> nebius.capacity.v1.ComputeInstanceDetails.Preset.Resources
 	0,  // 9: nebius.capacity.v1.ResourceAdviceStatus.Availability.data_state:type_name -> nebius.capacity.v1.ResourceAdviceStatus.Availability.DataState
-	9,  // 10: nebius.capacity.v1.ResourceAdviceStatus.Availability.effective_at:type_name -> google.protobuf.Timestamp
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	1,  // 10: nebius.capacity.v1.ResourceAdviceStatus.Availability.availability_level:type_name -> nebius.capacity.v1.ResourceAdviceStatus.Availability.AvailabilityLevel
+	10, // 11: nebius.capacity.v1.ResourceAdviceStatus.Availability.effective_at:type_name -> google.protobuf.Timestamp
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_nebius_capacity_v1_resource_advice_proto_init() }
@@ -658,7 +742,7 @@ func file_nebius_capacity_v1_resource_advice_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_capacity_v1_resource_advice_proto_rawDesc), len(file_nebius_capacity_v1_resource_advice_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
