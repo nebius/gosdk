@@ -287,7 +287,8 @@ func mapKeyFromFieldKey(
 	from mask.FieldKey,
 	kind protoreflect.Kind,
 ) (protoreflect.MapKey, error) {
-	switch kind { //nolint:exhaustive // don't need to check all kinds
+	//nolint:exhaustive // default covers all other cases here
+	switch kind {
 	case protoreflect.BoolKind:
 		ret, err := strconv.ParseBool(string(from))
 		if err != nil {

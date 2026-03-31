@@ -288,6 +288,9 @@ func (w *wrapperEndpointSpec_VolumeMount_S3Config_S3Credentials) ProtoReflect() 
 	return (*EndpointSpec_VolumeMount_S3Config_S3Credentials)(w).ProtoReflect()
 }
 
+// func (x *EndpointSpec_VolumeMount_S3Config_MysteryBoxSecretRef) Sanitize()            // is not generated as no sensitive fields found
+// func (x *EndpointSpec_VolumeMount_S3Config_MysteryBoxSecretRef) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *EndpointSpec_DiskSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *EndpointSpec_DiskSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
@@ -334,6 +337,9 @@ func (*wrapperEndpointSpec_RegistryCredentials) ProtoMessage() {}
 func (w *wrapperEndpointSpec_RegistryCredentials) ProtoReflect() protoreflect.Message {
 	return (*EndpointSpec_RegistryCredentials)(w).ProtoReflect()
 }
+
+// func (x *EndpointSpec_MysteryBoxSecretRef) Sanitize()            // is not generated as no sensitive fields found
+// func (x *EndpointSpec_MysteryBoxSecretRef) LogValue() slog.Value // is not generated as no sensitive fields found
 
 // func (x *EndpointStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *EndpointStatus) LogValue() slog.Value // is not generated as no sensitive fields found
