@@ -127,8 +127,8 @@ func (x *ResourceMetadata) GetLabels() map[string]string {
 	return nil
 }
 
-// if service supports uniqueness of ResourceMetadata.name within tuple (scope) <resource_type, parent_id>
-// it also must have grpc method GetByName
+// This message is used as the request for the `GetByName` method in services supporting uniqueness
+// of `ResourceMetadata.name` within tuple (scope) <resource_type, `parent_id`>.
 type GetByNameRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`

@@ -287,6 +287,9 @@ func (w *wrapperJobSpec_VolumeMount_S3Config_S3Credentials) ProtoReflect() proto
 	return (*JobSpec_VolumeMount_S3Config_S3Credentials)(w).ProtoReflect()
 }
 
+// func (x *JobSpec_VolumeMount_S3Config_MysteryBoxSecretRef) Sanitize()            // is not generated as no sensitive fields found
+// func (x *JobSpec_VolumeMount_S3Config_MysteryBoxSecretRef) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *JobSpec_DiskSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *JobSpec_DiskSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
@@ -333,6 +336,9 @@ func (*wrapperJobSpec_RegistryCredentials) ProtoMessage() {}
 func (w *wrapperJobSpec_RegistryCredentials) ProtoReflect() protoreflect.Message {
 	return (*JobSpec_RegistryCredentials)(w).ProtoReflect()
 }
+
+// func (x *JobSpec_MysteryBoxSecretRef) Sanitize()            // is not generated as no sensitive fields found
+// func (x *JobSpec_MysteryBoxSecretRef) LogValue() slog.Value // is not generated as no sensitive fields found
 
 // func (x *JobStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *JobStatus) LogValue() slog.Value // is not generated as no sensitive fields found
