@@ -1589,6 +1589,8 @@ type LocalDisksSpec struct {
 	Request isLocalDisksSpec_Request `protobuf_oneof:"request"`
 	// config defines actions that managed Kubernetes service performs on mounted local disks
 	// to provide them inside Kubernetes cluster with a convenient interface.
+	//
+	// When omitted, a default value is generated.
 	Config        *LocalDisksSpecConfig `protobuf:"bytes,101,opt,name=config,proto3" json:"config,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1716,6 +1718,7 @@ type LocalDisksSpecConfig struct {
 	// Types that are valid to be assigned to Type:
 	//
 	//	*LocalDisksSpecConfig_None
+	//	*LocalDisksSpecConfig_KubeletEphemeral
 	Type          isLocalDisksSpecConfig_Type `protobuf_oneof:"type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1767,6 +1770,15 @@ func (x *LocalDisksSpecConfig) GetNone() bool {
 	return false
 }
 
+func (x *LocalDisksSpecConfig) GetKubeletEphemeral() bool {
+	if x != nil {
+		if x, ok := x.Type.(*LocalDisksSpecConfig_KubeletEphemeral); ok {
+			return x.KubeletEphemeral
+		}
+	}
+	return false
+}
+
 type isLocalDisksSpecConfig_Type interface {
 	isLocalDisksSpecConfig_Type()
 }
@@ -1776,7 +1788,17 @@ type LocalDisksSpecConfig_None struct {
 	None bool `protobuf:"varint,1,opt,name=none,proto3,oneof"`
 }
 
+type LocalDisksSpecConfig_KubeletEphemeral struct {
+	// kubelet_ephemeral: combine all local disks into a single storage volume and use it as kubelet's local ephemeral storage on the node
+	// See also https://kubernetes.io/docs/concepts/storage/ephemeral-storage/
+	//
+	// The default when LocalDisksSpecConfig is not set.
+	KubeletEphemeral bool `protobuf:"varint,2,opt,name=kubelet_ephemeral,json=kubeletEphemeral,proto3,oneof"`
+}
+
 func (*LocalDisksSpecConfig_None) isLocalDisksSpecConfig_Type() {}
+
+func (*LocalDisksSpecConfig_KubeletEphemeral) isLocalDisksSpecConfig_Type() {}
 
 type NodeGroupStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1995,15 +2017,16 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\n" +
 	"\x06FORBID\x10\x01\x12\n" +
 	"\n" +
-	"\x06STRICT\x10\x02\"\xc0\x01\n" +
+	"\x06STRICT\x10\x02\"\xbe\x01\n" +
 	"\x0eLocalDisksSpec\x12V\n" +
-	"\x11passthrough_group\x18\x01 \x01(\v2'.nebius.mk8s.v1.PassthroughGroupRequestH\x00R\x10passthroughGroup\x12D\n" +
-	"\x06config\x18e \x01(\v2$.nebius.mk8s.v1.LocalDisksSpecConfigB\x06\xbaH\x03\xc8\x01\x01R\x06configB\x10\n" +
+	"\x11passthrough_group\x18\x01 \x01(\v2'.nebius.mk8s.v1.PassthroughGroupRequestH\x00R\x10passthroughGroup\x12B\n" +
+	"\x06config\x18e \x01(\v2$.nebius.mk8s.v1.LocalDisksSpecConfigB\x04\xbaJ\x01\aR\x06configB\x10\n" +
 	"\arequest\x12\x05\xbaH\x02\b\x01\"7\n" +
 	"\x17PassthroughGroupRequest\x12\x1c\n" +
-	"\trequested\x18\x01 \x01(\bR\trequested\";\n" +
+	"\trequested\x18\x01 \x01(\bR\trequested\"j\n" +
 	"\x14LocalDisksSpecConfig\x12\x14\n" +
-	"\x04none\x18\x01 \x01(\bH\x00R\x04noneB\r\n" +
+	"\x04none\x18\x01 \x01(\bH\x00R\x04none\x12-\n" +
+	"\x11kubelet_ephemeral\x18\x02 \x01(\bH\x00R\x10kubeletEphemeralB\r\n" +
 	"\x04type\x12\x05\xbaH\x02\b\x01\"\xbe\x03\n" +
 	"\x0fNodeGroupStatus\x12;\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.mk8s.v1.NodeGroupStatus.StateR\x05state\x12\x18\n" +
@@ -2144,6 +2167,7 @@ func file_nebius_mk8s_v1_node_group_proto_init() {
 	}
 	file_nebius_mk8s_v1_node_group_proto_msgTypes[20].OneofWrappers = []any{
 		(*LocalDisksSpecConfig_None)(nil),
+		(*LocalDisksSpecConfig_KubeletEphemeral)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

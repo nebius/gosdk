@@ -196,9 +196,10 @@ type GroupMembershipStatus struct {
 	//
 	//	*GroupMembershipStatus_TenantUserAccountStatus
 	//	*GroupMembershipStatus_ServiceAccountStatus
-	GroupMemberStatus isGroupMembershipStatus_GroupMemberStatus `protobuf_oneof:"group_member_status"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	GroupMemberStatus   isGroupMembershipStatus_GroupMemberStatus `protobuf_oneof:"group_member_status"`
+	GroupMemberMetadata *v1.ResourceMetadata                      `protobuf:"bytes,3,opt,name=group_member_metadata,json=groupMemberMetadata,proto3" json:"group_member_metadata,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *GroupMembershipStatus) Reset() {
@@ -252,6 +253,13 @@ func (x *GroupMembershipStatus) GetServiceAccountStatus() *ServiceAccountStatus 
 		if x, ok := x.GroupMemberStatus.(*GroupMembershipStatus_ServiceAccountStatus); ok {
 			return x.ServiceAccountStatus
 		}
+	}
+	return nil
+}
+
+func (x *GroupMembershipStatus) GetGroupMemberMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.GroupMemberMetadata
 	}
 	return nil
 }
@@ -449,10 +457,11 @@ const file_nebius_iam_v1_group_membership_proto_rawDesc = "" +
 	"\x06status\x18\x03 \x01(\v2$.nebius.iam.v1.GroupMembershipStatusB\x04\xbaJ\x01\x05R\x06status\x12=\n" +
 	"\trevoke_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xbaJ\x01\x05R\brevokeAt:\x04\xbaJ\x01\x02\"8\n" +
 	"\x13GroupMembershipSpec\x12!\n" +
-	"\tmember_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\bmemberId\"\xf2\x01\n" +
+	"\tmember_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\bmemberId\"\xca\x02\n" +
 	"\x15GroupMembershipStatus\x12e\n" +
 	"\x1atenant_user_account_status\x18\x01 \x01(\v2&.nebius.iam.v1.TenantUserAccountStatusH\x00R\x17tenantUserAccountStatus\x12[\n" +
-	"\x16service_account_status\x18\x02 \x01(\v2#.nebius.iam.v1.ServiceAccountStatusH\x00R\x14serviceAccountStatusB\x15\n" +
+	"\x16service_account_status\x18\x02 \x01(\v2#.nebius.iam.v1.ServiceAccountStatusH\x00R\x14serviceAccountStatus\x12V\n" +
+	"\x15group_member_metadata\x18\x03 \x01(\v2\".nebius.common.v1.ResourceMetadataR\x13groupMemberMetadataB\x15\n" +
 	"\x13group_member_status\"\xc0\x01\n" +
 	"\x0fGroupMemberKind\x127\n" +
 	"\x04kind\x18\x01 \x01(\x0e2#.nebius.iam.v1.GroupMemberKind.KindR\x04kind\"t\n" +
@@ -506,17 +515,18 @@ var file_nebius_iam_v1_group_membership_proto_depIdxs = []int32{
 	7,  // 3: nebius.iam.v1.GroupMembership.revoke_at:type_name -> google.protobuf.Timestamp
 	8,  // 4: nebius.iam.v1.GroupMembershipStatus.tenant_user_account_status:type_name -> nebius.iam.v1.TenantUserAccountStatus
 	9,  // 5: nebius.iam.v1.GroupMembershipStatus.service_account_status:type_name -> nebius.iam.v1.ServiceAccountStatus
-	0,  // 6: nebius.iam.v1.GroupMemberKind.kind:type_name -> nebius.iam.v1.GroupMemberKind.Kind
-	1,  // 7: nebius.iam.v1.GroupMembershipWithAttributes.group_membership:type_name -> nebius.iam.v1.GroupMembership
-	4,  // 8: nebius.iam.v1.GroupMembershipWithAttributes.group_member_kind:type_name -> nebius.iam.v1.GroupMemberKind
-	10, // 9: nebius.iam.v1.GroupMembershipWithAttributes.user_attributes:type_name -> nebius.iam.v1.UserAttributes
-	11, // 10: nebius.iam.v1.GroupMembershipWithAttributes.service_account_attributes:type_name -> nebius.iam.v1.ServiceAccountAttributes
-	12, // 11: nebius.iam.v1.GroupMembershipWithAttributes.error:type_name -> nebius.iam.v1.Error
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	6,  // 6: nebius.iam.v1.GroupMembershipStatus.group_member_metadata:type_name -> nebius.common.v1.ResourceMetadata
+	0,  // 7: nebius.iam.v1.GroupMemberKind.kind:type_name -> nebius.iam.v1.GroupMemberKind.Kind
+	1,  // 8: nebius.iam.v1.GroupMembershipWithAttributes.group_membership:type_name -> nebius.iam.v1.GroupMembership
+	4,  // 9: nebius.iam.v1.GroupMembershipWithAttributes.group_member_kind:type_name -> nebius.iam.v1.GroupMemberKind
+	10, // 10: nebius.iam.v1.GroupMembershipWithAttributes.user_attributes:type_name -> nebius.iam.v1.UserAttributes
+	11, // 11: nebius.iam.v1.GroupMembershipWithAttributes.service_account_attributes:type_name -> nebius.iam.v1.ServiceAccountAttributes
+	12, // 12: nebius.iam.v1.GroupMembershipWithAttributes.error:type_name -> nebius.iam.v1.Error
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_group_membership_proto_init() }
