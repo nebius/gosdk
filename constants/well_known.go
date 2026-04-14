@@ -15,6 +15,7 @@ const (
 	FieldID              = "id"
 	FieldName            = "name"
 	FieldParentID        = "parent_id"
+	FieldRegion          = "region"
 	FieldResourceVersion = "resource_version"
 	FieldCreatedAt       = "created_at"
 	FieldUpdatedAt       = "updated_at"
