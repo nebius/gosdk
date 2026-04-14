@@ -14,6 +14,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -571,7 +572,11 @@ type JobStatus struct {
 	// State of the job.
 	State JobStatus_State `protobuf:"varint,20,opt,name=state,proto3,enum=nebius.ai.v1.JobStatus_State" json:"state,omitempty"`
 	// Details of the job's state.
-	StateDetails  *JobStateDetails `protobuf:"bytes,21,opt,name=state_details,json=stateDetails,proto3" json:"state_details,omitempty"`
+	StateDetails *JobStateDetails `protobuf:"bytes,21,opt,name=state_details,json=stateDetails,proto3" json:"state_details,omitempty"`
+	// Time when the job workload started.
+	StartedAt *timestamppb.Timestamp `protobuf:"bytes,22,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	// Time when the job workload finished.
+	FinishedAt    *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -637,6 +642,20 @@ func (x *JobStatus) GetState() JobStatus_State {
 func (x *JobStatus) GetStateDetails() *JobStateDetails {
 	if x != nil {
 		return x.StateDetails
+	}
+	return nil
+}
+
+func (x *JobStatus) GetStartedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartedAt
+	}
+	return nil
+}
+
+func (x *JobStatus) GetFinishedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.FinishedAt
 	}
 	return nil
 }
@@ -1425,7 +1444,7 @@ var File_nebius_ai_v1_job_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
-	"\x16nebius/ai/v1/job.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xb7\x01\n" +
+	"\x16nebius/ai/v1/job.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xb7\x01\n" +
 	"\x03Job\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
@@ -1509,14 +1528,18 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionId\"\xbc\x03\n" +
+	"\bmbsecverR\tversionId\"\xb4\x04\n" +
 	"\tJobStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12=\n" +
 	"\tinstances\x18\n" +
 	" \x03(\v2\x1f.nebius.ai.v1.JobInstanceStatusR\tinstances\x123\n" +
 	"\x05state\x18\x14 \x01(\x0e2\x1d.nebius.ai.v1.JobStatus.StateR\x05state\x12B\n" +
-	"\rstate_details\x18\x15 \x01(\v2\x1d.nebius.ai.v1.JobStateDetailsR\fstateDetails\"\x9e\x01\n" +
+	"\rstate_details\x18\x15 \x01(\v2\x1d.nebius.ai.v1.JobStateDetailsR\fstateDetails\x129\n" +
+	"\n" +
+	"started_at\x18\x16 \x01(\v2\x1a.google.protobuf.TimestampR\tstartedAt\x12;\n" +
+	"\vfinished_at\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"finishedAt\"\x9e\x01\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPROVISIONING\x10\x01\x12\f\n" +
@@ -1595,8 +1618,9 @@ var file_nebius_ai_v1_job_proto_goTypes = []any{
 	(*JobSpec_VolumeMount_S3Config_MysteryBoxSecretRef)(nil), // 17: nebius.ai.v1.JobSpec.VolumeMount.S3Config.MysteryBoxSecretRef
 	(*v1.ResourceMetadata)(nil),                              // 18: nebius.common.v1.ResourceMetadata
 	(*durationpb.Duration)(nil),                              // 19: google.protobuf.Duration
-	(v11.InstanceStatus_InstanceState)(0),                    // 20: nebius.compute.v1.InstanceStatus.InstanceState
-	(v11.DiskSpec_DiskType)(0),                               // 21: nebius.compute.v1.DiskSpec.DiskType
+	(*timestamppb.Timestamp)(nil),                            // 20: google.protobuf.Timestamp
+	(v11.InstanceStatus_InstanceState)(0),                    // 21: nebius.compute.v1.InstanceStatus.InstanceState
+	(v11.DiskSpec_DiskType)(0),                               // 22: nebius.compute.v1.DiskSpec.DiskType
 }
 var file_nebius_ai_v1_job_proto_depIdxs = []int32{
 	18, // 0: nebius.ai.v1.Job.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -1611,20 +1635,22 @@ var file_nebius_ai_v1_job_proto_depIdxs = []int32{
 	8,  // 9: nebius.ai.v1.JobStatus.instances:type_name -> nebius.ai.v1.JobInstanceStatus
 	2,  // 10: nebius.ai.v1.JobStatus.state:type_name -> nebius.ai.v1.JobStatus.State
 	7,  // 11: nebius.ai.v1.JobStatus.state_details:type_name -> nebius.ai.v1.JobStateDetails
-	3,  // 12: nebius.ai.v1.JobInstanceStatus.state:type_name -> nebius.ai.v1.JobInstanceStatus.State
-	20, // 13: nebius.ai.v1.JobInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
-	14, // 14: nebius.ai.v1.JobSpec.EnvironmentVariable.mysterybox_secret:type_name -> nebius.ai.v1.JobSpec.MysteryBoxSecretRef
-	0,  // 15: nebius.ai.v1.JobSpec.Port.protocol:type_name -> nebius.ai.v1.JobSpec.Port.Protocol
-	1,  // 16: nebius.ai.v1.JobSpec.VolumeMount.mode:type_name -> nebius.ai.v1.JobSpec.VolumeMount.Mode
-	15, // 17: nebius.ai.v1.JobSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config
-	21, // 18: nebius.ai.v1.JobSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
-	16, // 19: nebius.ai.v1.JobSpec.VolumeMount.S3Config.credentials:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.S3Credentials
-	17, // 20: nebius.ai.v1.JobSpec.VolumeMount.S3Config.mysterybox_secret:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.MysteryBoxSecretRef
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	20, // 12: nebius.ai.v1.JobStatus.started_at:type_name -> google.protobuf.Timestamp
+	20, // 13: nebius.ai.v1.JobStatus.finished_at:type_name -> google.protobuf.Timestamp
+	3,  // 14: nebius.ai.v1.JobInstanceStatus.state:type_name -> nebius.ai.v1.JobInstanceStatus.State
+	21, // 15: nebius.ai.v1.JobInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	14, // 16: nebius.ai.v1.JobSpec.EnvironmentVariable.mysterybox_secret:type_name -> nebius.ai.v1.JobSpec.MysteryBoxSecretRef
+	0,  // 17: nebius.ai.v1.JobSpec.Port.protocol:type_name -> nebius.ai.v1.JobSpec.Port.Protocol
+	1,  // 18: nebius.ai.v1.JobSpec.VolumeMount.mode:type_name -> nebius.ai.v1.JobSpec.VolumeMount.Mode
+	15, // 19: nebius.ai.v1.JobSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config
+	22, // 20: nebius.ai.v1.JobSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
+	16, // 21: nebius.ai.v1.JobSpec.VolumeMount.S3Config.credentials:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.S3Credentials
+	17, // 22: nebius.ai.v1.JobSpec.VolumeMount.S3Config.mysterybox_secret:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.MysteryBoxSecretRef
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_nebius_ai_v1_job_proto_init() }
