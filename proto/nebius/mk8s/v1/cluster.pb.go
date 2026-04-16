@@ -734,9 +734,10 @@ var File_nebius_mk8s_v1_cluster_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"\n" +
-	"\x1cnebius/mk8s/v1/cluster.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xb1\x01\n" +
-	"\aCluster\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12/\n" +
+	"\x1cnebius/mk8s/v1/cluster.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbe\x03\n" +
+	"\aCluster\x12\xca\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x89\x02\xbaH\x85\x02\xba\x01\x81\x02\n" +
+	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '.', starting and ending with a letter or digit\x1arsize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9.]*)?[A-Za-z0-9])?$')R\bmetadata\x12/\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.mk8s.v1.ClusterSpecR\x04spec\x125\n" +
 	"\x06status\x18\x03 \x01(\v2\x1d.nebius.mk8s.v1.ClusterStatusR\x06status\"\xa0\x01\n" +
 	"\vClusterSpec\x12M\n" +
