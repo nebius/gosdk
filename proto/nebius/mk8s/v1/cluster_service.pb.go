@@ -471,9 +471,10 @@ var File_nebius_mk8s_v1_cluster_service_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_cluster_service_proto_rawDesc = "" +
 	"\n" +
-	"$nebius/mk8s/v1/cluster_service.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1cnebius/mk8s/v1/cluster.proto\"\x97\x01\n" +
-	"\x14CreateClusterRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x127\n" +
+	"$nebius/mk8s/v1/cluster_service.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1cnebius/mk8s/v1/cluster.proto\"\x9f\x03\n" +
+	"\x14CreateClusterRequest\x12\xcd\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x8c\x02\xbaH\x88\x02\xba\x01\x81\x02\n" +
+	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '.', starting and ending with a letter or digit\x1arsize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9.]*)?[A-Za-z0-9])?$')\xc8\x01\x01R\bmetadata\x127\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.mk8s.v1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"V\n" +
 	"\x11GetClusterRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12)\n" +

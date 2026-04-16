@@ -134,6 +134,7 @@ type MaintenanceEventStatus struct {
 	FinishedAt            *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`                                      // Time when the maintenance event is finished
 	SlaDeadlineTs         *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=sla_deadline_ts,json=slaDeadlineTs,proto3" json:"sla_deadline_ts,omitempty"`                           // Time when the instance will be force stopped
 	SupportCenterTicketId string                 `protobuf:"bytes,9,opt,name=support_center_ticket_id,json=supportCenterTicketId,proto3" json:"support_center_ticket_id,omitempty"` // Ticket key, can be transformed into url where support is talking with the client
+	MaintenanceReason     string                 `protobuf:"bytes,12,opt,name=maintenance_reason,json=maintenanceReason,proto3" json:"maintenance_reason,omitempty"`                // Reason of the maintenance
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -203,6 +204,13 @@ func (x *MaintenanceEventStatus) GetSupportCenterTicketId() string {
 	return ""
 }
 
+func (x *MaintenanceEventStatus) GetMaintenanceReason() string {
+	if x != nil {
+		return x.MaintenanceReason
+	}
+	return ""
+}
+
 var File_nebius_compute_v1_maintenance_event_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_maintenance_event_proto_rawDesc = "" +
@@ -214,7 +222,7 @@ const file_nebius_compute_v1_maintenance_event_proto_rawDesc = "" +
 	"\x06status\x18\x03 \x01(\v2).nebius.compute.v1.MaintenanceEventStatusB\x04\xbaJ\x01\x05R\x06status\";\n" +
 	"\x14MaintenanceEventSpec\x12#\n" +
 	"\n" +
-	"is_planned\x18\x05 \x01(\bB\x04\xbaJ\x01\x02R\tisPlanned\"\xb4\x02\n" +
+	"is_planned\x18\x05 \x01(\bB\x04\xbaJ\x01\x02R\tisPlanned\"\xe3\x02\n" +
 	"\x16MaintenanceEventStatus\x12%\n" +
 	"\x0emaintenance_id\x18\x01 \x01(\tR\rmaintenanceId\x129\n" +
 	"\n" +
@@ -222,7 +230,8 @@ const file_nebius_compute_v1_maintenance_event_proto_rawDesc = "" +
 	"\vfinished_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"finishedAt\x12B\n" +
 	"\x0fsla_deadline_ts\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\rslaDeadlineTs\x127\n" +
-	"\x18support_center_ticket_id\x18\t \x01(\tR\x15supportCenterTicketIdBd\n" +
+	"\x18support_center_ticket_id\x18\t \x01(\tR\x15supportCenterTicketId\x12-\n" +
+	"\x12maintenance_reason\x18\f \x01(\tR\x11maintenanceReasonBd\n" +
 	"\x18ai.nebius.pub.compute.v1B\x15MaintenanceEventProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 
 var (
