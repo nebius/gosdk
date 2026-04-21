@@ -414,14 +414,14 @@ const file_nebius_iam_v1_federation_certificate_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"\x87\x01\n" +
 	"!ListFederationCertificateResponse\x12:\n" +
 	"\x05items\x18\x01 \x03(\v2$.nebius.iam.v1.FederationCertificateR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xfb\x04\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x81\x05\n" +
 	"\x1cFederationCertificateService\x12X\n" +
 	"\x06Create\x121.nebius.iam.v1.CreateFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x12[\n" +
 	"\x03Get\x12..nebius.iam.v1.GetFederationCertificateRequest\x1a$.nebius.iam.v1.FederationCertificate\x12\x81\x01\n" +
 	"\x10ListByFederation\x12;.nebius.iam.v1.ListFederationCertificateByFederationRequest\x1a0.nebius.iam.v1.ListFederationCertificateResponse\x12X\n" +
-	"\x06Update\x121.nebius.iam.v1.UpdateFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x12`\n" +
+	"\x06Update\x121.nebius.iam.v1.UpdateFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x12f\n" +
 	"\n" +
-	"UpdateBulk\x125.nebius.iam.v1.UpdateBulkFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x12X\n" +
+	"UpdateBulk\x125.nebius.iam.v1.UpdateBulkFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\"\x04\xeaJ\x01\x02\x12X\n" +
 	"\x06Delete\x121.nebius.iam.v1.DeleteFederationCertificateRequest\x1a\x1b.nebius.common.v1.Operation\x1a\n" +
 	"\xbaJ\acpl.iamBh\n" +
 	"\x14ai.nebius.pub.iam.v1B!FederationCertificateServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
