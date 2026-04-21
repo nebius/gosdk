@@ -169,6 +169,10 @@ func (s federationCertificateService) UpdateBulk(ctx context.Context, request *v
 	error,
 ) {
 	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
 	if logger := s.sdk.GetLogger(); logger != nil {
 		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
 			logger.WarnContext(ctx, warning, slog.String("path", path))

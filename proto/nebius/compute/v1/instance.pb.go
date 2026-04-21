@@ -211,7 +211,7 @@ func (x AttachedFilesystemSpec_AttachMode) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AttachedFilesystemSpec_AttachMode.Descriptor instead.
 func (AttachedFilesystemSpec_AttachMode) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{8, 0}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{9, 0}
 }
 
 type InstanceStatus_InstanceState int32
@@ -278,7 +278,7 @@ func (x InstanceStatus_InstanceState) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InstanceStatus_InstanceState.Descriptor instead.
 func (InstanceStatus_InstanceState) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{9, 0}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{10, 0}
 }
 
 type ReservationPolicy_Policy int32
@@ -336,7 +336,7 @@ func (x ReservationPolicy_Policy) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ReservationPolicy_Policy.Descriptor instead.
 func (ReservationPolicy_Policy) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{11, 0}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{13, 0}
 }
 
 type Instance struct {
@@ -762,6 +762,7 @@ type AttachedDiskSpec struct {
 	// Types that are valid to be assigned to Type:
 	//
 	//	*AttachedDiskSpec_ExistingDisk
+	//	*AttachedDiskSpec_ManagedDisk
 	Type isAttachedDiskSpec_Type `protobuf_oneof:"type"`
 	// Specifies the user-defined identifier, allowing to use '/dev/disk/by-id/virtio-{device_id}' as a device path in mount command.
 	DeviceId      string `protobuf:"bytes,3,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
@@ -822,6 +823,15 @@ func (x *AttachedDiskSpec) GetExistingDisk() *ExistingDisk {
 	return nil
 }
 
+func (x *AttachedDiskSpec) GetManagedDisk() *ManagedDisk {
+	if x != nil {
+		if x, ok := x.Type.(*AttachedDiskSpec_ManagedDisk); ok {
+			return x.ManagedDisk
+		}
+	}
+	return nil
+}
+
 func (x *AttachedDiskSpec) GetDeviceId() string {
 	if x != nil {
 		return x.DeviceId
@@ -850,7 +860,49 @@ type AttachedDiskSpec_ExistingDisk struct {
 	ExistingDisk *ExistingDisk `protobuf:"bytes,2,opt,name=existing_disk,json=existingDisk,proto3,oneof"`
 }
 
+type AttachedDiskSpec_ManagedDisk struct {
+	// Attach a managed disk.
+	//
+	// Lifecycle:
+	// - The disk is deleted when the instance is deleted.
+	//
+	// Semantics:
+	// - Specifying a ManagedDisk expresses an intent to have that managed disk attached.
+	// - If this intent cannot be satisfied, the entire operation fails.
+	// - You can check the intent status in `instance.status.disk_attachments`.
+	//
+	// Updates and matching:
+	// - Managed disks can be updated only via instance spec updates. Updates via DiskService are not allowed.
+	// - During updates, disks are matched by `name`.
+	//
+	// Renaming and data loss:
+	//   - Changing the disk `name` triggers disk replacement (create a new disk and delete the old one),
+	//     which causes data loss.
+	//   - To rename a managed disk safely:
+	//     1) switch it to ExistingDisk in the instance spec, and
+	//     2) update/rename it via DiskService.
+	//
+	// Conflicts:
+	//   - Instance create/update fails if there is already a disk with the same `name`.
+	//     as requested by any ManagedDisk.
+	//
+	// Finding the disk ID:
+	//   - The disk ID is available in `instance.status.disk_attachments` after it is created.
+	//     Use `DiskAttachmentStatus.name` to find the desired disk which matches `name`.
+	//
+	// Switching to an existing (non-managed) disk:
+	//   - To preserve the disk after instance deletion, switch it to ExistingDisk in the instance spec,
+	//     use the disk ID from `instance.status.disk_attachments`.
+	//
+	// Deletion protection:
+	// - Switching ExistingDisk to ManagedDisk fails if `Disk.spec.deletion_protection` is enabled.
+	// - Deleting an instance that has a ManagedDisk fails if `Disk.spec.deletion_protection` is enabled.
+	ManagedDisk *ManagedDisk `protobuf:"bytes,4,opt,name=managed_disk,json=managedDisk,proto3,oneof"`
+}
+
 func (*AttachedDiskSpec_ExistingDisk) isAttachedDiskSpec_Type() {}
+
+func (*AttachedDiskSpec_ManagedDisk) isAttachedDiskSpec_Type() {}
 
 type ExistingDisk struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -896,6 +948,71 @@ func (x *ExistingDisk) GetId() string {
 	return ""
 }
 
+type ManagedDisk struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Name of a dependent disk.
+	// Use it to convert an ExistingDisk to a dependent disk.
+	// Changing the name will replace the disk and cause data loss.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Labels associated with disk resource.
+	Labels map[string]string `protobuf:"bytes,2,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Specification of a dependent disk to be created.
+	Spec          *DiskSpec `protobuf:"bytes,4,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ManagedDisk) Reset() {
+	*x = ManagedDisk{}
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ManagedDisk) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ManagedDisk) ProtoMessage() {}
+
+func (x *ManagedDisk) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ManagedDisk.ProtoReflect.Descriptor instead.
+func (*ManagedDisk) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ManagedDisk) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ManagedDisk) GetLabels() map[string]string {
+	if x != nil {
+		return x.Labels
+	}
+	return nil
+}
+
+func (x *ManagedDisk) GetSpec() *DiskSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
 type ExistingFilesystem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -905,7 +1022,7 @@ type ExistingFilesystem struct {
 
 func (x *ExistingFilesystem) Reset() {
 	*x = ExistingFilesystem{}
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[7]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -917,7 +1034,7 @@ func (x *ExistingFilesystem) String() string {
 func (*ExistingFilesystem) ProtoMessage() {}
 
 func (x *ExistingFilesystem) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[7]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -930,7 +1047,7 @@ func (x *ExistingFilesystem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExistingFilesystem.ProtoReflect.Descriptor instead.
 func (*ExistingFilesystem) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{7}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ExistingFilesystem) GetId() string {
@@ -955,7 +1072,7 @@ type AttachedFilesystemSpec struct {
 
 func (x *AttachedFilesystemSpec) Reset() {
 	*x = AttachedFilesystemSpec{}
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[8]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -967,7 +1084,7 @@ func (x *AttachedFilesystemSpec) String() string {
 func (*AttachedFilesystemSpec) ProtoMessage() {}
 
 func (x *AttachedFilesystemSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[8]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -980,7 +1097,7 @@ func (x *AttachedFilesystemSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AttachedFilesystemSpec.ProtoReflect.Descriptor instead.
 func (*AttachedFilesystemSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{8}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *AttachedFilesystemSpec) GetAttachMode() AttachedFilesystemSpec_AttachMode {
@@ -1035,13 +1152,15 @@ type InstanceStatus struct {
 	//	*InstanceStatus_InfinibandTopologyPath
 	GpuClusterTopology isInstanceStatus_GpuClusterTopology `protobuf_oneof:"gpu_cluster_topology"`
 	ReservationId      string                              `protobuf:"bytes,12,opt,name=reservation_id,json=reservationId,proto3" json:"reservation_id,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// Status of the requested disk attachments.
+	DiskAttachments []*DiskAttachmentStatus `protobuf:"bytes,13,rep,name=disk_attachments,json=diskAttachments,proto3" json:"disk_attachments,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *InstanceStatus) Reset() {
 	*x = InstanceStatus{}
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[9]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1053,7 +1172,7 @@ func (x *InstanceStatus) String() string {
 func (*InstanceStatus) ProtoMessage() {}
 
 func (x *InstanceStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[9]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1066,7 +1185,7 @@ func (x *InstanceStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InstanceStatus.ProtoReflect.Descriptor instead.
 func (*InstanceStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{9}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *InstanceStatus) GetState() InstanceStatus_InstanceState {
@@ -1120,6 +1239,13 @@ func (x *InstanceStatus) GetReservationId() string {
 	return ""
 }
 
+func (x *InstanceStatus) GetDiskAttachments() []*DiskAttachmentStatus {
+	if x != nil {
+		return x.DiskAttachments
+	}
+	return nil
+}
+
 type isInstanceStatus_GpuClusterTopology interface {
 	isInstanceStatus_GpuClusterTopology()
 }
@@ -1130,6 +1256,79 @@ type InstanceStatus_InfinibandTopologyPath struct {
 
 func (*InstanceStatus_InfinibandTopologyPath) isInstanceStatus_GpuClusterTopology() {}
 
+type DiskAttachmentStatus struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Disk ID.
+	// - For ExistingDisk, this is the referenced disk ID.
+	// - For ManagedDisk, may be empty while the attachment intent is still pending.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Disk name used to match this status entry with the desired attachment
+	// from the instance specification.
+	//
+	// Consistency:
+	//   - For ManagedDisk, this value is derived from the instance spec (ManagedDisk.name).
+	//   - For ExistingDisk, this value is derived from the disk resource name and may lag behind
+	//     in case of renaming. It is updated asynchronously and is eventually consistent.
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// Indicates whether this attachment is managed by the instance lifecycle.
+	// If true, the disk is expected to be deleted when the instance is deleted.
+	// If false, the disk is preserved and only detached on instance deletion.
+	IsManaged     bool `protobuf:"varint,3,opt,name=is_managed,json=isManaged,proto3" json:"is_managed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DiskAttachmentStatus) Reset() {
+	*x = DiskAttachmentStatus{}
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DiskAttachmentStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DiskAttachmentStatus) ProtoMessage() {}
+
+func (x *DiskAttachmentStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DiskAttachmentStatus.ProtoReflect.Descriptor instead.
+func (*DiskAttachmentStatus) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *DiskAttachmentStatus) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DiskAttachmentStatus) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *DiskAttachmentStatus) GetIsManaged() bool {
+	if x != nil {
+		return x.IsManaged
+	}
+	return false
+}
+
 type InstanceStatusInfinibandTopologyPath struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Path          []string               `protobuf:"bytes,1,rep,name=path,proto3" json:"path,omitempty"`
@@ -1139,7 +1338,7 @@ type InstanceStatusInfinibandTopologyPath struct {
 
 func (x *InstanceStatusInfinibandTopologyPath) Reset() {
 	*x = InstanceStatusInfinibandTopologyPath{}
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[10]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1151,7 +1350,7 @@ func (x *InstanceStatusInfinibandTopologyPath) String() string {
 func (*InstanceStatusInfinibandTopologyPath) ProtoMessage() {}
 
 func (x *InstanceStatusInfinibandTopologyPath) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[10]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1164,7 +1363,7 @@ func (x *InstanceStatusInfinibandTopologyPath) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use InstanceStatusInfinibandTopologyPath.ProtoReflect.Descriptor instead.
 func (*InstanceStatusInfinibandTopologyPath) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{10}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *InstanceStatusInfinibandTopologyPath) GetPath() []string {
@@ -1185,7 +1384,7 @@ type ReservationPolicy struct {
 
 func (x *ReservationPolicy) Reset() {
 	*x = ReservationPolicy{}
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[11]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1197,7 +1396,7 @@ func (x *ReservationPolicy) String() string {
 func (*ReservationPolicy) ProtoMessage() {}
 
 func (x *ReservationPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[11]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1210,7 +1409,7 @@ func (x *ReservationPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReservationPolicy.ProtoReflect.Descriptor instead.
 func (*ReservationPolicy) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{11}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ReservationPolicy) GetPolicy() ReservationPolicy_Policy {
@@ -1239,7 +1438,7 @@ type LocalDisksSpec struct {
 
 func (x *LocalDisksSpec) Reset() {
 	*x = LocalDisksSpec{}
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[12]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1251,7 +1450,7 @@ func (x *LocalDisksSpec) String() string {
 func (*LocalDisksSpec) ProtoMessage() {}
 
 func (x *LocalDisksSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[12]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1264,7 +1463,7 @@ func (x *LocalDisksSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocalDisksSpec.ProtoReflect.Descriptor instead.
 func (*LocalDisksSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{12}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *LocalDisksSpec) GetRequest() isLocalDisksSpec_Request {
@@ -1310,7 +1509,7 @@ type PassthroughGroupRequest struct {
 
 func (x *PassthroughGroupRequest) Reset() {
 	*x = PassthroughGroupRequest{}
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[13]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1322,7 +1521,7 @@ func (x *PassthroughGroupRequest) String() string {
 func (*PassthroughGroupRequest) ProtoMessage() {}
 
 func (x *PassthroughGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_instance_proto_msgTypes[13]
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1335,7 +1534,7 @@ func (x *PassthroughGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassthroughGroupRequest.ProtoReflect.Descriptor instead.
 func (*PassthroughGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{13}
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *PassthroughGroupRequest) GetRequested() bool {
@@ -1349,7 +1548,7 @@ var File_nebius_compute_v1_instance_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\n" +
-	" nebius/compute/v1/instance.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a)nebius/compute/v1/network_interface.proto\"\xba\x01\n" +
+	" nebius/compute/v1/instance.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a)nebius/compute/v1/network_interface.proto\"\xba\x01\n" +
 	"\bInstance\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\x129\n" +
@@ -1386,11 +1585,12 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x06preset\x18\x02 \x01(\tH\x00R\x06presetB\r\n" +
 	"\x04size\x12\x05\xbaH\x02\b\x01\"(\n" +
 	"\x16InstanceGpuClusterSpec\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xa6\x02\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xeb\x02\n" +
 	"\x10AttachedDiskSpec\x12W\n" +
 	"\vattach_mode\x18\x01 \x01(\x0e2..nebius.compute.v1.AttachedDiskSpec.AttachModeB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"attachMode\x12F\n" +
-	"\rexisting_disk\x18\x02 \x01(\v2\x1f.nebius.compute.v1.ExistingDiskH\x00R\fexistingDisk\x12$\n" +
+	"\rexisting_disk\x18\x02 \x01(\v2\x1f.nebius.compute.v1.ExistingDiskH\x00R\fexistingDisk\x12C\n" +
+	"\fmanaged_disk\x18\x04 \x01(\v2\x1e.nebius.compute.v1.ManagedDiskH\x00R\vmanagedDisk\x12$\n" +
 	"\tdevice_id\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x18\x14R\bdeviceId\"<\n" +
 	"\n" +
 	"AttachMode\x12\x0f\n" +
@@ -1400,7 +1600,14 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"READ_WRITE\x10\x02B\r\n" +
 	"\x04type\x12\x05\xbaH\x02\b\x01\"&\n" +
 	"\fExistingDisk\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\",\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xe1\x01\n" +
+	"\vManagedDisk\x12\x1a\n" +
+	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12B\n" +
+	"\x06labels\x18\x02 \x03(\v2*.nebius.compute.v1.ManagedDisk.LabelsEntryR\x06labels\x127\n" +
+	"\x04spec\x18\x04 \x01(\v2\x1b.nebius.compute.v1.DiskSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a9\n" +
+	"\vLabelsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\",\n" +
 	"\x12ExistingFilesystem\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xc7\x02\n" +
 	"\x16AttachedFilesystemSpec\x12]\n" +
@@ -1415,7 +1622,7 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\tREAD_ONLY\x10\x01\x12\x0e\n" +
 	"\n" +
 	"READ_WRITE\x10\x02B\r\n" +
-	"\x04type\x12\x05\xbaH\x02\b\x01\"\xcd\x04\n" +
+	"\x04type\x12\x05\xbaH\x02\b\x01\"\xa1\x05\n" +
 	"\x0eInstanceStatus\x12E\n" +
 	"\x05state\x18\x01 \x01(\x0e2/.nebius.compute.v1.InstanceStatus.InstanceStateR\x05state\x12X\n" +
 	"\x12network_interfaces\x18\x02 \x03(\v2).nebius.compute.v1.NetworkInterfaceStatusR\x11networkInterfaces\x12 \n" +
@@ -1423,7 +1630,8 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x14maintenance_event_id\x18\a \x01(\tR\x12maintenanceEventId\x12s\n" +
 	"\x18infiniband_topology_path\x18\n" +
 	" \x01(\v27.nebius.compute.v1.InstanceStatusInfinibandTopologyPathH\x00R\x16infinibandTopologyPath\x12%\n" +
-	"\x0ereservation_id\x18\f \x01(\tR\rreservationId\"\x8b\x01\n" +
+	"\x0ereservation_id\x18\f \x01(\tR\rreservationId\x12R\n" +
+	"\x10disk_attachments\x18\r \x03(\v2'.nebius.compute.v1.DiskAttachmentStatusR\x0fdiskAttachments\"\x8b\x01\n" +
 	"\rInstanceState\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\f\n" +
@@ -1434,7 +1642,12 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\aSTOPPED\x10\x06\x12\f\n" +
 	"\bDELETING\x10\a\x12\t\n" +
 	"\x05ERROR\x10\bB\x16\n" +
-	"\x14gpu_cluster_topologyJ\x04\b\x06\x10\a\":\n" +
+	"\x14gpu_cluster_topologyJ\x04\b\x06\x10\a\"Y\n" +
+	"\x14DiskAttachmentStatus\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
+	"\n" +
+	"is_managed\x18\x03 \x01(\bR\tisManaged\":\n" +
 	"$InstanceStatusInfinibandTopologyPath\x12\x12\n" +
 	"\x04path\x18\x01 \x03(\tR\x04path\"\xad\x01\n" +
 	"\x11ReservationPolicy\x12C\n" +
@@ -1469,7 +1682,7 @@ func file_nebius_compute_v1_instance_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_compute_v1_instance_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_nebius_compute_v1_instance_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_nebius_compute_v1_instance_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_nebius_compute_v1_instance_proto_goTypes = []any{
 	(InstanceRecoveryPolicy)(0),                  // 0: nebius.compute.v1.InstanceRecoveryPolicy
 	(PreemptibleSpec_PreemptionPolicy)(0),        // 1: nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
@@ -1484,46 +1697,54 @@ var file_nebius_compute_v1_instance_proto_goTypes = []any{
 	(*InstanceGpuClusterSpec)(nil),               // 10: nebius.compute.v1.InstanceGpuClusterSpec
 	(*AttachedDiskSpec)(nil),                     // 11: nebius.compute.v1.AttachedDiskSpec
 	(*ExistingDisk)(nil),                         // 12: nebius.compute.v1.ExistingDisk
-	(*ExistingFilesystem)(nil),                   // 13: nebius.compute.v1.ExistingFilesystem
-	(*AttachedFilesystemSpec)(nil),               // 14: nebius.compute.v1.AttachedFilesystemSpec
-	(*InstanceStatus)(nil),                       // 15: nebius.compute.v1.InstanceStatus
-	(*InstanceStatusInfinibandTopologyPath)(nil), // 16: nebius.compute.v1.InstanceStatusInfinibandTopologyPath
-	(*ReservationPolicy)(nil),                    // 17: nebius.compute.v1.ReservationPolicy
-	(*LocalDisksSpec)(nil),                       // 18: nebius.compute.v1.LocalDisksSpec
-	(*PassthroughGroupRequest)(nil),              // 19: nebius.compute.v1.PassthroughGroupRequest
-	(*v1.ResourceMetadata)(nil),                  // 20: nebius.common.v1.ResourceMetadata
-	(*NetworkInterfaceSpec)(nil),                 // 21: nebius.compute.v1.NetworkInterfaceSpec
-	(*NetworkInterfaceStatus)(nil),               // 22: nebius.compute.v1.NetworkInterfaceStatus
+	(*ManagedDisk)(nil),                          // 13: nebius.compute.v1.ManagedDisk
+	(*ExistingFilesystem)(nil),                   // 14: nebius.compute.v1.ExistingFilesystem
+	(*AttachedFilesystemSpec)(nil),               // 15: nebius.compute.v1.AttachedFilesystemSpec
+	(*InstanceStatus)(nil),                       // 16: nebius.compute.v1.InstanceStatus
+	(*DiskAttachmentStatus)(nil),                 // 17: nebius.compute.v1.DiskAttachmentStatus
+	(*InstanceStatusInfinibandTopologyPath)(nil), // 18: nebius.compute.v1.InstanceStatusInfinibandTopologyPath
+	(*ReservationPolicy)(nil),                    // 19: nebius.compute.v1.ReservationPolicy
+	(*LocalDisksSpec)(nil),                       // 20: nebius.compute.v1.LocalDisksSpec
+	(*PassthroughGroupRequest)(nil),              // 21: nebius.compute.v1.PassthroughGroupRequest
+	nil,                                          // 22: nebius.compute.v1.ManagedDisk.LabelsEntry
+	(*v1.ResourceMetadata)(nil),                  // 23: nebius.common.v1.ResourceMetadata
+	(*NetworkInterfaceSpec)(nil),                 // 24: nebius.compute.v1.NetworkInterfaceSpec
+	(*DiskSpec)(nil),                             // 25: nebius.compute.v1.DiskSpec
+	(*NetworkInterfaceStatus)(nil),               // 26: nebius.compute.v1.NetworkInterfaceStatus
 }
 var file_nebius_compute_v1_instance_proto_depIdxs = []int32{
-	20, // 0: nebius.compute.v1.Instance.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	23, // 0: nebius.compute.v1.Instance.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	7,  // 1: nebius.compute.v1.Instance.spec:type_name -> nebius.compute.v1.InstanceSpec
-	15, // 2: nebius.compute.v1.Instance.status:type_name -> nebius.compute.v1.InstanceStatus
+	16, // 2: nebius.compute.v1.Instance.status:type_name -> nebius.compute.v1.InstanceStatus
 	9,  // 3: nebius.compute.v1.InstanceSpec.resources:type_name -> nebius.compute.v1.ResourcesSpec
 	10, // 4: nebius.compute.v1.InstanceSpec.gpu_cluster:type_name -> nebius.compute.v1.InstanceGpuClusterSpec
-	21, // 5: nebius.compute.v1.InstanceSpec.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceSpec
+	24, // 5: nebius.compute.v1.InstanceSpec.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceSpec
 	11, // 6: nebius.compute.v1.InstanceSpec.boot_disk:type_name -> nebius.compute.v1.AttachedDiskSpec
 	11, // 7: nebius.compute.v1.InstanceSpec.secondary_disks:type_name -> nebius.compute.v1.AttachedDiskSpec
-	14, // 8: nebius.compute.v1.InstanceSpec.filesystems:type_name -> nebius.compute.v1.AttachedFilesystemSpec
+	15, // 8: nebius.compute.v1.InstanceSpec.filesystems:type_name -> nebius.compute.v1.AttachedFilesystemSpec
 	0,  // 9: nebius.compute.v1.InstanceSpec.recovery_policy:type_name -> nebius.compute.v1.InstanceRecoveryPolicy
 	8,  // 10: nebius.compute.v1.InstanceSpec.preemptible:type_name -> nebius.compute.v1.PreemptibleSpec
-	17, // 11: nebius.compute.v1.InstanceSpec.reservation_policy:type_name -> nebius.compute.v1.ReservationPolicy
-	18, // 12: nebius.compute.v1.InstanceSpec.local_disks:type_name -> nebius.compute.v1.LocalDisksSpec
+	19, // 11: nebius.compute.v1.InstanceSpec.reservation_policy:type_name -> nebius.compute.v1.ReservationPolicy
+	20, // 12: nebius.compute.v1.InstanceSpec.local_disks:type_name -> nebius.compute.v1.LocalDisksSpec
 	1,  // 13: nebius.compute.v1.PreemptibleSpec.on_preemption:type_name -> nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
 	2,  // 14: nebius.compute.v1.AttachedDiskSpec.attach_mode:type_name -> nebius.compute.v1.AttachedDiskSpec.AttachMode
 	12, // 15: nebius.compute.v1.AttachedDiskSpec.existing_disk:type_name -> nebius.compute.v1.ExistingDisk
-	3,  // 16: nebius.compute.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.compute.v1.AttachedFilesystemSpec.AttachMode
-	13, // 17: nebius.compute.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.compute.v1.ExistingFilesystem
-	4,  // 18: nebius.compute.v1.InstanceStatus.state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
-	22, // 19: nebius.compute.v1.InstanceStatus.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceStatus
-	16, // 20: nebius.compute.v1.InstanceStatus.infiniband_topology_path:type_name -> nebius.compute.v1.InstanceStatusInfinibandTopologyPath
-	5,  // 21: nebius.compute.v1.ReservationPolicy.policy:type_name -> nebius.compute.v1.ReservationPolicy.Policy
-	19, // 22: nebius.compute.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.compute.v1.PassthroughGroupRequest
-	23, // [23:23] is the sub-list for method output_type
-	23, // [23:23] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	13, // 16: nebius.compute.v1.AttachedDiskSpec.managed_disk:type_name -> nebius.compute.v1.ManagedDisk
+	22, // 17: nebius.compute.v1.ManagedDisk.labels:type_name -> nebius.compute.v1.ManagedDisk.LabelsEntry
+	25, // 18: nebius.compute.v1.ManagedDisk.spec:type_name -> nebius.compute.v1.DiskSpec
+	3,  // 19: nebius.compute.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.compute.v1.AttachedFilesystemSpec.AttachMode
+	14, // 20: nebius.compute.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.compute.v1.ExistingFilesystem
+	4,  // 21: nebius.compute.v1.InstanceStatus.state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	26, // 22: nebius.compute.v1.InstanceStatus.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceStatus
+	18, // 23: nebius.compute.v1.InstanceStatus.infiniband_topology_path:type_name -> nebius.compute.v1.InstanceStatusInfinibandTopologyPath
+	17, // 24: nebius.compute.v1.InstanceStatus.disk_attachments:type_name -> nebius.compute.v1.DiskAttachmentStatus
+	5,  // 25: nebius.compute.v1.ReservationPolicy.policy:type_name -> nebius.compute.v1.ReservationPolicy.Policy
+	21, // 26: nebius.compute.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.compute.v1.PassthroughGroupRequest
+	27, // [27:27] is the sub-list for method output_type
+	27, // [27:27] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_instance_proto_init() }
@@ -1531,20 +1752,22 @@ func file_nebius_compute_v1_instance_proto_init() {
 	if File_nebius_compute_v1_instance_proto != nil {
 		return
 	}
+	file_nebius_compute_v1_disk_proto_init()
 	file_nebius_compute_v1_network_interface_proto_init()
 	file_nebius_compute_v1_instance_proto_msgTypes[3].OneofWrappers = []any{
 		(*ResourcesSpec_Preset)(nil),
 	}
 	file_nebius_compute_v1_instance_proto_msgTypes[5].OneofWrappers = []any{
 		(*AttachedDiskSpec_ExistingDisk)(nil),
-	}
-	file_nebius_compute_v1_instance_proto_msgTypes[8].OneofWrappers = []any{
-		(*AttachedFilesystemSpec_ExistingFilesystem)(nil),
+		(*AttachedDiskSpec_ManagedDisk)(nil),
 	}
 	file_nebius_compute_v1_instance_proto_msgTypes[9].OneofWrappers = []any{
+		(*AttachedFilesystemSpec_ExistingFilesystem)(nil),
+	}
+	file_nebius_compute_v1_instance_proto_msgTypes[10].OneofWrappers = []any{
 		(*InstanceStatus_InfinibandTopologyPath)(nil),
 	}
-	file_nebius_compute_v1_instance_proto_msgTypes[12].OneofWrappers = []any{
+	file_nebius_compute_v1_instance_proto_msgTypes[14].OneofWrappers = []any{
 		(*LocalDisksSpec_PassthroughGroup)(nil),
 	}
 	type x struct{}
@@ -1553,7 +1776,7 @@ func file_nebius_compute_v1_instance_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_instance_proto_rawDesc), len(file_nebius_compute_v1_instance_proto_rawDesc)),
 			NumEnums:      6,
-			NumMessages:   14,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

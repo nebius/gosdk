@@ -111,6 +111,9 @@ func (w *wrapperInstanceSpec) ProtoReflect() protoreflect.Message {
 // func (x *ExistingDisk) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ExistingDisk) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *ManagedDisk) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ManagedDisk) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ExistingFilesystem) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ExistingFilesystem) LogValue() slog.Value // is not generated as no sensitive fields found
 
@@ -119,6 +122,9 @@ func (w *wrapperInstanceSpec) ProtoReflect() protoreflect.Message {
 
 // func (x *InstanceStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *InstanceStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DiskAttachmentStatus) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DiskAttachmentStatus) LogValue() slog.Value // is not generated as no sensitive fields found
 
 // func (x *InstanceStatusInfinibandTopologyPath) Sanitize()            // is not generated as no sensitive fields found
 // func (x *InstanceStatusInfinibandTopologyPath) LogValue() slog.Value // is not generated as no sensitive fields found

@@ -166,6 +166,7 @@ type UserProfile struct {
 	//	*UserProfile_RetrievingError
 	AttributesOptional isUserProfile_AttributesOptional `protobuf_oneof:"attributes_optional"`
 	Tenants            []*UserTenantInfo                `protobuf:"bytes,5,rep,name=tenants,proto3" json:"tenants,omitempty"`
+	UserAccountState   UserAccountStatus_State          `protobuf:"varint,6,opt,name=user_account_state,json=userAccountState,proto3,enum=nebius.iam.v1.UserAccountStatus_State" json:"user_account_state,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -246,6 +247,13 @@ func (x *UserProfile) GetTenants() []*UserTenantInfo {
 	return nil
 }
 
+func (x *UserProfile) GetUserAccountState() UserAccountStatus_State {
+	if x != nil {
+		return x.UserAccountState
+	}
+	return UserAccountStatus_STATE_UNSPECIFIED
+}
+
 type isUserProfile_AttributesOptional interface {
 	isUserProfile_AttributesOptional()
 }
@@ -263,11 +271,12 @@ func (*UserProfile_Attributes) isUserProfile_AttributesOptional() {}
 func (*UserProfile_RetrievingError) isUserProfile_AttributesOptional() {}
 
 type UserTenantInfo struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	TenantId            string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
-	TenantUserAccountId string                 `protobuf:"bytes,2,opt,name=tenant_user_account_id,json=tenantUserAccountId,proto3" json:"tenant_user_account_id,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	state                  protoimpl.MessageState        `protogen:"open.v1"`
+	TenantId               string                        `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	TenantUserAccountId    string                        `protobuf:"bytes,2,opt,name=tenant_user_account_id,json=tenantUserAccountId,proto3" json:"tenant_user_account_id,omitempty"`
+	TenantUserAccountState TenantUserAccountStatus_State `protobuf:"varint,3,opt,name=tenant_user_account_state,json=tenantUserAccountState,proto3,enum=nebius.iam.v1.TenantUserAccountStatus_State" json:"tenant_user_account_state,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *UserTenantInfo) Reset() {
@@ -312,6 +321,13 @@ func (x *UserTenantInfo) GetTenantUserAccountId() string {
 		return x.TenantUserAccountId
 	}
 	return ""
+}
+
+func (x *UserTenantInfo) GetTenantUserAccountState() TenantUserAccountStatus_State {
+	if x != nil {
+		return x.TenantUserAccountState
+	}
+	return TenantUserAccountStatus_STATE_UNSPECIFIED
 }
 
 type ServiceAccountProfile struct {
@@ -404,7 +420,7 @@ const file_nebius_iam_v1_profile_service_proto_rawDesc = "" +
 	"\fuser_profile\x18\x01 \x01(\v2\x1a.nebius.iam.v1.UserProfileH\x00R\vuserProfile\x12^\n" +
 	"\x17service_account_profile\x18\x02 \x01(\v2$.nebius.iam.v1.ServiceAccountProfileH\x00R\x15serviceAccountProfile\x12N\n" +
 	"\x11anonymous_profile\x18\x03 \x01(\v2\x1f.nebius.iam.v1.AnonymousAccountH\x00R\x10anonymousProfileB\t\n" +
-	"\aprofile\"\xc0\x02\n" +
+	"\aprofile\"\x96\x03\n" +
 	"\vUserProfile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12M\n" +
 	"\x0ffederation_info\x18\x02 \x01(\v2$.nebius.iam.v1.UserAccountExternalIdR\x0efederationInfo\x12?\n" +
@@ -412,11 +428,13 @@ const file_nebius_iam_v1_profile_service_proto_rawDesc = "" +
 	"attributes\x18\x03 \x01(\v2\x1d.nebius.iam.v1.UserAttributesH\x00R\n" +
 	"attributes\x12A\n" +
 	"\x10retrieving_error\x18\x04 \x01(\v2\x14.nebius.iam.v1.ErrorH\x00R\x0fretrievingError\x127\n" +
-	"\atenants\x18\x05 \x03(\v2\x1d.nebius.iam.v1.UserTenantInfoR\atenantsB\x15\n" +
-	"\x13attributes_optional\"b\n" +
+	"\atenants\x18\x05 \x03(\v2\x1d.nebius.iam.v1.UserTenantInfoR\atenants\x12T\n" +
+	"\x12user_account_state\x18\x06 \x01(\x0e2&.nebius.iam.v1.UserAccountStatus.StateR\x10userAccountStateB\x15\n" +
+	"\x13attributes_optional\"\xcb\x01\n" +
 	"\x0eUserTenantInfo\x12\x1b\n" +
 	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x123\n" +
-	"\x16tenant_user_account_id\x18\x02 \x01(\tR\x13tenantUserAccountId\"J\n" +
+	"\x16tenant_user_account_id\x18\x02 \x01(\tR\x13tenantUserAccountId\x12g\n" +
+	"\x19tenant_user_account_state\x18\x03 \x01(\x0e2,.nebius.iam.v1.TenantUserAccountStatus.StateR\x16tenantUserAccountState\"J\n" +
 	"\x15ServiceAccountProfile\x121\n" +
 	"\x04info\x18\x01 \x01(\v2\x1d.nebius.iam.v1.ServiceAccountR\x04info\"\x12\n" +
 	"\x10AnonymousAccount2h\n" +
@@ -439,33 +457,37 @@ func file_nebius_iam_v1_profile_service_proto_rawDescGZIP() []byte {
 
 var file_nebius_iam_v1_profile_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_nebius_iam_v1_profile_service_proto_goTypes = []any{
-	(*GetProfileRequest)(nil),     // 0: nebius.iam.v1.GetProfileRequest
-	(*GetProfileResponse)(nil),    // 1: nebius.iam.v1.GetProfileResponse
-	(*UserProfile)(nil),           // 2: nebius.iam.v1.UserProfile
-	(*UserTenantInfo)(nil),        // 3: nebius.iam.v1.UserTenantInfo
-	(*ServiceAccountProfile)(nil), // 4: nebius.iam.v1.ServiceAccountProfile
-	(*AnonymousAccount)(nil),      // 5: nebius.iam.v1.AnonymousAccount
-	(*UserAccountExternalId)(nil), // 6: nebius.iam.v1.UserAccountExternalId
-	(*UserAttributes)(nil),        // 7: nebius.iam.v1.UserAttributes
-	(*Error)(nil),                 // 8: nebius.iam.v1.Error
-	(*ServiceAccount)(nil),        // 9: nebius.iam.v1.ServiceAccount
+	(*GetProfileRequest)(nil),          // 0: nebius.iam.v1.GetProfileRequest
+	(*GetProfileResponse)(nil),         // 1: nebius.iam.v1.GetProfileResponse
+	(*UserProfile)(nil),                // 2: nebius.iam.v1.UserProfile
+	(*UserTenantInfo)(nil),             // 3: nebius.iam.v1.UserTenantInfo
+	(*ServiceAccountProfile)(nil),      // 4: nebius.iam.v1.ServiceAccountProfile
+	(*AnonymousAccount)(nil),           // 5: nebius.iam.v1.AnonymousAccount
+	(*UserAccountExternalId)(nil),      // 6: nebius.iam.v1.UserAccountExternalId
+	(*UserAttributes)(nil),             // 7: nebius.iam.v1.UserAttributes
+	(*Error)(nil),                      // 8: nebius.iam.v1.Error
+	(UserAccountStatus_State)(0),       // 9: nebius.iam.v1.UserAccountStatus.State
+	(TenantUserAccountStatus_State)(0), // 10: nebius.iam.v1.TenantUserAccountStatus.State
+	(*ServiceAccount)(nil),             // 11: nebius.iam.v1.ServiceAccount
 }
 var file_nebius_iam_v1_profile_service_proto_depIdxs = []int32{
-	2, // 0: nebius.iam.v1.GetProfileResponse.user_profile:type_name -> nebius.iam.v1.UserProfile
-	4, // 1: nebius.iam.v1.GetProfileResponse.service_account_profile:type_name -> nebius.iam.v1.ServiceAccountProfile
-	5, // 2: nebius.iam.v1.GetProfileResponse.anonymous_profile:type_name -> nebius.iam.v1.AnonymousAccount
-	6, // 3: nebius.iam.v1.UserProfile.federation_info:type_name -> nebius.iam.v1.UserAccountExternalId
-	7, // 4: nebius.iam.v1.UserProfile.attributes:type_name -> nebius.iam.v1.UserAttributes
-	8, // 5: nebius.iam.v1.UserProfile.retrieving_error:type_name -> nebius.iam.v1.Error
-	3, // 6: nebius.iam.v1.UserProfile.tenants:type_name -> nebius.iam.v1.UserTenantInfo
-	9, // 7: nebius.iam.v1.ServiceAccountProfile.info:type_name -> nebius.iam.v1.ServiceAccount
-	0, // 8: nebius.iam.v1.ProfileService.Get:input_type -> nebius.iam.v1.GetProfileRequest
-	1, // 9: nebius.iam.v1.ProfileService.Get:output_type -> nebius.iam.v1.GetProfileResponse
-	9, // [9:10] is the sub-list for method output_type
-	8, // [8:9] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	2,  // 0: nebius.iam.v1.GetProfileResponse.user_profile:type_name -> nebius.iam.v1.UserProfile
+	4,  // 1: nebius.iam.v1.GetProfileResponse.service_account_profile:type_name -> nebius.iam.v1.ServiceAccountProfile
+	5,  // 2: nebius.iam.v1.GetProfileResponse.anonymous_profile:type_name -> nebius.iam.v1.AnonymousAccount
+	6,  // 3: nebius.iam.v1.UserProfile.federation_info:type_name -> nebius.iam.v1.UserAccountExternalId
+	7,  // 4: nebius.iam.v1.UserProfile.attributes:type_name -> nebius.iam.v1.UserAttributes
+	8,  // 5: nebius.iam.v1.UserProfile.retrieving_error:type_name -> nebius.iam.v1.Error
+	3,  // 6: nebius.iam.v1.UserProfile.tenants:type_name -> nebius.iam.v1.UserTenantInfo
+	9,  // 7: nebius.iam.v1.UserProfile.user_account_state:type_name -> nebius.iam.v1.UserAccountStatus.State
+	10, // 8: nebius.iam.v1.UserTenantInfo.tenant_user_account_state:type_name -> nebius.iam.v1.TenantUserAccountStatus.State
+	11, // 9: nebius.iam.v1.ServiceAccountProfile.info:type_name -> nebius.iam.v1.ServiceAccount
+	0,  // 10: nebius.iam.v1.ProfileService.Get:input_type -> nebius.iam.v1.GetProfileRequest
+	1,  // 11: nebius.iam.v1.ProfileService.Get:output_type -> nebius.iam.v1.GetProfileResponse
+	11, // [11:12] is the sub-list for method output_type
+	10, // [10:11] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_profile_service_proto_init() }
