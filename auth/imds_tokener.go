@@ -8,6 +8,8 @@ import (
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/nebius/gosdk/constants"
 )
 
 type Token struct {
@@ -26,18 +28,46 @@ type IMDSTokenizer struct {
 
 var _ BearerTokener = (*IMDSTokenizer)(nil)
 
+func WithHTTPMaxAttempts(attempts int) Option {
+	return optionFunc(func(t BearerTokener) {
+		if imdsTokener, ok := t.(*IMDSTokenizer); ok {
+			imdsTokener.maxAttempts = attempts
+		}
+	})
+}
+
+func WithHTTPBaseBackoff(backoff time.Duration) Option {
+	return optionFunc(func(t BearerTokener) {
+		if imdsTokener, ok := t.(*IMDSTokenizer); ok {
+			imdsTokener.baseBackoff = backoff
+		}
+	})
+}
+
+func WithHTTPClient(client *http.Client) Option {
+	return optionFunc(func(t BearerTokener) {
+		if imdsTokener, ok := t.(*IMDSTokenizer); ok {
+			imdsTokener.client = client
+		}
+	})
+}
+
 // NewIMDSTokenizer returns a [BearerTokener] that serves token from IMDS HTTP endpoint,
 // requesting it every time.
-func NewIMDSTokenizer(endpoint string, maxAttempts int, baseBackoff time.Duration) (*IMDSTokenizer, error) {
+func NewIMDSTokenizer(endpoint string, opts ...Option) (*IMDSTokenizer, error) {
 	if endpoint == "" {
 		return nil, errors.New("empty IMDS endpoint")
 	}
-	return &IMDSTokenizer{
+	t := &IMDSTokenizer{
 		endpoint:    endpoint,
 		client:      http.DefaultClient,
-		maxAttempts: maxAttempts,
-		baseBackoff: baseBackoff,
-	}, nil
+		maxAttempts: constants.HTTPMaxAttempts,
+		baseBackoff: constants.HTTPBaseBackoff,
+	}
+	for _, opt := range opts {
+		opt.apply(t)
+	}
+	return t, nil
 }
 
 func (t *IMDSTokenizer) BearerToken(ctx context.Context) (BearerToken, error) {

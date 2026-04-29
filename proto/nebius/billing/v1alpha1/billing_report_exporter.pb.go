@@ -29,17 +29,22 @@ const (
 	// FOCUS (FinOps Open Cost and Usage Specification) v1.2 CSV format.
 	// See: https://focus.finops.org/focus-specification/v1-2/
 	ExportFormat_EXPORT_FORMAT_FOCUS_1_2_CSV ExportFormat = 1
+	// Consumption Breakdown PDF format.
+	// Single-period human-readable cost breakdown report exported as a PDF file.
+	ExportFormat_EXPORT_FORMAT_CONSUMPTION_BREAKDOWN_PDF ExportFormat = 100
 )
 
 // Enum value maps for ExportFormat.
 var (
 	ExportFormat_name = map[int32]string{
-		0: "EXPORT_FORMAT_UNSPECIFIED",
-		1: "EXPORT_FORMAT_FOCUS_1_2_CSV",
+		0:   "EXPORT_FORMAT_UNSPECIFIED",
+		1:   "EXPORT_FORMAT_FOCUS_1_2_CSV",
+		100: "EXPORT_FORMAT_CONSUMPTION_BREAKDOWN_PDF",
 	}
 	ExportFormat_value = map[string]int32{
-		"EXPORT_FORMAT_UNSPECIFIED":   0,
-		"EXPORT_FORMAT_FOCUS_1_2_CSV": 1,
+		"EXPORT_FORMAT_UNSPECIFIED":               0,
+		"EXPORT_FORMAT_FOCUS_1_2_CSV":             1,
+		"EXPORT_FORMAT_CONSUMPTION_BREAKDOWN_PDF": 100,
 	}
 )
 
@@ -74,10 +79,11 @@ var File_nebius_billing_v1alpha1_billing_report_exporter_proto protoreflect.File
 
 const file_nebius_billing_v1alpha1_billing_report_exporter_proto_rawDesc = "" +
 	"\n" +
-	"5nebius/billing/v1alpha1/billing_report_exporter.proto\x12\x17nebius.billing.v1alpha1*N\n" +
+	"5nebius/billing/v1alpha1/billing_report_exporter.proto\x12\x17nebius.billing.v1alpha1*{\n" +
 	"\fExportFormat\x12\x1d\n" +
 	"\x19EXPORT_FORMAT_UNSPECIFIED\x10\x00\x12\x1f\n" +
-	"\x1bEXPORT_FORMAT_FOCUS_1_2_CSV\x10\x01Bu\n" +
+	"\x1bEXPORT_FORMAT_FOCUS_1_2_CSV\x10\x01\x12+\n" +
+	"'EXPORT_FORMAT_CONSUMPTION_BREAKDOWN_PDF\x10dBu\n" +
 	"\x1eai.nebius.pub.billing.v1alpha1B\x1aBillingReportExporterProtoP\x01Z5github.com/nebius/gosdk/proto/nebius/billing/v1alpha1b\x06proto3"
 
 var (

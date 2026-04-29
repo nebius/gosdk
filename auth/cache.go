@@ -37,6 +37,87 @@ type CachedServiceTokener struct {
 
 var _ BearerTokener = (*CachedServiceTokener)(nil)
 
+const (
+	// Recommended by the IAM team: refresh after 90% of the token lifetime.
+	defaultCachedTokenerLifetime = 0.9
+	// Recommended by the IAM team: start retrying after 1 second.
+	defaultCachedTokenerInitialRetry = time.Second
+	// Recommended by the IAM team: increase retry delay by 1.5x on each attempt.
+	defaultCachedTokenerRetryMultiplier = 1.5
+	// Recommended by the IAM team: cap retry delay at 1 minute.
+	defaultCachedTokenerMaxRetry = time.Minute
+
+	stoppedTickerInterval = time.Minute
+)
+
+type CachedTokenerOptionFunc func(*CachedServiceTokener)
+
+func (f CachedTokenerOptionFunc) apply(c BearerTokener) {
+	if ct, ok := (c).(*CachedServiceTokener); ok {
+		f(ct)
+	}
+}
+
+func WithCachedTokenerLifetime(lifetime float64) Option {
+	return CachedTokenerOptionFunc(func(c *CachedServiceTokener) {
+		c.lifetime = lifetime
+	})
+}
+
+func WithCachedTokenerInitialRetry(initialRetry time.Duration) Option {
+	return CachedTokenerOptionFunc(func(c *CachedServiceTokener) {
+		c.initialRetry = initialRetry
+	})
+}
+
+func WithCachedTokenerRetryMultiplier(retryMultiplier float64) Option {
+	return CachedTokenerOptionFunc(func(c *CachedServiceTokener) {
+		c.retryMultiplier = retryMultiplier
+	})
+}
+
+func WithCachedTokenerMaxRetry(maxRetry time.Duration) Option {
+	return CachedTokenerOptionFunc(func(c *CachedServiceTokener) {
+		c.maxRetry = maxRetry
+	})
+}
+
+func NewCachedTokener(tokener BearerTokener, opts ...Option) *CachedServiceTokener {
+	c := &CachedServiceTokener{
+		tokener:         tokener,
+		lifetime:        defaultCachedTokenerLifetime,
+		initialRetry:    0,
+		retryMultiplier: 0,
+		maxRetry:        0,
+		ticker:          time.NewTicker(stoppedTickerInterval), // will be stopped immediately
+		now:             time.Now,
+
+		mu:         sync.RWMutex{},
+		cache:      nil,
+		refreshAt:  time.Time{},
+		retryCount: 0,
+	}
+
+	c.ticker.Stop()
+	for _, opt := range opts {
+		opt.apply(c)
+	}
+
+	if c.initialRetry <= 0 {
+		c.initialRetry = defaultCachedTokenerInitialRetry
+	}
+	if c.retryMultiplier <= 0 {
+		c.retryMultiplier = defaultCachedTokenerRetryMultiplier
+	}
+	if c.maxRetry <= 0 {
+		c.maxRetry = defaultCachedTokenerMaxRetry
+	}
+	if c.logger == nil {
+		c.logger = slog.New(slog.DiscardHandler)
+	}
+	return c
+}
+
 // NewCachedServiceTokener returns a decorated [BearerTokener] that enhances its functionality
 // with [BearerToken] caching and automatic background refresh to ensure that token is always valid.
 //
@@ -44,6 +125,14 @@ var _ BearerTokener = (*CachedServiceTokener)(nil)
 //   - lifetime: 0.9 of token lifespan (90% of the token lifespan)
 //   - initial retry: 1 second
 //   - max retry: 1 minute
+//
+// Note on the retry multiplier: in the new version, it is automatically increased by
+// 1.5x on each retry, while in the deprecated version, it is fixed to 1.5x. The new
+// approach is more resilient to transient errors while still preventing excessive retries.
+// This function retains the 1x multiplier option for backward compatibility,
+// but it is recommended to use the new version with automatic multiplier increase.
+//
+// Deprecated: use NewCachedTokener instead.
 func NewCachedServiceTokener(
 	logger *slog.Logger,
 	tokener BearerTokener,
@@ -52,33 +141,27 @@ func NewCachedServiceTokener(
 	retryMultiplier float64,
 	maxRetry time.Duration,
 ) *CachedServiceTokener {
-	stoppedTicker := time.NewTicker(time.Minute)
-	stoppedTicker.Stop()
-	if initialRetry <= 0 {
-		initialRetry = time.Second
-	}
+	logger.Warn("you're using a deprecated service tokener, consider switching to" +
+		" NewCachedTokener with options for better retry behavior and easier maintenance." +
+		" See the documentation for details.")
 	if retryMultiplier <= 0 {
-		retryMultiplier = 1
+		retryMultiplier = 1 // for backward compatibility
 	}
-	if maxRetry <= 0 {
-		maxRetry = time.Minute
-	}
-	return &CachedServiceTokener{
-		logger:          logger,
-		tokener:         tokener,
-		lifetime:        lifetime,
-		initialRetry:    initialRetry,
-		retryMultiplier: retryMultiplier,
-		maxRetry:        maxRetry,
-		ticker:          stoppedTicker,
-		now:             time.Now,
-		group:           singleflight.Group{},
+	return NewCachedTokener(
+		tokener,
+		WithLogger(logger),
+		WithCachedTokenerLifetime(lifetime),
+		WithCachedTokenerInitialRetry(initialRetry),
+		WithCachedTokenerRetryMultiplier(retryMultiplier),
+		WithCachedTokenerMaxRetry(maxRetry),
+	)
+}
 
-		mu:         sync.RWMutex{},
-		cache:      nil,
-		refreshAt:  time.Time{},
-		retryCount: 0,
+func (c *CachedServiceTokener) SetLogger(logger *slog.Logger) {
+	if logger == nil {
+		logger = slog.New(slog.DiscardHandler)
 	}
+	c.logger = logger
 }
 
 func (c *CachedServiceTokener) Unwrap() BearerTokener {
@@ -184,7 +267,7 @@ func (c *CachedServiceTokener) getToken() (*BearerToken, time.Time, int) {
 }
 
 func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool) (BearerToken, error) {
-	res, err, _ := c.group.Do("", func() (interface{}, error) {
+	res, err, _ := c.group.Do("", func() (any, error) {
 		var refreshAfter time.Duration
 
 		now := c.now()

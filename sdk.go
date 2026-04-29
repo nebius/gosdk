@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"maps"
 	"runtime"
 	"strings"
 	"sync/atomic"
@@ -16,6 +17,7 @@ import (
 	grpc_creds "google.golang.org/grpc/credentials"
 
 	"github.com/nebius/gosdk/auth"
+	_ "github.com/nebius/gosdk/auth/federation" // register temporary federation bridge while deprecated auth/federation handles remain
 	"github.com/nebius/gosdk/config"
 	"github.com/nebius/gosdk/config/paths"
 	"github.com/nebius/gosdk/config/reader"
@@ -88,6 +90,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var customDialOpts []grpc.DialOption
 	var customResolvers []conn.Resolver
 	var customInits []func(context.Context, *SDK) error
+	var authOpts []auth.Option
 	var configReader config.ConfigInterface = nil
 	var parentID string
 	var noParentID bool
@@ -147,12 +150,15 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			noParentID = bool(o)
 		case optionTenantID:
 			tenantID = string(o)
+		case optionAuthOptions:
+			authOpts = append(authOpts, o...)
 		}
 	}
 	logger := slog.New(handler)
 	if configReader != nil {
 		logger.DebugContext(ctx, "SDK is initialized with config reader")
 		configReader.SetOptions(
+			reader.WithAuthOptions(authOpts...),
 			reader.WithLogger(logger),
 			reader.WithDeferredClientFunc(func() (iampb.TokenExchangeServiceClient, error) {
 				if sdk == nil {
@@ -211,9 +217,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	substitutions := map[string]string{
 		"{domain}": ensurePort(domain),
 	}
-	for find, replace := range customSubstitutions {
-		substitutions[find] = replace
-	}
+	maps.Copy(substitutions, customSubstitutions)
 
 	var inits []func(context.Context, *SDK) error
 	var closes []func() error
@@ -249,8 +253,14 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 				return nil
 			})
 
-			//nolint:mnd // 90%, 1s and 1m are recommended values by IAM team
-			cache := auth.NewCachedServiceTokener(logger, t, 0.9, 1*time.Second, 1.5, 1*time.Minute)
+			cachedTokenerOpts := []auth.Option{
+				auth.WithLogger(logger),
+			}
+			cachedTokenerOpts = append(cachedTokenerOpts, authOpts...)
+			cache := auth.NewCachedTokener(
+				t,
+				cachedTokenerOpts...,
+			)
 			inits = append(inits, initCache(cache, logger))
 			tokener = cache
 

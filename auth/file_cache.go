@@ -33,14 +33,22 @@ func newTokenCache(
 	fileName string,
 	logger *slog.Logger,
 ) *tokenCache {
-	return &tokenCache{
+	tc := &tokenCache{
 		fileName: fileName,
-		logger: logger.With(
-			slog.String("name", "token_cache"),
-			slog.String("file_name", fileName),
-		),
 		lockFile: flock.New(fileName),
 	}
+	tc.SetLogger(logger)
+	return tc
+}
+
+func (f *tokenCache) SetLogger(logger *slog.Logger) {
+	if logger == nil {
+		logger = slog.New(slog.DiscardHandler)
+	}
+	f.logger = logger.With(
+		slog.String("name", "token_cache"),
+		slog.String("file_name", f.fileName),
+	)
 }
 
 func (f *tokenCache) loadCache(ctx context.Context) (*cacheContents, error) {
@@ -407,6 +415,10 @@ func newThrottledTokenCache(
 	}
 }
 
+func (t *throttledTokenCache) SetLogger(logger *slog.Logger) {
+	t.cache.SetLogger(logger)
+}
+
 func (t *throttledTokenCache) SetCacheThrottle(throttle time.Duration) {
 	t.throttle = throttle
 }
@@ -478,30 +490,75 @@ func (t *throttledTokenCache) RemoveIfEqual(
 }
 
 type pureFileCachedTokener struct {
-	cache *throttledTokenCache
-	name  string
+	cache    *throttledTokenCache
+	name     string
+	fileName string
+	throttle time.Duration
+	logger   *slog.Logger
 }
 
 const defaultFileCacheThrottle = 5 * time.Minute // default throttle duration
 func NewPureFileCachedTokener(
-	cacheFile string,
 	name string,
-	logger *slog.Logger,
+	opts ...Option,
 ) NamedTokener {
-	return &pureFileCachedTokener{
-		name:  name,
-		cache: newThrottledTokenCache(cacheFile, defaultFileCacheThrottle, name, logger),
+	t := &pureFileCachedTokener{
+		name:     name,
+		throttle: defaultFileCacheThrottle,
+	}
+
+	for _, opt := range opts {
+		opt.apply(t)
+	}
+	if t.logger == nil {
+		t.logger = slog.New(slog.DiscardHandler)
+	}
+	return t
+}
+
+func (p *pureFileCachedTokener) SetLogger(logger *slog.Logger) {
+	if logger == nil {
+		logger = slog.New(slog.DiscardHandler)
+	}
+	p.logger = logger
+	if p.cache != nil {
+		p.cache.SetLogger(logger)
 	}
 }
 
-func (p *pureFileCachedTokener) SetCacheThrottle(throttle time.Duration) {
-	p.cache.SetCacheThrottle(throttle)
+func (p *pureFileCachedTokener) initCache(ctx context.Context) error {
+	if p.cache != nil {
+		return nil
+	}
+	if p.fileName == "" {
+		fn, err := GetDefaultCacheFileName()
+		if err != nil {
+			return fmt.Errorf("get default cache file name: %w", err)
+		}
+		p.fileName = fn
+		p.logger.DebugContext(
+			ctx,
+			"no cache file name provided, using default",
+			slog.String("file_cache", p.fileName),
+		)
+	} else {
+		cacheFile, err := paths.ExpandHomeDir(p.fileName)
+		if err != nil {
+			return fmt.Errorf("expand home dir in cache file name: %w", err)
+		}
+		p.fileName = cacheFile
+	}
+	p.cache = newThrottledTokenCache(p.fileName, p.throttle, p.name, p.logger)
+	return nil
 }
 
 func (p *pureFileCachedTokener) Name() string {
 	return p.name
 }
 func (p *pureFileCachedTokener) BearerToken(ctx context.Context) (BearerToken, error) {
+	if err := p.initCache(ctx); err != nil {
+		return BearerToken{}, fmt.Errorf("init cache: %w", err)
+	}
 	tok, err := p.cache.Get(ctx)
 	if err != nil {
 		return BearerToken{}, fmt.Errorf("get from cache: %w", err)
@@ -513,6 +570,9 @@ func (p *pureFileCachedTokener) HandleError(
 ) error {
 	if checkErr == nil {
 		return nil // no error to handle, token is valid
+	}
+	if err := p.initCache(ctx); err != nil {
+		return fmt.Errorf("init cache: %w", err)
 	}
 	cacheTok, err := p.cache.Refresh(ctx)
 	if err != nil {
@@ -526,40 +586,129 @@ func (p *pureFileCachedTokener) HandleError(
 
 var _ NamedTokener = (*RenewableFileCachedTokener)(nil)
 
-type RenewableFileCachedTokener struct {
-	cache        *throttledTokenCache
-	tokener      NamedTokener
-	safetyMargin time.Duration
-	logger       *slog.Logger
-	name         string
+func WithFileCacheSafetyMargin(safetyMargin time.Duration) Option {
+	return optionFunc(func(t BearerTokener) {
+		switch cache := t.(type) {
+		case *RenewableFileCachedTokener:
+			cache.safetyMargin = safetyMargin
+		case *AsynchronouslyRenewableFileCachedTokener:
+			cache.safetyMargin = safetyMargin
+		default:
+			// do nothing if the tokener does not support safety margin
+		}
+	})
 }
 
+func WithFileCacheThrottle(throttle time.Duration) Option {
+	return optionFunc(func(t BearerTokener) {
+		switch cache := t.(type) {
+		case *RenewableFileCachedTokener:
+			cache.throttle = throttle
+		case *AsynchronouslyRenewableFileCachedTokener:
+			cache.throttle = throttle
+		case *pureFileCachedTokener:
+			cache.throttle = throttle
+		default:
+			// do nothing if the tokener does not support throttle
+		}
+	})
+}
+
+func WithFileCacheFileName(fileName string) Option {
+	return optionFunc(func(t BearerTokener) {
+		switch cache := t.(type) {
+		case *RenewableFileCachedTokener:
+			cache.cacheFileName = fileName
+		case *AsynchronouslyRenewableFileCachedTokener:
+			cache.cacheFileName = fileName
+		case *pureFileCachedTokener:
+			cache.fileName = fileName
+		default:
+			// do nothing if the tokener does not support file name
+		}
+	})
+}
+
+func WithFileCacheRetryTimeout(retryTimeout time.Duration) Option {
+	return optionFunc(func(t BearerTokener) {
+		switch cache := t.(type) {
+		case *AsynchronouslyRenewableFileCachedTokener:
+			cache.retryTimeout = retryTimeout
+		default:
+			// do nothing if the tokener does not support retry timeout
+		}
+	})
+}
+
+type RenewableFileCachedTokener struct {
+	cacheFileName string
+	throttle      time.Duration
+	cache         *throttledTokenCache
+	tokener       NamedTokener
+	safetyMargin  time.Duration
+	logger        *slog.Logger
+	name          string
+}
+
+func NewFileCacheTokener(
+	tokener NamedTokener,
+	opts ...Option,
+) *RenewableFileCachedTokener {
+	name := tokener.Name()
+	t := &RenewableFileCachedTokener{
+		tokener:      tokener,
+		throttle:     defaultFileCacheThrottle,
+		safetyMargin: 0,
+		logger:       slog.New(slog.DiscardHandler),
+		name:         name,
+	}
+	for _, opt := range opts {
+		opt.apply(t)
+	}
+	t.updateLoggerAttributes()
+	return t
+}
+
+// Deprecated: use NewFileCacheTokener instead.
 func NewFileCachedTokener(
 	cacheFile string,
 	tokener NamedTokener,
 	safetyMargin time.Duration,
 	logger *slog.Logger,
 ) *RenewableFileCachedTokener {
-	name := tokener.Name()
-	return &RenewableFileCachedTokener{
-		cache: newThrottledTokenCache(
-			cacheFile, defaultFileCacheThrottle, name, logger,
-		),
-		tokener:      tokener,
-		safetyMargin: safetyMargin,
-		logger: logger.With(
-			slog.String("name", "renewable_file_cached_tokener"),
-			slog.String("file_cache", cacheFile),
-			slog.String("token_name", name),
-			slog.Duration("safety_margin", safetyMargin),
-		),
+	logger.Warn("you're using a deprecated file cached tokener, consider switching to" +
+		" NewFileCacheTokener with options for better retry behavior and easier maintenance." +
+		" See the documentation for details.")
+	return NewFileCacheTokener(
+		tokener,
+		WithFileCacheFileName(cacheFile),
+		WithFileCacheSafetyMargin(safetyMargin),
+		WithLogger(logger),
+	)
+}
 
-		name: name, // should not change after creation
+func (f *RenewableFileCachedTokener) SetLogger(logger *slog.Logger) {
+	if logger == nil {
+		logger = slog.New(slog.DiscardHandler)
+	}
+	f.logger = logger
+	f.updateLoggerAttributes()
+	if f.cache != nil {
+		f.cache.SetLogger(f.logger)
 	}
 }
 
-func (f *RenewableFileCachedTokener) SetCacheThrottle(throttle time.Duration) {
-	f.cache.SetCacheThrottle(throttle)
+func (f *RenewableFileCachedTokener) updateLoggerAttributes() {
+	f.logger = f.logger.With(
+		slog.String("name", "renewable_file_cached_tokener"),
+		slog.String("token_name", f.name),
+		slog.Duration("safety_margin", f.safetyMargin),
+	)
+	if f.cache != nil && f.cacheFileName != "" {
+		f.logger = f.logger.With(
+			slog.String("file_cache", f.cacheFileName),
+		)
+	}
 }
 
 func (f *RenewableFileCachedTokener) Name() string {
@@ -569,7 +718,43 @@ func (f *RenewableFileCachedTokener) Unwrap() BearerTokener {
 	return f.tokener
 }
 
+func (f *RenewableFileCachedTokener) initCache(ctx context.Context) error {
+	if f.cache != nil {
+		return nil
+	}
+	if f.cacheFileName == "" {
+		fn, err := GetDefaultCacheFileName()
+		if err != nil {
+			return fmt.Errorf("get default cache file name: %w", err)
+		}
+		f.cacheFileName = fn
+		f.logger.DebugContext(
+			ctx,
+			"no cache file name provided, using default",
+			slog.String("file_cache", f.cacheFileName),
+		)
+	} else {
+		cacheFile, err := paths.ExpandHomeDir(f.cacheFileName)
+		if err != nil {
+			return fmt.Errorf("expand home dir: %w", err)
+		}
+		f.cacheFileName = cacheFile
+	}
+	f.logger = f.logger.With(
+		slog.String("file_cache", f.cacheFileName),
+	)
+	f.logger.DebugContext(ctx, "initializing file cache")
+	f.cache = newThrottledTokenCache(
+		f.cacheFileName, f.throttle, f.name, f.logger,
+	)
+	return nil
+}
+
 func (f *RenewableFileCachedTokener) BearerToken(ctx context.Context) (BearerToken, error) {
+	if err := f.initCache(ctx); err != nil {
+		return BearerToken{}, fmt.Errorf("init cache: %w", err)
+	}
+
 	tok, err := f.cache.Get(ctx)
 	if err != nil {
 		return BearerToken{}, fmt.Errorf("get from cache: %w", err)
@@ -627,6 +812,10 @@ func (f *RenewableFileCachedTokener) HandleError(
 	if checkErr == nil { // no error to handle, token is valid
 		return nil
 	}
+	if err := f.initCache(ctx); err != nil {
+		return fmt.Errorf("init cache: %w", err)
+	}
+
 	f.logger.DebugContext(
 		ctx,
 		"handling error for token",
@@ -661,11 +850,14 @@ func (f *RenewableFileCachedTokener) HandleError(
 }
 
 type AsynchronouslyRenewableFileCachedTokener struct {
-	cache        *throttledTokenCache
-	tokener      NamedTokener
-	safetyMargin time.Duration
-	logger       *slog.Logger
-	name         string
+	cacheFileName string
+	throttle      time.Duration
+	cache         *throttledTokenCache
+	tokener       NamedTokener
+	safetyMargin  time.Duration
+	logger        *slog.Logger
+	name          string
+	retryTimeout  time.Duration
 
 	ticker *time.Ticker
 	group  singleflight.Group
@@ -676,30 +868,102 @@ const (
 	retryTimeout = 1 * time.Second // default retry timeout
 )
 
-func NewAsynchronouslyRenewableFileCachedTokener(
-	cacheFile string,
+func NewAsynchronouslyRenewableFileCacheTokener(
 	tokener NamedTokener,
-	safetyMargin time.Duration,
-	logger *slog.Logger,
+	opts ...Option,
 ) *AsynchronouslyRenewableFileCachedTokener {
 	name := tokener.Name()
-	return &AsynchronouslyRenewableFileCachedTokener{
-		cache: newThrottledTokenCache(
-			cacheFile, defaultFileCacheThrottle, name, logger,
-		),
+	t := &AsynchronouslyRenewableFileCachedTokener{
 		tokener:      tokener,
-		safetyMargin: safetyMargin,
-		logger:       logger,
+		safetyMargin: 0,
+		retryTimeout: retryTimeout,
+		throttle:     defaultFileCacheThrottle,
+		logger:       slog.New(slog.DiscardHandler),
 
 		ticker: time.NewTicker(0), // stopped ticker, will be reset on first token fetch
 		group:  singleflight.Group{},
 		name:   name, // should not change after creation
 		mutex:  sync.Mutex{},
 	}
+	for _, opt := range opts {
+		opt.apply(t)
+	}
+	t.updateLoggerAttributes()
+	return t
 }
 
-func (f *AsynchronouslyRenewableFileCachedTokener) SetCacheThrottle(throttle time.Duration) {
-	f.cache.SetCacheThrottle(throttle)
+// Deprecated: use NewAsynchronouslyRenewableFileCacheTokener instead.
+func NewAsynchronouslyRenewableFileCachedTokener(
+	cacheFile string,
+	tokener NamedTokener,
+	safetyMargin time.Duration,
+	logger *slog.Logger,
+) *AsynchronouslyRenewableFileCachedTokener {
+	logger.Warn("you're using a deprecated asynchronously renewable file cached tokener, consider switching to" +
+		" NewAsynchronouslyRenewableFileCacheTokener with options for better retry behavior and easier maintenance." +
+		" See the documentation for details.")
+	return NewAsynchronouslyRenewableFileCacheTokener(
+		tokener,
+		WithFileCacheFileName(cacheFile),
+		WithFileCacheSafetyMargin(safetyMargin),
+		WithLogger(logger),
+	)
+}
+
+func (f *AsynchronouslyRenewableFileCachedTokener) SetLogger(logger *slog.Logger) {
+	if logger == nil {
+		logger = slog.New(slog.DiscardHandler)
+	}
+	f.logger = logger
+	f.updateLoggerAttributes()
+	if f.cache != nil {
+		f.cache.SetLogger(f.logger)
+	}
+}
+
+func (f *AsynchronouslyRenewableFileCachedTokener) updateLoggerAttributes() {
+	f.logger = f.logger.With(
+		slog.String("name", "asynchronously_renewable_file_cached_tokener"),
+		slog.String("token_name", f.name),
+		slog.Duration("safety_margin", f.safetyMargin),
+	)
+	if f.cache != nil && f.cacheFileName != "" {
+		f.logger = f.logger.With(
+			slog.String("file_cache", f.cacheFileName),
+		)
+	}
+}
+
+func (f *AsynchronouslyRenewableFileCachedTokener) initCache(ctx context.Context) error {
+	if f.cache != nil {
+		return nil
+	}
+	if f.cacheFileName == "" {
+		fn, err := GetDefaultCacheFileName()
+		if err != nil {
+			return fmt.Errorf("get default cache file name: %w", err)
+		}
+		f.cacheFileName = fn
+		f.logger.DebugContext(
+			ctx,
+			"no cache file name provided, using default",
+			slog.String("file_cache", f.cacheFileName),
+		)
+	} else {
+		cacheFile, err := paths.ExpandHomeDir(f.cacheFileName)
+		if err != nil {
+			return fmt.Errorf("expand home dir: %w", err)
+		}
+		f.cacheFileName = cacheFile
+	}
+	f.logger = f.logger.With(
+		slog.String("file_cache", f.cacheFileName),
+	)
+	f.logger.DebugContext(ctx, "initializing file cache")
+	f.cache = newThrottledTokenCache(
+		f.cacheFileName, f.throttle, f.name, f.logger,
+	)
+	return nil
 }
 
 func (f *AsynchronouslyRenewableFileCachedTokener) Name() string {
@@ -711,6 +975,9 @@ func (f *AsynchronouslyRenewableFileCachedTokener) Unwrap() BearerTokener {
 func (f *AsynchronouslyRenewableFileCachedTokener) BearerToken(
 	ctx context.Context,
 ) (BearerToken, error) {
+	if err := f.initCache(ctx); err != nil {
+		return BearerToken{}, fmt.Errorf("init cache: %w", err)
+	}
 	tok, err := f.cache.Get(ctx)
 	if err != nil {
 		return BearerToken{}, fmt.Errorf("get from cache: %w", err)
@@ -725,6 +992,9 @@ func (f *AsynchronouslyRenewableFileCachedTokener) HandleError(
 ) error {
 	if checkErr == nil { // no error to handle, token is valid
 		return nil
+	}
+	if err := f.initCache(ctx); err != nil {
+		return fmt.Errorf("init cache: %w", err)
 	}
 	cachedTok, err := f.cache.Refresh(ctx)
 	if err != nil {
@@ -821,9 +1091,9 @@ func (f *AsynchronouslyRenewableFileCachedTokener) Run(ctx context.Context) erro
 					ctx,
 					"background token refresh failed",
 					slog.Any("error", err),
-					slog.Duration("next_attempt", retryTimeout),
+					slog.Duration("next_attempt", f.retryTimeout),
 				)
-				f.ticker.Reset(retryTimeout)
+				f.ticker.Reset(f.retryTimeout)
 			}
 		}
 	}
