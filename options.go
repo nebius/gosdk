@@ -9,6 +9,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"google.golang.org/grpc"
 
+	"github.com/nebius/gosdk/auth"
 	"github.com/nebius/gosdk/config"
 	"github.com/nebius/gosdk/conn"
 )
@@ -152,6 +153,17 @@ func WithoutParentID() Option {
 	return optionNoParentID(true)
 }
 
+// WithAuthOptions allows you to pass auth-layer options down to SDK-managed
+// tokeners.
+//
+// The SDK forwards these options to tokeners it constructs internally, such as
+// cached tokeners, file-cache decorators, federation auth, and workload
+// identity flows. Each option is applied only where it is supported by the
+// concrete tokener being configured.
+func WithAuthOptions(opts ...auth.Option) Option {
+	return optionAuthOptions(opts)
+}
+
 // WithTenantID sets the default tenant ID for all requests that need a tenant as a parent ID.
 // This can be overridden by methods that accept a parent ID parameter.
 //
@@ -179,6 +191,7 @@ type (
 	optionAuthTimeout     time.Duration
 	optionUserAgentPrefix string
 	optionRetryOptions    []retry.CallOption
+	optionAuthOptions     []auth.Option
 
 	optionConfigReader struct{ configReader config.ConfigInterface }
 	optionParentID     string
@@ -204,6 +217,7 @@ func (optionParentID) option()        {}
 func (optionAuthTimeout) option()     {}
 func (optionNoParentID) option()      {}
 func (optionTenantID) option()        {}
+func (optionAuthOptions) option()     {}
 
 type NoopHandler struct{}
 

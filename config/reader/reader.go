@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"io/fs"
 	"log/slog"
 	"os"
@@ -14,7 +13,7 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"github.com/nebius/gosdk/auth"
-	"github.com/nebius/gosdk/auth/federation"
+	_ "github.com/nebius/gosdk/auth/federation" // register temporary federation bridge while deprecated auth/federation handles remain
 	"github.com/nebius/gosdk/config"
 	"github.com/nebius/gosdk/config/paths"
 	"github.com/nebius/gosdk/constants"
@@ -36,38 +35,26 @@ type configReader struct {
 	preloadedConfig bool
 
 	// credentials options
-	noFileCache                  bool
-	fileRefreshPeriod            time.Duration
-	cacheFileName                string
-	clientID                     string
-	logger                       *slog.Logger
-	writer                       io.Writer
-	noBrowserOpen                bool
-	deferredClientFunc           func() (iampb.TokenExchangeServiceClient, error)
-	cachedTokenLifetimeFraction  float64
-	cachedTokenInitialRetryDelay time.Duration
-	cachedTokenRetryMultiplier   float64
-	cachedTokenMaxRetryDelay     time.Duration
-	tokenSafetyMargin            time.Duration
+	noFileCache        bool
+	fileRefreshPeriod  time.Duration
+	clientID           string
+	logger             *slog.Logger
+	deferredClientFunc func() (iampb.TokenExchangeServiceClient, error)
+	authOptions        []auth.Option
 
 	configParsed bool
 }
 
 func NewConfigReader(options ...config.Option) config.ConfigInterface {
 	r := &configReader{
-		tokenEnv:                     constants.TokenEnv,
-		profileEnv:                   constants.ProfileEnv,
-		endpointEnv:                  constants.EndpointEnv,
-		fileRefreshPeriod:            5 * time.Minute,
-		cachedTokenLifetimeFraction:  0.9,
-		cachedTokenInitialRetryDelay: 1 * time.Second,
-		cachedTokenRetryMultiplier:   1.5,
-		cachedTokenMaxRetryDelay:     1 * time.Minute,
-		tokenSafetyMargin:            0, // fix after NIAM-2917
+		tokenEnv:          constants.TokenEnv,
+		profileEnv:        constants.ProfileEnv,
+		endpointEnv:       constants.EndpointEnv,
+		fileRefreshPeriod: 5 * time.Minute,
 	}
 	r.SetOptions(options...)
 	if r.logger == nil {
-		r.logger = slog.New(slog.NewTextHandler(io.Discard, &slog.HandlerOptions{Level: slog.LevelError}))
+		r.logger = slog.New(slog.DiscardHandler)
 	}
 	if !r.preloadedConfig || r.config == nil {
 		r.config = config.NewConfig()
@@ -126,11 +113,6 @@ func (r *configReader) Load(ctx context.Context) error {
 		return config.NewGetProfileError(fmt.Errorf("no profile found"), r.config.Profiles)
 	}
 	r.logger.DebugContext(ctx, "loaded profile", slog.Any("profile", r.profile))
-	if !r.noFileCache {
-		if err := r.expandCacheFileName(); err != nil {
-			return fmt.Errorf("expand cache file name: %w", err)
-		}
-	}
 	r.configParsed = true
 	return nil
 }
@@ -209,23 +191,6 @@ func (r *configReader) CurrentProfileName() string {
 	return ""
 }
 
-func (r *configReader) expandCacheFileName() error {
-	if r.cacheFileName == "" {
-		cacheFile, err := auth.GetDefaultCacheFileName()
-		if err != nil {
-			return fmt.Errorf("get default cache file name: %w", err)
-		}
-		r.cacheFileName = cacheFile
-	} else {
-		cacheFile, err := paths.ExpandHomeDir(r.cacheFileName)
-		if err != nil {
-			return fmt.Errorf("expand home dir: %w", err)
-		}
-		r.cacheFileName = cacheFile
-	}
-	return nil
-}
-
 func (r *configReader) ParentID() string {
 	if r.noParentID {
 		return ""
@@ -247,7 +212,16 @@ func (r *configReader) Endpoint() string {
 	return r.profile.Endpoint
 }
 
+func (r *configReader) authOptionsWithLogger() []auth.Option {
+	opts := make([]auth.Option, 0, len(r.authOptions)+1)
+	opts = append(opts, auth.WithLogger(r.logger))
+	opts = append(opts, r.authOptions...)
+	return opts
+}
+
 func (r *configReader) GetCredentials(ctx context.Context) (auth.BearerTokener, error) {
+	authOpts := r.authOptionsWithLogger()
+
 	// 1. Environment token
 	if r.tokenEnv != "" {
 		token := strings.TrimSpace(os.Getenv(r.tokenEnv))
@@ -276,7 +250,10 @@ func (r *configReader) GetCredentials(ctx context.Context) (auth.BearerTokener, 
 	// 3. Raw token endpoint
 	if r.profile.TokenEndpoint != "" {
 		r.logger.DebugContext(ctx, "using token from imds", slog.String("endpoint", r.profile.TokenEndpoint))
-		tokener, err := auth.NewIMDSTokenizer(r.profile.TokenEndpoint, constants.HTTPMaxAttempts, constants.HTTPBaseBackoff)
+		tokener, err := auth.NewIMDSTokenizer(
+			r.profile.TokenEndpoint,
+			authOpts...,
+		)
 		if err != nil {
 			return nil, fmt.Errorf("create token endpoint reader %q: %w", r.profile.TokenEndpoint, err)
 		}
@@ -292,27 +269,19 @@ func (r *configReader) GetCredentials(ctx context.Context) (auth.BearerTokener, 
 			slog.String("federation_endpoint", r.profile.FederationEndpoint),
 			slog.String("federation_id", r.profile.FederationID),
 			slog.String("profile", r.profile.Name),
-			slog.Bool("no_browser_open", r.noBrowserOpen),
 		)
 		if r.clientID == "" {
 			return nil, fmt.Errorf("missing client ID for federation auth")
 		}
-		if r.noFileCache { // federation auth always uses file cache
-			if err := r.expandCacheFileName(); err != nil {
-				return nil, fmt.Errorf("expand cache file name: %w", err)
-			}
-		}
-		tokener := federation.NewTokenerWithWriter(
-			r.logger,
-			r.writer,
+		tokener := auth.NewFederationTokener(
 			r.clientID,
 			r.profile.FederationEndpoint,
 			r.profile.FederationID,
 			r.profile.Name,
-			r.noBrowserOpen,
+			authOpts...,
 		)
-		r.logger.DebugContext(ctx, "using file-cached federation tokener", slog.String("cache_file", r.cacheFileName))
-		return auth.NewInAppSyncTokener(auth.NewFileCachedTokener(r.cacheFileName, tokener, r.tokenSafetyMargin, r.logger)), nil
+		r.logger.DebugContext(ctx, "using file-cached federation tokener")
+		return auth.NewInAppSyncTokener(auth.NewFileCacheTokener(tokener, authOpts...)), nil
 	default:
 		return nil, config.NewError(fmt.Errorf("unsupported auth type: %s", r.profile.AuthType))
 	}
@@ -330,12 +299,26 @@ func (r *configReader) getServiceAccountCredentials(ctx context.Context) (auth.B
 	if r.deferredClientFunc == nil {
 		return nil, errors.New("deferred client function is not set")
 	}
+	resolvedTokener, err := r.resolveServiceAccountTokener(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if r.profile.FederatedSubjectCredentialsFilePath != "" && resolvedTokener != nil && !strings.HasPrefix(resolvedTokener.Name(), "federated-credentials/") {
+		r.logger.WarnContext(ctx, "federated subject credentials file is ignored because key-based credentials are used")
+	}
+	authOpts := r.authOptionsWithLogger()
+	if r.noFileCache {
+		r.logger.DebugContext(ctx, "using in-memory cached service account tokener")
+		return auth.NewCachedTokener(
+			resolvedTokener,
+			authOpts...,
+		), nil
+	}
+	r.logger.DebugContext(ctx, "using file-cached service account tokener")
+	return auth.NewFileCacheTokener(resolvedTokener, authOpts...), nil
+}
 
-	var (
-		resolvedTokener auth.NamedTokener
-		errResolution   error
-	)
-
+func (r *configReader) resolveServiceAccountTokener(ctx context.Context) (auth.NamedTokener, error) {
 	wrap := func(reader auth.ServiceAccountReader, saID, pkID string) auth.NamedTokener {
 		return auth.NewNameWrapper(
 			fmt.Sprintf("service-account/%s/%s", saID, pkID),
@@ -347,75 +330,58 @@ func (r *configReader) getServiceAccountCredentials(ctx context.Context) (auth.B
 		)
 	}
 
-	chooseFederated := func() bool {
-		if r.profile.FederatedSubjectCredentialsFilePath == "" ||
-			r.profile.ServiceAccountID == "" {
-			return false
-		}
-		if r.profile.PublicKeyID != "" || r.profile.PrivateKey != "" ||
-			r.profile.PrivateKeyFilePath != "" ||
-			r.profile.ServiceAccountCredentialsFilePath != "" {
-			return false
-		}
-		resolvedTokener = auth.NewFederatedCredentialsTokener(r.profile.ServiceAccountID, r.profile.FederatedSubjectCredentialsFilePath, r.deferredClientFunc)
-		return true
+	if r.profile.FederatedSubjectCredentialsFilePath != "" &&
+		r.profile.ServiceAccountID != "" &&
+		r.profile.PublicKeyID == "" &&
+		r.profile.PrivateKey == "" &&
+		r.profile.PrivateKeyFilePath == "" &&
+		r.profile.ServiceAccountCredentialsFilePath == "" {
+		return auth.NewFederatedCredentialsTokener(
+			r.profile.ServiceAccountID,
+			r.profile.FederatedSubjectCredentialsFilePath,
+			r.deferredClientFunc,
+		), nil
 	}
-	chooseCredentialsFile := func() bool {
-		if r.profile.ServiceAccountCredentialsFilePath == "" {
-			return false
-		}
+
+	if r.profile.ServiceAccountCredentialsFilePath != "" {
 		if r.profile.ServiceAccountID != "" || r.profile.PublicKeyID != "" {
-			return false
+			return nil, fmt.Errorf("incomplete service account configuration: provide either (service-account-id, federated-subject-credentials-file-path) OR (service-account-credentials-file-path) OR (service-account-id, public-key-id and one of private-key / private-key-file-path)")
 		}
-		if r.profile.PrivateKey != "" ||
-			r.profile.PrivateKeyFilePath != "" {
+		if r.profile.PrivateKey != "" || r.profile.PrivateKeyFilePath != "" {
 			r.logger.WarnContext(ctx, "ignoring inline parameters or file private key because service account credentials file is provided")
 		}
 		parser := auth.NewServiceAccountCredentialsFileParser(nil, r.profile.ServiceAccountCredentialsFilePath)
 		creds, err := parser.SubjectCredentials()
 		if err != nil {
-			errResolution = fmt.Errorf("parse service account credentials file: %w", err)
-			return false
+			return nil, fmt.Errorf("parse service account credentials file: %w", err)
 		}
-		resolvedTokener = wrap(parser, creds.Subject, creds.KeyID)
-		return true
+		return wrap(parser, creds.Subject, creds.KeyID), nil
 	}
-	chooseInline := func() bool {
-		if r.profile.PrivateKey == "" || r.profile.PublicKeyID == "" ||
-			r.profile.ServiceAccountID == "" {
-			return false
-		}
+
+	if r.profile.PrivateKey != "" &&
+		r.profile.PublicKeyID != "" &&
+		r.profile.ServiceAccountID != "" {
 		if r.profile.PrivateKeyFilePath != "" {
 			r.logger.WarnContext(ctx, "ignoring file private key because inline private key is provided")
 		}
-		resolvedTokener = wrap(auth.NewPrivateKeyParser([]byte(r.profile.PrivateKey), r.profile.PublicKeyID, r.profile.ServiceAccountID), r.profile.ServiceAccountID, r.profile.PublicKeyID)
-		return true
-	}
-	chooseKeyFile := func() bool {
-		if r.profile.PrivateKeyFilePath == "" ||
-			r.profile.PublicKeyID == "" ||
-			r.profile.ServiceAccountID == "" {
-			return false
-		}
-		resolvedTokener = wrap(auth.NewPrivateKeyFileParser(nil, r.profile.PrivateKeyFilePath, r.profile.PublicKeyID, r.profile.ServiceAccountID), r.profile.ServiceAccountID, r.profile.PublicKeyID)
-		return true
+		return wrap(
+			auth.NewPrivateKeyParser([]byte(r.profile.PrivateKey), r.profile.PublicKeyID, r.profile.ServiceAccountID),
+			r.profile.ServiceAccountID,
+			r.profile.PublicKeyID,
+		), nil
 	}
 
-	if !chooseFederated() && !chooseCredentialsFile() && !chooseInline() && !chooseKeyFile() {
-		if errResolution != nil {
-			return nil, errResolution
-		}
-		return nil, fmt.Errorf("incomplete service account configuration: provide either (service-account-id, federated-subject-credentials-file-path) OR (service-account-credentials-file-path) OR (service-account-id, public-key-id and one of private-key / private-key-file-path)")
+	if r.profile.PrivateKeyFilePath != "" &&
+		r.profile.PublicKeyID != "" &&
+		r.profile.ServiceAccountID != "" {
+		return wrap(
+			auth.NewPrivateKeyFileParser(nil, r.profile.PrivateKeyFilePath, r.profile.PublicKeyID, r.profile.ServiceAccountID),
+			r.profile.ServiceAccountID,
+			r.profile.PublicKeyID,
+		), nil
 	}
-	if r.profile.FederatedSubjectCredentialsFilePath != "" && resolvedTokener != nil && !strings.HasPrefix(resolvedTokener.Name(), "federated-credentials/") {
-		r.logger.WarnContext(ctx, "federated subject credentials file is ignored because key-based credentials are used")
-	}
-	if r.noFileCache {
-		r.logger.DebugContext(ctx, "using in-memory cached service account tokener")
-		return auth.NewCachedServiceTokener(r.logger, resolvedTokener, r.cachedTokenLifetimeFraction, r.cachedTokenInitialRetryDelay, r.cachedTokenRetryMultiplier, r.cachedTokenMaxRetryDelay), nil
-	}
-	r.logger.DebugContext(ctx, "using file-cached service account tokener", slog.String("cache_file", r.cacheFileName))
-	return auth.NewFileCachedTokener(r.cacheFileName, resolvedTokener, r.tokenSafetyMargin, r.logger), nil
+
+	return nil, fmt.Errorf("incomplete service account configuration: provide either (service-account-id, federated-subject-credentials-file-path) OR (service-account-credentials-file-path) OR (service-account-id, public-key-id and one of private-key / private-key-file-path)")
 }
 
 func (r *configReader) GetAuthType() config.AuthType {

@@ -1448,7 +1448,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x03Job\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xb1\x14\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xaf\x17\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1470,11 +1470,12 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x13ssh_authorized_keys\x18\x1a \x03(\tR\x11sshAuthorizedKeys\x12 \n" +
 	"\vpreemptible\x18\x1b \x01(\bR\vpreemptible\x12;\n" +
 	"\x10restart_attempts\x18\x1e \x01(\x03B\x10\xbaH\r\"\v(\xff\xff\xff\xff\xff\xff\xff\xff\xff\x01R\x0frestartAttempts\x123\n" +
-	"\atimeout\x18\x1f \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\xa4\x01\n" +
+	"\atimeout\x18\x1f \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\xef\x02\n" +
 	"\x13EnvironmentVariable\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x19\n" +
 	"\x05value\x18\x02 \x01(\tB\x03\xc0J\x01R\x05value\x12V\n" +
-	"\x11mysterybox_secret\x18\x03 \x01(\v2).nebius.ai.v1.JobSpec.MysteryBoxSecretRefR\x10mysteryboxSecret\x1a\xef\x01\n" +
+	"\x11mysterybox_secret\x18\x03 \x01(\v2).nebius.ai.v1.JobSpec.MysteryBoxSecretRefR\x10mysteryboxSecret:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
+	"\x18mysterybox_secret_if_set\x122mysterybox_secret must set secret_id or version_id\x1aq!has(this.mysterybox_secret) || this.mysterybox_secret.secret_id != '' || this.mysterybox_secret.version_id != ''\x1a\xef\x01\n" +
 	"\x04Port\x122\n" +
 	"\x0econtainer_port\x18\x01 \x01(\x05B\v\xbaH\b\x1a\x06\x18\xff\xff\x03(\x01R\rcontainerPort\x12(\n" +
 	"\thost_port\x18\x02 \x01(\x05B\v\xbaH\b\x1a\x06\x18\xff\xff\x03(\x00R\bhostPort\x12G\n" +
@@ -1483,14 +1484,14 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x14PROTOCOL_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04HTTP\x10\x01\x12\a\n" +
 	"\x03TCP\x10\x02\x12\a\n" +
-	"\x03UDP\x10\x03\x1a\x9a\a\n" +
+	"\x03UDP\x10\x03\x1a\xd9\b\n" +
 	"\vVolumeMount\x12\x16\n" +
 	"\x06source\x18\x01 \x01(\tR\x06source\x12\x1f\n" +
 	"\vsource_path\x18\x02 \x01(\tR\n" +
 	"sourcePath\x12%\n" +
 	"\x0econtainer_path\x18\x03 \x01(\tR\rcontainerPath\x12B\n" +
 	"\x04mode\x18\x04 \x01(\x0e2&.nebius.ai.v1.JobSpec.VolumeMount.ModeB\x06\xbaH\x03\xc8\x01\x01R\x04mode\x12I\n" +
-	"\ts3_config\x18\x05 \x01(\v2*.nebius.ai.v1.JobSpec.VolumeMount.S3ConfigH\x00R\bs3Config\x1a\xcd\x04\n" +
+	"\ts3_config\x18\x05 \x01(\v2*.nebius.ai.v1.JobSpec.VolumeMount.S3ConfigH\x00R\bs3Config\x1a\x8c\x06\n" +
 	"\bS3Config\x12\"\n" +
 	"\bendpoint\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bendpoint\x12\x1e\n" +
 	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\\\n" +
@@ -1499,14 +1500,16 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\rS3Credentials\x12-\n" +
 	"\raccess_key_id\x18\x01 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\vaccessKeyId\x125\n" +
 	"\x11secret_access_key\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\x0fsecretAccessKey\x12(\n" +
-	"\rsession_token\x18\x03 \x01(\tB\x03\xc0J\x01R\fsessionToken\x1ax\n" +
-	"\x13MysteryBoxSecretRef\x12-\n" +
-	"\tsecret_id\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xe2J\a\n" +
-	"\x05mbsecR\bsecretId\x122\n" +
+	"\rsession_token\x18\x03 \x01(\tB\x03\xc0J\x01R\fsessionToken\x1al\n" +
+	"\x13MysteryBoxSecretRef\x12'\n" +
+	"\tsecret_id\x18\x01 \x01(\tB\n" +
+	"\xe2J\a\n" +
+	"\x05mbsecR\bsecretId\x12,\n" +
 	"\n" +
-	"version_id\x18\x02 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
+	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionIdB\x06\n" +
+	"\bmbsecverR\tversionId:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
+	"\x18mysterybox_secret_if_set\x122mysterybox_secret must set secret_id or version_id\x1aq!has(this.mysterybox_secret) || this.mysterybox_secret.secret_id != '' || this.mysterybox_secret.version_id != ''B\x06\n" +
 	"\x04authJ\x04\b\x02\x10\x03R\x06bucket\";\n" +
 	"\x04Mode\x12\x14\n" +
 	"\x10MODE_UNSPECIFIED\x10\x00\x12\x0e\n" +
@@ -1521,12 +1524,13 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x13RegistryCredentials\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1f\n" +
 	"\bpassword\x18\x02 \x01(\tB\x03\xc0J\x01R\bpassword\x12:\n" +
-	"\x19mysterybox_secret_version\x18\x03 \x01(\tR\x17mysteryboxSecretVersion\x1ax\n" +
-	"\x13MysteryBoxSecretRef\x12-\n" +
-	"\tsecret_id\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xe2J\a\n" +
-	"\x05mbsecR\bsecretId\x122\n" +
+	"\x19mysterybox_secret_version\x18\x03 \x01(\tR\x17mysteryboxSecretVersion\x1al\n" +
+	"\x13MysteryBoxSecretRef\x12'\n" +
+	"\tsecret_id\x18\x01 \x01(\tB\n" +
+	"\xe2J\a\n" +
+	"\x05mbsecR\bsecretId\x12,\n" +
 	"\n" +
-	"version_id\x18\x02 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
+	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
 	"\bmbsecverR\tversionId\"\xb4\x04\n" +
 	"\tJobStatus\x12+\n" +

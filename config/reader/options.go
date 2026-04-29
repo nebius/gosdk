@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/nebius/gosdk/auth"
 	"github.com/nebius/gosdk/config"
 	iampb "github.com/nebius/gosdk/proto/nebius/iam/v1"
 )
@@ -114,7 +115,7 @@ func WithNoFileCache(noFileCache bool) config.Option {
 
 func WithCacheFileName(name string) config.Option {
 	return optionFunc(func(c *configReader) {
-		c.cacheFileName = name
+		c.authOptions = append(c.authOptions, auth.WithFileCacheFileName(name))
 	})
 }
 
@@ -125,6 +126,9 @@ func WithClientID(clientID string) config.Option {
 }
 
 func WithLogger(logger *slog.Logger) config.Option {
+	if logger == nil {
+		logger = slog.New(slog.DiscardHandler)
+	}
 	return optionFunc(func(c *configReader) {
 		c.logger = logger
 	})
@@ -133,13 +137,13 @@ func WithLogger(logger *slog.Logger) config.Option {
 // browser/open control for federation flow
 func WithoutBrowserOpen() config.Option {
 	return optionFunc(func(c *configReader) {
-		c.noBrowserOpen = true
+		c.authOptions = append(c.authOptions, auth.WithFederationNoBrowserOpen())
 	})
 }
 
 func WithNoBrowserOpen(noBrowserOpen bool) config.Option {
 	return optionFunc(func(c *configReader) {
-		c.noBrowserOpen = noBrowserOpen
+		c.authOptions = append(c.authOptions, auth.WithFederationNoBrowserOpenFlag(noBrowserOpen))
 	})
 }
 
@@ -152,37 +156,47 @@ func WithDeferredClientFunc(f func() (iampb.TokenExchangeServiceClient, error)) 
 
 func WithWriter(w io.Writer) config.Option {
 	return optionFunc(func(c *configReader) {
-		c.writer = w
+		c.authOptions = append(c.authOptions, auth.WithFederationWriter(w))
 	})
 }
 
 // cached token tuning
 func WithCachedTokenLifetimeFraction(frac float64) config.Option {
 	return optionFunc(func(c *configReader) {
-		c.cachedTokenLifetimeFraction = frac
+		c.authOptions = append(c.authOptions, auth.WithCachedTokenerLifetime(frac))
 	})
 }
 
 func WithCachedTokenInitialRetryDelay(d time.Duration) config.Option {
 	return optionFunc(func(c *configReader) {
-		c.cachedTokenInitialRetryDelay = d
+		c.authOptions = append(c.authOptions, auth.WithCachedTokenerInitialRetry(d))
 	})
 }
 
 func WithCachedTokenRetryMultiplier(mult float64) config.Option {
 	return optionFunc(func(c *configReader) {
-		c.cachedTokenRetryMultiplier = mult
+		c.authOptions = append(c.authOptions, auth.WithCachedTokenerRetryMultiplier(mult))
 	})
 }
 
 func WithCachedTokenMaxRetryDelay(d time.Duration) config.Option {
 	return optionFunc(func(c *configReader) {
-		c.cachedTokenMaxRetryDelay = d
+		c.authOptions = append(c.authOptions, auth.WithCachedTokenerMaxRetry(d))
+	})
+}
+
+// WithAuthOptions appends low-level auth options that will be forwarded to the
+// tokeners and decorators constructed by the config reader.
+//
+// Each option is applied only to the auth components that support it.
+func WithAuthOptions(opts ...auth.Option) config.Option {
+	return optionFunc(func(c *configReader) {
+		c.authOptions = append(c.authOptions, opts...)
 	})
 }
 
 func WithTokenSafetyMargin(d time.Duration) config.Option {
 	return optionFunc(func(c *configReader) {
-		c.tokenSafetyMargin = d
+		c.authOptions = append(c.authOptions, auth.WithFileCacheSafetyMargin(d))
 	})
 }
