@@ -26,11 +26,7 @@ func rmFrom2ListsRecursive(
 	if desc.Message() == nil {
 		return nil, nil
 	}
-	l := initList.Len()
-	if l > modList.Len() {
-		l = modList.Len()
-	}
-	for i := range l {
+	for i := range min(initList.Len(), modList.Len()) {
 		initEl := initList.Get(i)
 		modEl := modList.Get(i)
 		resetMask, err := rmFrom2MessagesRecursive(

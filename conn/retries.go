@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net"
+	"slices"
 	"strings"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
@@ -23,7 +24,7 @@ import (
 //nolint:gochecknoglobals // const
 var DefaultRetriableCodes = []codes.Code{codes.ResourceExhausted, codes.Unavailable}
 
-func IsRetriableNebiusError(err error) bool { //nolint:gocognit
+func IsRetriableNebiusError(err error) bool {
 	if err == nil {
 		return false
 	}
@@ -49,14 +50,9 @@ func IsRetriableNebiusError(err error) bool { //nolint:gocognit
 			// grpc code.
 		}
 	}
-	if status, ok := status.FromError(err); ok {
-		errCode := status.Code()
-		for _, code := range DefaultRetriableCodes {
-			if code == errCode {
-				return true
-			}
-		}
-		return false
+
+	if s, isGRPC := status.FromError(err); isGRPC {
+		return slices.Contains(DefaultRetriableCodes, s.Code())
 	}
 
 	// Retry on transport, TLS, and network-related errors

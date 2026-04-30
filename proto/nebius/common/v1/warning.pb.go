@@ -94,6 +94,8 @@ const (
 	Warning_CODE_DEPRECATED_SPEC_VALUE_REQUEST Warning_Code = 5
 	// Deprecated value was observed in the response.
 	Warning_CODE_DEPRECATED_SPEC_VALUE_RESPONSE Warning_Code = 6
+	// Not-recommended value was used in the request.
+	Warning_CODE_NOT_RECOMMENDED_SPEC_VALUE_REQUEST Warning_Code = 7
 )
 
 // Enum value maps for Warning_Code.
@@ -106,15 +108,17 @@ var (
 		4: "CODE_DEPRECATED_PROTO",
 		5: "CODE_DEPRECATED_SPEC_VALUE_REQUEST",
 		6: "CODE_DEPRECATED_SPEC_VALUE_RESPONSE",
+		7: "CODE_NOT_RECOMMENDED_SPEC_VALUE_REQUEST",
 	}
 	Warning_Code_value = map[string]int32{
-		"CODE_UNSPECIFIED":                    0,
-		"CODE_REGION_ROUTING_FAILOVER":        1,
-		"CODE_DEPRECATED_TOOL_VERSION":        2,
-		"CODE_DEPRECATED_ENDPOINT":            3,
-		"CODE_DEPRECATED_PROTO":               4,
-		"CODE_DEPRECATED_SPEC_VALUE_REQUEST":  5,
-		"CODE_DEPRECATED_SPEC_VALUE_RESPONSE": 6,
+		"CODE_UNSPECIFIED":                        0,
+		"CODE_REGION_ROUTING_FAILOVER":            1,
+		"CODE_DEPRECATED_TOOL_VERSION":            2,
+		"CODE_DEPRECATED_ENDPOINT":                3,
+		"CODE_DEPRECATED_PROTO":                   4,
+		"CODE_DEPRECATED_SPEC_VALUE_REQUEST":      5,
+		"CODE_DEPRECATED_SPEC_VALUE_RESPONSE":     6,
+		"CODE_NOT_RECOMMENDED_SPEC_VALUE_REQUEST": 7,
 	}
 )
 
@@ -307,7 +311,7 @@ const file_nebius_common_v1_warning_proto_rawDesc = "" +
 	"\n" +
 	"\x1enebius/common/v1/warning.proto\x12\x10nebius.common.v1\"A\n" +
 	"\bWarnings\x125\n" +
-	"\bwarnings\x18\x01 \x03(\v2\x19.nebius.common.v1.WarningR\bwarnings\"\xd7\x04\n" +
+	"\bwarnings\x18\x01 \x03(\v2\x19.nebius.common.v1.WarningR\bwarnings\"\x84\x05\n" +
 	"\aWarning\x128\n" +
 	"\x06target\x18\x01 \x01(\x0e2 .nebius.common.v1.Warning.TargetR\x06target\x122\n" +
 	"\x04code\x18\x02 \x01(\x0e2\x1e.nebius.common.v1.Warning.CodeR\x04code\x12\x18\n" +
@@ -321,7 +325,7 @@ const file_nebius_common_v1_warning_proto_rawDesc = "" +
 	"\n" +
 	"TARGET_CLI\x10\x01\x12\r\n" +
 	"\tTARGET_TF\x10\x02\x12\x12\n" +
-	"\x0eTARGET_CONSOLE\x10\x03\"\xea\x01\n" +
+	"\x0eTARGET_CONSOLE\x10\x03\"\x97\x02\n" +
 	"\x04Code\x12\x14\n" +
 	"\x10CODE_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cCODE_REGION_ROUTING_FAILOVER\x10\x01\x12 \n" +
@@ -329,7 +333,8 @@ const file_nebius_common_v1_warning_proto_rawDesc = "" +
 	"\x18CODE_DEPRECATED_ENDPOINT\x10\x03\x12\x19\n" +
 	"\x15CODE_DEPRECATED_PROTO\x10\x04\x12&\n" +
 	"\"CODE_DEPRECATED_SPEC_VALUE_REQUEST\x10\x05\x12'\n" +
-	"#CODE_DEPRECATED_SPEC_VALUE_RESPONSE\x10\x06BY\n" +
+	"#CODE_DEPRECATED_SPEC_VALUE_RESPONSE\x10\x06\x12+\n" +
+	"'CODE_NOT_RECOMMENDED_SPEC_VALUE_REQUEST\x10\aBY\n" +
 	"\x17ai.nebius.pub.common.v1B\fWarningProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/common/v1b\x06proto3"
 
 var (
