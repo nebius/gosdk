@@ -51,8 +51,8 @@ func (r ContextResolver) Resolve(ctx context.Context, id ServiceID) (Address, er
 }
 
 func NewBasicResolver(id, address string) Resolver {
-	if strings.HasSuffix(id, "*") {
-		return NewPrefixResolver(strings.TrimSuffix(id, "*"), Address(address))
+	if prefix, isWildcard := strings.CutSuffix(id, "*"); isWildcard {
+		return NewPrefixResolver(prefix, Address(address))
 	}
 	return NewSingleResolver(ServiceID(id), Address(address))
 }
