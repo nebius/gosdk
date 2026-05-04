@@ -793,9 +793,16 @@ type GetVersionResponse struct {
 	//	*GetVersionResponse_Restart
 	Response isGetVersionResponse_Response `protobuf_oneof:"response"`
 	// Feature flags for the agent. Keys are UPPER_CASE flag names, values are flag values (typically "true"/"false").
-	FeatureFlags  map[string]string `protobuf:"bytes,5,rep,name=feature_flags,json=featureFlags,proto3" json:"feature_flags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// When feature_flags_unavailable is true the agent must ignore this field and
+	// keep its current flag set unchanged.
+	FeatureFlags map[string]string `protobuf:"bytes,5,rep,name=feature_flags,json=featureFlags,proto3" json:"feature_flags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// True when the server could not load feature-flag state. The agent must
+	// keep its current flag set instead of treating an empty feature_flags map
+	// as "clear all". The default value of false means feature_flags is
+	// authoritative — including legitimately empty.
+	FeatureFlagsUnavailable bool `protobuf:"varint,6,opt,name=feature_flags_unavailable,json=featureFlagsUnavailable,proto3" json:"feature_flags_unavailable,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *GetVersionResponse) Reset() {
@@ -874,6 +881,13 @@ func (x *GetVersionResponse) GetFeatureFlags() map[string]string {
 		return x.FeatureFlags
 	}
 	return nil
+}
+
+func (x *GetVersionResponse) GetFeatureFlagsUnavailable() bool {
+	if x != nil {
+		return x.FeatureFlagsUnavailable
+	}
+	return false
 }
 
 type isGetVersionResponse_Response interface {
@@ -1088,13 +1102,14 @@ const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\x06OSInfo\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05uname\x18\x02 \x01(\tR\x05uname\x12\"\n" +
-	"\farchitecture\x18\x03 \x01(\tR\farchitecture\"\xf0\x03\n" +
+	"\farchitecture\x18\x03 \x01(\tR\farchitecture\"\xac\x04\n" +
 	"\x12GetVersionResponse\x12>\n" +
 	"\x06action\x18\x01 \x01(\x0e2&.nebius.logging.agentmanager.v1.ActionR\x06action\x12C\n" +
 	"\x03nop\x18\x02 \x01(\v2/.nebius.logging.agentmanager.v1.NopActionParamsH\x00R\x03nop\x12L\n" +
 	"\x06update\x18\x03 \x01(\v22.nebius.logging.agentmanager.v1.UpdateActionParamsH\x00R\x06update\x12O\n" +
 	"\arestart\x18\x04 \x01(\v23.nebius.logging.agentmanager.v1.RestartActionParamsH\x00R\arestart\x12i\n" +
-	"\rfeature_flags\x18\x05 \x03(\v2D.nebius.logging.agentmanager.v1.GetVersionResponse.FeatureFlagsEntryR\ffeatureFlags\x1a?\n" +
+	"\rfeature_flags\x18\x05 \x03(\v2D.nebius.logging.agentmanager.v1.GetVersionResponse.FeatureFlagsEntryR\ffeatureFlags\x12:\n" +
+	"\x19feature_flags_unavailable\x18\x06 \x01(\bR\x17featureFlagsUnavailable\x1a?\n" +
 	"\x11FeatureFlagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\n" +
