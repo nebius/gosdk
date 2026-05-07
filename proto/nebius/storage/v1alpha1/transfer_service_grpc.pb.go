@@ -34,6 +34,8 @@ const (
 // TransferServiceClient is the client API for TransferService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type TransferServiceClient interface {
 	Get(ctx context.Context, in *GetTransferRequest, opts ...grpc.CallOption) (*Transfer, error)
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Transfer, error)
@@ -56,6 +58,7 @@ type transferServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewTransferServiceClient(cc grpc.ClientConnInterface) TransferServiceClient {
 	return &transferServiceClient{cc}
 }
@@ -144,6 +147,8 @@ func (c *transferServiceClient) GetIterationHistory(ctx context.Context, in *Get
 // TransferServiceServer is the server API for TransferService service.
 // All implementations should embed UnimplementedTransferServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type TransferServiceServer interface {
 	Get(context.Context, *GetTransferRequest) (*Transfer, error)
 	GetByName(context.Context, *v1.GetByNameRequest) (*Transfer, error)
@@ -201,6 +206,7 @@ type UnsafeTransferServiceServer interface {
 	mustEmbedUnimplementedTransferServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterTransferServiceServer(s grpc.ServiceRegistrar, srv TransferServiceServer) {
 	s.RegisterService(&TransferService_ServiceDesc, srv)
 }
