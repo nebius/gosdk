@@ -588,7 +588,7 @@ const file_nebius_storage_v1alpha1_transfer_service_proto_rawDesc = "" +
 	"\n" +
 	"iterations\x18\x01 \x03(\v2*.nebius.storage.v1alpha1.TransferIterationR\n" +
 	"iterations\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xea\x06\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xfc\b\n" +
 	"\x0fTransferService\x12U\n" +
 	"\x03Get\x12+.nebius.storage.v1alpha1.GetTransferRequest\x1a!.nebius.storage.v1alpha1.Transfer\x12R\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a!.nebius.storage.v1alpha1.Transfer\x12e\n" +
@@ -598,7 +598,9 @@ const file_nebius_storage_v1alpha1_transfer_service_proto_rawDesc = "" +
 	"\x04Stop\x12,.nebius.storage.v1alpha1.StopTransferRequest\x1a\x1b.nebius.common.v1.Operation\x12U\n" +
 	"\x06Resume\x12..nebius.storage.v1alpha1.ResumeTransferRequest\x1a\x1b.nebius.common.v1.Operation\x12U\n" +
 	"\x06Delete\x12..nebius.storage.v1alpha1.DeleteTransferRequest\x1a\x1b.nebius.common.v1.Operation\x12\x80\x01\n" +
-	"\x13GetIterationHistory\x123.nebius.storage.v1alpha1.GetIterationHistoryRequest\x1a4.nebius.storage.v1alpha1.GetIterationHistoryResponse\x1a\x13\xbaJ\x10transfer.storageBo\n" +
+	"\x13GetIterationHistory\x123.nebius.storage.v1alpha1.GetIterationHistoryRequest\x1a4.nebius.storage.v1alpha1.GetIterationHistoryResponse\x1a\xa4\x02\xbaJ\x10transfer.storage\xd2J\x8a\x02\n" +
+	"\n" +
+	"2026-06-01\x12\x85\x01Data Transfer v1alpha1 API is deprecated. Please use the v1 API instead. All existing transfers remain accessible through the v1 API.\x1atPlease use the 'storage transfer' command instead. All existing transfers remain accessible through the new command.\x88\x02\x01Bo\n" +
 	"\x1eai.nebius.pub.storage.v1alpha1B\x14TransferServiceProtoP\x01Z5github.com/nebius/gosdk/proto/nebius/storage/v1alpha1b\x06proto3"
 
 var (
