@@ -25,8 +25,9 @@ const (
 )
 
 type GetFederatedCredentialsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Target federated credentials ID.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -70,9 +71,9 @@ func (x *GetFederatedCredentialsRequest) GetId() string {
 
 type GetByNameFederatedCredentialsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Container (project), which contains desired credentials.
+	// Parent container ID for the federated credentials.
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	// Federated credentials name.
+	// Target federated credentials name.
 	Name          string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -123,8 +124,10 @@ func (x *GetByNameFederatedCredentialsRequest) GetName() string {
 }
 
 type CreateFederatedCredentialsRequest struct {
-	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata      `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Federated credentials resource metadata.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Federated credentials resource specification.
 	Spec          *FederatedCredentialsSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -175,8 +178,10 @@ func (x *CreateFederatedCredentialsRequest) GetSpec() *FederatedCredentialsSpec 
 }
 
 type UpdateFederatedCredentialsRequest struct {
-	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata      `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Federated credentials resource metadata.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Federated credentials resource specification.
 	Spec          *FederatedCredentialsSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -228,13 +233,13 @@ func (x *UpdateFederatedCredentialsRequest) GetSpec() *FederatedCredentialsSpec 
 
 type ListFederatedCredentialsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Represents the parent NID
+	// Parent container ID for the federated credentials.
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	// Specifies the maximum number of items to return in the response. Default is 10
+	// Maximum number of items to return in the response. Default value: 10.
 	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Token for pagination, allowing the retrieval of the next set of results.
 	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	// A filter to narrow down the results based on specific criteria.
+	// Filter expression for narrowing down the results.
 	Filter        string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -300,9 +305,9 @@ func (x *ListFederatedCredentialsRequest) GetFilter() string {
 
 type ListFederatedCredentialsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// List of user accounts returned in the response. The field should be named as `items` for consistency.
+	// List of federated credentials returned in the response.
 	Items []*FederatedCredentials `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	// Token for pagination, indicating the next set of results can be retrieved using this token.
+	// Token for pagination, allowing the retrieval of the next set of results.
 	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -353,8 +358,9 @@ func (x *ListFederatedCredentialsResponse) GetNextPageToken() string {
 }
 
 type DeleteFederatedCredentialsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Target federated credentials ID.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

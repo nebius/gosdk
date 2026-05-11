@@ -25,9 +25,12 @@ const (
 )
 
 type FederatedCredentials struct {
-	state         protoimpl.MessageState      `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata        `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *FederatedCredentialsSpec   `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Federated credentials resource metadata.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Federated credentials resource specification.
+	Spec *FederatedCredentialsSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	// Federated credentials resource status.
 	Status        *FederatedCredentialsStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -86,15 +89,16 @@ func (x *FederatedCredentials) GetStatus() *FederatedCredentialsStatus {
 
 type FederatedCredentialsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// provider of federated credentials used for federated subject authentication
+	// Provider settings used to authenticate a federated subject.
 	//
 	// Types that are valid to be assigned to CredentialsProvider:
 	//
 	//	*FederatedCredentialsSpec_OidcProvider
 	CredentialsProvider isFederatedCredentialsSpec_CredentialsProvider `protobuf_oneof:"credentials_provider"`
-	// Federated subject ID.For oidc_provider subject will be calculated based on the “sub” claim of the JWT federation token.
+	// Federated subject ID. For oidc_provider, the subject is calculated from the
+	// "sub" claim of the federated JWT token.
 	FederatedSubjectId string `protobuf:"bytes,101,opt,name=federated_subject_id,json=federatedSubjectId,proto3" json:"federated_subject_id,omitempty"`
-	// IAM subject, in which federated subject will be impersonated to. E.g. for workload identities it will be IAM service account.
+	// IAM subject (service account) that the federated subject impersonates.
 	SubjectId     string `protobuf:"bytes,111,opt,name=subject_id,json=subjectId,proto3" json:"subject_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -170,21 +174,18 @@ type FederatedCredentialsSpec_OidcProvider struct {
 
 func (*FederatedCredentialsSpec_OidcProvider) isFederatedCredentialsSpec_CredentialsProvider() {}
 
+// The OIDC provider does not have to be a full OIDC provider, but it must expose
+// OIDC discovery metadata at the "/.well-known/openid-configuration" endpoint.
+// The discovery metadata must contain "jwks_uri", which points to the JSON Web
+// Key Set (JWKS). The JWKS contains public keys used to verify JSON
+// Web Tokens (JWTs) issued by the identity provider.
 type OidcCredentialsProvider struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// It's not required provider OIDC issuer should be real OIDC provider, but should expose OIDC configuration
-	// with "/.well-known/openid-configuration" endpoint. Configuration should contains the "jwks_uri" endpoint
-	// where the JSON Web Key Set (JWKS) can be found; this set contains public keys used to verify
-	// JSON Web Tokens (JWTs) issued by an identity provider.
-	//
-	// Limitations for external OIDC providers:
-	// - token service limits the number of handled keys by 50. If your JWKS return more than 50,
-	// the only first 50 will be used for signature verifying.
-	// - response size for jwks_uri and "/.well-known/openid-configuration limited by 100KB.
+	// OIDC-compatible JWT issuer URL.
 	IssuerUrl string `protobuf:"bytes,1,opt,name=issuer_url,json=issuerUrl,proto3" json:"issuer_url,omitempty"`
-	// Literally json, which represents JWKS with public keys for JWT verification.
-	// It worth mentioned that in a case of adding/rotating keys the jwk_set_json also should be updated here.
-	// Besides, the "issuer" parameter should be set even if the JWKS will be resolved locally.
+	// JSON representation of a JSON Web Key Set (JWKS) with public keys used for
+	// JWT signature verification.
+	// If set, the token service uses this JWKS to verify token signatures.
 	JwkSetJson    string `protobuf:"bytes,2,opt,name=jwk_set_json,json=jwkSetJson,proto3" json:"jwk_set_json,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

@@ -25,9 +25,11 @@ const (
 )
 
 type CreateFederationRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *FederationSpec        `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Federation resource metadata.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Federation resource specification.
+	Spec          *FederationSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -77,8 +79,9 @@ func (x *CreateFederationRequest) GetSpec() *FederationSpec {
 }
 
 type GetFederationRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Target federation ID.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -121,11 +124,14 @@ func (x *GetFederationRequest) GetId() string {
 }
 
 type ListFederationsRequest struct {
-	state    protoimpl.MessageState `protogen:"open.v1"`
-	ParentId string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	// Default value: 10
-	PageSize      int64  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Parent container ID for the federations.
+	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	// Maximum number of items to return in the response. Default value: 10.
+	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Token for pagination, allowing the retrieval of the next set of results.
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// Filter expression for narrowing down the results.
 	Filter        string `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -190,9 +196,11 @@ func (x *ListFederationsRequest) GetFilter() string {
 }
 
 type ListFederationsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*Federation          `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// List of federations returned in the response.
+	Items []*Federation `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	// Token for pagination, allowing the retrieval of the next set of results.
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -242,9 +250,11 @@ func (x *ListFederationsResponse) GetNextPageToken() string {
 }
 
 type UpdateFederationRequest struct {
-	state    protoimpl.MessageState `protogen:"open.v1"`
-	Metadata *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec     *FederationSpec        `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Federation resource metadata.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Federation resource specification.
+	Spec *FederationSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	// Deprecated: Marked as deprecated in nebius/iam/v1/federation_service.proto.
 	Status        *FederationStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -304,8 +314,9 @@ func (x *UpdateFederationRequest) GetStatus() *FederationStatus {
 }
 
 type ActivateFederationRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	FederationId  string                 `protobuf:"bytes,1,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Target federation ID.
+	FederationId  string `protobuf:"bytes,1,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -348,8 +359,9 @@ func (x *ActivateFederationRequest) GetFederationId() string {
 }
 
 type DeactivateFederationRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	FederationId  string                 `protobuf:"bytes,1,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Target federation ID.
+	FederationId  string `protobuf:"bytes,1,opt,name=federation_id,json=federationId,proto3" json:"federation_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -392,8 +404,9 @@ func (x *DeactivateFederationRequest) GetFederationId() string {
 }
 
 type DeleteFederationRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Target federation ID.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
