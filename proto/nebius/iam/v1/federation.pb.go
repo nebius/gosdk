@@ -74,10 +74,13 @@ func (FederationStatus_State) EnumDescriptor() ([]byte, []int) {
 }
 
 type Federation struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *FederationSpec        `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	Status        *FederationStatus      `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Federation resource metadata.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Federation resource specification.
+	Spec *FederationSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	// Federation resource status.
+	Status        *FederationStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -134,8 +137,12 @@ func (x *Federation) GetStatus() *FederationStatus {
 }
 
 type FederationSpec struct {
-	state                   protoimpl.MessageState `protogen:"open.v1"`
-	UserAccountAutoCreation bool                   `protobuf:"varint,1,opt,name=user_account_auto_creation,json=userAccountAutoCreation,proto3" json:"user_account_auto_creation,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// If false, users with access to the federation cannot sign in automatically
+	// and user accounts for them must be pre-created by a federation administrator.
+	UserAccountAutoCreation bool `protobuf:"varint,1,opt,name=user_account_auto_creation,json=userAccountAutoCreation,proto3" json:"user_account_auto_creation,omitempty"`
+	// Specifies if the federation in active state
+	//
 	// Deprecated: Marked as deprecated in nebius/iam/v1/federation.proto.
 	Active bool `protobuf:"varint,4,opt,name=active,proto3" json:"active,omitempty"`
 	// Types that are valid to be assigned to Settings:
@@ -212,15 +219,18 @@ type isFederationSpec_Settings interface {
 }
 
 type FederationSpec_SamlSettings struct {
+	// SAML federation settings.
 	SamlSettings *SamlSettings `protobuf:"bytes,10,opt,name=saml_settings,json=samlSettings,proto3,oneof"`
 }
 
 func (*FederationSpec_SamlSettings) isFederationSpec_Settings() {}
 
 type SamlSettings struct {
-	state     protoimpl.MessageState `protogen:"open.v1"`
-	IdpIssuer string                 `protobuf:"bytes,1,opt,name=idp_issuer,json=idpIssuer,proto3" json:"idp_issuer,omitempty"`
-	SsoUrl    string                 `protobuf:"bytes,2,opt,name=sso_url,json=ssoUrl,proto3" json:"sso_url,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The unique identifier of the SAML Identity Provider. It usually matches the entityID from the IdP metadata.
+	IdpIssuer string `protobuf:"bytes,1,opt,name=idp_issuer,json=idpIssuer,proto3" json:"idp_issuer,omitempty"`
+	// Identity Provider’s Single Sign-On endpoint. This is the URL where the user is redirected to start SAML login.
+	SsoUrl string `protobuf:"bytes,2,opt,name=sso_url,json=ssoUrl,proto3" json:"sso_url,omitempty"`
 	// if "true", the identity provider MUST authenticate the presenter directly rather than rely on a previous security context.
 	ForceAuthn    bool `protobuf:"varint,3,opt,name=force_authn,json=forceAuthn,proto3" json:"force_authn,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -279,10 +289,13 @@ func (x *SamlSettings) GetForceAuthn() bool {
 }
 
 type FederationStatus struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	State             FederationStatus_State `protobuf:"varint,3,opt,name=state,proto3,enum=nebius.iam.v1.FederationStatus_State" json:"state,omitempty"`
-	UsersCount        int32                  `protobuf:"varint,1,opt,name=users_count,json=usersCount,proto3" json:"users_count,omitempty"`
-	CertificatesCount int32                  `protobuf:"varint,2,opt,name=certificates_count,json=certificatesCount,proto3" json:"certificates_count,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Federation state.
+	State FederationStatus_State `protobuf:"varint,3,opt,name=state,proto3,enum=nebius.iam.v1.FederationStatus_State" json:"state,omitempty"`
+	// Number of users registered in the IAM federation. This value may differ from the number of users in the identity provider.
+	UsersCount int32 `protobuf:"varint,1,opt,name=users_count,json=usersCount,proto3" json:"users_count,omitempty"`
+	// Number of certificates attached to the SAML federation for verifying SAML responses.
+	CertificatesCount int32 `protobuf:"varint,2,opt,name=certificates_count,json=certificatesCount,proto3" json:"certificates_count,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }

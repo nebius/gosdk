@@ -32,11 +32,17 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FederatedCredentialsServiceClient interface {
+	// Retrieves information about federated credentials by ID.
 	Get(ctx context.Context, in *GetFederatedCredentialsRequest, opts ...grpc.CallOption) (*FederatedCredentials, error)
+	// Retrieves information about federated credentials by name and parent container.
 	GetByName(ctx context.Context, in *GetByNameFederatedCredentialsRequest, opts ...grpc.CallOption) (*FederatedCredentials, error)
+	// Lists federated credentials by parent container.
 	List(ctx context.Context, in *ListFederatedCredentialsRequest, opts ...grpc.CallOption) (*ListFederatedCredentialsResponse, error)
+	// Creates federated credentials.
 	Create(ctx context.Context, in *CreateFederatedCredentialsRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates federated credentials.
 	Update(ctx context.Context, in *UpdateFederatedCredentialsRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes federated credentials.
 	Delete(ctx context.Context, in *DeleteFederatedCredentialsRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -106,11 +112,17 @@ func (c *federatedCredentialsServiceClient) Delete(ctx context.Context, in *Dele
 // All implementations should embed UnimplementedFederatedCredentialsServiceServer
 // for forward compatibility
 type FederatedCredentialsServiceServer interface {
+	// Retrieves information about federated credentials by ID.
 	Get(context.Context, *GetFederatedCredentialsRequest) (*FederatedCredentials, error)
+	// Retrieves information about federated credentials by name and parent container.
 	GetByName(context.Context, *GetByNameFederatedCredentialsRequest) (*FederatedCredentials, error)
+	// Lists federated credentials by parent container.
 	List(context.Context, *ListFederatedCredentialsRequest) (*ListFederatedCredentialsResponse, error)
+	// Creates federated credentials.
 	Create(context.Context, *CreateFederatedCredentialsRequest) (*v1.Operation, error)
+	// Updates federated credentials.
 	Update(context.Context, *UpdateFederatedCredentialsRequest) (*v1.Operation, error)
+	// Deletes federated credentials.
 	Delete(context.Context, *DeleteFederatedCredentialsRequest) (*v1.Operation, error)
 }
 

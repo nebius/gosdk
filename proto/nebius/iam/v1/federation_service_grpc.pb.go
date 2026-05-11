@@ -34,17 +34,23 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FederationServiceClient interface {
+	// Creates a federation.
 	Create(ctx context.Context, in *CreateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Retrieves information about a federation by ID.
 	Get(ctx context.Context, in *GetFederationRequest, opts ...grpc.CallOption) (*Federation, error)
+	// Retrieves information about a federation by name and parent container.
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Federation, error)
+	// Lists federations by parent container.
 	List(ctx context.Context, in *ListFederationsRequest, opts ...grpc.CallOption) (*ListFederationsResponse, error)
+	// Updates a federation.
 	Update(ctx context.Context, in *UpdateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Activates an existing federation.
 	// By default, a newly created federation is in the active state.
 	Activate(ctx context.Context, in *ActivateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Deactivates an existing federation.
-	// When a federation is inactive, all users under it will be unable to authenticate.
+	// When a federation is inactive, all users under it cannot authenticate.
 	Deactivate(ctx context.Context, in *DeactivateFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a federation. An active federation cannot be deleted and must be deactivated first.
 	Delete(ctx context.Context, in *DeleteFederationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -132,17 +138,23 @@ func (c *federationServiceClient) Delete(ctx context.Context, in *DeleteFederati
 // All implementations should embed UnimplementedFederationServiceServer
 // for forward compatibility
 type FederationServiceServer interface {
+	// Creates a federation.
 	Create(context.Context, *CreateFederationRequest) (*v1.Operation, error)
+	// Retrieves information about a federation by ID.
 	Get(context.Context, *GetFederationRequest) (*Federation, error)
+	// Retrieves information about a federation by name and parent container.
 	GetByName(context.Context, *v1.GetByNameRequest) (*Federation, error)
+	// Lists federations by parent container.
 	List(context.Context, *ListFederationsRequest) (*ListFederationsResponse, error)
+	// Updates a federation.
 	Update(context.Context, *UpdateFederationRequest) (*v1.Operation, error)
 	// Activates an existing federation.
 	// By default, a newly created federation is in the active state.
 	Activate(context.Context, *ActivateFederationRequest) (*v1.Operation, error)
 	// Deactivates an existing federation.
-	// When a federation is inactive, all users under it will be unable to authenticate.
+	// When a federation is inactive, all users under it cannot authenticate.
 	Deactivate(context.Context, *DeactivateFederationRequest) (*v1.Operation, error)
+	// Deletes a federation. An active federation cannot be deleted and must be deactivated first.
 	Delete(context.Context, *DeleteFederationRequest) (*v1.Operation, error)
 }
 
