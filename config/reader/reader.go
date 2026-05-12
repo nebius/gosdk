@@ -39,6 +39,7 @@ type configReader struct {
 	fileRefreshPeriod  time.Duration
 	clientID           string
 	logger             *slog.Logger
+	metrics            Metrics
 	deferredClientFunc func() (iampb.TokenExchangeServiceClient, error)
 	authOptions        []auth.Option
 
@@ -72,49 +73,63 @@ func (r *configReader) LoadIfNeeded(ctx context.Context) error {
 }
 
 func (r *configReader) Load(ctx context.Context) error {
+	start := time.Now()
+	source := "file"
 	if r.preloadedConfig {
-		r.logger.DebugContext(ctx, "config is preloaded, skipping file load")
-	} else {
-		if err := r.load(ctx); err != nil {
-			return err
-		}
+		source = "preloaded"
 	}
-	if r.customEndpoint == "" && r.endpointEnv != "" {
-		r.customEndpoint = strings.TrimSpace(os.Getenv(r.endpointEnv))
+	retErr := func() error {
+		if r.preloadedConfig {
+			r.logger.DebugContext(ctx, "config is preloaded, skipping file load")
+		} else {
+			if err := r.load(ctx); err != nil {
+				return err
+			}
+		}
+		if r.customEndpoint == "" && r.endpointEnv != "" {
+			r.customEndpoint = strings.TrimSpace(os.Getenv(r.endpointEnv))
+			if r.customEndpoint != "" {
+				r.logger.DebugContext(ctx, "will load custom endpoint from environment variable", slog.String("env", r.endpointEnv))
+			}
+		}
 		if r.customEndpoint != "" {
-			r.logger.DebugContext(ctx, "will load custom endpoint from environment variable", slog.String("env", r.endpointEnv))
+			r.logger.DebugContext(ctx, "overriding profile endpoint with custom endpoint", slog.String("endpoint", r.customEndpoint))
 		}
-	}
-	if r.customEndpoint != "" {
-		r.logger.DebugContext(ctx, "overriding profile endpoint with custom endpoint", slog.String("endpoint", r.customEndpoint))
-	}
-	if r.profileName == "" && r.profileEnv != "" {
-		r.profileName = strings.TrimSpace(os.Getenv(r.profileEnv))
-		if r.profileName != "" {
-			r.logger.DebugContext(ctx, "will load profile from environment variable", slog.String("env", r.profileEnv))
+		if r.profileName == "" && r.profileEnv != "" {
+			r.profileName = strings.TrimSpace(os.Getenv(r.profileEnv))
+			if r.profileName != "" {
+				r.logger.DebugContext(ctx, "will load profile from environment variable", slog.String("env", r.profileEnv))
+			}
 		}
-	}
-	if r.profileName == "" {
-		r.logger.DebugContext(ctx, "no profile specified, loading default profile")
-		profile, err := r.config.GetDefaultProfile()
-		if err != nil {
-			return err
+		if r.profileName == "" {
+			r.logger.DebugContext(ctx, "no profile specified, loading default profile")
+			profile, err := r.config.GetDefaultProfile()
+			if err != nil {
+				return err
+			}
+			r.profile = profile
+		} else {
+			r.logger.DebugContext(ctx, "loading specified profile", slog.String("profile", r.profileName))
+			profile, err := r.config.GetProfile(r.profileName)
+			if err != nil {
+				return err
+			}
+			r.profile = profile
 		}
-		r.profile = profile
-	} else {
-		r.logger.DebugContext(ctx, "loading specified profile", slog.String("profile", r.profileName))
-		profile, err := r.config.GetProfile(r.profileName)
-		if err != nil {
-			return err
+		if r.profile == nil {
+			return config.NewGetProfileError(fmt.Errorf("no profile found"), r.config.Profiles)
 		}
-		r.profile = profile
+		r.logger.DebugContext(ctx, "loaded profile", slog.Any("profile", r.profile))
+		r.configParsed = true
+		return nil
+	}()
+
+	result := metricResultSuccess
+	if retErr != nil {
+		result = metricResultError
 	}
-	if r.profile == nil {
-		return config.NewGetProfileError(fmt.Errorf("no profile found"), r.config.Profiles)
-	}
-	r.logger.DebugContext(ctx, "loaded profile", slog.Any("profile", r.profile))
-	r.configParsed = true
-	return nil
+	configLoad(ctx, r.metrics, source, result, time.Since(start))
+	return retErr
 }
 
 func (r *configReader) setVMProfile() bool {
@@ -220,71 +235,83 @@ func (r *configReader) authOptionsWithLogger() []auth.Option {
 }
 
 func (r *configReader) GetCredentials(ctx context.Context) (auth.BearerTokener, error) {
-	authOpts := r.authOptionsWithLogger()
+	start := time.Now()
+	source := "unknown"
+	tokener, retErr := func() (auth.BearerTokener, error) {
+		authOpts := r.authOptionsWithLogger()
 
-	// 1. Environment token
-	if r.tokenEnv != "" {
-		token := strings.TrimSpace(os.Getenv(r.tokenEnv))
-		if token != "" {
-			r.logger.DebugContext(ctx, "loading token from environment variable", slog.String("env", r.tokenEnv))
-			return auth.StaticBearerToken(token), nil
+		// 1. Environment token
+		if r.tokenEnv != "" {
+			token := strings.TrimSpace(os.Getenv(r.tokenEnv))
+			if token != "" {
+				source = "env"
+				r.logger.DebugContext(ctx, "loading token from environment variable", slog.String("env", r.tokenEnv))
+				return auth.NewStaticTokener(token, authOpts...), nil
+			}
 		}
-	}
-	// 2. Raw token file
-	if r.profile.TokenFile != "" {
-		r.logger.DebugContext(ctx, "using token from file", slog.String("file", r.profile.TokenFile))
-		info, err := os.Stat(r.profile.TokenFile)
-		if err != nil {
-			return nil, config.NewError(fmt.Errorf("stat token file %q: %w", r.profile.TokenFile, err))
+		// 2. Raw token file
+		if r.profile.TokenFile != "" {
+			source = "token-file"
+			r.logger.DebugContext(ctx, "using token from file", slog.String("file", r.profile.TokenFile))
+			tokener, err := auth.NewFileTokener(
+				r.profile.TokenFile,
+				r.fileRefreshPeriod,
+				authOpts...,
+			)
+			if err != nil {
+				return nil, fmt.Errorf("create token file reader %q: %w", r.profile.TokenFile, err)
+			}
+			return tokener, nil
 		}
-		if info.IsDir() {
-			return nil, config.NewError(fmt.Errorf("token file %q is a directory", r.profile.TokenFile))
+		// 3. Raw token endpoint
+		if r.profile.TokenEndpoint != "" {
+			source = "imds"
+			r.logger.DebugContext(ctx, "using token from imds", slog.String("endpoint", r.profile.TokenEndpoint))
+			tokener, err := auth.NewIMDSTokenizer(
+				r.profile.TokenEndpoint,
+				authOpts...,
+			)
+			if err != nil {
+				return nil, fmt.Errorf("create token endpoint reader %q: %w", r.profile.TokenEndpoint, err)
+			}
+			return tokener, nil
 		}
-		tokener, err := auth.NewFileTokener(r.profile.TokenFile, r.fileRefreshPeriod)
-		if err != nil {
-			return nil, fmt.Errorf("create token file reader %q: %w", r.profile.TokenFile, err)
-		}
-		return tokener, nil
-	}
 
-	// 3. Raw token endpoint
-	if r.profile.TokenEndpoint != "" {
-		r.logger.DebugContext(ctx, "using token from imds", slog.String("endpoint", r.profile.TokenEndpoint))
-		tokener, err := auth.NewIMDSTokenizer(
-			r.profile.TokenEndpoint,
-			authOpts...,
-		)
-		if err != nil {
-			return nil, fmt.Errorf("create token endpoint reader %q: %w", r.profile.TokenEndpoint, err)
+		switch r.profile.AuthType {
+		case config.AuthTypeServiceAccount:
+			source = "service-account"
+			return r.getServiceAccountCredentials(ctx)
+		case config.AuthTypeFederation:
+			source = "federation"
+			r.logger.DebugContext(ctx, "using federation authentication",
+				slog.String("client_id", r.clientID),
+				slog.String("federation_endpoint", r.profile.FederationEndpoint),
+				slog.String("federation_id", r.profile.FederationID),
+				slog.String("profile", r.profile.Name),
+			)
+			if r.clientID == "" {
+				return nil, fmt.Errorf("missing client ID for federation auth")
+			}
+			tokener := auth.NewFederationTokener(
+				r.clientID,
+				r.profile.FederationEndpoint,
+				r.profile.FederationID,
+				r.profile.Name,
+				authOpts...,
+			)
+			r.logger.DebugContext(ctx, "using file-cached federation tokener")
+			return auth.NewInAppSyncTokener(auth.NewFileCacheTokener(tokener, authOpts...)), nil
+		default:
+			return nil, config.NewError(fmt.Errorf("unsupported auth type: %s", r.profile.AuthType))
 		}
-		return tokener, nil
-	}
+	}()
 
-	switch r.profile.AuthType {
-	case config.AuthTypeServiceAccount:
-		return r.getServiceAccountCredentials(ctx)
-	case config.AuthTypeFederation:
-		r.logger.DebugContext(ctx, "using federation authentication",
-			slog.String("client_id", r.clientID),
-			slog.String("federation_endpoint", r.profile.FederationEndpoint),
-			slog.String("federation_id", r.profile.FederationID),
-			slog.String("profile", r.profile.Name),
-		)
-		if r.clientID == "" {
-			return nil, fmt.Errorf("missing client ID for federation auth")
-		}
-		tokener := auth.NewFederationTokener(
-			r.clientID,
-			r.profile.FederationEndpoint,
-			r.profile.FederationID,
-			r.profile.Name,
-			authOpts...,
-		)
-		r.logger.DebugContext(ctx, "using file-cached federation tokener")
-		return auth.NewInAppSyncTokener(auth.NewFileCacheTokener(tokener, authOpts...)), nil
-	default:
-		return nil, config.NewError(fmt.Errorf("unsupported auth type: %s", r.profile.AuthType))
+	result := metricResultSuccess
+	if retErr != nil {
+		result = metricResultError
 	}
+	credentialsResolve(ctx, r.metrics, source, result, time.Since(start))
+	return tokener, retErr
 }
 
 // getServiceAccountCredentials handles all service account auth permutations.
@@ -320,8 +347,9 @@ func (r *configReader) getServiceAccountCredentials(ctx context.Context) (auth.B
 
 func (r *configReader) resolveServiceAccountTokener(ctx context.Context) (auth.NamedTokener, error) {
 	wrap := func(reader auth.ServiceAccountReader, saID, pkID string) auth.NamedTokener {
-		return auth.NewNameWrapper(
+		return auth.NewTypedNameWrapper(
 			fmt.Sprintf("service-account/%s/%s", saID, pkID),
+			"service-account",
 			auth.NewExchangeableBearerTokenerWithDeferredClient(
 				auth.NewServiceAccountExchangeTokenRequester(
 					auth.NewCachedServiceAccount(reader),

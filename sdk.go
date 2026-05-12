@@ -64,9 +64,13 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 
 	var credentials Credentials = nil
 	handler := slog.Handler(NoopHandler{})
+	loggerSet := false
 	explicitInit := false
 	timeout := DefaultTimeout
 	authTimeout := DefaultAuthTimeout
+	var readerMetrics reader.Metrics
+	var authMetrics auth.Metrics
+	var configReader config.ConfigInterface = nil
 
 	userAgent := "nebius-gosdk"
 
@@ -91,10 +95,11 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var customResolvers []conn.Resolver
 	var customInits []func(context.Context, *SDK) error
 	var authOpts []auth.Option
-	var configReader config.ConfigInterface = nil
 	var parentID string
 	var noParentID bool
 	var tenantID string
+	keepaliveCfg := defaultKeepaliveConfig()
+	keepaliveConfigured := false
 	retryOpts := []retry.CallOption{}
 	for _, opt := range opts {
 		switch o := opt.(type) {
@@ -102,6 +107,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			credentials = o.creds
 		case optionLogger:
 			handler = o.handler
+			loggerSet = true
 		case optionLoggingOptions:
 			logOpts = append(logOpts, o...)
 		case optionUserAgentPrefix:
@@ -152,21 +158,55 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			tenantID = string(o)
 		case optionAuthOptions:
 			authOpts = append(authOpts, o...)
+		case optionMetrics:
+			readerMetrics = o.metrics
+			authMetrics = nil
+		case optionAuthMetrics:
+			authMetrics = o.metrics
+			readerMetrics = nil
+		case optionWithoutKeepalive:
+			keepaliveCfg = keepaliveConfig{
+				enabled: false,
+			}
+			keepaliveConfigured = true
 		}
+	}
+	if !keepaliveConfigured {
+		var err error
+		keepaliveCfg, err = keepaliveConfigFromEnv()
+		if err != nil {
+			return nil, err
+		}
+	}
+	if readerMetrics == nil && authMetrics != nil {
+		readerMetrics = reader.ExpandAuthMetrics(authMetrics)
+	}
+	if authMetrics == nil && readerMetrics != nil {
+		authMetrics = readerMetrics
 	}
 	logger := slog.New(handler)
 	if configReader != nil {
 		logger.DebugContext(ctx, "SDK is initialized with config reader")
-		configReader.SetOptions(
-			reader.WithAuthOptions(authOpts...),
-			reader.WithLogger(logger),
+		authOptsForReader := append([]auth.Option{}, authOpts...)
+		if authMetrics != nil {
+			authOptsForReader = append(authOptsForReader, auth.WithMetrics(authMetrics))
+		}
+		readerOpts := []config.Option{
+			reader.WithAuthOptions(authOptsForReader...),
 			reader.WithDeferredClientFunc(func() (iampb.TokenExchangeServiceClient, error) {
 				if sdk == nil {
 					return nil, errors.New("SDK is not initialized")
 				}
 				return iam.NewTokenExchangeService(sdk), nil
 			}),
-		)
+		}
+		if loggerSet {
+			readerOpts = append(readerOpts, reader.WithLogger(logger))
+		}
+		if readerMetrics != nil {
+			readerOpts = append(readerOpts, reader.WithMetrics(readerMetrics))
+		}
+		configReader.SetOptions(readerOpts...)
 		if err := configReader.LoadIfNeeded(ctx); err != nil {
 			return nil, fmt.Errorf("load config: %w", err)
 		}
@@ -245,6 +285,15 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			auths[selector] = c.auth
 		case credsTokener:
 			tokener = c.tokener
+			if authMetrics != nil {
+				if setter, ok := tokener.(auth.MetricsSetter); ok {
+					setter.SetMetrics(authMetrics)
+				} else {
+					instrumented := auth.NewInstrumentedBearerTokener(tokener)
+					instrumented.SetMetrics(authMetrics)
+					tokener = instrumented
+				}
+			}
 			auths[selector] = auth.NewAuthenticatorFromBearerTokener(tokener)
 		case credsServiceAccount:
 			t := auth.NewExchangeableBearerTokener(auth.NewServiceAccountExchangeTokenRequester(c.reader), nil)
@@ -257,6 +306,9 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 				auth.WithLogger(logger),
 			}
 			cachedTokenerOpts = append(cachedTokenerOpts, authOpts...)
+			if authMetrics != nil {
+				cachedTokenerOpts = append(cachedTokenerOpts, auth.WithMetrics(authMetrics))
+			}
 			cache := auth.NewCachedTokener(
 				t,
 				cachedTokenerOpts...,
@@ -280,6 +332,10 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		grpc.WithChainUnaryInterceptor(conn.IdempotencyKeyInterceptor),
 		grpc.WithTransportCredentials(grpc_creds.NewTLS(nil)), // tls enabled by default
 	)
+
+	if keepaliveCfg.enabled {
+		dialOpts = append(dialOpts, keepaliveCfg.dialOption())
+	}
 
 	dialOpts = append(dialOpts, customDialOpts...)
 
@@ -391,10 +447,10 @@ func (s *SDK) Context() context.Context {
 // It is automatically called by the [New] constructor by default.
 // This method should only be called manually if the [WithExplicitInit] option is used.
 func (s *SDK) Init(ctx context.Context) error {
-	ctx, cancel := context.WithCancel(ctx)
+	initCtx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	for _, init := range s.inits {
-		err := init(ctx, s)
+		err := init(initCtx, s)
 		if err != nil {
 			return err
 		}

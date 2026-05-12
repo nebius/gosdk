@@ -20,6 +20,7 @@ type ExchangeTokenRequester interface {
 // using the [iampb.TokenExchangeServiceClient.Exchange] method.
 // It relies on an [ExchangeTokenRequester] to generate the request payload for the exchange.
 type ExchangeableBearerTokener struct {
+	metrics    atomicMetrics
 	creds      ExchangeTokenRequester
 	client     iampb.TokenExchangeServiceClient
 	clientFunc func() (iampb.TokenExchangeServiceClient, error)
@@ -27,6 +28,8 @@ type ExchangeableBearerTokener struct {
 }
 
 var _ BearerTokener = (*ExchangeableBearerTokener)(nil)
+var _ MetricsSetter = (*ExchangeableBearerTokener)(nil)
+var _ TypedTokener = (*ExchangeableBearerTokener)(nil)
 
 // NewExchangeableBearerTokener returns a [BearerTokener] that exchanges tokens
 // using the [iampb.TokenExchangeServiceClient.Exchange] method.
@@ -64,15 +67,26 @@ func (t *ExchangeableBearerTokener) SetClient(client iampb.TokenExchangeServiceC
 	t.client = client
 }
 
+func (t *ExchangeableBearerTokener) SetMetrics(metrics Metrics) {
+	t.metrics.Store(metrics)
+}
+
+func (t *ExchangeableBearerTokener) Type() string {
+	return "token-exchange"
+}
+
 func (t *ExchangeableBearerTokener) BearerToken(ctx context.Context) (BearerToken, error) {
+	start := t.now()
 	if t.client == nil && t.clientFunc != nil {
 		client, err := t.clientFunc()
 		if err != nil {
+			t.metrics.tokenAcquireError(ctx, t, t.now().Sub(start), 0)
 			return BearerToken{}, fmt.Errorf("get token exchange client: %w", err)
 		}
 		t.client = client
 	}
 	if t.client == nil {
+		t.metrics.tokenAcquireError(ctx, t, t.now().Sub(start), 0)
 		return BearerToken{}, errors.New("tokenService client is not defined")
 	}
 
@@ -80,23 +94,27 @@ func (t *ExchangeableBearerTokener) BearerToken(ctx context.Context) (BearerToke
 
 	request, err := t.creds.GetExchangeTokenRequest(ctx)
 	if err != nil {
+		t.metrics.tokenAcquireError(ctx, t, t.now().Sub(start), 0)
 		return BearerToken{}, err
 	}
 
 	resp, err := t.client.Exchange(ctx, request, Disable{})
 	if err != nil {
+		t.metrics.tokenAcquireError(ctx, t, t.now().Sub(start), 0)
 		return BearerToken{}, fmt.Errorf("exchange token: %w", err)
 	}
 
 	tokenType := resp.GetTokenType()
 	if strings.ToLower(tokenType) != "bearer" {
+		t.metrics.tokenAcquireError(ctx, t, t.now().Sub(start), 0)
 		return BearerToken{}, fmt.Errorf("unsupported token received: expected Bearer, received %q", tokenType)
 	}
-
-	return BearerToken{
+	token := BearerToken{
 		Token:     resp.GetAccessToken(),
 		ExpiresAt: now.Add(time.Duration(resp.GetExpiresIn()) * time.Second),
-	}, nil
+	}
+	t.metrics.tokenAcquireSuccess(ctx, t, t.now().Sub(start), 0, token, now)
+	return token, nil
 }
 
 func (t *ExchangeableBearerTokener) HandleError(context.Context, BearerToken, error) error {

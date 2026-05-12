@@ -11,6 +11,7 @@ import (
 
 	"github.com/nebius/gosdk/auth"
 	"github.com/nebius/gosdk/config"
+	"github.com/nebius/gosdk/config/reader"
 	"github.com/nebius/gosdk/conn"
 )
 
@@ -49,6 +50,14 @@ func WithLoggingOptions(opts ...logging.Option) Option {
 // You can use [conn.WithAddressDialOptions] to use different options for a specific [conn.Address].
 func WithDialOptions(opts ...grpc.DialOption) Option {
 	return optionDialOpts(opts)
+}
+
+// WithoutKeepalive disables the GoSDK default gRPC client keepalive.
+//
+// This only affects the SDK default. Dial options passed through [WithDialOptions]
+// are appended later and may still configure keepalive explicitly.
+func WithoutKeepalive() Option {
+	return optionWithoutKeepalive{}
 }
 
 // WithResolvers customizes service address resolution.
@@ -124,6 +133,12 @@ func WithRetryOptions(opts ...retry.CallOption) Option {
 // You can disable ParentID autofill by adding [WithNoParentID] or
 // [WithoutParentID] option.
 // By default, it reads configuration from the standard Nebius CLI config file.
+// If [WithLogger], [WithMetrics], or [WithAuthMetrics] are explicitly set on
+// the SDK, those values override the corresponding logger or metrics
+// configured on the provided config reader.
+// Token-file credentials are resolved lazily: the config reader creates the
+// file tokener during SDK setup, but the file is read and validated only when a
+// token is first requested.
 func WithConfigReader(configReader config.ConfigInterface) Option {
 	return optionConfigReader{configReader: configReader}
 }
@@ -164,6 +179,28 @@ func WithAuthOptions(opts ...auth.Option) Option {
 	return optionAuthOptions(opts)
 }
 
+// WithMetrics propagates config-reader and auth metrics to SDK-managed
+// components. It accepts [reader.Metrics] because config loading and credential
+// resolution observations are emitted by the config reader; [reader.Metrics]
+// embeds [auth.Metrics], so the same recorder also receives auth observations.
+// Auth provider labels are low-cardinality provider types; for exchange-based
+// credentials, cache events can use the high-level provider label while
+// acquisition/lifetime events can use the inner "token-exchange" label.
+func WithMetrics(metrics reader.Metrics) Option {
+	return optionMetrics{metrics: metrics}
+}
+
+// WithAuthMetrics propagates auth-only metrics to SDK-managed auth components.
+// Use it when the recorder does not implement the config-reader callbacks
+// required by [WithMetrics].
+//
+// If a config reader is used, the SDK adapts these metrics via
+// [reader.ExpandAuthMetrics], so config-reader-specific callbacks are muted.
+// Provider labels follow the same split documented on [WithMetrics].
+func WithAuthMetrics(metrics auth.Metrics) Option {
+	return optionAuthMetrics{metrics: metrics}
+}
+
 // WithTenantID sets the default tenant ID for all requests that need a tenant as a parent ID.
 // This can be overridden by methods that accept a parent ID parameter.
 //
@@ -178,10 +215,11 @@ type (
 	optionLogger         struct{ handler slog.Handler }
 	optionLoggingOptions []logging.Option
 
-	optionDialOpts        []grpc.DialOption
-	optionResolvers       []conn.Resolver
-	optionDomain          string
-	optionAddressTemplate struct {
+	optionDialOpts         []grpc.DialOption
+	optionWithoutKeepalive struct{}
+	optionResolvers        []conn.Resolver
+	optionDomain           string
+	optionAddressTemplate  struct {
 		find    string
 		replace string
 	}
@@ -192,6 +230,8 @@ type (
 	optionUserAgentPrefix string
 	optionRetryOptions    []retry.CallOption
 	optionAuthOptions     []auth.Option
+	optionMetrics         struct{ metrics reader.Metrics }
+	optionAuthMetrics     struct{ metrics auth.Metrics }
 
 	optionConfigReader struct{ configReader config.ConfigInterface }
 	optionParentID     string
@@ -203,21 +243,24 @@ func (optionCredentials) option()    {}
 func (optionLogger) option()         {}
 func (optionLoggingOptions) option() {}
 
-func (optionDialOpts) option()        {}
-func (optionResolvers) option()       {}
-func (optionDomain) option()          {}
-func (optionAddressTemplate) option() {}
-func (optionExplicitInit) option()    {}
-func (optionInit) option()            {}
-func (optionTimeout) option()         {}
-func (optionUserAgentPrefix) option() {}
-func (optionRetryOptions) option()    {}
-func (optionConfigReader) option()    {}
-func (optionParentID) option()        {}
-func (optionAuthTimeout) option()     {}
-func (optionNoParentID) option()      {}
-func (optionTenantID) option()        {}
-func (optionAuthOptions) option()     {}
+func (optionDialOpts) option()         {}
+func (optionWithoutKeepalive) option() {}
+func (optionResolvers) option()        {}
+func (optionDomain) option()           {}
+func (optionAddressTemplate) option()  {}
+func (optionExplicitInit) option()     {}
+func (optionInit) option()             {}
+func (optionTimeout) option()          {}
+func (optionUserAgentPrefix) option()  {}
+func (optionRetryOptions) option()     {}
+func (optionConfigReader) option()     {}
+func (optionParentID) option()         {}
+func (optionAuthTimeout) option()      {}
+func (optionNoParentID) option()       {}
+func (optionTenantID) option()         {}
+func (optionAuthOptions) option()      {}
+func (optionMetrics) option()          {}
+func (optionAuthMetrics) option()      {}
 
 type NoopHandler struct{}
 
