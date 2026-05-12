@@ -60,8 +60,8 @@ tidy: ## keep go.mod and .github/latest-deps tidy
 	@echo "+ $@"
 	go mod tidy
 	$(IMPORTS) > .github/latest-deps/imports.go
-	go fmt .github/latest-deps/imports.go
-	go mod tidy -modfile=.github/latest-deps/go.mod
+	go -C .github/latest-deps fmt imports.go
+	go -C .github/latest-deps mod tidy
 .PHONY: check
 
 check-tidy: ## ensure go.mod is tidy
@@ -72,7 +72,7 @@ check-tidy: ## ensure go.mod is tidy
 	diff -u .github/latest-deps/imports.go .github/latest-deps/imports.check.go
 	rm .github/latest-deps/imports.check.go
 
-	go mod tidy -diff -modfile=.github/latest-deps/go.mod
+	go -C .github/latest-deps mod tidy -diff
 .PHONY: check-tidy
 
 build-docker-dev: ## build development image from dev.dockerfile
