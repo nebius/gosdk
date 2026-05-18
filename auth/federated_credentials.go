@@ -91,8 +91,9 @@ func NewFederatedCredentialsTokener(
 ) NamedTokener {
 	reader := NewFileFederatedCredentialsReader(fileName)
 	requester := NewFederatedCredentialsTokenRequester(serviceAccountID, reader)
-	return NewNameWrapper(
+	return NewTypedNameWrapper(
 		"federated-credentials/"+serviceAccountID+"/"+fileName,
+		"federated-credentials",
 		NewExchangeableBearerTokenerWithDeferredClient(
 			requester,
 			clientFunc,

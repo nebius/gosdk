@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
-	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/gofrs/flock"
@@ -495,7 +495,11 @@ type pureFileCachedTokener struct {
 	fileName string
 	throttle time.Duration
 	logger   *slog.Logger
+	metrics  atomicMetrics
 }
+
+var _ MetricsSetter = (*pureFileCachedTokener)(nil)
+var _ TypedTokener = (*pureFileCachedTokener)(nil)
 
 const defaultFileCacheThrottle = 5 * time.Minute // default throttle duration
 func NewPureFileCachedTokener(
@@ -524,6 +528,14 @@ func (p *pureFileCachedTokener) SetLogger(logger *slog.Logger) {
 	if p.cache != nil {
 		p.cache.SetLogger(logger)
 	}
+}
+
+func (p *pureFileCachedTokener) SetMetrics(metrics Metrics) {
+	p.metrics.Store(metrics)
+}
+
+func (p *pureFileCachedTokener) Type() string {
+	return "file-cache"
 }
 
 func (p *pureFileCachedTokener) initCache(ctx context.Context) error {
@@ -561,7 +573,13 @@ func (p *pureFileCachedTokener) BearerToken(ctx context.Context) (BearerToken, e
 	}
 	tok, err := p.cache.Get(ctx)
 	if err != nil {
+		p.metrics.cacheMiss(ctx, p, metricResultError)
 		return BearerToken{}, fmt.Errorf("get from cache: %w", err)
+	}
+	if tok.Empty() || tok.IsExpired() {
+		p.metrics.cacheMiss(ctx, p, metricResultSuccess)
+	} else {
+		p.metrics.cacheHit(ctx, p)
 	}
 	return tok, nil
 }
@@ -576,67 +594,88 @@ func (p *pureFileCachedTokener) HandleError(
 	}
 	cacheTok, err := p.cache.Refresh(ctx)
 	if err != nil {
+		p.metrics.cacheRefresh(ctx, p, metricResultError)
 		return errors.Join(checkErr, fmt.Errorf("refresh cache: %w", err))
 	}
 	if !cacheTok.Empty() && !cacheTok.Equal(token) {
+		p.metrics.cacheRefresh(ctx, p, metricResultSuccess)
 		return nil
 	}
 	return fmt.Errorf("token requires refresh using another tool: %w", checkErr)
 }
 
 var _ NamedTokener = (*RenewableFileCachedTokener)(nil)
+var _ MetricsSetter = (*RenewableFileCachedTokener)(nil)
+var _ Wrapper = (*RenewableFileCachedTokener)(nil)
 
 func WithFileCacheSafetyMargin(safetyMargin time.Duration) Option {
 	return optionFunc(func(t BearerTokener) {
-		switch cache := t.(type) {
-		case *RenewableFileCachedTokener:
-			cache.safetyMargin = safetyMargin
-		case *AsynchronouslyRenewableFileCachedTokener:
-			cache.safetyMargin = safetyMargin
-		default:
-			// do nothing if the tokener does not support safety margin
-		}
+		applyToTokenerOrWrapped(t, func(t BearerTokener) bool {
+			switch cache := t.(type) {
+			case *RenewableFileCachedTokener:
+				cache.safetyMargin = safetyMargin
+				return true
+			case *AsynchronouslyRenewableFileCachedTokener:
+				cache.safetyMargin = safetyMargin
+				return true
+			default:
+				return false
+			}
+		})
 	})
 }
 
 func WithFileCacheThrottle(throttle time.Duration) Option {
 	return optionFunc(func(t BearerTokener) {
-		switch cache := t.(type) {
-		case *RenewableFileCachedTokener:
-			cache.throttle = throttle
-		case *AsynchronouslyRenewableFileCachedTokener:
-			cache.throttle = throttle
-		case *pureFileCachedTokener:
-			cache.throttle = throttle
-		default:
-			// do nothing if the tokener does not support throttle
-		}
+		applyToTokenerOrWrapped(t, func(t BearerTokener) bool {
+			switch cache := t.(type) {
+			case *RenewableFileCachedTokener:
+				cache.throttle = throttle
+				return true
+			case *AsynchronouslyRenewableFileCachedTokener:
+				cache.throttle = throttle
+				return true
+			case *pureFileCachedTokener:
+				cache.throttle = throttle
+				return true
+			default:
+				return false
+			}
+		})
 	})
 }
 
 func WithFileCacheFileName(fileName string) Option {
 	return optionFunc(func(t BearerTokener) {
-		switch cache := t.(type) {
-		case *RenewableFileCachedTokener:
-			cache.cacheFileName = fileName
-		case *AsynchronouslyRenewableFileCachedTokener:
-			cache.cacheFileName = fileName
-		case *pureFileCachedTokener:
-			cache.fileName = fileName
-		default:
-			// do nothing if the tokener does not support file name
-		}
+		applyToTokenerOrWrapped(t, func(t BearerTokener) bool {
+			switch cache := t.(type) {
+			case *RenewableFileCachedTokener:
+				cache.cacheFileName = fileName
+				return true
+			case *AsynchronouslyRenewableFileCachedTokener:
+				cache.cacheFileName = fileName
+				return true
+			case *pureFileCachedTokener:
+				cache.fileName = fileName
+				return true
+			default:
+				return false
+			}
+		})
 	})
 }
 
 func WithFileCacheRetryTimeout(retryTimeout time.Duration) Option {
 	return optionFunc(func(t BearerTokener) {
-		switch cache := t.(type) {
-		case *AsynchronouslyRenewableFileCachedTokener:
-			cache.retryTimeout = retryTimeout
-		default:
-			// do nothing if the tokener does not support retry timeout
-		}
+		applyToTokenerOrWrapped(t, func(t BearerTokener) bool {
+			switch cache := t.(type) {
+			case *AsynchronouslyRenewableFileCachedTokener:
+				cache.retryTimeout = retryTimeout
+				return true
+			default:
+				return false
+			}
+		})
 	})
 }
 
@@ -648,6 +687,7 @@ type RenewableFileCachedTokener struct {
 	safetyMargin  time.Duration
 	logger        *slog.Logger
 	name          string
+	metrics       atomicMetrics
 }
 
 func NewFileCacheTokener(
@@ -698,6 +738,13 @@ func (f *RenewableFileCachedTokener) SetLogger(logger *slog.Logger) {
 	}
 }
 
+func (f *RenewableFileCachedTokener) SetMetrics(metrics Metrics) {
+	f.metrics.Store(metrics)
+	if setter, ok := f.tokener.(MetricsSetter); ok {
+		setter.SetMetrics(metrics)
+	}
+}
+
 func (f *RenewableFileCachedTokener) updateLoggerAttributes() {
 	f.logger = f.logger.With(
 		slog.String("name", "renewable_file_cached_tokener"),
@@ -714,6 +761,7 @@ func (f *RenewableFileCachedTokener) updateLoggerAttributes() {
 func (f *RenewableFileCachedTokener) Name() string {
 	return f.name
 }
+
 func (f *RenewableFileCachedTokener) Unwrap() BearerTokener {
 	return f.tokener
 }
@@ -757,6 +805,7 @@ func (f *RenewableFileCachedTokener) BearerToken(ctx context.Context) (BearerTok
 
 	tok, err := f.cache.Get(ctx)
 	if err != nil {
+		f.metrics.cacheMiss(ctx, f, metricResultError)
 		return BearerToken{}, fmt.Errorf("get from cache: %w", err)
 	}
 	if tok.NotEmpty() && !tok.ExpiresAt.IsZero() {
@@ -771,6 +820,7 @@ func (f *RenewableFileCachedTokener) BearerToken(ctx context.Context) (BearerTok
 	}
 	f.safetyMargin = 0 // safety margin did its primary run check
 	if tok.NotEmpty() && !tok.IsExpired() {
+		f.metrics.cacheHit(ctx, f)
 		return tok, nil
 	}
 	f.logger.DebugContext(
@@ -780,8 +830,10 @@ func (f *RenewableFileCachedTokener) BearerToken(ctx context.Context) (BearerTok
 
 	token, err := f.tokener.BearerToken(ctx)
 	if err != nil {
+		f.metrics.cacheMiss(ctx, f, metricResultError)
 		return token, fmt.Errorf("get from wrapped tokener: %w", err)
 	}
+	f.metrics.cacheMiss(ctx, f, metricResultSuccess)
 	if token.Empty() {
 		f.logger.DebugContext(
 			ctx,
@@ -790,6 +842,7 @@ func (f *RenewableFileCachedTokener) BearerToken(ctx context.Context) (BearerTok
 		return token, nil
 	}
 	if err = f.cache.Set(ctx, token); err != nil {
+		f.metrics.cacheStore(ctx, f, metricResultError)
 		f.logger.ErrorContext(
 			ctx,
 			"failed to save token to cache",
@@ -797,6 +850,7 @@ func (f *RenewableFileCachedTokener) BearerToken(ctx context.Context) (BearerTok
 			slog.Any("error", err),
 		)
 	} else {
+		f.metrics.cacheStore(ctx, f, metricResultSuccess)
 		f.logger.DebugContext(
 			ctx,
 			"new token saved to cache",
@@ -824,12 +878,14 @@ func (f *RenewableFileCachedTokener) HandleError(
 	)
 	cachedTok, err := f.cache.Refresh(ctx)
 	if err != nil {
+		f.metrics.cacheRefresh(ctx, f, metricResultError)
 		return errors.Join(
 			checkErr,
 			fmt.Errorf("refresh cache: %w", err),
 		)
 	}
 	if cachedTok.NotEmpty() && !cachedTok.Equal(token) {
+		f.metrics.cacheRefresh(ctx, f, metricResultSuccess)
 		f.logger.InfoContext(
 			ctx,
 			"token refreshed from cache",
@@ -845,6 +901,7 @@ func (f *RenewableFileCachedTokener) HandleError(
 				fmt.Errorf("remove from cache: %w", err),
 			)
 		}
+		f.metrics.cacheInvalidate(ctx, f)
 	}
 	return f.tokener.HandleError(ctx, token, checkErr)
 }
@@ -858,11 +915,15 @@ type AsynchronouslyRenewableFileCachedTokener struct {
 	logger        *slog.Logger
 	name          string
 	retryTimeout  time.Duration
+	metrics       atomicMetrics
+	retryCount    atomic.Int64
 
 	ticker *time.Ticker
 	group  singleflight.Group
-	mutex  sync.Mutex // mutex to protect access to fetchedChannel and contextsWaiting
 }
+
+var _ MetricsSetter = (*AsynchronouslyRenewableFileCachedTokener)(nil)
+var _ Wrapper = (*AsynchronouslyRenewableFileCachedTokener)(nil)
 
 const (
 	retryTimeout = 1 * time.Second // default retry timeout
@@ -880,10 +941,9 @@ func NewAsynchronouslyRenewableFileCacheTokener(
 		throttle:     defaultFileCacheThrottle,
 		logger:       slog.New(slog.DiscardHandler),
 
-		ticker: time.NewTicker(0), // stopped ticker, will be reset on first token fetch
+		ticker: newStoppedTicker(),
 		group:  singleflight.Group{},
 		name:   name, // should not change after creation
-		mutex:  sync.Mutex{},
 	}
 	for _, opt := range opts {
 		opt.apply(t)
@@ -918,6 +978,13 @@ func (f *AsynchronouslyRenewableFileCachedTokener) SetLogger(logger *slog.Logger
 	f.updateLoggerAttributes()
 	if f.cache != nil {
 		f.cache.SetLogger(f.logger)
+	}
+}
+
+func (f *AsynchronouslyRenewableFileCachedTokener) SetMetrics(metrics Metrics) {
+	f.metrics.Store(metrics)
+	if setter, ok := f.tokener.(MetricsSetter); ok {
+		setter.SetMetrics(metrics)
 	}
 }
 
@@ -969,9 +1036,11 @@ func (f *AsynchronouslyRenewableFileCachedTokener) initCache(ctx context.Context
 func (f *AsynchronouslyRenewableFileCachedTokener) Name() string {
 	return f.name
 }
+
 func (f *AsynchronouslyRenewableFileCachedTokener) Unwrap() BearerTokener {
 	return f.tokener
 }
+
 func (f *AsynchronouslyRenewableFileCachedTokener) BearerToken(
 	ctx context.Context,
 ) (BearerToken, error) {
@@ -980,12 +1049,20 @@ func (f *AsynchronouslyRenewableFileCachedTokener) BearerToken(
 	}
 	tok, err := f.cache.Get(ctx)
 	if err != nil {
+		f.metrics.cacheMiss(ctx, f, metricResultError)
 		return BearerToken{}, fmt.Errorf("get from cache: %w", err)
 	}
 	if tok.NotEmpty() && !tok.IsExpired() {
+		f.metrics.cacheHit(ctx, f)
 		return tok, nil
 	}
-	return f.requestToken(ctx)
+	token, err := f.requestToken(ctx, false)
+	if err != nil {
+		f.metrics.cacheMiss(ctx, f, metricResultError)
+		return BearerToken{}, err
+	}
+	f.metrics.cacheMiss(ctx, f, metricResultSuccess)
+	return token, nil
 }
 func (f *AsynchronouslyRenewableFileCachedTokener) HandleError(
 	ctx context.Context, token BearerToken, checkErr error,
@@ -998,12 +1075,14 @@ func (f *AsynchronouslyRenewableFileCachedTokener) HandleError(
 	}
 	cachedTok, err := f.cache.Refresh(ctx)
 	if err != nil {
+		f.metrics.cacheRefresh(ctx, f, metricResultError)
 		return errors.Join(
 			checkErr,
 			fmt.Errorf("refresh cache: %w", err),
 		)
 	}
 	if cachedTok.NotEmpty() && !cachedTok.Equal(token) {
+		f.metrics.cacheRefresh(ctx, f, metricResultSuccess)
 		if f.logger != nil {
 			f.logger.InfoContext(
 				ctx,
@@ -1021,6 +1100,7 @@ func (f *AsynchronouslyRenewableFileCachedTokener) HandleError(
 				fmt.Errorf("remove from cache: %w", err),
 			)
 		}
+		f.metrics.cacheInvalidate(ctx, f)
 	}
 	return f.tokener.HandleError(ctx, token, checkErr)
 }
@@ -1085,7 +1165,7 @@ func (f *AsynchronouslyRenewableFileCachedTokener) Run(ctx context.Context) erro
 				}()
 			}
 
-			_, err = f.requestToken(ctx)
+			_, err = f.requestToken(ctx, true)
 			if err != nil && !errors.Is(err, context.Canceled) {
 				f.logger.ErrorContext(
 					ctx,
@@ -1101,15 +1181,22 @@ func (f *AsynchronouslyRenewableFileCachedTokener) Run(ctx context.Context) erro
 
 func (f *AsynchronouslyRenewableFileCachedTokener) requestToken(
 	ctx context.Context,
+	background bool,
 ) (BearerToken, error) {
 	res, err, _ := f.group.Do("", func() (any, error) {
+		start := time.Now()
 		var refreshAfter time.Duration
 
 		now := time.Now()
-		token, err := f.tokener.BearerToken(ctx)
+		token, err := f.tokener.BearerToken(contextWithTokenAcquireAttempt(ctx, f.acquireAttempt(background)))
 		if err != nil {
+			f.recordAcquireResult(background, false)
+			if background {
+				f.metrics.tokenRefresh(ctx, f, metricResultError, time.Since(start), true)
+			}
 			return nil, fmt.Errorf("get from wrapped tokener: %w", err)
 		}
+		f.recordAcquireResult(background, true)
 
 		if !token.ExpiresAt.IsZero() {
 			ttl := token.ExpiresAt.Sub(now)
@@ -1125,6 +1212,7 @@ func (f *AsynchronouslyRenewableFileCachedTokener) requestToken(
 		}
 
 		if err = f.cache.Set(ctx, token); err != nil {
+			f.metrics.cacheStore(ctx, f, metricResultError)
 			if f.logger != nil {
 				f.logger.ErrorContext(
 					ctx,
@@ -1133,14 +1221,23 @@ func (f *AsynchronouslyRenewableFileCachedTokener) requestToken(
 					slog.Any("error", err),
 				)
 			} else {
+				if background {
+					f.metrics.tokenRefresh(ctx, f, metricResultError, time.Since(start), true)
+				}
 				return BearerToken{}, fmt.Errorf("save to cache: %w", err)
 			}
+		}
+		if err == nil {
+			f.metrics.cacheStore(ctx, f, metricResultSuccess)
 		}
 
 		if refreshAfter > 0 {
 			f.ticker.Reset(refreshAfter)
 		}
 
+		if background {
+			f.metrics.tokenRefresh(ctx, f, metricResultSuccess, time.Since(start), true)
+		}
 		return token, nil
 	})
 	if err != nil {
@@ -1148,6 +1245,24 @@ func (f *AsynchronouslyRenewableFileCachedTokener) requestToken(
 	}
 
 	return res.(BearerToken), nil //nolint:errcheck // ok to panic
+}
+
+func (f *AsynchronouslyRenewableFileCachedTokener) acquireAttempt(background bool) int {
+	if !background {
+		return 1
+	}
+	return int(f.retryCount.Load()) + 1
+}
+
+func (f *AsynchronouslyRenewableFileCachedTokener) recordAcquireResult(background bool, success bool) {
+	if !background {
+		return
+	}
+	if success {
+		f.retryCount.Store(0)
+		return
+	}
+	f.retryCount.Add(1)
 }
 
 func GetDefaultCacheFileName() (string, error) {

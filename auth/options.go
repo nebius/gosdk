@@ -22,6 +22,19 @@ func applyOptions(t BearerTokener, opts ...Option) {
 	}
 }
 
+func applyToTokenerOrWrapped(t BearerTokener, apply func(BearerTokener) bool) {
+	for t != nil {
+		if apply(t) {
+			return
+		}
+		wrapper, ok := t.(Wrapper)
+		if !ok {
+			return
+		}
+		t = wrapper.Unwrap()
+	}
+}
+
 type LoggerSetter interface {
 	SetLogger(logger *slog.Logger)
 }
@@ -32,9 +45,13 @@ type LoggerOption struct {
 }
 
 func (o LoggerOption) apply(t BearerTokener) {
-	if setter, ok := t.(LoggerSetter); ok {
-		setter.SetLogger(o.Logger)
-	}
+	applyToTokenerOrWrapped(t, func(t BearerTokener) bool {
+		setter, ok := t.(LoggerSetter)
+		if ok {
+			setter.SetLogger(o.Logger)
+		}
+		return ok
+	})
 }
 
 // WithLogger sets the logger for the token provider. It will be used by both
