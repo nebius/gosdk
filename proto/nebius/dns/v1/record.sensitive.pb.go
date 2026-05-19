@@ -19,3 +19,12 @@ package v1
 
 // func (x *ListRecordsResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListRecordsResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *CreateRecordRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreateRecordRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateRecordRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateRecordRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DeleteRecordRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DeleteRecordRequest) LogValue() slog.Value // is not generated as no sensitive fields found

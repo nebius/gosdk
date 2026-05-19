@@ -496,9 +496,10 @@ func (*Karpenter) Descriptor() ([]byte, []int) {
 }
 
 type ClusterStatus struct {
-	state        protoimpl.MessageState `protogen:"open.v1"`
-	State        ClusterStatus_State    `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1.ClusterStatus_State" json:"state,omitempty"`
-	ControlPlane *ControlPlaneStatus    `protobuf:"bytes,2,opt,name=control_plane,json=controlPlane,proto3" json:"control_plane,omitempty"`
+	state        protoimpl.MessageState       `protogen:"open.v1"`
+	State        ClusterStatus_State          `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1.ClusterStatus_State" json:"state,omitempty"`
+	ControlPlane *ControlPlaneStatus          `protobuf:"bytes,2,opt,name=control_plane,json=controlPlane,proto3" json:"control_plane,omitempty"`
+	Events       []*v1.RecurrentResourceEvent `protobuf:"bytes,3,rep,name=events,proto3" json:"events,omitempty"`
 	// Show that changes are in flight
 	Reconciling   bool `protobuf:"varint,100,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -545,6 +546,13 @@ func (x *ClusterStatus) GetState() ClusterStatus_State {
 func (x *ClusterStatus) GetControlPlane() *ControlPlaneStatus {
 	if x != nil {
 		return x.ControlPlane
+	}
+	return nil
+}
+
+func (x *ClusterStatus) GetEvents() []*v1.RecurrentResourceEvent {
+	if x != nil {
+		return x.Events
 	}
 	return nil
 }
@@ -734,10 +742,10 @@ var File_nebius_mk8s_v1_cluster_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"\n" +
-	"\x1cnebius/mk8s/v1/cluster.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbe\x03\n" +
+	"\x1cnebius/mk8s/v1/cluster.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a%nebius/common/v1/resource_event.proto\"\xbe\x03\n" +
 	"\aCluster\x12\xca\x02\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x89\x02\xbaH\x85\x02\xba\x01\x81\x02\n" +
-	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '.', starting and ending with a letter or digit\x1arsize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9.]*)?[A-Za-z0-9])?$')R\bmetadata\x12/\n" +
+	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1arsize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_]*)?[A-Za-z0-9])?$')R\bmetadata\x12/\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.mk8s.v1.ClusterSpecR\x04spec\x125\n" +
 	"\x06status\x18\x03 \x01(\v2\x1d.nebius.mk8s.v1.ClusterStatusR\x06status\"\xa0\x01\n" +
 	"\vClusterSpec\x12M\n" +
@@ -759,10 +767,11 @@ const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"\rservice_cidrs\x18\x01 \x03(\tB\x97\x01\xbaH\x8f\x01\xba\x01\x86\x01\n" +
 	"\x11string.valid_cidr\x12?value must be a CIDR block or prefix length from \"/12\" to \"/28\"\x1a0this.all(x, x.matches('^(.*)/(1[2-9]|2[0-8])$'))\x92\x01\x02\x10\x01\xbaJ\x01\x02R\fserviceCidrs\"\x0f\n" +
 	"\rAuditLogsSpec\"\v\n" +
-	"\tKarpenter\"\x82\x02\n" +
+	"\tKarpenter\"\xc4\x02\n" +
 	"\rClusterStatus\x129\n" +
 	"\x05state\x18\x01 \x01(\x0e2#.nebius.mk8s.v1.ClusterStatus.StateR\x05state\x12G\n" +
-	"\rcontrol_plane\x18\x02 \x01(\v2\".nebius.mk8s.v1.ControlPlaneStatusR\fcontrolPlane\x12 \n" +
+	"\rcontrol_plane\x18\x02 \x01(\v2\".nebius.mk8s.v1.ControlPlaneStatusR\fcontrolPlane\x12@\n" +
+	"\x06events\x18\x03 \x03(\v2(.nebius.common.v1.RecurrentResourceEventR\x06events\x12 \n" +
 	"\vreconciling\x18d \x01(\bR\vreconciling\"K\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
@@ -810,6 +819,7 @@ var file_nebius_mk8s_v1_cluster_proto_goTypes = []any{
 	(*ControlPlaneStatusEndpoints)(nil), // 11: nebius.mk8s.v1.ControlPlaneStatusEndpoints
 	(*ControlPlaneStatusAuth)(nil),      // 12: nebius.mk8s.v1.ControlPlaneStatusAuth
 	(*v1.ResourceMetadata)(nil),         // 13: nebius.common.v1.ResourceMetadata
+	(*v1.RecurrentResourceEvent)(nil),   // 14: nebius.common.v1.RecurrentResourceEvent
 }
 var file_nebius_mk8s_v1_cluster_proto_depIdxs = []int32{
 	13, // 0: nebius.mk8s.v1.Cluster.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -823,13 +833,14 @@ var file_nebius_mk8s_v1_cluster_proto_depIdxs = []int32{
 	5,  // 8: nebius.mk8s.v1.ControlPlaneEndpointsSpec.public_endpoint:type_name -> nebius.mk8s.v1.PublicEndpointSpec
 	0,  // 9: nebius.mk8s.v1.ClusterStatus.state:type_name -> nebius.mk8s.v1.ClusterStatus.State
 	10, // 10: nebius.mk8s.v1.ClusterStatus.control_plane:type_name -> nebius.mk8s.v1.ControlPlaneStatus
-	11, // 11: nebius.mk8s.v1.ControlPlaneStatus.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneStatusEndpoints
-	12, // 12: nebius.mk8s.v1.ControlPlaneStatus.auth:type_name -> nebius.mk8s.v1.ControlPlaneStatusAuth
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	14, // 11: nebius.mk8s.v1.ClusterStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
+	11, // 12: nebius.mk8s.v1.ControlPlaneStatus.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneStatusEndpoints
+	12, // 13: nebius.mk8s.v1.ControlPlaneStatus.auth:type_name -> nebius.mk8s.v1.ControlPlaneStatusAuth
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_cluster_proto_init() }

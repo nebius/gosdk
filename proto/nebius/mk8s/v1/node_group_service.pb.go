@@ -648,9 +648,10 @@ const file_nebius_mk8s_v1_node_group_service_proto_rawDesc = "" +
 	"!NodeGroupCompatibilityVersionItem\x12\x0e\n" +
 	"\x02os\x18\x01 \x01(\tR\x02os\x12%\n" +
 	"\x0edrivers_preset\x18\x03 \x01(\tR\rdriversPreset\x121\n" +
-	"\x14compatible_platforms\x18\x05 \x03(\tR\x13compatiblePlatforms\"\x9b\x01\n" +
-	"\x16CreateNodeGroupRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
+	"\x14compatible_platforms\x18\x05 \x03(\tR\x13compatiblePlatforms\"\xa4\x03\n" +
+	"\x16CreateNodeGroupRequest\x12\xce\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x8d\x02\xbaH\x89\x02\xba\x01\x82\x02\n" +
+	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')\xc8\x01\x01R\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"X\n" +
 	"\x13GetNodeGroupRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12)\n" +

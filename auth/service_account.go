@@ -55,11 +55,12 @@ func NewServiceAccountTokener(
 	privateKey string,
 	getIAMClient func() (iampb.TokenExchangeServiceClient, error),
 ) NamedTokener {
-	return NewNameWrapper(
+	return NewTypedNameWrapper(
 		fmt.Sprintf(
 			"service-account/%s/%s",
 			id, publicKeyID,
 		),
+		"service-account",
 		NewExchangeableBearerTokenerWithDeferredClient(
 			NewServiceAccountExchangeTokenRequester(
 				NewCachedServiceAccount(

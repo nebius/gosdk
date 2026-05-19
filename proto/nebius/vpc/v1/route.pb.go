@@ -72,6 +72,56 @@ func (RouteStatus_State) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_vpc_v1_route_proto_rawDescGZIP(), []int{5, 0}
 }
 
+// Route type.
+type RouteStatus_Type int32
+
+const (
+	RouteStatus_TYPE_UNSPECIFIED RouteStatus_Type = 0
+	RouteStatus_STATIC           RouteStatus_Type = 1
+	RouteStatus_REDISTRIBUTED    RouteStatus_Type = 2
+)
+
+// Enum value maps for RouteStatus_Type.
+var (
+	RouteStatus_Type_name = map[int32]string{
+		0: "TYPE_UNSPECIFIED",
+		1: "STATIC",
+		2: "REDISTRIBUTED",
+	}
+	RouteStatus_Type_value = map[string]int32{
+		"TYPE_UNSPECIFIED": 0,
+		"STATIC":           1,
+		"REDISTRIBUTED":    2,
+	}
+)
+
+func (x RouteStatus_Type) Enum() *RouteStatus_Type {
+	p := new(RouteStatus_Type)
+	*p = x
+	return p
+}
+
+func (x RouteStatus_Type) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RouteStatus_Type) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_vpc_v1_route_proto_enumTypes[1].Descriptor()
+}
+
+func (RouteStatus_Type) Type() protoreflect.EnumType {
+	return &file_nebius_vpc_v1_route_proto_enumTypes[1]
+}
+
+func (x RouteStatus_Type) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RouteStatus_Type.Descriptor instead.
+func (RouteStatus_Type) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_route_proto_rawDescGZIP(), []int{5, 1}
+}
+
 // Routes determine how network traffic is directed within a VPC network,
 // specifying the path that traffic should take based on destination addresses.
 type Route struct {
@@ -393,7 +443,10 @@ type RouteStatus struct {
 	// Current state of the route.
 	State RouteStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.vpc.v1.RouteStatus_State" json:"state,omitempty"`
 	// Detailed status of the next hop configuration.
-	NextHop       *NextHopState `protobuf:"bytes,2,opt,name=next_hop,json=nextHop,proto3" json:"next_hop,omitempty"`
+	NextHop *NextHopState `protobuf:"bytes,2,opt,name=next_hop,json=nextHop,proto3" json:"next_hop,omitempty"`
+	// Indicates the route type.
+	// REDISTRIBUTED routes cannot be deleted directly.
+	Type          RouteStatus_Type `protobuf:"varint,3,opt,name=type,proto3,enum=nebius.vpc.v1.RouteStatus_Type" json:"type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -440,6 +493,13 @@ func (x *RouteStatus) GetNextHop() *NextHopState {
 		return x.NextHop
 	}
 	return nil
+}
+
+func (x *RouteStatus) GetType() RouteStatus_Type {
+	if x != nil {
+		return x.Type
+	}
+	return RouteStatus_TYPE_UNSPECIFIED
 }
 
 type NextHopState struct {
@@ -635,14 +695,20 @@ const file_nebius_vpc_v1_route_proto_rawDesc = "" +
 	"\bnext_hop\x12\x05\xbaH\x02\b\x01\"=\n" +
 	"\x11AllocationNextHop\x12(\n" +
 	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
-	"\rvpcallocationR\x02id\"\xa8\x01\n" +
+	"\rvpcallocationR\x02id\"\x9a\x02\n" +
 	"\vRouteStatus\x126\n" +
 	"\x05state\x18\x01 \x01(\x0e2 .nebius.vpc.v1.RouteStatus.StateR\x05state\x126\n" +
-	"\bnext_hop\x18\x02 \x01(\v2\x1b.nebius.vpc.v1.NextHopStateR\anextHop\")\n" +
+	"\bnext_hop\x18\x02 \x01(\v2\x1b.nebius.vpc.v1.NextHopStateR\anextHop\x123\n" +
+	"\x04type\x18\x03 \x01(\x0e2\x1f.nebius.vpc.v1.RouteStatus.TypeR\x04type\")\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05READY\x10\n" +
-	"\"\xc5\x01\n" +
+	"\";\n" +
+	"\x04Type\x12\x14\n" +
+	"\x10TYPE_UNSPECIFIED\x10\x00\x12\n" +
+	"\n" +
+	"\x06STATIC\x10\x01\x12\x11\n" +
+	"\rREDISTRIBUTED\x10\x02\"\xc5\x01\n" +
 	"\fNextHopState\x12G\n" +
 	"\n" +
 	"allocation\x18\x01 \x01(\v2%.nebius.vpc.v1.AllocationNextHopStateH\x00R\n" +
@@ -668,37 +734,39 @@ func file_nebius_vpc_v1_route_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1_route_proto_rawDescData
 }
 
-var file_nebius_vpc_v1_route_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_nebius_vpc_v1_route_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_nebius_vpc_v1_route_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_vpc_v1_route_proto_goTypes = []any{
 	(RouteStatus_State)(0),            // 0: nebius.vpc.v1.RouteStatus.State
-	(*Route)(nil),                     // 1: nebius.vpc.v1.Route
-	(*RouteSpec)(nil),                 // 2: nebius.vpc.v1.RouteSpec
-	(*DestinationMatch)(nil),          // 3: nebius.vpc.v1.DestinationMatch
-	(*NextHop)(nil),                   // 4: nebius.vpc.v1.NextHop
-	(*AllocationNextHop)(nil),         // 5: nebius.vpc.v1.AllocationNextHop
-	(*RouteStatus)(nil),               // 6: nebius.vpc.v1.RouteStatus
-	(*NextHopState)(nil),              // 7: nebius.vpc.v1.NextHopState
-	(*AllocationNextHopState)(nil),    // 8: nebius.vpc.v1.AllocationNextHopState
-	(*DefaultEgressGatewayState)(nil), // 9: nebius.vpc.v1.DefaultEgressGatewayState
-	(*v1.ResourceMetadata)(nil),       // 10: nebius.common.v1.ResourceMetadata
+	(RouteStatus_Type)(0),             // 1: nebius.vpc.v1.RouteStatus.Type
+	(*Route)(nil),                     // 2: nebius.vpc.v1.Route
+	(*RouteSpec)(nil),                 // 3: nebius.vpc.v1.RouteSpec
+	(*DestinationMatch)(nil),          // 4: nebius.vpc.v1.DestinationMatch
+	(*NextHop)(nil),                   // 5: nebius.vpc.v1.NextHop
+	(*AllocationNextHop)(nil),         // 6: nebius.vpc.v1.AllocationNextHop
+	(*RouteStatus)(nil),               // 7: nebius.vpc.v1.RouteStatus
+	(*NextHopState)(nil),              // 8: nebius.vpc.v1.NextHopState
+	(*AllocationNextHopState)(nil),    // 9: nebius.vpc.v1.AllocationNextHopState
+	(*DefaultEgressGatewayState)(nil), // 10: nebius.vpc.v1.DefaultEgressGatewayState
+	(*v1.ResourceMetadata)(nil),       // 11: nebius.common.v1.ResourceMetadata
 }
 var file_nebius_vpc_v1_route_proto_depIdxs = []int32{
-	10, // 0: nebius.vpc.v1.Route.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	2,  // 1: nebius.vpc.v1.Route.spec:type_name -> nebius.vpc.v1.RouteSpec
-	6,  // 2: nebius.vpc.v1.Route.status:type_name -> nebius.vpc.v1.RouteStatus
-	3,  // 3: nebius.vpc.v1.RouteSpec.destination:type_name -> nebius.vpc.v1.DestinationMatch
-	4,  // 4: nebius.vpc.v1.RouteSpec.next_hop:type_name -> nebius.vpc.v1.NextHop
-	5,  // 5: nebius.vpc.v1.NextHop.allocation:type_name -> nebius.vpc.v1.AllocationNextHop
+	11, // 0: nebius.vpc.v1.Route.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	3,  // 1: nebius.vpc.v1.Route.spec:type_name -> nebius.vpc.v1.RouteSpec
+	7,  // 2: nebius.vpc.v1.Route.status:type_name -> nebius.vpc.v1.RouteStatus
+	4,  // 3: nebius.vpc.v1.RouteSpec.destination:type_name -> nebius.vpc.v1.DestinationMatch
+	5,  // 4: nebius.vpc.v1.RouteSpec.next_hop:type_name -> nebius.vpc.v1.NextHop
+	6,  // 5: nebius.vpc.v1.NextHop.allocation:type_name -> nebius.vpc.v1.AllocationNextHop
 	0,  // 6: nebius.vpc.v1.RouteStatus.state:type_name -> nebius.vpc.v1.RouteStatus.State
-	7,  // 7: nebius.vpc.v1.RouteStatus.next_hop:type_name -> nebius.vpc.v1.NextHopState
-	8,  // 8: nebius.vpc.v1.NextHopState.allocation:type_name -> nebius.vpc.v1.AllocationNextHopState
-	9,  // 9: nebius.vpc.v1.NextHopState.default_egress_gateway:type_name -> nebius.vpc.v1.DefaultEgressGatewayState
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	8,  // 7: nebius.vpc.v1.RouteStatus.next_hop:type_name -> nebius.vpc.v1.NextHopState
+	1,  // 8: nebius.vpc.v1.RouteStatus.type:type_name -> nebius.vpc.v1.RouteStatus.Type
+	9,  // 9: nebius.vpc.v1.NextHopState.allocation:type_name -> nebius.vpc.v1.AllocationNextHopState
+	10, // 10: nebius.vpc.v1.NextHopState.default_egress_gateway:type_name -> nebius.vpc.v1.DefaultEgressGatewayState
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_nebius_vpc_v1_route_proto_init() }
@@ -719,7 +787,7 @@ func file_nebius_vpc_v1_route_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_route_proto_rawDesc), len(file_nebius_vpc_v1_route_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,

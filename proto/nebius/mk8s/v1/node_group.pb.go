@@ -293,7 +293,7 @@ func (NodeGroupStatus_State) EnumDescriptor() ([]byte, []int) {
 // that registers in Kubernetes API and a Node object created.
 type NodeGroup struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"` // The parent_id is an ID of Cluster
+	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	Spec          *NodeGroupSpec         `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	Status        *NodeGroupStatus       `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1917,9 +1917,10 @@ var File_nebius_mk8s_v1_node_group_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\n" +
-	"\x1fnebius/mk8s/v1/node_group.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a%nebius/common/v1/resource_event.proto\x1a&nebius/mk8s/v1/instance_template.proto\"\xb7\x01\n" +
-	"\tNodeGroup\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +
+	"\x1fnebius/mk8s/v1/node_group.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a%nebius/common/v1/resource_event.proto\x1a&nebius/mk8s/v1/instance_template.proto\"\xc5\x03\n" +
+	"\tNodeGroup\x12\xcb\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x8a\x02\xbaH\x86\x02\xba\x01\x82\x02\n" +
+	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')R\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecR\x04spec\x127\n" +
 	"\x06status\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.NodeGroupStatusR\x06status\"\xa6\x03\n" +
 	"\rNodeGroupSpec\x12,\n" +

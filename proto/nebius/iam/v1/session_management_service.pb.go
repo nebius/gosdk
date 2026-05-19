@@ -103,15 +103,18 @@ type isRevokeSessionRequest_Revoke interface {
 }
 
 type RevokeSessionRequest_ServiceAccountId struct {
-	ServiceAccountId string `protobuf:"bytes,3,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"` // revoke all for specific service account - to revoke logout from all sessions for user
+	// Revoke all tokens for a service account.
+	ServiceAccountId string `protobuf:"bytes,3,opt,name=service_account_id,json=serviceAccountId,proto3,oneof"`
 }
 
 type RevokeSessionRequest_AllMyActive struct {
-	AllMyActive bool `protobuf:"varint,6,opt,name=all_my_active,json=allMyActive,proto3,oneof"` // revoke all active session of current user
+	// Revoke all active sessions and access tokens for the current user.
+	AllMyActive bool `protobuf:"varint,6,opt,name=all_my_active,json=allMyActive,proto3,oneof"`
 }
 
 type RevokeSessionRequest_TenantUserAccountId struct {
-	TenantUserAccountId string `protobuf:"bytes,7,opt,name=tenant_user_account_id,json=tenantUserAccountId,proto3,oneof"` // revoke all for specific tenant user - to revoke logout from all sessions for user
+	// Revoke all active sessions and tokens for a tenant user.
+	TenantUserAccountId string `protobuf:"bytes,7,opt,name=tenant_user_account_id,json=tenantUserAccountId,proto3,oneof"`
 }
 
 func (*RevokeSessionRequest_ServiceAccountId) isRevokeSessionRequest_Revoke() {}

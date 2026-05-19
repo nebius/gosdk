@@ -26,6 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SessionManagementServiceClient interface {
+	// Revoke sessions/tokens
 	Revoke(ctx context.Context, in *RevokeSessionRequest, opts ...grpc.CallOption) (*RevokeSessionResponse, error)
 }
 
@@ -50,6 +51,7 @@ func (c *sessionManagementServiceClient) Revoke(ctx context.Context, in *RevokeS
 // All implementations should embed UnimplementedSessionManagementServiceServer
 // for forward compatibility
 type SessionManagementServiceServer interface {
+	// Revoke sessions/tokens
 	Revoke(context.Context, *RevokeSessionRequest) (*RevokeSessionResponse, error)
 }
 

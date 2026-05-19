@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"google.golang.org/grpc/metadata"
@@ -28,6 +29,7 @@ type BearerTokener interface {
 type StaticBearerToken string
 
 var _ BearerTokener = StaticBearerToken("")
+var _ TypedTokener = StaticBearerToken("")
 
 // NewStaticBearerToken returns a [BearerTokener] that always returns a fixed [BearerToken].
 func NewStaticBearerToken(token string) StaticBearerToken {
@@ -43,6 +45,78 @@ func (t StaticBearerToken) BearerToken(context.Context) (BearerToken, error) {
 
 func (t StaticBearerToken) HandleError(_ context.Context, _ BearerToken, err error) error {
 	return err // Unauthenticated error should not be retried
+}
+
+func (t StaticBearerToken) Type() string {
+	return "static"
+}
+
+// InstrumentedBearerTokener wraps a [BearerTokener] and emits acquire/lifetime
+// metrics around calls to the wrapped provider.
+//
+// If the wrapped tokener already emits metrics and receives the same metrics
+// through SetMetrics, both layers will report observations. Use this wrapper
+// when that extra outer observation is desired.
+type InstrumentedBearerTokener struct {
+	tokener BearerTokener
+	metrics atomicMetrics
+}
+
+var _ BearerTokener = (*InstrumentedBearerTokener)(nil)
+var _ MetricsSetter = (*InstrumentedBearerTokener)(nil)
+var _ Wrapper = (*InstrumentedBearerTokener)(nil)
+
+func NewInstrumentedBearerTokener(tokener BearerTokener) *InstrumentedBearerTokener {
+	return &InstrumentedBearerTokener{tokener: tokener}
+}
+
+// NewStaticTokener returns a [BearerTokener] that always returns a fixed
+// [BearerToken] and can participate in auth metrics.
+func NewStaticTokener(token string, opts ...Option) *InstrumentedBearerTokener {
+	tokener := NewInstrumentedBearerTokener(StaticBearerToken(token))
+	applyOptions(tokener, opts...)
+	return tokener
+}
+
+func (t *InstrumentedBearerTokener) BearerToken(ctx context.Context) (BearerToken, error) {
+	if t == nil || t.tokener == nil {
+		return BearerToken{}, errors.New("instrumented bearer tokener has no wrapped tokener")
+	}
+	start := time.Now()
+	token, err := t.tokener.BearerToken(ctx)
+	if err != nil {
+		t.metrics.tokenAcquireError(ctx, t, time.Since(start), 0)
+		return BearerToken{}, err
+	}
+	t.metrics.tokenAcquireSuccess(ctx, t, time.Since(start), 0, token, time.Now())
+	return token, nil
+}
+
+func (t *InstrumentedBearerTokener) HandleError(ctx context.Context, token BearerToken, err error) error {
+	if t == nil || t.tokener == nil {
+		if err != nil {
+			return err
+		}
+		return errors.New("instrumented bearer tokener has no wrapped tokener")
+	}
+	return t.tokener.HandleError(ctx, token, err)
+}
+
+func (t *InstrumentedBearerTokener) SetMetrics(metrics Metrics) {
+	if t == nil {
+		return
+	}
+	t.metrics.Store(metrics)
+	if setter, ok := t.tokener.(MetricsSetter); ok {
+		setter.SetMetrics(metrics)
+	}
+}
+
+func (t *InstrumentedBearerTokener) Unwrap() BearerTokener {
+	if t == nil {
+		return nil
+	}
+	return t.tokener
 }
 
 // AuthenticatorFromBearerTokener is an [Authenticator] that uses a [BearerTokener]

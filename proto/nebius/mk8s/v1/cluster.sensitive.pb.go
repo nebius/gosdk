@@ -2,8 +2,63 @@
 
 package v1
 
-// func (x *Cluster) Sanitize()            // is not generated as no sensitive fields found
-// func (x *Cluster) LogValue() slog.Value // is not generated as no sensitive fields found
+import (
+	proto "google.golang.org/protobuf/proto"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	slog "log/slog"
+)
+
+// Sanitize mutates [Cluster] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+func (x *Cluster) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.Status.Sanitize()
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [Cluster].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *Cluster
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [Cluster], use the following code:
+//
+//	var original *Cluster
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*Cluster)
+func (x *Cluster) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*Cluster) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperCluster)(c))
+}
+
+// wrapperCluster is used to return [Cluster] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperCluster Cluster
+
+func (w *wrapperCluster) String() string {
+	return (*Cluster)(w).String()
+}
+
+func (*wrapperCluster) ProtoMessage() {}
+
+func (w *wrapperCluster) ProtoReflect() protoreflect.Message {
+	return (*Cluster)(w).ProtoReflect()
+}
 
 // func (x *ClusterSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ClusterSpec) LogValue() slog.Value // is not generated as no sensitive fields found
@@ -26,8 +81,59 @@ package v1
 // func (x *Karpenter) Sanitize()            // is not generated as no sensitive fields found
 // func (x *Karpenter) LogValue() slog.Value // is not generated as no sensitive fields found
 
-// func (x *ClusterStatus) Sanitize()            // is not generated as no sensitive fields found
-// func (x *ClusterStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+// Sanitize mutates [ClusterStatus] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+func (x *ClusterStatus) Sanitize() {
+	if x == nil {
+		return
+	}
+	for _, y := range x.Events {
+		y.Sanitize()
+	}
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [ClusterStatus].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// It also sanitizes the content of google.protobuf.Any, i.e. performs unmarshal, sanitize, marshal cycle.
+// Important: [proto.UnmarshalOptions.DiscardUnknown] = true is used.
+// In case of an error, the content of Any is replaced with google.protobuf.Empty.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *ClusterStatus
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [ClusterStatus], use the following code:
+//
+//	var original *ClusterStatus
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*ClusterStatus)
+func (x *ClusterStatus) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*ClusterStatus) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperClusterStatus)(c))
+}
+
+// wrapperClusterStatus is used to return [ClusterStatus] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperClusterStatus ClusterStatus
+
+func (w *wrapperClusterStatus) String() string {
+	return (*ClusterStatus)(w).String()
+}
+
+func (*wrapperClusterStatus) ProtoMessage() {}
+
+func (w *wrapperClusterStatus) ProtoReflect() protoreflect.Message {
+	return (*ClusterStatus)(w).ProtoReflect()
+}
 
 // func (x *ControlPlaneStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ControlPlaneStatus) LogValue() slog.Value // is not generated as no sensitive fields found

@@ -437,8 +437,10 @@ type InstanceSpec struct {
 	Preemptible *PreemptibleSpec `protobuf:"bytes,19,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
 	// Instance's hostname. Used to generate default DNS record in format `<hostname>.<network_id>.compute.internal.`
 	// or `<instance_id>.<network_id>.compute.internal.` if hostname is not specified.
-	Hostname          string             `protobuf:"bytes,20,opt,name=hostname,proto3" json:"hostname,omitempty"`
-	ReservationPolicy *ReservationPolicy `protobuf:"bytes,23,opt,name=reservation_policy,json=reservationPolicy,proto3" json:"reservation_policy,omitempty"`
+	Hostname string `protobuf:"bytes,20,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	// NVLink Instance Group ID associated with the VM
+	NvlInstanceGroupId string             `protobuf:"bytes,21,opt,name=nvl_instance_group_id,json=nvlInstanceGroupId,proto3" json:"nvl_instance_group_id,omitempty"`
+	ReservationPolicy  *ReservationPolicy `protobuf:"bytes,23,opt,name=reservation_policy,json=reservationPolicy,proto3" json:"reservation_policy,omitempty"`
 	// Local disks are meaningfully different from regular (remote) disks:
 	// they are provided by the underlying host and are tied to a particular VM run.
 	// Local disk data is not preserved across Stop-Start initiated via Compute API.
@@ -564,6 +566,13 @@ func (x *InstanceSpec) GetHostname() string {
 	return ""
 }
 
+func (x *InstanceSpec) GetNvlInstanceGroupId() string {
+	if x != nil {
+		return x.NvlInstanceGroupId
+	}
+	return ""
+}
+
 func (x *InstanceSpec) GetReservationPolicy() *ReservationPolicy {
 	if x != nil {
 		return x.ReservationPolicy
@@ -583,8 +592,7 @@ type PreemptibleSpec struct {
 	// Specifies what happens when the VM is preempted. The only supported value is STOP:
 	// Compute stops the VM without deleting or restarting it.
 	OnPreemption PreemptibleSpec_PreemptionPolicy `protobuf:"varint,1,opt,name=on_preemption,json=onPreemption,proto3,enum=nebius.compute.v1.PreemptibleSpec_PreemptionPolicy" json:"on_preemption,omitempty"`
-	// The value can range from 1 to 5, where 5 indicates the highest priority.
-	// Affects the order in which Compute tries to preempt VMs, but does not guarantee the exact order.
+	// Deprecated: Marked as deprecated in nebius/compute/v1/instance.proto.
 	Priority      int32 `protobuf:"varint,2,opt,name=priority,proto3" json:"priority,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -627,6 +635,7 @@ func (x *PreemptibleSpec) GetOnPreemption() PreemptibleSpec_PreemptionPolicy {
 	return PreemptibleSpec_UNSPECIFIED
 }
 
+// Deprecated: Marked as deprecated in nebius/compute/v1/instance.proto.
 func (x *PreemptibleSpec) GetPriority() int32 {
 	if x != nil {
 		return x.Priority
@@ -1552,7 +1561,7 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\bInstance\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\xcc\b\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\xff\b\n" +
 	"\fInstanceSpec\x122\n" +
 	"\x12service_account_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x10serviceAccountId\x12F\n" +
 	"\tresources\x18\x02 \x01(\v2 .nebius.compute.v1.ResourcesSpecB\x06\xbaH\x03\xc8\x01\x01R\tresources\x12P\n" +
@@ -1567,15 +1576,17 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x0frecovery_policy\x18\x0f \x01(\x0e2).nebius.compute.v1.InstanceRecoveryPolicyB\x04\xbaJ\x01\x02R\x0erecoveryPolicy\x12J\n" +
 	"\vpreemptible\x18\x13 \x01(\v2\".nebius.compute.v1.PreemptibleSpecB\x04\xbaJ\x01\x02R\vpreemptible\x12\x93\x01\n" +
 	"\bhostname\x18\x14 \x01(\tBw\xbaHt\xba\x01q\n" +
-	"\x0ehostname.valid\x12\x1evalue must be a valid hostname\x1a?this == '' || this.matches('^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$')R\bhostname\x12S\n" +
+	"\x0ehostname.valid\x12\x1evalue must be a valid hostname\x1a?this == '' || this.matches('^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$')R\bhostname\x121\n" +
+	"\x15nvl_instance_group_id\x18\x15 \x01(\tR\x12nvlInstanceGroupId\x12S\n" +
 	"\x12reservation_policy\x18\x17 \x01(\v2$.nebius.compute.v1.ReservationPolicyR\x11reservationPolicy\x12B\n" +
 	"\vlocal_disks\x18\x18 \x01(\v2!.nebius.compute.v1.LocalDisksSpecR\n" +
-	"localDisks\"\xce\x01\n" +
+	"localDisks\"\x9b\x02\n" +
 	"\x0fPreemptibleSpec\x12d\n" +
 	"\ron_preemption\x18\x01 \x01(\x0e23.nebius.compute.v1.PreemptibleSpec.PreemptionPolicyB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\fonPreemption\x12&\n" +
-	"\bpriority\x18\x02 \x01(\x05B\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\bpriority\"-\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\fonPreemption\x12s\n" +
+	"\bpriority\x18\x02 \x01(\x05BW\xbaJ\x01\x02\xd2JN\n" +
+	"\n" +
+	"2026-05-11\x12@it is deprecated and doesn't affect preemption behavior anymore.\x18\x01R\bpriority\"-\n" +
 	"\x10PreemptionPolicy\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04STOP\x10\x01\"`\n" +

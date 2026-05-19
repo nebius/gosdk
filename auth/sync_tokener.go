@@ -24,6 +24,7 @@ type InAppSyncTokener struct {
 
 var _ BearerTokener = (*InAppSyncTokener)(nil)
 var _ Wrapper = (*InAppSyncTokener)(nil)
+var _ MetricsSetter = (*InAppSyncTokener)(nil)
 
 // NewInAppSyncTokener returns a decorated [BearerTokener] that synchronizes
 // requests to [BearerTokener.BearerToken] within a single process.
@@ -36,6 +37,12 @@ func NewInAppSyncTokener(tokener BearerTokener) *InAppSyncTokener {
 
 func (t *InAppSyncTokener) Unwrap() BearerTokener {
 	return t.tokener
+}
+
+func (t *InAppSyncTokener) SetMetrics(metrics Metrics) {
+	if setter, ok := t.tokener.(MetricsSetter); ok {
+		setter.SetMetrics(metrics)
+	}
 }
 
 func (t *InAppSyncTokener) BearerToken(ctx context.Context) (BearerToken, error) {
@@ -63,6 +70,7 @@ type MultiprocessSyncTokener struct {
 
 var _ BearerTokener = (*MultiprocessSyncTokener)(nil)
 var _ Wrapper = (*MultiprocessSyncTokener)(nil)
+var _ MetricsSetter = (*MultiprocessSyncTokener)(nil)
 
 // NewMultiprocessSyncTokener returns a decorated [BearerTokener] that synchronizes
 // requests to [BearerTokener.BearerToken] across multiple processes using
@@ -81,6 +89,12 @@ func NewMultiprocessSyncTokener(tokener BearerTokener) (*MultiprocessSyncTokener
 
 func (t *MultiprocessSyncTokener) Unwrap() BearerTokener {
 	return t.tokener
+}
+
+func (t *MultiprocessSyncTokener) SetMetrics(metrics Metrics) {
+	if setter, ok := t.tokener.(MetricsSetter); ok {
+		setter.SetMetrics(metrics)
+	}
 }
 
 func (t *MultiprocessSyncTokener) BearerToken(

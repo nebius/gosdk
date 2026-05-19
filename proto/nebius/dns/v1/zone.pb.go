@@ -519,6 +519,176 @@ func (x *ListZonesResponse) GetNextPageToken() string {
 	return ""
 }
 
+// Request to create a DNS zone
+type CreateZoneRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Metadata for the DNS zone to create
+	// The only required field is `metadata.parent_id`, which must be set to the ID of this zone's parent IAM container
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Specification for the DNS zone to create
+	Spec          *ZoneSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateZoneRequest) Reset() {
+	*x = CreateZoneRequest{}
+	mi := &file_nebius_dns_v1_zone_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateZoneRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateZoneRequest) ProtoMessage() {}
+
+func (x *CreateZoneRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_dns_v1_zone_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateZoneRequest.ProtoReflect.Descriptor instead.
+func (*CreateZoneRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_dns_v1_zone_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CreateZoneRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *CreateZoneRequest) GetSpec() *ZoneSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
+// Request to update the DNS zone by its ID
+type UpdateZoneRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Metadata for the DNS zone being updated
+	//   - The only required field is `metadata.id`, which must be set to the ID of the DNS zone being updated
+	//   - You may also set the expected DNS zone version (`metadata.resource_version`), which ensures that only the requested version is
+	//     updated (and a `FAILED_PRECONDITION` error is returned on version mismatch)
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// New specification for the DNS zone
+	Spec          *ZoneSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateZoneRequest) Reset() {
+	*x = UpdateZoneRequest{}
+	mi := &file_nebius_dns_v1_zone_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateZoneRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateZoneRequest) ProtoMessage() {}
+
+func (x *UpdateZoneRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_dns_v1_zone_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateZoneRequest.ProtoReflect.Descriptor instead.
+func (*UpdateZoneRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_dns_v1_zone_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *UpdateZoneRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *UpdateZoneRequest) GetSpec() *ZoneSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
+type DeleteZoneRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the DNS zone to delete
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Optional: expected DNS zone version (`metadata.resource_version`)
+	// - If specified, ensures that only the requested version is deleted (and a `FAILED_PRECONDITION` error is returned on version mismatch)
+	// - If not specified or set to `0`, the latest version will be deleted
+	ResourceVersion int64 `protobuf:"varint,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *DeleteZoneRequest) Reset() {
+	*x = DeleteZoneRequest{}
+	mi := &file_nebius_dns_v1_zone_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteZoneRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteZoneRequest) ProtoMessage() {}
+
+func (x *DeleteZoneRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_dns_v1_zone_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteZoneRequest.ProtoReflect.Descriptor instead.
+func (*DeleteZoneRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_dns_v1_zone_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *DeleteZoneRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DeleteZoneRequest) GetResourceVersion() int64 {
+	if x != nil {
+		return x.ResourceVersion
+	}
+	return 0
+}
+
 var File_nebius_dns_v1_zone_proto protoreflect.FileDescriptor
 
 const file_nebius_dns_v1_zone_proto_rawDesc = "" +
@@ -557,7 +727,19 @@ const file_nebius_dns_v1_zone_proto_rawDesc = "" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"f\n" +
 	"\x11ListZonesResponse\x12)\n" +
 	"\x05items\x18\x01 \x03(\v2\x13.nebius.dns.v1.ZoneR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageTokenBP\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x95\x03\n" +
+	"\x11CreateZoneRequest\x12\xca\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x89\x02\xbaH\xf9\x01\xba\x01\xf2\x01\n" +
+	"\rmetadata_name\x12\xa2\x01metadata.name must start and end with a letter a-z or a digit 0-9, contain only letters a-z, digits 0-9 and hyphens, and have a length between 1 and 63 characters\x1a<this.name.matches('^|[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$')\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x123\n" +
+	"\x04spec\x18\x02 \x01(\v2\x17.nebius.dns.v1.ZoneSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\x8a\x03\n" +
+	"\x11UpdateZoneRequest\x12\xc7\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x86\x02\xbaH\xf6\x01\xba\x01\xf2\x01\n" +
+	"\rmetadata_name\x12\xa2\x01metadata.name must start and end with a letter a-z or a digit 0-9, contain only letters a-z, digits 0-9 and hyphens, and have a length between 1 and 63 characters\x1a<this.name.matches('^|[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$')\xe2J\t\x12\aprojectR\bmetadata\x12+\n" +
+	"\x04spec\x18\x02 \x01(\v2\x17.nebius.dns.v1.ZoneSpecR\x04spec\"k\n" +
+	"\x11DeleteZoneRequest\x12\"\n" +
+	"\x02id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\adnszoneR\x02id\x122\n" +
+	"\x10resource_version\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fresourceVersionBP\n" +
 	"\x14ai.nebius.pub.dns.v1B\tZoneProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/dns/v1b\x06proto3"
 
 var (
@@ -572,7 +754,7 @@ func file_nebius_dns_v1_zone_proto_rawDescGZIP() []byte {
 	return file_nebius_dns_v1_zone_proto_rawDescData
 }
 
-var file_nebius_dns_v1_zone_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_dns_v1_zone_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_nebius_dns_v1_zone_proto_goTypes = []any{
 	(*Zone)(nil),                // 0: nebius.dns.v1.Zone
 	(*ZoneSpec)(nil),            // 1: nebius.dns.v1.ZoneSpec
@@ -582,20 +764,27 @@ var file_nebius_dns_v1_zone_proto_goTypes = []any{
 	(*GetZoneRequest)(nil),      // 5: nebius.dns.v1.GetZoneRequest
 	(*ListZonesRequest)(nil),    // 6: nebius.dns.v1.ListZonesRequest
 	(*ListZonesResponse)(nil),   // 7: nebius.dns.v1.ListZonesResponse
-	(*v1.ResourceMetadata)(nil), // 8: nebius.common.v1.ResourceMetadata
+	(*CreateZoneRequest)(nil),   // 8: nebius.dns.v1.CreateZoneRequest
+	(*UpdateZoneRequest)(nil),   // 9: nebius.dns.v1.UpdateZoneRequest
+	(*DeleteZoneRequest)(nil),   // 10: nebius.dns.v1.DeleteZoneRequest
+	(*v1.ResourceMetadata)(nil), // 11: nebius.common.v1.ResourceMetadata
 }
 var file_nebius_dns_v1_zone_proto_depIdxs = []int32{
-	8, // 0: nebius.dns.v1.Zone.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	1, // 1: nebius.dns.v1.Zone.spec:type_name -> nebius.dns.v1.ZoneSpec
-	4, // 2: nebius.dns.v1.Zone.status:type_name -> nebius.dns.v1.ZoneStatus
-	2, // 3: nebius.dns.v1.ZoneSpec.vpc:type_name -> nebius.dns.v1.VpcZoneScope
-	3, // 4: nebius.dns.v1.ZoneSpec.soa_spec:type_name -> nebius.dns.v1.SoaSpec
-	0, // 5: nebius.dns.v1.ListZonesResponse.items:type_name -> nebius.dns.v1.Zone
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	11, // 0: nebius.dns.v1.Zone.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	1,  // 1: nebius.dns.v1.Zone.spec:type_name -> nebius.dns.v1.ZoneSpec
+	4,  // 2: nebius.dns.v1.Zone.status:type_name -> nebius.dns.v1.ZoneStatus
+	2,  // 3: nebius.dns.v1.ZoneSpec.vpc:type_name -> nebius.dns.v1.VpcZoneScope
+	3,  // 4: nebius.dns.v1.ZoneSpec.soa_spec:type_name -> nebius.dns.v1.SoaSpec
+	0,  // 5: nebius.dns.v1.ListZonesResponse.items:type_name -> nebius.dns.v1.Zone
+	11, // 6: nebius.dns.v1.CreateZoneRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	1,  // 7: nebius.dns.v1.CreateZoneRequest.spec:type_name -> nebius.dns.v1.ZoneSpec
+	11, // 8: nebius.dns.v1.UpdateZoneRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	1,  // 9: nebius.dns.v1.UpdateZoneRequest.spec:type_name -> nebius.dns.v1.ZoneSpec
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_nebius_dns_v1_zone_proto_init() }
@@ -612,7 +801,7 @@ func file_nebius_dns_v1_zone_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_dns_v1_zone_proto_rawDesc), len(file_nebius_dns_v1_zone_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -23,6 +23,9 @@ const (
 	ZoneService_Get_FullMethodName       = "/nebius.dns.v1.ZoneService/Get"
 	ZoneService_GetByName_FullMethodName = "/nebius.dns.v1.ZoneService/GetByName"
 	ZoneService_List_FullMethodName      = "/nebius.dns.v1.ZoneService/List"
+	ZoneService_Create_FullMethodName    = "/nebius.dns.v1.ZoneService/Create"
+	ZoneService_Update_FullMethodName    = "/nebius.dns.v1.ZoneService/Update"
+	ZoneService_Delete_FullMethodName    = "/nebius.dns.v1.ZoneService/Delete"
 )
 
 // ZoneServiceClient is the client API for ZoneService service.
@@ -35,6 +38,12 @@ type ZoneServiceClient interface {
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Zone, error)
 	// Lists DNS zones in the specified parent IAM container
 	List(ctx context.Context, in *ListZonesRequest, opts ...grpc.CallOption) (*ListZonesResponse, error)
+	// Creates a DNS zone
+	Create(ctx context.Context, in *CreateZoneRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates the DNS zone with the specified ID
+	Update(ctx context.Context, in *UpdateZoneRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes the DNS zone with the specified ID
+	Delete(ctx context.Context, in *DeleteZoneRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type zoneServiceClient struct {
@@ -72,6 +81,33 @@ func (c *zoneServiceClient) List(ctx context.Context, in *ListZonesRequest, opts
 	return out, nil
 }
 
+func (c *zoneServiceClient) Create(ctx context.Context, in *CreateZoneRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, ZoneService_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *zoneServiceClient) Update(ctx context.Context, in *UpdateZoneRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, ZoneService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *zoneServiceClient) Delete(ctx context.Context, in *DeleteZoneRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, ZoneService_Delete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ZoneServiceServer is the server API for ZoneService service.
 // All implementations should embed UnimplementedZoneServiceServer
 // for forward compatibility
@@ -82,6 +118,12 @@ type ZoneServiceServer interface {
 	GetByName(context.Context, *v1.GetByNameRequest) (*Zone, error)
 	// Lists DNS zones in the specified parent IAM container
 	List(context.Context, *ListZonesRequest) (*ListZonesResponse, error)
+	// Creates a DNS zone
+	Create(context.Context, *CreateZoneRequest) (*v1.Operation, error)
+	// Updates the DNS zone with the specified ID
+	Update(context.Context, *UpdateZoneRequest) (*v1.Operation, error)
+	// Deletes the DNS zone with the specified ID
+	Delete(context.Context, *DeleteZoneRequest) (*v1.Operation, error)
 }
 
 // UnimplementedZoneServiceServer should be embedded to have forward compatible implementations.
@@ -96,6 +138,15 @@ func (UnimplementedZoneServiceServer) GetByName(context.Context, *v1.GetByNameRe
 }
 func (UnimplementedZoneServiceServer) List(context.Context, *ListZonesRequest) (*ListZonesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedZoneServiceServer) Create(context.Context, *CreateZoneRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedZoneServiceServer) Update(context.Context, *UpdateZoneRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedZoneServiceServer) Delete(context.Context, *DeleteZoneRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
 // UnsafeZoneServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -163,6 +214,60 @@ func _ZoneService_List_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ZoneService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateZoneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ZoneService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneServiceServer).Create(ctx, req.(*CreateZoneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ZoneService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateZoneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ZoneService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneServiceServer).Update(ctx, req.(*UpdateZoneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ZoneService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteZoneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ZoneService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneServiceServer).Delete(ctx, req.(*DeleteZoneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ZoneService_ServiceDesc is the grpc.ServiceDesc for ZoneService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -181,6 +286,18 @@ var ZoneService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _ZoneService_List_Handler,
+		},
+		{
+			MethodName: "Create",
+			Handler:    _ZoneService_Create_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _ZoneService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _ZoneService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

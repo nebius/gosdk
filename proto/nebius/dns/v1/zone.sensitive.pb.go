@@ -25,3 +25,12 @@ package v1
 
 // func (x *ListZonesResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListZonesResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *CreateZoneRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CreateZoneRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *UpdateZoneRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateZoneRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *DeleteZoneRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *DeleteZoneRequest) LogValue() slog.Value // is not generated as no sensitive fields found

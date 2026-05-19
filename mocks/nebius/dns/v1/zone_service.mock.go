@@ -14,6 +14,7 @@ import (
 	iter "iter"
 	reflect "reflect"
 
+	operations "github.com/nebius/gosdk/operations"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v10 "github.com/nebius/gosdk/proto/nebius/dns/v1"
 	gomock "go.uber.org/mock/gomock"
@@ -41,6 +42,94 @@ func NewMockZoneService(ctrl *gomock.Controller) *MockZoneService {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockZoneService) EXPECT() *MockZoneServiceMockRecorder {
 	return m.recorder
+}
+
+// Create mocks base method.
+func (m *MockZoneService) Create(arg0 context.Context, arg1 *v10.CreateZoneRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockZoneServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockZoneServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockZoneService)(nil).Create), varargs...)
+	return &MockZoneServiceCreateCall{Call: call}
+}
+
+// MockZoneServiceCreateCall wrap *gomock.Call
+type MockZoneServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockZoneServiceCreateCall) Return(arg0 operations.Operation, arg1 error) *MockZoneServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockZoneServiceCreateCall) Do(f func(context.Context, *v10.CreateZoneRequest, ...grpc.CallOption) (operations.Operation, error)) *MockZoneServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockZoneServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreateZoneRequest, ...grpc.CallOption) (operations.Operation, error)) *MockZoneServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *MockZoneService) Delete(arg0 context.Context, arg1 *v10.DeleteZoneRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockZoneServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockZoneServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockZoneService)(nil).Delete), varargs...)
+	return &MockZoneServiceDeleteCall{Call: call}
+}
+
+// MockZoneServiceDeleteCall wrap *gomock.Call
+type MockZoneServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockZoneServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockZoneServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockZoneServiceDeleteCall) Do(f func(context.Context, *v10.DeleteZoneRequest, ...grpc.CallOption) (operations.Operation, error)) *MockZoneServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockZoneServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeleteZoneRequest, ...grpc.CallOption) (operations.Operation, error)) *MockZoneServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
 }
 
 // Filter mocks base method.
@@ -174,6 +263,50 @@ func (c *MockZoneServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.G
 	return c
 }
 
+// GetOperation mocks base method.
+func (m *MockZoneService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockZoneServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockZoneServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockZoneService)(nil).GetOperation), varargs...)
+	return &MockZoneServiceGetOperationCall{Call: call}
+}
+
+// MockZoneServiceGetOperationCall wrap *gomock.Call
+type MockZoneServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockZoneServiceGetOperationCall) Return(arg0 operations.Operation, arg1 error) *MockZoneServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockZoneServiceGetOperationCall) Do(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockZoneServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockZoneServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockZoneServiceGetOperationCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // List mocks base method.
 func (m *MockZoneService) List(arg0 context.Context, arg1 *v10.ListZonesRequest, arg2 ...grpc.CallOption) (*v10.ListZonesResponse, error) {
 	m.ctrl.T.Helper()
@@ -214,6 +347,94 @@ func (c *MockZoneServiceListCall) Do(f func(context.Context, *v10.ListZonesReque
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockZoneServiceListCall) DoAndReturn(f func(context.Context, *v10.ListZonesRequest, ...grpc.CallOption) (*v10.ListZonesResponse, error)) *MockZoneServiceListCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockZoneService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockZoneServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockZoneServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockZoneService)(nil).ListOperations), varargs...)
+	return &MockZoneServiceListOperationsCall{Call: call}
+}
+
+// MockZoneServiceListOperationsCall wrap *gomock.Call
+type MockZoneServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockZoneServiceListOperationsCall) Return(arg0 *v1.ListOperationsResponse, arg1 error) *MockZoneServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockZoneServiceListOperationsCall) Do(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockZoneServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockZoneServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockZoneServiceListOperationsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Update mocks base method.
+func (m *MockZoneService) Update(arg0 context.Context, arg1 *v10.UpdateZoneRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockZoneServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockZoneServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockZoneService)(nil).Update), varargs...)
+	return &MockZoneServiceUpdateCall{Call: call}
+}
+
+// MockZoneServiceUpdateCall wrap *gomock.Call
+type MockZoneServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockZoneServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockZoneServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockZoneServiceUpdateCall) Do(f func(context.Context, *v10.UpdateZoneRequest, ...grpc.CallOption) (operations.Operation, error)) *MockZoneServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockZoneServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateZoneRequest, ...grpc.CallOption) (operations.Operation, error)) *MockZoneServiceUpdateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
