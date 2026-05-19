@@ -303,7 +303,9 @@ func (x *UpdateProjectRequest) GetSpec() *ProjectSpec {
 type DeleteProjectRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of project to delete.
-	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// If true, performs a dry run of the deletion without actually deleting the project.
+	DryRun        bool `protobuf:"varint,2,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -343,6 +345,13 @@ func (x *DeleteProjectRequest) GetId() string {
 		return x.Id
 	}
 	return ""
+}
+
+func (x *DeleteProjectRequest) GetDryRun() bool {
+	if x != nil {
+		return x.DryRun
+	}
+	return false
 }
 
 type ListProjectsResponse struct {
@@ -419,9 +428,10 @@ const file_nebius_iam_v2_project_service_proto_rawDesc = "" +
 	"\x06filter\x18\x04 \x01(\tR\x06filter\"\x86\x01\n" +
 	"\x14UpdateProjectRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12.\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.iam.v2.ProjectSpecR\x04spec\"&\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.iam.v2.ProjectSpecR\x04spec\"?\n" +
 	"\x14DeleteProjectRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"l\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
+	"\adry_run\x18\x02 \x01(\bR\x06dryRun\"l\n" +
 	"\x14ListProjectsResponse\x12,\n" +
 	"\x05items\x18\x01 \x03(\v2\x16.nebius.iam.v2.ProjectR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xdf\x03\n" +

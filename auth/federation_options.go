@@ -10,9 +10,13 @@ type federationWriterOption struct {
 }
 
 func (o federationWriterOption) apply(t BearerTokener) {
-	if ft, ok := t.(*FederationTokener); ok {
-		ft.writer = o.writer
-	}
+	applyToTokenerOrWrapped(t, func(t BearerTokener) bool {
+		ft, ok := t.(*FederationTokener)
+		if ok {
+			ft.writer = o.writer
+		}
+		return ok
+	})
 }
 
 type federationNoBrowserOpenOption struct {
@@ -20,9 +24,13 @@ type federationNoBrowserOpenOption struct {
 }
 
 func (o federationNoBrowserOpenOption) apply(t BearerTokener) {
-	if ft, ok := t.(*FederationTokener); ok {
-		ft.noBrowserOpen = o.noBrowserOpen
-	}
+	applyToTokenerOrWrapped(t, func(t BearerTokener) bool {
+		ft, ok := t.(*FederationTokener)
+		if ok {
+			ft.noBrowserOpen = o.noBrowserOpen
+		}
+		return ok
+	})
 }
 
 type federationAuthTimeoutOption struct {
@@ -30,9 +38,13 @@ type federationAuthTimeoutOption struct {
 }
 
 func (o federationAuthTimeoutOption) apply(t BearerTokener) {
-	if ft, ok := t.(*FederationTokener); ok {
-		ft.authTimeout = o.timeout
-	}
+	applyToTokenerOrWrapped(t, func(t BearerTokener) bool {
+		ft, ok := t.(*FederationTokener)
+		if ok {
+			ft.authTimeout = o.timeout
+		}
+		return ok
+	})
 }
 
 func WithFederationWriter(writer io.Writer) Option {

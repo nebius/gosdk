@@ -20,6 +20,7 @@ import (
 //   - max retry: 1 minute
 type CachedServiceTokener struct {
 	logger          *slog.Logger
+	metrics         atomicMetrics
 	tokener         BearerTokener
 	lifetime        float64 // lifetime is fraction of token lifespan after which the token is refreshed
 	initialRetry    time.Duration
@@ -36,6 +37,8 @@ type CachedServiceTokener struct {
 }
 
 var _ BearerTokener = (*CachedServiceTokener)(nil)
+var _ MetricsSetter = (*CachedServiceTokener)(nil)
+var _ Wrapper = (*CachedServiceTokener)(nil)
 
 const (
 	// Recommended by the IAM team: refresh after 90% of the token lifetime.
@@ -46,16 +49,24 @@ const (
 	defaultCachedTokenerRetryMultiplier = 1.5
 	// Recommended by the IAM team: cap retry delay at 1 minute.
 	defaultCachedTokenerMaxRetry = time.Minute
-
-	stoppedTickerInterval = time.Minute
 )
+
+func newStoppedTicker() *time.Ticker {
+	ticker := time.NewTicker(defaultCachedTokenerMaxRetry)
+	ticker.Stop()
+	return ticker
+}
 
 type CachedTokenerOptionFunc func(*CachedServiceTokener)
 
 func (f CachedTokenerOptionFunc) apply(c BearerTokener) {
-	if ct, ok := (c).(*CachedServiceTokener); ok {
-		f(ct)
-	}
+	applyToTokenerOrWrapped(c, func(t BearerTokener) bool {
+		ct, ok := t.(*CachedServiceTokener)
+		if ok {
+			f(ct)
+		}
+		return ok
+	})
 }
 
 func WithCachedTokenerLifetime(lifetime float64) Option {
@@ -89,7 +100,7 @@ func NewCachedTokener(tokener BearerTokener, opts ...Option) *CachedServiceToken
 		initialRetry:    0,
 		retryMultiplier: 0,
 		maxRetry:        0,
-		ticker:          time.NewTicker(stoppedTickerInterval), // will be stopped immediately
+		ticker:          newStoppedTicker(),
 		now:             time.Now,
 
 		mu:         sync.RWMutex{},
@@ -98,7 +109,6 @@ func NewCachedTokener(tokener BearerTokener, opts ...Option) *CachedServiceToken
 		retryCount: 0,
 	}
 
-	c.ticker.Stop()
 	for _, opt := range opts {
 		opt.apply(c)
 	}
@@ -167,6 +177,14 @@ func (c *CachedServiceTokener) SetLogger(logger *slog.Logger) {
 func (c *CachedServiceTokener) Unwrap() BearerTokener {
 	return c.tokener
 }
+
+func (c *CachedServiceTokener) SetMetrics(metrics Metrics) {
+	c.metrics.Store(metrics)
+	if setter, ok := c.tokener.(MetricsSetter); ok {
+		setter.SetMetrics(metrics)
+	}
+}
+
 func (c *CachedServiceTokener) Run(ctx context.Context) error { //nolint:gocognit
 	go func() { // run underlying async tokener, if necessary
 		err, _ := RunAsyncTokener(ctx, c.tokener)
@@ -236,12 +254,18 @@ func (c *CachedServiceTokener) Run(ctx context.Context) error { //nolint:gocogni
 }
 
 func (c *CachedServiceTokener) BearerToken(ctx context.Context) (BearerToken, error) {
-	token, _, _ := c.getToken()
-	if token != nil {
-		return *token, nil
+	cachedToken, _, _ := c.getToken()
+	if cachedToken != nil {
+		c.metrics.cacheHit(ctx, c)
+		return *cachedToken, nil
 	}
-
-	return c.requestToken(ctx, false)
+	token, err := c.requestToken(ctx, false)
+	if err != nil {
+		c.metrics.cacheMiss(ctx, c, metricResultError)
+		return BearerToken{}, err
+	}
+	c.metrics.cacheMiss(ctx, c, metricResultSuccess)
+	return token, nil
 }
 
 func (c *CachedServiceTokener) HandleError(ctx context.Context, token BearerToken, err error) error {
@@ -254,6 +278,7 @@ func (c *CachedServiceTokener) HandleError(ctx context.Context, token BearerToke
 		c.cache = nil
 		c.refreshAt = time.Time{}
 		c.ticker.Stop()
+		c.metrics.cacheInvalidate(ctx, c)
 	}
 	c.mu.Unlock()
 
@@ -268,46 +293,20 @@ func (c *CachedServiceTokener) getToken() (*BearerToken, time.Time, int) {
 
 func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool) (BearerToken, error) {
 	res, err, _ := c.group.Do("", func() (any, error) {
-		var refreshAfter time.Duration
-
+		start := c.now()
 		now := c.now()
-		token, err := c.tokener.BearerToken(ctx)
+		token, err := c.tokener.BearerToken(contextWithTokenAcquireAttempt(ctx, c.acquireAttempt(background)))
 		if err != nil {
-			if background {
-				c.mu.Lock()
-				c.retryCount++
-				c.mu.Unlock()
-			}
+			c.recordRequestError(ctx, background, start)
 			return nil, err
 		}
 
-		if !token.ExpiresAt.IsZero() {
-			ttl := token.ExpiresAt.Sub(now)
-			if ttl > 0 {
-				refreshAfter = time.Duration(float64(ttl) * c.lifetime)
-			} else {
-				c.logger.ErrorContext(
-					ctx,
-					"received already expired token",
-					slog.Time("expires_at", token.ExpiresAt),
-				)
-			}
-		}
-
-		c.mu.Lock()
-		c.cache = &token
-		if refreshAfter > 0 {
-			c.refreshAt = now.Add(refreshAfter)
-		} else {
-			c.refreshAt = time.Time{}
-		}
-		c.retryCount = 0
-		c.mu.Unlock()
-
+		refreshAfter := c.refreshDelay(ctx, token, now)
+		c.storeToken(token, now, refreshAfter)
 		if refreshAfter > 0 {
 			c.ticker.Reset(refreshAfter)
 		}
-
+		c.recordRequestSuccess(ctx, background, start)
 		return token, nil
 	})
 	if err != nil {
@@ -317,17 +316,74 @@ func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool
 	return res.(BearerToken), nil //nolint:errcheck // ok to panic
 }
 
+func (c *CachedServiceTokener) recordRequestError(ctx context.Context, background bool, start time.Time) {
+	if !background {
+		return
+	}
+	c.mu.Lock()
+	c.retryCount++
+	c.mu.Unlock()
+	c.metrics.tokenRefresh(ctx, c, metricResultError, c.now().Sub(start))
+}
+
+func (c *CachedServiceTokener) recordRequestSuccess(ctx context.Context, background bool, start time.Time) {
+	if background {
+		c.metrics.tokenRefresh(ctx, c, metricResultSuccess, c.now().Sub(start))
+	}
+}
+
+func (c *CachedServiceTokener) refreshDelay(ctx context.Context, token BearerToken, now time.Time) time.Duration {
+	if token.ExpiresAt.IsZero() {
+		return 0
+	}
+	ttl := token.ExpiresAt.Sub(now)
+	if ttl > 0 {
+		return time.Duration(float64(ttl) * c.lifetime)
+	}
+	c.logger.ErrorContext(
+		ctx,
+		"received already expired token",
+		slog.Time("expires_at", token.ExpiresAt),
+	)
+	return 0
+}
+
+func (c *CachedServiceTokener) storeToken(token BearerToken, now time.Time, refreshAfter time.Duration) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	c.cache = &token
+	if refreshAfter > 0 {
+		c.refreshAt = now.Add(refreshAfter)
+	} else {
+		c.refreshAt = time.Time{}
+	}
+	c.retryCount = 0
+}
+
+func (c *CachedServiceTokener) acquireAttempt(background bool) int {
+	if !background {
+		return 1
+	}
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	return c.retryCount + 1
+}
+
 // CachedBearerTokener is a [BearerTokener] decorator that caches the [BearerToken].
 // Method [CachedBearerTokener.HandleError] invalidates the cache on any error.
 type CachedBearerTokener struct {
 	tokener BearerTokener
 	group   singleflight.Group
 
-	mu    sync.RWMutex
-	cache *BearerToken
+	metrics atomicMetrics
+	mu      sync.RWMutex
+	cache   *BearerToken
 }
 
 var _ BearerTokener = (*CachedBearerTokener)(nil)
+var _ MetricsSetter = (*CachedBearerTokener)(nil)
+var _ Wrapper = (*CachedBearerTokener)(nil)
 
 // NewCachedBearerTokener returns a decorated [BearerTokener] that caches the [BearerToken].
 func NewCachedBearerTokener(tokener BearerTokener) *CachedBearerTokener {
@@ -344,13 +400,26 @@ func (c *CachedBearerTokener) Unwrap() BearerTokener {
 	return c.tokener
 }
 
-func (c *CachedBearerTokener) BearerToken(ctx context.Context) (BearerToken, error) {
-	token := c.getToken()
-	if token != nil {
-		return *token, nil
+func (c *CachedBearerTokener) SetMetrics(metrics Metrics) {
+	c.metrics.Store(metrics)
+	if setter, ok := c.tokener.(MetricsSetter); ok {
+		setter.SetMetrics(metrics)
 	}
+}
 
-	return c.requestToken(ctx)
+func (c *CachedBearerTokener) BearerToken(ctx context.Context) (BearerToken, error) {
+	cachedToken := c.getToken()
+	if cachedToken != nil {
+		c.metrics.cacheHit(ctx, c)
+		return *cachedToken, nil
+	}
+	token, err := c.requestToken(ctx)
+	if err != nil {
+		c.metrics.cacheMiss(ctx, c, metricResultError)
+		return BearerToken{}, err
+	}
+	c.metrics.cacheMiss(ctx, c, metricResultSuccess)
+	return token, nil
 }
 
 func (c *CachedBearerTokener) HandleError(ctx context.Context, token BearerToken, err error) error {
@@ -361,6 +430,7 @@ func (c *CachedBearerTokener) HandleError(ctx context.Context, token BearerToken
 	c.mu.Lock()
 	if c.cache != nil && c.cache.Token == token.Token {
 		c.cache = nil
+		c.metrics.cacheInvalidate(ctx, c)
 	}
 	c.mu.Unlock()
 

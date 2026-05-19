@@ -134,6 +134,19 @@ func WithLogger(logger *slog.Logger) config.Option {
 	})
 }
 
+func WithMetrics(metrics Metrics) config.Option {
+	return optionFunc(func(c *configReader) {
+		c.metrics = metrics
+		c.authOptions = append(c.authOptions, auth.WithMetrics(metrics))
+	})
+}
+
+// WithAuthMetrics sets auth metrics for the reader while muting
+// config-reader-specific callbacks.
+func WithAuthMetrics(metrics auth.Metrics) config.Option {
+	return WithMetrics(ExpandAuthMetrics(metrics))
+}
+
 // browser/open control for federation flow
 func WithoutBrowserOpen() config.Option {
 	return optionFunc(func(c *configReader) {

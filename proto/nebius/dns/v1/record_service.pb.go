@@ -26,29 +26,42 @@ var File_nebius_dns_v1_record_service_proto protoreflect.FileDescriptor
 
 const file_nebius_dns_v1_record_service_proto_rawDesc = "" +
 	"\n" +
-	"\"nebius/dns/v1/record_service.proto\x12\rnebius.dns.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1anebius/dns/v1/record.proto2\xed\x01\n" +
+	"\"nebius/dns/v1/record_service.proto\x12\rnebius.dns.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1anebius/dns/v1/record.proto2\xce\x03\n" +
 	"\rRecordService\x12=\n" +
 	"\x03Get\x12\x1f.nebius.dns.v1.GetRecordRequest\x1a\x15.nebius.dns.v1.Record\x12F\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x15.nebius.dns.v1.Record\x12M\n" +
-	"\x04List\x12!.nebius.dns.v1.ListRecordsRequest\x1a\".nebius.dns.v1.ListRecordsResponse\x1a\x06\xbaJ\x03dnsBY\n" +
+	"\x04List\x12!.nebius.dns.v1.ListRecordsRequest\x1a\".nebius.dns.v1.ListRecordsResponse\x12I\n" +
+	"\x06Create\x12\".nebius.dns.v1.CreateRecordRequest\x1a\x1b.nebius.common.v1.Operation\x12I\n" +
+	"\x06Update\x12\".nebius.dns.v1.UpdateRecordRequest\x1a\x1b.nebius.common.v1.Operation\x12I\n" +
+	"\x06Delete\x12\".nebius.dns.v1.DeleteRecordRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x06\xbaJ\x03dnsBY\n" +
 	"\x14ai.nebius.pub.dns.v1B\x12RecordServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/dns/v1b\x06proto3"
 
 var file_nebius_dns_v1_record_service_proto_goTypes = []any{
 	(*GetRecordRequest)(nil),    // 0: nebius.dns.v1.GetRecordRequest
 	(*v1.GetByNameRequest)(nil), // 1: nebius.common.v1.GetByNameRequest
 	(*ListRecordsRequest)(nil),  // 2: nebius.dns.v1.ListRecordsRequest
-	(*Record)(nil),              // 3: nebius.dns.v1.Record
-	(*ListRecordsResponse)(nil), // 4: nebius.dns.v1.ListRecordsResponse
+	(*CreateRecordRequest)(nil), // 3: nebius.dns.v1.CreateRecordRequest
+	(*UpdateRecordRequest)(nil), // 4: nebius.dns.v1.UpdateRecordRequest
+	(*DeleteRecordRequest)(nil), // 5: nebius.dns.v1.DeleteRecordRequest
+	(*Record)(nil),              // 6: nebius.dns.v1.Record
+	(*ListRecordsResponse)(nil), // 7: nebius.dns.v1.ListRecordsResponse
+	(*v1.Operation)(nil),        // 8: nebius.common.v1.Operation
 }
 var file_nebius_dns_v1_record_service_proto_depIdxs = []int32{
 	0, // 0: nebius.dns.v1.RecordService.Get:input_type -> nebius.dns.v1.GetRecordRequest
 	1, // 1: nebius.dns.v1.RecordService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
 	2, // 2: nebius.dns.v1.RecordService.List:input_type -> nebius.dns.v1.ListRecordsRequest
-	3, // 3: nebius.dns.v1.RecordService.Get:output_type -> nebius.dns.v1.Record
-	3, // 4: nebius.dns.v1.RecordService.GetByName:output_type -> nebius.dns.v1.Record
-	4, // 5: nebius.dns.v1.RecordService.List:output_type -> nebius.dns.v1.ListRecordsResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	3, // 3: nebius.dns.v1.RecordService.Create:input_type -> nebius.dns.v1.CreateRecordRequest
+	4, // 4: nebius.dns.v1.RecordService.Update:input_type -> nebius.dns.v1.UpdateRecordRequest
+	5, // 5: nebius.dns.v1.RecordService.Delete:input_type -> nebius.dns.v1.DeleteRecordRequest
+	6, // 6: nebius.dns.v1.RecordService.Get:output_type -> nebius.dns.v1.Record
+	6, // 7: nebius.dns.v1.RecordService.GetByName:output_type -> nebius.dns.v1.Record
+	7, // 8: nebius.dns.v1.RecordService.List:output_type -> nebius.dns.v1.ListRecordsResponse
+	8, // 9: nebius.dns.v1.RecordService.Create:output_type -> nebius.common.v1.Operation
+	8, // 10: nebius.dns.v1.RecordService.Update:output_type -> nebius.common.v1.Operation
+	8, // 11: nebius.dns.v1.RecordService.Delete:output_type -> nebius.common.v1.Operation
+	6, // [6:12] is the sub-list for method output_type
+	0, // [0:6] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

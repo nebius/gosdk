@@ -14,6 +14,7 @@ import (
 	iter "iter"
 	reflect "reflect"
 
+	operations "github.com/nebius/gosdk/operations"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v10 "github.com/nebius/gosdk/proto/nebius/dns/v1"
 	gomock "go.uber.org/mock/gomock"
@@ -41,6 +42,94 @@ func NewMockRecordService(ctrl *gomock.Controller) *MockRecordService {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockRecordService) EXPECT() *MockRecordServiceMockRecorder {
 	return m.recorder
+}
+
+// Create mocks base method.
+func (m *MockRecordService) Create(arg0 context.Context, arg1 *v10.CreateRecordRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Create", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockRecordServiceMockRecorder) Create(arg0, arg1 any, arg2 ...any) *MockRecordServiceCreateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRecordService)(nil).Create), varargs...)
+	return &MockRecordServiceCreateCall{Call: call}
+}
+
+// MockRecordServiceCreateCall wrap *gomock.Call
+type MockRecordServiceCreateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockRecordServiceCreateCall) Return(arg0 operations.Operation, arg1 error) *MockRecordServiceCreateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockRecordServiceCreateCall) Do(f func(context.Context, *v10.CreateRecordRequest, ...grpc.CallOption) (operations.Operation, error)) *MockRecordServiceCreateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockRecordServiceCreateCall) DoAndReturn(f func(context.Context, *v10.CreateRecordRequest, ...grpc.CallOption) (operations.Operation, error)) *MockRecordServiceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *MockRecordService) Delete(arg0 context.Context, arg1 *v10.DeleteRecordRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockRecordServiceMockRecorder) Delete(arg0, arg1 any, arg2 ...any) *MockRecordServiceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRecordService)(nil).Delete), varargs...)
+	return &MockRecordServiceDeleteCall{Call: call}
+}
+
+// MockRecordServiceDeleteCall wrap *gomock.Call
+type MockRecordServiceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockRecordServiceDeleteCall) Return(arg0 operations.Operation, arg1 error) *MockRecordServiceDeleteCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockRecordServiceDeleteCall) Do(f func(context.Context, *v10.DeleteRecordRequest, ...grpc.CallOption) (operations.Operation, error)) *MockRecordServiceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockRecordServiceDeleteCall) DoAndReturn(f func(context.Context, *v10.DeleteRecordRequest, ...grpc.CallOption) (operations.Operation, error)) *MockRecordServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
 }
 
 // Filter mocks base method.
@@ -174,6 +263,50 @@ func (c *MockRecordServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1
 	return c
 }
 
+// GetOperation mocks base method.
+func (m *MockRecordService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOperation", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOperation indicates an expected call of GetOperation.
+func (mr *MockRecordServiceMockRecorder) GetOperation(arg0, arg1 any, arg2 ...any) *MockRecordServiceGetOperationCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOperation", reflect.TypeOf((*MockRecordService)(nil).GetOperation), varargs...)
+	return &MockRecordServiceGetOperationCall{Call: call}
+}
+
+// MockRecordServiceGetOperationCall wrap *gomock.Call
+type MockRecordServiceGetOperationCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockRecordServiceGetOperationCall) Return(arg0 operations.Operation, arg1 error) *MockRecordServiceGetOperationCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockRecordServiceGetOperationCall) Do(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockRecordServiceGetOperationCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockRecordServiceGetOperationCall) DoAndReturn(f func(context.Context, *v1.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)) *MockRecordServiceGetOperationCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // List mocks base method.
 func (m *MockRecordService) List(arg0 context.Context, arg1 *v10.ListRecordsRequest, arg2 ...grpc.CallOption) (*v10.ListRecordsResponse, error) {
 	m.ctrl.T.Helper()
@@ -214,6 +347,94 @@ func (c *MockRecordServiceListCall) Do(f func(context.Context, *v10.ListRecordsR
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockRecordServiceListCall) DoAndReturn(f func(context.Context, *v10.ListRecordsRequest, ...grpc.CallOption) (*v10.ListRecordsResponse, error)) *MockRecordServiceListCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// ListOperations mocks base method.
+func (m *MockRecordService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOperations", varargs...)
+	ret0, _ := ret[0].(*v1.ListOperationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOperations indicates an expected call of ListOperations.
+func (mr *MockRecordServiceMockRecorder) ListOperations(arg0, arg1 any, arg2 ...any) *MockRecordServiceListOperationsCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOperations", reflect.TypeOf((*MockRecordService)(nil).ListOperations), varargs...)
+	return &MockRecordServiceListOperationsCall{Call: call}
+}
+
+// MockRecordServiceListOperationsCall wrap *gomock.Call
+type MockRecordServiceListOperationsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockRecordServiceListOperationsCall) Return(arg0 *v1.ListOperationsResponse, arg1 error) *MockRecordServiceListOperationsCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockRecordServiceListOperationsCall) Do(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockRecordServiceListOperationsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockRecordServiceListOperationsCall) DoAndReturn(f func(context.Context, *v1.ListOperationsRequest, ...grpc.CallOption) (*v1.ListOperationsResponse, error)) *MockRecordServiceListOperationsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Update mocks base method.
+func (m *MockRecordService) Update(arg0 context.Context, arg1 *v10.UpdateRecordRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockRecordServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockRecordServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockRecordService)(nil).Update), varargs...)
+	return &MockRecordServiceUpdateCall{Call: call}
+}
+
+// MockRecordServiceUpdateCall wrap *gomock.Call
+type MockRecordServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockRecordServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockRecordServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockRecordServiceUpdateCall) Do(f func(context.Context, *v10.UpdateRecordRequest, ...grpc.CallOption) (operations.Operation, error)) *MockRecordServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockRecordServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateRecordRequest, ...grpc.CallOption) (operations.Operation, error)) *MockRecordServiceUpdateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

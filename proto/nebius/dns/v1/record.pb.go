@@ -520,6 +520,187 @@ func (x *ListRecordsResponse) GetNextPageToken() string {
 	return ""
 }
 
+// Request to create a DNS record
+type CreateRecordRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Metadata for the DNS record to create
+	// The only required field is `metadata.parent_id`, which must be set to the ID of this record's parent DNS zone
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Specification for the DNS record to create
+	Spec          *RecordSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateRecordRequest) Reset() {
+	*x = CreateRecordRequest{}
+	mi := &file_nebius_dns_v1_record_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateRecordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateRecordRequest) ProtoMessage() {}
+
+func (x *CreateRecordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_dns_v1_record_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateRecordRequest.ProtoReflect.Descriptor instead.
+func (*CreateRecordRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_dns_v1_record_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CreateRecordRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *CreateRecordRequest) GetSpec() *RecordSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
+// Request to update the DNS record by its ID
+type UpdateRecordRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Metadata for the DNS record being updated
+	//   - The only required field is `metadata.id`, which must be set to the ID of the DNS record being updated
+	//   - You may also set the expected DNS record version (`metadata.resource_version`), which ensures that only the requested version is
+	//     updated (and a `FAILED_PRECONDITION` error is returned on version mismatch)
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// New specification for the DNS record
+	Spec          *RecordSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateRecordRequest) Reset() {
+	*x = UpdateRecordRequest{}
+	mi := &file_nebius_dns_v1_record_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateRecordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateRecordRequest) ProtoMessage() {}
+
+func (x *UpdateRecordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_dns_v1_record_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateRecordRequest.ProtoReflect.Descriptor instead.
+func (*UpdateRecordRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_dns_v1_record_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateRecordRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *UpdateRecordRequest) GetSpec() *RecordSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
+// Request to delete the DNS record by its ID
+type DeleteRecordRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the DNS record to delete
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Optional: expected DNS record version (`metadata.resource_version`)
+	// - If specified, ensures that only the requested version is deleted (and a `FAILED_PRECONDITION` error is returned on version mismatch)
+	// - If not specified or set to `0`, the latest version will be deleted
+	ResourceVersion int64 `protobuf:"varint,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
+	// Indicates that deletion-protected records should be also deleted
+	// Attempt to delete a protected record without this flag set to `true` will cause a `FAILED_PRECONDITION` error
+	Force         bool `protobuf:"varint,3,opt,name=force,proto3" json:"force,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteRecordRequest) Reset() {
+	*x = DeleteRecordRequest{}
+	mi := &file_nebius_dns_v1_record_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteRecordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteRecordRequest) ProtoMessage() {}
+
+func (x *DeleteRecordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_dns_v1_record_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteRecordRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRecordRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_dns_v1_record_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DeleteRecordRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DeleteRecordRequest) GetResourceVersion() int64 {
+	if x != nil {
+		return x.ResourceVersion
+	}
+	return 0
+}
+
+func (x *DeleteRecordRequest) GetForce() bool {
+	if x != nil {
+		return x.Force
+	}
+	return false
+}
+
 var File_nebius_dns_v1_record_proto protoreflect.FileDescriptor
 
 const file_nebius_dns_v1_record_proto_rawDesc = "" +
@@ -570,7 +751,20 @@ const file_nebius_dns_v1_record_proto_rawDesc = "" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"j\n" +
 	"\x13ListRecordsResponse\x12+\n" +
 	"\x05items\x18\x01 \x03(\v2\x15.nebius.dns.v1.RecordR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageTokenBR\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x99\x03\n" +
+	"\x13CreateRecordRequest\x12\xca\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x89\x02\xbaH\xf9\x01\xba\x01\xf2\x01\n" +
+	"\rmetadata_name\x12\xa2\x01metadata.name must start and end with a letter a-z or a digit 0-9, contain only letters a-z, digits 0-9 and hyphens, and have a length between 1 and 63 characters\x1a<this.name.matches('^|[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$')\xc8\x01\x01\xe2J\t\x12\adnszoneR\bmetadata\x125\n" +
+	"\x04spec\x18\x02 \x01(\v2\x19.nebius.dns.v1.RecordSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\x8e\x03\n" +
+	"\x13UpdateRecordRequest\x12\xc7\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x86\x02\xbaH\xf6\x01\xba\x01\xf2\x01\n" +
+	"\rmetadata_name\x12\xa2\x01metadata.name must start and end with a letter a-z or a digit 0-9, contain only letters a-z, digits 0-9 and hyphens, and have a length between 1 and 63 characters\x1a<this.name.matches('^|[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$')\xe2J\t\x12\adnszoneR\bmetadata\x12-\n" +
+	"\x04spec\x18\x02 \x01(\v2\x19.nebius.dns.v1.RecordSpecR\x04spec\"\x85\x01\n" +
+	"\x13DeleteRecordRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tdnsrecordR\x02id\x122\n" +
+	"\x10resource_version\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fresourceVersion\x12\x14\n" +
+	"\x05force\x18\x03 \x01(\bR\x05forceBR\n" +
 	"\x14ai.nebius.pub.dns.v1B\vRecordProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/dns/v1b\x06proto3"
 
 var (
@@ -586,7 +780,7 @@ func file_nebius_dns_v1_record_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_dns_v1_record_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nebius_dns_v1_record_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_nebius_dns_v1_record_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_dns_v1_record_proto_goTypes = []any{
 	(RecordSpec_RecordType)(0),  // 0: nebius.dns.v1.RecordSpec.RecordType
 	(*Record)(nil),              // 1: nebius.dns.v1.Record
@@ -595,19 +789,26 @@ var file_nebius_dns_v1_record_proto_goTypes = []any{
 	(*GetRecordRequest)(nil),    // 4: nebius.dns.v1.GetRecordRequest
 	(*ListRecordsRequest)(nil),  // 5: nebius.dns.v1.ListRecordsRequest
 	(*ListRecordsResponse)(nil), // 6: nebius.dns.v1.ListRecordsResponse
-	(*v1.ResourceMetadata)(nil), // 7: nebius.common.v1.ResourceMetadata
+	(*CreateRecordRequest)(nil), // 7: nebius.dns.v1.CreateRecordRequest
+	(*UpdateRecordRequest)(nil), // 8: nebius.dns.v1.UpdateRecordRequest
+	(*DeleteRecordRequest)(nil), // 9: nebius.dns.v1.DeleteRecordRequest
+	(*v1.ResourceMetadata)(nil), // 10: nebius.common.v1.ResourceMetadata
 }
 var file_nebius_dns_v1_record_proto_depIdxs = []int32{
-	7, // 0: nebius.dns.v1.Record.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	2, // 1: nebius.dns.v1.Record.spec:type_name -> nebius.dns.v1.RecordSpec
-	3, // 2: nebius.dns.v1.Record.status:type_name -> nebius.dns.v1.RecordStatus
-	0, // 3: nebius.dns.v1.RecordSpec.type:type_name -> nebius.dns.v1.RecordSpec.RecordType
-	1, // 4: nebius.dns.v1.ListRecordsResponse.items:type_name -> nebius.dns.v1.Record
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	10, // 0: nebius.dns.v1.Record.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	2,  // 1: nebius.dns.v1.Record.spec:type_name -> nebius.dns.v1.RecordSpec
+	3,  // 2: nebius.dns.v1.Record.status:type_name -> nebius.dns.v1.RecordStatus
+	0,  // 3: nebius.dns.v1.RecordSpec.type:type_name -> nebius.dns.v1.RecordSpec.RecordType
+	1,  // 4: nebius.dns.v1.ListRecordsResponse.items:type_name -> nebius.dns.v1.Record
+	10, // 5: nebius.dns.v1.CreateRecordRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	2,  // 6: nebius.dns.v1.CreateRecordRequest.spec:type_name -> nebius.dns.v1.RecordSpec
+	10, // 7: nebius.dns.v1.UpdateRecordRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	2,  // 8: nebius.dns.v1.UpdateRecordRequest.spec:type_name -> nebius.dns.v1.RecordSpec
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_nebius_dns_v1_record_proto_init() }
@@ -621,7 +822,7 @@ func file_nebius_dns_v1_record_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_dns_v1_record_proto_rawDesc), len(file_nebius_dns_v1_record_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   6,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -52,6 +52,7 @@ func RegisterFederationAuthorizer(authorizer federationAuthorizerFunc) {
 }
 
 type FederationTokener struct {
+	metrics            atomicMetrics
 	logger             *slog.Logger
 	writer             io.Writer
 	clientID           string
@@ -63,6 +64,8 @@ type FederationTokener struct {
 }
 
 var _ NamedTokener = (*FederationTokener)(nil)
+var _ MetricsSetter = (*FederationTokener)(nil)
+var _ TypedTokener = (*FederationTokener)(nil)
 
 func NewFederationTokener(
 	clientID string,
@@ -105,6 +108,10 @@ func (f *FederationTokener) updateLoggerAttributes() {
 	)
 }
 
+func (f *FederationTokener) SetMetrics(metrics Metrics) {
+	f.metrics.Store(metrics)
+}
+
 func (f *FederationTokener) BearerToken(ctx context.Context) (BearerToken, error) {
 	ctx, cancel := context.WithTimeout(ctx, f.authTimeout)
 	defer cancel()
@@ -120,11 +127,13 @@ func (f *FederationTokener) BearerToken(ctx context.Context) (BearerToken, error
 		f.noBrowserOpen,
 	)
 	if err != nil {
+		f.metrics.tokenAcquireError(ctx, f, time.Since(now), 0)
 		return BearerToken{}, fmt.Errorf("authorize: %w", err)
 	}
+	f.metrics.tokenAcquireSuccess(ctx, f, time.Since(now), 0, token, time.Now())
 
 	f.logger.DebugContext(ctx, "federation token received",
-		slog.String("token", token.String()),
+		slog.String("token", token.String()), // token is sanitized in String()
 		slog.Any("start_time", now),
 		slog.Any("finish_time", time.Now()),
 		slog.Any("acquisition_duration", time.Since(now)),
@@ -139,4 +148,8 @@ func (f *FederationTokener) HandleError(context.Context, BearerToken, error) err
 
 func (f *FederationTokener) Name() string {
 	return fmt.Sprintf("federation/%s/%s/%s", f.federationEndpoint, f.federationID, f.profileName)
+}
+
+func (f *FederationTokener) Type() string {
+	return "federation"
 }

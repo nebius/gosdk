@@ -23,6 +23,9 @@ const (
 	RecordService_Get_FullMethodName       = "/nebius.dns.v1.RecordService/Get"
 	RecordService_GetByName_FullMethodName = "/nebius.dns.v1.RecordService/GetByName"
 	RecordService_List_FullMethodName      = "/nebius.dns.v1.RecordService/List"
+	RecordService_Create_FullMethodName    = "/nebius.dns.v1.RecordService/Create"
+	RecordService_Update_FullMethodName    = "/nebius.dns.v1.RecordService/Update"
+	RecordService_Delete_FullMethodName    = "/nebius.dns.v1.RecordService/Delete"
 )
 
 // RecordServiceClient is the client API for RecordService service.
@@ -35,6 +38,12 @@ type RecordServiceClient interface {
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Record, error)
 	// Lists DNS records in the specified DNS zone
 	List(ctx context.Context, in *ListRecordsRequest, opts ...grpc.CallOption) (*ListRecordsResponse, error)
+	// Creates a DNS record
+	Create(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates the DNS record with the specified ID
+	Update(ctx context.Context, in *UpdateRecordRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes the DNS record with the specified ID
+	Delete(ctx context.Context, in *DeleteRecordRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type recordServiceClient struct {
@@ -72,6 +81,33 @@ func (c *recordServiceClient) List(ctx context.Context, in *ListRecordsRequest, 
 	return out, nil
 }
 
+func (c *recordServiceClient) Create(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, RecordService_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *recordServiceClient) Update(ctx context.Context, in *UpdateRecordRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, RecordService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *recordServiceClient) Delete(ctx context.Context, in *DeleteRecordRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, RecordService_Delete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RecordServiceServer is the server API for RecordService service.
 // All implementations should embed UnimplementedRecordServiceServer
 // for forward compatibility
@@ -82,6 +118,12 @@ type RecordServiceServer interface {
 	GetByName(context.Context, *v1.GetByNameRequest) (*Record, error)
 	// Lists DNS records in the specified DNS zone
 	List(context.Context, *ListRecordsRequest) (*ListRecordsResponse, error)
+	// Creates a DNS record
+	Create(context.Context, *CreateRecordRequest) (*v1.Operation, error)
+	// Updates the DNS record with the specified ID
+	Update(context.Context, *UpdateRecordRequest) (*v1.Operation, error)
+	// Deletes the DNS record with the specified ID
+	Delete(context.Context, *DeleteRecordRequest) (*v1.Operation, error)
 }
 
 // UnimplementedRecordServiceServer should be embedded to have forward compatible implementations.
@@ -96,6 +138,15 @@ func (UnimplementedRecordServiceServer) GetByName(context.Context, *v1.GetByName
 }
 func (UnimplementedRecordServiceServer) List(context.Context, *ListRecordsRequest) (*ListRecordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRecordServiceServer) Create(context.Context, *CreateRecordRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedRecordServiceServer) Update(context.Context, *UpdateRecordRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedRecordServiceServer) Delete(context.Context, *DeleteRecordRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
 // UnsafeRecordServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -163,6 +214,60 @@ func _RecordService_List_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RecordService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RecordServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RecordService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RecordServiceServer).Create(ctx, req.(*CreateRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RecordService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RecordServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RecordService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RecordServiceServer).Update(ctx, req.(*UpdateRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RecordService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RecordServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RecordService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RecordServiceServer).Delete(ctx, req.(*DeleteRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RecordService_ServiceDesc is the grpc.ServiceDesc for RecordService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -181,6 +286,18 @@ var RecordService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _RecordService_List_Handler,
+		},
+		{
+			MethodName: "Create",
+			Handler:    _RecordService_Create_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _RecordService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _RecordService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
