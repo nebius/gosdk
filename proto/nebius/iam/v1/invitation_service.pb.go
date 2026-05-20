@@ -12,6 +12,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -25,10 +26,12 @@ const (
 )
 
 type CreateInvitationRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *InvitationSpec        `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	NoSend        bool                   `protobuf:"varint,3,opt,name=no_send,json=noSend,proto3" json:"no_send,omitempty"` // if set, no sending is attempted (it's supposed that later a Resend method is called)
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Metadata *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec     *InvitationSpec        `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	NoSend   bool                   `protobuf:"varint,3,opt,name=no_send,json=noSend,proto3" json:"no_send,omitempty"` // if set, no sending is attempted (it's supposed that later a Resend method is called)
+	// How long the invitation remains valid after creation. If omitted, the service default is used.
+	ExpiresIn     *durationpb.Duration `protobuf:"bytes,4,opt,name=expires_in,json=expiresIn,proto3" json:"expires_in,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -82,6 +85,13 @@ func (x *CreateInvitationRequest) GetNoSend() bool {
 		return x.NoSend
 	}
 	return false
+}
+
+func (x *CreateInvitationRequest) GetExpiresIn() *durationpb.Duration {
+	if x != nil {
+		return x.ExpiresIn
+	}
+	return nil
 }
 
 type GetInvitationRequest struct {
@@ -392,11 +402,13 @@ var File_nebius_iam_v1_invitation_service_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_invitation_service_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/iam/v1/invitation_service.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/iam/v1/invitation.proto\"\xa5\x01\n" +
+	"&nebius/iam/v1/invitation_service.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/iam/v1/invitation.proto\"\xdf\x01\n" +
 	"\x17CreateInvitationRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.iam.v1.InvitationSpecR\x04spec\x12\x17\n" +
-	"\ano_send\x18\x03 \x01(\bR\x06noSend\".\n" +
+	"\ano_send\x18\x03 \x01(\bR\x06noSend\x128\n" +
+	"\n" +
+	"expires_in\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\texpiresIn\".\n" +
 	"\x14GetInvitationRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x96\x01\n" +
 	"\x16ListInvitationsRequest\x12#\n" +
@@ -448,32 +460,34 @@ var file_nebius_iam_v1_invitation_service_proto_goTypes = []any{
 	(*ResendInvitationRequest)(nil), // 6: nebius.iam.v1.ResendInvitationRequest
 	(*v1.ResourceMetadata)(nil),     // 7: nebius.common.v1.ResourceMetadata
 	(*InvitationSpec)(nil),          // 8: nebius.iam.v1.InvitationSpec
-	(*Invitation)(nil),              // 9: nebius.iam.v1.Invitation
-	(*v1.Operation)(nil),            // 10: nebius.common.v1.Operation
+	(*durationpb.Duration)(nil),     // 9: google.protobuf.Duration
+	(*Invitation)(nil),              // 10: nebius.iam.v1.Invitation
+	(*v1.Operation)(nil),            // 11: nebius.common.v1.Operation
 }
 var file_nebius_iam_v1_invitation_service_proto_depIdxs = []int32{
 	7,  // 0: nebius.iam.v1.CreateInvitationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	8,  // 1: nebius.iam.v1.CreateInvitationRequest.spec:type_name -> nebius.iam.v1.InvitationSpec
-	9,  // 2: nebius.iam.v1.ListInvitationsResponse.items:type_name -> nebius.iam.v1.Invitation
-	7,  // 3: nebius.iam.v1.UpdateInvitationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8,  // 4: nebius.iam.v1.UpdateInvitationRequest.spec:type_name -> nebius.iam.v1.InvitationSpec
-	0,  // 5: nebius.iam.v1.InvitationService.Create:input_type -> nebius.iam.v1.CreateInvitationRequest
-	1,  // 6: nebius.iam.v1.InvitationService.Get:input_type -> nebius.iam.v1.GetInvitationRequest
-	2,  // 7: nebius.iam.v1.InvitationService.List:input_type -> nebius.iam.v1.ListInvitationsRequest
-	4,  // 8: nebius.iam.v1.InvitationService.Delete:input_type -> nebius.iam.v1.DeleteInvitationRequest
-	5,  // 9: nebius.iam.v1.InvitationService.Update:input_type -> nebius.iam.v1.UpdateInvitationRequest
-	6,  // 10: nebius.iam.v1.InvitationService.Resend:input_type -> nebius.iam.v1.ResendInvitationRequest
-	10, // 11: nebius.iam.v1.InvitationService.Create:output_type -> nebius.common.v1.Operation
-	9,  // 12: nebius.iam.v1.InvitationService.Get:output_type -> nebius.iam.v1.Invitation
-	3,  // 13: nebius.iam.v1.InvitationService.List:output_type -> nebius.iam.v1.ListInvitationsResponse
-	10, // 14: nebius.iam.v1.InvitationService.Delete:output_type -> nebius.common.v1.Operation
-	10, // 15: nebius.iam.v1.InvitationService.Update:output_type -> nebius.common.v1.Operation
-	10, // 16: nebius.iam.v1.InvitationService.Resend:output_type -> nebius.common.v1.Operation
-	11, // [11:17] is the sub-list for method output_type
-	5,  // [5:11] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	9,  // 2: nebius.iam.v1.CreateInvitationRequest.expires_in:type_name -> google.protobuf.Duration
+	10, // 3: nebius.iam.v1.ListInvitationsResponse.items:type_name -> nebius.iam.v1.Invitation
+	7,  // 4: nebius.iam.v1.UpdateInvitationRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	8,  // 5: nebius.iam.v1.UpdateInvitationRequest.spec:type_name -> nebius.iam.v1.InvitationSpec
+	0,  // 6: nebius.iam.v1.InvitationService.Create:input_type -> nebius.iam.v1.CreateInvitationRequest
+	1,  // 7: nebius.iam.v1.InvitationService.Get:input_type -> nebius.iam.v1.GetInvitationRequest
+	2,  // 8: nebius.iam.v1.InvitationService.List:input_type -> nebius.iam.v1.ListInvitationsRequest
+	4,  // 9: nebius.iam.v1.InvitationService.Delete:input_type -> nebius.iam.v1.DeleteInvitationRequest
+	5,  // 10: nebius.iam.v1.InvitationService.Update:input_type -> nebius.iam.v1.UpdateInvitationRequest
+	6,  // 11: nebius.iam.v1.InvitationService.Resend:input_type -> nebius.iam.v1.ResendInvitationRequest
+	11, // 12: nebius.iam.v1.InvitationService.Create:output_type -> nebius.common.v1.Operation
+	10, // 13: nebius.iam.v1.InvitationService.Get:output_type -> nebius.iam.v1.Invitation
+	3,  // 14: nebius.iam.v1.InvitationService.List:output_type -> nebius.iam.v1.ListInvitationsResponse
+	11, // 15: nebius.iam.v1.InvitationService.Delete:output_type -> nebius.common.v1.Operation
+	11, // 16: nebius.iam.v1.InvitationService.Update:output_type -> nebius.common.v1.Operation
+	11, // 17: nebius.iam.v1.InvitationService.Resend:output_type -> nebius.common.v1.Operation
+	12, // [12:18] is the sub-list for method output_type
+	6,  // [6:12] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_nebius_iam_v1_invitation_service_proto_init() }
