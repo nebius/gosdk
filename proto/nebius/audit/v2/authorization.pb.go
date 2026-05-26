@@ -7,6 +7,7 @@
 package v2
 
 import (
+	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,6 +26,8 @@ type Authorization struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Field is required. We do not use `(buf.validate.field).required = true` here as false value
 	// considered as unset (validation violation)
+	//
+	// Deprecated: Marked as deprecated in nebius/audit/v2/authorization.proto.
 	Authorized    bool `protobuf:"varint,1,opt,name=authorized,proto3" json:"authorized,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -60,6 +63,7 @@ func (*Authorization) Descriptor() ([]byte, []int) {
 	return file_nebius_audit_v2_authorization_proto_rawDescGZIP(), []int{0}
 }
 
+// Deprecated: Marked as deprecated in nebius/audit/v2/authorization.proto.
 func (x *Authorization) GetAuthorized() bool {
 	if x != nil {
 		return x.Authorized
@@ -71,10 +75,10 @@ var File_nebius_audit_v2_authorization_proto protoreflect.FileDescriptor
 
 const file_nebius_audit_v2_authorization_proto_rawDesc = "" +
 	"\n" +
-	"#nebius/audit/v2/authorization.proto\x12\x0fnebius.audit.v2\"/\n" +
-	"\rAuthorization\x12\x1e\n" +
+	"#nebius/audit/v2/authorization.proto\x12\x0fnebius.audit.v2\x1a\x18nebius/annotations.proto\"i\n" +
+	"\rAuthorization\x12X\n" +
 	"\n" +
-	"authorized\x18\x01 \x01(\bR\n" +
+	"authorized\x18\x01 \x01(\bB8\xd2J3\x121This flag is unreliable and soon will be removed.\x18\x01R\n" +
 	"authorizedB]\n" +
 	"\x16ai.nebius.pub.audit.v2B\x12AuthorizationProtoP\x01Z-github.com/nebius/gosdk/proto/nebius/audit/v2b\x06proto3"
 
