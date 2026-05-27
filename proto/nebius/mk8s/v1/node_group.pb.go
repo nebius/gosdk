@@ -1200,12 +1200,12 @@ type NodeGroupDeploymentStrategy struct {
 	// In case of not enough quota even for one extra node, update operation will hung because of quota exhausted error.
 	// Such error will be visible in Operation.progress_data.
 	MaxSurge *PercentOrCount `protobuf:"bytes,2,opt,name=max_surge,json=maxSurge,proto3" json:"max_surge,omitempty"`
-	// Maximum amount of time that the service will spend on attempting gracefully draining a node (evicting it's pods), before
-	// falling back to pod deletion.
-	// By default, node can be drained unlimited time.
-	// Important consequence of that is if PodDisruptionBudget doesn't allow to evict a pod,
-	// then NodeGroup update with node re-creation will hung on that pod eviction.
-	// Note, that it is different from `kubectl drain --timeout`
+	// Maximum amount of time that the service will spend attempting to gracefully drain a node
+	// (evicting its pods) before falling back to pod deletion.
+	// A value of 0 (or when field is omitted) means no timeout: the node can be drained for an unlimited time.
+	// Important consequence of that is if PodDisruptionBudget doesn't allow evicting a pod,
+	// then NodeGroup update with node re-creation will hang on that pod eviction.
+	// Note that this is different from `kubectl drain --timeout`, which gives up and returns an error.
 	DrainTimeout  *durationpb.Duration `protobuf:"bytes,3,opt,name=drain_timeout,json=drainTimeout,proto3" json:"drain_timeout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1821,6 +1821,10 @@ type NodeGroupStatus struct {
 	// Both outdated and up-to-date nodes are counted.
 	ReadyNodeCount int64                        `protobuf:"varint,6,opt,name=ready_node_count,json=readyNodeCount,proto3" json:"ready_node_count,omitempty"`
 	Events         []*v1.RecurrentResourceEvent `protobuf:"bytes,61,rep,name=events,proto3" json:"events,omitempty"`
+	// Deployment strategy used by the service for node group rollouts and node deletions.
+	// It includes default values applied by the service. A drain_timeout value of 0 means
+	// that node draining is not time-limited.
+	Strategy *NodeGroupDeploymentStrategy `protobuf:"bytes,62,opt,name=strategy,proto3" json:"strategy,omitempty"`
 	// Show that there are changes are in flight.
 	Reconciling   bool `protobuf:"varint,100,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1906,6 +1910,13 @@ func (x *NodeGroupStatus) GetEvents() []*v1.RecurrentResourceEvent {
 	return nil
 }
 
+func (x *NodeGroupStatus) GetStrategy() *NodeGroupDeploymentStrategy {
+	if x != nil {
+		return x.Strategy
+	}
+	return nil
+}
+
 func (x *NodeGroupStatus) GetReconciling() bool {
 	if x != nil {
 		return x.Reconciling
@@ -1922,9 +1933,9 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x8a\x02\xbaH\x86\x02\xba\x01\x82\x02\n" +
 	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')R\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecR\x04spec\x127\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.NodeGroupStatusR\x06status\"\xa6\x03\n" +
-	"\rNodeGroupSpec\x12,\n" +
-	"\aversion\x18\x01 \x01(\tB\x12\xbaH\x0fr\r2\v|^\\d\\.\\d\\d$R\aversion\x125\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.NodeGroupStatusR\x06status\"\xc1\x03\n" +
+	"\rNodeGroupSpec\x12G\n" +
+	"\aversion\x18\x01 \x01(\tB-\xbaH*r(2&^$|^\\d+\\.\\d+(-nebius-node\\.[1-9]\\d*)?$R\aversion\x125\n" +
 	"\x10fixed_node_count\x18\x02 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00H\x00R\x0efixedNodeCount\x12L\n" +
 	"\vautoscaling\x18\x05 \x01(\v2(.nebius.mk8s.v1.NodeGroupAutoscalingSpecH\x00R\vautoscaling\x12@\n" +
 	"\btemplate\x18\x03 \x01(\v2\x1c.nebius.mk8s.v1.NodeTemplateB\x06\xbaH\x03\xc8\x01\x01R\btemplate\x12G\n" +
@@ -2028,7 +2039,7 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\x14LocalDisksSpecConfig\x12\x14\n" +
 	"\x04none\x18\x01 \x01(\bH\x00R\x04none\x12-\n" +
 	"\x11kubelet_ephemeral\x18\x02 \x01(\bH\x00R\x10kubeletEphemeralB\r\n" +
-	"\x04type\x12\x05\xbaH\x02\b\x01\"\xbe\x03\n" +
+	"\x04type\x12\x05\xbaH\x02\b\x01\"\x87\x04\n" +
 	"\x0fNodeGroupStatus\x12;\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.mk8s.v1.NodeGroupStatus.StateR\x05state\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12*\n" +
@@ -2037,7 +2048,8 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"node_count\x18\x04 \x01(\x03R\tnodeCount\x12.\n" +
 	"\x13outdated_node_count\x18\x05 \x01(\x03R\x11outdatedNodeCount\x12(\n" +
 	"\x10ready_node_count\x18\x06 \x01(\x03R\x0ereadyNodeCount\x12@\n" +
-	"\x06events\x18= \x03(\v2(.nebius.common.v1.RecurrentResourceEventR\x06events\x12 \n" +
+	"\x06events\x18= \x03(\v2(.nebius.common.v1.RecurrentResourceEventR\x06events\x12G\n" +
+	"\bstrategy\x18> \x01(\v2+.nebius.mk8s.v1.NodeGroupDeploymentStrategyR\bstrategy\x12 \n" +
 	"\vreconciling\x18d \x01(\bR\vreconciling\"K\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
@@ -2135,11 +2147,12 @@ var file_nebius_mk8s_v1_node_group_proto_depIdxs = []int32{
 	25, // 31: nebius.mk8s.v1.LocalDisksSpec.config:type_name -> nebius.mk8s.v1.LocalDisksSpecConfig
 	4,  // 32: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
 	32, // 33: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
-	34, // [34:34] is the sub-list for method output_type
-	34, // [34:34] is the sub-list for method input_type
-	34, // [34:34] is the sub-list for extension type_name
-	34, // [34:34] is the sub-list for extension extendee
-	0,  // [0:34] is the sub-list for field type_name
+	17, // 34: nebius.mk8s.v1.NodeGroupStatus.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
+	35, // [35:35] is the sub-list for method output_type
+	35, // [35:35] is the sub-list for method input_type
+	35, // [35:35] is the sub-list for extension type_name
+	35, // [35:35] is the sub-list for extension extendee
+	0,  // [0:35] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_node_group_proto_init() }

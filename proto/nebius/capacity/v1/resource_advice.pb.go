@@ -151,7 +151,7 @@ func (ResourceAdviceStatus_Availability_AvailabilityLevel) EnumDescriptor() ([]b
 // of a specific technical configuration in a specific scope.
 type ResourceAdvice struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Standard metadata. parent_id is the User's Tenant/Project NID.
+	// Standard metadata. parent_id is the User's Tenant NID.
 	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// Identifiers for the capacity scope and technical configuration.
 	Spec *ResourceAdviceSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`

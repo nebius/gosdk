@@ -24,6 +24,7 @@ const (
 	NVLInstanceGroupService_Get_FullMethodName       = "/nebius.compute.v1.NVLInstanceGroupService/Get"
 	NVLInstanceGroupService_GetByName_FullMethodName = "/nebius.compute.v1.NVLInstanceGroupService/GetByName"
 	NVLInstanceGroupService_List_FullMethodName      = "/nebius.compute.v1.NVLInstanceGroupService/List"
+	NVLInstanceGroupService_Update_FullMethodName    = "/nebius.compute.v1.NVLInstanceGroupService/Update"
 	NVLInstanceGroupService_Delete_FullMethodName    = "/nebius.compute.v1.NVLInstanceGroupService/Delete"
 )
 
@@ -39,6 +40,8 @@ type NVLInstanceGroupServiceClient interface {
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*NVLInstanceGroup, error)
 	// List lists all NVL InstanceGroups in the specified parent.
 	List(ctx context.Context, in *ListNVLInstanceGroupsRequest, opts ...grpc.CallOption) (*ListNVLInstanceGroupsResponse, error)
+	// Update modifies the specified NVL InstanceGroup by its ID.
+	Update(ctx context.Context, in *UpdateNVLInstanceGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Delete deletes the specified NVL InstanceGroup by its ID.
 	Delete(ctx context.Context, in *DeleteNVLInstanceGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
@@ -87,6 +90,15 @@ func (c *nVLInstanceGroupServiceClient) List(ctx context.Context, in *ListNVLIns
 	return out, nil
 }
 
+func (c *nVLInstanceGroupServiceClient) Update(ctx context.Context, in *UpdateNVLInstanceGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, NVLInstanceGroupService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *nVLInstanceGroupServiceClient) Delete(ctx context.Context, in *DeleteNVLInstanceGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, NVLInstanceGroupService_Delete_FullMethodName, in, out, opts...)
@@ -108,6 +120,8 @@ type NVLInstanceGroupServiceServer interface {
 	GetByName(context.Context, *v1.GetByNameRequest) (*NVLInstanceGroup, error)
 	// List lists all NVL InstanceGroups in the specified parent.
 	List(context.Context, *ListNVLInstanceGroupsRequest) (*ListNVLInstanceGroupsResponse, error)
+	// Update modifies the specified NVL InstanceGroup by its ID.
+	Update(context.Context, *UpdateNVLInstanceGroupRequest) (*v1.Operation, error)
 	// Delete deletes the specified NVL InstanceGroup by its ID.
 	Delete(context.Context, *DeleteNVLInstanceGroupRequest) (*v1.Operation, error)
 }
@@ -127,6 +141,9 @@ func (UnimplementedNVLInstanceGroupServiceServer) GetByName(context.Context, *v1
 }
 func (UnimplementedNVLInstanceGroupServiceServer) List(context.Context, *ListNVLInstanceGroupsRequest) (*ListNVLInstanceGroupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedNVLInstanceGroupServiceServer) Update(context.Context, *UpdateNVLInstanceGroupRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedNVLInstanceGroupServiceServer) Delete(context.Context, *DeleteNVLInstanceGroupRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -215,6 +232,24 @@ func _NVLInstanceGroupService_List_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NVLInstanceGroupService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateNVLInstanceGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NVLInstanceGroupServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NVLInstanceGroupService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NVLInstanceGroupServiceServer).Update(ctx, req.(*UpdateNVLInstanceGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NVLInstanceGroupService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteNVLInstanceGroupRequest)
 	if err := dec(in); err != nil {
@@ -255,6 +290,10 @@ var NVLInstanceGroupService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _NVLInstanceGroupService_List_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _NVLInstanceGroupService_Update_Handler,
 		},
 		{
 			MethodName: "Delete",

@@ -75,6 +75,58 @@ func (x *CreateNVLInstanceGroupRequest) GetSpec() *NVLInstanceGroupSpec {
 	return nil
 }
 
+type UpdateNVLInstanceGroupRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec          *NVLInstanceGroupSpec  `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateNVLInstanceGroupRequest) Reset() {
+	*x = UpdateNVLInstanceGroupRequest{}
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateNVLInstanceGroupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateNVLInstanceGroupRequest) ProtoMessage() {}
+
+func (x *UpdateNVLInstanceGroupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateNVLInstanceGroupRequest.ProtoReflect.Descriptor instead.
+func (*UpdateNVLInstanceGroupRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UpdateNVLInstanceGroupRequest) GetMetadata() *v1.ResourceMetadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *UpdateNVLInstanceGroupRequest) GetSpec() *NVLInstanceGroupSpec {
+	if x != nil {
+		return x.Spec
+	}
+	return nil
+}
+
 type GetNVLInstanceGroupRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -84,7 +136,7 @@ type GetNVLInstanceGroupRequest struct {
 
 func (x *GetNVLInstanceGroupRequest) Reset() {
 	*x = GetNVLInstanceGroupRequest{}
-	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[1]
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -96,7 +148,7 @@ func (x *GetNVLInstanceGroupRequest) String() string {
 func (*GetNVLInstanceGroupRequest) ProtoMessage() {}
 
 func (x *GetNVLInstanceGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[1]
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +161,7 @@ func (x *GetNVLInstanceGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetNVLInstanceGroupRequest.ProtoReflect.Descriptor instead.
 func (*GetNVLInstanceGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{1}
+	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetNVLInstanceGroupRequest) GetId() string {
@@ -130,7 +182,7 @@ type ListNVLInstanceGroupsRequest struct {
 
 func (x *ListNVLInstanceGroupsRequest) Reset() {
 	*x = ListNVLInstanceGroupsRequest{}
-	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[2]
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -142,7 +194,7 @@ func (x *ListNVLInstanceGroupsRequest) String() string {
 func (*ListNVLInstanceGroupsRequest) ProtoMessage() {}
 
 func (x *ListNVLInstanceGroupsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[2]
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -155,7 +207,7 @@ func (x *ListNVLInstanceGroupsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNVLInstanceGroupsRequest.ProtoReflect.Descriptor instead.
 func (*ListNVLInstanceGroupsRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{2}
+	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListNVLInstanceGroupsRequest) GetParentId() string {
@@ -189,7 +241,7 @@ type ListNVLInstanceGroupsResponse struct {
 
 func (x *ListNVLInstanceGroupsResponse) Reset() {
 	*x = ListNVLInstanceGroupsResponse{}
-	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[3]
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -201,7 +253,7 @@ func (x *ListNVLInstanceGroupsResponse) String() string {
 func (*ListNVLInstanceGroupsResponse) ProtoMessage() {}
 
 func (x *ListNVLInstanceGroupsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[3]
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -214,7 +266,7 @@ func (x *ListNVLInstanceGroupsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNVLInstanceGroupsResponse.ProtoReflect.Descriptor instead.
 func (*ListNVLInstanceGroupsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListNVLInstanceGroupsResponse) GetItems() []*NVLInstanceGroup {
@@ -240,7 +292,7 @@ type DeleteNVLInstanceGroupRequest struct {
 
 func (x *DeleteNVLInstanceGroupRequest) Reset() {
 	*x = DeleteNVLInstanceGroupRequest{}
-	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[4]
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -252,7 +304,7 @@ func (x *DeleteNVLInstanceGroupRequest) String() string {
 func (*DeleteNVLInstanceGroupRequest) ProtoMessage() {}
 
 func (x *DeleteNVLInstanceGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[4]
+	mi := &file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -265,7 +317,7 @@ func (x *DeleteNVLInstanceGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteNVLInstanceGroupRequest.ProtoReflect.Descriptor instead.
 func (*DeleteNVLInstanceGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteNVLInstanceGroupRequest) GetId() string {
@@ -282,6 +334,9 @@ const file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDesc = "" +
 	"0nebius/compute/v1/nvlinstancegroup_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/compute/v1/nvlinstancegroup.proto\"\x9c\x01\n" +
 	"\x1dCreateNVLInstanceGroupRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +
+	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1.NVLInstanceGroupSpecR\x04spec\"\x9c\x01\n" +
+	"\x1dUpdateNVLInstanceGroupRequest\x12>\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1.NVLInstanceGroupSpecR\x04spec\",\n" +
 	"\x1aGetNVLInstanceGroupRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"w\n" +
@@ -294,12 +349,13 @@ const file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDesc = "" +
 	"\x05items\x18\x01 \x03(\v2#.nebius.compute.v1.NVLInstanceGroupR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"/\n" +
 	"\x1dDeleteNVLInstanceGroupRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\xf3\x03\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id2\xcc\x04\n" +
 	"\x17NVLInstanceGroupService\x12W\n" +
 	"\x06Create\x120.nebius.compute.v1.CreateNVLInstanceGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12Y\n" +
 	"\x03Get\x12-.nebius.compute.v1.GetNVLInstanceGroupRequest\x1a#.nebius.compute.v1.NVLInstanceGroup\x12T\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a#.nebius.compute.v1.NVLInstanceGroup\x12i\n" +
 	"\x04List\x12/.nebius.compute.v1.ListNVLInstanceGroupsRequest\x1a0.nebius.compute.v1.ListNVLInstanceGroupsResponse\x12W\n" +
+	"\x06Update\x120.nebius.compute.v1.UpdateNVLInstanceGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12W\n" +
 	"\x06Delete\x120.nebius.compute.v1.DeleteNVLInstanceGroupRequest\x1a\x1b.nebius.common.v1.Operation\x1a\n" +
 	"\xbaJ\acomputeBk\n" +
 	"\x18ai.nebius.pub.compute.v1B\x1cNvlinstancegroupServiceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
@@ -316,38 +372,43 @@ func file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescGZIP() []byte 
 	return file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDescData
 }
 
-var file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_nebius_compute_v1_nvlinstancegroup_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_nebius_compute_v1_nvlinstancegroup_service_proto_goTypes = []any{
 	(*CreateNVLInstanceGroupRequest)(nil), // 0: nebius.compute.v1.CreateNVLInstanceGroupRequest
-	(*GetNVLInstanceGroupRequest)(nil),    // 1: nebius.compute.v1.GetNVLInstanceGroupRequest
-	(*ListNVLInstanceGroupsRequest)(nil),  // 2: nebius.compute.v1.ListNVLInstanceGroupsRequest
-	(*ListNVLInstanceGroupsResponse)(nil), // 3: nebius.compute.v1.ListNVLInstanceGroupsResponse
-	(*DeleteNVLInstanceGroupRequest)(nil), // 4: nebius.compute.v1.DeleteNVLInstanceGroupRequest
-	(*v1.ResourceMetadata)(nil),           // 5: nebius.common.v1.ResourceMetadata
-	(*NVLInstanceGroupSpec)(nil),          // 6: nebius.compute.v1.NVLInstanceGroupSpec
-	(*NVLInstanceGroup)(nil),              // 7: nebius.compute.v1.NVLInstanceGroup
-	(*v1.GetByNameRequest)(nil),           // 8: nebius.common.v1.GetByNameRequest
-	(*v1.Operation)(nil),                  // 9: nebius.common.v1.Operation
+	(*UpdateNVLInstanceGroupRequest)(nil), // 1: nebius.compute.v1.UpdateNVLInstanceGroupRequest
+	(*GetNVLInstanceGroupRequest)(nil),    // 2: nebius.compute.v1.GetNVLInstanceGroupRequest
+	(*ListNVLInstanceGroupsRequest)(nil),  // 3: nebius.compute.v1.ListNVLInstanceGroupsRequest
+	(*ListNVLInstanceGroupsResponse)(nil), // 4: nebius.compute.v1.ListNVLInstanceGroupsResponse
+	(*DeleteNVLInstanceGroupRequest)(nil), // 5: nebius.compute.v1.DeleteNVLInstanceGroupRequest
+	(*v1.ResourceMetadata)(nil),           // 6: nebius.common.v1.ResourceMetadata
+	(*NVLInstanceGroupSpec)(nil),          // 7: nebius.compute.v1.NVLInstanceGroupSpec
+	(*NVLInstanceGroup)(nil),              // 8: nebius.compute.v1.NVLInstanceGroup
+	(*v1.GetByNameRequest)(nil),           // 9: nebius.common.v1.GetByNameRequest
+	(*v1.Operation)(nil),                  // 10: nebius.common.v1.Operation
 }
 var file_nebius_compute_v1_nvlinstancegroup_service_proto_depIdxs = []int32{
-	5, // 0: nebius.compute.v1.CreateNVLInstanceGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	6, // 1: nebius.compute.v1.CreateNVLInstanceGroupRequest.spec:type_name -> nebius.compute.v1.NVLInstanceGroupSpec
-	7, // 2: nebius.compute.v1.ListNVLInstanceGroupsResponse.items:type_name -> nebius.compute.v1.NVLInstanceGroup
-	0, // 3: nebius.compute.v1.NVLInstanceGroupService.Create:input_type -> nebius.compute.v1.CreateNVLInstanceGroupRequest
-	1, // 4: nebius.compute.v1.NVLInstanceGroupService.Get:input_type -> nebius.compute.v1.GetNVLInstanceGroupRequest
-	8, // 5: nebius.compute.v1.NVLInstanceGroupService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
-	2, // 6: nebius.compute.v1.NVLInstanceGroupService.List:input_type -> nebius.compute.v1.ListNVLInstanceGroupsRequest
-	4, // 7: nebius.compute.v1.NVLInstanceGroupService.Delete:input_type -> nebius.compute.v1.DeleteNVLInstanceGroupRequest
-	9, // 8: nebius.compute.v1.NVLInstanceGroupService.Create:output_type -> nebius.common.v1.Operation
-	7, // 9: nebius.compute.v1.NVLInstanceGroupService.Get:output_type -> nebius.compute.v1.NVLInstanceGroup
-	7, // 10: nebius.compute.v1.NVLInstanceGroupService.GetByName:output_type -> nebius.compute.v1.NVLInstanceGroup
-	3, // 11: nebius.compute.v1.NVLInstanceGroupService.List:output_type -> nebius.compute.v1.ListNVLInstanceGroupsResponse
-	9, // 12: nebius.compute.v1.NVLInstanceGroupService.Delete:output_type -> nebius.common.v1.Operation
-	8, // [8:13] is the sub-list for method output_type
-	3, // [3:8] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	6,  // 0: nebius.compute.v1.CreateNVLInstanceGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	7,  // 1: nebius.compute.v1.CreateNVLInstanceGroupRequest.spec:type_name -> nebius.compute.v1.NVLInstanceGroupSpec
+	6,  // 2: nebius.compute.v1.UpdateNVLInstanceGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	7,  // 3: nebius.compute.v1.UpdateNVLInstanceGroupRequest.spec:type_name -> nebius.compute.v1.NVLInstanceGroupSpec
+	8,  // 4: nebius.compute.v1.ListNVLInstanceGroupsResponse.items:type_name -> nebius.compute.v1.NVLInstanceGroup
+	0,  // 5: nebius.compute.v1.NVLInstanceGroupService.Create:input_type -> nebius.compute.v1.CreateNVLInstanceGroupRequest
+	2,  // 6: nebius.compute.v1.NVLInstanceGroupService.Get:input_type -> nebius.compute.v1.GetNVLInstanceGroupRequest
+	9,  // 7: nebius.compute.v1.NVLInstanceGroupService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	3,  // 8: nebius.compute.v1.NVLInstanceGroupService.List:input_type -> nebius.compute.v1.ListNVLInstanceGroupsRequest
+	1,  // 9: nebius.compute.v1.NVLInstanceGroupService.Update:input_type -> nebius.compute.v1.UpdateNVLInstanceGroupRequest
+	5,  // 10: nebius.compute.v1.NVLInstanceGroupService.Delete:input_type -> nebius.compute.v1.DeleteNVLInstanceGroupRequest
+	10, // 11: nebius.compute.v1.NVLInstanceGroupService.Create:output_type -> nebius.common.v1.Operation
+	8,  // 12: nebius.compute.v1.NVLInstanceGroupService.Get:output_type -> nebius.compute.v1.NVLInstanceGroup
+	8,  // 13: nebius.compute.v1.NVLInstanceGroupService.GetByName:output_type -> nebius.compute.v1.NVLInstanceGroup
+	4,  // 14: nebius.compute.v1.NVLInstanceGroupService.List:output_type -> nebius.compute.v1.ListNVLInstanceGroupsResponse
+	10, // 15: nebius.compute.v1.NVLInstanceGroupService.Update:output_type -> nebius.common.v1.Operation
+	10, // 16: nebius.compute.v1.NVLInstanceGroupService.Delete:output_type -> nebius.common.v1.Operation
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_nvlinstancegroup_service_proto_init() }
@@ -362,7 +423,7 @@ func file_nebius_compute_v1_nvlinstancegroup_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDesc), len(file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -394,3 +394,47 @@ func (c *MockNVLInstanceGroupServiceListOperationsCall) DoAndReturn(f func(conte
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// Update mocks base method.
+func (m *MockNVLInstanceGroupService) Update(arg0 context.Context, arg1 *v10.UpdateNVLInstanceGroupRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockNVLInstanceGroupServiceMockRecorder) Update(arg0, arg1 any, arg2 ...any) *MockNVLInstanceGroupServiceUpdateCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockNVLInstanceGroupService)(nil).Update), varargs...)
+	return &MockNVLInstanceGroupServiceUpdateCall{Call: call}
+}
+
+// MockNVLInstanceGroupServiceUpdateCall wrap *gomock.Call
+type MockNVLInstanceGroupServiceUpdateCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNVLInstanceGroupServiceUpdateCall) Return(arg0 operations.Operation, arg1 error) *MockNVLInstanceGroupServiceUpdateCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNVLInstanceGroupServiceUpdateCall) Do(f func(context.Context, *v10.UpdateNVLInstanceGroupRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNVLInstanceGroupServiceUpdateCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNVLInstanceGroupServiceUpdateCall) DoAndReturn(f func(context.Context, *v10.UpdateNVLInstanceGroupRequest, ...grpc.CallOption) (operations.Operation, error)) *MockNVLInstanceGroupServiceUpdateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}

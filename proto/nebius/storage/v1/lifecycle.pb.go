@@ -376,8 +376,11 @@ type LifecycleFilter struct {
 	ObjectSizeGreaterThanBytes int64 `protobuf:"varint,2,opt,name=object_size_greater_than_bytes,json=objectSizeGreaterThanBytes,proto3" json:"object_size_greater_than_bytes,omitempty"`
 	// Maximum object size to which the rule applies.
 	ObjectSizeLessThanBytes int64 `protobuf:"varint,3,opt,name=object_size_less_than_bytes,json=objectSizeLessThanBytes,proto3" json:"object_size_less_than_bytes,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	// Tags to filter objects by their tagging. Rule applies only to objects that
+	// match all tags in a filter.
+	Tags          []*LifecycleFilter_Tag `protobuf:"bytes,4,rep,name=tags,proto3" json:"tags,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *LifecycleFilter) Reset() {
@@ -429,6 +432,13 @@ func (x *LifecycleFilter) GetObjectSizeLessThanBytes() int64 {
 		return x.ObjectSizeLessThanBytes
 	}
 	return 0
+}
+
+func (x *LifecycleFilter) GetTags() []*LifecycleFilter_Tag {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
 }
 
 // Specifies which requests are included in `days_since_last_access` calculations.
@@ -851,6 +861,58 @@ func (x *LifecycleNoncurrentVersionTransition) GetStorageClass() StorageClass {
 	return StorageClass_STORAGE_CLASS_UNSPECIFIED
 }
 
+type LifecycleFilter_Tag struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LifecycleFilter_Tag) Reset() {
+	*x = LifecycleFilter_Tag{}
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LifecycleFilter_Tag) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LifecycleFilter_Tag) ProtoMessage() {}
+
+func (x *LifecycleFilter_Tag) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LifecycleFilter_Tag.ProtoReflect.Descriptor instead.
+func (*LifecycleFilter_Tag) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_lifecycle_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *LifecycleFilter_Tag) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *LifecycleFilter_Tag) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
 type LifecycleAccessFilter_Condition struct {
 	state protoimpl.MessageState               `protogen:"open.v1"`
 	Type  LifecycleAccessFilter_Condition_Type `protobuf:"varint,1,opt,name=type,proto3,enum=nebius.storage.v1.LifecycleAccessFilter_Condition_Type" json:"type,omitempty"`
@@ -866,7 +928,7 @@ type LifecycleAccessFilter_Condition struct {
 
 func (x *LifecycleAccessFilter_Condition) Reset() {
 	*x = LifecycleAccessFilter_Condition{}
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[9]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -878,7 +940,7 @@ func (x *LifecycleAccessFilter_Condition) String() string {
 func (*LifecycleAccessFilter_Condition) ProtoMessage() {}
 
 func (x *LifecycleAccessFilter_Condition) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[9]
+	mi := &file_nebius_storage_v1_lifecycle_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -939,11 +1001,15 @@ const file_nebius_storage_v1_lifecycle_proto_rawDesc = "" +
 	"\x06Status\x12\x16\n" +
 	"\x12STATUS_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aENABLED\x10\x01\x12\f\n" +
-	"\bDISABLED\x10\x02\"\xab\x01\n" +
+	"\bDISABLED\x10\x02\"\x96\x02\n" +
 	"\x0fLifecycleFilter\x12\x16\n" +
 	"\x06prefix\x18\x01 \x01(\tR\x06prefix\x12B\n" +
 	"\x1eobject_size_greater_than_bytes\x18\x02 \x01(\x03R\x1aobjectSizeGreaterThanBytes\x12<\n" +
-	"\x1bobject_size_less_than_bytes\x18\x03 \x01(\x03R\x17objectSizeLessThanBytes\"\xa4\x04\n" +
+	"\x1bobject_size_less_than_bytes\x18\x03 \x01(\x03R\x17objectSizeLessThanBytes\x12:\n" +
+	"\x04tags\x18\x04 \x03(\v2&.nebius.storage.v1.LifecycleFilter.TagR\x04tags\x1a-\n" +
+	"\x03Tag\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\"\xa4\x04\n" +
 	"\x15LifecycleAccessFilter\x12\\\n" +
 	"\n" +
 	"conditions\x18\x01 \x03(\v22.nebius.storage.v1.LifecycleAccessFilter.ConditionB\b\xbaH\x05\x92\x01\x02\x10dR\n" +
@@ -1003,7 +1069,7 @@ func file_nebius_storage_v1_lifecycle_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_storage_v1_lifecycle_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_nebius_storage_v1_lifecycle_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_nebius_storage_v1_lifecycle_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_nebius_storage_v1_lifecycle_proto_goTypes = []any{
 	(LifecycleRule_Status)(0),                       // 0: nebius.storage.v1.LifecycleRule.Status
 	(LifecycleAccessFilter_Condition_Type)(0),       // 1: nebius.storage.v1.LifecycleAccessFilter.Condition.Type
@@ -1017,9 +1083,10 @@ var file_nebius_storage_v1_lifecycle_proto_goTypes = []any{
 	(*LifecycleAbortIncompleteMultipartUpload)(nil), // 9: nebius.storage.v1.LifecycleAbortIncompleteMultipartUpload
 	(*LifecycleTransition)(nil),                     // 10: nebius.storage.v1.LifecycleTransition
 	(*LifecycleNoncurrentVersionTransition)(nil),    // 11: nebius.storage.v1.LifecycleNoncurrentVersionTransition
-	(*LifecycleAccessFilter_Condition)(nil),         // 12: nebius.storage.v1.LifecycleAccessFilter.Condition
-	(*timestamppb.Timestamp)(nil),                   // 13: google.protobuf.Timestamp
-	(StorageClass)(0),                               // 14: nebius.storage.v1.StorageClass
+	(*LifecycleFilter_Tag)(nil),                     // 12: nebius.storage.v1.LifecycleFilter.Tag
+	(*LifecycleAccessFilter_Condition)(nil),         // 13: nebius.storage.v1.LifecycleAccessFilter.Condition
+	(*timestamppb.Timestamp)(nil),                   // 14: google.protobuf.Timestamp
+	(StorageClass)(0),                               // 15: nebius.storage.v1.StorageClass
 }
 var file_nebius_storage_v1_lifecycle_proto_depIdxs = []int32{
 	4,  // 0: nebius.storage.v1.LifecycleConfiguration.rules:type_name -> nebius.storage.v1.LifecycleRule
@@ -1031,18 +1098,19 @@ var file_nebius_storage_v1_lifecycle_proto_depIdxs = []int32{
 	9,  // 6: nebius.storage.v1.LifecycleRule.abort_incomplete_multipart_upload:type_name -> nebius.storage.v1.LifecycleAbortIncompleteMultipartUpload
 	10, // 7: nebius.storage.v1.LifecycleRule.transition:type_name -> nebius.storage.v1.LifecycleTransition
 	11, // 8: nebius.storage.v1.LifecycleRule.noncurrent_version_transition:type_name -> nebius.storage.v1.LifecycleNoncurrentVersionTransition
-	12, // 9: nebius.storage.v1.LifecycleAccessFilter.conditions:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition
-	13, // 10: nebius.storage.v1.LifecycleExpiration.date:type_name -> google.protobuf.Timestamp
-	13, // 11: nebius.storage.v1.LifecycleTransition.date:type_name -> google.protobuf.Timestamp
-	14, // 12: nebius.storage.v1.LifecycleTransition.storage_class:type_name -> nebius.storage.v1.StorageClass
-	14, // 13: nebius.storage.v1.LifecycleNoncurrentVersionTransition.storage_class:type_name -> nebius.storage.v1.StorageClass
-	1,  // 14: nebius.storage.v1.LifecycleAccessFilter.Condition.type:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition.Type
-	2,  // 15: nebius.storage.v1.LifecycleAccessFilter.Condition.methods:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition.Method
-	16, // [16:16] is the sub-list for method output_type
-	16, // [16:16] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	12, // 9: nebius.storage.v1.LifecycleFilter.tags:type_name -> nebius.storage.v1.LifecycleFilter.Tag
+	13, // 10: nebius.storage.v1.LifecycleAccessFilter.conditions:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition
+	14, // 11: nebius.storage.v1.LifecycleExpiration.date:type_name -> google.protobuf.Timestamp
+	14, // 12: nebius.storage.v1.LifecycleTransition.date:type_name -> google.protobuf.Timestamp
+	15, // 13: nebius.storage.v1.LifecycleTransition.storage_class:type_name -> nebius.storage.v1.StorageClass
+	15, // 14: nebius.storage.v1.LifecycleNoncurrentVersionTransition.storage_class:type_name -> nebius.storage.v1.StorageClass
+	1,  // 15: nebius.storage.v1.LifecycleAccessFilter.Condition.type:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition.Type
+	2,  // 16: nebius.storage.v1.LifecycleAccessFilter.Condition.methods:type_name -> nebius.storage.v1.LifecycleAccessFilter.Condition.Method
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_lifecycle_proto_init() }
@@ -1068,7 +1136,7 @@ func file_nebius_storage_v1_lifecycle_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_storage_v1_lifecycle_proto_rawDesc), len(file_nebius_storage_v1_lifecycle_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
