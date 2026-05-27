@@ -26,7 +26,12 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ResourceAdviceServiceClient interface {
-	// Lists resource advice resources.
+	// Returns a list of resource advice entries for the caller's tenant.
+	// Each entry represents a unique combination of region, fabric, platform, and preset
+	// (e.g., gpu-b200-sxm / 8gpu-160vcpu-1792gb in us-central1-b) and reports current
+	// capacity availability across three allocation types: reserved, on-demand, and preemptible.
+	// Use this method to determine where and which compute instances can be launched
+	// given the tenant's quotas, capacity block groups, and the current physical capacity in data centers.
 	// Supports filtering by region, resource type, or platform.
 	List(ctx context.Context, in *ListResourceAdviceRequest, opts ...grpc.CallOption) (*ListResourceAdviceResponse, error)
 }
@@ -52,7 +57,12 @@ func (c *resourceAdviceServiceClient) List(ctx context.Context, in *ListResource
 // All implementations should embed UnimplementedResourceAdviceServiceServer
 // for forward compatibility
 type ResourceAdviceServiceServer interface {
-	// Lists resource advice resources.
+	// Returns a list of resource advice entries for the caller's tenant.
+	// Each entry represents a unique combination of region, fabric, platform, and preset
+	// (e.g., gpu-b200-sxm / 8gpu-160vcpu-1792gb in us-central1-b) and reports current
+	// capacity availability across three allocation types: reserved, on-demand, and preemptible.
+	// Use this method to determine where and which compute instances can be launched
+	// given the tenant's quotas, capacity block groups, and the current physical capacity in data centers.
 	// Supports filtering by region, resource type, or platform.
 	List(context.Context, *ListResourceAdviceRequest) (*ListResourceAdviceResponse, error)
 }

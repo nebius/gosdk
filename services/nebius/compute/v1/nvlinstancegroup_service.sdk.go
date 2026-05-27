@@ -8,6 +8,7 @@ import (
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	operations "github.com/nebius/gosdk/operations"
+	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/compute/v1"
 	grpc "google.golang.org/grpc"
@@ -32,6 +33,7 @@ type NVLInstanceGroupService interface {
 	GetByName(context.Context, *v11.GetByNameRequest, ...grpc.CallOption) (*v1.NVLInstanceGroup, error)
 	List(context.Context, *v1.ListNVLInstanceGroupsRequest, ...grpc.CallOption) (*v1.ListNVLInstanceGroupsResponse, error)
 	Filter(context.Context, *v1.ListNVLInstanceGroupsRequest, ...grpc.CallOption) iter.Seq2[*v1.NVLInstanceGroup, error]
+	Update(context.Context, *v1.UpdateNVLInstanceGroupRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteNVLInstanceGroupRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
@@ -208,6 +210,35 @@ func (s nVLInstanceGroupService) Filter(ctx context.Context, request *v1.ListNVL
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s nVLInstanceGroupService) Update(ctx context.Context, request *v1.UpdateNVLInstanceGroupRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
+	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, NVLInstanceGroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewNVLInstanceGroupServiceClient(con).Update(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
 }
 
 func (s nVLInstanceGroupService) Delete(ctx context.Context, request *v1.DeleteNVLInstanceGroupRequest, opts ...grpc.CallOption) (

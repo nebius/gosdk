@@ -5,6 +5,9 @@ package v1
 // func (x *CreateNVLInstanceGroupRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *CreateNVLInstanceGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *UpdateNVLInstanceGroupRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *UpdateNVLInstanceGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *GetNVLInstanceGroupRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GetNVLInstanceGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
