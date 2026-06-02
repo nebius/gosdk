@@ -402,7 +402,7 @@ func (x *Instance) GetStatus() *InstanceStatus {
 type InstanceSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Unique identifier of the service account associated with this instance.
-	// For details, see https://docs.nebius.dev/en/iam/about-iam/concepts/service-accounts
+	// For details, see https://docs.nebius.com/iam/service-accounts/manage
 	ServiceAccountId string `protobuf:"bytes,1,opt,name=service_account_id,json=serviceAccountId,proto3" json:"service_account_id,omitempty"`
 	// Specification of compute resources allocated to the instance.
 	// For details, see https://docs.nebius.com/compute/virtual-machines/types
