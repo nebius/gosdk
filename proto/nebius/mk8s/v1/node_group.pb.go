@@ -543,7 +543,12 @@ type NodeTemplate struct {
 	ReservationPolicy *ReservationPolicy `protobuf:"bytes,18,opt,name=reservation_policy,json=reservationPolicy,proto3" json:"reservation_policy,omitempty"`
 	// local_disks enables the provisioning of fast local drives.
 	// This type of storage is strictly ephemeral: on node restart, all data is erased, similar to RAM.
-	LocalDisks    *LocalDisksSpec `protobuf:"bytes,19,opt,name=local_disks,json=localDisks,proto3" json:"local_disks,omitempty"`
+	LocalDisks *LocalDisksSpec `protobuf:"bytes,19,opt,name=local_disks,json=localDisks,proto3" json:"local_disks,omitempty"`
+	// The maximum number of Pods per node for your cluster. If omitted, MK8S assigns the default value of 110. When you
+	// configure the maximum number of Pods per node for the cluster, MK8S uses this value to allocate a CIDR range for every node
+	// in group. The node CIDR prefix is calculated as `32 - ceil(log2(2 * max_pods))`, i.e. the smallest IPv4 subnet whose total address
+	// count is at least `2 * max_pods`. Not all IPs are usable for workload Pods because some of them are consumed by system Pods.
+	MaxPods       int64 `protobuf:"varint,20,opt,name=max_pods,json=maxPods,proto3" json:"max_pods,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -674,6 +679,13 @@ func (x *NodeTemplate) GetLocalDisks() *LocalDisksSpec {
 		return x.LocalDisks
 	}
 	return nil
+}
+
+func (x *NodeTemplate) GetMaxPods() int64 {
+	if x != nil {
+		return x.MaxPods
+	}
+	return 0
 }
 
 type NodeMetadataTemplate struct {
@@ -1942,7 +1954,7 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\bstrategy\x18\x04 \x01(\v2+.nebius.mk8s.v1.NodeGroupDeploymentStrategyR\bstrategy\x12H\n" +
 	"\vauto_repair\x18\x06 \x01(\v2'.nebius.mk8s.v1.NodeGroupAutoRepairSpecR\n" +
 	"autoRepairB\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\x91\a\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\xbb\a\n" +
 	"\fNodeTemplate\x12@\n" +
 	"\bmetadata\x18\x01 \x01(\v2$.nebius.mk8s.v1.NodeMetadataTemplateR\bmetadata\x12;\n" +
 	"\x06taints\x18\x02 \x03(\v2\x19.nebius.mk8s.v1.NodeTaintB\b\xbaH\x05\x92\x01\x02\x10dR\x06taints\x12C\n" +
@@ -1960,7 +1972,9 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\vpreemptible\x18\x0f \x01(\v2\x1f.nebius.mk8s.v1.PreemptibleSpecB\x04\xbaJ\x01\x06R\vpreemptible\x12P\n" +
 	"\x12reservation_policy\x18\x12 \x01(\v2!.nebius.mk8s.v1.ReservationPolicyR\x11reservationPolicy\x12?\n" +
 	"\vlocal_disks\x18\x13 \x01(\v2\x1e.nebius.mk8s.v1.LocalDisksSpecR\n" +
-	"localDisks\"\xa5\x01\n" +
+	"localDisks\x12(\n" +
+	"\bmax_pods\x18\x14 \x01(\x03B\r\xbaH\n" +
+	"\xd8\x01\x01\"\x05\x18\x80\x02(\bR\amaxPods\"\xa5\x01\n" +
 	"\x14NodeMetadataTemplate\x12R\n" +
 	"\x06labels\x18\x01 \x03(\v20.nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntryB\b\xbaH\x05\x9a\x01\x02\x10dR\x06labels\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +

@@ -111,7 +111,15 @@ type ListAuditEventRequest struct {
 	// status
 	Filter string `protobuf:"bytes,6,opt,name=filter,proto3" json:"filter,omitempty"`
 	// Type of audit event to filter by.
-	EventType     EventType `protobuf:"varint,7,opt,name=event_type,json=eventType,proto3,enum=nebius.audit.v2.EventType" json:"event_type,omitempty"`
+	EventType EventType `protobuf:"varint,7,opt,name=event_type,json=eventType,proto3,enum=nebius.audit.v2.EventType" json:"event_type,omitempty"`
+	// Region to retrieve audit logs (e.g. eu-north2, us-central1, eu-west1)
+	// See https://docs.nebius.com/overview/regions
+	// Default: eu-north1
+	//
+	// During a transition period (until 13-08-2026), events are written to
+	// both eu-north1 and their origin region.
+	// After that, events are only stored in their origin region, and this field becomes required.
+	Region        string `protobuf:"bytes,8,opt,name=region,proto3" json:"region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -195,6 +203,13 @@ func (x *ListAuditEventRequest) GetEventType() EventType {
 	return EventType_EVENT_TYPE_UNSPECIFIED
 }
 
+func (x *ListAuditEventRequest) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
 type ListAuditEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*AuditEvent          `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -251,7 +266,7 @@ var File_nebius_audit_v2_audit_event_service_proto protoreflect.FileDescriptor
 
 const file_nebius_audit_v2_audit_event_service_proto_rawDesc = "" +
 	"\n" +
-	")nebius/audit/v2/audit_event_service.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a!nebius/audit/v2/audit_event.proto\"\xcc\x02\n" +
+	")nebius/audit/v2/audit_event_service.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a!nebius/audit/v2/audit_event.proto\"\xe4\x02\n" +
 	"\x15ListAuditEventRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12'\n" +
 	"\tpage_size\x18\x02 \x01(\x03B\n" +
@@ -262,7 +277,8 @@ const file_nebius_audit_v2_audit_event_service_proto_rawDesc = "" +
 	"page_token\x18\x05 \x01(\tR\tpageToken\x12\x1b\n" +
 	"\x06filter\x18\x06 \x01(\tB\x03\xc0J\x01R\x06filter\x129\n" +
 	"\n" +
-	"event_type\x18\a \x01(\x0e2\x1a.nebius.audit.v2.EventTypeR\teventType\"s\n" +
+	"event_type\x18\a \x01(\x0e2\x1a.nebius.audit.v2.EventTypeR\teventType\x12\x16\n" +
+	"\x06region\x18\b \x01(\tR\x06region\"s\n" +
 	"\x16ListAuditEventResponse\x121\n" +
 	"\x05items\x18\x01 \x03(\v2\x1b.nebius.audit.v2.AuditEventR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken*J\n" +

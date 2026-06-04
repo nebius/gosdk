@@ -578,7 +578,12 @@ type DiskStatus struct {
 	BlockSizeBytes             int64                                 `protobuf:"varint,8,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
 	SourceImageCpuArchitecture DiskStatus_SourceImageCPUArchitecture `protobuf:"varint,9,opt,name=source_image_cpu_architecture,json=sourceImageCpuArchitecture,proto3,enum=nebius.compute.v1.DiskStatus_SourceImageCPUArchitecture" json:"source_image_cpu_architecture,omitempty"`
 	// Indicates resources that prevent the disk from being attached as read-write.
-	LockState     *DiskStatus_LockState `protobuf:"bytes,11,opt,name=lock_state,json=lockState,proto3" json:"lock_state,omitempty"`
+	LockState *DiskStatus_LockState `protobuf:"bytes,11,opt,name=lock_state,json=lockState,proto3" json:"lock_state,omitempty"`
+	// Indicates whether the disk is deleted along with an instance.
+	// Set only for disks declared in the instance spec.
+	// If set, the value is the instance ID that manages this disk's lifecycle (the disk is deleted when that instance is deleted).
+	// To change this value, update the instance specification (see AttachedDiskSpec.type).
+	ManagedBy     string `protobuf:"bytes,12,opt,name=managed_by,json=managedBy,proto3" json:"managed_by,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -681,6 +686,13 @@ func (x *DiskStatus) GetLockState() *DiskStatus_LockState {
 		return x.LockState
 	}
 	return nil
+}
+
+func (x *DiskStatus) GetManagedBy() string {
+	if x != nil {
+		return x.ManagedBy
+	}
+	return ""
 }
 
 type DiskEncryption struct {
@@ -807,7 +819,7 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\"[\n" +
 	"\x11SourceImageFamily\x12)\n" +
 	"\fimage_family\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vimageFamily\x12\x1b\n" +
-	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\x95\x06\n" +
+	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xb4\x06\n" +
 	"\n" +
 	"DiskStatus\x129\n" +
 	"\x05state\x18\x01 \x01(\x0e2#.nebius.compute.v1.DiskStatus.StateR\x05state\x12+\n" +
@@ -821,7 +833,9 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\x10block_size_bytes\x18\b \x01(\x03R\x0eblockSizeBytes\x12{\n" +
 	"\x1dsource_image_cpu_architecture\x18\t \x01(\x0e28.nebius.compute.v1.DiskStatus.SourceImageCPUArchitectureR\x1asourceImageCpuArchitecture\x12F\n" +
 	"\n" +
-	"lock_state\x18\v \x01(\v2'.nebius.compute.v1.DiskStatus.LockStateR\tlockState\x1a#\n" +
+	"lock_state\x18\v \x01(\v2'.nebius.compute.v1.DiskStatus.LockStateR\tlockState\x12\x1d\n" +
+	"\n" +
+	"managed_by\x18\f \x01(\tR\tmanagedBy\x1a#\n" +
 	"\tLockState\x12\x16\n" +
 	"\x06images\x18\x01 \x03(\tR\x06images\"d\n" +
 	"\x05State\x12\x0f\n" +
