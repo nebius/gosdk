@@ -227,8 +227,10 @@ type GetVersionRequest struct {
 	DcgmVersion string `protobuf:"bytes,20,opt,name=dcgm_version,json=dcgmVersion,proto3" json:"dcgm_version,omitempty"`
 	// Health check logs information for monitoring disk usage.
 	HealthcheckLogs *HealthCheckLogs `protobuf:"bytes,21,opt,name=healthcheck_logs,json=healthcheckLogs,proto3" json:"healthcheck_logs,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Largest config_version this agent has already accepted; 0 if none.
+	LastSeenConfigVersion uint64 `protobuf:"varint,22,opt,name=last_seen_config_version,json=lastSeenConfigVersion,proto3" json:"last_seen_config_version,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *GetVersionRequest) Reset() {
@@ -406,6 +408,13 @@ func (x *GetVersionRequest) GetHealthcheckLogs() *HealthCheckLogs {
 		return x.HealthcheckLogs
 	}
 	return nil
+}
+
+func (x *GetVersionRequest) GetLastSeenConfigVersion() uint64 {
+	if x != nil {
+		return x.LastSeenConfigVersion
+	}
+	return 0
 }
 
 // Health status information for all agent modules.
@@ -801,8 +810,11 @@ type GetVersionResponse struct {
 	// as "clear all". The default value of false means feature_flags is
 	// authoritative — including legitimately empty.
 	FeatureFlagsUnavailable bool `protobuf:"varint,6,opt,name=feature_flags_unavailable,json=featureFlagsUnavailable,proto3" json:"feature_flags_unavailable,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	// Version of the rollout state this response was built from. Agent echoes
+	// it back as last_seen_config_version on the next request.
+	ConfigVersion uint64 `protobuf:"varint,7,opt,name=config_version,json=configVersion,proto3" json:"config_version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetVersionResponse) Reset() {
@@ -888,6 +900,13 @@ func (x *GetVersionResponse) GetFeatureFlagsUnavailable() bool {
 		return x.FeatureFlagsUnavailable
 	}
 	return false
+}
+
+func (x *GetVersionResponse) GetConfigVersion() uint64 {
+	if x != nil {
+		return x.ConfigVersion
+	}
+	return 0
 }
 
 type isGetVersionResponse_Response interface {
@@ -1048,7 +1067,7 @@ var File_nebius_logging_v1_agentmanager_version_service_proto protoreflect.FileD
 
 const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\n" +
-	"4nebius/logging/v1/agentmanager/version_service.proto\x12\x1enebius.logging.agentmanager.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\"\xd2\b\n" +
+	"4nebius/logging/v1/agentmanager/version_service.proto\x12\x1enebius.logging.agentmanager.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\"\x8b\t\n" +
 	"\x11GetVersionRequest\x12=\n" +
 	"\x04type\x18\x01 \x01(\x0e2).nebius.logging.agentmanager.v1.AgentTypeR\x04type\x12#\n" +
 	"\ragent_version\x18\x02 \x01(\tR\fagentVersion\x12'\n" +
@@ -1074,7 +1093,8 @@ const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\n" +
 	"gpu_number\x18\x13 \x01(\x05R\tgpuNumber\x12!\n" +
 	"\fdcgm_version\x18\x14 \x01(\tR\vdcgmVersion\x12Z\n" +
-	"\x10healthcheck_logs\x18\x15 \x01(\v2/.nebius.logging.agentmanager.v1.HealthCheckLogsR\x0fhealthcheckLogs\"\xa3\a\n" +
+	"\x10healthcheck_logs\x18\x15 \x01(\v2/.nebius.logging.agentmanager.v1.HealthCheckLogsR\x0fhealthcheckLogs\x127\n" +
+	"\x18last_seen_config_version\x18\x16 \x01(\x04R\x15lastSeenConfigVersion\"\xa3\a\n" +
 	"\rModulesHealth\x12F\n" +
 	"\aprocess\x18\x01 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\aprocess\x12O\n" +
 	"\fgpu_pipeline\x18\x02 \x01(\v2,.nebius.logging.agentmanager.v1.ModuleHealthR\vgpuPipeline\x12O\n" +
@@ -1102,14 +1122,15 @@ const file_nebius_logging_v1_agentmanager_version_service_proto_rawDesc = "" +
 	"\x06OSInfo\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05uname\x18\x02 \x01(\tR\x05uname\x12\"\n" +
-	"\farchitecture\x18\x03 \x01(\tR\farchitecture\"\xac\x04\n" +
+	"\farchitecture\x18\x03 \x01(\tR\farchitecture\"\xd3\x04\n" +
 	"\x12GetVersionResponse\x12>\n" +
 	"\x06action\x18\x01 \x01(\x0e2&.nebius.logging.agentmanager.v1.ActionR\x06action\x12C\n" +
 	"\x03nop\x18\x02 \x01(\v2/.nebius.logging.agentmanager.v1.NopActionParamsH\x00R\x03nop\x12L\n" +
 	"\x06update\x18\x03 \x01(\v22.nebius.logging.agentmanager.v1.UpdateActionParamsH\x00R\x06update\x12O\n" +
 	"\arestart\x18\x04 \x01(\v23.nebius.logging.agentmanager.v1.RestartActionParamsH\x00R\arestart\x12i\n" +
 	"\rfeature_flags\x18\x05 \x03(\v2D.nebius.logging.agentmanager.v1.GetVersionResponse.FeatureFlagsEntryR\ffeatureFlags\x12:\n" +
-	"\x19feature_flags_unavailable\x18\x06 \x01(\bR\x17featureFlagsUnavailable\x1a?\n" +
+	"\x19feature_flags_unavailable\x18\x06 \x01(\bR\x17featureFlagsUnavailable\x12%\n" +
+	"\x0econfig_version\x18\a \x01(\x04R\rconfigVersion\x1a?\n" +
 	"\x11FeatureFlagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\n" +
