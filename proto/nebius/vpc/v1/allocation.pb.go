@@ -80,6 +80,61 @@ func (AllocationStatus_State) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_vpc_v1_allocation_proto_rawDescGZIP(), []int{4, 0}
 }
 
+type NetworkInterfaceAssignment_Type int32
+
+const (
+	NetworkInterfaceAssignment_TYPE_UNSPECIFIED NetworkInterfaceAssignment_Type = 0
+	// Allocation is attached as the interface private IPv4 address.
+	NetworkInterfaceAssignment_PRIMARY NetworkInterfaceAssignment_Type = 1
+	// Allocation is attached as an IP alias.
+	NetworkInterfaceAssignment_ALIAS NetworkInterfaceAssignment_Type = 2
+	// Allocation is attached as the interface public IPv4 address.
+	NetworkInterfaceAssignment_PUBLIC NetworkInterfaceAssignment_Type = 3
+)
+
+// Enum value maps for NetworkInterfaceAssignment_Type.
+var (
+	NetworkInterfaceAssignment_Type_name = map[int32]string{
+		0: "TYPE_UNSPECIFIED",
+		1: "PRIMARY",
+		2: "ALIAS",
+		3: "PUBLIC",
+	}
+	NetworkInterfaceAssignment_Type_value = map[string]int32{
+		"TYPE_UNSPECIFIED": 0,
+		"PRIMARY":          1,
+		"ALIAS":            2,
+		"PUBLIC":           3,
+	}
+)
+
+func (x NetworkInterfaceAssignment_Type) Enum() *NetworkInterfaceAssignment_Type {
+	p := new(NetworkInterfaceAssignment_Type)
+	*p = x
+	return p
+}
+
+func (x NetworkInterfaceAssignment_Type) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (NetworkInterfaceAssignment_Type) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_vpc_v1_allocation_proto_enumTypes[1].Descriptor()
+}
+
+func (NetworkInterfaceAssignment_Type) Type() protoreflect.EnumType {
+	return &file_nebius_vpc_v1_allocation_proto_enumTypes[1]
+}
+
+func (x NetworkInterfaceAssignment_Type) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use NetworkInterfaceAssignment_Type.Descriptor instead.
+func (NetworkInterfaceAssignment_Type) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_allocation_proto_rawDescGZIP(), []int{7, 0}
+}
+
 type Allocation struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Metadata for the Allocation.
@@ -671,7 +726,9 @@ type NetworkInterfaceAssignment struct {
 	// ID of the Compute instance network interface belongs to.
 	InstanceId string `protobuf:"bytes,1,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
 	// Network interface name
-	Name          string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// Type of allocation attachment on the network interface.
+	Type          NetworkInterfaceAssignment_Type `protobuf:"varint,3,opt,name=type,proto3,enum=nebius.vpc.v1.NetworkInterfaceAssignment_Type" json:"type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -718,6 +775,13 @@ func (x *NetworkInterfaceAssignment) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *NetworkInterfaceAssignment) GetType() NetworkInterfaceAssignment_Type {
+	if x != nil {
+		return x.Type
+	}
+	return NetworkInterfaceAssignment_TYPE_UNSPECIFIED
 }
 
 type LoadBalancerAssignment struct {
@@ -820,12 +884,19 @@ const file_nebius_vpc_v1_allocation_proto_rawDesc = "" +
 	"Assignment\x12X\n" +
 	"\x11network_interface\x18\x01 \x01(\v2).nebius.vpc.v1.NetworkInterfaceAssignmentH\x00R\x10networkInterface\x12L\n" +
 	"\rload_balancer\x18\x02 \x01(\v2%.nebius.vpc.v1.LoadBalancerAssignmentH\x00R\floadBalancerB\x06\n" +
-	"\x04type\"g\n" +
+	"\x04type\"\xed\x01\n" +
 	"\x1aNetworkInterfaceAssignment\x125\n" +
 	"\vinstance_id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
 	"\x0fcomputeinstanceR\n" +
 	"instanceId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\">\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12B\n" +
+	"\x04type\x18\x03 \x01(\x0e2..nebius.vpc.v1.NetworkInterfaceAssignment.TypeR\x04type\"@\n" +
+	"\x04Type\x12\x14\n" +
+	"\x10TYPE_UNSPECIFIED\x10\x00\x12\v\n" +
+	"\aPRIMARY\x10\x01\x12\t\n" +
+	"\x05ALIAS\x10\x02\x12\n" +
+	"\n" +
+	"\x06PUBLIC\x10\x03\">\n" +
 	"\x16LoadBalancerAssignment\x12$\n" +
 	"\x02id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
 	"\x0fvpcloadbalancerR\x02idBV\n" +
@@ -843,39 +914,41 @@ func file_nebius_vpc_v1_allocation_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1_allocation_proto_rawDescData
 }
 
-var file_nebius_vpc_v1_allocation_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_nebius_vpc_v1_allocation_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_nebius_vpc_v1_allocation_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_vpc_v1_allocation_proto_goTypes = []any{
-	(AllocationStatus_State)(0),        // 0: nebius.vpc.v1.AllocationStatus.State
-	(*Allocation)(nil),                 // 1: nebius.vpc.v1.Allocation
-	(*AllocationSpec)(nil),             // 2: nebius.vpc.v1.AllocationSpec
-	(*IPv4PrivateAllocationSpec)(nil),  // 3: nebius.vpc.v1.IPv4PrivateAllocationSpec
-	(*IPv4PublicAllocationSpec)(nil),   // 4: nebius.vpc.v1.IPv4PublicAllocationSpec
-	(*AllocationStatus)(nil),           // 5: nebius.vpc.v1.AllocationStatus
-	(*AllocationDetails)(nil),          // 6: nebius.vpc.v1.AllocationDetails
-	(*Assignment)(nil),                 // 7: nebius.vpc.v1.Assignment
-	(*NetworkInterfaceAssignment)(nil), // 8: nebius.vpc.v1.NetworkInterfaceAssignment
-	(*LoadBalancerAssignment)(nil),     // 9: nebius.vpc.v1.LoadBalancerAssignment
-	(*v1.ResourceMetadata)(nil),        // 10: nebius.common.v1.ResourceMetadata
-	(IpVersion)(0),                     // 11: nebius.vpc.v1.IpVersion
+	(AllocationStatus_State)(0),          // 0: nebius.vpc.v1.AllocationStatus.State
+	(NetworkInterfaceAssignment_Type)(0), // 1: nebius.vpc.v1.NetworkInterfaceAssignment.Type
+	(*Allocation)(nil),                   // 2: nebius.vpc.v1.Allocation
+	(*AllocationSpec)(nil),               // 3: nebius.vpc.v1.AllocationSpec
+	(*IPv4PrivateAllocationSpec)(nil),    // 4: nebius.vpc.v1.IPv4PrivateAllocationSpec
+	(*IPv4PublicAllocationSpec)(nil),     // 5: nebius.vpc.v1.IPv4PublicAllocationSpec
+	(*AllocationStatus)(nil),             // 6: nebius.vpc.v1.AllocationStatus
+	(*AllocationDetails)(nil),            // 7: nebius.vpc.v1.AllocationDetails
+	(*Assignment)(nil),                   // 8: nebius.vpc.v1.Assignment
+	(*NetworkInterfaceAssignment)(nil),   // 9: nebius.vpc.v1.NetworkInterfaceAssignment
+	(*LoadBalancerAssignment)(nil),       // 10: nebius.vpc.v1.LoadBalancerAssignment
+	(*v1.ResourceMetadata)(nil),          // 11: nebius.common.v1.ResourceMetadata
+	(IpVersion)(0),                       // 12: nebius.vpc.v1.IpVersion
 }
 var file_nebius_vpc_v1_allocation_proto_depIdxs = []int32{
-	10, // 0: nebius.vpc.v1.Allocation.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	2,  // 1: nebius.vpc.v1.Allocation.spec:type_name -> nebius.vpc.v1.AllocationSpec
-	5,  // 2: nebius.vpc.v1.Allocation.status:type_name -> nebius.vpc.v1.AllocationStatus
-	3,  // 3: nebius.vpc.v1.AllocationSpec.ipv4_private:type_name -> nebius.vpc.v1.IPv4PrivateAllocationSpec
-	4,  // 4: nebius.vpc.v1.AllocationSpec.ipv4_public:type_name -> nebius.vpc.v1.IPv4PublicAllocationSpec
+	11, // 0: nebius.vpc.v1.Allocation.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	3,  // 1: nebius.vpc.v1.Allocation.spec:type_name -> nebius.vpc.v1.AllocationSpec
+	6,  // 2: nebius.vpc.v1.Allocation.status:type_name -> nebius.vpc.v1.AllocationStatus
+	4,  // 3: nebius.vpc.v1.AllocationSpec.ipv4_private:type_name -> nebius.vpc.v1.IPv4PrivateAllocationSpec
+	5,  // 4: nebius.vpc.v1.AllocationSpec.ipv4_public:type_name -> nebius.vpc.v1.IPv4PublicAllocationSpec
 	0,  // 5: nebius.vpc.v1.AllocationStatus.state:type_name -> nebius.vpc.v1.AllocationStatus.State
-	6,  // 6: nebius.vpc.v1.AllocationStatus.details:type_name -> nebius.vpc.v1.AllocationDetails
-	7,  // 7: nebius.vpc.v1.AllocationStatus.assignment:type_name -> nebius.vpc.v1.Assignment
-	11, // 8: nebius.vpc.v1.AllocationDetails.version:type_name -> nebius.vpc.v1.IpVersion
-	8,  // 9: nebius.vpc.v1.Assignment.network_interface:type_name -> nebius.vpc.v1.NetworkInterfaceAssignment
-	9,  // 10: nebius.vpc.v1.Assignment.load_balancer:type_name -> nebius.vpc.v1.LoadBalancerAssignment
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	7,  // 6: nebius.vpc.v1.AllocationStatus.details:type_name -> nebius.vpc.v1.AllocationDetails
+	8,  // 7: nebius.vpc.v1.AllocationStatus.assignment:type_name -> nebius.vpc.v1.Assignment
+	12, // 8: nebius.vpc.v1.AllocationDetails.version:type_name -> nebius.vpc.v1.IpVersion
+	9,  // 9: nebius.vpc.v1.Assignment.network_interface:type_name -> nebius.vpc.v1.NetworkInterfaceAssignment
+	10, // 10: nebius.vpc.v1.Assignment.load_balancer:type_name -> nebius.vpc.v1.LoadBalancerAssignment
+	1,  // 11: nebius.vpc.v1.NetworkInterfaceAssignment.type:type_name -> nebius.vpc.v1.NetworkInterfaceAssignment.Type
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_nebius_vpc_v1_allocation_proto_init() }
@@ -905,7 +978,7 @@ func file_nebius_vpc_v1_allocation_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_allocation_proto_rawDesc), len(file_nebius_vpc_v1_allocation_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
