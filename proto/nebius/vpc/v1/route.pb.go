@@ -446,7 +446,11 @@ type RouteStatus struct {
 	NextHop *NextHopState `protobuf:"bytes,2,opt,name=next_hop,json=nextHop,proto3" json:"next_hop,omitempty"`
 	// Indicates the route type.
 	// REDISTRIBUTED routes cannot be deleted directly.
-	Type          RouteStatus_Type `protobuf:"varint,3,opt,name=type,proto3,enum=nebius.vpc.v1.RouteStatus_Type" json:"type,omitempty"`
+	Type RouteStatus_Type `protobuf:"varint,3,opt,name=type,proto3,enum=nebius.vpc.v1.RouteStatus_Type" json:"type,omitempty"`
+	// Indicates priority of the route.
+	// That is 0 or a positive number.
+	// Lower value = higher priority; 0 is the highest priority.
+	Priority      int32 `protobuf:"varint,4,opt,name=priority,proto3" json:"priority,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -500,6 +504,13 @@ func (x *RouteStatus) GetType() RouteStatus_Type {
 		return x.Type
 	}
 	return RouteStatus_TYPE_UNSPECIFIED
+}
+
+func (x *RouteStatus) GetPriority() int32 {
+	if x != nil {
+		return x.Priority
+	}
+	return 0
 }
 
 type NextHopState struct {
@@ -695,11 +706,12 @@ const file_nebius_vpc_v1_route_proto_rawDesc = "" +
 	"\bnext_hop\x12\x05\xbaH\x02\b\x01\"=\n" +
 	"\x11AllocationNextHop\x12(\n" +
 	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
-	"\rvpcallocationR\x02id\"\x9a\x02\n" +
+	"\rvpcallocationR\x02id\"\xb6\x02\n" +
 	"\vRouteStatus\x126\n" +
 	"\x05state\x18\x01 \x01(\x0e2 .nebius.vpc.v1.RouteStatus.StateR\x05state\x126\n" +
 	"\bnext_hop\x18\x02 \x01(\v2\x1b.nebius.vpc.v1.NextHopStateR\anextHop\x123\n" +
-	"\x04type\x18\x03 \x01(\x0e2\x1f.nebius.vpc.v1.RouteStatus.TypeR\x04type\")\n" +
+	"\x04type\x18\x03 \x01(\x0e2\x1f.nebius.vpc.v1.RouteStatus.TypeR\x04type\x12\x1a\n" +
+	"\bpriority\x18\x04 \x01(\x05R\bpriority\")\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05READY\x10\n" +
