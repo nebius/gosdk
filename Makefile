@@ -60,8 +60,8 @@ tidy: ## keep go.mod and .github/latest-deps tidy
 	@echo "+ $@"
 	go mod tidy
 	$(IMPORTS) > .github/latest-deps/imports.go
-	go -C .github/latest-deps fmt imports.go
 	go -C .github/latest-deps mod tidy
+	go -C .github/latest-deps fmt imports.go
 .PHONY: check
 
 check-tidy: ## ensure go.mod is tidy
