@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/gofrs/flock"
+	"go.yaml.in/yaml/v3"
 	"golang.org/x/sync/singleflight"
-	"gopkg.in/yaml.v3"
 
 	"github.com/nebius/gosdk/config/paths"
 )

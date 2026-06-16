@@ -46,6 +46,7 @@
     "conn/resolvers.go",
     "conn/resolvers_test.go",
     "conn/retries.go",
+    "conn/retries_test.go",
     "constants/constants.go",
     "constants/well_known.go",
     "credentials.go",

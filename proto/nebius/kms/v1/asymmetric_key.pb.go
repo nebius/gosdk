@@ -270,9 +270,9 @@ const file_nebius_kms_v1_asymmetric_key_proto_rawDesc = "" +
 	"\rAsymmetricKey\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.kms.v1.AsymmetricKeySpecR\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\".nebius.kms.v1.AsymmetricKeyStatusR\x06status\"\x88\x01\n" +
-	"\x11AsymmetricKeySpec\x12 \n" +
-	"\vdescription\x18\x01 \x01(\tR\vdescription\x12Q\n" +
+	"\x06status\x18\x03 \x01(\v2\".nebius.kms.v1.AsymmetricKeyStatusR\x06status\"\x92\x01\n" +
+	"\x11AsymmetricKeySpec\x12*\n" +
+	"\vdescription\x18\x01 \x01(\tB\b\xbaH\x05r\x03(\x80\bR\vdescription\x12Q\n" +
 	"\talgorithm\x18\x02 \x01(\x0e2\".nebius.kms.v1.AsymmetricAlgorithmB\x0f\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01\xbaJ\x01\x02R\talgorithm\"\xb6\x01\n" +
 	"\x13AsymmetricKeyStatus\x12-\n" +
 	"\x05state\x18\x01 \x01(\x0e2\x17.nebius.kms.v1.KeyStateR\x05state\x129\n" +
