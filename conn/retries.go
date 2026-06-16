@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
@@ -23,6 +24,8 @@ import (
 //
 //nolint:gochecknoglobals // const
 var DefaultRetriableCodes = []codes.Code{codes.ResourceExhausted, codes.Unavailable}
+
+const unexpectedHTTPStatusPrefix = "unexpected HTTP status code received from server: "
 
 func IsRetriableNebiusError(err error) bool {
 	if err == nil {
@@ -52,7 +55,13 @@ func IsRetriableNebiusError(err error) bool {
 	}
 
 	if s, isGRPC := status.FromError(err); isGRPC {
-		return slices.Contains(DefaultRetriableCodes, s.Code())
+		if slices.Contains(DefaultRetriableCodes, s.Code()) {
+			return true
+		}
+
+		// grpc-go maps unknown HTTP status codes from proxies, such as
+		// Cloudflare 52x responses, to codes.Unknown.
+		return s.Code() == codes.Unknown && hasUnexpectedHTTP52xStatus(s.Message())
 	}
 
 	// Retry on transport, TLS, and network-related errors
@@ -97,4 +106,23 @@ func isTransportError(err error) bool {
 	// Check for gRPC stream errors
 	var streamErr http2.StreamError
 	return errors.As(err, &streamErr)
+}
+
+func hasUnexpectedHTTP52xStatus(message string) bool {
+	statusIndex := strings.Index(message, unexpectedHTTPStatusPrefix)
+	if statusIndex < 0 {
+		return false
+	}
+
+	statusStart := statusIndex + len(unexpectedHTTPStatusPrefix)
+	statusEnd := statusStart
+	for statusEnd < len(message) && message[statusEnd] >= '0' && message[statusEnd] <= '9' {
+		statusEnd++
+	}
+	if statusStart == statusEnd {
+		return false
+	}
+
+	code, err := strconv.Atoi(message[statusStart:statusEnd])
+	return err == nil && code >= 520 && code < 530
 }

@@ -164,6 +164,9 @@ func (w *wrapperNodeTemplate) ProtoReflect() protoreflect.Message {
 // func (x *PublicIPAddress) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PublicIPAddress) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *SecurityGroup) Sanitize()            // is not generated as no sensitive fields found
+// func (x *SecurityGroup) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *AttachedFilesystemSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *AttachedFilesystemSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 

@@ -14,6 +14,7 @@ import (
 	_ "github.com/stretchr/testify/assert"
 	_ "github.com/stretchr/testify/require"
 	_ "go.uber.org/mock/gomock"
+	_ "go.yaml.in/yaml/v3"
 	_ "golang.org/x/net/http2"
 	_ "golang.org/x/sync/singleflight"
 	_ "google.golang.org/genproto/googleapis/rpc/code"
@@ -38,5 +39,4 @@ import (
 	_ "google.golang.org/protobuf/types/known/emptypb"
 	_ "google.golang.org/protobuf/types/known/structpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
-	_ "gopkg.in/yaml.v3"
 )
