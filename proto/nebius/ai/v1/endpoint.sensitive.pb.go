@@ -66,6 +66,9 @@ func (x *EndpointSpec) Sanitize() {
 	}
 	x.RegistryCredentials.Sanitize()
 	x.AuthToken = "**HIDDEN**"
+	for _, y := range x.InjectedFiles {
+		y.Sanitize()
+	}
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [EndpointSpec].
@@ -336,6 +339,50 @@ func (*wrapperEndpointSpec_RegistryCredentials) ProtoMessage() {}
 
 func (w *wrapperEndpointSpec_RegistryCredentials) ProtoReflect() protoreflect.Message {
 	return (*EndpointSpec_RegistryCredentials)(w).ProtoReflect()
+}
+
+// Sanitize mutates [EndpointSpec_FileInjection] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *EndpointSpec_FileInjection) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.Content = []byte("**HIDDEN**")
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [EndpointSpec_FileInjection].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *EndpointSpec_FileInjection
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [EndpointSpec_FileInjection], use the following code:
+//
+//	var original *EndpointSpec_FileInjection
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*EndpointSpec_FileInjection)
+func (x *EndpointSpec_FileInjection) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*EndpointSpec_FileInjection) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperEndpointSpec_FileInjection)(c))
+}
+
+// wrapperEndpointSpec_FileInjection is used to return [EndpointSpec_FileInjection] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperEndpointSpec_FileInjection EndpointSpec_FileInjection
+
+func (w *wrapperEndpointSpec_FileInjection) String() string {
+	return (*EndpointSpec_FileInjection)(w).String()
+}
+
+func (*wrapperEndpointSpec_FileInjection) ProtoMessage() {}
+
+func (w *wrapperEndpointSpec_FileInjection) ProtoReflect() protoreflect.Message {
+	return (*EndpointSpec_FileInjection)(w).ProtoReflect()
 }
 
 // func (x *EndpointSpec_MysteryBoxSecretRef) Sanitize()            // is not generated as no sensitive fields found
