@@ -65,6 +65,9 @@ func (x *JobSpec) Sanitize() {
 		y.Sanitize()
 	}
 	x.RegistryCredentials.Sanitize()
+	for _, y := range x.InjectedFiles {
+		y.Sanitize()
+	}
 }
 
 // LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [JobSpec].
@@ -335,6 +338,50 @@ func (*wrapperJobSpec_RegistryCredentials) ProtoMessage() {}
 
 func (w *wrapperJobSpec_RegistryCredentials) ProtoReflect() protoreflect.Message {
 	return (*JobSpec_RegistryCredentials)(w).ProtoReflect()
+}
+
+// Sanitize mutates [JobSpec_FileInjection] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *JobSpec_FileInjection) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.Content = []byte("**HIDDEN**")
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [JobSpec_FileInjection].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *JobSpec_FileInjection
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [JobSpec_FileInjection], use the following code:
+//
+//	var original *JobSpec_FileInjection
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*JobSpec_FileInjection)
+func (x *JobSpec_FileInjection) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*JobSpec_FileInjection) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperJobSpec_FileInjection)(c))
+}
+
+// wrapperJobSpec_FileInjection is used to return [JobSpec_FileInjection] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperJobSpec_FileInjection JobSpec_FileInjection
+
+func (w *wrapperJobSpec_FileInjection) String() string {
+	return (*JobSpec_FileInjection)(w).String()
+}
+
+func (*wrapperJobSpec_FileInjection) ProtoMessage() {}
+
+func (w *wrapperJobSpec_FileInjection) ProtoReflect() protoreflect.Message {
+	return (*JobSpec_FileInjection)(w).ProtoReflect()
 }
 
 // func (x *JobSpec_MysteryBoxSecretRef) Sanitize()            // is not generated as no sensitive fields found
