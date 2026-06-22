@@ -22,6 +22,8 @@ type ConfigInterface interface {
 	Load(context.Context) error
 	LoadIfNeeded(context.Context) error
 	CurrentProfileName() string
+
+	AddImpersonationIfSet(context.Context, auth.BearerTokener) (auth.BearerTokener, error)
 }
 
 type StubOption struct{}

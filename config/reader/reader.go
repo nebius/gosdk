@@ -43,6 +43,8 @@ type configReader struct {
 	deferredClientFunc func() (iampb.TokenExchangeServiceClient, error)
 	authOptions        []auth.Option
 
+	impersonateServiceAccountID string
+
 	configParsed bool
 }
 
@@ -463,6 +465,41 @@ func (r *configReader) resolveServiceAccountTokener(ctx context.Context) (auth.N
 	}
 
 	return nil, fmt.Errorf("incomplete service account configuration: provide either (service-account-id, federated-subject-credentials-file-path) OR (service-account-credentials-file-path) OR (service-account-id, public-key-id and one of private-key / private-key-file-path)")
+}
+
+func (r *configReader) AddImpersonationIfSet(
+	ctx context.Context, tokener auth.BearerTokener,
+) (auth.BearerTokener, error) {
+	if tokener != nil && (r.impersonateServiceAccountID != "" || (r.profile != nil &&
+		r.profile.ImpersonateServiceAccountID != "")) {
+		var impersonateSAID string
+		if r.impersonateServiceAccountID != "" {
+			impersonateSAID = r.impersonateServiceAccountID
+		} else if r.profile != nil {
+			impersonateSAID = r.profile.ImpersonateServiceAccountID
+		}
+		r.logger.DebugContext(ctx, "impersonating service account",
+			slog.String("service_account_id", impersonateSAID),
+		)
+		// cache is necessary if the client sends multiple requests during one
+		// execution for example, Operation.Wait after create/update/delete
+		return auth.NewCachedTokener(
+			r.newImpersonatedBearerTokener(impersonateSAID, tokener),
+			r.authOptionsWithLogger()...,
+		), nil
+	}
+	return tokener, nil
+}
+
+func (r *configReader) newImpersonatedBearerTokener(
+	serviceAccountID string,
+	tokener auth.BearerTokener,
+) auth.BearerTokener {
+	return auth.NewExchangeImpersonatedBearerTokener(
+		serviceAccountID,
+		tokener,
+		r.deferredClientFunc,
+	)
 }
 
 func (r *configReader) GetAuthType() config.AuthType {

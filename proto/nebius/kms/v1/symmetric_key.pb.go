@@ -277,11 +277,11 @@ const file_nebius_kms_v1_symmetric_key_proto_rawDesc = "" +
 	"\fSymmetricKey\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.kms.v1.SymmetricKeySpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.kms.v1.SymmetricKeyStatusR\x06status\"\xea\x01\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.kms.v1.SymmetricKeyStatusR\x06status\"\xee\x01\n" +
 	"\x10SymmetricKeySpec\x12*\n" +
 	"\vdescription\x18\x01 \x01(\tB\b\xbaH\x05r\x03(\x80\bR\vdescription\x12P\n" +
-	"\talgorithm\x18\x02 \x01(\x0e2!.nebius.kms.v1.SymmetricAlgorithmB\x0f\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01\xbaJ\x01\x02R\talgorithm\x12X\n" +
-	"\x0frotation_period\x18\x03 \x01(\v2\x19.google.protobuf.DurationB\x14\xbaH\x11\xaa\x01\x0e\"\x06\b\x80\x86\xb0\x96\x012\x04\b\x80\xa3\x05R\x0erotationPeriod\"\xb5\x01\n" +
+	"\talgorithm\x18\x02 \x01(\x0e2!.nebius.kms.v1.SymmetricAlgorithmB\x0f\xbaH\b\xc8\x01\x01\x82\x01\x02\x10\x01\xbaJ\x01\x02R\talgorithm\x12\\\n" +
+	"\x0frotation_period\x18\x03 \x01(\v2\x19.google.protobuf.DurationB\x18\xbaH\x11\xaa\x01\x0e\"\x06\b\x80\x86\xb0\x96\x012\x04\b\x80\xa3\x05\xbaJ\x01\aR\x0erotationPeriod\"\xb5\x01\n" +
 	"\x12SymmetricKeyStatus\x12-\n" +
 	"\x05state\x18\x01 \x01(\x0e2\x17.nebius.kms.v1.KeyStateR\x05state\x129\n" +
 	"\n" +

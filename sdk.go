@@ -294,6 +294,13 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 					tokener = instrumented
 				}
 			}
+			if configReader != nil {
+				var err error
+				tokener, err = configReader.AddImpersonationIfSet(ctx, tokener)
+				if err != nil {
+					return nil, fmt.Errorf("impersonate token: %w", err)
+				}
+			}
 			auths[selector] = auth.NewAuthenticatorFromBearerTokener(tokener)
 		case credsServiceAccount:
 			t := auth.NewExchangeableBearerTokener(auth.NewServiceAccountExchangeTokenRequester(c.reader), nil)
