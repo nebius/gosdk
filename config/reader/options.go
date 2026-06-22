@@ -213,3 +213,9 @@ func WithTokenSafetyMargin(d time.Duration) config.Option {
 		c.authOptions = append(c.authOptions, auth.WithFileCacheSafetyMargin(d))
 	})
 }
+
+func WithImpersonate(impersonateServiceAccountID string) config.Option {
+	return optionFunc(func(c *configReader) {
+		c.impersonateServiceAccountID = impersonateServiceAccountID
+	})
+}

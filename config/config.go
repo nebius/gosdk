@@ -41,8 +41,9 @@ type Profile struct {
 	// Federated credentials log-in path
 	FederatedSubjectCredentialsFilePath string `yaml:"federated-subject-credentials-file-path,omitempty"`
 
-	ParentID string `yaml:"parent-id,omitempty"`
-	TenantID string `yaml:"tenant-id,omitempty"`
+	ParentID                    string `yaml:"parent-id,omitempty"`
+	TenantID                    string `yaml:"tenant-id,omitempty"`
+	ImpersonateServiceAccountID string `yaml:"impersonate-service-account-id,omitempty"`
 }
 
 func (p *Profile) LogValue() slog.Value {
@@ -58,11 +59,12 @@ func (p *Profile) LogValue() slog.Value {
 		"private-key-file-path":                   p.PrivateKeyFilePath,
 		"service-account-credentials-file-path":   p.ServiceAccountCredentialsFilePath,
 		"federated-subject-credentials-file-path": p.FederatedSubjectCredentialsFilePath,
-		"auth-type":      p.AuthType,
-		"parent-id":      p.ParentID,
-		"tenant-id":      p.TenantID,
-		"token-file":     p.TokenFile,
-		"token-endpoint": p.TokenEndpoint,
+		"auth-type":                      p.AuthType,
+		"parent-id":                      p.ParentID,
+		"tenant-id":                      p.TenantID,
+		"token-file":                     p.TokenFile,
+		"token-endpoint":                 p.TokenEndpoint,
+		"impersonate-service-account-id": p.ImpersonateServiceAccountID,
 	})
 }
 
