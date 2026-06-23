@@ -1859,7 +1859,7 @@ const file_nebius_storage_v1_transfer_proto_rawDesc = "" +
 	"\x1eOVERWRITE_STRATEGY_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05NEVER\x10\x01\x12\f\n" +
 	"\bIF_NEWER\x10\x02B\x17\n" +
-	"\x0estop_condition\x12\x05\xbaH\x02\b\x01\"\xc8\n" +
+	"\x0estop_condition\x12\x05\xbaH\x02\b\x01\"\xcc\n" +
 	"\n" +
 	"\x0eTransferSource\x12J\n" +
 	"\x06nebius\x18\x01 \x01(\v20.nebius.storage.v1.TransferSource.NebiusProviderH\x00R\x06nebius\x12]\n" +
@@ -1888,8 +1888,8 @@ const file_nebius_storage_v1_transfer_proto_rawDesc = "" +
 	"\x0econtainer_name\x18\x02 \x01(\tB\x0e\xbaH\a\xc8\x01\x01r\x02\x18d\xbaJ\x01\x02R\rcontainerName\x12U\n" +
 	"\tanonymous\x18\x03 \x01(\v2/.nebius.storage.v1.TransferCredentialsAnonymousB\x04\xbaJ\x01\x06H\x00R\tanonymous\x12o\n" +
 	"\x15azure_storage_account\x18\x04 \x01(\v29.nebius.storage.v1.TransferCredentialsAzureStorageAccountH\x00R\x13azureStorageAccountB\x14\n" +
-	"\vcredentials\x12\x05\xbaH\x02\b\x01B\x11\n" +
-	"\bprovider\x12\x05\xbaH\x02\b\x01\"\xb5\x06\n" +
+	"\vcredentials\x12\x05\xbaH\x02\b\x01B\x15\n" +
+	"\bprovider\x12\t\xbaH\x02\b\x01\xbaJ\x01\x02\"\xb9\x06\n" +
 	"\x13TransferDestination\x12O\n" +
 	"\x06nebius\x18\x01 \x01(\v25.nebius.storage.v1.TransferDestination.NebiusProviderH\x00R\x06nebius\x12b\n" +
 	"\rs3_compatible\x18\x02 \x01(\v2;.nebius.storage.v1.TransferDestination.S3CompatibleProviderH\x00R\fs3Compatible\x12$\n" +
@@ -1909,8 +1909,8 @@ const file_nebius_storage_v1_transfer_proto_rawDesc = "" +
 	"\tanonymous\x18\x04 \x01(\v2/.nebius.storage.v1.TransferCredentialsAnonymousB\x04\xbaJ\x01\x06H\x00R\tanonymous\x12P\n" +
 	"\n" +
 	"access_key\x18\x05 \x01(\v2/.nebius.storage.v1.TransferCredentialsAccessKeyH\x00R\taccessKeyB\x14\n" +
-	"\vcredentials\x12\x05\xbaH\x02\b\x01B\x11\n" +
-	"\bprovider\x12\x05\xbaH\x02\b\x01\"\x1e\n" +
+	"\vcredentials\x12\x05\xbaH\x02\b\x01B\x15\n" +
+	"\bprovider\x12\t\xbaH\x02\b\x01\xbaJ\x01\x02\"\x1e\n" +
 	"\x1cTransferCredentialsAnonymous\"\x8c\x01\n" +
 	"\x1cTransferCredentialsAccessKey\x12/\n" +
 	"\raccess_key_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\x18\xe8\aR\vaccessKeyId\x12;\n" +

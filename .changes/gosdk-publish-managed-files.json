@@ -44,6 +44,7 @@
     "conn/idempotency.go",
     "conn/inner_timeout.go",
     "conn/parse.go",
+    "conn/parse_test.go",
     "conn/resolvers.go",
     "conn/resolvers_test.go",
     "conn/retries.go",

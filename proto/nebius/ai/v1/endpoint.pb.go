@@ -788,8 +788,8 @@ type EndpointSpec_EnvironmentVariable struct {
 	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 	// Secret storing the environment variable value.
 	// Mutually exclusive with `value`.
-	// The payload entry is selected by `mysterybox_secret.key`, which defaults
-	// to `name` when empty.
+	// The value is read from the payload entry whose key matches the variable
+	// name, or the first entry when no such key exists.
 	MysteryboxSecret *EndpointSpec_MysteryBoxSecretRef `protobuf:"bytes,3,opt,name=mysterybox_secret,json=mysteryboxSecret,proto3" json:"mysterybox_secret,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
@@ -1207,12 +1207,7 @@ type EndpointSpec_MysteryBoxSecretRef struct {
 	// MysteryBox secret ID.
 	SecretId string `protobuf:"bytes,1,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
 	// MysteryBox secret version ID.
-	VersionId string `protobuf:"bytes,2,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
-	// Optional key of the payload entry to read the value from.
-	// Honored for environment variable references, where it defaults to the
-	// environment variable name when empty. References that read a fixed
-	// payload key (such as auth token or S3 credentials) ignore this field.
-	Key           string `protobuf:"bytes,3,opt,name=key,proto3" json:"key,omitempty"`
+	VersionId     string `protobuf:"bytes,2,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1257,13 +1252,6 @@ func (x *EndpointSpec_MysteryBoxSecretRef) GetSecretId() string {
 func (x *EndpointSpec_MysteryBoxSecretRef) GetVersionId() string {
 	if x != nil {
 		return x.VersionId
-	}
-	return ""
-}
-
-func (x *EndpointSpec_MysteryBoxSecretRef) GetKey() string {
-	if x != nil {
-		return x.Key
 	}
 	return ""
 }
@@ -1503,7 +1491,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xfe\x1b\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xf7\x1b\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1584,7 +1572,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\x19mysterybox_secret_version\x18\x03 \x01(\tR\x17mysteryboxSecretVersion\x1a\x81\x01\n" +
 	"\rFileInjection\x12B\n" +
 	"\x0econtainer_path\x18\x01 \x01(\tB\x1b\xbaH\x18\xc8\x01\x01r\x132\x11^/[^/]+(/[^/]+)*$R\rcontainerPath\x12,\n" +
-	"\acontent\x18\x02 \x01(\fB\x12\xbaH\bz\x06\x10\x01\x18\x80\x80\x04\xbaJ\x01\x04\xc0J\x01R\acontent\x1a~\n" +
+	"\acontent\x18\x02 \x01(\fB\x12\xbaH\bz\x06\x10\x01\x18\x80\x80\x04\xbaJ\x01\x04\xc0J\x01R\acontent\x1aw\n" +
 	"\x13MysteryBoxSecretRef\x12'\n" +
 	"\tsecret_id\x18\x01 \x01(\tB\n" +
 	"\xe2J\a\n" +
@@ -1592,8 +1580,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionId\x12\x10\n" +
-	"\x03key\x18\x03 \x01(\tR\x03key:\x80\x02\xbaH\xfc\x01\x1a\xf9\x01\n" +
+	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\x80\x02\xbaH\xfc\x01\x1a\xf9\x01\n" +
 	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xb0\x03\n" +
 	"\x0eEndpointStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +

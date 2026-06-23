@@ -1,24 +1,27 @@
 package conn
 
 import (
+	"crypto/tls"
 	"fmt"
 	"maps"
 	"slices"
 	"strings"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 type Override struct {
-	ServiceID string
-	Address   string
-	Insecure  bool
+	ServiceID   string
+	Address     string
+	Insecure    bool
+	NoTLSVerify bool
 }
 
 // ParseOverrides parses value, usually env.
-// String is a comma `,` separated list of `ID=ADDRESS` pairs with
-// possible addition of `;insecure` to the address.
+// String is a comma `,` separated list of `ID=ADDRESS[;OPTION]` pairs.
+// Supported options are `insecure` and `no-tls-verify`. They are mutually exclusive.
 func ParseOverrides(value string) ([]Override, error) {
 	pairs := strings.Split(value, ",")
 	overrides := make([]Override, 0, len(pairs))
@@ -38,19 +41,25 @@ func ParseOverrides(value string) ([]Override, error) {
 		}
 
 		serviceID := strings.TrimSpace(parts[0])
-		address, option, _ := strings.Cut(parts[1], ";")
-		address, option = strings.TrimSpace(address), strings.TrimSpace(option)
+		addressAndOptions := strings.Split(parts[1], ";")
+		address := strings.TrimSpace(addressAndOptions[0])
 		override := Override{
 			ServiceID: serviceID,
 			Address:   address,
-			Insecure:  false,
 		}
-		switch option {
-		case "":
-		case "insecure":
-			override.Insecure = true
-		default:
-			return nil, fmt.Errorf("unknown option %q", option)
+		for _, option := range addressAndOptions[1:] {
+			switch option = strings.TrimSpace(option); option {
+			case "":
+			case "insecure":
+				override.Insecure = true
+			case "no-tls-verify":
+				override.NoTLSVerify = true
+			default:
+				return nil, fmt.Errorf("unknown option %q", option)
+			}
+		}
+		if override.Insecure && override.NoTLSVerify {
+			return nil, fmt.Errorf("options %q and %q are mutually exclusive in %q", "insecure", "no-tls-verify", pair)
 		}
 
 		overrides = append(overrides, override)
@@ -59,9 +68,10 @@ func ParseOverrides(value string) ([]Override, error) {
 }
 
 // ParseResolverAndDialOptions parses value using ParseOverrides.
-// String is a comma `,` separated list of `ID=ADDRESS[;insecure]` pairs.
+// String is a comma `,` separated list of `ID=ADDRESS[;OPTION]` pairs.
+// Supported options are `insecure` and `no-tls-verify`. They are mutually exclusive.
 // If an ID ends with `*`, [PrefixResolver] is returned, and [SingleResolver] otherwise.
-// For each insecure override respective dial option is returned.
+// For each transport option override respective dial option is returned.
 func ParseResolverAndDialOptions(value string) (Resolver, []grpc.DialOption, error) {
 	overrides, err := ParseOverrides(value)
 	if err != nil {
@@ -86,13 +96,21 @@ func ParseResolverAndDialOptions(value string) (Resolver, []grpc.DialOption, err
 			opt := grpc.WithTransportCredentials(insecure.NewCredentials())
 			dialOptions[o.Address] = WithAddressDialOptions(Address(o.Address), opt)
 		}
+		if o.NoTLSVerify {
+			tlsConfig := &tls.Config{
+				InsecureSkipVerify: true, //nolint:gosec // Explicit no-tls-verify override for selected APIs.
+			}
+			opt := grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig))
+			dialOptions[o.Address] = WithAddressDialOptions(Address(o.Address), opt)
+		}
 	}
 
 	return resultResolver, slices.Collect(maps.Values(dialOptions)), err
 }
 
 // ParseResolver parses value, usually env, and creates resolver.
-// String is a comma `,` separated list of `ID=ADDRESS[;insecure]` pairs.
+// String is a comma `,` separated list of `ID=ADDRESS[;OPTION]` pairs.
+// Supported options are `insecure` and `no-tls-verify`. They are mutually exclusive.
 // If an ID ends with `*`, [PrefixResolver] is returned, and [SingleResolver] otherwise.
 func ParseResolver(value string) (Resolver, error) {
 	resolver, _, err := ParseResolverAndDialOptions(value)
