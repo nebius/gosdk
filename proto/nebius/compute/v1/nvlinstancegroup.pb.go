@@ -138,7 +138,9 @@ func (x *NVLInstanceGroup) GetStatus() *NVLInstanceGroupStatus {
 type NVLInstanceGroupSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Type of the NVLink InstanceGroup (corresponds to the Compute platform)
-	Type          NVLInstanceGroupSpec_NVLInstanceGroupType `protobuf:"varint,1,opt,name=type,proto3,enum=nebius.compute.v1.NVLInstanceGroupSpec_NVLInstanceGroupType" json:"type,omitempty"`
+	Type NVLInstanceGroupSpec_NVLInstanceGroupType `protobuf:"varint,1,opt,name=type,proto3,enum=nebius.compute.v1.NVLInstanceGroupSpec_NVLInstanceGroupType" json:"type,omitempty"`
+	// Maximum number of instances in the NVLink InstanceGroup
+	Size          int64 `protobuf:"varint,2,opt,name=size,proto3" json:"size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -178,6 +180,13 @@ func (x *NVLInstanceGroupSpec) GetType() NVLInstanceGroupSpec_NVLInstanceGroupTy
 		return x.Type
 	}
 	return NVLInstanceGroupSpec_UNSPECIFIED
+}
+
+func (x *NVLInstanceGroupSpec) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
 }
 
 type NVLInstanceGroupStatus struct {
@@ -287,9 +296,10 @@ const file_nebius_compute_v1_nvlinstancegroup_proto_rawDesc = "" +
 	"\x10NVLInstanceGroup\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1.NVLInstanceGroupSpecR\x04spec\x12A\n" +
-	"\x06status\x18\x03 \x01(\v2).nebius.compute.v1.NVLInstanceGroupStatusR\x06status\"\xad\x01\n" +
+	"\x06status\x18\x03 \x01(\v2).nebius.compute.v1.NVLInstanceGroupStatusR\x06status\"\xd1\x01\n" +
 	"\x14NVLInstanceGroupSpec\x12V\n" +
-	"\x04type\x18\x01 \x01(\x0e2<.nebius.compute.v1.NVLInstanceGroupSpec.NVLInstanceGroupTypeB\x04\xbaJ\x01\x02R\x04type\"=\n" +
+	"\x04type\x18\x01 \x01(\x0e2<.nebius.compute.v1.NVLInstanceGroupSpec.NVLInstanceGroupTypeB\x04\xbaJ\x01\x02R\x04type\x12\"\n" +
+	"\x04size\x18\x02 \x01(\x03B\x0e\xbaH\a\xc8\x01\x01\"\x02 \x00\xbaJ\x01\x02R\x04size\"=\n" +
 	"\x14NVLInstanceGroupType\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05GB200\x10\x01\x12\t\n" +
