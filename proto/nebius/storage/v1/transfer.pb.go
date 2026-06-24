@@ -304,6 +304,8 @@ func (TransferError_Origin) EnumDescriptor() ([]byte, []int) {
 // Transfer that migrates data from other providers or across different regions of Nebius Object Storage.
 // Transfer consists of consecutive iterations where the service lists objects in the source bucket and
 // moves those that need to be transferred according to the specified overwrite strategy and touch unmanaged flag value.
+// If the enable deletes in destination flag is set, the service also lists destination bucket and deletes
+// objects which do not exist in the source bucket according to the touch unmanaged flag value.
 // After an iteration completes, the transfer will stop if its stop condition is met. Otherwise,
 // it will wait for the defined inter-iteration interval before starting the next iteration.
 type Transfer struct {
@@ -393,6 +395,9 @@ type TransferSpec struct {
 	InterIterationInterval *durationpb.Duration `protobuf:"bytes,7,opt,name=inter_iteration_interval,json=interIterationInterval,proto3" json:"inter_iteration_interval,omitempty"`
 	// Overwrite strategy set logic of overwrite already existed objects in destination bucket.
 	OverwriteStrategy TransferSpec_OverwriteStrategy `protobuf:"varint,8,opt,name=overwrite_strategy,json=overwriteStrategy,proto3,enum=nebius.storage.v1.TransferSpec_OverwriteStrategy" json:"overwrite_strategy,omitempty"`
+	// If enable_deletes_in_destination flag is set, service will delete objects that exist in destination, but don't exist in source.
+	// If touch_unmanaged flag isn't set, we do not delete objects that haven't been created by Data Transfer service.
+	EnableDeletesInDestination bool `protobuf:"varint,9,opt,name=enable_deletes_in_destination,json=enableDeletesInDestination,proto3" json:"enable_deletes_in_destination,omitempty"`
 	// If touch_unmanaged flag is set, service will be allowed to overwrite and delete from destination objects that were not
 	// created by Data Transfer Service. If this flag is false, Data Transfer Service will never overwrite or delete objects
 	// that haven't been created by Data Transfer service.
@@ -498,6 +503,13 @@ func (x *TransferSpec) GetOverwriteStrategy() TransferSpec_OverwriteStrategy {
 		return x.OverwriteStrategy
 	}
 	return TransferSpec_OVERWRITE_STRATEGY_UNSPECIFIED
+}
+
+func (x *TransferSpec) GetEnableDeletesInDestination() bool {
+	if x != nil {
+		return x.EnableDeletesInDestination
+	}
+	return false
 }
 
 func (x *TransferSpec) GetTouchUnmanaged() bool {
@@ -972,6 +984,8 @@ type TransferIteration struct {
 	EndTime *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	// Number of objects transferred during this iteration.
 	ObjectsTransferredCount int64 `protobuf:"varint,6,opt,name=objects_transferred_count,json=objectsTransferredCount,proto3" json:"objects_transferred_count,omitempty"`
+	// Number of objects deleted from destination bucket during this iteration.
+	ObjectsDeletedCount int64 `protobuf:"varint,7,opt,name=objects_deleted_count,json=objectsDeletedCount,proto3" json:"objects_deleted_count,omitempty"`
 	// Total size of objects transferred during this iteration.
 	ObjectsTransferredSize int64 `protobuf:"varint,8,opt,name=objects_transferred_size,json=objectsTransferredSize,proto3" json:"objects_transferred_size,omitempty"`
 	// Average throughput in bytes per second during the iteration.
@@ -1048,6 +1062,13 @@ func (x *TransferIteration) GetEndTime() *timestamppb.Timestamp {
 func (x *TransferIteration) GetObjectsTransferredCount() int64 {
 	if x != nil {
 		return x.ObjectsTransferredCount
+	}
+	return 0
+}
+
+func (x *TransferIteration) GetObjectsDeletedCount() int64 {
+	if x != nil {
+		return x.ObjectsDeletedCount
 	}
 	return 0
 }
@@ -1630,7 +1651,7 @@ type TransferDestination_NebiusProvider struct {
 	// Name of the destination bucket.
 	BucketName string `protobuf:"bytes,2,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
 	// Credentials for accessing the destination bucket.
-	// These credentials must have head, write permissions.
+	// These credentials must have head, write and delete (if enable_deletes_in_destination flag is enabled) permissions.
 	//
 	// Types that are valid to be assigned to Credentials:
 	//
@@ -1722,7 +1743,7 @@ type TransferDestination_S3CompatibleProvider struct {
 	// Name of the destination bucket.
 	BucketName string `protobuf:"bytes,3,opt,name=bucket_name,json=bucketName,proto3" json:"bucket_name,omitempty"`
 	// Credentials for accessing the destination bucket.
-	// These credentials must have head, write permissions.
+	// These credentials must have head, write and delete (if enable_deletes_in_destination flag is enabled) permissions.
 	//
 	// Types that are valid to be assigned to Credentials:
 	//
@@ -1835,7 +1856,8 @@ const file_nebius_storage_v1_transfer_proto_rawDesc = "" +
 	"\bTransfer\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.storage.v1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12?\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.storage.v1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\xc6\t\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.storage.v1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\x8f\n" +
+	"\n" +
 	"\fTransferSpec\x12A\n" +
 	"\x06source\x18\x01 \x01(\v2!.nebius.storage.v1.TransferSourceB\x06\xbaH\x03\xc8\x01\x01R\x06source\x12P\n" +
 	"\vdestination\x18\x02 \x01(\v2&.nebius.storage.v1.TransferDestinationB\x06\xbaH\x03\xc8\x01\x01R\vdestination\x12D\n" +
@@ -1845,7 +1867,8 @@ const file_nebius_storage_v1_transfer_proto_rawDesc = "" +
 	"\binfinite\x18\x06 \x01(\v25.nebius.storage.v1.TransferSpec.StopConditionInfiniteB\x04\xbaJ\x01\x06H\x00R\binfinite\x12a\n" +
 	"\x18inter_iteration_interval\x18\a \x01(\v2\x19.google.protobuf.DurationB\f\xbaH\x05\xaa\x01\x022\x00\xbaJ\x01\aR\x16interIterationInterval\x12l\n" +
 	"\x12overwrite_strategy\x18\b \x01(\x0e21.nebius.storage.v1.TransferSpec.OverwriteStrategyB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x11overwriteStrategy\x12-\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x11overwriteStrategy\x12G\n" +
+	"\x1denable_deletes_in_destination\x18\t \x01(\bB\x04\xbaJ\x01\x02R\x1aenableDeletesInDestination\x12-\n" +
 	"\x0ftouch_unmanaged\x18\n" +
 	" \x01(\bB\x04\xbaJ\x01\x02R\x0etouchUnmanaged\x1aw\n" +
 	"\bLimiters\x12;\n" +
@@ -1937,7 +1960,7 @@ const file_nebius_storage_v1_transfer_proto_rawDesc = "" +
 	"\x0fSuspensionState\x12 \n" +
 	"\x1cSUSPENSION_STATE_UNSPECIFIED\x10\x00\x12\x11\n" +
 	"\rNOT_SUSPENDED\x10\x01\x12\r\n" +
-	"\tSUSPENDED\x10\x02\"\xb5\x04\n" +
+	"\tSUSPENDED\x10\x02\"\xe9\x04\n" +
 	"\x11TransferIteration\x12'\n" +
 	"\x0fsequence_number\x18\x01 \x01(\x03R\x0esequenceNumber\x12@\n" +
 	"\x05state\x18\x02 \x01(\x0e2*.nebius.storage.v1.TransferIteration.StateR\x05state\x126\n" +
@@ -1945,7 +1968,8 @@ const file_nebius_storage_v1_transfer_proto_rawDesc = "" +
 	"\n" +
 	"start_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tstartTime\x125\n" +
 	"\bend_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12:\n" +
-	"\x19objects_transferred_count\x18\x06 \x01(\x03R\x17objectsTransferredCount\x128\n" +
+	"\x19objects_transferred_count\x18\x06 \x01(\x03R\x17objectsTransferredCount\x122\n" +
+	"\x15objects_deleted_count\x18\a \x01(\x03R\x13objectsDeletedCount\x128\n" +
 	"\x18objects_transferred_size\x18\b \x01(\x03R\x16objectsTransferredSize\x128\n" +
 	"\x18average_throughput_bytes\x18\t \x01(\x03R\x16averageThroughputBytes\"[\n" +
 	"\x05State\x12\x15\n" +
