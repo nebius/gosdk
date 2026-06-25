@@ -74,6 +74,9 @@ func WithHTTPClient(client *http.Client) Option {
 
 // NewIMDSTokenizer returns a [BearerTokener] that serves token from IMDS HTTP endpoint,
 // requesting it every time.
+//
+// Endpoint must return a JSON object with `access_token` and `expires_at` fields.
+// For Nebius IMDS, pass http://metadata.nebius.internal/v1/iam/sa/token.
 func NewIMDSTokenizer(endpoint string, opts ...Option) (*IMDSTokenizer, error) {
 	if endpoint == "" {
 		return nil, errors.New("empty IMDS endpoint")

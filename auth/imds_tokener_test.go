@@ -25,7 +25,7 @@ func TestIMDSTokenizerErrorBodyReportsTruncation(t *testing.T) {
 		}),
 	}
 	tokener, err := auth.NewIMDSTokenizer(
-		"http://metadata.internal/token",
+		"http://metadata.nebius.internal/v1/iam/sa/token",
 		auth.WithHTTPClient(client),
 		auth.WithHTTPMaxAttempts(1),
 	)
