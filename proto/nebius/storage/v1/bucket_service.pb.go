@@ -548,10 +548,10 @@ const file_nebius_storage_v1_bucket_service_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04nameJ\x04\b\x03\x10\x04\"\x96\x01\n" +
 	"\x13CreateBucketRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x127\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x04\xbaJ\x01\aR\x04spec\"\x98\x01\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x04\xbaJ\x01\aR\x04spec\"\x90\x01\n" +
 	"\x13UpdateBucketRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xa4\x01\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecR\x04spec\"\xa4\x01\n" +
 	"\x13DeleteBucketRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x127\n" +
 	"\bpurge_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\apurgeAt\x12-\n" +
