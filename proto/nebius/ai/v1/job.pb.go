@@ -1515,9 +1515,9 @@ var File_nebius_ai_v1_job_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
-	"\x16nebius/ai/v1/job.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xb7\x01\n" +
-	"\x03Job\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
+	"\x16nebius/ai/v1/job.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xc3\x01\n" +
+	"\x03Job\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
 	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\x90\x19\n" +
 	"\aJobSpec\x12\x1c\n" +
