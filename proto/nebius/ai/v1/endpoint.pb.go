@@ -1487,9 +1487,9 @@ var File_nebius_ai_v1_endpoint_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
-	"\x1bnebius/ai/v1/endpoint.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xc6\x01\n" +
-	"\bEndpoint\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x126\n" +
+	"\x1bnebius/ai/v1/endpoint.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xd2\x01\n" +
+	"\bEndpoint\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
 	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xf7\x1b\n" +
 	"\fEndpointSpec\x12\x1c\n" +

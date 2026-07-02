@@ -76,13 +76,13 @@ func (s jobService) GetByName(ctx context.Context, request *v1.GetJobByNameReque
 	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -111,13 +111,13 @@ func (s jobService) List(ctx context.Context, request *v1.ListJobsRequest, opts 
 	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -168,10 +168,10 @@ func (s jobService) Create(ctx context.Context, request *v1.CreateJobRequest, op
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"project"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, nil) == "" {
+			if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -181,7 +181,7 @@ func (s jobService) Create(ctx context.Context, request *v1.CreateJobRequest, op
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}

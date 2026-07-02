@@ -388,17 +388,19 @@ const file_nebius_ai_v1_job_service_proto_rawDesc = "" +
 	"\x1enebius/ai/v1/job_service.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x16nebius/ai/v1/job.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\"1\n" +
 	"\rGetJobRequest\x12 \n" +
 	"\x02id\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xe2J\a\n" +
-	"\x05aijobR\x02id\"V\n" +
-	"\x13GetJobByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"r\n" +
-	"\x0fListJobsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\x05aijobR\x02id\"b\n" +
+	"\x13GetJobByNameRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"~\n" +
+	"\x0fListJobsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\xa6\x01\n" +
-	"\x10CreateJobRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\xb2\x01\n" +
+	"\x10CreateJobRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x17\n" +
 	"\adry_run\x18\x03 \x01(\bR\x06dryRun\"4\n" +
 	"\x10DeleteJobRequest\x12 \n" +
