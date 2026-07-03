@@ -1,6 +1,6 @@
 module github.com/nebius/gosdk
 
-go 1.24.0 // minimal supported version 1.24, tested all versions up to 1.26
+go 1.25.0 // minimal supported version 1.24, tested all versions up to 1.26
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.9-20250912141014-52f32327d4b0.1
@@ -14,8 +14,8 @@ require (
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/mock v0.2.0
 	go.yaml.in/yaml/v3 v3.0.2
-	golang.org/x/net v0.38.0
-	golang.org/x/sync v0.16.0
+	golang.org/x/net v0.55.0
+	golang.org/x/sync v0.20.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250811230008-5f3141c8851a
 	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.10
@@ -37,8 +37,8 @@ require (
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/stoewer/go-strcase v1.3.1 // indirect
 	golang.org/x/exp v0.0.0-20250813145105-42675adae3e6 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
