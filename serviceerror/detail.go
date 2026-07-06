@@ -15,6 +15,7 @@ import (
 //   - [Internal]
 //   - [NotEnoughResources]
 //   - [OperationAborted]
+//   - [OperationConflict]
 //   - [OutOfRange]
 //   - [PermissionDenied]
 //   - [QuotaFailure]
@@ -22,6 +23,7 @@ import (
 //   - [ResourceConflict]
 //   - [ResourceNotFound]
 //   - [TooManyRequests]
+//   - [NotEnoughResources]
 //   - [Unknown]
 type Detail interface {
 	String() string
@@ -50,6 +52,8 @@ func NewDetail(serviceError *common.ServiceError) Detail {
 		return newResourceConflict(serviceError, seDetails.ResourceConflict)
 	case *common.ServiceError_OperationAborted:
 		return newOperationAborted(serviceError, seDetails.OperationAborted)
+	case *common.ServiceError_OperationConflict:
+		return newOperationConflict(serviceError, seDetails.OperationConflict)
 	case *common.ServiceError_TooManyRequests:
 		return newTooManyRequests(serviceError, seDetails.TooManyRequests)
 	case *common.ServiceError_QuotaFailure:

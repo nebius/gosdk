@@ -23,6 +23,9 @@ package v1
 // func (x *OperationAborted) Sanitize()            // is not generated as no sensitive fields found
 // func (x *OperationAborted) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *OperationConflict) Sanitize()            // is not generated as no sensitive fields found
+// func (x *OperationConflict) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *OutOfRange) Sanitize()            // is not generated as no sensitive fields found
 // func (x *OutOfRange) LogValue() slog.Value // is not generated as no sensitive fields found
 
