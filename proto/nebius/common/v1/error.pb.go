@@ -96,6 +96,7 @@ type ServiceError struct {
 	//	*ServiceError_PermissionDenied
 	//	*ServiceError_ResourceConflict
 	//	*ServiceError_OperationAborted
+	//	*ServiceError_OperationConflict
 	//	*ServiceError_TooManyRequests
 	//	*ServiceError_QuotaFailure
 	//	*ServiceError_NotEnoughResources
@@ -230,6 +231,15 @@ func (x *ServiceError) GetOperationAborted() *OperationAborted {
 	return nil
 }
 
+func (x *ServiceError) GetOperationConflict() *OperationConflict {
+	if x != nil {
+		if x, ok := x.Details.(*ServiceError_OperationConflict); ok {
+			return x.OperationConflict
+		}
+	}
+	return nil
+}
+
 func (x *ServiceError) GetTooManyRequests() *TooManyRequests {
 	if x != nil {
 		if x, ok := x.Details.(*ServiceError_TooManyRequests); ok {
@@ -309,6 +319,10 @@ type ServiceError_OperationAborted struct {
 	OperationAborted *OperationAborted `protobuf:"bytes,131,opt,name=operation_aborted,json=operationAborted,proto3,oneof"`
 }
 
+type ServiceError_OperationConflict struct {
+	OperationConflict *OperationConflict `protobuf:"bytes,132,opt,name=operation_conflict,json=operationConflict,proto3,oneof"`
+}
+
 type ServiceError_TooManyRequests struct {
 	TooManyRequests *TooManyRequests `protobuf:"bytes,140,opt,name=too_many_requests,json=tooManyRequests,proto3,oneof"`
 }
@@ -340,6 +354,8 @@ func (*ServiceError_PermissionDenied) isServiceError_Details() {}
 func (*ServiceError_ResourceConflict) isServiceError_Details() {}
 
 func (*ServiceError_OperationAborted) isServiceError_Details() {}
+
+func (*ServiceError_OperationConflict) isServiceError_Details() {}
 
 func (*ServiceError_TooManyRequests) isServiceError_Details() {}
 
@@ -661,6 +677,62 @@ func (x *OperationAborted) GetResourceId() string {
 	return ""
 }
 
+// Operation cannot be started because a conflicting operation is already running on the same resource.
+// Wait until the conflicting operation finishes, then you can retry starting your operation.
+type OperationConflict struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the conflicting operation (the one that's running).
+	ConflictingOperationId string `protobuf:"bytes,1,opt,name=conflicting_operation_id,json=conflictingOperationId,proto3" json:"conflicting_operation_id,omitempty"`
+	// Resource ID corresponding to the conflicting operation.
+	ResourceId    string `protobuf:"bytes,2,opt,name=resource_id,json=resourceId,proto3" json:"resource_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OperationConflict) Reset() {
+	*x = OperationConflict{}
+	mi := &file_nebius_common_v1_error_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OperationConflict) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OperationConflict) ProtoMessage() {}
+
+func (x *OperationConflict) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_common_v1_error_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OperationConflict.ProtoReflect.Descriptor instead.
+func (*OperationConflict) Descriptor() ([]byte, []int) {
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *OperationConflict) GetConflictingOperationId() string {
+	if x != nil {
+		return x.ConflictingOperationId
+	}
+	return ""
+}
+
+func (x *OperationConflict) GetResourceId() string {
+	if x != nil {
+		return x.ResourceId
+	}
+	return ""
+}
+
 // Indicates that element with requested parameters is exceeding the particular range.
 type OutOfRange struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -674,7 +746,7 @@ type OutOfRange struct {
 
 func (x *OutOfRange) Reset() {
 	*x = OutOfRange{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[7]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -686,7 +758,7 @@ func (x *OutOfRange) String() string {
 func (*OutOfRange) ProtoMessage() {}
 
 func (x *OutOfRange) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[7]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -699,7 +771,7 @@ func (x *OutOfRange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OutOfRange.ProtoReflect.Descriptor instead.
 func (*OutOfRange) Descriptor() ([]byte, []int) {
-	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{7}
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *OutOfRange) GetRequested() string {
@@ -727,7 +799,7 @@ type PermissionDenied struct {
 
 func (x *PermissionDenied) Reset() {
 	*x = PermissionDenied{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[8]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -739,7 +811,7 @@ func (x *PermissionDenied) String() string {
 func (*PermissionDenied) ProtoMessage() {}
 
 func (x *PermissionDenied) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[8]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -752,7 +824,7 @@ func (x *PermissionDenied) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PermissionDenied.ProtoReflect.Descriptor instead.
 func (*PermissionDenied) Descriptor() ([]byte, []int) {
-	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{8}
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PermissionDenied) GetResourceId() string {
@@ -775,7 +847,7 @@ type InternalError struct {
 
 func (x *InternalError) Reset() {
 	*x = InternalError{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[9]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -787,7 +859,7 @@ func (x *InternalError) String() string {
 func (*InternalError) ProtoMessage() {}
 
 func (x *InternalError) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[9]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -800,7 +872,7 @@ func (x *InternalError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InternalError.ProtoReflect.Descriptor instead.
 func (*InternalError) Descriptor() ([]byte, []int) {
-	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{9}
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *InternalError) GetRequestId() string {
@@ -828,7 +900,7 @@ type TooManyRequests struct {
 
 func (x *TooManyRequests) Reset() {
 	*x = TooManyRequests{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[10]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -840,7 +912,7 @@ func (x *TooManyRequests) String() string {
 func (*TooManyRequests) ProtoMessage() {}
 
 func (x *TooManyRequests) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[10]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -853,7 +925,7 @@ func (x *TooManyRequests) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TooManyRequests.ProtoReflect.Descriptor instead.
 func (*TooManyRequests) Descriptor() ([]byte, []int) {
-	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{10}
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *TooManyRequests) GetViolation() string {
@@ -874,7 +946,7 @@ type QuotaFailure struct {
 
 func (x *QuotaFailure) Reset() {
 	*x = QuotaFailure{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[11]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -886,7 +958,7 @@ func (x *QuotaFailure) String() string {
 func (*QuotaFailure) ProtoMessage() {}
 
 func (x *QuotaFailure) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[11]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -899,7 +971,7 @@ func (x *QuotaFailure) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QuotaFailure.ProtoReflect.Descriptor instead.
 func (*QuotaFailure) Descriptor() ([]byte, []int) {
-	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{11}
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *QuotaFailure) GetViolations() []*QuotaFailure_Violation {
@@ -920,7 +992,7 @@ type NotEnoughResources struct {
 
 func (x *NotEnoughResources) Reset() {
 	*x = NotEnoughResources{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[12]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -932,7 +1004,7 @@ func (x *NotEnoughResources) String() string {
 func (*NotEnoughResources) ProtoMessage() {}
 
 func (x *NotEnoughResources) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[12]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -945,7 +1017,7 @@ func (x *NotEnoughResources) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NotEnoughResources.ProtoReflect.Descriptor instead.
 func (*NotEnoughResources) Descriptor() ([]byte, []int) {
-	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{12}
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *NotEnoughResources) GetViolations() []*NotEnoughResources_Violation {
@@ -967,7 +1039,7 @@ type BadRequest_Violation struct {
 
 func (x *BadRequest_Violation) Reset() {
 	*x = BadRequest_Violation{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[13]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -979,7 +1051,7 @@ func (x *BadRequest_Violation) String() string {
 func (*BadRequest_Violation) ProtoMessage() {}
 
 func (x *BadRequest_Violation) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[13]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1025,7 +1097,7 @@ type QuotaFailure_Violation struct {
 
 func (x *QuotaFailure_Violation) Reset() {
 	*x = QuotaFailure_Violation{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[14]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1037,7 +1109,7 @@ func (x *QuotaFailure_Violation) String() string {
 func (*QuotaFailure_Violation) ProtoMessage() {}
 
 func (x *QuotaFailure_Violation) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[14]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1050,7 +1122,7 @@ func (x *QuotaFailure_Violation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QuotaFailure_Violation.ProtoReflect.Descriptor instead.
 func (*QuotaFailure_Violation) Descriptor() ([]byte, []int) {
-	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{11, 0}
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{12, 0}
 }
 
 func (x *QuotaFailure_Violation) GetQuota() string {
@@ -1097,7 +1169,7 @@ type NotEnoughResources_Violation struct {
 
 func (x *NotEnoughResources_Violation) Reset() {
 	*x = NotEnoughResources_Violation{}
-	mi := &file_nebius_common_v1_error_proto_msgTypes[15]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1109,7 +1181,7 @@ func (x *NotEnoughResources_Violation) String() string {
 func (*NotEnoughResources_Violation) ProtoMessage() {}
 
 func (x *NotEnoughResources_Violation) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_common_v1_error_proto_msgTypes[15]
+	mi := &file_nebius_common_v1_error_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1122,7 +1194,7 @@ func (x *NotEnoughResources_Violation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NotEnoughResources_Violation.ProtoReflect.Descriptor instead.
 func (*NotEnoughResources_Violation) Descriptor() ([]byte, []int) {
-	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{12, 0}
+	return file_nebius_common_v1_error_proto_rawDescGZIP(), []int{13, 0}
 }
 
 func (x *NotEnoughResources_Violation) GetResourceType() string {
@@ -1150,7 +1222,7 @@ var File_nebius_common_v1_error_proto protoreflect.FileDescriptor
 
 const file_nebius_common_v1_error_proto_rawDesc = "" +
 	"\n" +
-	"\x1cnebius/common/v1/error.proto\x12\x10nebius.common.v1\"\xa0\t\n" +
+	"\x1cnebius/common/v1/error.proto\x12\x10nebius.common.v1\"\xf7\t\n" +
 	"\fServiceError\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12?\n" +
@@ -1163,7 +1235,8 @@ const file_nebius_common_v1_error_proto_rawDesc = "" +
 	"outOfRange\x12Q\n" +
 	"\x11permission_denied\x18x \x01(\v2\".nebius.common.v1.PermissionDeniedH\x00R\x10permissionDenied\x12R\n" +
 	"\x11resource_conflict\x18\x82\x01 \x01(\v2\".nebius.common.v1.ResourceConflictH\x00R\x10resourceConflict\x12R\n" +
-	"\x11operation_aborted\x18\x83\x01 \x01(\v2\".nebius.common.v1.OperationAbortedH\x00R\x10operationAborted\x12P\n" +
+	"\x11operation_aborted\x18\x83\x01 \x01(\v2\".nebius.common.v1.OperationAbortedH\x00R\x10operationAborted\x12U\n" +
+	"\x12operation_conflict\x18\x84\x01 \x01(\v2#.nebius.common.v1.OperationConflictH\x00R\x11operationConflict\x12P\n" +
 	"\x11too_many_requests\x18\x8c\x01 \x01(\v2!.nebius.common.v1.TooManyRequestsH\x00R\x0ftooManyRequests\x12F\n" +
 	"\rquota_failure\x18\x8d\x01 \x01(\v2\x1e.nebius.common.v1.QuotaFailureH\x00R\fquotaFailure\x12Y\n" +
 	"\x14not_enough_resources\x18\x8e\x01 \x01(\v2$.nebius.common.v1.NotEnoughResourcesH\x00R\x12notEnoughResources\x12I\n" +
@@ -1202,6 +1275,10 @@ const file_nebius_common_v1_error_proto_rawDesc = "" +
 	"\foperation_id\x18\x01 \x01(\tR\voperationId\x125\n" +
 	"\x17aborted_by_operation_id\x18\x02 \x01(\tR\x14abortedByOperationId\x12\x1f\n" +
 	"\vresource_id\x18\x03 \x01(\tR\n" +
+	"resourceId\"n\n" +
+	"\x11OperationConflict\x128\n" +
+	"\x18conflicting_operation_id\x18\x01 \x01(\tR\x16conflictingOperationId\x12\x1f\n" +
+	"\vresource_id\x18\x02 \x01(\tR\n" +
 	"resourceId\"@\n" +
 	"\n" +
 	"OutOfRange\x12\x1c\n" +
@@ -1249,7 +1326,7 @@ func file_nebius_common_v1_error_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_common_v1_error_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nebius_common_v1_error_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_nebius_common_v1_error_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_nebius_common_v1_error_proto_goTypes = []any{
 	(ServiceError_RetryType)(0),          // 0: nebius.common.v1.ServiceError.RetryType
 	(*ServiceError)(nil),                 // 1: nebius.common.v1.ServiceError
@@ -1259,38 +1336,40 @@ var file_nebius_common_v1_error_proto_goTypes = []any{
 	(*ResourceAlreadyExists)(nil),        // 5: nebius.common.v1.ResourceAlreadyExists
 	(*ResourceConflict)(nil),             // 6: nebius.common.v1.ResourceConflict
 	(*OperationAborted)(nil),             // 7: nebius.common.v1.OperationAborted
-	(*OutOfRange)(nil),                   // 8: nebius.common.v1.OutOfRange
-	(*PermissionDenied)(nil),             // 9: nebius.common.v1.PermissionDenied
-	(*InternalError)(nil),                // 10: nebius.common.v1.InternalError
-	(*TooManyRequests)(nil),              // 11: nebius.common.v1.TooManyRequests
-	(*QuotaFailure)(nil),                 // 12: nebius.common.v1.QuotaFailure
-	(*NotEnoughResources)(nil),           // 13: nebius.common.v1.NotEnoughResources
-	(*BadRequest_Violation)(nil),         // 14: nebius.common.v1.BadRequest.Violation
-	(*QuotaFailure_Violation)(nil),       // 15: nebius.common.v1.QuotaFailure.Violation
-	(*NotEnoughResources_Violation)(nil), // 16: nebius.common.v1.NotEnoughResources.Violation
+	(*OperationConflict)(nil),            // 8: nebius.common.v1.OperationConflict
+	(*OutOfRange)(nil),                   // 9: nebius.common.v1.OutOfRange
+	(*PermissionDenied)(nil),             // 10: nebius.common.v1.PermissionDenied
+	(*InternalError)(nil),                // 11: nebius.common.v1.InternalError
+	(*TooManyRequests)(nil),              // 12: nebius.common.v1.TooManyRequests
+	(*QuotaFailure)(nil),                 // 13: nebius.common.v1.QuotaFailure
+	(*NotEnoughResources)(nil),           // 14: nebius.common.v1.NotEnoughResources
+	(*BadRequest_Violation)(nil),         // 15: nebius.common.v1.BadRequest.Violation
+	(*QuotaFailure_Violation)(nil),       // 16: nebius.common.v1.QuotaFailure.Violation
+	(*NotEnoughResources_Violation)(nil), // 17: nebius.common.v1.NotEnoughResources.Violation
 }
 var file_nebius_common_v1_error_proto_depIdxs = []int32{
 	2,  // 0: nebius.common.v1.ServiceError.bad_request:type_name -> nebius.common.v1.BadRequest
 	3,  // 1: nebius.common.v1.ServiceError.bad_resource_state:type_name -> nebius.common.v1.BadResourceState
 	4,  // 2: nebius.common.v1.ServiceError.resource_not_found:type_name -> nebius.common.v1.ResourceNotFound
 	5,  // 3: nebius.common.v1.ServiceError.resource_already_exists:type_name -> nebius.common.v1.ResourceAlreadyExists
-	8,  // 4: nebius.common.v1.ServiceError.out_of_range:type_name -> nebius.common.v1.OutOfRange
-	9,  // 5: nebius.common.v1.ServiceError.permission_denied:type_name -> nebius.common.v1.PermissionDenied
+	9,  // 4: nebius.common.v1.ServiceError.out_of_range:type_name -> nebius.common.v1.OutOfRange
+	10, // 5: nebius.common.v1.ServiceError.permission_denied:type_name -> nebius.common.v1.PermissionDenied
 	6,  // 6: nebius.common.v1.ServiceError.resource_conflict:type_name -> nebius.common.v1.ResourceConflict
 	7,  // 7: nebius.common.v1.ServiceError.operation_aborted:type_name -> nebius.common.v1.OperationAborted
-	11, // 8: nebius.common.v1.ServiceError.too_many_requests:type_name -> nebius.common.v1.TooManyRequests
-	12, // 9: nebius.common.v1.ServiceError.quota_failure:type_name -> nebius.common.v1.QuotaFailure
-	13, // 10: nebius.common.v1.ServiceError.not_enough_resources:type_name -> nebius.common.v1.NotEnoughResources
-	10, // 11: nebius.common.v1.ServiceError.internal_error:type_name -> nebius.common.v1.InternalError
-	0,  // 12: nebius.common.v1.ServiceError.retry_type:type_name -> nebius.common.v1.ServiceError.RetryType
-	14, // 13: nebius.common.v1.BadRequest.violations:type_name -> nebius.common.v1.BadRequest.Violation
-	15, // 14: nebius.common.v1.QuotaFailure.violations:type_name -> nebius.common.v1.QuotaFailure.Violation
-	16, // 15: nebius.common.v1.NotEnoughResources.violations:type_name -> nebius.common.v1.NotEnoughResources.Violation
-	16, // [16:16] is the sub-list for method output_type
-	16, // [16:16] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	8,  // 8: nebius.common.v1.ServiceError.operation_conflict:type_name -> nebius.common.v1.OperationConflict
+	12, // 9: nebius.common.v1.ServiceError.too_many_requests:type_name -> nebius.common.v1.TooManyRequests
+	13, // 10: nebius.common.v1.ServiceError.quota_failure:type_name -> nebius.common.v1.QuotaFailure
+	14, // 11: nebius.common.v1.ServiceError.not_enough_resources:type_name -> nebius.common.v1.NotEnoughResources
+	11, // 12: nebius.common.v1.ServiceError.internal_error:type_name -> nebius.common.v1.InternalError
+	0,  // 13: nebius.common.v1.ServiceError.retry_type:type_name -> nebius.common.v1.ServiceError.RetryType
+	15, // 14: nebius.common.v1.BadRequest.violations:type_name -> nebius.common.v1.BadRequest.Violation
+	16, // 15: nebius.common.v1.QuotaFailure.violations:type_name -> nebius.common.v1.QuotaFailure.Violation
+	17, // 16: nebius.common.v1.NotEnoughResources.violations:type_name -> nebius.common.v1.NotEnoughResources.Violation
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_nebius_common_v1_error_proto_init() }
@@ -1307,6 +1386,7 @@ func file_nebius_common_v1_error_proto_init() {
 		(*ServiceError_PermissionDenied)(nil),
 		(*ServiceError_ResourceConflict)(nil),
 		(*ServiceError_OperationAborted)(nil),
+		(*ServiceError_OperationConflict)(nil),
 		(*ServiceError_TooManyRequests)(nil),
 		(*ServiceError_QuotaFailure)(nil),
 		(*ServiceError_NotEnoughResources)(nil),
@@ -1318,7 +1398,7 @@ func file_nebius_common_v1_error_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_common_v1_error_proto_rawDesc), len(file_nebius_common_v1_error_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   16,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

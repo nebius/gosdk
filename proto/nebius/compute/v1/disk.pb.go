@@ -743,7 +743,10 @@ type DiskStatus_LockState struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Disk is locked for deletion and for read-write operations while image is being created.
 	// Here is the list of these images.
-	Images        []string `protobuf:"bytes,1,rep,name=images,proto3" json:"images,omitempty"`
+	Images []string `protobuf:"bytes,1,rep,name=images,proto3" json:"images,omitempty"`
+	// Disk is locked only for deletion while snapshot is being created.
+	// Here is the list of these snapshots.
+	Snapshots     []string `protobuf:"bytes,2,rep,name=snapshots,proto3" json:"snapshots,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -785,6 +788,13 @@ func (x *DiskStatus_LockState) GetImages() []string {
 	return nil
 }
 
+func (x *DiskStatus_LockState) GetSnapshots() []string {
+	if x != nil {
+		return x.Snapshots
+	}
+	return nil
+}
+
 var File_nebius_compute_v1_disk_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_disk_proto_rawDesc = "" +
@@ -819,7 +829,7 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\"[\n" +
 	"\x11SourceImageFamily\x12)\n" +
 	"\fimage_family\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vimageFamily\x12\x1b\n" +
-	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xb4\x06\n" +
+	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xd2\x06\n" +
 	"\n" +
 	"DiskStatus\x129\n" +
 	"\x05state\x18\x01 \x01(\x0e2#.nebius.compute.v1.DiskStatus.StateR\x05state\x12+\n" +
@@ -835,9 +845,10 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\n" +
 	"lock_state\x18\v \x01(\v2'.nebius.compute.v1.DiskStatus.LockStateR\tlockState\x12\x1d\n" +
 	"\n" +
-	"managed_by\x18\f \x01(\tR\tmanagedBy\x1a#\n" +
+	"managed_by\x18\f \x01(\tR\tmanagedBy\x1aA\n" +
 	"\tLockState\x12\x16\n" +
-	"\x06images\x18\x01 \x03(\tR\x06images\"d\n" +
+	"\x06images\x18\x01 \x03(\tR\x06images\x12\x1c\n" +
+	"\tsnapshots\x18\x02 \x03(\tR\tsnapshots\"d\n" +
 	"\x05State\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
