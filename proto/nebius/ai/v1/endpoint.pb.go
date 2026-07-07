@@ -1491,7 +1491,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xf7\x1b\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\x93\x1c\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1515,9 +1515,9 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
 	"auth_token\x18\x1e \x01(\tB\x03\xc0J\x01R\tauthToken\x12o\n" +
 	"\x1cauth_token_mysterybox_secret\x18\x1f \x01(\v2..nebius.ai.v1.EndpointSpec.MysteryBoxSecretRefR\x19authTokenMysteryboxSecret\x12U\n" +
-	"\x0einjected_files\x18  \x03(\v2(.nebius.ai.v1.EndpointSpec.FileInjectionB\x04\xbaJ\x01\x04R\rinjectedFiles\x1a\xf4\x02\n" +
-	"\x13EnvironmentVariable\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x19\n" +
+	"\x0einjected_files\x18  \x03(\v2(.nebius.ai.v1.EndpointSpec.FileInjectionB\x04\xbaJ\x01\x04R\rinjectedFiles\x1a\x90\x03\n" +
+	"\x13EnvironmentVariable\x126\n" +
+	"\x04name\x18\x01 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^[a-zA-Z_][a-zA-Z0-9_]*$R\x04name\x12\x19\n" +
 	"\x05value\x18\x02 \x01(\tB\x03\xc0J\x01R\x05value\x12[\n" +
 	"\x11mysterybox_secret\x18\x03 \x01(\v2..nebius.ai.v1.EndpointSpec.MysteryBoxSecretRefR\x10mysteryboxSecret:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
 	"\x18mysterybox_secret_if_set\x122mysterybox_secret must set secret_id or version_id\x1aq!has(this.mysterybox_secret) || this.mysterybox_secret.secret_id != '' || this.mysterybox_secret.version_id != ''\x1a\xf4\x01\n" +
