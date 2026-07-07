@@ -1519,7 +1519,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x03Job\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\x90\x19\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xac\x19\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1542,9 +1542,9 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\vpreemptible\x18\x1b \x01(\bR\vpreemptible\x12;\n" +
 	"\x10restart_attempts\x18\x1e \x01(\x03B\x10\xbaH\r\"\v(\xff\xff\xff\xff\xff\xff\xff\xff\xff\x01R\x0frestartAttempts\x123\n" +
 	"\atimeout\x18\x1f \x01(\v2\x19.google.protobuf.DurationR\atimeout\x12P\n" +
-	"\x0einjected_files\x18  \x03(\v2#.nebius.ai.v1.JobSpec.FileInjectionB\x04\xbaJ\x01\x04R\rinjectedFiles\x1a\xef\x02\n" +
-	"\x13EnvironmentVariable\x12\x1a\n" +
-	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x19\n" +
+	"\x0einjected_files\x18  \x03(\v2#.nebius.ai.v1.JobSpec.FileInjectionB\x04\xbaJ\x01\x04R\rinjectedFiles\x1a\x8b\x03\n" +
+	"\x13EnvironmentVariable\x126\n" +
+	"\x04name\x18\x01 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^[a-zA-Z_][a-zA-Z0-9_]*$R\x04name\x12\x19\n" +
 	"\x05value\x18\x02 \x01(\tB\x03\xc0J\x01R\x05value\x12V\n" +
 	"\x11mysterybox_secret\x18\x03 \x01(\v2).nebius.ai.v1.JobSpec.MysteryBoxSecretRefR\x10mysteryboxSecret:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
 	"\x18mysterybox_secret_if_set\x122mysterybox_secret must set secret_id or version_id\x1aq!has(this.mysterybox_secret) || this.mysterybox_secret.secret_id != '' || this.mysterybox_secret.version_id != ''\x1a\xef\x01\n" +
