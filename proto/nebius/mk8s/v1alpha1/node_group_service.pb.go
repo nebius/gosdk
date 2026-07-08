@@ -517,31 +517,36 @@ var File_nebius_mk8s_v1alpha1_node_group_service_proto protoreflect.FileDescript
 
 const file_nebius_mk8s_v1alpha1_node_group_service_proto_rawDesc = "" +
 	"\n" +
-	"-nebius/mk8s/v1alpha1/node_group_service.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a%nebius/mk8s/v1alpha1/node_group.proto\"\xa1\x01\n" +
-	"\x16CreateNodeGroupRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12?\n" +
-	"\x04spec\x18\x02 \x01(\v2#.nebius.mk8s.v1alpha1.NodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"X\n" +
-	"\x13GetNodeGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12)\n" +
-	"\x10resource_version\x18\x02 \x01(\tR\x0fresourceVersion\"\\\n" +
-	"\x19GetNodeGroupByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"x\n" +
-	"\x15ListNodeGroupsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"-nebius/mk8s/v1alpha1/node_group_service.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a%nebius/mk8s/v1alpha1/node_group.proto\"\xb1\x01\n" +
+	"\x16CreateNodeGroupRequest\x12V\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\x12\vmk8sclusterR\bmetadata\x12?\n" +
+	"\x04spec\x18\x02 \x01(\v2#.nebius.mk8s.v1alpha1.NodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"j\n" +
+	"\x13GetNodeGroupRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rmk8snodegroupR\x02id\x12)\n" +
+	"\x10resource_version\x18\x02 \x01(\tR\x0fresourceVersion\"l\n" +
+	"\x19GetNodeGroupByNameRequest\x123\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
+	"\vmk8sclusterR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x88\x01\n" +
+	"\x15ListNodeGroupsRequest\x123\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
+	"\vmk8sclusterR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"w\n" +
 	"\x16ListNodeGroupsResponse\x125\n" +
 	"\x05items\x18\x01 \x03(\v2\x1f.nebius.mk8s.v1alpha1.NodeGroupR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x99\x01\n" +
-	"\x16UpdateNodeGroupRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x127\n" +
-	"\x04spec\x18\x02 \x01(\v2#.nebius.mk8s.v1alpha1.NodeGroupSpecR\x04spec\"0\n" +
-	"\x16DeleteNodeGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x9a\x01\n" +
-	"\x17UpgradeNodeGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12P\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa9\x01\n" +
+	"\x16UpdateNodeGroupRequest\x12V\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\x12\vmk8sclusterR\bmetadata\x127\n" +
+	"\x04spec\x18\x02 \x01(\v2#.nebius.mk8s.v1alpha1.NodeGroupSpecR\x04spec\"B\n" +
+	"\x16DeleteNodeGroupRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rmk8snodegroupR\x02id\"\xac\x01\n" +
+	"\x17UpgradeNodeGroupRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rmk8snodegroupR\x02id\x12P\n" +
 	"\x14latest_infra_version\x18\x02 \x01(\v2\x16.google.protobuf.EmptyB\x04\xbaJ\x01\x06H\x00R\x12latestInfraVersionB\x15\n" +
 	"\fupgrade_type\x12\x05\xbaH\x02\b\x012\xe1\x05\n" +
 	"\x10NodeGroupService\x12Q\n" +

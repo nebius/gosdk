@@ -648,29 +648,33 @@ const file_nebius_mk8s_v1_node_group_service_proto_rawDesc = "" +
 	"!NodeGroupCompatibilityVersionItem\x12\x0e\n" +
 	"\x02os\x18\x01 \x01(\tR\x02os\x12%\n" +
 	"\x0edrivers_preset\x18\x03 \x01(\tR\rdriversPreset\x121\n" +
-	"\x14compatible_platforms\x18\x05 \x03(\tR\x13compatiblePlatforms\"\xa4\x03\n" +
-	"\x16CreateNodeGroupRequest\x12\xce\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x8d\x02\xbaH\x89\x02\xba\x01\x82\x02\n" +
-	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')\xc8\x01\x01R\bmetadata\x129\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"X\n" +
-	"\x13GetNodeGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12)\n" +
-	"\x10resource_version\x18\x02 \x01(\tR\x0fresourceVersion\"x\n" +
-	"\x15ListNodeGroupsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\x14compatible_platforms\x18\x05 \x03(\tR\x13compatiblePlatforms\"\xb4\x03\n" +
+	"\x16CreateNodeGroupRequest\x12\xde\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x9d\x02\xbaH\x89\x02\xba\x01\x82\x02\n" +
+	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')\xc8\x01\x01\xe2J\r\x12\vmk8sclusterR\bmetadata\x129\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"j\n" +
+	"\x13GetNodeGroupRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rmk8snodegroupR\x02id\x12)\n" +
+	"\x10resource_version\x18\x02 \x01(\tR\x0fresourceVersion\"\x88\x01\n" +
+	"\x15ListNodeGroupsRequest\x123\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
+	"\vmk8sclusterR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"q\n" +
 	"\x16ListNodeGroupsResponse\x12/\n" +
 	"\x05items\x18\x01 \x03(\v2\x19.nebius.mk8s.v1.NodeGroupR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x93\x01\n" +
-	"\x16UpdateNodeGroupRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecR\x04spec\"0\n" +
-	"\x16DeleteNodeGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x9a\x01\n" +
-	"\x17UpgradeNodeGroupRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12P\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa3\x01\n" +
+	"\x16UpdateNodeGroupRequest\x12V\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\x12\vmk8sclusterR\bmetadata\x121\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecR\x04spec\"B\n" +
+	"\x16DeleteNodeGroupRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rmk8snodegroupR\x02id\"\xac\x01\n" +
+	"\x17UpgradeNodeGroupRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rmk8snodegroupR\x02id\x12P\n" +
 	"\x14latest_infra_version\x18\x02 \x01(\v2\x16.google.protobuf.EmptyB\x04\xbaJ\x01\x06H\x00R\x12latestInfraVersionB\x15\n" +
 	"\fupgrade_type\x12\x05\xbaH\x02\b\x012\xc3\x05\n" +
 	"\x10NodeGroupService\x12E\n" +

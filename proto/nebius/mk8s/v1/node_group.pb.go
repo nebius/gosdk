@@ -2083,10 +2083,10 @@ var File_nebius_mk8s_v1_node_group_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\n" +
-	"\x1fnebius/mk8s/v1/node_group.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a%nebius/common/v1/resource_event.proto\x1a&nebius/mk8s/v1/instance_template.proto\"\xc5\x03\n" +
-	"\tNodeGroup\x12\xcb\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x8a\x02\xbaH\x86\x02\xba\x01\x82\x02\n" +
-	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')R\bmetadata\x121\n" +
+	"\x1fnebius/mk8s/v1/node_group.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a%nebius/common/v1/resource_event.proto\x1a&nebius/mk8s/v1/instance_template.proto\"\xd5\x03\n" +
+	"\tNodeGroup\x12\xdb\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x9a\x02\xbaH\x86\x02\xba\x01\x82\x02\n" +
+	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')\xe2J\r\x12\vmk8sclusterR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecR\x04spec\x127\n" +
 	"\x06status\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.NodeGroupStatusR\x06status\"\xc1\x03\n" +
 	"\rNodeGroupSpec\x12G\n" +
@@ -2097,7 +2097,7 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\bstrategy\x18\x04 \x01(\v2+.nebius.mk8s.v1.NodeGroupDeploymentStrategyR\bstrategy\x12H\n" +
 	"\vauto_repair\x18\x06 \x01(\v2'.nebius.mk8s.v1.NodeGroupAutoRepairSpecR\n" +
 	"autoRepairB\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\xef\a\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\x84\b\n" +
 	"\fNodeTemplate\x12@\n" +
 	"\bmetadata\x18\x01 \x01(\v2$.nebius.mk8s.v1.NodeMetadataTemplateR\bmetadata\x12;\n" +
 	"\x06taints\x18\x02 \x03(\v2\x19.nebius.mk8s.v1.NodeTaintB\b\xbaH\x05\x92\x01\x02\x10dR\x06taints\x12C\n" +
@@ -2109,19 +2109,21 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"gpuCluster\x12e\n" +
 	"\x12network_interfaces\x18\x05 \x03(\v2(.nebius.mk8s.v1.NetworkInterfaceTemplateB\f\xbaH\x05\x92\x01\x02\x10\x01\xbaJ\x01\aR\x11networkInterfaces\x12H\n" +
 	"\vfilesystems\x18\a \x03(\v2&.nebius.mk8s.v1.AttachedFilesystemSpecR\vfilesystems\x124\n" +
-	"\x14cloud_init_user_data\x18\x06 \x01(\tB\x03\xc0J\x01R\x11cloudInitUserData\x12,\n" +
+	"\x14cloud_init_user_data\x18\x06 \x01(\tB\x03\xc0J\x01R\x11cloudInitUserData\x12A\n" +
 	"\x12service_account_id\x18\n" +
-	" \x01(\tR\x10serviceAccountId\x12G\n" +
+	" \x01(\tB\x13\xe2J\x10\n" +
+	"\x0eserviceaccountR\x10serviceAccountId\x12G\n" +
 	"\vpreemptible\x18\x0f \x01(\v2\x1f.nebius.mk8s.v1.PreemptibleSpecB\x04\xbaJ\x01\x06R\vpreemptible\x122\n" +
 	"\x06nvlink\x18\x11 \x01(\v2\x1a.nebius.mk8s.v1.NVLinkSpecR\x06nvlink\x12P\n" +
 	"\x12reservation_policy\x18\x12 \x01(\v2!.nebius.mk8s.v1.ReservationPolicyR\x11reservationPolicy\x12?\n" +
 	"\vlocal_disks\x18\x13 \x01(\v2\x1e.nebius.mk8s.v1.LocalDisksSpecR\n" +
 	"localDisks\x12(\n" +
 	"\bmax_pods\x18\x14 \x01(\x03B\r\xbaH\n" +
-	"\xd8\x01\x01\"\x05\x18\x80\x02(\bR\amaxPods\"[\n" +
+	"\xd8\x01\x01\"\x05\x18\x80\x02(\bR\amaxPods\"w\n" +
 	"\n" +
-	"NVLinkSpec\x129\n" +
-	"\x15nvl_instance_group_id\x18\x02 \x01(\tB\x04\xbaJ\x01\x02H\x00R\x12nvlInstanceGroupIdB\x12\n" +
+	"NVLinkSpec\x12U\n" +
+	"\x15nvl_instance_group_id\x18\x02 \x01(\tB \xbaJ\x01\x02\xe2J\x19\n" +
+	"\x17computenvlinstancegroupH\x00R\x12nvlInstanceGroupIdB\x12\n" +
 	"\tnvl_group\x12\x05\xbaH\x02\b\x01\"\xa5\x01\n" +
 	"\x14NodeMetadataTemplate\x12R\n" +
 	"\x06labels\x18\x01 \x03(\v20.nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntryB\b\xbaH\x05\x9a\x01\x02\x10dR\x06labels\x1a9\n" +
@@ -2129,16 +2131,19 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"<\n" +
 	"\vGpuSettings\x12-\n" +
-	"\x0edrivers_preset\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rdriversPreset\" \n" +
-	"\x0eGpuClusterSpec\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xd8\x01\n" +
+	"\x0edrivers_preset\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rdriversPreset\"8\n" +
+	"\x0eGpuClusterSpec\x12&\n" +
+	"\x02id\x18\x01 \x01(\tB\x16\xe2J\x13\n" +
+	"\x11computegpuclusterR\x02id\"\xe6\x01\n" +
 	"\x18NetworkInterfaceTemplate\x12Q\n" +
-	"\x11public_ip_address\x18\x01 \x01(\v2\x1f.nebius.mk8s.v1.PublicIPAddressB\x04\xbaJ\x01\x06R\x0fpublicIpAddress\x12!\n" +
-	"\tsubnet_id\x18\x03 \x01(\tB\x04\xbaJ\x01\aR\bsubnetId\x12F\n" +
+	"\x11public_ip_address\x18\x01 \x01(\v2\x1f.nebius.mk8s.v1.PublicIPAddressB\x04\xbaJ\x01\x06R\x0fpublicIpAddress\x12/\n" +
+	"\tsubnet_id\x18\x03 \x01(\tB\x12\xbaJ\x01\a\xe2J\v\n" +
+	"\tvpcsubnetR\bsubnetId\x12F\n" +
 	"\x0fsecurity_groups\x18\a \x03(\v2\x1d.nebius.mk8s.v1.SecurityGroupR\x0esecurityGroups\"\x11\n" +
-	"\x0fPublicIPAddress\"\x1f\n" +
-	"\rSecurityGroup\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xbd\x02\n" +
+	"\x0fPublicIPAddress\"6\n" +
+	"\rSecurityGroup\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xe2J\x12\n" +
+	"\x10vpcsecuritygroupR\x02id\"\xbd\x02\n" +
 	"\x16AttachedFilesystemSpec\x12Z\n" +
 	"\vattach_mode\x18\x01 \x01(\x0e21.nebius.mk8s.v1.AttachedFilesystemSpec.AttachModeB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"attachMode\x12#\n" +
@@ -2150,9 +2155,10 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\tREAD_ONLY\x10\x01\x12\x0e\n" +
 	"\n" +
 	"READ_WRITE\x10\x02B\r\n" +
-	"\x04type\x12\x05\xbaH\x02\b\x01\",\n" +
-	"\x12ExistingFilesystem\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x8f\x02\n" +
+	"\x04type\x12\x05\xbaH\x02\b\x01\"B\n" +
+	"\x12ExistingFilesystem\x12,\n" +
+	"\x02id\x18\x01 \x01(\tB\x1c\xbaH\x03\xc8\x01\x01\xe2J\x13\n" +
+	"\x11computefilesystemR\x02id\"\x8f\x02\n" +
 	"\x18NodeGroupAutoscalingSpec\x12/\n" +
 	"\x0emin_node_count\x18\x01 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00R\fminNodeCount\x12/\n" +
 	"\x0emax_node_count\x18\x02 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00R\fmaxNodeCount:\x90\x01\xbaH\x8c\x01\x1a\x89\x01\n" +
@@ -2185,10 +2191,11 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationH\x00R\atimeout\x12\x1c\n" +
 	"\bdisabled\x18\x04 \x01(\bH\x00R\bdisabledB\x10\n" +
 	"\atrigger\x12\x05\xbaH\x02\b\x01\"\x11\n" +
-	"\x0fPreemptibleSpec\"\xaa\x01\n" +
+	"\x0fPreemptibleSpec\"\xc3\x01\n" +
 	"\x11ReservationPolicy\x12@\n" +
-	"\x06policy\x18\x01 \x01(\x0e2(.nebius.mk8s.v1.ReservationPolicy.PolicyR\x06policy\x12'\n" +
-	"\x0freservation_ids\x18\x02 \x03(\tR\x0ereservationIds\"*\n" +
+	"\x06policy\x18\x01 \x01(\x0e2(.nebius.mk8s.v1.ReservationPolicy.PolicyR\x06policy\x12@\n" +
+	"\x0freservation_ids\x18\x02 \x03(\tB\x17\xe2J\x14\n" +
+	"\x12computereservationR\x0ereservationIds\"*\n" +
 	"\x06Policy\x12\b\n" +
 	"\x04AUTO\x10\x00\x12\n" +
 	"\n" +

@@ -79,13 +79,13 @@ func (s nodeGroupService) GetByName(ctx context.Context, request *v1alpha1.GetNo
 	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"mk8scluster"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"mk8scluster"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -114,13 +114,13 @@ func (s nodeGroupService) List(ctx context.Context, request *v1alpha1.ListNodeGr
 	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"mk8scluster"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"mk8scluster"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -171,10 +171,10 @@ func (s nodeGroupService) Create(ctx context.Context, request *v1alpha1.CreateNo
 	*alphaops.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"mk8scluster"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, nil) == "" {
+			if check_nid.ValidateNIDString(tenantID, []string{"mk8scluster"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -184,7 +184,7 @@ func (s nodeGroupService) Create(ctx context.Context, request *v1alpha1.CreateNo
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"mk8scluster"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -218,7 +218,7 @@ func (s nodeGroupService) Update(ctx context.Context, request *v1alpha1.UpdateNo
 	*alphaops.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"mk8scluster"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
