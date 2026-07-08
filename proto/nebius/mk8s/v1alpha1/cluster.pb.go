@@ -699,19 +699,19 @@ var File_nebius_mk8s_v1alpha1_cluster_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1alpha1_cluster_proto_rawDesc = "" +
 	"\n" +
-	"\"nebius/mk8s/v1alpha1/cluster.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xca\x03\n" +
-	"\aCluster\x12\xca\x02\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x89\x02\xbaH\x85\x02\xba\x01\x81\x02\n" +
-	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '.', starting and ending with a letter or digit\x1arsize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9.]*)?[A-Za-z0-9])?$')R\bmetadata\x125\n" +
+	"\"nebius/mk8s/v1alpha1/cluster.proto\x12\x14nebius.mk8s.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xd6\x03\n" +
+	"\aCluster\x12\xd6\x02\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x95\x02\xbaH\x85\x02\xba\x01\x81\x02\n" +
+	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '.', starting and ending with a letter or digit\x1arsize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9.]*)?[A-Za-z0-9])?$')\xe2J\t\x12\aprojectR\bmetadata\x125\n" +
 	"\x04spec\x18\x02 \x01(\v2!.nebius.mk8s.v1alpha1.ClusterSpecR\x04spec\x12;\n" +
 	"\x06status\x18\x03 \x01(\v2#.nebius.mk8s.v1alpha1.ClusterStatusR\x06status\"\xac\x01\n" +
 	"\vClusterSpec\x12S\n" +
 	"\rcontrol_plane\x18\x02 \x01(\v2&.nebius.mk8s.v1alpha1.ControlPlaneSpecB\x06\xbaH\x03\xc8\x01\x01R\fcontrolPlane\x12H\n" +
-	"\fkube_network\x18\x03 \x01(\v2%.nebius.mk8s.v1alpha1.KubeNetworkSpecR\vkubeNetwork\"\xdd\x01\n" +
+	"\fkube_network\x18\x03 \x01(\v2%.nebius.mk8s.v1alpha1.KubeNetworkSpecR\vkubeNetwork\"\xeb\x01\n" +
 	"\x10ControlPlaneSpec\x12\x18\n" +
-	"\aversion\x18\x01 \x01(\tR\aversion\x12'\n" +
-	"\tsubnet_id\x18\x02 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\bsubnetId\x12M\n" +
+	"\aversion\x18\x01 \x01(\tR\aversion\x125\n" +
+	"\tsubnet_id\x18\x02 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\v\n" +
+	"\tvpcsubnetR\bsubnetId\x12M\n" +
 	"\tendpoints\x18\x03 \x01(\v2/.nebius.mk8s.v1alpha1.ControlPlaneEndpointsSpecR\tendpoints\x127\n" +
 	"\x11etcd_cluster_size\x18\x04 \x01(\x03B\v\xbaH\b\"\x060\x000\x010\x03R\x0fetcdClusterSize\"t\n" +
 	"\x19ControlPlaneEndpointsSpec\x12W\n" +

@@ -113,13 +113,13 @@ func (s clusterService) List(ctx context.Context, request *v1.ListClustersReques
 	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -170,10 +170,10 @@ func (s clusterService) Create(ctx context.Context, request *v1.CreateClusterReq
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"project"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, nil) == "" {
+			if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -183,7 +183,7 @@ func (s clusterService) Create(ctx context.Context, request *v1.CreateClusterReq
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -217,7 +217,7 @@ func (s clusterService) Update(ctx context.Context, request *v1.UpdateClusterReq
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"project"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
