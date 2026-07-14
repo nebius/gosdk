@@ -152,6 +152,8 @@ const (
 	EndpointStatus_STOPPED EndpointStatus_State = 6
 	// The endpoint encountered an error.
 	EndpointStatus_ERROR EndpointStatus_State = 8
+	// The endpoint is pulling an image (STARTING -> IMAGE_PULLING -> RUNNING).
+	EndpointStatus_IMAGE_PULLING EndpointStatus_State = 9
 )
 
 // Enum value maps for EndpointStatus_State.
@@ -165,6 +167,7 @@ var (
 		5: "DELETING",
 		6: "STOPPED",
 		8: "ERROR",
+		9: "IMAGE_PULLING",
 	}
 	EndpointStatus_State_value = map[string]int32{
 		"STATE_UNSPECIFIED": 0,
@@ -175,6 +178,7 @@ var (
 		"DELETING":          5,
 		"STOPPED":           6,
 		"ERROR":             8,
+		"IMAGE_PULLING":     9,
 	}
 )
 
@@ -226,6 +230,8 @@ const (
 	EndpointInstanceStatus_FAILED EndpointInstanceStatus_State = 7
 	// The endpoint encountered an error.
 	EndpointInstanceStatus_ERROR EndpointInstanceStatus_State = 8
+	// The endpoint is pulling an image (STARTING -> IMAGE_PULLING -> RUNNING).
+	EndpointInstanceStatus_IMAGE_PULLING EndpointInstanceStatus_State = 9
 )
 
 // Enum value maps for EndpointInstanceStatus_State.
@@ -240,6 +246,7 @@ var (
 		6: "STOPPED",
 		7: "FAILED",
 		8: "ERROR",
+		9: "IMAGE_PULLING",
 	}
 	EndpointInstanceStatus_State_value = map[string]int32{
 		"STATE_UNSPECIFIED": 0,
@@ -251,6 +258,7 @@ var (
 		"STOPPED":           6,
 		"FAILED":            7,
 		"ERROR":             8,
+		"IMAGE_PULLING":     9,
 	}
 )
 
@@ -1581,14 +1589,14 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
 	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\x80\x02\xbaH\xfc\x01\x1a\xf9\x01\n" +
-	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xb0\x03\n" +
+	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xc4\x03\n" +
 	"\x0eEndpointStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12B\n" +
 	"\tinstances\x18\n" +
 	" \x03(\v2$.nebius.ai.v1.EndpointInstanceStatusR\tinstances\x128\n" +
 	"\x05state\x18\x14 \x01(\x0e2\".nebius.ai.v1.EndpointStatus.StateR\x05state\x12G\n" +
-	"\rstate_details\x18\x15 \x01(\v2\".nebius.ai.v1.EndpointStateDetailsR\fstateDetails\"\x7f\n" +
+	"\rstate_details\x18\x15 \x01(\v2\".nebius.ai.v1.EndpointStateDetailsR\fstateDetails\"\x92\x01\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPROVISIONING\x10\x01\x12\f\n" +
@@ -1597,10 +1605,11 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bSTOPPING\x10\x04\x12\f\n" +
 	"\bDELETING\x10\x05\x12\v\n" +
 	"\aSTOPPED\x10\x06\x12\t\n" +
-	"\x05ERROR\x10\b\"L\n" +
+	"\x05ERROR\x10\b\x12\x11\n" +
+	"\rIMAGE_PULLING\x10\t\"L\n" +
 	"\x14EndpointStateDetails\x12\x1a\n" +
 	"\x04code\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\xd9\x03\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xec\x03\n" +
 	"\x16EndpointInstanceStatus\x12H\n" +
 	"\x05state\x18\x01 \x01(\x0e2*.nebius.ai.v1.EndpointInstanceStatus.StateB\x06\xbaH\x03\xc8\x01\x01R\x05state\x12D\n" +
 	"\x13compute_instance_id\x18\n" +
@@ -1609,7 +1618,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\x16compute_instance_state\x18\v \x01(\x0e2/.nebius.compute.v1.InstanceStatus.InstanceStateR\x14computeInstanceState\x12\x1d\n" +
 	"\n" +
 	"private_ip\x18\f \x01(\tR\tprivateIp\x12\x1b\n" +
-	"\tpublic_ip\x18\r \x01(\tR\bpublicIp\"\x8b\x01\n" +
+	"\tpublic_ip\x18\r \x01(\tR\bpublicIp\"\x9e\x01\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPROVISIONING\x10\x01\x12\f\n" +
@@ -1620,7 +1629,8 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\aSTOPPED\x10\x06\x12\n" +
 	"\n" +
 	"\x06FAILED\x10\a\x12\t\n" +
-	"\x05ERROR\x10\bBR\n" +
+	"\x05ERROR\x10\b\x12\x11\n" +
+	"\rIMAGE_PULLING\x10\tBR\n" +
 	"\x13ai.nebius.pub.ai.v1B\rEndpointProtoP\x01Z*github.com/nebius/gosdk/proto/nebius/ai/v1b\x06proto3"
 
 var (

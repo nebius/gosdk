@@ -10,11 +10,10 @@ import (
 	"net/http"
 	"net/url"
 	"os/exec"
-	"runtime"
 	"strings"
 
+	"github.com/nebius/gosdk/browser"
 	"github.com/nebius/gosdk/config"
-	"github.com/nebius/gosdk/config/paths"
 )
 
 func getCode(
@@ -61,7 +60,7 @@ func getCode(
 	query.Set("code_challenge_method", pkceCode.Method())
 	authURL.RawQuery = query.Encode()
 
-	cmd, err := browserOpenCommand(ctx, authURL.String())
+	cmd, err := browser.Command(ctx, authURL.String())
 	if err != nil {
 		logger.WarnContext(ctx, "no command found to open browser", slog.String("error", err.Error()))
 	}
@@ -207,64 +206,13 @@ func Authorize(
 func openBrowser(ctx context.Context, logger *slog.Logger, cmd *exec.Cmd) <-chan error {
 	ch := make(chan error, 1)
 
-	logger.DebugContext(ctx, "exec browser command", slog.String("cmd", cmd.String()))
-
 	go func() {
-		output, err := cmd.CombinedOutput()
-		if err != nil {
-			logger.ErrorContext(ctx, "open browser command failed",
-				slog.String("output", string(output)),
-				slog.String("error", err.Error()),
-			)
-			ch <- errors.Join(err, errors.New(string(output)))
-		} else {
-			logger.DebugContext(ctx, "open browser command completed", slog.String("output", string(output)))
+		if err := browser.Run(ctx, logger, cmd); err != nil {
+			ch <- err
 		}
 	}()
 
 	return ch
-}
-
-func browserOpenCommand(ctx context.Context, url string) (*exec.Cmd, error) {
-	var cmd *exec.Cmd
-	switch runtime.GOOS {
-	case "linux":
-		if IsWSL() {
-			//nolint:gosec // we trust url
-			cmd = exec.CommandContext(ctx, "cmd.exe", "/c", "start", strings.ReplaceAll(url, "&", "^&"))
-			home, err := paths.UserHomeDir()
-			if err != nil {
-				return nil, err
-			}
-			cmd.Dir = home
-			return cmd, nil
-		}
-		providers := []string{"xdg-open", "x-www-browser", "www-browser"}
-		for _, provider := range providers {
-			_, err := exec.LookPath(provider)
-			if err != nil {
-				continue
-			}
-			cmd = exec.CommandContext(ctx, provider, url)
-			break
-		}
-		if cmd == nil {
-			return nil, errors.New("browser provider not found")
-		}
-	case "freebsd", "openbsd", "netbsd":
-		cmd = exec.CommandContext(ctx, "xdg-open", url)
-	case "windows":
-		cmd = exec.CommandContext(ctx, "rundll32", "url.dll,FileProtocolHandler", url)
-	case "darwin":
-		cmd = exec.CommandContext(ctx, "open", url)
-	default:
-		return nil, errors.New("unsupported platform")
-	}
-	_, err := exec.LookPath(cmd.Path)
-	if err != nil {
-		return nil, err
-	}
-	return cmd, nil
 }
 
 func httpsURL(url string) string {

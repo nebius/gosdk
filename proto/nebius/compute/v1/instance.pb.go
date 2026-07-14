@@ -1561,14 +1561,14 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\bInstance\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\xff\b\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\x87\t\n" +
 	"\fInstanceSpec\x122\n" +
 	"\x12service_account_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x10serviceAccountId\x12F\n" +
 	"\tresources\x18\x02 \x01(\v2 .nebius.compute.v1.ResourcesSpecB\x06\xbaH\x03\xc8\x01\x01R\tresources\x12P\n" +
 	"\vgpu_cluster\x18\x03 \x01(\v2).nebius.compute.v1.InstanceGpuClusterSpecB\x04\xbaJ\x01\x02R\n" +
 	"gpuCluster\x12c\n" +
-	"\x12network_interfaces\x18\x04 \x03(\v2'.nebius.compute.v1.NetworkInterfaceSpecB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\x10\bR\x11networkInterfaces\x12@\n" +
-	"\tboot_disk\x18\x05 \x01(\v2#.nebius.compute.v1.AttachedDiskSpecR\bbootDisk\x12L\n" +
+	"\x12network_interfaces\x18\x04 \x03(\v2'.nebius.compute.v1.NetworkInterfaceSpecB\v\xbaH\b\xc8\x01\x01\x92\x01\x02\x10\bR\x11networkInterfaces\x12H\n" +
+	"\tboot_disk\x18\x05 \x01(\v2#.nebius.compute.v1.AttachedDiskSpecB\x06\xbaH\x03\xc8\x01\x01R\bbootDisk\x12L\n" +
 	"\x0fsecondary_disks\x18\x06 \x03(\v2#.nebius.compute.v1.AttachedDiskSpecR\x0esecondaryDisks\x12K\n" +
 	"\vfilesystems\x18\a \x03(\v2).nebius.compute.v1.AttachedFilesystemSpecR\vfilesystems\x12=\n" +
 	"\x14cloud_init_user_data\x18\b \x01(\tB\f\xbaH\x06r\x04\x18\x80\x80\x02\xc0J\x01R\x11cloudInitUserData\x12\x18\n" +
