@@ -24,14 +24,14 @@ type configReader struct {
 	config  *config.Config
 	profile *config.Profile
 
-	path           string
-	profileName    string
-	noParentID     bool
-	profileEnv     string
-	tokenEnv       string
-	endpointEnv    string
-	customEndpoint string
-
+	path            string
+	profileName     string
+	noParentID      bool
+	profileEnv      string
+	tokenEnv        string
+	endpointEnv     string
+	customEndpoint  string
+	metadataProbe   metadataProbe
 	preloadedConfig bool
 
 	// credentials options
@@ -54,6 +54,7 @@ func NewConfigReader(options ...config.Option) config.ConfigInterface {
 		profileEnv:        constants.ProfileEnv,
 		endpointEnv:       constants.EndpointEnv,
 		fileRefreshPeriod: 5 * time.Minute,
+		metadataProbe:     defaultMetadataProbe(),
 	}
 	r.SetOptions(options...)
 	if r.logger == nil {
@@ -160,21 +161,6 @@ func (r *configReader) selectProfile(ctx context.Context) error {
 	return nil
 }
 
-func (r *configReader) setVMProfile() bool {
-	profileName := "virtual"
-	tokenFilePath := "/mnt/cloud-metadata/token"
-	if stat, statErr := os.Stat(tokenFilePath); statErr == nil && !stat.IsDir() {
-		r.config.Default = profileName
-		r.config.Profiles[profileName] = &config.Profile{
-			Name:      profileName,
-			Endpoint:  paths.DefaultAPIEndpoint,
-			TokenFile: tokenFilePath,
-		}
-		r.profile = r.config.Profiles[profileName]
-		return true
-	}
-	return false
-}
 func (r *configReader) load(ctx context.Context) error {
 	path, err := r.GetConfigPath()
 	if err != nil {
@@ -184,7 +170,7 @@ func (r *configReader) load(ctx context.Context) error {
 	bytes, err := os.ReadFile(path)
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
-			if r.setVMProfile() {
+			if r.setVMProfile(ctx) {
 				r.logger.DebugContext(ctx, "using virtual machine profile")
 				return nil
 			}

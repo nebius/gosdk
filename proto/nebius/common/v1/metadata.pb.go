@@ -185,11 +185,11 @@ var File_nebius_common_v1_metadata_proto protoreflect.FileDescriptor
 
 const file_nebius_common_v1_metadata_proto_rawDesc = "" +
 	"\n" +
-	"\x1fnebius/common/v1/metadata.proto\x12\x10nebius.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\"\x9a\x03\n" +
+	"\x1fnebius/common/v1/metadata.proto\x12\x10nebius.common.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\"\xa4\x03\n" +
 	"\x10ResourceMetadata\x12\x14\n" +
 	"\x02id\x18\x01 \x01(\tB\x04\xbaJ\x01\x03R\x02id\x12#\n" +
-	"\tparent_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x122\n" +
+	"\tparent_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1c\n" +
+	"\x04name\x18\x03 \x01(\tB\b\xbaH\x05r\x03(\x80\bR\x04name\x122\n" +
 	"\x10resource_version\x18\x04 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\x0fresourceVersion\x12?\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xbaJ\x01\x05R\tcreatedAt\x12?\n" +
@@ -198,10 +198,10 @@ const file_nebius_common_v1_metadata_proto_rawDesc = "" +
 	"\x06labels\x18\a \x03(\v2..nebius.common.v1.ResourceMetadata.LabelsEntryR\x06labels\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"S\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"X\n" +
 	"\x10GetByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04nameBZ\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1f\n" +
+	"\x04name\x18\x02 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03(\x80\bR\x04nameBZ\n" +
 	"\x17ai.nebius.pub.common.v1B\rMetadataProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/common/v1b\x06proto3"
 
 var (

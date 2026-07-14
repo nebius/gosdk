@@ -485,7 +485,7 @@ func TestReplaceAtFieldPath(t *testing.T) {
 			Message proto.Message
 			Result  proto.Message
 			Path    mask.FieldPath
-			Val     interface{}
+			Val     any
 			Err     string
 		}{
 			{

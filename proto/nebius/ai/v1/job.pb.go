@@ -158,21 +158,24 @@ const (
 	JobStatus_CANCELLED JobStatus_State = 8
 	// The job encountered an internal error.
 	JobStatus_ERROR JobStatus_State = 9
+	// The job is pulling an image (STARTING -> IMAGE_PULLING -> RUNNING).
+	JobStatus_IMAGE_PULLING JobStatus_State = 10
 )
 
 // Enum value maps for JobStatus_State.
 var (
 	JobStatus_State_name = map[int32]string{
-		0: "STATE_UNSPECIFIED",
-		1: "PROVISIONING",
-		2: "STARTING",
-		3: "RUNNING",
-		4: "CANCELLING",
-		5: "DELETING",
-		6: "COMPLETED",
-		7: "FAILED",
-		8: "CANCELLED",
-		9: "ERROR",
+		0:  "STATE_UNSPECIFIED",
+		1:  "PROVISIONING",
+		2:  "STARTING",
+		3:  "RUNNING",
+		4:  "CANCELLING",
+		5:  "DELETING",
+		6:  "COMPLETED",
+		7:  "FAILED",
+		8:  "CANCELLED",
+		9:  "ERROR",
+		10: "IMAGE_PULLING",
 	}
 	JobStatus_State_value = map[string]int32{
 		"STATE_UNSPECIFIED": 0,
@@ -185,6 +188,7 @@ var (
 		"FAILED":            7,
 		"CANCELLED":         8,
 		"ERROR":             9,
+		"IMAGE_PULLING":     10,
 	}
 )
 
@@ -240,6 +244,8 @@ const (
 	JobInstanceStatus_CANCELLED JobInstanceStatus_State = 9
 	// The job encountered an internal error.
 	JobInstanceStatus_ERROR JobInstanceStatus_State = 10
+	// The job is pulling an image (STARTING -> IMAGE_PULLING -> RUNNING).
+	JobInstanceStatus_IMAGE_PULLING JobInstanceStatus_State = 11
 )
 
 // Enum value maps for JobInstanceStatus_State.
@@ -256,6 +262,7 @@ var (
 		8:  "FAILED",
 		9:  "CANCELLED",
 		10: "ERROR",
+		11: "IMAGE_PULLING",
 	}
 	JobInstanceStatus_State_value = map[string]int32{
 		"STATE_UNSPECIFIED": 0,
@@ -269,6 +276,7 @@ var (
 		"FAILED":            8,
 		"CANCELLED":         9,
 		"ERROR":             10,
+		"IMAGE_PULLING":     11,
 	}
 )
 
@@ -1607,7 +1615,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key\"\xb4\x04\n" +
+	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key\"\xc7\x04\n" +
 	"\tJobStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12=\n" +
@@ -1618,7 +1626,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"started_at\x18\x16 \x01(\v2\x1a.google.protobuf.TimestampR\tstartedAt\x12;\n" +
 	"\vfinished_at\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"finishedAt\"\x9e\x01\n" +
+	"finishedAt\"\xb1\x01\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPROVISIONING\x10\x01\x12\f\n" +
@@ -1631,10 +1639,12 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"\x06FAILED\x10\a\x12\r\n" +
 	"\tCANCELLED\x10\b\x12\t\n" +
-	"\x05ERROR\x10\t\"G\n" +
+	"\x05ERROR\x10\t\x12\x11\n" +
+	"\rIMAGE_PULLING\x10\n" +
+	"\"G\n" +
 	"\x0fJobStateDetails\x12\x1a\n" +
 	"\x04code\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\xfa\x03\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\x8d\x04\n" +
 	"\x11JobInstanceStatus\x12C\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.ai.v1.JobInstanceStatus.StateB\x06\xbaH\x03\xc8\x01\x01R\x05state\x12D\n" +
 	"\x13compute_instance_id\x18\n" +
@@ -1643,7 +1653,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x16compute_instance_state\x18\v \x01(\x0e2/.nebius.compute.v1.InstanceStatus.InstanceStateB\x06\xbaH\x03\xc8\x01\x01R\x14computeInstanceState\x12\x1d\n" +
 	"\n" +
 	"private_ip\x18\f \x01(\tR\tprivateIp\x12\x1b\n" +
-	"\tpublic_ip\x18\r \x01(\tR\bpublicIp\"\xae\x01\n" +
+	"\tpublic_ip\x18\r \x01(\tR\bpublicIp\"\xc1\x01\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPROVISIONING\x10\x01\x12\f\n" +
@@ -1659,7 +1669,8 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x06FAILED\x10\b\x12\r\n" +
 	"\tCANCELLED\x10\t\x12\t\n" +
 	"\x05ERROR\x10\n" +
-	"BM\n" +
+	"\x12\x11\n" +
+	"\rIMAGE_PULLING\x10\vBM\n" +
 	"\x13ai.nebius.pub.ai.v1B\bJobProtoP\x01Z*github.com/nebius/gosdk/proto/nebius/ai/v1b\x06proto3"
 
 var (

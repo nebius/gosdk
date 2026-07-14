@@ -328,6 +328,7 @@ type DiskSpec struct {
 	//
 	//	*DiskSpec_SourceImageId
 	//	*DiskSpec_SourceImageFamily
+	//	*DiskSpec_SourceSnapshotId
 	Source isDiskSpec_Source `protobuf_oneof:"source"`
 	// Defines how data on the disk is encrypted. By default, no encryption is applied.
 	DiskEncryption *DiskEncryption `protobuf:"bytes,11,opt,name=disk_encryption,json=diskEncryption,proto3" json:"disk_encryption,omitempty"`
@@ -449,6 +450,15 @@ func (x *DiskSpec) GetSourceImageFamily() *SourceImageFamily {
 	return nil
 }
 
+func (x *DiskSpec) GetSourceSnapshotId() string {
+	if x != nil {
+		if x, ok := x.Source.(*DiskSpec_SourceSnapshotId); ok {
+			return x.SourceSnapshotId
+		}
+	}
+	return ""
+}
+
 func (x *DiskSpec) GetDiskEncryption() *DiskEncryption {
 	if x != nil {
 		return x.DiskEncryption
@@ -503,9 +513,15 @@ type DiskSpec_SourceImageFamily struct {
 	SourceImageFamily *SourceImageFamily `protobuf:"bytes,10,opt,name=source_image_family,json=sourceImageFamily,proto3,oneof"`
 }
 
+type DiskSpec_SourceSnapshotId struct {
+	SourceSnapshotId string `protobuf:"bytes,13,opt,name=source_snapshot_id,json=sourceSnapshotId,proto3,oneof"`
+}
+
 func (*DiskSpec_SourceImageId) isDiskSpec_Source() {}
 
 func (*DiskSpec_SourceImageFamily) isDiskSpec_Source() {}
+
+func (*DiskSpec_SourceSnapshotId) isDiskSpec_Source() {}
 
 type SourceImageFamily struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -803,7 +819,7 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\x04Disk\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12/\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x1d.nebius.compute.v1.DiskStatusR\x06status\"\xc0\x05\n" +
+	"\x06status\x18\x03 \x01(\v2\x1d.nebius.compute.v1.DiskStatusR\x06status\"\xf6\x05\n" +
 	"\bDiskSpec\x12\x1f\n" +
 	"\n" +
 	"size_bytes\x18\x01 \x01(\x03H\x00R\tsizeBytes\x12'\n" +
@@ -815,7 +831,8 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04type\x12.\n" +
 	"\x0fsource_image_id\x18\b \x01(\tB\x04\xbaJ\x01\x02H\x01R\rsourceImageId\x12\\\n" +
 	"\x13source_image_family\x18\n" +
-	" \x01(\v2$.nebius.compute.v1.SourceImageFamilyB\x04\xbaJ\x01\x02H\x01R\x11sourceImageFamily\x12P\n" +
+	" \x01(\v2$.nebius.compute.v1.SourceImageFamilyB\x04\xbaJ\x01\x02H\x01R\x11sourceImageFamily\x124\n" +
+	"\x12source_snapshot_id\x18\r \x01(\tB\x04\xbaJ\x01\x02H\x01R\x10sourceSnapshotId\x12P\n" +
 	"\x0fdisk_encryption\x18\v \x01(\v2!.nebius.compute.v1.DiskEncryptionB\x04\xbaJ\x01\x02R\x0ediskEncryption\x12'\n" +
 	"\x0fforbid_deletion\x18\f \x01(\bR\x0eforbidDeletion\"t\n" +
 	"\bDiskType\x12\x0f\n" +
@@ -926,6 +943,7 @@ func file_nebius_compute_v1_disk_proto_init() {
 		(*DiskSpec_SizeGibibytes)(nil),
 		(*DiskSpec_SourceImageId)(nil),
 		(*DiskSpec_SourceImageFamily)(nil),
+		(*DiskSpec_SourceSnapshotId)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

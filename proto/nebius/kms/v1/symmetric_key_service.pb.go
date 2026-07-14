@@ -580,37 +580,44 @@ var File_nebius_kms_v1_symmetric_key_service_proto protoreflect.FileDescriptor
 
 const file_nebius_kms_v1_symmetric_key_service_proto_rawDesc = "" +
 	"\n" +
-	")nebius/kms/v1/symmetric_key_service.proto\x12\rnebius.kms.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/kms/v1/symmetric_key.proto\"\xa0\x01\n" +
-	"\x19CreateSymmetricKeyRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12;\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.kms.v1.SymmetricKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\x98\x01\n" +
-	"\x19UpdateSymmetricKeyRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x123\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.kms.v1.SymmetricKeySpecR\x04spec\"o\n" +
-	"\x16GetSymmetricKeyRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12=\n" +
-	"\x1bshow_scheduled_for_deletion\x18\x02 \x01(\bR\x18showScheduledForDeletion\"_\n" +
-	"\x1cGetSymmetricKeyByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\xba\x01\n" +
-	"\x18ListSymmetricKeysRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	")nebius/kms/v1/symmetric_key_service.proto\x12\rnebius.kms.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/kms/v1/symmetric_key.proto\"\xac\x01\n" +
+	"\x19CreateSymmetricKeyRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12;\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.kms.v1.SymmetricKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xa4\x01\n" +
+	"\x19UpdateSymmetricKeyRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x123\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.kms.v1.SymmetricKeySpecR\x04spec\"}\n" +
+	"\x16GetSymmetricKeyRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tkmssymkeyR\x02id\x12=\n" +
+	"\x1bshow_scheduled_for_deletion\x18\x02 \x01(\bR\x18showScheduledForDeletion\"k\n" +
+	"\x1cGetSymmetricKeyByNameRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\xc6\x01\n" +
+	"\x18ListSymmetricKeysRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12=\n" +
 	"\x1bshow_scheduled_for_deletion\x18\x04 \x01(\bR\x18showScheduledForDeletion\"v\n" +
 	"\x19ListSymmetricKeysResponse\x121\n" +
 	"\x05items\x18\x01 \x03(\v2\x1b.nebius.kms.v1.SymmetricKeyR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"3\n" +
-	"\x19RotateSymmetricKeyRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"3\n" +
-	"\x19DeleteSymmetricKeyRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x9a\x01\n" +
-	"&UpdateSymmetricKeyDeletionDelayRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12X\n" +
-	"\x0edeletion_delay\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\x16\xbaH\x13\xc8\x01\x01\xaa\x01\r\"\x05\b\x80\x9a\x9e\x012\x04\b\x80\xa3\x05R\rdeletionDelay\"I\n" +
-	"\x1bUndeleteSymmetricKeyRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12\x12\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"A\n" +
+	"\x19RotateSymmetricKeyRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tkmssymkeyR\x02id\"A\n" +
+	"\x19DeleteSymmetricKeyRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tkmssymkeyR\x02id\"\xa8\x01\n" +
+	"&UpdateSymmetricKeyDeletionDelayRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tkmssymkeyR\x02id\x12X\n" +
+	"\x0edeletion_delay\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\x16\xbaH\x13\xc8\x01\x01\xaa\x01\r\"\x05\b\x80\x9a\x9e\x012\x04\b\x80\xa3\x05R\rdeletionDelay\"W\n" +
+	"\x1bUndeleteSymmetricKeyRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\tkmssymkeyR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name2\xa2\x06\n" +
 	"\x13SymmetricKeyService\x12O\n" +
 	"\x06Create\x12(.nebius.kms.v1.CreateSymmetricKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12O\n" +

@@ -518,7 +518,7 @@ func ParseYAML(input []byte) (*Mask, error) {
 }
 
 func parseFormat(input []byte, format format) (*Mask, error) {
-	var data interface{}
+	var data any
 
 	switch format {
 	case jsonFormat:
@@ -542,16 +542,16 @@ func parseFormat(input []byte, format format) (*Mask, error) {
 	return ret, nil
 }
 
-func extractLeafFP(data interface{}, prefix FieldPath) []FieldPath {
+func extractLeafFP(data any, prefix FieldPath) []FieldPath {
 	var fieldPaths []FieldPath
 
 	switch v := data.(type) {
-	case map[string]interface{}:
+	case map[string]any:
 		for key, value := range v {
 			newPrefix := prefix.Join(FieldKey(key))
 			fieldPaths = append(fieldPaths, extractLeafFP(value, newPrefix)...)
 		}
-	case []interface{}:
+	case []any:
 		for i, value := range v {
 			newPrefix := prefix.Join(FieldKey(strconv.Itoa(i)))
 			childPaths := extractLeafFP(value, newPrefix)

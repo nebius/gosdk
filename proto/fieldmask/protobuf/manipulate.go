@@ -438,7 +438,7 @@ func cloneValue(val protoreflect.Value) protoreflect.Value {
 	return protoreflect.ValueOf(val.Interface())
 }
 
-func convertToValue(val interface{}) (_ protoreflect.Value, err error) {
+func convertToValue(val any) (_ protoreflect.Value, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = fmt.Errorf("panic: %s", r)
@@ -499,7 +499,7 @@ func convertToValue(val interface{}) (_ protoreflect.Value, err error) {
 func ReplaceAtFieldPath(
 	data proto.Message,
 	path mask.FieldPath,
-	newVal interface{},
+	newVal any,
 ) error {
 	valValue, err := convertToValue(newVal)
 	if err != nil {

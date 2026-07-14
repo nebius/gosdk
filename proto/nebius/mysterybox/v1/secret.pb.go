@@ -276,23 +276,26 @@ var File_nebius_mysterybox_v1_secret_proto protoreflect.FileDescriptor
 
 const file_nebius_mysterybox_v1_secret_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/mysterybox/v1/secret.proto\x12\x14nebius.mysterybox.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a)nebius/mysterybox/v1/secret_version.proto\"\xc0\x01\n" +
-	"\x06Secret\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
+	"!nebius/mysterybox/v1/secret.proto\x12\x14nebius.mysterybox.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a)nebius/mysterybox/v1/secret_version.proto\"\xce\x01\n" +
+	"\x06Secret\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.mysterybox.v1.SecretSpecR\x04spec\x12@\n" +
-	"\x06status\x18\x03 \x01(\v2\".nebius.mysterybox.v1.SecretStatusB\x04\xbaJ\x01\x05R\x06status\"\xd5\x01\n" +
+	"\x06status\x18\x03 \x01(\v2\".nebius.mysterybox.v1.SecretStatusB\x04\xbaJ\x01\x05R\x06status\"\xe2\x01\n" +
 	"\n" +
 	"SecretSpec\x12 \n" +
-	"\vdescription\x18\x01 \x01(\tR\vdescription\x127\n" +
-	"\x12primary_version_id\x18\x03 \x01(\tB\x04\xbaJ\x01\aH\x00R\x10primaryVersionId\x88\x01\x01\x12U\n" +
+	"\vdescription\x18\x01 \x01(\tR\vdescription\x12D\n" +
+	"\x12primary_version_id\x18\x03 \x01(\tB\x11\xbaJ\x01\a\xe2J\n" +
+	"\n" +
+	"\bmbsecverH\x00R\x10primaryVersionId\x88\x01\x01\x12U\n" +
 	"\x0esecret_version\x18\x04 \x01(\v2'.nebius.mysterybox.v1.SecretVersionSpecB\x05\xbaJ\x02\x04\x02R\rsecretVersionB\x15\n" +
-	"\x13_primary_version_id\"\xb9\x02\n" +
+	"\x13_primary_version_id\"\xc9\x02\n" +
 	"\fSecretStatus\x12>\n" +
 	"\x05state\x18\x01 \x01(\x0e2(.nebius.mysterybox.v1.SecretStatus.StateR\x05state\x129\n" +
 	"\n" +
 	"deleted_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt\x125\n" +
-	"\bpurge_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\apurgeAt\x12/\n" +
-	"\x14effective_kms_key_id\x18\x04 \x01(\tR\x11effectiveKmsKeyId\"F\n" +
+	"\bpurge_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\apurgeAt\x12?\n" +
+	"\x14effective_kms_key_id\x18\x04 \x01(\tB\x0e\xe2J\v\n" +
+	"\tkmssymkeyR\x11effectiveKmsKeyId\"F\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +

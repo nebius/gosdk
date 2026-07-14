@@ -56,10 +56,10 @@ func (s symmetricKeyService) Create(ctx context.Context, request *v1.CreateSymme
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"project"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, nil) == "" {
+			if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -69,7 +69,7 @@ func (s symmetricKeyService) Create(ctx context.Context, request *v1.CreateSymme
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -103,7 +103,7 @@ func (s symmetricKeyService) Update(ctx context.Context, request *v1.UpdateSymme
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
+	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"project"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
@@ -181,13 +181,13 @@ func (s symmetricKeyService) GetByName(ctx context.Context, request *v1.GetSymme
 	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}
@@ -216,13 +216,13 @@ func (s symmetricKeyService) List(ctx context.Context, request *v1.ListSymmetric
 	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.ValidateNIDString(parentID, []string{"project"}) == "" {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.ValidateNIDString(tenantID, []string{"project"}) == "" {
 					request.ParentId = tenantID
 				}
 			}

@@ -538,35 +538,45 @@ var File_nebius_kms_v1_asymmetric_key_service_proto protoreflect.FileDescriptor
 
 const file_nebius_kms_v1_asymmetric_key_service_proto_rawDesc = "" +
 	"\n" +
-	"*nebius/kms/v1/asymmetric_key_service.proto\x12\rnebius.kms.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\"nebius/kms/v1/asymmetric_key.proto\"\xa2\x01\n" +
-	"\x1aCreateAsymmetricKeyRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12<\n" +
-	"\x04spec\x18\x02 \x01(\v2 .nebius.kms.v1.AsymmetricKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\x9a\x01\n" +
-	"\x1aUpdateAsymmetricKeyRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x124\n" +
-	"\x04spec\x18\x02 \x01(\v2 .nebius.kms.v1.AsymmetricKeySpecR\x04spec\"p\n" +
-	"\x17GetAsymmetricKeyRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12=\n" +
-	"\x1bshow_scheduled_for_deletion\x18\x02 \x01(\bR\x18showScheduledForDeletion\"`\n" +
-	"\x1dGetAsymmetricKeyByNameRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\xbb\x01\n" +
-	"\x19ListAsymmetricKeysRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"*nebius/kms/v1/asymmetric_key_service.proto\x12\rnebius.kms.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\"nebius/kms/v1/asymmetric_key.proto\"\xae\x01\n" +
+	"\x1aCreateAsymmetricKeyRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12<\n" +
+	"\x04spec\x18\x02 \x01(\v2 .nebius.kms.v1.AsymmetricKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xa6\x01\n" +
+	"\x1aUpdateAsymmetricKeyRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
+	"\x04spec\x18\x02 \x01(\v2 .nebius.kms.v1.AsymmetricKeySpecR\x04spec\"\x7f\n" +
+	"\x17GetAsymmetricKeyRequest\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"kmsasymkeyR\x02id\x12=\n" +
+	"\x1bshow_scheduled_for_deletion\x18\x02 \x01(\bR\x18showScheduledForDeletion\"l\n" +
+	"\x1dGetAsymmetricKeyByNameRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\xc7\x01\n" +
+	"\x19ListAsymmetricKeysRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12=\n" +
 	"\x1bshow_scheduled_for_deletion\x18\x04 \x01(\bR\x18showScheduledForDeletion\"x\n" +
 	"\x1aListAsymmetricKeysResponse\x122\n" +
 	"\x05items\x18\x01 \x03(\v2\x1c.nebius.kms.v1.AsymmetricKeyR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"4\n" +
-	"\x1aDeleteAsymmetricKeyRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x9b\x01\n" +
-	"'UpdateAsymmetricKeyDeletionDelayRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12X\n" +
-	"\x0edeletion_delay\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\x16\xbaH\x13\xc8\x01\x01\xaa\x01\r\"\x05\b\x80\x9a\x9e\x012\x04\b\x80\xa3\x05R\rdeletionDelay\"J\n" +
-	"\x1cUndeleteAsymmetricKeyRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12\x12\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"C\n" +
+	"\x1aDeleteAsymmetricKeyRequest\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"kmsasymkeyR\x02id\"\xaa\x01\n" +
+	"'UpdateAsymmetricKeyDeletionDelayRequest\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"kmsasymkeyR\x02id\x12X\n" +
+	"\x0edeletion_delay\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\x16\xbaH\x13\xc8\x01\x01\xaa\x01\r\"\x05\b\x80\x9a\x9e\x012\x04\b\x80\xa3\x05R\rdeletionDelay\"Y\n" +
+	"\x1cUndeleteAsymmetricKeyRequest\x12%\n" +
+	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"kmsasymkeyR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name2\xdd\x05\n" +
 	"\x14AsymmetricKeyService\x12P\n" +
 	"\x06Create\x12).nebius.kms.v1.CreateAsymmetricKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12P\n" +

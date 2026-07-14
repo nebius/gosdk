@@ -266,9 +266,9 @@ var File_nebius_kms_v1_asymmetric_key_proto protoreflect.FileDescriptor
 
 const file_nebius_kms_v1_asymmetric_key_proto_rawDesc = "" +
 	"\n" +
-	"\"nebius/kms/v1/asymmetric_key.proto\x12\rnebius.kms.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1dnebius/kms/v1/key_state.proto\"\xc1\x01\n" +
-	"\rAsymmetricKey\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
+	"\"nebius/kms/v1/asymmetric_key.proto\x12\rnebius.kms.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1dnebius/kms/v1/key_state.proto\"\xcf\x01\n" +
+	"\rAsymmetricKey\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.kms.v1.AsymmetricKeySpecR\x04spec\x12:\n" +
 	"\x06status\x18\x03 \x01(\v2\".nebius.kms.v1.AsymmetricKeyStatusR\x06status\"\x92\x01\n" +
 	"\x11AsymmetricKeySpec\x12*\n" +
