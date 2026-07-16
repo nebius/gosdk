@@ -327,6 +327,7 @@ type CapacityBlockGroupStatus struct {
 	// Specification of the Capacity Block Group.
 	ResourceAffinity *ResourceAffinity `protobuf:"bytes,2,opt,name=resource_affinity,json=resourceAffinity,proto3" json:"resource_affinity,omitempty"`
 	// Service for which the Capacity Block Group is allocated.
+	// Derived from the resource_affinity variant (compute_v1 -> "compute", tokenfactory_v1 -> "tokenfactory").
 	Service string `protobuf:"bytes,3,opt,name=service,proto3" json:"service,omitempty"`
 	// Capacity Block Group state with respect to quota allocation.
 	State CapacityBlockGroupStatus_State `protobuf:"varint,5,opt,name=state,proto3,enum=nebius.capacity.v1.CapacityBlockGroupStatus_State" json:"state,omitempty"`
