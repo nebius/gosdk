@@ -395,6 +395,50 @@ func (c *MockInstanceServiceListCall) DoAndReturn(f func(context.Context, *v10.L
 	return c
 }
 
+// ListInstancesByNVLInstanceGroup mocks base method.
+func (m *MockInstanceService) ListInstancesByNVLInstanceGroup(arg0 context.Context, arg1 *v10.ListInstancesByNVLInstanceGroupRequest, arg2 ...grpc.CallOption) (*v10.ListInstancesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListInstancesByNVLInstanceGroup", varargs...)
+	ret0, _ := ret[0].(*v10.ListInstancesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListInstancesByNVLInstanceGroup indicates an expected call of ListInstancesByNVLInstanceGroup.
+func (mr *MockInstanceServiceMockRecorder) ListInstancesByNVLInstanceGroup(arg0, arg1 any, arg2 ...any) *MockInstanceServiceListInstancesByNVLInstanceGroupCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListInstancesByNVLInstanceGroup", reflect.TypeOf((*MockInstanceService)(nil).ListInstancesByNVLInstanceGroup), varargs...)
+	return &MockInstanceServiceListInstancesByNVLInstanceGroupCall{Call: call}
+}
+
+// MockInstanceServiceListInstancesByNVLInstanceGroupCall wrap *gomock.Call
+type MockInstanceServiceListInstancesByNVLInstanceGroupCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockInstanceServiceListInstancesByNVLInstanceGroupCall) Return(arg0 *v10.ListInstancesResponse, arg1 error) *MockInstanceServiceListInstancesByNVLInstanceGroupCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockInstanceServiceListInstancesByNVLInstanceGroupCall) Do(f func(context.Context, *v10.ListInstancesByNVLInstanceGroupRequest, ...grpc.CallOption) (*v10.ListInstancesResponse, error)) *MockInstanceServiceListInstancesByNVLInstanceGroupCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockInstanceServiceListInstancesByNVLInstanceGroupCall) DoAndReturn(f func(context.Context, *v10.ListInstancesByNVLInstanceGroupRequest, ...grpc.CallOption) (*v10.ListInstancesResponse, error)) *MockInstanceServiceListInstancesByNVLInstanceGroupCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListOperations mocks base method.
 func (m *MockInstanceService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
 	m.ctrl.T.Helper()

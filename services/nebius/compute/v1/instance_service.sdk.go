@@ -33,6 +33,7 @@ type InstanceService interface {
 	BatchGet(context.Context, *v1.BatchGetRequest, ...grpc.CallOption) (*v1.BatchGetResponse, error)
 	List(context.Context, *v1.ListInstancesRequest, ...grpc.CallOption) (*v1.ListInstancesResponse, error)
 	Filter(context.Context, *v1.ListInstancesRequest, ...grpc.CallOption) iter.Seq2[*v1.Instance, error]
+	ListInstancesByNVLInstanceGroup(context.Context, *v1.ListInstancesByNVLInstanceGroupRequest, ...grpc.CallOption) (*v1.ListInstancesResponse, error)
 	Create(context.Context, *v1.CreateInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdateInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteInstanceRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -188,6 +189,27 @@ func (s instanceService) Filter(ctx context.Context, request *v1.ListInstancesRe
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s instanceService) ListInstancesByNVLInstanceGroup(ctx context.Context, request *v1.ListInstancesByNVLInstanceGroupRequest, opts ...grpc.CallOption) (
+	*v1.ListInstancesResponse,
+	error,
+) {
+	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
+	if logger := s.sdk.GetLogger(); logger != nil {
+		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
+			logger.WarnContext(ctx, warning, slog.String("path", path))
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, InstanceServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewInstanceServiceClient(con).ListInstancesByNVLInstanceGroup(ctx, request, opts...)
 }
 
 func (s instanceService) Create(ctx context.Context, request *v1.CreateInstanceRequest, opts ...grpc.CallOption) (

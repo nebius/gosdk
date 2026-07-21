@@ -20,16 +20,17 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	InstanceService_Get_FullMethodName                    = "/nebius.compute.v1.InstanceService/Get"
-	InstanceService_GetByName_FullMethodName              = "/nebius.compute.v1.InstanceService/GetByName"
-	InstanceService_BatchGet_FullMethodName               = "/nebius.compute.v1.InstanceService/BatchGet"
-	InstanceService_List_FullMethodName                   = "/nebius.compute.v1.InstanceService/List"
-	InstanceService_Create_FullMethodName                 = "/nebius.compute.v1.InstanceService/Create"
-	InstanceService_Update_FullMethodName                 = "/nebius.compute.v1.InstanceService/Update"
-	InstanceService_Delete_FullMethodName                 = "/nebius.compute.v1.InstanceService/Delete"
-	InstanceService_Start_FullMethodName                  = "/nebius.compute.v1.InstanceService/Start"
-	InstanceService_Stop_FullMethodName                   = "/nebius.compute.v1.InstanceService/Stop"
-	InstanceService_ListOperationsByParent_FullMethodName = "/nebius.compute.v1.InstanceService/ListOperationsByParent"
+	InstanceService_Get_FullMethodName                             = "/nebius.compute.v1.InstanceService/Get"
+	InstanceService_GetByName_FullMethodName                       = "/nebius.compute.v1.InstanceService/GetByName"
+	InstanceService_BatchGet_FullMethodName                        = "/nebius.compute.v1.InstanceService/BatchGet"
+	InstanceService_List_FullMethodName                            = "/nebius.compute.v1.InstanceService/List"
+	InstanceService_ListInstancesByNVLInstanceGroup_FullMethodName = "/nebius.compute.v1.InstanceService/ListInstancesByNVLInstanceGroup"
+	InstanceService_Create_FullMethodName                          = "/nebius.compute.v1.InstanceService/Create"
+	InstanceService_Update_FullMethodName                          = "/nebius.compute.v1.InstanceService/Update"
+	InstanceService_Delete_FullMethodName                          = "/nebius.compute.v1.InstanceService/Delete"
+	InstanceService_Start_FullMethodName                           = "/nebius.compute.v1.InstanceService/Start"
+	InstanceService_Stop_FullMethodName                            = "/nebius.compute.v1.InstanceService/Stop"
+	InstanceService_ListOperationsByParent_FullMethodName          = "/nebius.compute.v1.InstanceService/ListOperationsByParent"
 )
 
 // InstanceServiceClient is the client API for InstanceService service.
@@ -45,6 +46,8 @@ type InstanceServiceClient interface {
 	BatchGet(ctx context.Context, in *BatchGetRequest, opts ...grpc.CallOption) (*BatchGetResponse, error)
 	// Lists all VM instances within a specified parent.
 	List(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
+	// Lists all VM instances that belong to the specified NVL instance group.
+	ListInstancesByNVLInstanceGroup(ctx context.Context, in *ListInstancesByNVLInstanceGroupRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error)
 	// Creates a new VM instance based on the provided specification.
 	// For details, see https://docs.nebius.com/compute/virtual-machines/manage
 	Create(ctx context.Context, in *CreateInstanceRequest, opts ...grpc.CallOption) (*v1.Operation, error)
@@ -99,6 +102,15 @@ func (c *instanceServiceClient) BatchGet(ctx context.Context, in *BatchGetReques
 func (c *instanceServiceClient) List(ctx context.Context, in *ListInstancesRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error) {
 	out := new(ListInstancesResponse)
 	err := c.cc.Invoke(ctx, InstanceService_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instanceServiceClient) ListInstancesByNVLInstanceGroup(ctx context.Context, in *ListInstancesByNVLInstanceGroupRequest, opts ...grpc.CallOption) (*ListInstancesResponse, error) {
+	out := new(ListInstancesResponse)
+	err := c.cc.Invoke(ctx, InstanceService_ListInstancesByNVLInstanceGroup_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -172,6 +184,8 @@ type InstanceServiceServer interface {
 	BatchGet(context.Context, *BatchGetRequest) (*BatchGetResponse, error)
 	// Lists all VM instances within a specified parent.
 	List(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
+	// Lists all VM instances that belong to the specified NVL instance group.
+	ListInstancesByNVLInstanceGroup(context.Context, *ListInstancesByNVLInstanceGroupRequest) (*ListInstancesResponse, error)
 	// Creates a new VM instance based on the provided specification.
 	// For details, see https://docs.nebius.com/compute/virtual-machines/manage
 	Create(context.Context, *CreateInstanceRequest) (*v1.Operation, error)
@@ -203,6 +217,9 @@ func (UnimplementedInstanceServiceServer) BatchGet(context.Context, *BatchGetReq
 }
 func (UnimplementedInstanceServiceServer) List(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedInstanceServiceServer) ListInstancesByNVLInstanceGroup(context.Context, *ListInstancesByNVLInstanceGroupRequest) (*ListInstancesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListInstancesByNVLInstanceGroup not implemented")
 }
 func (UnimplementedInstanceServiceServer) Create(context.Context, *CreateInstanceRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -302,6 +319,24 @@ func _InstanceService_List_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InstanceServiceServer).List(ctx, req.(*ListInstancesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstanceService_ListInstancesByNVLInstanceGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInstancesByNVLInstanceGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstanceServiceServer).ListInstancesByNVLInstanceGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstanceService_ListInstancesByNVLInstanceGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstanceServiceServer).ListInstancesByNVLInstanceGroup(ctx, req.(*ListInstancesByNVLInstanceGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -436,6 +471,10 @@ var InstanceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _InstanceService_List_Handler,
+		},
+		{
+			MethodName: "ListInstancesByNVLInstanceGroup",
+			Handler:    _InstanceService_ListInstancesByNVLInstanceGroup_Handler,
 		},
 		{
 			MethodName: "Create",
