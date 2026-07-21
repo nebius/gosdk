@@ -158,6 +158,9 @@ func (w *wrapperListInstancesResponse) ProtoReflect() protoreflect.Message {
 // func (x *StopInstanceRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *StopInstanceRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *ListInstancesByNVLInstanceGroupRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListInstancesByNVLInstanceGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *BatchGetRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *BatchGetRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 

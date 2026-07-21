@@ -70,10 +70,10 @@ func (x *GetTunnelRequest) GetId() string {
 	return ""
 }
 
-// Request to list tunnels within a project.
+// Request to list tunnels within a parent resource.
 type ListTunnelRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identifier of the parent project.
+	// Identifier of the parent resource.
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Maximum number of items to return per page.
 	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
@@ -371,9 +371,9 @@ const file_nebius_tunnel_v1_tunnel_service_proto_rawDesc = "" +
 	"\x06filter\x18\x04 \x01(\tR\x06filter\"m\n" +
 	"\x13ListTunnelsResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.tunnel.v1.TunnelR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x87\x01\n" +
-	"\x13CreateTunnelRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x95\x01\n" +
+	"\x13CreateTunnelRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x120\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.tunnel.v1.TunnelSpecR\x04spec\"\x97\x01\n" +
 	"\x13UpdateTunnelRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x128\n" +

@@ -431,7 +431,10 @@ type ClusterControlPlaneVersion struct {
 	// To use such versions - a feature restricted_k8s_versions should be enabled on a cluster.
 	Restricted bool `protobuf:"varint,2,opt,name=restricted,proto3" json:"restricted,omitempty"`
 	// EndOfLife determines when the version will be forced out of use.
-	EndOfLife     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=end_of_life,json=endOfLife,proto3" json:"end_of_life,omitempty"`
+	EndOfLife *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=end_of_life,json=endOfLife,proto3" json:"end_of_life,omitempty"`
+	// Deprecated marks version to be soon deleted from API.
+	// Creation of clusters with this version is forbidden.
+	Deprecated    bool `protobuf:"varint,4,opt,name=deprecated,proto3" json:"deprecated,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -487,6 +490,13 @@ func (x *ClusterControlPlaneVersion) GetEndOfLife() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *ClusterControlPlaneVersion) GetDeprecated() bool {
+	if x != nil {
+		return x.Deprecated
+	}
+	return false
+}
+
 var File_nebius_mk8s_v1_cluster_service_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_cluster_service_proto_rawDesc = "" +
@@ -518,13 +528,16 @@ const file_nebius_mk8s_v1_cluster_service_proto_rawDesc = "" +
 	"\vmk8sclusterR\x02id\"(\n" +
 	"&ListClusterControlPlaneVersionsRequest\"k\n" +
 	"'ListClusterControlPlaneVersionsResponse\x12@\n" +
-	"\x05items\x18\x01 \x03(\v2*.nebius.mk8s.v1.ClusterControlPlaneVersionR\x05items\"\x92\x01\n" +
+	"\x05items\x18\x01 \x03(\v2*.nebius.mk8s.v1.ClusterControlPlaneVersionR\x05items\"\xb2\x01\n" +
 	"\x1aClusterControlPlaneVersion\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12\x1e\n" +
 	"\n" +
 	"restricted\x18\x02 \x01(\bR\n" +
 	"restricted\x12:\n" +
-	"\vend_of_life\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tendOfLife2\xee\x04\n" +
+	"\vend_of_life\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tendOfLife\x12\x1e\n" +
+	"\n" +
+	"deprecated\x18\x04 \x01(\bR\n" +
+	"deprecated2\xee\x04\n" +
 	"\x0eClusterService\x12A\n" +
 	"\x03Get\x12!.nebius.mk8s.v1.GetClusterRequest\x1a\x17.nebius.mk8s.v1.Cluster\x12H\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x17.nebius.mk8s.v1.Cluster\x12Q\n" +
