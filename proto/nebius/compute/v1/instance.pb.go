@@ -29,6 +29,7 @@ type InstanceRecoveryPolicy int32
 const (
 	InstanceRecoveryPolicy_RECOVER InstanceRecoveryPolicy = 0
 	InstanceRecoveryPolicy_FAIL    InstanceRecoveryPolicy = 1
+	InstanceRecoveryPolicy_ALWAYS  InstanceRecoveryPolicy = 2
 )
 
 // Enum value maps for InstanceRecoveryPolicy.
@@ -36,10 +37,12 @@ var (
 	InstanceRecoveryPolicy_name = map[int32]string{
 		0: "RECOVER",
 		1: "FAIL",
+		2: "ALWAYS",
 	}
 	InstanceRecoveryPolicy_value = map[string]int32{
 		"RECOVER": 0,
 		"FAIL":    1,
+		"ALWAYS":  2,
 	}
 )
 
@@ -429,8 +432,10 @@ type InstanceSpec struct {
 	// Common source of failure is a host failure, but it can be any other failure.
 	// Instance undergoing a guest shutdown (poweroff, etc.) will be subject to recovery policy, meaning that it could
 	// be restarted and billed accordingly. Stop instance via API or UI to stop it to avoid recovering.
-	// - If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.
-	// - If set to FAIL, instance will be stopped and not restarted.
+	//   - If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.
+	//   - If set to FAIL, instance will be stopped and not restarted.
+	//   - If set to ALWAYS, keep retrying recovery indefinitely until the instance is recovered. Available only for instances in
+	//     nvlinstancegroup
 	RecoveryPolicy InstanceRecoveryPolicy `protobuf:"varint,15,opt,name=recovery_policy,json=recoveryPolicy,proto3,enum=nebius.compute.v1.InstanceRecoveryPolicy" json:"recovery_policy,omitempty"`
 	// Include these parameters to create a Preemptible VM and omit them to create a Regular VM
 	// For details, see https://docs.nebius.com/compute/virtual-machines/preemptible
@@ -1674,10 +1679,12 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x11passthrough_group\x18\x01 \x01(\v2*.nebius.compute.v1.PassthroughGroupRequestH\x00R\x10passthroughGroupB\x10\n" +
 	"\arequest\x12\x05\xbaH\x02\b\x01\"7\n" +
 	"\x17PassthroughGroupRequest\x12\x1c\n" +
-	"\trequested\x18\x01 \x01(\bR\trequested*/\n" +
+	"\trequested\x18\x01 \x01(\bR\trequested*;\n" +
 	"\x16InstanceRecoveryPolicy\x12\v\n" +
 	"\aRECOVER\x10\x00\x12\b\n" +
-	"\x04FAIL\x10\x01B\\\n" +
+	"\x04FAIL\x10\x01\x12\n" +
+	"\n" +
+	"\x06ALWAYS\x10\x02B\\\n" +
 	"\x18ai.nebius.pub.compute.v1B\rInstanceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 
 var (
