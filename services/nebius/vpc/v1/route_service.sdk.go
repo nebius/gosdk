@@ -14,7 +14,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -53,12 +52,6 @@ func (s routeService) Get(ctx context.Context, request *v1.GetRouteRequest, opts
 	*v1.Route,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
 	if err != nil {
 		return nil, err
@@ -74,24 +67,18 @@ func (s routeService) GetByName(ctx context.Context, request *v1.GetRouteByNameR
 	*v1.Route,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"vpcroutetable"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"vpcroutetable"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"vpcroutetable"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"vpcroutetable"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
@@ -109,24 +96,18 @@ func (s routeService) List(ctx context.Context, request *v1.ListRoutesRequest, o
 	*v1.ListRoutesResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"vpcroutetable"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"vpcroutetable"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"vpcroutetable"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"vpcroutetable"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
@@ -169,10 +150,9 @@ func (s routeService) Create(ctx context.Context, request *v1.CreateRouteRequest
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"vpcroutetable"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, []string{"vpcroutetable"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"vpcroutetable"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -182,7 +162,7 @@ func (s routeService) Create(ctx context.Context, request *v1.CreateRouteRequest
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"vpcroutetable"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"vpcroutetable"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -190,11 +170,6 @@ func (s routeService) Create(ctx context.Context, request *v1.CreateRouteRequest
 				md.ParentId = parentID
 				request.Metadata = md
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
@@ -216,15 +191,9 @@ func (s routeService) Update(ctx context.Context, request *v1.UpdateRouteRequest
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"vpcroutetable"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
 	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
 	if err != nil {
@@ -245,12 +214,6 @@ func (s routeService) Delete(ctx context.Context, request *v1.DeleteRouteRequest
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, RouteServiceID)
 	if err != nil {
 		return nil, err

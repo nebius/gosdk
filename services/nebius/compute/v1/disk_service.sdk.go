@@ -14,7 +14,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -54,12 +53,6 @@ func (s diskService) Get(ctx context.Context, request *v1.GetDiskRequest, opts .
 	*v1.Disk,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -75,24 +68,18 @@ func (s diskService) GetByName(ctx context.Context, request *v11.GetByNameReques
 	*v1.Disk,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
@@ -110,24 +97,18 @@ func (s diskService) List(ctx context.Context, request *v1.ListDisksRequest, opt
 	*v1.ListDisksResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
@@ -170,10 +151,9 @@ func (s diskService) Create(ctx context.Context, request *v1.CreateDiskRequest, 
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -183,7 +163,7 @@ func (s diskService) Create(ctx context.Context, request *v1.CreateDiskRequest, 
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -191,11 +171,6 @@ func (s diskService) Create(ctx context.Context, request *v1.CreateDiskRequest, 
 				md.ParentId = parentID
 				request.Metadata = md
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
@@ -217,15 +192,9 @@ func (s diskService) Update(ctx context.Context, request *v1.UpdateDiskRequest, 
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
 	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
@@ -246,12 +215,6 @@ func (s diskService) Delete(ctx context.Context, request *v1.DeleteDiskRequest, 
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err
@@ -271,12 +234,6 @@ func (s diskService) ListOperationsByParent(ctx context.Context, request *v1.Lis
 	*v11.ListOperationsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, DiskServiceID)
 	if err != nil {
 		return nil, err

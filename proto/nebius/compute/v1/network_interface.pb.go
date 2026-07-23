@@ -307,9 +307,11 @@ type NetworkInterfaceStatus struct {
 	// MAC address
 	MacAddress string `protobuf:"bytes,7,opt,name=mac_address,json=macAddress,proto3" json:"mac_address,omitempty"`
 	// FQDN of the interface
-	Fqdn          string `protobuf:"bytes,9,opt,name=fqdn,proto3" json:"fqdn,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Fqdn string `protobuf:"bytes,9,opt,name=fqdn,proto3" json:"fqdn,omitempty"`
+	// Effective security groups associated with the network interface.
+	SecurityGroups []*SecurityGroupStatus `protobuf:"bytes,10,rep,name=security_groups,json=securityGroups,proto3" json:"security_groups,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *NetworkInterfaceStatus) Reset() {
@@ -389,6 +391,13 @@ func (x *NetworkInterfaceStatus) GetFqdn() string {
 		return x.Fqdn
 	}
 	return ""
+}
+
+func (x *NetworkInterfaceStatus) GetSecurityGroups() []*SecurityGroupStatus {
+	if x != nil {
+		return x.SecurityGroups
+	}
+	return nil
 }
 
 type IPAddressStatus struct {
@@ -599,6 +608,51 @@ func (x *SecurityGroup) GetId() string {
 	return ""
 }
 
+type SecurityGroupStatus struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Security group identifier
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SecurityGroupStatus) Reset() {
+	*x = SecurityGroupStatus{}
+	mi := &file_nebius_compute_v1_network_interface_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SecurityGroupStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SecurityGroupStatus) ProtoMessage() {}
+
+func (x *SecurityGroupStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_network_interface_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SecurityGroupStatus.ProtoReflect.Descriptor instead.
+func (*SecurityGroupStatus) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_network_interface_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *SecurityGroupStatus) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 var File_nebius_compute_v1_network_interface_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_network_interface_proto_rawDesc = "" +
@@ -621,7 +675,7 @@ const file_nebius_compute_v1_network_interface_proto_rawDesc = "" +
 	"\n" +
 	"allocation\"6\n" +
 	"\aIPAlias\x12+\n" +
-	"\rallocation_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fallocationId\"\xce\x02\n" +
+	"\rallocation_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fallocationId\"\x9f\x03\n" +
 	"\x16NetworkInterfaceStatus\x12\x14\n" +
 	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12A\n" +
@@ -631,7 +685,9 @@ const file_nebius_compute_v1_network_interface_proto_rawDesc = "" +
 	"\aaliases\x18\x06 \x01(\v2\".nebius.compute.v1.IPAliasesStatusR\aaliases\x12\x1f\n" +
 	"\vmac_address\x18\a \x01(\tR\n" +
 	"macAddress\x12\x12\n" +
-	"\x04fqdn\x18\t \x01(\tR\x04fqdn\"P\n" +
+	"\x04fqdn\x18\t \x01(\tR\x04fqdn\x12O\n" +
+	"\x0fsecurity_groups\x18\n" +
+	" \x03(\v2&.nebius.compute.v1.SecurityGroupStatusR\x0esecurityGroups\"P\n" +
 	"\x0fIPAddressStatus\x12\x18\n" +
 	"\aaddress\x18\x01 \x01(\tR\aaddress\x12#\n" +
 	"\rallocation_id\x18\x02 \x01(\tR\fallocationId\"n\n" +
@@ -642,6 +698,8 @@ const file_nebius_compute_v1_network_interface_proto_rawDesc = "" +
 	"\x0fIPAliasesStatus\x12\x14\n" +
 	"\x05cidrs\x18\x02 \x03(\tR\x05cidrs\"\x1f\n" +
 	"\rSecurityGroup\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"%\n" +
+	"\x13SecurityGroupStatus\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02idBd\n" +
 	"\x18ai.nebius.pub.compute.v1B\x15NetworkInterfaceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 
@@ -657,7 +715,7 @@ func file_nebius_compute_v1_network_interface_proto_rawDescGZIP() []byte {
 	return file_nebius_compute_v1_network_interface_proto_rawDescData
 }
 
-var file_nebius_compute_v1_network_interface_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_nebius_compute_v1_network_interface_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_nebius_compute_v1_network_interface_proto_goTypes = []any{
 	(*NetworkInterfaceSpec)(nil),   // 0: nebius.compute.v1.NetworkInterfaceSpec
 	(*IPAddress)(nil),              // 1: nebius.compute.v1.IPAddress
@@ -668,6 +726,7 @@ var file_nebius_compute_v1_network_interface_proto_goTypes = []any{
 	(*PublicIPAddressStatus)(nil),  // 6: nebius.compute.v1.PublicIPAddressStatus
 	(*IPAliasesStatus)(nil),        // 7: nebius.compute.v1.IPAliasesStatus
 	(*SecurityGroup)(nil),          // 8: nebius.compute.v1.SecurityGroup
+	(*SecurityGroupStatus)(nil),    // 9: nebius.compute.v1.SecurityGroupStatus
 }
 var file_nebius_compute_v1_network_interface_proto_depIdxs = []int32{
 	1, // 0: nebius.compute.v1.NetworkInterfaceSpec.ip_address:type_name -> nebius.compute.v1.IPAddress
@@ -677,11 +736,12 @@ var file_nebius_compute_v1_network_interface_proto_depIdxs = []int32{
 	5, // 4: nebius.compute.v1.NetworkInterfaceStatus.ip_address:type_name -> nebius.compute.v1.IPAddressStatus
 	6, // 5: nebius.compute.v1.NetworkInterfaceStatus.public_ip_address:type_name -> nebius.compute.v1.PublicIPAddressStatus
 	7, // 6: nebius.compute.v1.NetworkInterfaceStatus.aliases:type_name -> nebius.compute.v1.IPAliasesStatus
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	9, // 7: nebius.compute.v1.NetworkInterfaceStatus.security_groups:type_name -> nebius.compute.v1.SecurityGroupStatus
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_network_interface_proto_init() }
@@ -698,7 +758,7 @@ func file_nebius_compute_v1_network_interface_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_network_interface_proto_rawDesc), len(file_nebius_compute_v1_network_interface_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

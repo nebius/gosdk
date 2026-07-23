@@ -14,7 +14,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -55,10 +54,9 @@ func (s federationService) Create(ctx context.Context, request *v1.CreateFederat
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -68,7 +66,7 @@ func (s federationService) Create(ctx context.Context, request *v1.CreateFederat
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -76,11 +74,6 @@ func (s federationService) Create(ctx context.Context, request *v1.CreateFederat
 				md.ParentId = parentID
 				request.Metadata = md
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
@@ -102,12 +95,6 @@ func (s federationService) Get(ctx context.Context, request *v1.GetFederationReq
 	*v1.Federation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err
@@ -123,24 +110,18 @@ func (s federationService) GetByName(ctx context.Context, request *v11.GetByName
 	*v1.Federation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
@@ -158,24 +139,18 @@ func (s federationService) List(ctx context.Context, request *v1.ListFederations
 	*v1.ListFederationsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
@@ -218,15 +193,9 @@ func (s federationService) Update(ctx context.Context, request *v1.UpdateFederat
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
 	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
@@ -247,12 +216,6 @@ func (s federationService) Activate(ctx context.Context, request *v1.ActivateFed
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err
@@ -272,12 +235,6 @@ func (s federationService) Deactivate(ctx context.Context, request *v1.Deactivat
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err
@@ -297,12 +254,6 @@ func (s federationService) Delete(ctx context.Context, request *v1.DeleteFederat
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, FederationServiceID)
 	if err != nil {
 		return nil, err

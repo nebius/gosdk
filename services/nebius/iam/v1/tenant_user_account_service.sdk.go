@@ -13,7 +13,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -50,12 +49,6 @@ func (s tenantUserAccountService) Get(ctx context.Context, request *v1.GetTenant
 	*v1.TenantUserAccount,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -71,24 +64,18 @@ func (s tenantUserAccountService) List(ctx context.Context, request *v1.ListTena
 	*v1.ListTenantUserAccountsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountServiceID)
@@ -131,12 +118,6 @@ func (s tenantUserAccountService) Block(ctx context.Context, request *v1.BlockTe
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountServiceID)
 	if err != nil {
 		return nil, err
@@ -156,12 +137,6 @@ func (s tenantUserAccountService) Unblock(ctx context.Context, request *v1.Unblo
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, TenantUserAccountServiceID)
 	if err != nil {
 		return nil, err

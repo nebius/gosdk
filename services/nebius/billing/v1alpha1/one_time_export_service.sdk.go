@@ -13,7 +13,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -49,10 +48,9 @@ func (s oneTimeExportService) Create(ctx context.Context, request *v1alpha1.Crea
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"contract"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, []string{"contract"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"contract"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -62,7 +60,7 @@ func (s oneTimeExportService) Create(ctx context.Context, request *v1alpha1.Crea
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"contract"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"contract"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -70,11 +68,6 @@ func (s oneTimeExportService) Create(ctx context.Context, request *v1alpha1.Crea
 				md.ParentId = parentID
 				request.Metadata = md
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, OneTimeExportServiceID)
@@ -96,12 +89,6 @@ func (s oneTimeExportService) Get(ctx context.Context, request *v1alpha1.GetOneT
 	*v1alpha1.OneTimeExport,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, OneTimeExportServiceID)
 	if err != nil {
 		return nil, err
@@ -117,24 +104,18 @@ func (s oneTimeExportService) List(ctx context.Context, request *v1alpha1.ListOn
 	*v1alpha1.ListOneTimeExportsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"contract"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"contract"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"contract"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"contract"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, OneTimeExportServiceID)

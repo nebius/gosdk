@@ -10,7 +10,6 @@ import (
 	grpcheader "github.com/nebius/gosdk/proto/fieldmask/grpcheader"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/maintenance/v1alpha1"
 	grpc "google.golang.org/grpc"
-	slog "log/slog"
 )
 
 func init() {
@@ -43,12 +42,6 @@ func (s maintenanceService) Get(ctx context.Context, request *v1alpha1.GetMainte
 	*v1alpha1.Maintenance,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {
 		return nil, err
@@ -64,24 +57,18 @@ func (s maintenanceService) List(ctx context.Context, request *v1alpha1.ListMain
 	*v1alpha1.ListMaintenancesResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
@@ -99,15 +86,9 @@ func (s maintenanceService) Update(ctx context.Context, request *v1alpha1.Update
 	*v1alpha1.UpdateMaintenanceResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
 	}
 	address, err := s.sdk.Resolve(ctx, MaintenanceServiceID)
 	if err != nil {

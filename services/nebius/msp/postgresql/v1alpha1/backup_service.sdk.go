@@ -11,7 +11,6 @@ import (
 	v1alpha11 "github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1"
 	grpc "google.golang.org/grpc"
-	slog "log/slog"
 )
 
 func init() {
@@ -48,12 +47,6 @@ func (s backupService) Get(ctx context.Context, request *v1alpha1.GetBackupReque
 	*v1alpha1.Backup,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -69,24 +62,18 @@ func (s backupService) List(ctx context.Context, request *v1alpha1.ListBackupsRe
 	*v1alpha1.ListBackupsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, nil) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
@@ -104,12 +91,6 @@ func (s backupService) ListByCluster(ctx context.Context, request *v1alpha1.List
 	*v1alpha1.ListBackupsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -125,12 +106,6 @@ func (s backupService) Create(ctx context.Context, request *v1alpha1.CreateBacku
 	*alphaops.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err
@@ -150,12 +125,6 @@ func (s backupService) Delete(ctx context.Context, request *v1alpha1.DeleteBacku
 	*alphaops.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, BackupServiceID)
 	if err != nil {
 		return nil, err

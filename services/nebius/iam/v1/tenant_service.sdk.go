@@ -4,14 +4,12 @@ package v1
 
 import (
 	context "context"
-	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -44,12 +42,6 @@ func (s tenantService) Get(ctx context.Context, request *v1.GetTenantRequest, op
 	*v1.Container,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err
@@ -65,12 +57,6 @@ func (s tenantService) List(ctx context.Context, request *v1.ListTenantsRequest,
 	*v1.ListTenantsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, TenantServiceID)
 	if err != nil {
 		return nil, err

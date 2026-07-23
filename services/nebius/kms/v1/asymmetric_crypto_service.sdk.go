@@ -4,12 +4,10 @@ package v1
 
 import (
 	context "context"
-	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	v1 "github.com/nebius/gosdk/proto/nebius/kms/v1"
 	grpc "google.golang.org/grpc"
-	slog "log/slog"
 )
 
 func init() {
@@ -42,12 +40,6 @@ func (s asymmetricCryptoService) SignHash(ctx context.Context, request *v1.Asymm
 	*v1.AsymmetricSignHashResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, AsymmetricCryptoServiceID)
 	if err != nil {
 		return nil, err
@@ -63,12 +55,6 @@ func (s asymmetricCryptoService) GetPublicKey(ctx context.Context, request *v1.A
 	*v1.AsymmetricGetPublicKeyResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, AsymmetricCryptoServiceID)
 	if err != nil {
 		return nil, err
@@ -84,12 +70,6 @@ func (s asymmetricCryptoService) Decrypt(ctx context.Context, request *v1.Asymme
 	*v1.AsymmetricDecryptResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, AsymmetricCryptoServiceID)
 	if err != nil {
 		return nil, err

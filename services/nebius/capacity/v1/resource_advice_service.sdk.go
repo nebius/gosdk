@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -43,24 +42,18 @@ func (s resourceAdviceService) List(ctx context.Context, request *v1.ListResourc
 	*v1.ListResourceAdviceResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"tenant"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"tenant"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"tenant"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"tenant"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, ResourceAdviceServiceID)

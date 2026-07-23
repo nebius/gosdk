@@ -4,7 +4,6 @@ package v1
 
 import (
 	context "context"
-	check_nid "github.com/nebius/gosdk/check-nid"
 	conn "github.com/nebius/gosdk/conn"
 	iface "github.com/nebius/gosdk/internal/iface"
 	operations "github.com/nebius/gosdk/operations"
@@ -12,7 +11,6 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/logging/v1"
 	grpc "google.golang.org/grpc"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	slog "log/slog"
 )
 
 func init() {
@@ -48,12 +46,6 @@ func (s logExportService) ExportLogs(ctx context.Context, request *v1.ExportLogs
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, LogExportServiceID)
 	if err != nil {
 		return nil, err
@@ -73,12 +65,6 @@ func (s logExportService) GetExportInfo(ctx context.Context, request *v1.GetExpo
 	*v1.ExportStatus,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, LogExportServiceID)
 	if err != nil {
 		return nil, err
@@ -94,12 +80,6 @@ func (s logExportService) ListExports(ctx context.Context, request *v1.ListExpor
 	*v1.ListExportsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, LogExportServiceID)
 	if err != nil {
 		return nil, err
@@ -115,12 +95,6 @@ func (s logExportService) CancelExportLogs(ctx context.Context, request *v1.Canc
 	*emptypb.Empty,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, LogExportServiceID)
 	if err != nil {
 		return nil, err

@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -44,12 +43,6 @@ func (s capacityIntervalService) Get(ctx context.Context, request *v1.GetCapacit
 	*v1.CapacityInterval,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, CapacityIntervalServiceID)
 	if err != nil {
 		return nil, err
@@ -65,24 +58,18 @@ func (s capacityIntervalService) List(ctx context.Context, request *v1.ListCapac
 	*v1.ListCapacityIntervalsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"capacityblockgroup"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"capacityblockgroup"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"capacityblockgroup"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"capacityblockgroup"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, CapacityIntervalServiceID)

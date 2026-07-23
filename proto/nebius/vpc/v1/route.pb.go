@@ -694,10 +694,10 @@ const file_nebius_vpc_v1_route_proto_rawDesc = "" +
 	"\vdestination\x18\x02 \x01(\v2\x1f.nebius.vpc.v1.DestinationMatchB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\vdestination\x12=\n" +
 	"\bnext_hop\x18\x03 \x01(\v2\x16.nebius.vpc.v1.NextHopB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\anextHop\"\xd4\x01\n" +
-	"\x10DestinationMatch\x12\xbf\x01\n" +
-	"\x04cidr\x18\x01 \x01(\tB\xaa\x01\xbaH\xa2\x01\xba\x01\x9b\x01\n" +
-	"\x11string.valid_cidr\x123destination.cidr must be a valid and specified CIDR\x1aQthis.matches('^([0-9]{1,3}\\\\.){3}[0-9]{1,3}/[0-9]+$') && this.isIpPrefix(4, true)\xc8\x01\x01\xbaJ\x01\x02R\x04cidr\"\x98\x01\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\anextHop\"\x95\x01\n" +
+	"\x10DestinationMatch\x12\x80\x01\n" +
+	"\x04cidr\x18\x01 \x01(\tBl\xbaHe\xba\x01_\n" +
+	"\x11string.valid_cidr\x123destination.cidr must be a valid and specified CIDR\x1a\x15this.isIpPrefix(true)\xc8\x01\x01\xbaJ\x01\x02R\x04cidr\"\x98\x01\n" +
 	"\aNextHop\x12B\n" +
 	"\n" +
 	"allocation\x18\x01 \x01(\v2 .nebius.vpc.v1.AllocationNextHopH\x00R\n" +
