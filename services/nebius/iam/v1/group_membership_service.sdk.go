@@ -11,7 +11,6 @@ import (
 	v11 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	v1 "github.com/nebius/gosdk/proto/nebius/iam/v1"
 	grpc "google.golang.org/grpc"
-	slog "log/slog"
 )
 
 func init() {
@@ -50,10 +49,9 @@ func (s groupMembershipService) Create(ctx context.Context, request *v1.CreateGr
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -63,7 +61,7 @@ func (s groupMembershipService) Create(ctx context.Context, request *v1.CreateGr
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, nil) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -71,11 +69,6 @@ func (s groupMembershipService) Create(ctx context.Context, request *v1.CreateGr
 				md.ParentId = parentID
 				request.Metadata = md
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
@@ -97,12 +90,6 @@ func (s groupMembershipService) Get(ctx context.Context, request *v1.GetGroupMem
 	*v1.GroupMembership,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -118,12 +105,6 @@ func (s groupMembershipService) GetWithAttributes(ctx context.Context, request *
 	*v1.GroupMembershipWithAttributes,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -139,12 +120,6 @@ func (s groupMembershipService) Delete(ctx context.Context, request *v1.DeleteGr
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -164,12 +139,6 @@ func (s groupMembershipService) ListMembers(ctx context.Context, request *v1.Lis
 	*v1.ListGroupMembershipsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -185,12 +154,6 @@ func (s groupMembershipService) ListMembersWithAttributes(ctx context.Context, r
 	*v1.ListGroupMembershipsWithAttributesResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err
@@ -206,12 +169,6 @@ func (s groupMembershipService) ListMemberOf(ctx context.Context, request *v1.Li
 	*v1.ListMemberOfResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, GroupMembershipServiceID)
 	if err != nil {
 		return nil, err

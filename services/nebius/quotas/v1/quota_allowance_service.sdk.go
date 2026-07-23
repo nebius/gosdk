@@ -14,7 +14,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -53,24 +52,18 @@ func (s quotaAllowanceService) List(ctx context.Context, request *v1.ListQuotaAl
 	*v1.ListQuotaAllowancesResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
@@ -113,12 +106,6 @@ func (s quotaAllowanceService) Get(ctx context.Context, request *v1.GetQuotaAllo
 	*v1.QuotaAllowance,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
 		return nil, err
@@ -134,24 +121,18 @@ func (s quotaAllowanceService) GetByName(ctx context.Context, request *v1.GetByN
 	*v1.QuotaAllowance,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
@@ -169,10 +150,9 @@ func (s quotaAllowanceService) Create(ctx context.Context, request *v1.CreateQuo
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -182,7 +162,7 @@ func (s quotaAllowanceService) Create(ctx context.Context, request *v1.CreateQuo
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -190,11 +170,6 @@ func (s quotaAllowanceService) Create(ctx context.Context, request *v1.CreateQuo
 				md.ParentId = parentID
 				request.Metadata = md
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
@@ -216,15 +191,9 @@ func (s quotaAllowanceService) Update(ctx context.Context, request *v1.UpdateQuo
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"tenant", "aitenant", "tractotenant", "project", "aiproject"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
 	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
@@ -245,12 +214,6 @@ func (s quotaAllowanceService) Delete(ctx context.Context, request *v1.DeleteQuo
 	operations.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, QuotaAllowanceServiceID)
 	if err != nil {
 		return nil, err

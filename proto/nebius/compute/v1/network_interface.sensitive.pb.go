@@ -28,3 +28,6 @@ package v1
 
 // func (x *SecurityGroup) Sanitize()            // is not generated as no sensitive fields found
 // func (x *SecurityGroup) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *SecurityGroupStatus) Sanitize()            // is not generated as no sensitive fields found
+// func (x *SecurityGroupStatus) LogValue() slog.Value // is not generated as no sensitive fields found

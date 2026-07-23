@@ -15,7 +15,6 @@ import (
 	grpc "google.golang.org/grpc"
 	proto "google.golang.org/protobuf/proto"
 	iter "iter"
-	slog "log/slog"
 )
 
 func init() {
@@ -55,12 +54,6 @@ func (s nodeGroupService) Get(ctx context.Context, request *v1alpha1.GetNodeGrou
 	*v1alpha1.NodeGroup,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -76,24 +69,18 @@ func (s nodeGroupService) GetByName(ctx context.Context, request *v1alpha1.GetNo
 	*v1alpha1.NodeGroup,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"mk8scluster"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"mk8scluster"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"mk8scluster"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"mk8scluster"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
@@ -111,24 +98,18 @@ func (s nodeGroupService) List(ctx context.Context, request *v1alpha1.ListNodeGr
 	*v1alpha1.ListNodeGroupsResponse,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"mk8scluster"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"mk8scluster"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.ValidateNIDString(tenantID, []string{"mk8scluster"}) == "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"mk8scluster"}) {
 					request.ParentId = tenantID
 				}
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
@@ -171,10 +152,9 @@ func (s nodeGroupService) Create(ctx context.Context, request *v1alpha1.CreateNo
 	*alphaops.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"mk8scluster"}}}})
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.ValidateNIDString(tenantID, []string{"mk8scluster"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"mk8scluster"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -184,7 +164,7 @@ func (s nodeGroupService) Create(ctx context.Context, request *v1alpha1.CreateNo
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.ValidateNIDString(parentID, []string{"mk8scluster"}) == "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"mk8scluster"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -192,11 +172,6 @@ func (s nodeGroupService) Create(ctx context.Context, request *v1alpha1.CreateNo
 				md.ParentId = parentID
 				request.Metadata = md
 			}
-		}
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
 		}
 	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
@@ -218,15 +193,9 @@ func (s nodeGroupService) Update(ctx context.Context, request *v1alpha1.UpdateNo
 	*alphaops.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext([]*check_nid.SubfieldSettings{{FieldPath: "metadata.parent_id", Nid: &check_nid.NIDFieldSettings{Resource: []string{"mk8scluster"}}}})
 	ctx, err := grpcheader.EnsureMessageResetMaskInOutgoingContext(ctx, request)
 	if err != nil {
 		return nil, err
-	}
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
 	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
@@ -247,12 +216,6 @@ func (s nodeGroupService) Delete(ctx context.Context, request *v1alpha1.DeleteNo
 	*alphaops.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err
@@ -272,12 +235,6 @@ func (s nodeGroupService) Upgrade(ctx context.Context, request *v1alpha1.Upgrade
 	*alphaops.Operation,
 	error,
 ) {
-	nidCheckCtx := check_nid.NewNIDCheckContext(nil)
-	if logger := s.sdk.GetLogger(); logger != nil {
-		for path, warning := range check_nid.CheckMessageFields(request, nidCheckCtx) {
-			logger.WarnContext(ctx, warning, slog.String("path", path))
-		}
-	}
 	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
 	if err != nil {
 		return nil, err

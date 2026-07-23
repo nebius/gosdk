@@ -462,7 +462,7 @@ type isNodeGroupSpec_Size interface {
 }
 
 type NodeGroupSpec_FixedNodeCount struct {
-	// Number of nodes in the group. Can be changed manually at any time.
+	// Number of nodes in the group. Can be changed manually at any time, except for a node group with NVLink.
 	FixedNodeCount int64 `protobuf:"varint,2,opt,name=fixed_node_count,json=fixedNodeCount,proto3,oneof"`
 }
 
@@ -2088,7 +2088,7 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x9a\x02\xbaH\x86\x02\xba\x01\x82\x02\n" +
 	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')\xe2J\r\x12\vmk8sclusterR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecR\x04spec\x127\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.NodeGroupStatusR\x06status\"\xc1\x03\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.NodeGroupStatusR\x06status\"\xdf\x04\n" +
 	"\rNodeGroupSpec\x12G\n" +
 	"\aversion\x18\x01 \x01(\tB-\xbaH*r(2&^$|^\\d+\\.\\d+(-nebius-node\\.[1-9]\\d*)?$R\aversion\x125\n" +
 	"\x10fixed_node_count\x18\x02 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00H\x00R\x0efixedNodeCount\x12L\n" +
@@ -2096,7 +2096,8 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\btemplate\x18\x03 \x01(\v2\x1c.nebius.mk8s.v1.NodeTemplateB\x06\xbaH\x03\xc8\x01\x01R\btemplate\x12G\n" +
 	"\bstrategy\x18\x04 \x01(\v2+.nebius.mk8s.v1.NodeGroupDeploymentStrategyR\bstrategy\x12H\n" +
 	"\vauto_repair\x18\x06 \x01(\v2'.nebius.mk8s.v1.NodeGroupAutoRepairSpecR\n" +
-	"autoRepairB\r\n" +
+	"autoRepair:\x9b\x01\xbaH\x97\x01\x1a\x94\x01\n" +
+	"\"node_group_spec.nvlink_autoscaling\x127autoscaling cannot be used for a node group with NVLink\x1a5!(has(this.template.nvlink) && has(this.autoscaling))B\r\n" +
 	"\x04size\x12\x05\xbaH\x02\b\x01\"\x84\b\n" +
 	"\fNodeTemplate\x12@\n" +
 	"\bmetadata\x18\x01 \x01(\v2$.nebius.mk8s.v1.NodeMetadataTemplateR\bmetadata\x12;\n" +
