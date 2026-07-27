@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/nebius/gosdk/browser"
-	"github.com/nebius/gosdk/config"
+	"github.com/nebius/gosdk/internal/configerror"
 )
 
 func getCode(
@@ -26,7 +26,7 @@ func getCode(
 ) (_ string, _ string, retErr error) {
 	authURL, err := url.Parse(httpsURL(authEndpoint))
 	if err != nil {
-		return "", "", config.NewError(err)
+		return "", "", configerror.New(err)
 	}
 
 	callback, err := newCallbackHandler(logger)
@@ -169,7 +169,7 @@ func Authorize(
 	)
 	tokenURL, err := url.Parse(federationURL + tokenEP)
 	if err != nil {
-		return GetTokenResult{}, config.NewError(err)
+		return GetTokenResult{}, configerror.New(err)
 	}
 
 	pkceCode, err := GeneratePKCECode()

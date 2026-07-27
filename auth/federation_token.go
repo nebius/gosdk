@@ -2,54 +2,15 @@ package auth
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"log/slog"
 	"time"
+
+	"github.com/nebius/gosdk/auth/federation"
 )
 
 const federationAuthTimeout = 10 * time.Minute
-
-type federationAuthorizerFunc func(
-	ctx context.Context,
-	clientID string,
-	federationURL string,
-	federationID string,
-	logger *slog.Logger,
-	writer io.Writer,
-	noBrowserOpen bool,
-) (BearerToken, error)
-
-var federationAuthorizer federationAuthorizerFunc = func( //nolint:gochecknoglobals // temporary bridge to cut the auth <-> federation cycle while deprecated auth/federation handles remain
-	context.Context,
-	string,
-	string,
-	string,
-	*slog.Logger,
-	io.Writer,
-	bool,
-) (BearerToken, error) {
-	return BearerToken{}, errors.New(
-		"federation auth implementation is not registered; import nebius.ai/nebo/api/tools/gosdk/auth/federation",
-	)
-}
-
-// RegisterFederationAuthorizer wires the low-level federation flow implementation
-// into the auth package. It is intended for internal package initialization only.
-// This bridge exists only while the deprecated federation package constructors
-// and aliases still live under auth/federation and we need to cut the
-// auth <-> federation dependency cycle.
-// After those deprecated entrypoints are removed, drop this registration hook
-// and the package-level function variable, remove the federation side-effect
-// imports owned by gosdk, and embed this authorization code in the auth-side
-// FederationTokener implementation directly.
-func RegisterFederationAuthorizer(authorizer federationAuthorizerFunc) {
-	if authorizer == nil {
-		return
-	}
-	federationAuthorizer = authorizer
-}
 
 type FederationTokener struct {
 	metrics            atomicMetrics
@@ -117,7 +78,7 @@ func (f *FederationTokener) BearerToken(ctx context.Context) (BearerToken, error
 	defer cancel()
 	now := time.Now()
 
-	token, err := federationAuthorizer(
+	res, err := federation.Authorize(
 		ctx,
 		f.clientID,
 		f.federationEndpoint,
@@ -129,6 +90,10 @@ func (f *FederationTokener) BearerToken(ctx context.Context) (BearerToken, error
 	if err != nil {
 		f.metrics.tokenAcquireError(ctx, f, time.Since(now), 0)
 		return BearerToken{}, fmt.Errorf("authorize: %w", err)
+	}
+	token := BearerToken{
+		Token:     res.AccessToken,
+		ExpiresAt: now.Add(time.Duration(res.ExpiresIn) * time.Second),
 	}
 	f.metrics.tokenAcquireSuccess(ctx, f, time.Since(now), 0, token, time.Now())
 
