@@ -56,7 +56,7 @@ func (o LoggerOption) apply(t BearerTokener) {
 
 // WithLogger sets the logger for the token provider. It will be used by both
 // CachedServiceTokener and FileCacheTokener if they are used.
-// It is also used in the federation Tokener if it is used.
+// It is also used by FederationTokener if it is used.
 // If the logger is not set, usually a no-op logger will be used.
 func WithLogger(logger *slog.Logger) Option {
 	return LoggerOption{Logger: logger}

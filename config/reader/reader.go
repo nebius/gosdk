@@ -13,7 +13,6 @@ import (
 	"go.yaml.in/yaml/v3"
 
 	"github.com/nebius/gosdk/auth"
-	_ "github.com/nebius/gosdk/auth/federation" // register temporary federation bridge while deprecated auth/federation handles remain
 	"github.com/nebius/gosdk/config"
 	"github.com/nebius/gosdk/config/paths"
 	"github.com/nebius/gosdk/constants"

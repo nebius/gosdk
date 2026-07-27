@@ -3,27 +3,14 @@ package config
 import (
 	"maps"
 	"slices"
+
+	"github.com/nebius/gosdk/internal/configerror"
 )
 
-type Error struct {
-	err error
-}
+type Error = configerror.Error
 
 func NewError(err error) *Error {
-	if err == nil {
-		return nil
-	}
-	return &Error{
-		err: err,
-	}
-}
-
-func (e *Error) Error() string {
-	return "config: " + e.err.Error()
-}
-
-func (e *Error) Unwrap() error {
-	return e.err
+	return configerror.New(err)
 }
 
 type MissingConfigError struct {
