@@ -26,6 +26,7 @@ const (
 	JobService_Create_FullMethodName    = "/nebius.ai.v1.JobService/Create"
 	JobService_Delete_FullMethodName    = "/nebius.ai.v1.JobService/Delete"
 	JobService_Cancel_FullMethodName    = "/nebius.ai.v1.JobService/Cancel"
+	JobService_Restart_FullMethodName   = "/nebius.ai.v1.JobService/Restart"
 )
 
 // JobServiceClient is the client API for JobService service.
@@ -44,6 +45,8 @@ type JobServiceClient interface {
 	Delete(ctx context.Context, in *DeleteJobRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Cancels a job.
 	Cancel(ctx context.Context, in *CancelJobRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Restarts a job.
+	Restart(ctx context.Context, in *RestartJobRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
 type jobServiceClient struct {
@@ -108,6 +111,15 @@ func (c *jobServiceClient) Cancel(ctx context.Context, in *CancelJobRequest, opt
 	return out, nil
 }
 
+func (c *jobServiceClient) Restart(ctx context.Context, in *RestartJobRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, JobService_Restart_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // JobServiceServer is the server API for JobService service.
 // All implementations should embed UnimplementedJobServiceServer
 // for forward compatibility
@@ -124,6 +136,8 @@ type JobServiceServer interface {
 	Delete(context.Context, *DeleteJobRequest) (*v1.Operation, error)
 	// Cancels a job.
 	Cancel(context.Context, *CancelJobRequest) (*v1.Operation, error)
+	// Restarts a job.
+	Restart(context.Context, *RestartJobRequest) (*v1.Operation, error)
 }
 
 // UnimplementedJobServiceServer should be embedded to have forward compatible implementations.
@@ -147,6 +161,9 @@ func (UnimplementedJobServiceServer) Delete(context.Context, *DeleteJobRequest) 
 }
 func (UnimplementedJobServiceServer) Cancel(context.Context, *CancelJobRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Cancel not implemented")
+}
+func (UnimplementedJobServiceServer) Restart(context.Context, *RestartJobRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Restart not implemented")
 }
 
 // UnsafeJobServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -268,6 +285,24 @@ func _JobService_Cancel_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _JobService_Restart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestartJobRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobServiceServer).Restart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JobService_Restart_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobServiceServer).Restart(ctx, req.(*RestartJobRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // JobService_ServiceDesc is the grpc.ServiceDesc for JobService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -298,6 +333,10 @@ var JobService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Cancel",
 			Handler:    _JobService_Cancel_Handler,
+		},
+		{
+			MethodName: "Restart",
+			Handler:    _JobService_Restart_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

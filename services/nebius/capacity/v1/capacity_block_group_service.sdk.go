@@ -77,13 +77,13 @@ func (s capacityBlockGroupService) List(ctx context.Context, request *v1.ListCap
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"tenant"}) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"tenant", "aitenant"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"tenant"}) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"tenant", "aitenant"}) {
 					request.ParentId = tenantID
 				}
 			}

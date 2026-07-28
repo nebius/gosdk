@@ -27,6 +27,13 @@ type sdkAuthMetricsRecorder struct {
 	cacheMiss    int
 }
 
+func TestWithDomainRejectsEmptyValue(t *testing.T) {
+	t.Parallel()
+
+	_, err := gosdk.New(context.Background(), gosdk.WithDomain(""))
+	require.EqualError(t, err, "empty domain provided")
+}
+
 func (m *sdkMetricsRecorder) TokenAcquire(context.Context, string, string, time.Duration, int) {
 	m.tokenAcquire++
 }

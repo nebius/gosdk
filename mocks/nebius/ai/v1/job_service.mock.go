@@ -438,3 +438,47 @@ func (c *MockJobServiceListOperationsCall) DoAndReturn(f func(context.Context, *
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// Restart mocks base method.
+func (m *MockJobService) Restart(arg0 context.Context, arg1 *v1.RestartJobRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Restart", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Restart indicates an expected call of Restart.
+func (mr *MockJobServiceMockRecorder) Restart(arg0, arg1 any, arg2 ...any) *MockJobServiceRestartCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Restart", reflect.TypeOf((*MockJobService)(nil).Restart), varargs...)
+	return &MockJobServiceRestartCall{Call: call}
+}
+
+// MockJobServiceRestartCall wrap *gomock.Call
+type MockJobServiceRestartCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockJobServiceRestartCall) Return(arg0 operations.Operation, arg1 error) *MockJobServiceRestartCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockJobServiceRestartCall) Do(f func(context.Context, *v1.RestartJobRequest, ...grpc.CallOption) (operations.Operation, error)) *MockJobServiceRestartCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockJobServiceRestartCall) DoAndReturn(f func(context.Context, *v1.RestartJobRequest, ...grpc.CallOption) (operations.Operation, error)) *MockJobServiceRestartCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}

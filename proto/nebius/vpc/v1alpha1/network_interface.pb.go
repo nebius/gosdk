@@ -294,7 +294,10 @@ type NetworkInterfaceStatus struct {
 	// Effective IP Aliases
 	Aliases *IPAliasesStatus `protobuf:"bytes,6,opt,name=aliases,proto3" json:"aliases,omitempty"`
 	// MAC address
-	MacAddress    string `protobuf:"bytes,7,opt,name=mac_address,json=macAddress,proto3" json:"mac_address,omitempty"`
+	MacAddress string `protobuf:"bytes,7,opt,name=mac_address,json=macAddress,proto3" json:"mac_address,omitempty"`
+	// Subnet ID actually used by the network interface.
+	// Equals spec.subnet_id when it is provided; otherwise contains the resolved default subnet ID.
+	SubnetId      string `protobuf:"bytes,10,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -367,6 +370,13 @@ func (x *NetworkInterfaceStatus) GetAliases() *IPAliasesStatus {
 func (x *NetworkInterfaceStatus) GetMacAddress() string {
 	if x != nil {
 		return x.MacAddress
+	}
+	return ""
+}
+
+func (x *NetworkInterfaceStatus) GetSubnetId() string {
+	if x != nil {
+		return x.SubnetId
 	}
 	return ""
 }
@@ -527,9 +537,9 @@ var File_nebius_vpc_v1alpha1_network_interface_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc = "" +
 	"\n" +
-	"+nebius/vpc/v1alpha1/network_interface.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xda\x02\n" +
-	"\x14NetworkInterfaceSpec\x125\n" +
-	"\tsubnet_id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\v\n" +
+	"+nebius/vpc/v1alpha1/network_interface.proto\x12\x13nebius.vpc.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xd4\x02\n" +
+	"\x14NetworkInterfaceSpec\x12/\n" +
+	"\tsubnet_id\x18\x01 \x01(\tB\x12\xbaJ\x01\x02\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x126\n" +
 	"\x04name\x18\x02 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a\x10\x01\x18<2\x14^[0-9a-z][0-9a-z-]*$R\x04name\x12C\n" +
 	"\n" +
@@ -547,7 +557,7 @@ const file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc = "" +
 	"allocation\"H\n" +
 	"\aIPAlias\x12=\n" +
 	"\rallocation_id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
-	"\rvpcallocationR\fallocationId\"\xc0\x02\n" +
+	"\rvpcallocationR\fallocationId\"\xed\x02\n" +
 	"\x16NetworkInterfaceStatus\x12\x14\n" +
 	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12C\n" +
@@ -556,7 +566,10 @@ const file_nebius_vpc_v1alpha1_network_interface_proto_rawDesc = "" +
 	"\x11public_ip_address\x18\x04 \x01(\v2*.nebius.vpc.v1alpha1.PublicIPAddressStatusR\x0fpublicIpAddress\x12>\n" +
 	"\aaliases\x18\x06 \x01(\v2$.nebius.vpc.v1alpha1.IPAliasesStatusR\aaliases\x12\x1f\n" +
 	"\vmac_address\x18\a \x01(\tR\n" +
-	"macAddress\"d\n" +
+	"macAddress\x12+\n" +
+	"\tsubnet_id\x18\n" +
+	" \x01(\tB\x0e\xe2J\v\n" +
+	"\tvpcsubnetR\bsubnetId\"d\n" +
 	"\x0fIPAddressStatus\x12\x18\n" +
 	"\aaddress\x18\x01 \x01(\tR\aaddress\x127\n" +
 	"\rallocation_id\x18\x02 \x01(\tB\x12\xe2J\x0f\n" +

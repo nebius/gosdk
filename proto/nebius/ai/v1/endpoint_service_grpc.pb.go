@@ -26,6 +26,7 @@ const (
 	EndpointService_Create_FullMethodName    = "/nebius.ai.v1.EndpointService/Create"
 	EndpointService_Delete_FullMethodName    = "/nebius.ai.v1.EndpointService/Delete"
 	EndpointService_Start_FullMethodName     = "/nebius.ai.v1.EndpointService/Start"
+	EndpointService_Restart_FullMethodName   = "/nebius.ai.v1.EndpointService/Restart"
 	EndpointService_Stop_FullMethodName      = "/nebius.ai.v1.EndpointService/Stop"
 )
 
@@ -45,6 +46,8 @@ type EndpointServiceClient interface {
 	Delete(ctx context.Context, in *DeleteEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Starts an endpoint.
 	Start(ctx context.Context, in *StartEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Restarts an endpoint.
+	Restart(ctx context.Context, in *RestartEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Stops an endpoint.
 	Stop(ctx context.Context, in *StopEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
@@ -111,6 +114,15 @@ func (c *endpointServiceClient) Start(ctx context.Context, in *StartEndpointRequ
 	return out, nil
 }
 
+func (c *endpointServiceClient) Restart(ctx context.Context, in *RestartEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
+	out := new(v1.Operation)
+	err := c.cc.Invoke(ctx, EndpointService_Restart_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *endpointServiceClient) Stop(ctx context.Context, in *StopEndpointRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, EndpointService_Stop_FullMethodName, in, out, opts...)
@@ -136,6 +148,8 @@ type EndpointServiceServer interface {
 	Delete(context.Context, *DeleteEndpointRequest) (*v1.Operation, error)
 	// Starts an endpoint.
 	Start(context.Context, *StartEndpointRequest) (*v1.Operation, error)
+	// Restarts an endpoint.
+	Restart(context.Context, *RestartEndpointRequest) (*v1.Operation, error)
 	// Stops an endpoint.
 	Stop(context.Context, *StopEndpointRequest) (*v1.Operation, error)
 }
@@ -161,6 +175,9 @@ func (UnimplementedEndpointServiceServer) Delete(context.Context, *DeleteEndpoin
 }
 func (UnimplementedEndpointServiceServer) Start(context.Context, *StartEndpointRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Start not implemented")
+}
+func (UnimplementedEndpointServiceServer) Restart(context.Context, *RestartEndpointRequest) (*v1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Restart not implemented")
 }
 func (UnimplementedEndpointServiceServer) Stop(context.Context, *StopEndpointRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Stop not implemented")
@@ -285,6 +302,24 @@ func _EndpointService_Start_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EndpointService_Restart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestartEndpointRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EndpointServiceServer).Restart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EndpointService_Restart_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EndpointServiceServer).Restart(ctx, req.(*RestartEndpointRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _EndpointService_Stop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StopEndpointRequest)
 	if err := dec(in); err != nil {
@@ -333,6 +368,10 @@ var EndpointService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Start",
 			Handler:    _EndpointService_Start_Handler,
+		},
+		{
+			MethodName: "Restart",
+			Handler:    _EndpointService_Restart_Handler,
 		},
 		{
 			MethodName: "Stop",

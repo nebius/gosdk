@@ -329,6 +329,50 @@ func (x *CancelJobRequest) GetId() string {
 	return ""
 }
 
+type RestartJobRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RestartJobRequest) Reset() {
+	*x = RestartJobRequest{}
+	mi := &file_nebius_ai_v1_job_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RestartJobRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestartJobRequest) ProtoMessage() {}
+
+func (x *RestartJobRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_ai_v1_job_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestartJobRequest.ProtoReflect.Descriptor instead.
+func (*RestartJobRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_ai_v1_job_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *RestartJobRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 type ListJobsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Job                 `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -339,7 +383,7 @@ type ListJobsResponse struct {
 
 func (x *ListJobsResponse) Reset() {
 	*x = ListJobsResponse{}
-	mi := &file_nebius_ai_v1_job_service_proto_msgTypes[6]
+	mi := &file_nebius_ai_v1_job_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -351,7 +395,7 @@ func (x *ListJobsResponse) String() string {
 func (*ListJobsResponse) ProtoMessage() {}
 
 func (x *ListJobsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_ai_v1_job_service_proto_msgTypes[6]
+	mi := &file_nebius_ai_v1_job_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -364,7 +408,7 @@ func (x *ListJobsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListJobsResponse.ProtoReflect.Descriptor instead.
 func (*ListJobsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_ai_v1_job_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_ai_v1_job_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListJobsResponse) GetItems() []*Job {
@@ -408,10 +452,13 @@ const file_nebius_ai_v1_job_service_proto_rawDesc = "" +
 	"\x05aijobR\x02id\"4\n" +
 	"\x10CancelJobRequest\x12 \n" +
 	"\x02id\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xe2J\a\n" +
+	"\x05aijobR\x02id\"5\n" +
+	"\x11RestartJobRequest\x12 \n" +
+	"\x02id\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xe2J\a\n" +
 	"\x05aijobR\x02id\"c\n" +
 	"\x10ListJobsResponse\x12'\n" +
 	"\x05items\x18\x01 \x03(\v2\x11.nebius.ai.v1.JobR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xaf\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xf8\x03\n" +
 	"\n" +
 	"JobService\x125\n" +
 	"\x03Get\x12\x1b.nebius.ai.v1.GetJobRequest\x1a\x11.nebius.ai.v1.Job\x12A\n" +
@@ -419,7 +466,8 @@ const file_nebius_ai_v1_job_service_proto_rawDesc = "" +
 	"\x04List\x12\x1d.nebius.ai.v1.ListJobsRequest\x1a\x1e.nebius.ai.v1.ListJobsResponse\x12E\n" +
 	"\x06Create\x12\x1e.nebius.ai.v1.CreateJobRequest\x1a\x1b.nebius.common.v1.Operation\x12E\n" +
 	"\x06Delete\x12\x1e.nebius.ai.v1.DeleteJobRequest\x1a\x1b.nebius.common.v1.Operation\x12E\n" +
-	"\x06Cancel\x12\x1e.nebius.ai.v1.CancelJobRequest\x1a\x1b.nebius.common.v1.Operation\x1a\v\xbaJ\bapps.mspBT\n" +
+	"\x06Cancel\x12\x1e.nebius.ai.v1.CancelJobRequest\x1a\x1b.nebius.common.v1.Operation\x12G\n" +
+	"\aRestart\x12\x1f.nebius.ai.v1.RestartJobRequest\x1a\x1b.nebius.common.v1.Operation\x1a\v\xbaJ\bapps.mspBT\n" +
 	"\x13ai.nebius.pub.ai.v1B\x0fJobServiceProtoP\x01Z*github.com/nebius/gosdk/proto/nebius/ai/v1b\x06proto3"
 
 var (
@@ -434,7 +482,7 @@ func file_nebius_ai_v1_job_service_proto_rawDescGZIP() []byte {
 	return file_nebius_ai_v1_job_service_proto_rawDescData
 }
 
-var file_nebius_ai_v1_job_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_nebius_ai_v1_job_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_ai_v1_job_service_proto_goTypes = []any{
 	(*GetJobRequest)(nil),       // 0: nebius.ai.v1.GetJobRequest
 	(*GetJobByNameRequest)(nil), // 1: nebius.ai.v1.GetJobByNameRequest
@@ -442,30 +490,33 @@ var file_nebius_ai_v1_job_service_proto_goTypes = []any{
 	(*CreateJobRequest)(nil),    // 3: nebius.ai.v1.CreateJobRequest
 	(*DeleteJobRequest)(nil),    // 4: nebius.ai.v1.DeleteJobRequest
 	(*CancelJobRequest)(nil),    // 5: nebius.ai.v1.CancelJobRequest
-	(*ListJobsResponse)(nil),    // 6: nebius.ai.v1.ListJobsResponse
-	(*v1.ResourceMetadata)(nil), // 7: nebius.common.v1.ResourceMetadata
-	(*JobSpec)(nil),             // 8: nebius.ai.v1.JobSpec
-	(*Job)(nil),                 // 9: nebius.ai.v1.Job
-	(*v1.Operation)(nil),        // 10: nebius.common.v1.Operation
+	(*RestartJobRequest)(nil),   // 6: nebius.ai.v1.RestartJobRequest
+	(*ListJobsResponse)(nil),    // 7: nebius.ai.v1.ListJobsResponse
+	(*v1.ResourceMetadata)(nil), // 8: nebius.common.v1.ResourceMetadata
+	(*JobSpec)(nil),             // 9: nebius.ai.v1.JobSpec
+	(*Job)(nil),                 // 10: nebius.ai.v1.Job
+	(*v1.Operation)(nil),        // 11: nebius.common.v1.Operation
 }
 var file_nebius_ai_v1_job_service_proto_depIdxs = []int32{
-	7,  // 0: nebius.ai.v1.CreateJobRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8,  // 1: nebius.ai.v1.CreateJobRequest.spec:type_name -> nebius.ai.v1.JobSpec
-	9,  // 2: nebius.ai.v1.ListJobsResponse.items:type_name -> nebius.ai.v1.Job
+	8,  // 0: nebius.ai.v1.CreateJobRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	9,  // 1: nebius.ai.v1.CreateJobRequest.spec:type_name -> nebius.ai.v1.JobSpec
+	10, // 2: nebius.ai.v1.ListJobsResponse.items:type_name -> nebius.ai.v1.Job
 	0,  // 3: nebius.ai.v1.JobService.Get:input_type -> nebius.ai.v1.GetJobRequest
 	1,  // 4: nebius.ai.v1.JobService.GetByName:input_type -> nebius.ai.v1.GetJobByNameRequest
 	2,  // 5: nebius.ai.v1.JobService.List:input_type -> nebius.ai.v1.ListJobsRequest
 	3,  // 6: nebius.ai.v1.JobService.Create:input_type -> nebius.ai.v1.CreateJobRequest
 	4,  // 7: nebius.ai.v1.JobService.Delete:input_type -> nebius.ai.v1.DeleteJobRequest
 	5,  // 8: nebius.ai.v1.JobService.Cancel:input_type -> nebius.ai.v1.CancelJobRequest
-	9,  // 9: nebius.ai.v1.JobService.Get:output_type -> nebius.ai.v1.Job
-	9,  // 10: nebius.ai.v1.JobService.GetByName:output_type -> nebius.ai.v1.Job
-	6,  // 11: nebius.ai.v1.JobService.List:output_type -> nebius.ai.v1.ListJobsResponse
-	10, // 12: nebius.ai.v1.JobService.Create:output_type -> nebius.common.v1.Operation
-	10, // 13: nebius.ai.v1.JobService.Delete:output_type -> nebius.common.v1.Operation
-	10, // 14: nebius.ai.v1.JobService.Cancel:output_type -> nebius.common.v1.Operation
-	9,  // [9:15] is the sub-list for method output_type
-	3,  // [3:9] is the sub-list for method input_type
+	6,  // 9: nebius.ai.v1.JobService.Restart:input_type -> nebius.ai.v1.RestartJobRequest
+	10, // 10: nebius.ai.v1.JobService.Get:output_type -> nebius.ai.v1.Job
+	10, // 11: nebius.ai.v1.JobService.GetByName:output_type -> nebius.ai.v1.Job
+	7,  // 12: nebius.ai.v1.JobService.List:output_type -> nebius.ai.v1.ListJobsResponse
+	11, // 13: nebius.ai.v1.JobService.Create:output_type -> nebius.common.v1.Operation
+	11, // 14: nebius.ai.v1.JobService.Delete:output_type -> nebius.common.v1.Operation
+	11, // 15: nebius.ai.v1.JobService.Cancel:output_type -> nebius.common.v1.Operation
+	11, // 16: nebius.ai.v1.JobService.Restart:output_type -> nebius.common.v1.Operation
+	10, // [10:17] is the sub-list for method output_type
+	3,  // [3:10] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
 	3,  // [3:3] is the sub-list for extension extendee
 	0,  // [0:3] is the sub-list for field type_name
@@ -483,7 +534,7 @@ func file_nebius_ai_v1_job_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_ai_v1_job_service_proto_rawDesc), len(file_nebius_ai_v1_job_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

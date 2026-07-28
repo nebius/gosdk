@@ -67,6 +67,9 @@ func (w *wrapperCreateJobRequest) ProtoReflect() protoreflect.Message {
 // func (x *CancelJobRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *CancelJobRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *RestartJobRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *RestartJobRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // Sanitize mutates [ListJobsResponse] to remove/mask all sensitive values.
 // Sensitive fields are marked with [(nebius.sensitive) = true].
 func (x *ListJobsResponse) Sanitize() {

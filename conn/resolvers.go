@@ -3,6 +3,7 @@ package conn
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log/slog"
 	"strings"
 	"sync"
@@ -43,11 +44,57 @@ func NewContextResolver(logger *slog.Logger, next Resolver) ContextResolver {
 func (r ContextResolver) Resolve(ctx context.Context, id ServiceID) (Address, error) {
 	resolver := ResolverFromContext(ctx)
 	if resolver == nil {
-		resolver = r.next
-	} else {
-		r.logger.DebugContext(ctx, "using custom service address resolver", slog.String("service", string(id)))
+		return r.next.Resolve(ctx, id)
 	}
-	return resolver.Resolve(ctx, id)
+	return NewLoggingResolver(r.logger, resolver).Resolve(ctx, id)
+}
+
+type loggingResolver struct {
+	logger *slog.Logger
+	next   Resolver
+}
+
+var _ Resolver = loggingResolver{}
+
+type resolverLogAttributer interface {
+	resolverLogAttributes(ServiceID, Address) []any
+}
+
+// NewLoggingResolver logs the concrete resolver that successfully resolves a service.
+// Resolver chains are decorated recursively so the matching resolver is logged instead of the chain.
+func NewLoggingResolver(logger *slog.Logger, next Resolver) Resolver {
+	switch resolver := next.(type) {
+	case loggingResolver:
+		return resolver
+	case ResolversChain:
+		logged := make([]Resolver, 0, len(resolver))
+		for _, child := range resolver {
+			logged = append(logged, NewLoggingResolver(logger, child))
+		}
+		return NewResolversChain(logged...)
+	default:
+		return loggingResolver{logger: logger, next: next}
+	}
+}
+
+func (r loggingResolver) Resolve(ctx context.Context, id ServiceID) (Address, error) {
+	address, err := r.next.Resolve(ctx, id)
+	if err != nil {
+		return "", err
+	}
+	if !r.logger.Enabled(ctx, slog.LevelDebug) {
+		return address, nil
+	}
+	attrs := []any{
+		slog.String("service", string(id)),
+		slog.String("address", string(address)),
+		slog.String("resolver_type", fmt.Sprintf("%T", r.next)),
+	}
+	if attributer, ok := r.next.(resolverLogAttributer); ok {
+		attrs = append(attrs, attributer.resolverLogAttributes(id, address)...)
+	}
+	r.logger.DebugContext(ctx, "service address is resolved by resolver", attrs...)
+	return address, nil
 }
 
 func NewBasicResolver(id, address string) Resolver {
@@ -66,6 +113,18 @@ func NewConventionResolver() ConventionResolver {
 }
 
 func (ConventionResolver) Resolve(_ context.Context, id ServiceID) (Address, error) {
+	serviceName, err := conventionServiceName(id)
+	if err != nil {
+		return "", err
+	}
+	return Address(serviceName + ".{domain}"), nil
+}
+
+func (ConventionResolver) resolverLogAttributes(ServiceID, Address) []any {
+	return []any{slog.String("route", "gateway")}
+}
+
+func conventionServiceName(id ServiceID) (string, error) {
 	parts := strings.Split(string(id), ".")
 	if len(parts) < 3 || parts[0] != "nebius" {
 		return "", NewUnknownServiceError(id)
@@ -74,7 +133,7 @@ func (ConventionResolver) Resolve(_ context.Context, id ServiceID) (Address, err
 	if name, ok := ConventionResolverServiceIDToNameMap[id]; ok {
 		serviceName = name
 	}
-	return Address(serviceName + ".{domain}"), nil
+	return serviceName, nil
 }
 
 type ConstantResolver string
@@ -87,6 +146,10 @@ func NewConstantResolver(address Address) ConstantResolver {
 
 func (r ConstantResolver) Resolve(context.Context, ServiceID) (Address, error) {
 	return Address(r), nil
+}
+
+func (ConstantResolver) resolverLogAttributes(ServiceID, Address) []any {
+	return []any{slog.String("route", "override")}
 }
 
 type SingleResolver struct {
@@ -110,6 +173,10 @@ func (r SingleResolver) Resolve(_ context.Context, id ServiceID) (Address, error
 	return "", NewUnknownServiceError(id)
 }
 
+func (SingleResolver) resolverLogAttributes(ServiceID, Address) []any {
+	return []any{slog.String("route", "override")}
+}
+
 type PrefixResolver struct {
 	prefix  string
 	address Address
@@ -129,6 +196,13 @@ func (r PrefixResolver) Resolve(_ context.Context, id ServiceID) (Address, error
 		return r.address, nil
 	}
 	return "", NewUnknownServiceError(id)
+}
+
+func (r PrefixResolver) resolverLogAttributes(ServiceID, Address) []any {
+	return []any{
+		slog.String("route", "override"),
+		slog.String("resolver_prefix", r.prefix),
+	}
 }
 
 type ResolversChain []Resolver

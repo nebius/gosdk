@@ -211,17 +211,19 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		}
 
 		if domain == "" {
-			if configReader.Endpoint() == "" {
+			configuredEndpoint := configReader.Endpoint()
+			if configuredEndpoint != "" {
+				logger.DebugContext(ctx, "using endpoint from config reader",
+					slog.String("endpoint", configuredEndpoint),
+				)
+				domain = configuredEndpoint
+			}
+			if domain == "" {
 				domain = paths.DefaultAPIEndpoint
 				logger.WarnContext(ctx, "missing profile's endpoint, using default",
 					slog.String("endpoint", domain),
 					slog.String("profile", configReader.CurrentProfileName()),
 				)
-			} else {
-				logger.DebugContext(ctx, "using endpoint from config reader",
-					slog.String("endpoint", configReader.Endpoint()),
-				)
-				domain = configReader.Endpoint()
 			}
 		}
 		if credentials == nil {
@@ -243,7 +245,6 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		if tenantID == "" {
 			tenantID = configReader.TenantID()
 		}
-
 	}
 	if credentials == nil {
 		credentials = NoCredentials()
@@ -406,6 +407,12 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		logger.DebugContext(ctx, "parent and tenant ID are disabled by options")
 	}
 
+	defaultResolver := conn.Resolver(conn.NewConventionResolver())
+	resolverChain := conn.NewLoggingResolver(
+		logger,
+		conn.NewResolversChain(append(customResolvers, defaultResolver)...),
+	)
+
 	sdk = &SDK{
 		resolver: conn.NewContextResolver(
 			logger,
@@ -413,7 +420,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 				logger,
 				conn.NewTemplateExpander(
 					substitutions,
-					conn.NewResolversChain(append(customResolvers, conn.NewConventionResolver())...),
+					resolverChain,
 				),
 			),
 		),
