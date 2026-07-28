@@ -303,10 +303,11 @@ var File_nebius_capacity_v1_capacity_interval_proto protoreflect.FileDescriptor
 const file_nebius_capacity_v1_capacity_interval_proto_rawDesc = "" +
 	"\n" +
 	"*nebius/capacity/v1/capacity_interval.proto\x12\x12nebius.capacity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a*nebius/capacity/v1/resource_affinity.proto\x1a\x1fnebius/common/v1/metadata.proto\"\x16\n" +
-	"\x14CapacityIntervalSpec\"\x9f\x04\n" +
-	"\x16CapacityIntervalStatus\x12.\n" +
-	"\fcontainer_id\x18\x01 \x01(\tB\v\xe2J\b\n" +
-	"\x06tenantR\vcontainerId\x12\x16\n" +
+	"\x14CapacityIntervalSpec\"\xa9\x04\n" +
+	"\x16CapacityIntervalStatus\x128\n" +
+	"\fcontainer_id\x18\x01 \x01(\tB\x15\xe2J\x12\n" +
+	"\x06tenant\n" +
+	"\baitenantR\vcontainerId\x12\x16\n" +
 	"\x06region\x18\x02 \x01(\tR\x06region\x12Q\n" +
 	"\x11resource_affinity\x18\x03 \x01(\v2$.nebius.capacity.v1.ResourceAffinityR\x10resourceAffinity\x12\x18\n" +
 	"\aservice\x18\x04 \x01(\tR\aservice\x12\x1a\n" +

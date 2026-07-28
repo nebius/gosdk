@@ -573,9 +573,9 @@ const file_nebius_capacity_v1_capacity_block_group_proto_rawDesc = "" +
 	"\x10USAGE_STATE_USED\x10\x01\x12\x18\n" +
 	"\x14USAGE_STATE_NOT_USED\x10\x02\x12\x17\n" +
 	"\x13USAGE_STATE_UNKNOWN\x10\x03B\x11\n" +
-	"\x0f_next_change_to\"\xf9\x01\n" +
-	"\x12CapacityBlockGroup\x12Q\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\x12\x06tenantR\bmetadata\x12>\n" +
+	"\x0f_next_change_to\"\x83\x02\n" +
+	"\x12CapacityBlockGroup\x12[\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x1b\xbaH\x03\xc8\x01\x01\xe2J\x12\x12\x06tenant\x12\baitenantR\bmetadata\x12>\n" +
 	"\x04spec\x18\x02 \x01(\v2*.nebius.capacity.v1.CapacityBlockGroupSpecR\x04spec\x12J\n" +
 	"\x06status\x18\x03 \x01(\v2,.nebius.capacity.v1.CapacityBlockGroupStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02Bh\n" +
 	"\x19ai.nebius.pub.capacity.v1B\x17CapacityBlockGroupProtoP\x01Z0github.com/nebius/gosdk/proto/nebius/capacity/v1b\x06proto3"

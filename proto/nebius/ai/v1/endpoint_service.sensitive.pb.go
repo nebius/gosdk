@@ -67,6 +67,9 @@ func (w *wrapperCreateEndpointRequest) ProtoReflect() protoreflect.Message {
 // func (x *StartEndpointRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *StartEndpointRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *RestartEndpointRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *RestartEndpointRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *StopEndpointRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *StopEndpointRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 

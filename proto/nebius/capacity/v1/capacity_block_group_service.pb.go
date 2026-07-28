@@ -353,15 +353,17 @@ const file_nebius_capacity_v1_capacity_block_group_service_proto_rawDesc = "" +
 	"5nebius/capacity/v1/capacity_block_group_service.proto\x12\x12nebius.capacity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a-nebius/capacity/v1/capacity_block_group.proto\x1a*nebius/capacity/v1/resource_affinity.proto\"Q\n" +
 	"\x1cGetCapacityBlockGroupRequest\x121\n" +
 	"\x02id\x18\x01 \x01(\tB!\xbaH\x03\xc8\x01\x01\xbaJ\x01\x03\xe2J\x14\n" +
-	"\x12capacityblockgroupR\x02id\"\xdb\x01\n" +
-	".GetCapacityBlockGroupByResourceAffinityRequest\x12.\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +
-	"\x06tenantR\bparentId\x12\x1e\n" +
+	"\x12capacityblockgroupR\x02id\"\xe5\x01\n" +
+	".GetCapacityBlockGroupByResourceAffinityRequest\x128\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x1b\xbaH\x03\xc8\x01\x01\xe2J\x12\n" +
+	"\x06tenant\n" +
+	"\baitenantR\bparentId\x12\x1e\n" +
 	"\x06region\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12Y\n" +
-	"\x11resource_affinity\x18\x03 \x01(\v2$.nebius.capacity.v1.ResourceAffinityB\x06\xbaH\x03\xc8\x01\x01R\x10resourceAffinity\"\x98\x01\n" +
-	"\x1eListCapacityBlockGroupsRequest\x12.\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +
-	"\x06tenantR\bparentId\x12'\n" +
+	"\x11resource_affinity\x18\x03 \x01(\v2$.nebius.capacity.v1.ResourceAffinityB\x06\xbaH\x03\xc8\x01\x01R\x10resourceAffinity\"\xa2\x01\n" +
+	"\x1eListCapacityBlockGroupsRequest\x128\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x1b\xbaH\x03\xc8\x01\x01\xe2J\x12\n" +
+	"\x06tenant\n" +
+	"\baitenantR\bparentId\x12'\n" +
 	"\tpage_size\x18\x02 \x01(\x03B\n" +
 	"\xbaH\a\"\x05\x18\xc8\x01(\x00R\bpageSize\x12\x1d\n" +
 	"\n" +

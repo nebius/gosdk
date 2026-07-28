@@ -33,6 +33,7 @@ type JobService interface {
 	Create(context.Context, *v1.CreateJobRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteJobRequest, ...grpc.CallOption) (operations.Operation, error)
 	Cancel(context.Context, *v1.CancelJobRequest, ...grpc.CallOption) (operations.Operation, error)
+	Restart(context.Context, *v1.RestartJobRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
 }
@@ -218,6 +219,25 @@ func (s jobService) Cancel(ctx context.Context, request *v1.CancelJobRequest, op
 		return nil, err
 	}
 	op, err := v1.NewJobServiceClient(con).Cancel(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s jobService) Restart(ctx context.Context, request *v1.RestartJobRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, JobServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewJobServiceClient(con).Restart(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}

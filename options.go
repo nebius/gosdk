@@ -219,7 +219,8 @@ type (
 	optionWithoutKeepalive struct{}
 	optionResolvers        []conn.Resolver
 	optionDomain           string
-	optionAddressTemplate  struct {
+
+	optionAddressTemplate struct {
 		find    string
 		replace string
 	}
@@ -247,20 +248,21 @@ func (optionDialOpts) option()         {}
 func (optionWithoutKeepalive) option() {}
 func (optionResolvers) option()        {}
 func (optionDomain) option()           {}
-func (optionAddressTemplate) option()  {}
-func (optionExplicitInit) option()     {}
-func (optionInit) option()             {}
-func (optionTimeout) option()          {}
-func (optionUserAgentPrefix) option()  {}
-func (optionRetryOptions) option()     {}
-func (optionConfigReader) option()     {}
-func (optionParentID) option()         {}
-func (optionAuthTimeout) option()      {}
-func (optionNoParentID) option()       {}
-func (optionTenantID) option()         {}
-func (optionAuthOptions) option()      {}
-func (optionMetrics) option()          {}
-func (optionAuthMetrics) option()      {}
+
+func (optionAddressTemplate) option() {}
+func (optionExplicitInit) option()    {}
+func (optionInit) option()            {}
+func (optionTimeout) option()         {}
+func (optionUserAgentPrefix) option() {}
+func (optionRetryOptions) option()    {}
+func (optionConfigReader) option()    {}
+func (optionParentID) option()        {}
+func (optionAuthTimeout) option()     {}
+func (optionNoParentID) option()      {}
+func (optionTenantID) option()        {}
+func (optionAuthOptions) option()     {}
+func (optionMetrics) option()         {}
+func (optionAuthMetrics) option()     {}
 
 type NoopHandler struct{}
 

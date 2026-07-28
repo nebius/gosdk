@@ -33,6 +33,7 @@ type EndpointService interface {
 	Create(context.Context, *v1.CreateEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
 	Start(context.Context, *v1.StartEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
+	Restart(context.Context, *v1.RestartEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
 	Stop(context.Context, *v1.StopEndpointRequest, ...grpc.CallOption) (operations.Operation, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
@@ -219,6 +220,25 @@ func (s endpointService) Start(ctx context.Context, request *v1.StartEndpointReq
 		return nil, err
 	}
 	op, err := v1.NewEndpointServiceClient(con).Start(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s endpointService) Restart(ctx context.Context, request *v1.RestartEndpointRequest, opts ...grpc.CallOption) (
+	operations.Operation,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, EndpointServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1.NewEndpointServiceClient(con).Restart(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}

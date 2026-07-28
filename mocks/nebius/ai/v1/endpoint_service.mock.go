@@ -395,6 +395,50 @@ func (c *MockEndpointServiceListOperationsCall) DoAndReturn(f func(context.Conte
 	return c
 }
 
+// Restart mocks base method.
+func (m *MockEndpointService) Restart(arg0 context.Context, arg1 *v1.RestartEndpointRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Restart", varargs...)
+	ret0, _ := ret[0].(operations.Operation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Restart indicates an expected call of Restart.
+func (mr *MockEndpointServiceMockRecorder) Restart(arg0, arg1 any, arg2 ...any) *MockEndpointServiceRestartCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Restart", reflect.TypeOf((*MockEndpointService)(nil).Restart), varargs...)
+	return &MockEndpointServiceRestartCall{Call: call}
+}
+
+// MockEndpointServiceRestartCall wrap *gomock.Call
+type MockEndpointServiceRestartCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockEndpointServiceRestartCall) Return(arg0 operations.Operation, arg1 error) *MockEndpointServiceRestartCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockEndpointServiceRestartCall) Do(f func(context.Context, *v1.RestartEndpointRequest, ...grpc.CallOption) (operations.Operation, error)) *MockEndpointServiceRestartCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockEndpointServiceRestartCall) DoAndReturn(f func(context.Context, *v1.RestartEndpointRequest, ...grpc.CallOption) (operations.Operation, error)) *MockEndpointServiceRestartCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Start mocks base method.
 func (m *MockEndpointService) Start(arg0 context.Context, arg1 *v1.StartEndpointRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()
