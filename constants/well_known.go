@@ -20,6 +20,7 @@ const (
 	FieldCreatedAt       = "created_at"
 	FieldUpdatedAt       = "updated_at"
 	FieldLabels          = "labels"
+	FieldLabelsAll       = "labels_all"
 
 	FieldSpec        = "spec"
 	FieldStatus      = "status"
@@ -43,5 +44,5 @@ var MetadataUnwrapped = []protoreflect.Name{
 }
 
 var ReservedFields = append([]protoreflect.Name{
-	FieldMetadata, FieldStatus, FieldWellKnownID,
+	FieldMetadata, FieldStatus, FieldWellKnownID, FieldLabelsAll,
 }, MetadataUnwrapped...)
