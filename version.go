@@ -1,3 +1,3 @@
 package gosdk
 
-const Version = "0.2.46"
+const Version = "0.2.47"

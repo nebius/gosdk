@@ -449,7 +449,11 @@ type AuditEventExportStatus struct {
 	// This value is used as the final path prefix for exported files in the destination object storage bucket.
 	ExportOperationId string `protobuf:"bytes,2,opt,name=export_operation_id,json=exportOperationId,proto3" json:"export_operation_id,omitempty"`
 	// Error message in case of export failure.
-	Message       string `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	Message string `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	// Timestamp indicating when the export was started.
+	StartedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	// Timestamp indicating when the export was finished.
+	FinishedAt    *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -505,6 +509,20 @@ func (x *AuditEventExportStatus) GetMessage() string {
 	return ""
 }
 
+func (x *AuditEventExportStatus) GetStartedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartedAt
+	}
+	return nil
+}
+
+func (x *AuditEventExportStatus) GetFinishedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.FinishedAt
+	}
+	return nil
+}
+
 var File_nebius_audit_v2_audit_event_export_proto protoreflect.FileDescriptor
 
 const file_nebius_audit_v2_audit_event_export_proto_rawDesc = "" +
@@ -531,11 +549,15 @@ const file_nebius_audit_v2_audit_event_export_proto_rawDesc = "" +
 	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\x02to\x12\x1b\n" +
 	"\x06filter\x18\x03 \x01(\tB\x03\xc0J\x01R\x06filter\x12A\n" +
 	"\n" +
-	"event_type\x18\x04 \x01(\x0e2\x1a.nebius.audit.v2.EventTypeB\x06\xbaH\x03\xc8\x01\x01R\teventType\"\xa0\x01\n" +
+	"event_type\x18\x04 \x01(\x0e2\x1a.nebius.audit.v2.EventTypeB\x06\xbaH\x03\xc8\x01\x01R\teventType\"\x98\x02\n" +
 	"\x16AuditEventExportStatus\x12<\n" +
 	"\x05state\x18\x01 \x01(\x0e2&.nebius.audit.v2.AuditEventExportStateR\x05state\x12.\n" +
 	"\x13export_operation_id\x18\x02 \x01(\tR\x11exportOperationId\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage*\xd6\x01\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x129\n" +
+	"\n" +
+	"started_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tstartedAt\x12;\n" +
+	"\vfinished_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"finishedAt*\xd6\x01\n" +
 	"\x15AuditEventExportState\x12(\n" +
 	"$AUDIT_EVENT_EXPORT_STATE_UNSPECIFIED\x10\x00\x12$\n" +
 	" AUDIT_EVENT_EXPORT_STATE_RUNNING\x10\x01\x12%\n" +
@@ -581,11 +603,13 @@ var file_nebius_audit_v2_audit_event_export_proto_depIdxs = []int32{
 	8,  // 7: nebius.audit.v2.AuditEventExportParams.to:type_name -> google.protobuf.Timestamp
 	9,  // 8: nebius.audit.v2.AuditEventExportParams.event_type:type_name -> nebius.audit.v2.EventType
 	0,  // 9: nebius.audit.v2.AuditEventExportStatus.state:type_name -> nebius.audit.v2.AuditEventExportState
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	8,  // 10: nebius.audit.v2.AuditEventExportStatus.started_at:type_name -> google.protobuf.Timestamp
+	8,  // 11: nebius.audit.v2.AuditEventExportStatus.finished_at:type_name -> google.protobuf.Timestamp
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_nebius_audit_v2_audit_event_export_proto_init() }
