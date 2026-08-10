@@ -20,12 +20,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ZoneService_Get_FullMethodName       = "/nebius.dns.v1.ZoneService/Get"
-	ZoneService_GetByName_FullMethodName = "/nebius.dns.v1.ZoneService/GetByName"
-	ZoneService_List_FullMethodName      = "/nebius.dns.v1.ZoneService/List"
-	ZoneService_Create_FullMethodName    = "/nebius.dns.v1.ZoneService/Create"
-	ZoneService_Update_FullMethodName    = "/nebius.dns.v1.ZoneService/Update"
-	ZoneService_Delete_FullMethodName    = "/nebius.dns.v1.ZoneService/Delete"
+	ZoneService_Get_FullMethodName           = "/nebius.dns.v1.ZoneService/Get"
+	ZoneService_GetByName_FullMethodName     = "/nebius.dns.v1.ZoneService/GetByName"
+	ZoneService_List_FullMethodName          = "/nebius.dns.v1.ZoneService/List"
+	ZoneService_ListByNetwork_FullMethodName = "/nebius.dns.v1.ZoneService/ListByNetwork"
+	ZoneService_Create_FullMethodName        = "/nebius.dns.v1.ZoneService/Create"
+	ZoneService_Update_FullMethodName        = "/nebius.dns.v1.ZoneService/Update"
+	ZoneService_Delete_FullMethodName        = "/nebius.dns.v1.ZoneService/Delete"
 )
 
 // ZoneServiceClient is the client API for ZoneService service.
@@ -38,6 +39,8 @@ type ZoneServiceClient interface {
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Zone, error)
 	// Lists DNS zones in the specified parent IAM container
 	List(ctx context.Context, in *ListZonesRequest, opts ...grpc.CallOption) (*ListZonesResponse, error)
+	// Lists DNS zones in the specified virtual network
+	ListByNetwork(ctx context.Context, in *ListZonesByNetworkRequest, opts ...grpc.CallOption) (*ListZonesResponse, error)
 	// Creates a DNS zone
 	Create(ctx context.Context, in *CreateZoneRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Updates the DNS zone with the specified ID
@@ -81,6 +84,15 @@ func (c *zoneServiceClient) List(ctx context.Context, in *ListZonesRequest, opts
 	return out, nil
 }
 
+func (c *zoneServiceClient) ListByNetwork(ctx context.Context, in *ListZonesByNetworkRequest, opts ...grpc.CallOption) (*ListZonesResponse, error) {
+	out := new(ListZonesResponse)
+	err := c.cc.Invoke(ctx, ZoneService_ListByNetwork_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *zoneServiceClient) Create(ctx context.Context, in *CreateZoneRequest, opts ...grpc.CallOption) (*v1.Operation, error) {
 	out := new(v1.Operation)
 	err := c.cc.Invoke(ctx, ZoneService_Create_FullMethodName, in, out, opts...)
@@ -118,6 +130,8 @@ type ZoneServiceServer interface {
 	GetByName(context.Context, *v1.GetByNameRequest) (*Zone, error)
 	// Lists DNS zones in the specified parent IAM container
 	List(context.Context, *ListZonesRequest) (*ListZonesResponse, error)
+	// Lists DNS zones in the specified virtual network
+	ListByNetwork(context.Context, *ListZonesByNetworkRequest) (*ListZonesResponse, error)
 	// Creates a DNS zone
 	Create(context.Context, *CreateZoneRequest) (*v1.Operation, error)
 	// Updates the DNS zone with the specified ID
@@ -138,6 +152,9 @@ func (UnimplementedZoneServiceServer) GetByName(context.Context, *v1.GetByNameRe
 }
 func (UnimplementedZoneServiceServer) List(context.Context, *ListZonesRequest) (*ListZonesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedZoneServiceServer) ListByNetwork(context.Context, *ListZonesByNetworkRequest) (*ListZonesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListByNetwork not implemented")
 }
 func (UnimplementedZoneServiceServer) Create(context.Context, *CreateZoneRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -214,6 +231,24 @@ func _ZoneService_List_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ZoneService_ListByNetwork_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListZonesByNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZoneServiceServer).ListByNetwork(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ZoneService_ListByNetwork_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZoneServiceServer).ListByNetwork(ctx, req.(*ListZonesByNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ZoneService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateZoneRequest)
 	if err := dec(in); err != nil {
@@ -286,6 +321,10 @@ var ZoneService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _ZoneService_List_Handler,
+		},
+		{
+			MethodName: "ListByNetwork",
+			Handler:    _ZoneService_ListByNetwork_Handler,
 		},
 		{
 			MethodName: "Create",

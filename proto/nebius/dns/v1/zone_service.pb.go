@@ -7,11 +7,13 @@
 package v1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/nebius/gosdk/proto/nebius"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -22,46 +24,138 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Request to list DNS zones in the specified virtual network
+type ListZonesByNetworkRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Network ID
+	NetworkId string `protobuf:"bytes,1,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
+	// Page size
+	// If not specified or set to `0`, a default page size of `100` will be used
+	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// An opaque listing continuation token
+	// - If not specified or empty, the first page of results will be returned
+	// - If specified, the next page of results (as identified by the token) will be returned
+	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListZonesByNetworkRequest) Reset() {
+	*x = ListZonesByNetworkRequest{}
+	mi := &file_nebius_dns_v1_zone_service_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListZonesByNetworkRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListZonesByNetworkRequest) ProtoMessage() {}
+
+func (x *ListZonesByNetworkRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_dns_v1_zone_service_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListZonesByNetworkRequest.ProtoReflect.Descriptor instead.
+func (*ListZonesByNetworkRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_dns_v1_zone_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ListZonesByNetworkRequest) GetNetworkId() string {
+	if x != nil {
+		return x.NetworkId
+	}
+	return ""
+}
+
+func (x *ListZonesByNetworkRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListZonesByNetworkRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
 var File_nebius_dns_v1_zone_service_proto protoreflect.FileDescriptor
 
 const file_nebius_dns_v1_zone_service_proto_rawDesc = "" +
 	"\n" +
-	" nebius/dns/v1/zone_service.proto\x12\rnebius.dns.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x18nebius/dns/v1/zone.proto2\xbc\x03\n" +
+	" nebius/dns/v1/zone_service.proto\x12\rnebius.dns.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x18nebius/dns/v1/zone.proto\"\x8d\x01\n" +
+	"\x19ListZonesByNetworkRequest\x124\n" +
+	"\n" +
+	"network_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
+	"\n" +
+	"vpcnetworkR\tnetworkId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken2\x9f\x04\n" +
 	"\vZoneService\x129\n" +
 	"\x03Get\x12\x1d.nebius.dns.v1.GetZoneRequest\x1a\x13.nebius.dns.v1.Zone\x12D\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x13.nebius.dns.v1.Zone\x12I\n" +
-	"\x04List\x12\x1f.nebius.dns.v1.ListZonesRequest\x1a .nebius.dns.v1.ListZonesResponse\x12G\n" +
+	"\x04List\x12\x1f.nebius.dns.v1.ListZonesRequest\x1a .nebius.dns.v1.ListZonesResponse\x12a\n" +
+	"\rListByNetwork\x12(.nebius.dns.v1.ListZonesByNetworkRequest\x1a .nebius.dns.v1.ListZonesResponse\"\x04\xeaJ\x01\x03\x12G\n" +
 	"\x06Create\x12 .nebius.dns.v1.CreateZoneRequest\x1a\x1b.nebius.common.v1.Operation\x12G\n" +
 	"\x06Update\x12 .nebius.dns.v1.UpdateZoneRequest\x1a\x1b.nebius.common.v1.Operation\x12G\n" +
 	"\x06Delete\x12 .nebius.dns.v1.DeleteZoneRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x06\xbaJ\x03dnsBW\n" +
 	"\x14ai.nebius.pub.dns.v1B\x10ZoneServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/dns/v1b\x06proto3"
 
+var (
+	file_nebius_dns_v1_zone_service_proto_rawDescOnce sync.Once
+	file_nebius_dns_v1_zone_service_proto_rawDescData []byte
+)
+
+func file_nebius_dns_v1_zone_service_proto_rawDescGZIP() []byte {
+	file_nebius_dns_v1_zone_service_proto_rawDescOnce.Do(func() {
+		file_nebius_dns_v1_zone_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_nebius_dns_v1_zone_service_proto_rawDesc), len(file_nebius_dns_v1_zone_service_proto_rawDesc)))
+	})
+	return file_nebius_dns_v1_zone_service_proto_rawDescData
+}
+
+var file_nebius_dns_v1_zone_service_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_nebius_dns_v1_zone_service_proto_goTypes = []any{
-	(*GetZoneRequest)(nil),      // 0: nebius.dns.v1.GetZoneRequest
-	(*v1.GetByNameRequest)(nil), // 1: nebius.common.v1.GetByNameRequest
-	(*ListZonesRequest)(nil),    // 2: nebius.dns.v1.ListZonesRequest
-	(*CreateZoneRequest)(nil),   // 3: nebius.dns.v1.CreateZoneRequest
-	(*UpdateZoneRequest)(nil),   // 4: nebius.dns.v1.UpdateZoneRequest
-	(*DeleteZoneRequest)(nil),   // 5: nebius.dns.v1.DeleteZoneRequest
-	(*Zone)(nil),                // 6: nebius.dns.v1.Zone
-	(*ListZonesResponse)(nil),   // 7: nebius.dns.v1.ListZonesResponse
-	(*v1.Operation)(nil),        // 8: nebius.common.v1.Operation
+	(*ListZonesByNetworkRequest)(nil), // 0: nebius.dns.v1.ListZonesByNetworkRequest
+	(*GetZoneRequest)(nil),            // 1: nebius.dns.v1.GetZoneRequest
+	(*v1.GetByNameRequest)(nil),       // 2: nebius.common.v1.GetByNameRequest
+	(*ListZonesRequest)(nil),          // 3: nebius.dns.v1.ListZonesRequest
+	(*CreateZoneRequest)(nil),         // 4: nebius.dns.v1.CreateZoneRequest
+	(*UpdateZoneRequest)(nil),         // 5: nebius.dns.v1.UpdateZoneRequest
+	(*DeleteZoneRequest)(nil),         // 6: nebius.dns.v1.DeleteZoneRequest
+	(*Zone)(nil),                      // 7: nebius.dns.v1.Zone
+	(*ListZonesResponse)(nil),         // 8: nebius.dns.v1.ListZonesResponse
+	(*v1.Operation)(nil),              // 9: nebius.common.v1.Operation
 }
 var file_nebius_dns_v1_zone_service_proto_depIdxs = []int32{
-	0, // 0: nebius.dns.v1.ZoneService.Get:input_type -> nebius.dns.v1.GetZoneRequest
-	1, // 1: nebius.dns.v1.ZoneService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
-	2, // 2: nebius.dns.v1.ZoneService.List:input_type -> nebius.dns.v1.ListZonesRequest
-	3, // 3: nebius.dns.v1.ZoneService.Create:input_type -> nebius.dns.v1.CreateZoneRequest
-	4, // 4: nebius.dns.v1.ZoneService.Update:input_type -> nebius.dns.v1.UpdateZoneRequest
-	5, // 5: nebius.dns.v1.ZoneService.Delete:input_type -> nebius.dns.v1.DeleteZoneRequest
-	6, // 6: nebius.dns.v1.ZoneService.Get:output_type -> nebius.dns.v1.Zone
-	6, // 7: nebius.dns.v1.ZoneService.GetByName:output_type -> nebius.dns.v1.Zone
-	7, // 8: nebius.dns.v1.ZoneService.List:output_type -> nebius.dns.v1.ListZonesResponse
-	8, // 9: nebius.dns.v1.ZoneService.Create:output_type -> nebius.common.v1.Operation
-	8, // 10: nebius.dns.v1.ZoneService.Update:output_type -> nebius.common.v1.Operation
-	8, // 11: nebius.dns.v1.ZoneService.Delete:output_type -> nebius.common.v1.Operation
-	6, // [6:12] is the sub-list for method output_type
-	0, // [0:6] is the sub-list for method input_type
+	1, // 0: nebius.dns.v1.ZoneService.Get:input_type -> nebius.dns.v1.GetZoneRequest
+	2, // 1: nebius.dns.v1.ZoneService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	3, // 2: nebius.dns.v1.ZoneService.List:input_type -> nebius.dns.v1.ListZonesRequest
+	0, // 3: nebius.dns.v1.ZoneService.ListByNetwork:input_type -> nebius.dns.v1.ListZonesByNetworkRequest
+	4, // 4: nebius.dns.v1.ZoneService.Create:input_type -> nebius.dns.v1.CreateZoneRequest
+	5, // 5: nebius.dns.v1.ZoneService.Update:input_type -> nebius.dns.v1.UpdateZoneRequest
+	6, // 6: nebius.dns.v1.ZoneService.Delete:input_type -> nebius.dns.v1.DeleteZoneRequest
+	7, // 7: nebius.dns.v1.ZoneService.Get:output_type -> nebius.dns.v1.Zone
+	7, // 8: nebius.dns.v1.ZoneService.GetByName:output_type -> nebius.dns.v1.Zone
+	8, // 9: nebius.dns.v1.ZoneService.List:output_type -> nebius.dns.v1.ListZonesResponse
+	8, // 10: nebius.dns.v1.ZoneService.ListByNetwork:output_type -> nebius.dns.v1.ListZonesResponse
+	9, // 11: nebius.dns.v1.ZoneService.Create:output_type -> nebius.common.v1.Operation
+	9, // 12: nebius.dns.v1.ZoneService.Update:output_type -> nebius.common.v1.Operation
+	9, // 13: nebius.dns.v1.ZoneService.Delete:output_type -> nebius.common.v1.Operation
+	7, // [7:14] is the sub-list for method output_type
+	0, // [0:7] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -79,12 +173,13 @@ func file_nebius_dns_v1_zone_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_dns_v1_zone_service_proto_rawDesc), len(file_nebius_dns_v1_zone_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   0,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_nebius_dns_v1_zone_service_proto_goTypes,
 		DependencyIndexes: file_nebius_dns_v1_zone_service_proto_depIdxs,
+		MessageInfos:      file_nebius_dns_v1_zone_service_proto_msgTypes,
 	}.Build()
 	File_nebius_dns_v1_zone_service_proto = out.File
 	file_nebius_dns_v1_zone_service_proto_goTypes = nil

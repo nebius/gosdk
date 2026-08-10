@@ -31,6 +31,7 @@ type ZoneService interface {
 	GetByName(context.Context, *v11.GetByNameRequest, ...grpc.CallOption) (*v1.Zone, error)
 	List(context.Context, *v1.ListZonesRequest, ...grpc.CallOption) (*v1.ListZonesResponse, error)
 	Filter(context.Context, *v1.ListZonesRequest, ...grpc.CallOption) iter.Seq2[*v1.Zone, error]
+	ListByNetwork(context.Context, *v1.ListZonesByNetworkRequest, ...grpc.CallOption) (*v1.ListZonesResponse, error)
 	Create(context.Context, *v1.CreateZoneRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdateZoneRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteZoneRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -144,6 +145,21 @@ func (s zoneService) Filter(ctx context.Context, request *v1.ListZonesRequest, o
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s zoneService) ListByNetwork(ctx context.Context, request *v1.ListZonesByNetworkRequest, opts ...grpc.CallOption) (
+	*v1.ListZonesResponse,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, ZoneServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewZoneServiceClient(con).ListByNetwork(ctx, request, opts...)
 }
 
 func (s zoneService) Create(ctx context.Context, request *v1.CreateZoneRequest, opts ...grpc.CallOption) (

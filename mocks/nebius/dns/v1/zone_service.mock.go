@@ -351,6 +351,50 @@ func (c *MockZoneServiceListCall) DoAndReturn(f func(context.Context, *v10.ListZ
 	return c
 }
 
+// ListByNetwork mocks base method.
+func (m *MockZoneService) ListByNetwork(arg0 context.Context, arg1 *v10.ListZonesByNetworkRequest, arg2 ...grpc.CallOption) (*v10.ListZonesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListByNetwork", varargs...)
+	ret0, _ := ret[0].(*v10.ListZonesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListByNetwork indicates an expected call of ListByNetwork.
+func (mr *MockZoneServiceMockRecorder) ListByNetwork(arg0, arg1 any, arg2 ...any) *MockZoneServiceListByNetworkCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListByNetwork", reflect.TypeOf((*MockZoneService)(nil).ListByNetwork), varargs...)
+	return &MockZoneServiceListByNetworkCall{Call: call}
+}
+
+// MockZoneServiceListByNetworkCall wrap *gomock.Call
+type MockZoneServiceListByNetworkCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockZoneServiceListByNetworkCall) Return(arg0 *v10.ListZonesResponse, arg1 error) *MockZoneServiceListByNetworkCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockZoneServiceListByNetworkCall) Do(f func(context.Context, *v10.ListZonesByNetworkRequest, ...grpc.CallOption) (*v10.ListZonesResponse, error)) *MockZoneServiceListByNetworkCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockZoneServiceListByNetworkCall) DoAndReturn(f func(context.Context, *v10.ListZonesByNetworkRequest, ...grpc.CallOption) (*v10.ListZonesResponse, error)) *MockZoneServiceListByNetworkCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListOperations mocks base method.
 func (m *MockZoneService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
 	m.ctrl.T.Helper()
