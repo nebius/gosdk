@@ -608,6 +608,8 @@
     "proto/nebius/storage/v1/bucket_service_grpc.pb.go",
     "proto/nebius/storage/v1/cors.pb.go",
     "proto/nebius/storage/v1/cors.sensitive.pb.go",
+    "proto/nebius/storage/v1/insecure_endpoint.pb.go",
+    "proto/nebius/storage/v1/insecure_endpoint.sensitive.pb.go",
     "proto/nebius/storage/v1/lifecycle.pb.go",
     "proto/nebius/storage/v1/lifecycle.sensitive.pb.go",
     "proto/nebius/storage/v1/transfer.pb.go",
