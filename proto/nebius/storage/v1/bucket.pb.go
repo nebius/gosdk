@@ -382,8 +382,11 @@ type BucketStatus struct {
 	// Indicator flag showing whether the bucket has any BucketPolicy rule
 	// that grants anonymous access to any object, prefix, or the entire bucket.
 	AnonymousAccessEnabled bool `protobuf:"varint,9,opt,name=anonymous_access_enabled,json=anonymousAccessEnabled,proto3" json:"anonymous_access_enabled,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// Insecure endpoint mode shows whether plain HTTP (without TLS) is forbidden, allowed for traffic from the
+	// same region or allowed from everywhere.
+	InsecureEndpoint *InsecureEndpoint `protobuf:"bytes,10,opt,name=insecure_endpoint,json=insecureEndpoint,proto3" json:"insecure_endpoint,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *BucketStatus) Reset() {
@@ -472,11 +475,18 @@ func (x *BucketStatus) GetAnonymousAccessEnabled() bool {
 	return false
 }
 
+func (x *BucketStatus) GetInsecureEndpoint() *InsecureEndpoint {
+	if x != nil {
+		return x.InsecureEndpoint
+	}
+	return nil
+}
+
 var File_nebius_storage_v1_bucket_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\n" +
-	"\x1enebius/storage/v1/bucket.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/storage/v1/base.proto\x1a'nebius/storage/v1/bucket_counters.proto\x1a%nebius/storage/v1/bucket_policy.proto\x1a\x1cnebius/storage/v1/cors.proto\x1a!nebius/storage/v1/lifecycle.proto\"\xd0\x01\n" +
+	"\x1enebius/storage/v1/bucket.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/storage/v1/base.proto\x1a'nebius/storage/v1/bucket_counters.proto\x1a%nebius/storage/v1/bucket_policy.proto\x1a\x1cnebius/storage/v1/cors.proto\x1a)nebius/storage/v1/insecure_endpoint.proto\x1a!nebius/storage/v1/lifecycle.proto\"\xd0\x01\n" +
 	"\x06Bucket\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
@@ -496,7 +506,7 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x04NONE\x10\x01\x12\x0f\n" +
 	"\vMUTATE_ONLY\x10\x02\x12\a\n" +
 	"\x03ALL\x10\x03J\x04\b\x03\x10\x04J\x04\b\n" +
-	"\x10\v\"\x86\x05\n" +
+	"\x10\v\"\xd8\x05\n" +
 	"\fBucketStatus\x12=\n" +
 	"\bcounters\x18\x01 \x03(\v2!.nebius.storage.v1.BucketCountersR\bcounters\x12;\n" +
 	"\x05state\x18\x02 \x01(\x0e2%.nebius.storage.v1.BucketStatus.StateR\x05state\x12Z\n" +
@@ -507,7 +517,9 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\vdomain_name\x18\x06 \x01(\tR\n" +
 	"domainName\x12\x16\n" +
 	"\x06region\x18\b \x01(\tR\x06region\x128\n" +
-	"\x18anonymous_access_enabled\x18\t \x01(\bR\x16anonymousAccessEnabled\"b\n" +
+	"\x18anonymous_access_enabled\x18\t \x01(\bR\x16anonymousAccessEnabled\x12P\n" +
+	"\x11insecure_endpoint\x18\n" +
+	" \x01(\v2#.nebius.storage.v1.InsecureEndpointR\x10insecureEndpoint\"b\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\n" +
@@ -550,6 +562,7 @@ var file_nebius_storage_v1_bucket_proto_goTypes = []any{
 	(*BucketPolicy)(nil),               // 11: nebius.storage.v1.BucketPolicy
 	(*BucketCounters)(nil),             // 12: nebius.storage.v1.BucketCounters
 	(*timestamppb.Timestamp)(nil),      // 13: google.protobuf.Timestamp
+	(*InsecureEndpoint)(nil),           // 14: nebius.storage.v1.InsecureEndpoint
 }
 var file_nebius_storage_v1_bucket_proto_depIdxs = []int32{
 	6,  // 0: nebius.storage.v1.Bucket.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -566,11 +579,12 @@ var file_nebius_storage_v1_bucket_proto_depIdxs = []int32{
 	2,  // 11: nebius.storage.v1.BucketStatus.suspension_state:type_name -> nebius.storage.v1.BucketStatus.SuspensionState
 	13, // 12: nebius.storage.v1.BucketStatus.deleted_at:type_name -> google.protobuf.Timestamp
 	13, // 13: nebius.storage.v1.BucketStatus.purge_at:type_name -> google.protobuf.Timestamp
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	14, // 14: nebius.storage.v1.BucketStatus.insecure_endpoint:type_name -> nebius.storage.v1.InsecureEndpoint
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_bucket_proto_init() }
@@ -582,6 +596,7 @@ func file_nebius_storage_v1_bucket_proto_init() {
 	file_nebius_storage_v1_bucket_counters_proto_init()
 	file_nebius_storage_v1_bucket_policy_proto_init()
 	file_nebius_storage_v1_cors_proto_init()
+	file_nebius_storage_v1_insecure_endpoint_proto_init()
 	file_nebius_storage_v1_lifecycle_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
