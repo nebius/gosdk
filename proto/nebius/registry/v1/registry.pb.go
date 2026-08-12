@@ -258,9 +258,9 @@ var File_nebius_registry_v1_registry_proto protoreflect.FileDescriptor
 
 const file_nebius_registry_v1_registry_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/registry/v1/registry.proto\x12\x12nebius.registry.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xd2\x01\n" +
-	"\bRegistry\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12<\n" +
+	"!nebius/registry/v1/registry.proto\x12\x12nebius.registry.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xde\x01\n" +
+	"\bRegistry\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12<\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.registry.v1.RegistrySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12@\n" +
 	"\x06status\x18\x03 \x01(\v2\".nebius.registry.v1.RegistryStatusB\x04\xbaJ\x01\x05R\x06status\"Y\n" +
 	"\fRegistrySpec\x12 \n" +
