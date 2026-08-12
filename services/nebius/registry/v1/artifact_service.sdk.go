@@ -65,13 +65,13 @@ func (s artifactService) List(ctx context.Context, request *v1.ListArtifactsRequ
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"registry"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"registry"}) {
 					request.ParentId = tenantID
 				}
 			}

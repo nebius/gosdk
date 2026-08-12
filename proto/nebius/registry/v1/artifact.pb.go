@@ -7,6 +7,7 @@
 package v1
 
 import (
+	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -253,9 +254,11 @@ var File_nebius_registry_v1_artifact_proto protoreflect.FileDescriptor
 
 const file_nebius_registry_v1_artifact_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/registry/v1/artifact.proto\x12\x12nebius.registry.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb9\x04\n" +
-	"\bArtifact\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"!nebius/registry/v1/artifact.proto\x12\x12nebius.registry.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\"\xc8\x04\n" +
+	"\bArtifact\x12\x1d\n" +
+	"\x02id\x18\x01 \x01(\tB\r\xe2J\n" +
+	"\n" +
+	"\bartifactR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
 	"media_type\x18\x03 \x01(\tR\tmediaType\x12\x16\n" +

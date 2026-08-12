@@ -340,26 +340,31 @@ var File_nebius_registry_v1_registry_service_proto protoreflect.FileDescriptor
 
 const file_nebius_registry_v1_registry_service_proto_rawDesc = "" +
 	"\n" +
-	")nebius/registry/v1/registry_service.proto\x12\x12nebius.registry.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/registry/v1/registry.proto\",\n" +
-	"\x12GetRegistryRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x88\x01\n" +
-	"\x15ListRegistriesRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	")nebius/registry/v1/registry_service.proto\x12\x12nebius.registry.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/registry/v1/registry.proto\"9\n" +
+	"\x12GetRegistryRequest\x12#\n" +
+	"\x02id\x18\x01 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
+	"\n" +
+	"\bregistryR\x02id\"\x96\x01\n" +
+	"\x15ListRegistriesRequest\x12)\n" +
+	"\tparent_id\x18\x01 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
 	"\x06filter\x18\x04 \x01(\tR\x06filter\"t\n" +
 	"\x16ListRegistriesResponse\x122\n" +
 	"\x05items\x18\x01 \x03(\v2\x1c.nebius.registry.v1.RegistryR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x8d\x01\n" +
-	"\x15CreateRegistryRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
-	"\x04spec\x18\x02 \x01(\v2 .nebius.registry.v1.RegistrySpecR\x04spec\"\x8d\x01\n" +
-	"\x15UpdateRegistryRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x124\n" +
-	"\x04spec\x18\x02 \x01(\v2 .nebius.registry.v1.RegistrySpecR\x04spec\"/\n" +
-	"\x15DeleteRegistryRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xc0\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x9b\x01\n" +
+	"\x15CreateRegistryRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
+	"\x04spec\x18\x02 \x01(\v2 .nebius.registry.v1.RegistrySpecR\x04spec\"\x9b\x01\n" +
+	"\x15UpdateRegistryRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
+	"\x04spec\x18\x02 \x01(\v2 .nebius.registry.v1.RegistrySpecR\x04spec\"<\n" +
+	"\x15DeleteRegistryRequest\x12#\n" +
+	"\x02id\x18\x01 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
+	"\n" +
+	"\bregistryR\x02id2\xc0\x03\n" +
 	"\x0fRegistryService\x12K\n" +
 	"\x03Get\x12&.nebius.registry.v1.GetRegistryRequest\x1a\x1c.nebius.registry.v1.Registry\x12]\n" +
 	"\x04List\x12).nebius.registry.v1.ListRegistriesRequest\x1a*.nebius.registry.v1.ListRegistriesResponse\x12P\n" +

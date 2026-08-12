@@ -236,20 +236,26 @@ var File_nebius_registry_v1_artifact_service_proto protoreflect.FileDescriptor
 
 const file_nebius_registry_v1_artifact_service_proto_rawDesc = "" +
 	"\n" +
-	")nebius/registry/v1/artifact_service.proto\x12\x12nebius.registry.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/registry/v1/artifact.proto\",\n" +
-	"\x12GetArtifactRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x87\x01\n" +
-	"\x14ListArtifactsRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	")nebius/registry/v1/artifact_service.proto\x12\x12nebius.registry.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a nebius/common/v1/operation.proto\x1a!nebius/registry/v1/artifact.proto\"9\n" +
+	"\x12GetArtifactRequest\x12#\n" +
+	"\x02id\x18\x01 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
+	"\n" +
+	"\bartifactR\x02id\"\x96\x01\n" +
+	"\x14ListArtifactsRequest\x12*\n" +
+	"\tparent_id\x18\x01 \x01(\tB\r\xe2J\n" +
+	"\n" +
+	"\bregistryR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
 	"\x06filter\x18\x04 \x01(\tR\x06filter\"s\n" +
 	"\x15ListArtifactsResponse\x122\n" +
 	"\x05items\x18\x01 \x03(\v2\x1c.nebius.registry.v1.ArtifactR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"/\n" +
-	"\x15DeleteArtifactRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x9a\x02\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"<\n" +
+	"\x15DeleteArtifactRequest\x12#\n" +
+	"\x02id\x18\x01 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
+	"\n" +
+	"\bartifactR\x02id2\x9a\x02\n" +
 	"\x0fArtifactService\x12K\n" +
 	"\x03Get\x12&.nebius.registry.v1.GetArtifactRequest\x1a\x1c.nebius.registry.v1.Artifact\x12[\n" +
 	"\x04List\x12(.nebius.registry.v1.ListArtifactsRequest\x1a).nebius.registry.v1.ListArtifactsResponse\x12P\n" +
