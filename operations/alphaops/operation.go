@@ -15,6 +15,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/nebius/gosdk/conn"
 	"github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 )
 
@@ -91,32 +92,42 @@ func (o *Operation) Poll(ctx context.Context, opts ...grpc.CallOption) (*Operati
 // Important: It returns [*Error] if operation is not successful.
 //
 // Use [PollInterval] call option to override the [DefaultPollInterval].
+// Consecutive retriable polling errors use exponential backoff with jitter
+// until the context is done. Use [PollErrorBackoff] to override or disable it.
 func (o *Operation) Wait(ctx context.Context, opts ...grpc.CallOption) (*Operation, error) {
 	if o.Done() {
 		return o, NewError(o)
 	}
-	interval := DefaultPollInterval
-	for _, opt := range opts {
-		constant, isConstant := opt.(pollInterval)
-		if isConstant && constant.interval > 0 {
-			interval = constant.interval
-		}
-	}
+	interval, backoff := resolveWaitOptions(opts)
+	delay := interval
+	retryAttempt := uint(0)
 	for {
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
-		case <-time.After(interval):
+		case <-time.After(delay):
 			_, err := o.Poll(ctx, opts...)
 			if err != nil {
+				if backoff != nil && isRetriablePollError(err) {
+					retryAttempt++
+					delay = backoff(ctx, retryAttempt)
+					continue
+				}
 				return nil, err
 			}
 
 			if o.Done() {
 				return o, NewError(o)
 			}
+			retryAttempt = 0
+			delay = interval
 		}
 	}
+}
+
+func isRetriablePollError(err error) bool {
+	tErr := &conn.TimeoutError{}
+	return errors.As(err, &tErr) || conn.IsRetriableNebiusError(err)
 }
 
 // ID returns operation ID.

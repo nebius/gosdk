@@ -173,28 +173,26 @@ func (o *opWrapper) Poll(ctx context.Context, opts ...grpc.CallOption) (Operatio
 // Important: It returns [*Error] if operation is not successful.
 //
 // Use [PollInterval] call option to override the [DefaultPollInterval].
+// Consecutive retriable polling errors use exponential backoff with jitter
+// until the context is done. Use [PollErrorBackoff] to override or disable it.
 func (o *opWrapper) Wait(ctx context.Context, opts ...grpc.CallOption) (Operation, error) {
 	// if you change this, do not forget to change Stub
 	if o.Done() {
 		return o, NewError(o)
 	}
-	interval := DefaultPollInterval
-	for _, opt := range opts {
-		// TODO: add more options to support backoff
-		constant, isConstant := opt.(pollInterval)
-		if isConstant && constant.interval > 0 {
-			interval = constant.interval
-		}
-	}
+	interval, backoff := resolveWaitOptions(opts)
+	delay := interval
+	retryAttempt := uint(0)
 	for {
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
-		case <-time.After(interval):
+		case <-time.After(delay):
 			_, err := o.Poll(ctx, opts...)
 			if err != nil {
-				tErr := &conn.TimeoutError{}
-				if errors.As(err, &tErr) {
+				if backoff != nil && isRetriablePollError(err) {
+					retryAttempt++
+					delay = backoff(ctx, retryAttempt)
 					continue
 				}
 				return nil, err
@@ -203,8 +201,15 @@ func (o *opWrapper) Wait(ctx context.Context, opts ...grpc.CallOption) (Operatio
 			if o.Done() {
 				return o, NewError(o)
 			}
+			retryAttempt = 0
+			delay = interval
 		}
 	}
+}
+
+func isRetriablePollError(err error) bool {
+	tErr := &conn.TimeoutError{}
+	return errors.As(err, &tErr) || conn.IsRetriableNebiusError(err)
 }
 
 // ID returns operation ID.
