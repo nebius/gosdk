@@ -1032,7 +1032,10 @@ type BadRequest_Violation struct {
 	// What field value is invalid.
 	Field string `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
 	// Description why the value is invalid, in English.
-	Message       string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// Other fields whose values contribute to this violation.
+	// Does not include the primary field.
+	RelatedFields []string `protobuf:"bytes,3,rep,name=related_fields,json=relatedFields,proto3" json:"related_fields,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1079,6 +1082,13 @@ func (x *BadRequest_Violation) GetMessage() string {
 		return x.Message
 	}
 	return ""
+}
+
+func (x *BadRequest_Violation) GetRelatedFields() []string {
+	if x != nil {
+		return x.RelatedFields
+	}
+	return nil
 }
 
 type QuotaFailure_Violation struct {
@@ -1248,15 +1258,16 @@ const file_nebius_common_v1_error_proto_rawDesc = "" +
 	"\x04CALL\x10\x01\x12\x10\n" +
 	"\fUNIT_OF_WORK\x10\x02\x12\v\n" +
 	"\aNOTHING\x10\x03B\t\n" +
-	"\adetails\"\x91\x01\n" +
+	"\adetails\"\xb8\x01\n" +
 	"\n" +
 	"BadRequest\x12F\n" +
 	"\n" +
 	"violations\x18\x01 \x03(\v2&.nebius.common.v1.BadRequest.ViolationR\n" +
-	"violations\x1a;\n" +
+	"violations\x1ab\n" +
 	"\tViolation\x12\x14\n" +
 	"\x05field\x18\x01 \x01(\tR\x05field\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"M\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
+	"\x0erelated_fields\x18\x03 \x03(\tR\rrelatedFields\"M\n" +
 	"\x10BadResourceState\x12\x1f\n" +
 	"\vresource_id\x18\x01 \x01(\tR\n" +
 	"resourceId\x12\x18\n" +

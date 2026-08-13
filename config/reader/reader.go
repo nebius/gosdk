@@ -469,22 +469,15 @@ func (r *configReader) AddImpersonationIfSet(
 		// cache is necessary if the client sends multiple requests during one
 		// execution for example, Operation.Wait after create/update/delete
 		return auth.NewCachedTokener(
-			r.newImpersonatedBearerTokener(impersonateSAID, tokener),
+			auth.NewExchangeImpersonatedBearerTokener(
+				impersonateSAID,
+				tokener,
+				r.deferredClientFunc,
+			),
 			r.authOptionsWithLogger()...,
 		), nil
 	}
 	return tokener, nil
-}
-
-func (r *configReader) newImpersonatedBearerTokener(
-	serviceAccountID string,
-	tokener auth.BearerTokener,
-) auth.BearerTokener {
-	return auth.NewExchangeImpersonatedBearerTokener(
-		serviceAccountID,
-		tokener,
-		r.deferredClientFunc,
-	)
 }
 
 func (r *configReader) GetAuthType() config.AuthType {

@@ -92,11 +92,17 @@ func FromRPCError(err error, md *metadata.MD, extraDetails ...*anypb.Any) error 
 }
 
 func (e *Error) Error() string {
+	return e.FormatDetails(nil)
+}
+
+// FormatDetails formats the error using formatDetail for each service error
+// detail. A nil formatter, or an empty formatter result, uses Detail.String.
+func (e *Error) FormatDetails(formatDetail func(Detail) string) string {
 	requestInfo := ""
 	if e.RequestID != "" {
 		requestInfo = fmt.Sprintf("request = %s", e.RequestID)
 	}
-	cause := e.cause()
+	cause := e.cause(formatDetail)
 	wrapped := e.Wrapped.Error()
 
 	if cause == "" && requestInfo == "" {
@@ -120,13 +126,20 @@ func (e *Error) Error() string {
 	return withRequestInfo
 }
 
-func (e *Error) cause() string {
+func (e *Error) cause(formatDetail func(Detail) string) string {
 	if len(e.Details) == 0 {
 		return ""
 	}
 	errorStrings := make([]string, 0, len(e.Details))
 	for _, se := range e.Details {
-		errorStrings = append(errorStrings, addIndent(se.String(), "  "))
+		formatted := ""
+		if formatDetail != nil {
+			formatted = formatDetail(se)
+		}
+		if formatted == "" {
+			formatted = se.String()
+		}
+		errorStrings = append(errorStrings, addIndent(formatted, "  "))
 	}
 	if len(errorStrings) > 1 {
 		return fmt.Sprintf(
