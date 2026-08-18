@@ -231,7 +231,9 @@ type SamlSettings struct {
 	IdpIssuer string `protobuf:"bytes,1,opt,name=idp_issuer,json=idpIssuer,proto3" json:"idp_issuer,omitempty"`
 	// Identity Provider’s Single Sign-On endpoint. This is the URL where the user is redirected to start SAML login.
 	SsoUrl string `protobuf:"bytes,2,opt,name=sso_url,json=ssoUrl,proto3" json:"sso_url,omitempty"`
-	// if "true", the identity provider MUST authenticate the presenter directly rather than rely on a previous security context.
+	// If true, the SAML AuthnRequest asks the identity provider to authenticate the user instead of reusing an existing IdP session. (See
+	// SAML Core 2.0, section 3.4.1, ForceAuthn: https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf) Limitations: the SAML
+	// response does not let verify whether the identity provider honored this request; support depends on the identity provider.
 	ForceAuthn    bool `protobuf:"varint,3,opt,name=force_authn,json=forceAuthn,proto3" json:"force_authn,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
