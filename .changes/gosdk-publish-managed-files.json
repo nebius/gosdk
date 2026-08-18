@@ -559,6 +559,8 @@
     "proto/nebius/msp/postgresql/v1alpha1/config/postgresql.sensitive.pb.go",
     "proto/nebius/msp/postgresql/v1alpha1/template.pb.go",
     "proto/nebius/msp/postgresql/v1alpha1/template.sensitive.pb.go",
+    "proto/nebius/msp/skypilot/v1alpha1/skypilot_service.pb.go",
+    "proto/nebius/msp/skypilot/v1alpha1/skypilot_service.sensitive.pb.go",
     "proto/nebius/msp/v1alpha1/cluster.pb.go",
     "proto/nebius/msp/v1alpha1/cluster.sensitive.pb.go",
     "proto/nebius/msp/v1alpha1/common.pb.go",
