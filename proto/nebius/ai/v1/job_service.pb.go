@@ -24,9 +24,59 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Controls whether sensitive injected-file content is included.
+type GetJobRequest_View int32
+
+const (
+	GetJobRequest_VIEW_UNSPECIFIED GetJobRequest_View = 0
+	GetJobRequest_SECRET           GetJobRequest_View = 1
+)
+
+// Enum value maps for GetJobRequest_View.
+var (
+	GetJobRequest_View_name = map[int32]string{
+		0: "VIEW_UNSPECIFIED",
+		1: "SECRET",
+	}
+	GetJobRequest_View_value = map[string]int32{
+		"VIEW_UNSPECIFIED": 0,
+		"SECRET":           1,
+	}
+)
+
+func (x GetJobRequest_View) Enum() *GetJobRequest_View {
+	p := new(GetJobRequest_View)
+	*p = x
+	return p
+}
+
+func (x GetJobRequest_View) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GetJobRequest_View) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_ai_v1_job_service_proto_enumTypes[0].Descriptor()
+}
+
+func (GetJobRequest_View) Type() protoreflect.EnumType {
+	return &file_nebius_ai_v1_job_service_proto_enumTypes[0]
+}
+
+func (x GetJobRequest_View) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GetJobRequest_View.Descriptor instead.
+func (GetJobRequest_View) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_ai_v1_job_service_proto_rawDescGZIP(), []int{0, 0}
+}
+
 type GetJobRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// SECRET includes injected file content and requires
+	// resource.aijob.getSensitiveData.
+	View          GetJobRequest_View `protobuf:"varint,101,opt,name=view,proto3,enum=nebius.ai.v1.GetJobRequest_View" json:"view,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -66,6 +116,13 @@ func (x *GetJobRequest) GetId() string {
 		return x.Id
 	}
 	return ""
+}
+
+func (x *GetJobRequest) GetView() GetJobRequest_View {
+	if x != nil {
+		return x.View
+	}
+	return GetJobRequest_VIEW_UNSPECIFIED
 }
 
 type GetJobByNameRequest struct {
@@ -429,10 +486,15 @@ var File_nebius_ai_v1_job_service_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_job_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1enebius/ai/v1/job_service.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x16nebius/ai/v1/job.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\"1\n" +
+	"\x1enebius/ai/v1/job_service.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x16nebius/ai/v1/job.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\"\x9b\x01\n" +
 	"\rGetJobRequest\x12 \n" +
 	"\x02id\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xe2J\a\n" +
-	"\x05aijobR\x02id\"b\n" +
+	"\x05aijobR\x02id\x12>\n" +
+	"\x04view\x18e \x01(\x0e2 .nebius.ai.v1.GetJobRequest.ViewB\b\xbaH\x05\x82\x01\x02\x10\x01R\x04view\"(\n" +
+	"\x04View\x12\x14\n" +
+	"\x10VIEW_UNSPECIFIED\x10\x00\x12\n" +
+	"\n" +
+	"\x06SECRET\x10\x01\"b\n" +
 	"\x13GetJobByNameRequest\x12/\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
 	"\aprojectR\bparentId\x12\x1a\n" +
@@ -482,44 +544,47 @@ func file_nebius_ai_v1_job_service_proto_rawDescGZIP() []byte {
 	return file_nebius_ai_v1_job_service_proto_rawDescData
 }
 
+var file_nebius_ai_v1_job_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_nebius_ai_v1_job_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_ai_v1_job_service_proto_goTypes = []any{
-	(*GetJobRequest)(nil),       // 0: nebius.ai.v1.GetJobRequest
-	(*GetJobByNameRequest)(nil), // 1: nebius.ai.v1.GetJobByNameRequest
-	(*ListJobsRequest)(nil),     // 2: nebius.ai.v1.ListJobsRequest
-	(*CreateJobRequest)(nil),    // 3: nebius.ai.v1.CreateJobRequest
-	(*DeleteJobRequest)(nil),    // 4: nebius.ai.v1.DeleteJobRequest
-	(*CancelJobRequest)(nil),    // 5: nebius.ai.v1.CancelJobRequest
-	(*RestartJobRequest)(nil),   // 6: nebius.ai.v1.RestartJobRequest
-	(*ListJobsResponse)(nil),    // 7: nebius.ai.v1.ListJobsResponse
-	(*v1.ResourceMetadata)(nil), // 8: nebius.common.v1.ResourceMetadata
-	(*JobSpec)(nil),             // 9: nebius.ai.v1.JobSpec
-	(*Job)(nil),                 // 10: nebius.ai.v1.Job
-	(*v1.Operation)(nil),        // 11: nebius.common.v1.Operation
+	(GetJobRequest_View)(0),     // 0: nebius.ai.v1.GetJobRequest.View
+	(*GetJobRequest)(nil),       // 1: nebius.ai.v1.GetJobRequest
+	(*GetJobByNameRequest)(nil), // 2: nebius.ai.v1.GetJobByNameRequest
+	(*ListJobsRequest)(nil),     // 3: nebius.ai.v1.ListJobsRequest
+	(*CreateJobRequest)(nil),    // 4: nebius.ai.v1.CreateJobRequest
+	(*DeleteJobRequest)(nil),    // 5: nebius.ai.v1.DeleteJobRequest
+	(*CancelJobRequest)(nil),    // 6: nebius.ai.v1.CancelJobRequest
+	(*RestartJobRequest)(nil),   // 7: nebius.ai.v1.RestartJobRequest
+	(*ListJobsResponse)(nil),    // 8: nebius.ai.v1.ListJobsResponse
+	(*v1.ResourceMetadata)(nil), // 9: nebius.common.v1.ResourceMetadata
+	(*JobSpec)(nil),             // 10: nebius.ai.v1.JobSpec
+	(*Job)(nil),                 // 11: nebius.ai.v1.Job
+	(*v1.Operation)(nil),        // 12: nebius.common.v1.Operation
 }
 var file_nebius_ai_v1_job_service_proto_depIdxs = []int32{
-	8,  // 0: nebius.ai.v1.CreateJobRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	9,  // 1: nebius.ai.v1.CreateJobRequest.spec:type_name -> nebius.ai.v1.JobSpec
-	10, // 2: nebius.ai.v1.ListJobsResponse.items:type_name -> nebius.ai.v1.Job
-	0,  // 3: nebius.ai.v1.JobService.Get:input_type -> nebius.ai.v1.GetJobRequest
-	1,  // 4: nebius.ai.v1.JobService.GetByName:input_type -> nebius.ai.v1.GetJobByNameRequest
-	2,  // 5: nebius.ai.v1.JobService.List:input_type -> nebius.ai.v1.ListJobsRequest
-	3,  // 6: nebius.ai.v1.JobService.Create:input_type -> nebius.ai.v1.CreateJobRequest
-	4,  // 7: nebius.ai.v1.JobService.Delete:input_type -> nebius.ai.v1.DeleteJobRequest
-	5,  // 8: nebius.ai.v1.JobService.Cancel:input_type -> nebius.ai.v1.CancelJobRequest
-	6,  // 9: nebius.ai.v1.JobService.Restart:input_type -> nebius.ai.v1.RestartJobRequest
-	10, // 10: nebius.ai.v1.JobService.Get:output_type -> nebius.ai.v1.Job
-	10, // 11: nebius.ai.v1.JobService.GetByName:output_type -> nebius.ai.v1.Job
-	7,  // 12: nebius.ai.v1.JobService.List:output_type -> nebius.ai.v1.ListJobsResponse
-	11, // 13: nebius.ai.v1.JobService.Create:output_type -> nebius.common.v1.Operation
-	11, // 14: nebius.ai.v1.JobService.Delete:output_type -> nebius.common.v1.Operation
-	11, // 15: nebius.ai.v1.JobService.Cancel:output_type -> nebius.common.v1.Operation
-	11, // 16: nebius.ai.v1.JobService.Restart:output_type -> nebius.common.v1.Operation
-	10, // [10:17] is the sub-list for method output_type
-	3,  // [3:10] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	0,  // 0: nebius.ai.v1.GetJobRequest.view:type_name -> nebius.ai.v1.GetJobRequest.View
+	9,  // 1: nebius.ai.v1.CreateJobRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	10, // 2: nebius.ai.v1.CreateJobRequest.spec:type_name -> nebius.ai.v1.JobSpec
+	11, // 3: nebius.ai.v1.ListJobsResponse.items:type_name -> nebius.ai.v1.Job
+	1,  // 4: nebius.ai.v1.JobService.Get:input_type -> nebius.ai.v1.GetJobRequest
+	2,  // 5: nebius.ai.v1.JobService.GetByName:input_type -> nebius.ai.v1.GetJobByNameRequest
+	3,  // 6: nebius.ai.v1.JobService.List:input_type -> nebius.ai.v1.ListJobsRequest
+	4,  // 7: nebius.ai.v1.JobService.Create:input_type -> nebius.ai.v1.CreateJobRequest
+	5,  // 8: nebius.ai.v1.JobService.Delete:input_type -> nebius.ai.v1.DeleteJobRequest
+	6,  // 9: nebius.ai.v1.JobService.Cancel:input_type -> nebius.ai.v1.CancelJobRequest
+	7,  // 10: nebius.ai.v1.JobService.Restart:input_type -> nebius.ai.v1.RestartJobRequest
+	11, // 11: nebius.ai.v1.JobService.Get:output_type -> nebius.ai.v1.Job
+	11, // 12: nebius.ai.v1.JobService.GetByName:output_type -> nebius.ai.v1.Job
+	8,  // 13: nebius.ai.v1.JobService.List:output_type -> nebius.ai.v1.ListJobsResponse
+	12, // 14: nebius.ai.v1.JobService.Create:output_type -> nebius.common.v1.Operation
+	12, // 15: nebius.ai.v1.JobService.Delete:output_type -> nebius.common.v1.Operation
+	12, // 16: nebius.ai.v1.JobService.Cancel:output_type -> nebius.common.v1.Operation
+	12, // 17: nebius.ai.v1.JobService.Restart:output_type -> nebius.common.v1.Operation
+	11, // [11:18] is the sub-list for method output_type
+	4,  // [4:11] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_nebius_ai_v1_job_service_proto_init() }
@@ -533,13 +598,14 @@ func file_nebius_ai_v1_job_service_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_ai_v1_job_service_proto_rawDesc), len(file_nebius_ai_v1_job_service_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_nebius_ai_v1_job_service_proto_goTypes,
 		DependencyIndexes: file_nebius_ai_v1_job_service_proto_depIdxs,
+		EnumInfos:         file_nebius_ai_v1_job_service_proto_enumTypes,
 		MessageInfos:      file_nebius_ai_v1_job_service_proto_msgTypes,
 	}.Build()
 	File_nebius_ai_v1_job_service_proto = out.File
