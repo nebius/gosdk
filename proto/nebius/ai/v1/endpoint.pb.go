@@ -398,7 +398,8 @@ type EndpointSpec struct {
 	// Must reference a secret payload containing `AUTH_TOKEN`.
 	AuthTokenMysteryboxSecret *EndpointSpec_MysteryBoxSecretRef `protobuf:"bytes,31,opt,name=auth_token_mysterybox_secret,json=authTokenMysteryboxSecret,proto3" json:"auth_token_mysterybox_secret,omitempty"`
 	// Small config files injected into the container before the user process
-	// starts. Intended for configs, not datasets.
+	// starts. Intended for configs, not datasets. Read methods return target
+	// paths. File content is returned only by Get with view SECRET.
 	InjectedFiles []*EndpointSpec_FileInjection `protobuf:"bytes,32,rep,name=injected_files,json=injectedFiles,proto3" json:"injected_files,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1168,9 +1169,9 @@ type EndpointSpec_FileInjection struct {
 	// Must be a clean absolute path: root, trailing slashes, empty path
 	// segments, "." and ".." are not allowed.
 	ContainerPath string `protobuf:"bytes,1,opt,name=container_path,json=containerPath,proto3" json:"container_path,omitempty"`
-	// File content. Between 1 byte and 64 KiB (one mystery box secret payload).
-	//
-	// Not returned by read methods.
+	// File content. On create, must contain between 1 byte and 64 KiB
+	// (one mystery box secret payload).
+	// Returned only by Get with view SECRET.
 	Content       []byte `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1510,7 +1511,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\x93\x1c\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\x92\x1c\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1534,7 +1535,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
 	"auth_token\x18\x1e \x01(\tB\x03\xc0J\x01R\tauthToken\x12o\n" +
 	"\x1cauth_token_mysterybox_secret\x18\x1f \x01(\v2..nebius.ai.v1.EndpointSpec.MysteryBoxSecretRefR\x19authTokenMysteryboxSecret\x12U\n" +
-	"\x0einjected_files\x18  \x03(\v2(.nebius.ai.v1.EndpointSpec.FileInjectionB\x04\xbaJ\x01\x04R\rinjectedFiles\x1a\x90\x03\n" +
+	"\x0einjected_files\x18  \x03(\v2(.nebius.ai.v1.EndpointSpec.FileInjectionB\x04\xbaJ\x01\x02R\rinjectedFiles\x1a\x90\x03\n" +
 	"\x13EnvironmentVariable\x126\n" +
 	"\x04name\x18\x01 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^[a-zA-Z_][a-zA-Z0-9_]*$R\x04name\x12\x19\n" +
 	"\x05value\x18\x02 \x01(\tB\x03\xc0J\x01R\x05value\x12[\n" +
@@ -1588,10 +1589,10 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\x13RegistryCredentials\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1f\n" +
 	"\bpassword\x18\x02 \x01(\tB\x03\xc0J\x01R\bpassword\x12:\n" +
-	"\x19mysterybox_secret_version\x18\x03 \x01(\tR\x17mysteryboxSecretVersion\x1a\x81\x01\n" +
+	"\x19mysterybox_secret_version\x18\x03 \x01(\tR\x17mysteryboxSecretVersion\x1a\x80\x01\n" +
 	"\rFileInjection\x12B\n" +
-	"\x0econtainer_path\x18\x01 \x01(\tB\x1b\xbaH\x18\xc8\x01\x01r\x132\x11^/[^/]+(/[^/]+)*$R\rcontainerPath\x12,\n" +
-	"\acontent\x18\x02 \x01(\fB\x12\xbaH\bz\x06\x10\x01\x18\x80\x80\x04\xbaJ\x01\x04\xc0J\x01R\acontent\x1aw\n" +
+	"\x0econtainer_path\x18\x01 \x01(\tB\x1b\xbaH\x18\xc8\x01\x01r\x132\x11^/[^/]+(/[^/]+)*$R\rcontainerPath\x12+\n" +
+	"\acontent\x18\x02 \x01(\fB\x11\xbaH\v\xd8\x01\x01z\x06\x10\x01\x18\x80\x80\x04\xc0J\x01R\acontent\x1aw\n" +
 	"\x13MysteryBoxSecretRef\x12'\n" +
 	"\tsecret_id\x18\x01 \x01(\tB\n" +
 	"\xe2J\a\n" +

@@ -122,6 +122,8 @@ const (
 	// Compound values (messages, lists and maps) may result in unpredictable
 	// updates (see examples in guidelines).
 	FieldBehavior_NON_EMPTY_DEFAULT FieldBehavior = 7
+	// The same as `OUTPUT_ONLY`
+	FieldBehavior_PUBLIC_OUTPUT_ONLY FieldBehavior = 8
 )
 
 // Enum value maps for FieldBehavior.
@@ -134,6 +136,7 @@ var (
 		5: "OUTPUT_ONLY",
 		6: "MEANINGFUL_EMPTY_VALUE",
 		7: "NON_EMPTY_DEFAULT",
+		8: "PUBLIC_OUTPUT_ONLY",
 	}
 	FieldBehavior_value = map[string]int32{
 		"FIELD_BEHAVIOR_UNSPECIFIED": 0,
@@ -143,6 +146,7 @@ var (
 		"OUTPUT_ONLY":                5,
 		"MEANINGFUL_EMPTY_VALUE":     6,
 		"NON_EMPTY_DEFAULT":          7,
+		"PUBLIC_OUTPUT_ONLY":         8,
 	}
 )
 
@@ -1145,7 +1149,7 @@ const file_nebius_annotations_proto_rawDesc = "" +
 	"\x1dRESOURCE_BEHAVIOR_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aMOVABLE\x10\x01\x12\v\n" +
 	"\aUNNAMED\x10\x02\x12\x12\n" +
-	"\x0eIMMUTABLE_NAME\x10\x03*\xa2\x01\n" +
+	"\x0eIMMUTABLE_NAME\x10\x03*\xba\x01\n" +
 	"\rFieldBehavior\x12\x1e\n" +
 	"\x1aFIELD_BEHAVIOR_UNSPECIFIED\x10\x00\x12\r\n" +
 	"\tIMMUTABLE\x10\x02\x12\x0e\n" +
@@ -1155,7 +1159,8 @@ const file_nebius_annotations_proto_rawDesc = "" +
 	"INPUT_ONLY\x10\x04\x12\x0f\n" +
 	"\vOUTPUT_ONLY\x10\x05\x12\x1a\n" +
 	"\x16MEANINGFUL_EMPTY_VALUE\x10\x06\x12\x15\n" +
-	"\x11NON_EMPTY_DEFAULT\x10\a*s\n" +
+	"\x11NON_EMPTY_DEFAULT\x10\a\x12\x16\n" +
+	"\x12PUBLIC_OUTPUT_ONLY\x10\b*s\n" +
 	"\x0eMethodBehavior\x12\x1f\n" +
 	"\x1bMETHOD_BEHAVIOR_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eMETHOD_UPDATER\x10\x02\x12\x14\n" +
