@@ -2,7 +2,7 @@ module github.com/nebius/gosdk
 
 go 1.26
 
-toolchain go1.26.4 // update together with dev.dockerfile
+toolchain go1.26.6 // update together with dev.dockerfile and .github/workflows/ci.yml
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260415201107-50325440f8f2.1
