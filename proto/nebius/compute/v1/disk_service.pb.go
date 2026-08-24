@@ -341,36 +341,41 @@ var File_nebius_compute_v1_disk_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_disk_service_proto_rawDesc = "" +
 	"\n" +
-	"$nebius/compute/v1/disk_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a)nebius/compute/v1/operation_service.proto\" \n" +
-	"\x0eGetDiskRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xd5\x01\n" +
-	"\x10ListDisksRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"$nebius/compute/v1/disk_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a)nebius/compute/v1/operation_service.proto\"2\n" +
+	"\x0eGetDiskRequest\x12 \n" +
+	"\x02id\x18\x01 \x01(\tB\x10\xe2J\r\n" +
+	"\vcomputediskR\x02id\"\xe3\x01\n" +
+	"\x10ListDisksRequest\x12)\n" +
+	"\tparent_id\x18\x01 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12h\n" +
 	"\x06filter\x18\x04 \x01(\tBP\xd2JK\n" +
 	"\n" +
-	"2025-06-16\x12=it is not implemented, filtering could be done on client side\x18\x01R\x06filter\"\x84\x01\n" +
-	"\x11CreateDiskRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12/\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\"\x84\x01\n" +
-	"\x11UpdateDiskRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12/\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\"#\n" +
-	"\x11DeleteDiskRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"j\n" +
+	"2025-06-16\x12=it is not implemented, filtering could be done on client side\x18\x01R\x06filter\"\x92\x01\n" +
+	"\x11CreateDiskRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12/\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\"\x92\x01\n" +
+	"\x11UpdateDiskRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12/\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\"5\n" +
+	"\x11DeleteDiskRequest\x12 \n" +
+	"\x02id\x18\x01 \x01(\tB\x10\xe2J\r\n" +
+	"\vcomputediskR\x02id\"j\n" +
 	"\x11ListDisksResponse\x12-\n" +
 	"\x05items\x18\x01 \x03(\v2\x17.nebius.compute.v1.DiskR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xd6\x04\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xf2\x04\n" +
 	"\vDiskService\x12A\n" +
 	"\x03Get\x12!.nebius.compute.v1.GetDiskRequest\x1a\x17.nebius.compute.v1.Disk\x12H\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x17.nebius.compute.v1.Disk\x12Q\n" +
 	"\x04List\x12#.nebius.compute.v1.ListDisksRequest\x1a$.nebius.compute.v1.ListDisksResponse\x12K\n" +
 	"\x06Create\x12$.nebius.compute.v1.CreateDiskRequest\x1a\x1b.nebius.common.v1.Operation\x12K\n" +
 	"\x06Update\x12$.nebius.compute.v1.UpdateDiskRequest\x1a\x1b.nebius.common.v1.Operation\x12K\n" +
-	"\x06Delete\x12$.nebius.compute.v1.DeleteDiskRequest\x1a\x1b.nebius.common.v1.Operation\x12t\n" +
-	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\x1a\n" +
+	"\x06Delete\x12$.nebius.compute.v1.DeleteDiskRequest\x1a\x1b.nebius.common.v1.Operation\x12\x8f\x01\n" +
+	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x19\xf2J\x16\n" +
+	"\tparent_id\x12\t\n" +
+	"\aproject\x1a\n" +
 	"\xbaJ\acomputeB_\n" +
 	"\x18ai.nebius.pub.compute.v1B\x10DiskServiceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 

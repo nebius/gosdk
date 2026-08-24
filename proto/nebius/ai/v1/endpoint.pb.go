@@ -1371,6 +1371,7 @@ type isEndpointSpec_VolumeMount_S3Config_Auth interface {
 
 type EndpointSpec_VolumeMount_S3Config_Credentials struct {
 	// Inline S3 credentials.
+	// Unmasked values are returned only by Get with view SECRET.
 	Credentials *EndpointSpec_VolumeMount_S3Config_S3Credentials `protobuf:"bytes,4,opt,name=credentials,proto3,oneof"`
 }
 
