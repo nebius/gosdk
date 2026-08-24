@@ -293,6 +293,9 @@ type IPv4PrivateAllocationSpec struct {
 	// the available space in the pool or subnet.
 	// If not specified, defaults to "/32".
 	Cidr string `protobuf:"bytes,1,opt,name=cidr,proto3" json:"cidr,omitempty"`
+	// May be changed only from subnet_id to pool_id, and the new pool_id
+	// must be equal to status.details.pool_id.
+	//
 	// Types that are valid to be assigned to Pool:
 	//
 	//	*IPv4PrivateAllocationSpec_SubnetId
@@ -395,6 +398,9 @@ type IPv4PublicAllocationSpec struct {
 	// the available space in the pool or subnet.
 	// If not specified, defaults to "/32".
 	Cidr string `protobuf:"bytes,1,opt,name=cidr,proto3" json:"cidr,omitempty"`
+	// May be changed only from subnet_id to pool_id, and the new pool_id
+	// must be equal to status.details.pool_id.
+	//
 	// Types that are valid to be assigned to Pool:
 	//
 	//	*IPv4PublicAllocationSpec_SubnetId
@@ -843,23 +849,23 @@ const file_nebius_vpc_v1_allocation_proto_rawDesc = "" +
 	"\fipv4_private\x18\x01 \x01(\v2(.nebius.vpc.v1.IPv4PrivateAllocationSpecH\x00R\vipv4Private\x12J\n" +
 	"\vipv4_public\x18\x02 \x01(\v2'.nebius.vpc.v1.IPv4PublicAllocationSpecH\x00R\n" +
 	"ipv4PublicB\x10\n" +
-	"\aip_spec\x12\x05\xbaH\x02\b\x01\"\xdd\x02\n" +
+	"\aip_spec\x12\x05\xbaH\x02\b\x01\"\xd1\x02\n" +
 	"\x19IPv4PrivateAllocationSpec\x12\xcc\x01\n" +
 	"\x04cidr\x18\x01 \x01(\tB\xb7\x01\xbaH\xaf\x01\xba\x01\xab\x01\n" +
-	"\x11string.valid_cidr\x12.value must be a valid IP address, CIDR or mask\x1afthis == '' || this.matches('^/([0-9]|[1-2][0-9]|3[0-2])$') || this.isIp(4) || this.isIpPrefix(4, true)\xbaJ\x01\x02R\x04cidr\x121\n" +
-	"\tsubnet_id\x18\x02 \x01(\tB\x12\xbaJ\x01\x02\xe2J\v\n" +
-	"\tvpcsubnetH\x00R\bsubnetId\x12+\n" +
-	"\apool_id\x18\x03 \x01(\tB\x10\xbaJ\x01\x02\xe2J\t\n" +
-	"\avpcpoolH\x00R\x06poolIdB\x11\n" +
-	"\x04pool\x12\t\xbaH\x02\b\x01\xbaJ\x01\x02\"\xdc\x02\n" +
+	"\x11string.valid_cidr\x12.value must be a valid IP address, CIDR or mask\x1afthis == '' || this.matches('^/([0-9]|[1-2][0-9]|3[0-2])$') || this.isIp(4) || this.isIpPrefix(4, true)\xbaJ\x01\x02R\x04cidr\x12-\n" +
+	"\tsubnet_id\x18\x02 \x01(\tB\x0e\xe2J\v\n" +
+	"\tvpcsubnetH\x00R\bsubnetId\x12'\n" +
+	"\apool_id\x18\x03 \x01(\tB\f\xe2J\t\n" +
+	"\avpcpoolH\x00R\x06poolIdB\r\n" +
+	"\x04pool\x12\x05\xbaH\x02\b\x01\"\xd0\x02\n" +
 	"\x18IPv4PublicAllocationSpec\x12\xcc\x01\n" +
 	"\x04cidr\x18\x01 \x01(\tB\xb7\x01\xbaH\xaf\x01\xba\x01\xab\x01\n" +
-	"\x11string.valid_cidr\x12.value must be a valid IP address, CIDR or mask\x1afthis == '' || this.matches('^/([0-9]|[1-2][0-9]|3[0-2])$') || this.isIp(4) || this.isIpPrefix(4, true)\xbaJ\x01\x02R\x04cidr\x121\n" +
-	"\tsubnet_id\x18\x02 \x01(\tB\x12\xbaJ\x01\x02\xe2J\v\n" +
-	"\tvpcsubnetH\x00R\bsubnetId\x12+\n" +
-	"\apool_id\x18\x03 \x01(\tB\x10\xbaJ\x01\x02\xe2J\t\n" +
-	"\avpcpoolH\x00R\x06poolIdB\x11\n" +
-	"\x04pool\x12\t\xbaH\x02\b\x01\xbaJ\x01\x02\"\xb7\x02\n" +
+	"\x11string.valid_cidr\x12.value must be a valid IP address, CIDR or mask\x1afthis == '' || this.matches('^/([0-9]|[1-2][0-9]|3[0-2])$') || this.isIp(4) || this.isIpPrefix(4, true)\xbaJ\x01\x02R\x04cidr\x12-\n" +
+	"\tsubnet_id\x18\x02 \x01(\tB\x0e\xe2J\v\n" +
+	"\tvpcsubnetH\x00R\bsubnetId\x12'\n" +
+	"\apool_id\x18\x03 \x01(\tB\f\xe2J\t\n" +
+	"\avpcpoolH\x00R\x06poolIdB\r\n" +
+	"\x04pool\x12\x05\xbaH\x02\b\x01\"\xb7\x02\n" +
 	"\x10AllocationStatus\x12;\n" +
 	"\x05state\x18\x01 \x01(\x0e2%.nebius.vpc.v1.AllocationStatus.StateR\x05state\x12:\n" +
 	"\adetails\x18\x02 \x01(\v2 .nebius.vpc.v1.AllocationDetailsR\adetails\x129\n" +

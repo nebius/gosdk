@@ -24,7 +24,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Controls whether sensitive injected-file content is included.
+// Controls whether injected-file content and unmasked inline S3 credential values are included.
 type GetJobRequest_View int32
 
 const (
@@ -74,7 +74,7 @@ func (GetJobRequest_View) EnumDescriptor() ([]byte, []int) {
 type GetJobRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// SECRET includes injected file content and requires
+	// SECRET includes injected-file content and unmasked inline S3 credentials and requires
 	// resource.aijob.getSensitiveData.
 	View          GetJobRequest_View `protobuf:"varint,101,opt,name=view,proto3,enum=nebius.ai.v1.GetJobRequest_View" json:"view,omitempty"`
 	unknownFields protoimpl.UnknownFields

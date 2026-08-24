@@ -815,11 +815,11 @@ var File_nebius_compute_v1_disk_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\n" +
-	"\x1cnebius/compute/v1/disk.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xae\x01\n" +
-	"\x04Disk\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12/\n" +
+	"\x1cnebius/compute/v1/disk.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xbc\x01\n" +
+	"\x04Disk\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12/\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x1d.nebius.compute.v1.DiskStatusR\x06status\"\xf6\x05\n" +
+	"\x06status\x18\x03 \x01(\v2\x1d.nebius.compute.v1.DiskStatusR\x06status\"\x9f\x06\n" +
 	"\bDiskSpec\x12\x1f\n" +
 	"\n" +
 	"size_bytes\x18\x01 \x01(\x03H\x00R\tsizeBytes\x12'\n" +
@@ -828,11 +828,13 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\x0esize_gibibytes\x18\x04 \x01(\x03H\x00R\rsizeGibibytes\x12.\n" +
 	"\x10block_size_bytes\x18\x05 \x01(\x03B\x04\xbaJ\x01\x02R\x0eblockSizeBytes\x12D\n" +
 	"\x04type\x18\x06 \x01(\x0e2$.nebius.compute.v1.DiskSpec.DiskTypeB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04type\x12.\n" +
-	"\x0fsource_image_id\x18\b \x01(\tB\x04\xbaJ\x01\x02H\x01R\rsourceImageId\x12\\\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04type\x12?\n" +
+	"\x0fsource_image_id\x18\b \x01(\tB\x15\xbaJ\x01\x02\xe2J\x0e\n" +
+	"\fcomputeimageH\x01R\rsourceImageId\x12\\\n" +
 	"\x13source_image_family\x18\n" +
-	" \x01(\v2$.nebius.compute.v1.SourceImageFamilyB\x04\xbaJ\x01\x02H\x01R\x11sourceImageFamily\x124\n" +
-	"\x12source_snapshot_id\x18\r \x01(\tB\x04\xbaJ\x01\x02H\x01R\x10sourceSnapshotId\x12P\n" +
+	" \x01(\v2$.nebius.compute.v1.SourceImageFamilyB\x04\xbaJ\x01\x02H\x01R\x11sourceImageFamily\x12L\n" +
+	"\x12source_snapshot_id\x18\r \x01(\tB\x1c\xbaJ\x01\x02\xe2J\x15\n" +
+	"\x13computedisksnapshotH\x01R\x10sourceSnapshotId\x12P\n" +
 	"\x0fdisk_encryption\x18\v \x01(\v2!.nebius.compute.v1.DiskEncryptionB\x04\xbaJ\x01\x02R\x0ediskEncryption\x12'\n" +
 	"\x0fforbid_deletion\x18\f \x01(\bR\x0eforbidDeletion\"t\n" +
 	"\bDiskType\x12\x0f\n" +
@@ -843,29 +845,36 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\x11NETWORK_SSD_IO_M3\x10\x04B\r\n" +
 	"\x04size\x12\x05\xbaH\x02\b\x01B\b\n" +
 	"\x06sourceJ\x04\b\a\x10\bJ\x04\b\t\x10\n" +
-	"\"[\n" +
+	"\"i\n" +
 	"\x11SourceImageFamily\x12)\n" +
-	"\fimage_family\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vimageFamily\x12\x1b\n" +
-	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xd2\x06\n" +
+	"\fimage_family\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vimageFamily\x12)\n" +
+	"\tparent_id\x18\x02 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\"\xd4\a\n" +
 	"\n" +
 	"DiskStatus\x129\n" +
 	"\x05state\x18\x01 \x01(\x0e2#.nebius.compute.v1.DiskStatus.StateR\x05state\x12+\n" +
-	"\x11state_description\x18\x02 \x01(\tR\x10stateDescription\x122\n" +
-	"\x15read_write_attachment\x18\x03 \x01(\tR\x13readWriteAttachment\x122\n" +
-	"\x15read_only_attachments\x18\x04 \x03(\tR\x13readOnlyAttachments\x12&\n" +
-	"\x0fsource_image_id\x18\x05 \x01(\tR\rsourceImageId\x12\x1d\n" +
+	"\x11state_description\x18\x02 \x01(\tR\x10stateDescription\x12H\n" +
+	"\x15read_write_attachment\x18\x03 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x13readWriteAttachment\x12H\n" +
+	"\x15read_only_attachments\x18\x04 \x03(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x13readOnlyAttachments\x129\n" +
+	"\x0fsource_image_id\x18\x05 \x01(\tB\x11\xe2J\x0e\n" +
+	"\fcomputeimageR\rsourceImageId\x12\x1d\n" +
 	"\n" +
 	"size_bytes\x18\x06 \x01(\x03R\tsizeBytes\x12 \n" +
 	"\vreconciling\x18\a \x01(\bR\vreconciling\x12(\n" +
 	"\x10block_size_bytes\x18\b \x01(\x03R\x0eblockSizeBytes\x12{\n" +
 	"\x1dsource_image_cpu_architecture\x18\t \x01(\x0e28.nebius.compute.v1.DiskStatus.SourceImageCPUArchitectureR\x1asourceImageCpuArchitecture\x12F\n" +
 	"\n" +
-	"lock_state\x18\v \x01(\v2'.nebius.compute.v1.DiskStatus.LockStateR\tlockState\x12\x1d\n" +
+	"lock_state\x18\v \x01(\v2'.nebius.compute.v1.DiskStatus.LockStateR\tlockState\x123\n" +
 	"\n" +
-	"managed_by\x18\f \x01(\tR\tmanagedBy\x1aA\n" +
-	"\tLockState\x12\x16\n" +
-	"\x06images\x18\x01 \x03(\tR\x06images\x12\x1c\n" +
-	"\tsnapshots\x18\x02 \x03(\tR\tsnapshots\"d\n" +
+	"managed_by\x18\f \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\tmanagedBy\x1an\n" +
+	"\tLockState\x12)\n" +
+	"\x06images\x18\x01 \x03(\tB\x11\xe2J\x0e\n" +
+	"\fcomputeimageR\x06images\x126\n" +
+	"\tsnapshots\x18\x02 \x03(\tB\x18\xe2J\x15\n" +
+	"\x13computedisksnapshotR\tsnapshots\"d\n" +
 	"\x05State\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
