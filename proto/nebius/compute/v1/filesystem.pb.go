@@ -443,10 +443,10 @@ var File_nebius_compute_v1_filesystem_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_filesystem_proto_rawDesc = "" +
 	"\n" +
-	"\"nebius/compute/v1/filesystem.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc0\x01\n" +
+	"\"nebius/compute/v1/filesystem.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xce\x01\n" +
 	"\n" +
-	"Filesystem\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x125\n" +
+	"Filesystem\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x125\n" +
 	"\x04spec\x18\x02 \x01(\v2!.nebius.compute.v1.FilesystemSpecR\x04spec\x12;\n" +
 	"\x06status\x18\x03 \x01(\v2#.nebius.compute.v1.FilesystemStatusR\x06status\"\xbf\x03\n" +
 	"\x0eFilesystemSpec\x12\x1f\n" +
@@ -465,12 +465,14 @@ const file_nebius_compute_v1_filesystem_proto_rawDesc = "" +
 	"\vNETWORK_HDD\x10\x02\x12\b\n" +
 	"\x04WEKA\x10\x03\x12\b\n" +
 	"\x04VAST\x10\x04B\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\xaf\x03\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\xdb\x03\n" +
 	"\x10FilesystemStatus\x12?\n" +
 	"\x05state\x18\x01 \x01(\x0e2).nebius.compute.v1.FilesystemStatus.StateR\x05state\x12+\n" +
-	"\x11state_description\x18\x02 \x01(\tR\x10stateDescription\x124\n" +
-	"\x16read_write_attachments\x18\x03 \x03(\tR\x14readWriteAttachments\x122\n" +
-	"\x15read_only_attachments\x18\x04 \x03(\tR\x13readOnlyAttachments\x12\x1d\n" +
+	"\x11state_description\x18\x02 \x01(\tR\x10stateDescription\x12J\n" +
+	"\x16read_write_attachments\x18\x03 \x03(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x14readWriteAttachments\x12H\n" +
+	"\x15read_only_attachments\x18\x04 \x03(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x13readOnlyAttachments\x12\x1d\n" +
 	"\n" +
 	"size_bytes\x18\x05 \x01(\x03R\tsizeBytes\x12 \n" +
 	"\vreconciling\x18\x06 \x01(\bR\vreconciling\x12(\n" +

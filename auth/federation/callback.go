@@ -39,11 +39,19 @@ func (h *callbackHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 	state := r.URL.Query().Get("state")
 	h.setCode(code, state)
+	message := "Login is not successful, you may close the browser tab and try again"
 	if h.code != "" && state == h.state {
-		_, _ = fmt.Fprintln(w, "Login is successful, you may close the browser tab and go to the console")
-	} else {
-		_, _ = fmt.Fprintln(w, "Login is not successful, you may close the browser tab and try again")
+		message = "Login is successful, you may close the browser tab and go to the console"
 	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	_, _ = fmt.Fprintf(w, `<!doctype html>
+<html>
+<body>
+<p>%s</p>
+<script>setTimeout(() => window.close(), 10000);</script>
+</body>
+</html>
+`, message)
 }
 
 func (h *callbackHandler) Shutdown(ctx context.Context) error {
