@@ -37,6 +37,29 @@ func (m *Mask) IsEmpty() bool {
 	return true
 }
 
+// IsPathUnknown reports whether path itself or one of its ancestors is
+// selected by this unknown-path mask. Unknown descendants do not make the path
+// unknown. A nil mask means that no paths are unknown; a non-nil empty mask
+// selects the root and means that every path is unknown.
+func (m *Mask) IsPathUnknown(path FieldPath) bool {
+	unknown, _ := m.PathUnknownStatus(path)
+	return unknown
+}
+
+// PathUnknownStatus reports whether path itself or one of its ancestors is
+// unknown, and whether the mask instead selects descendants of a known path.
+// The two results are mutually exclusive.
+func (m *Mask) PathUnknownStatus(path FieldPath) (bool, bool) {
+	if m == nil {
+		return false, false
+	}
+	matches, isInner := path.MatchesSelectMaskInner(m)
+	if matches && (isInner || path.MatchesResetMaskFinal(m)) {
+		return true, false
+	}
+	return false, path.MatchesResetMask(m)
+}
+
 func (m *Mask) toFieldPathRecursive(recursion int) (FieldPath, error) {
 	if recursion >= recursionTooDeep {
 		return nil, ErrRecursionTooDeep
@@ -667,4 +690,80 @@ func (m *Mask) subtractResetRecursive(other *Mask, recursion int) error { //noli
 //   - error: An error that may appear during intersection process.
 func (m *Mask) SubtractResetMask(other *Mask) error {
 	return m.subtractResetRecursive(other, 0)
+}
+
+func (m *Mask) subtractResetPreservingAncestorsRecursive( //nolint:gocognit
+	other *Mask,
+	recursion int,
+) (bool, error) {
+	if recursion >= recursionTooDeep {
+		return false, ErrRecursionTooDeep
+	}
+	recursion++
+
+	if m == nil || other == nil {
+		return false, nil
+	}
+	if other.IsEmpty() {
+		m.Any = nil
+		clear(m.FieldParts)
+		return true, nil
+	}
+	if m.IsEmpty() {
+		return false, nil
+	}
+
+	if m.Any != nil && other.Any != nil {
+		remove, err := m.Any.subtractResetPreservingAncestorsRecursive(other.Any, recursion)
+		if err != nil {
+			return false, fmt.Errorf("*\\*: %w", err)
+		}
+		if remove {
+			m.Any = nil
+		}
+	}
+	for k, v := range m.FieldParts {
+		if v == nil {
+			delete(m.FieldParts, k)
+			continue
+		}
+		otherField := other.FieldParts[k]
+		if other.Any == nil && otherField == nil {
+			continue
+		}
+		remove := false
+		var err error
+		if other.Any != nil {
+			remove, err = v.subtractResetPreservingAncestorsRecursive(other.Any, recursion)
+			if err != nil {
+				return false, fmt.Errorf("%s\\*: %w", k, err)
+			}
+		}
+		if !remove && otherField != nil {
+			remove, err = v.subtractResetPreservingAncestorsRecursive(otherField, recursion)
+			if err != nil {
+				return false, fmt.Errorf("%s\\%s: %w", k, k, err)
+			}
+		}
+		if remove {
+			delete(m.FieldParts, k)
+		}
+	}
+
+	return m.IsEmpty(), nil
+}
+
+// SubtractResetMaskPreservingAncestors subtracts other [Mask] from this one
+// according to ResetMask logic without removing a complete receiver branch
+// when other selects only one of its descendants.
+//
+// Retaining the ancestor is necessary because a mask cannot represent "the
+// complete branch except this descendant". Callers can apply the retained
+// branch and restore the excluded descendant afterward.
+//
+// Note: subtraction is done in-place. Other remains unchanged when the two
+// masks do not share internal nodes.
+func (m *Mask) SubtractResetMaskPreservingAncestors(other *Mask) error {
+	_, err := m.subtractResetPreservingAncestorsRecursive(other, 0)
+	return err
 }

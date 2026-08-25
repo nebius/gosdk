@@ -70,6 +70,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 	var readerMetrics reader.Metrics
 	var authMetrics auth.Metrics
 	var configReader config.ConfigInterface = nil
+	userAgentPrefix := ""
 
 	userAgent := "nebius-gosdk"
 
@@ -110,7 +111,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		case optionLoggingOptions:
 			logOpts = append(logOpts, o...)
 		case optionUserAgentPrefix:
-			userAgent = string(o) + " " + userAgent
+			userAgentPrefix = string(o)
 		case optionDialOpts:
 			customDialOpts = append(customDialOpts, o...)
 		case optionResolvers:
@@ -184,6 +185,11 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 		authMetrics = readerMetrics
 	}
 	logger := slog.New(handler)
+	if userAgentPrefix != "" {
+		userAgent = userAgentPrefix + " " + userAgent
+	} else {
+		logger.WarnContext(ctx, "gosdk.WithUserAgentPrefix will become mandatory in a future release")
+	}
 	if configReader != nil {
 		logger.DebugContext(ctx, "SDK is initialized with config reader")
 		authOptsForReader := append([]auth.Option{}, authOpts...)

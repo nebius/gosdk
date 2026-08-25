@@ -10,3 +10,6 @@ package v1
 
 // func (x *TunnelStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *TunnelStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ServiceStatus) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ServiceStatus) LogValue() slog.Value // is not generated as no sensitive fields found

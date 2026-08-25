@@ -45,6 +45,68 @@ func TestMask_IsEmpty(t *testing.T) {
 	})
 }
 
+func TestMask_IsPathUnknown(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		name                   string
+		unknownMask            *Mask
+		path                   FieldPath
+		wantUnknown            bool
+		wantUnknownDescendants bool
+	}{
+		{
+			name: "nil mask",
+			path: NewFieldPath("nested", "value"),
+		},
+		{
+			name:        "root",
+			unknownMask: New(),
+			path:        NewFieldPath("nested", "value"),
+			wantUnknown: true,
+		},
+		{
+			name:        "exact path",
+			unknownMask: ParseMust("nested.value"),
+			path:        NewFieldPath("nested", "value"),
+			wantUnknown: true,
+		},
+		{
+			name:        "unknown ancestor",
+			unknownMask: ParseMust("nested"),
+			path:        NewFieldPath("nested", "value"),
+			wantUnknown: true,
+		},
+		{
+			name:                   "unknown descendant",
+			unknownMask:            ParseMust("nested.value"),
+			path:                   NewFieldPath("nested"),
+			wantUnknownDescendants: true,
+		},
+		{
+			name:        "wildcard",
+			unknownMask: ParseMust("*"),
+			path:        NewFieldPath("nested", "value"),
+			wantUnknown: true,
+		},
+		{
+			name:        "unrelated path",
+			unknownMask: ParseMust("other"),
+			path:        NewFieldPath("nested", "value"),
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			unknown, unknownDescendants := tc.unknownMask.PathUnknownStatus(tc.path)
+			assert.Equal(t, tc.wantUnknown, unknown)
+			assert.Equal(t, tc.wantUnknownDescendants, unknownDescendants)
+			assert.Equal(t, tc.wantUnknown, tc.unknownMask.IsPathUnknown(tc.path))
+		})
+	}
+}
+
 func TestMask_Marshal(t *testing.T) {
 	t.Parallel()
 	infiniteMask := New()
@@ -2524,4 +2586,126 @@ func TestMask_SubtractResetMask(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestMask_SubtractResetMaskPreservingAncestors(t *testing.T) {
+	t.Parallel()
+	infiMask := &Mask{}
+	infiMask.Any = infiMask
+	cases := []struct {
+		A   *Mask
+		B   *Mask
+		Res *Mask
+		Err string
+	}{
+		{
+			A:   nil,
+			B:   nil,
+			Res: nil,
+		},
+		{
+			A:   &Mask{},
+			B:   nil,
+			Res: &Mask{},
+		},
+		{
+			A:   nil,
+			B:   &Mask{},
+			Res: nil,
+		},
+		{
+			A:   ParseMust("x.(a,b),*.(c,d),e,f"),
+			B:   ParseMust("x.(a,b),*.(c,d),e,f"),
+			Res: ParseMust(""),
+		},
+		{
+			A:   ParseMust("x.(a,b),*.(c,d),e,f"),
+			B:   ParseMust("x.(a),*.(c),e"),
+			Res: ParseMust("x.b,*.d,f"),
+		},
+		{
+			A:   ParseMust("*"),
+			B:   ParseMust("*.x"),
+			Res: ParseMust("*"),
+		},
+		{
+			A:   ParseMust("a"),
+			B:   ParseMust("*.x"),
+			Res: ParseMust("a"),
+		},
+		{
+			A:   ParseMust("x"),
+			B:   ParseMust("x.a"),
+			Res: ParseMust("x"),
+		},
+		{
+			A:   ParseMust("x.(a,b),y"),
+			B:   ParseMust("x"),
+			Res: ParseMust("y"),
+		},
+		{
+			A:   ParseMust("x.(a,b),y"),
+			B:   ParseMust("*"),
+			Res: ParseMust(""),
+		},
+		{
+			A:   &Mask{FieldParts: map[FieldKey]*Mask{"x": nil}},
+			B:   ParseMust("x"),
+			Res: ParseMust(""),
+		},
+		{
+			A: &Mask{
+				FieldParts: map[FieldKey]*Mask{
+					"x": infiMask,
+				},
+			},
+			B: &Mask{
+				FieldParts: map[FieldKey]*Mask{
+					"x": infiMask,
+				},
+			},
+			Err: "x\\x: " + strings.Repeat("*\\*: ", recursionTooDeep-1) + "recursion too deep",
+		},
+		{
+			A: &Mask{
+				FieldParts: map[FieldKey]*Mask{
+					"x": infiMask,
+				},
+			},
+			B:   infiMask,
+			Err: "x\\*: " + strings.Repeat("*\\*: ", recursionTooDeep-1) + "recursion too deep",
+		},
+	}
+	for i, c := range cases {
+		name := fmt.Sprintf("case %d ", i)
+		if c.Err != "" {
+			name += "fail"
+		} else {
+			name += "ok"
+		}
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			err := c.A.SubtractResetMaskPreservingAncestors(c.B)
+			if c.Err != "" {
+				assert.EqualError(t, err, c.Err)
+			} else {
+				assert.NoError(t, err)
+				if c.Res == nil {
+					assert.Nil(t, c.A)
+				} else {
+					assert.True(t, c.Res.Equal(c.A), "not equal", c.A, c.Res)
+				}
+			}
+		})
+	}
+
+	t.Run("subtractor is unchanged", func(t *testing.T) {
+		t.Parallel()
+		minuend := ParseMust("x.(a,b),y")
+		subtractor := ParseMust("x.a")
+		expectedSubtractor := ParseMust("x.a")
+
+		assert.NoError(t, minuend.SubtractResetMaskPreservingAncestors(subtractor))
+		assert.True(t, expectedSubtractor.Equal(subtractor))
+	})
 }
