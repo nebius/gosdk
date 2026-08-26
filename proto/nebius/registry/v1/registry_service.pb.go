@@ -364,9 +364,10 @@ const file_nebius_registry_v1_registry_service_proto_rawDesc = "" +
 	"\x15DeleteRegistryRequest\x12#\n" +
 	"\x02id\x18\x01 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
 	"\n" +
-	"\bregistryR\x02id2\xc0\x03\n" +
+	"\bregistryR\x02id2\x8f\x04\n" +
 	"\x0fRegistryService\x12K\n" +
-	"\x03Get\x12&.nebius.registry.v1.GetRegistryRequest\x1a\x1c.nebius.registry.v1.Registry\x12]\n" +
+	"\x03Get\x12&.nebius.registry.v1.GetRegistryRequest\x1a\x1c.nebius.registry.v1.Registry\x12M\n" +
+	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1c.nebius.registry.v1.Registry\x12]\n" +
 	"\x04List\x12).nebius.registry.v1.ListRegistriesRequest\x1a*.nebius.registry.v1.ListRegistriesResponse\x12P\n" +
 	"\x06Create\x12).nebius.registry.v1.CreateRegistryRequest\x1a\x1b.nebius.common.v1.Operation\x12P\n" +
 	"\x06Update\x12).nebius.registry.v1.UpdateRegistryRequest\x1a\x1b.nebius.common.v1.Operation\x12P\n" +
@@ -396,7 +397,8 @@ var file_nebius_registry_v1_registry_service_proto_goTypes = []any{
 	(*Registry)(nil),               // 6: nebius.registry.v1.Registry
 	(*v1.ResourceMetadata)(nil),    // 7: nebius.common.v1.ResourceMetadata
 	(*RegistrySpec)(nil),           // 8: nebius.registry.v1.RegistrySpec
-	(*v1.Operation)(nil),           // 9: nebius.common.v1.Operation
+	(*v1.GetByNameRequest)(nil),    // 9: nebius.common.v1.GetByNameRequest
+	(*v1.Operation)(nil),           // 10: nebius.common.v1.Operation
 }
 var file_nebius_registry_v1_registry_service_proto_depIdxs = []int32{
 	6,  // 0: nebius.registry.v1.ListRegistriesResponse.items:type_name -> nebius.registry.v1.Registry
@@ -405,17 +407,19 @@ var file_nebius_registry_v1_registry_service_proto_depIdxs = []int32{
 	7,  // 3: nebius.registry.v1.UpdateRegistryRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	8,  // 4: nebius.registry.v1.UpdateRegistryRequest.spec:type_name -> nebius.registry.v1.RegistrySpec
 	0,  // 5: nebius.registry.v1.RegistryService.Get:input_type -> nebius.registry.v1.GetRegistryRequest
-	1,  // 6: nebius.registry.v1.RegistryService.List:input_type -> nebius.registry.v1.ListRegistriesRequest
-	3,  // 7: nebius.registry.v1.RegistryService.Create:input_type -> nebius.registry.v1.CreateRegistryRequest
-	4,  // 8: nebius.registry.v1.RegistryService.Update:input_type -> nebius.registry.v1.UpdateRegistryRequest
-	5,  // 9: nebius.registry.v1.RegistryService.Delete:input_type -> nebius.registry.v1.DeleteRegistryRequest
-	6,  // 10: nebius.registry.v1.RegistryService.Get:output_type -> nebius.registry.v1.Registry
-	2,  // 11: nebius.registry.v1.RegistryService.List:output_type -> nebius.registry.v1.ListRegistriesResponse
-	9,  // 12: nebius.registry.v1.RegistryService.Create:output_type -> nebius.common.v1.Operation
-	9,  // 13: nebius.registry.v1.RegistryService.Update:output_type -> nebius.common.v1.Operation
-	9,  // 14: nebius.registry.v1.RegistryService.Delete:output_type -> nebius.common.v1.Operation
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
+	9,  // 6: nebius.registry.v1.RegistryService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	1,  // 7: nebius.registry.v1.RegistryService.List:input_type -> nebius.registry.v1.ListRegistriesRequest
+	3,  // 8: nebius.registry.v1.RegistryService.Create:input_type -> nebius.registry.v1.CreateRegistryRequest
+	4,  // 9: nebius.registry.v1.RegistryService.Update:input_type -> nebius.registry.v1.UpdateRegistryRequest
+	5,  // 10: nebius.registry.v1.RegistryService.Delete:input_type -> nebius.registry.v1.DeleteRegistryRequest
+	6,  // 11: nebius.registry.v1.RegistryService.Get:output_type -> nebius.registry.v1.Registry
+	6,  // 12: nebius.registry.v1.RegistryService.GetByName:output_type -> nebius.registry.v1.Registry
+	2,  // 13: nebius.registry.v1.RegistryService.List:output_type -> nebius.registry.v1.ListRegistriesResponse
+	10, // 14: nebius.registry.v1.RegistryService.Create:output_type -> nebius.common.v1.Operation
+	10, // 15: nebius.registry.v1.RegistryService.Update:output_type -> nebius.common.v1.Operation
+	10, // 16: nebius.registry.v1.RegistryService.Delete:output_type -> nebius.common.v1.Operation
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name

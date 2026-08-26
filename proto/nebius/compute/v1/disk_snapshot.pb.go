@@ -380,24 +380,25 @@ var File_nebius_compute_v1_disk_snapshot_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_disk_snapshot_proto_rawDesc = "" +
 	"\n" +
-	"%nebius/compute/v1/disk_snapshot.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc6\x01\n" +
-	"\fDiskSnapshot\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x127\n" +
+	"%nebius/compute/v1/disk_snapshot.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xdc\x01\n" +
+	"\fDiskSnapshot\x12T\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x14\xe2J\x11\x12\x06tenant\x12\aprojectR\bmetadata\x127\n" +
 	"\x04spec\x18\x02 \x01(\v2#.nebius.compute.v1.DiskSnapshotSpecR\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2%.nebius.compute.v1.DiskSnapshotStatusR\x06status\"p\n" +
-	"\x10DiskSnapshotSpec\x120\n" +
-	"\x0esource_disk_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\fsourceDiskId\x12*\n" +
-	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\vdescription\"\x99\x04\n" +
+	"\x06status\x18\x03 \x01(\v2%.nebius.compute.v1.DiskSnapshotStatusR\x06status\"\x80\x01\n" +
+	"\x10DiskSnapshotSpec\x12@\n" +
+	"\x0esource_disk_id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\r\n" +
+	"\vcomputediskR\fsourceDiskId\x12*\n" +
+	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\vdescription\"\xab\x04\n" +
 	"\x12DiskSnapshotStatus\x12A\n" +
 	"\x05state\x18\x01 \x01(\x0e2+.nebius.compute.v1.DiskSnapshotStatus.StateR\x05state\x12,\n" +
 	"\x12content_size_bytes\x18\x02 \x01(\x03R\x10contentSizeBytes\x12,\n" +
 	"\x12storage_size_bytes\x18\x03 \x01(\x03R\x10storageSizeBytes\x12N\n" +
 	"\n" +
 	"lock_state\x18\x04 \x01(\v2/.nebius.compute.v1.DiskSnapshotStatus.LockStateR\tlockState\x12m\n" +
-	"\x17source_cpu_architecture\x18\x05 \x01(\x0e25.nebius.compute.v1.DiskSnapshotStatus.CPUArchitectureR\x15sourceCpuArchitecture\x1a!\n" +
-	"\tLockState\x12\x14\n" +
-	"\x05disks\x18\x01 \x03(\tR\x05disks\"J\n" +
+	"\x17source_cpu_architecture\x18\x05 \x01(\x0e25.nebius.compute.v1.DiskSnapshotStatus.CPUArchitectureR\x15sourceCpuArchitecture\x1a3\n" +
+	"\tLockState\x12&\n" +
+	"\x05disks\x18\x01 \x03(\tB\x10\xe2J\r\n" +
+	"\vcomputediskR\x05disks\"J\n" +
 	"\x05State\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +

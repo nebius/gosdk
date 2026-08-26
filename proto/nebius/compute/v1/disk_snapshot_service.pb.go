@@ -68,10 +68,11 @@ func (x *GetDiskSnapshotRequest) GetId() string {
 }
 
 type ListDiskSnapshotsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifier of the parent resource
+	ParentId      string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	PageSize      int64  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -444,11 +445,14 @@ var File_nebius_compute_v1_disk_snapshot_service_proto protoreflect.FileDescript
 
 const file_nebius_compute_v1_disk_snapshot_service_proto_rawDesc = "" +
 	"\n" +
-	"-nebius/compute/v1/disk_snapshot_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a%nebius/compute/v1/disk_snapshot.proto\"(\n" +
-	"\x16GetDiskSnapshotRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"s\n" +
-	"\x18ListDiskSnapshotsRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"-nebius/compute/v1/disk_snapshot_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a%nebius/compute/v1/disk_snapshot.proto\"B\n" +
+	"\x16GetDiskSnapshotRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xe2J\x15\n" +
+	"\x13computedisksnapshotR\x02id\"\x89\x01\n" +
+	"\x18ListDiskSnapshotsRequest\x121\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x06tenant\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"z\n" +
@@ -463,15 +467,16 @@ const file_nebius_compute_v1_disk_snapshot_service_proto_rawDesc = "" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x80\x01\n" +
 	"\x1fListDiskSnapshotsByDiskResponse\x125\n" +
 	"\x05items\x18\x01 \x03(\v2\x1f.nebius.compute.v1.DiskSnapshotR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x94\x01\n" +
-	"\x19CreateDiskSnapshotRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x127\n" +
-	"\x04spec\x18\x02 \x01(\v2#.nebius.compute.v1.DiskSnapshotSpecR\x04spec\"\x94\x01\n" +
-	"\x19UpdateDiskSnapshotRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x127\n" +
-	"\x04spec\x18\x02 \x01(\v2#.nebius.compute.v1.DiskSnapshotSpecR\x04spec\"+\n" +
-	"\x19DeleteDiskSnapshotRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\x9d\x05\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xaa\x01\n" +
+	"\x19CreateDiskSnapshotRequest\x12T\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x14\xe2J\x11\x12\x06tenant\x12\aprojectR\bmetadata\x127\n" +
+	"\x04spec\x18\x02 \x01(\v2#.nebius.compute.v1.DiskSnapshotSpecR\x04spec\"\xaa\x01\n" +
+	"\x19UpdateDiskSnapshotRequest\x12T\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x14\xe2J\x11\x12\x06tenant\x12\aprojectR\bmetadata\x127\n" +
+	"\x04spec\x18\x02 \x01(\v2#.nebius.compute.v1.DiskSnapshotSpecR\x04spec\"E\n" +
+	"\x19DeleteDiskSnapshotRequest\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xe2J\x15\n" +
+	"\x13computedisksnapshotR\x02id2\x9d\x05\n" +
 	"\x13DiskSnapshotService\x12Q\n" +
 	"\x03Get\x12).nebius.compute.v1.GetDiskSnapshotRequest\x1a\x1f.nebius.compute.v1.DiskSnapshot\x12P\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1f.nebius.compute.v1.DiskSnapshot\x12a\n" +

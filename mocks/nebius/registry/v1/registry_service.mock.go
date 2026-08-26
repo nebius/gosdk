@@ -219,6 +219,50 @@ func (c *MockRegistryServiceGetCall) DoAndReturn(f func(context.Context, *v10.Ge
 	return c
 }
 
+// GetByName mocks base method.
+func (m *MockRegistryService) GetByName(arg0 context.Context, arg1 *v1.GetByNameRequest, arg2 ...grpc.CallOption) (*v10.Registry, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetByName", varargs...)
+	ret0, _ := ret[0].(*v10.Registry)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByName indicates an expected call of GetByName.
+func (mr *MockRegistryServiceMockRecorder) GetByName(arg0, arg1 any, arg2 ...any) *MockRegistryServiceGetByNameCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByName", reflect.TypeOf((*MockRegistryService)(nil).GetByName), varargs...)
+	return &MockRegistryServiceGetByNameCall{Call: call}
+}
+
+// MockRegistryServiceGetByNameCall wrap *gomock.Call
+type MockRegistryServiceGetByNameCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockRegistryServiceGetByNameCall) Return(arg0 *v10.Registry, arg1 error) *MockRegistryServiceGetByNameCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockRegistryServiceGetByNameCall) Do(f func(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v10.Registry, error)) *MockRegistryServiceGetByNameCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockRegistryServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v10.Registry, error)) *MockRegistryServiceGetByNameCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // GetOperation mocks base method.
 func (m *MockRegistryService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()

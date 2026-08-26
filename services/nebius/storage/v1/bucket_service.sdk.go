@@ -71,13 +71,13 @@ func (s bucketService) GetByName(ctx context.Context, request *v1.GetBucketByNam
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 					request.ParentId = tenantID
 				}
 			}
@@ -100,13 +100,13 @@ func (s bucketService) List(ctx context.Context, request *v1.ListBucketsRequest,
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 					request.ParentId = tenantID
 				}
 			}
@@ -154,7 +154,7 @@ func (s bucketService) Create(ctx context.Context, request *v1.CreateBucketReque
 ) {
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -164,7 +164,7 @@ func (s bucketService) Create(ctx context.Context, request *v1.CreateBucketReque
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}

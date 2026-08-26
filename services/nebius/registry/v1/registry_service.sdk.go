@@ -28,6 +28,7 @@ const RegistryServiceID conn.ServiceID = "nebius.registry.v1.RegistryService"
 
 type RegistryService interface {
 	Get(context.Context, *v1.GetRegistryRequest, ...grpc.CallOption) (*v1.Registry, error)
+	GetByName(context.Context, *v11.GetByNameRequest, ...grpc.CallOption) (*v1.Registry, error)
 	List(context.Context, *v1.ListRegistriesRequest, ...grpc.CallOption) (*v1.ListRegistriesResponse, error)
 	Filter(context.Context, *v1.ListRegistriesRequest, ...grpc.CallOption) iter.Seq2[*v1.Registry, error]
 	Create(context.Context, *v1.CreateRegistryRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -60,6 +61,35 @@ func (s registryService) Get(ctx context.Context, request *v1.GetRegistryRequest
 		return nil, err
 	}
 	return v1.NewRegistryServiceClient(con).Get(ctx, request, opts...)
+}
+
+func (s registryService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.Registry,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, RegistryServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewRegistryServiceClient(con).GetByName(ctx, request, opts...)
 }
 
 func (s registryService) List(ctx context.Context, request *v1.ListRegistriesRequest, opts ...grpc.CallOption) (

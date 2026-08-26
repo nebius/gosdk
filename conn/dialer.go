@@ -115,7 +115,7 @@ func (d *dialer) getExisting(address Address) (*grpc.ClientConn, error) {
 
 func (d *dialer) dial(ctx context.Context, address Address) (*grpc.ClientConn, error) { //nolint:gocognit
 	log := d.logger.With(slog.String("address", string(address)))
-	res, err, _ := d.group.Do(string(address), func() (interface{}, error) {
+	res, err, _ := d.group.Do(string(address), func() (any, error) {
 		log.DebugContext(ctx, "connecting to grpc server")
 		start := time.Now()
 		opts := d.opts

@@ -444,7 +444,7 @@ func (c *CachedBearerTokener) getToken() *BearerToken {
 }
 
 func (c *CachedBearerTokener) requestToken(ctx context.Context) (BearerToken, error) {
-	res, err, _ := c.group.Do("", func() (interface{}, error) {
+	res, err, _ := c.group.Do("", func() (any, error) {
 		// Token could be already cached by another goroutine
 		if token := c.getToken(); token != nil {
 			return *token, nil

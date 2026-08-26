@@ -3,12 +3,13 @@ package constants
 import "google.golang.org/protobuf/reflect/protoreflect"
 
 const (
-	MethodGet       = "Get"
-	MethodGetByName = "GetByName"
-	MethodList      = "List"
-	MethodCreate    = "Create"
-	MethodDelete    = "Delete"
-	MethodUpdate    = "Update"
+	MethodGet            = "Get"
+	MethodGetByName      = "GetByName"
+	MethodList           = "List"
+	MethodListAggregated = "ListAggregated"
+	MethodCreate         = "Create"
+	MethodDelete         = "Delete"
+	MethodUpdate         = "Update"
 )
 
 const (

@@ -99,13 +99,13 @@ func (s diskSnapshotService) List(ctx context.Context, request *v1.ListDiskSnaps
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"tenant", "project"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"tenant", "project"}) {
 					request.ParentId = tenantID
 				}
 			}
@@ -168,7 +168,7 @@ func (s diskSnapshotService) Create(ctx context.Context, request *v1.CreateDiskS
 ) {
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"tenant", "project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -178,7 +178,7 @@ func (s diskSnapshotService) Create(ctx context.Context, request *v1.CreateDiskS
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"tenant", "project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}

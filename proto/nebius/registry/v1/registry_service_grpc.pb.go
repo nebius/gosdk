@@ -20,11 +20,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	RegistryService_Get_FullMethodName    = "/nebius.registry.v1.RegistryService/Get"
-	RegistryService_List_FullMethodName   = "/nebius.registry.v1.RegistryService/List"
-	RegistryService_Create_FullMethodName = "/nebius.registry.v1.RegistryService/Create"
-	RegistryService_Update_FullMethodName = "/nebius.registry.v1.RegistryService/Update"
-	RegistryService_Delete_FullMethodName = "/nebius.registry.v1.RegistryService/Delete"
+	RegistryService_Get_FullMethodName       = "/nebius.registry.v1.RegistryService/Get"
+	RegistryService_GetByName_FullMethodName = "/nebius.registry.v1.RegistryService/GetByName"
+	RegistryService_List_FullMethodName      = "/nebius.registry.v1.RegistryService/List"
+	RegistryService_Create_FullMethodName    = "/nebius.registry.v1.RegistryService/Create"
+	RegistryService_Update_FullMethodName    = "/nebius.registry.v1.RegistryService/Update"
+	RegistryService_Delete_FullMethodName    = "/nebius.registry.v1.RegistryService/Delete"
 )
 
 // RegistryServiceClient is the client API for RegistryService service.
@@ -32,6 +33,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RegistryServiceClient interface {
 	Get(ctx context.Context, in *GetRegistryRequest, opts ...grpc.CallOption) (*Registry, error)
+	// Gets the Registry resource by its parent IAM container `parent_id` and `name`
+	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Registry, error)
 	List(ctx context.Context, in *ListRegistriesRequest, opts ...grpc.CallOption) (*ListRegistriesResponse, error)
 	Create(ctx context.Context, in *CreateRegistryRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Update(ctx context.Context, in *UpdateRegistryRequest, opts ...grpc.CallOption) (*v1.Operation, error)
@@ -49,6 +52,15 @@ func NewRegistryServiceClient(cc grpc.ClientConnInterface) RegistryServiceClient
 func (c *registryServiceClient) Get(ctx context.Context, in *GetRegistryRequest, opts ...grpc.CallOption) (*Registry, error) {
 	out := new(Registry)
 	err := c.cc.Invoke(ctx, RegistryService_Get_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *registryServiceClient) GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*Registry, error) {
+	out := new(Registry)
+	err := c.cc.Invoke(ctx, RegistryService_GetByName_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,6 +108,8 @@ func (c *registryServiceClient) Delete(ctx context.Context, in *DeleteRegistryRe
 // for forward compatibility
 type RegistryServiceServer interface {
 	Get(context.Context, *GetRegistryRequest) (*Registry, error)
+	// Gets the Registry resource by its parent IAM container `parent_id` and `name`
+	GetByName(context.Context, *v1.GetByNameRequest) (*Registry, error)
 	List(context.Context, *ListRegistriesRequest) (*ListRegistriesResponse, error)
 	Create(context.Context, *CreateRegistryRequest) (*v1.Operation, error)
 	Update(context.Context, *UpdateRegistryRequest) (*v1.Operation, error)
@@ -108,6 +122,9 @@ type UnimplementedRegistryServiceServer struct {
 
 func (UnimplementedRegistryServiceServer) Get(context.Context, *GetRegistryRequest) (*Registry, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegistryServiceServer) GetByName(context.Context, *v1.GetByNameRequest) (*Registry, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
 }
 func (UnimplementedRegistryServiceServer) List(context.Context, *ListRegistriesRequest) (*ListRegistriesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
@@ -147,6 +164,24 @@ func _RegistryService_Get_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegistryServiceServer).Get(ctx, req.(*GetRegistryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegistryService_GetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.GetByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegistryServiceServer).GetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RegistryService_GetByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegistryServiceServer).GetByName(ctx, req.(*v1.GetByNameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -233,6 +268,10 @@ var RegistryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _RegistryService_Get_Handler,
+		},
+		{
+			MethodName: "GetByName",
+			Handler:    _RegistryService_GetByName_Handler,
 		},
 		{
 			MethodName: "List",
