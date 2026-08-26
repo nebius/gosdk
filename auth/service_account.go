@@ -85,7 +85,7 @@ func (c *CachedServiceAccount) ServiceAccount(ctx context.Context) (ServiceAccou
 		return *cache, nil
 	}
 
-	res, err, _ := c.group.Do("", func() (interface{}, error) {
+	res, err, _ := c.group.Do("", func() (any, error) {
 		account, err := c.reader.ServiceAccount(ctx)
 		if err != nil {
 			return nil, err
