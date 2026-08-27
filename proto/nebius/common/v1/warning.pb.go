@@ -100,21 +100,24 @@ const (
 	Warning_CODE_INVALID_NEBIUS_ID_REQUEST Warning_Code = 8
 	// Nebius ID in the request has an invalid format.
 	Warning_CODE_INVALID_NEBIUS_ID_FORMAT_REQUEST Warning_Code = 9
+	// ListAggregated returned incomplete results because one or more regions could not be queried.
+	Warning_CODE_LIST_AGGREGATED_PARTIAL Warning_Code = 10
 )
 
 // Enum value maps for Warning_Code.
 var (
 	Warning_Code_name = map[int32]string{
-		0: "CODE_UNSPECIFIED",
-		1: "CODE_REGION_ROUTING_FAILOVER",
-		2: "CODE_DEPRECATED_TOOL_VERSION",
-		3: "CODE_DEPRECATED_ENDPOINT",
-		4: "CODE_DEPRECATED_PROTO",
-		5: "CODE_DEPRECATED_SPEC_VALUE_REQUEST",
-		6: "CODE_DEPRECATED_SPEC_VALUE_RESPONSE",
-		7: "CODE_NOT_RECOMMENDED_SPEC_VALUE_REQUEST",
-		8: "CODE_INVALID_NEBIUS_ID_REQUEST",
-		9: "CODE_INVALID_NEBIUS_ID_FORMAT_REQUEST",
+		0:  "CODE_UNSPECIFIED",
+		1:  "CODE_REGION_ROUTING_FAILOVER",
+		2:  "CODE_DEPRECATED_TOOL_VERSION",
+		3:  "CODE_DEPRECATED_ENDPOINT",
+		4:  "CODE_DEPRECATED_PROTO",
+		5:  "CODE_DEPRECATED_SPEC_VALUE_REQUEST",
+		6:  "CODE_DEPRECATED_SPEC_VALUE_RESPONSE",
+		7:  "CODE_NOT_RECOMMENDED_SPEC_VALUE_REQUEST",
+		8:  "CODE_INVALID_NEBIUS_ID_REQUEST",
+		9:  "CODE_INVALID_NEBIUS_ID_FORMAT_REQUEST",
+		10: "CODE_LIST_AGGREGATED_PARTIAL",
 	}
 	Warning_Code_value = map[string]int32{
 		"CODE_UNSPECIFIED":                        0,
@@ -127,6 +130,7 @@ var (
 		"CODE_NOT_RECOMMENDED_SPEC_VALUE_REQUEST": 7,
 		"CODE_INVALID_NEBIUS_ID_REQUEST":          8,
 		"CODE_INVALID_NEBIUS_ID_FORMAT_REQUEST":   9,
+		"CODE_LIST_AGGREGATED_PARTIAL":            10,
 	}
 )
 
@@ -319,7 +323,7 @@ const file_nebius_common_v1_warning_proto_rawDesc = "" +
 	"\n" +
 	"\x1enebius/common/v1/warning.proto\x12\x10nebius.common.v1\"A\n" +
 	"\bWarnings\x125\n" +
-	"\bwarnings\x18\x01 \x03(\v2\x19.nebius.common.v1.WarningR\bwarnings\"\xd3\x05\n" +
+	"\bwarnings\x18\x01 \x03(\v2\x19.nebius.common.v1.WarningR\bwarnings\"\xf5\x05\n" +
 	"\aWarning\x128\n" +
 	"\x06target\x18\x01 \x01(\x0e2 .nebius.common.v1.Warning.TargetR\x06target\x122\n" +
 	"\x04code\x18\x02 \x01(\x0e2\x1e.nebius.common.v1.Warning.CodeR\x04code\x12\x18\n" +
@@ -333,7 +337,7 @@ const file_nebius_common_v1_warning_proto_rawDesc = "" +
 	"\n" +
 	"TARGET_CLI\x10\x01\x12\r\n" +
 	"\tTARGET_TF\x10\x02\x12\x12\n" +
-	"\x0eTARGET_CONSOLE\x10\x03\"\xe6\x02\n" +
+	"\x0eTARGET_CONSOLE\x10\x03\"\x88\x03\n" +
 	"\x04Code\x12\x14\n" +
 	"\x10CODE_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cCODE_REGION_ROUTING_FAILOVER\x10\x01\x12 \n" +
@@ -344,7 +348,9 @@ const file_nebius_common_v1_warning_proto_rawDesc = "" +
 	"#CODE_DEPRECATED_SPEC_VALUE_RESPONSE\x10\x06\x12+\n" +
 	"'CODE_NOT_RECOMMENDED_SPEC_VALUE_REQUEST\x10\a\x12\"\n" +
 	"\x1eCODE_INVALID_NEBIUS_ID_REQUEST\x10\b\x12)\n" +
-	"%CODE_INVALID_NEBIUS_ID_FORMAT_REQUEST\x10\tBY\n" +
+	"%CODE_INVALID_NEBIUS_ID_FORMAT_REQUEST\x10\t\x12 \n" +
+	"\x1cCODE_LIST_AGGREGATED_PARTIAL\x10\n" +
+	"BY\n" +
 	"\x17ai.nebius.pub.common.v1B\fWarningProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/common/v1b\x06proto3"
 
 var (
