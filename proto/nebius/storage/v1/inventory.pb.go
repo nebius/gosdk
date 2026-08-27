@@ -12,6 +12,7 @@ import (
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -193,6 +194,66 @@ func (InventorySpec_Schedule) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_storage_v1_inventory_proto_rawDescGZIP(), []int{1, 2}
 }
 
+type InventoryStatus_Error int32
+
+const (
+	// No error.
+	InventoryStatus_NO_ERROR InventoryStatus_Error = 0
+	// Destination bucket not found.
+	InventoryStatus_DESTINATION_BUCKET_NOT_FOUND InventoryStatus_Error = 1
+	// Permission denied: you don't have permission to the destination bucket.
+	InventoryStatus_PERMISSION_DENIED InventoryStatus_Error = 2
+	// Intent is invalid, does not exist or expired.
+	InventoryStatus_INVALID_INTENT InventoryStatus_Error = 3
+	// Quota exceeded in destination.
+	InventoryStatus_QUOTA_EXCEEDED InventoryStatus_Error = 4
+)
+
+// Enum value maps for InventoryStatus_Error.
+var (
+	InventoryStatus_Error_name = map[int32]string{
+		0: "NO_ERROR",
+		1: "DESTINATION_BUCKET_NOT_FOUND",
+		2: "PERMISSION_DENIED",
+		3: "INVALID_INTENT",
+		4: "QUOTA_EXCEEDED",
+	}
+	InventoryStatus_Error_value = map[string]int32{
+		"NO_ERROR":                     0,
+		"DESTINATION_BUCKET_NOT_FOUND": 1,
+		"PERMISSION_DENIED":            2,
+		"INVALID_INTENT":               3,
+		"QUOTA_EXCEEDED":               4,
+	}
+)
+
+func (x InventoryStatus_Error) Enum() *InventoryStatus_Error {
+	p := new(InventoryStatus_Error)
+	*p = x
+	return p
+}
+
+func (x InventoryStatus_Error) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (InventoryStatus_Error) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_storage_v1_inventory_proto_enumTypes[3].Descriptor()
+}
+
+func (InventoryStatus_Error) Type() protoreflect.EnumType {
+	return &file_nebius_storage_v1_inventory_proto_enumTypes[3]
+}
+
+func (x InventoryStatus_Error) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use InventoryStatus_Error.Descriptor instead.
+func (InventoryStatus_Error) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_inventory_proto_rawDescGZIP(), []int{2, 0}
+}
+
 // Inventory configures periodic generation of an object listing for a bucket.
 type Inventory struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -364,7 +425,11 @@ func (x *InventorySpec) GetSchedule() InventorySpec_Schedule {
 }
 
 type InventoryStatus struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Timestamp of the last successful run.
+	LastSuccess *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=last_success,json=lastSuccess,proto3" json:"last_success,omitempty"`
+	// Error code, if the last run was not successful, otherwise NO_ERROR.
+	ErrorCode     InventoryStatus_Error `protobuf:"varint,2,opt,name=error_code,json=errorCode,proto3,enum=nebius.storage.v1.InventoryStatus_Error" json:"error_code,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -399,11 +464,25 @@ func (*InventoryStatus) Descriptor() ([]byte, []int) {
 	return file_nebius_storage_v1_inventory_proto_rawDescGZIP(), []int{2}
 }
 
+func (x *InventoryStatus) GetLastSuccess() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastSuccess
+	}
+	return nil
+}
+
+func (x *InventoryStatus) GetErrorCode() InventoryStatus_Error {
+	if x != nil {
+		return x.ErrorCode
+	}
+	return InventoryStatus_NO_ERROR
+}
+
 var File_nebius_storage_v1_inventory_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_inventory_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/storage/v1/inventory.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xeb\x01\n" +
+	"!nebius/storage/v1/inventory.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xeb\x01\n" +
 	"\tInventory\x12X\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\x12\rstoragebucketR\bmetadata\x12<\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.storage.v1.InventorySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12@\n" +
@@ -434,8 +513,17 @@ const file_nebius_storage_v1_inventory_proto_rawDesc = "" +
 	"\x14SCHEDULE_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05DAILY\x10\x01\x12\n" +
 	"\n" +
-	"\x06WEEKLY\x10\x02\"\x11\n" +
-	"\x0fInventoryStatusB]\n" +
+	"\x06WEEKLY\x10\x02\"\x91\x02\n" +
+	"\x0fInventoryStatus\x12=\n" +
+	"\flast_success\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\vlastSuccess\x12G\n" +
+	"\n" +
+	"error_code\x18\x02 \x01(\x0e2(.nebius.storage.v1.InventoryStatus.ErrorR\terrorCode\"v\n" +
+	"\x05Error\x12\f\n" +
+	"\bNO_ERROR\x10\x00\x12 \n" +
+	"\x1cDESTINATION_BUCKET_NOT_FOUND\x10\x01\x12\x15\n" +
+	"\x11PERMISSION_DENIED\x10\x02\x12\x12\n" +
+	"\x0eINVALID_INTENT\x10\x03\x12\x12\n" +
+	"\x0eQUOTA_EXCEEDED\x10\x04B]\n" +
 	"\x18ai.nebius.pub.storage.v1B\x0eInventoryProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/storage/v1b\x06proto3"
 
 var (
@@ -450,29 +538,33 @@ func file_nebius_storage_v1_inventory_proto_rawDescGZIP() []byte {
 	return file_nebius_storage_v1_inventory_proto_rawDescData
 }
 
-var file_nebius_storage_v1_inventory_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_nebius_storage_v1_inventory_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_nebius_storage_v1_inventory_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_nebius_storage_v1_inventory_proto_goTypes = []any{
 	(InventorySpec_OutputFormat)(0),  // 0: nebius.storage.v1.InventorySpec.OutputFormat
 	(InventorySpec_OptionalField)(0), // 1: nebius.storage.v1.InventorySpec.OptionalField
 	(InventorySpec_Schedule)(0),      // 2: nebius.storage.v1.InventorySpec.Schedule
-	(*Inventory)(nil),                // 3: nebius.storage.v1.Inventory
-	(*InventorySpec)(nil),            // 4: nebius.storage.v1.InventorySpec
-	(*InventoryStatus)(nil),          // 5: nebius.storage.v1.InventoryStatus
-	(*v1.ResourceMetadata)(nil),      // 6: nebius.common.v1.ResourceMetadata
+	(InventoryStatus_Error)(0),       // 3: nebius.storage.v1.InventoryStatus.Error
+	(*Inventory)(nil),                // 4: nebius.storage.v1.Inventory
+	(*InventorySpec)(nil),            // 5: nebius.storage.v1.InventorySpec
+	(*InventoryStatus)(nil),          // 6: nebius.storage.v1.InventoryStatus
+	(*v1.ResourceMetadata)(nil),      // 7: nebius.common.v1.ResourceMetadata
+	(*timestamppb.Timestamp)(nil),    // 8: google.protobuf.Timestamp
 }
 var file_nebius_storage_v1_inventory_proto_depIdxs = []int32{
-	6, // 0: nebius.storage.v1.Inventory.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	4, // 1: nebius.storage.v1.Inventory.spec:type_name -> nebius.storage.v1.InventorySpec
-	5, // 2: nebius.storage.v1.Inventory.status:type_name -> nebius.storage.v1.InventoryStatus
+	7, // 0: nebius.storage.v1.Inventory.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	5, // 1: nebius.storage.v1.Inventory.spec:type_name -> nebius.storage.v1.InventorySpec
+	6, // 2: nebius.storage.v1.Inventory.status:type_name -> nebius.storage.v1.InventoryStatus
 	0, // 3: nebius.storage.v1.InventorySpec.output_format:type_name -> nebius.storage.v1.InventorySpec.OutputFormat
 	1, // 4: nebius.storage.v1.InventorySpec.optional_fields:type_name -> nebius.storage.v1.InventorySpec.OptionalField
 	2, // 5: nebius.storage.v1.InventorySpec.schedule:type_name -> nebius.storage.v1.InventorySpec.Schedule
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	8, // 6: nebius.storage.v1.InventoryStatus.last_success:type_name -> google.protobuf.Timestamp
+	3, // 7: nebius.storage.v1.InventoryStatus.error_code:type_name -> nebius.storage.v1.InventoryStatus.Error
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_inventory_proto_init() }
@@ -485,7 +577,7 @@ func file_nebius_storage_v1_inventory_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_storage_v1_inventory_proto_rawDesc), len(file_nebius_storage_v1_inventory_proto_rawDesc)),
-			NumEnums:      3,
+			NumEnums:      4,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
