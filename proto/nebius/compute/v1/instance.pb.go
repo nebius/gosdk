@@ -1599,9 +1599,10 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\bplatform\x18\x01 \x01(\tB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\bplatform\x12\x18\n" +
 	"\x06preset\x18\x02 \x01(\tH\x00R\x06presetB\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"(\n" +
-	"\x16InstanceGpuClusterSpec\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xeb\x02\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"@\n" +
+	"\x16InstanceGpuClusterSpec\x12&\n" +
+	"\x02id\x18\x01 \x01(\tB\x16\xe2J\x13\n" +
+	"\x11computegpuclusterR\x02id\"\xeb\x02\n" +
 	"\x10AttachedDiskSpec\x12W\n" +
 	"\vattach_mode\x18\x01 \x01(\x0e2..nebius.compute.v1.AttachedDiskSpec.AttachModeB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"attachMode\x12F\n" +

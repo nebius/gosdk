@@ -24,6 +24,61 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// ConnectionState reports whether the tunnel has an agent behind it. Values are
+// prefixed because a top-level enum puts them in the package scope.
+type ConnectionState int32
+
+const (
+	// Proto3 zero value. A read of the tunnel never returns it; a mutation
+	// records it, because it reports the tunnel that was written.
+	ConnectionState_CONNECTION_STATE_UNSPECIFIED ConnectionState = 0
+	// No agent is connected. Nothing the tunnel exposes is reachable.
+	ConnectionState_CONNECTION_STATE_DISCONNECTED ConnectionState = 1
+	// At least one agent is connected.
+	ConnectionState_CONNECTION_STATE_CONNECTED ConnectionState = 2
+)
+
+// Enum value maps for ConnectionState.
+var (
+	ConnectionState_name = map[int32]string{
+		0: "CONNECTION_STATE_UNSPECIFIED",
+		1: "CONNECTION_STATE_DISCONNECTED",
+		2: "CONNECTION_STATE_CONNECTED",
+	}
+	ConnectionState_value = map[string]int32{
+		"CONNECTION_STATE_UNSPECIFIED":  0,
+		"CONNECTION_STATE_DISCONNECTED": 1,
+		"CONNECTION_STATE_CONNECTED":    2,
+	}
+)
+
+func (x ConnectionState) Enum() *ConnectionState {
+	p := new(ConnectionState)
+	*p = x
+	return p
+}
+
+func (x ConnectionState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ConnectionState) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_tunnel_v1_tunnel_proto_enumTypes[0].Descriptor()
+}
+
+func (ConnectionState) Type() protoreflect.EnumType {
+	return &file_nebius_tunnel_v1_tunnel_proto_enumTypes[0]
+}
+
+func (x ConnectionState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ConnectionState.Descriptor instead.
+func (ConnectionState) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_tunnel_v1_tunnel_proto_rawDescGZIP(), []int{0}
+}
+
 // State represents the lifecycle state of the tunnel.
 type TunnelStatus_State int32
 
@@ -61,11 +116,11 @@ func (x TunnelStatus_State) String() string {
 }
 
 func (TunnelStatus_State) Descriptor() protoreflect.EnumDescriptor {
-	return file_nebius_tunnel_v1_tunnel_proto_enumTypes[0].Descriptor()
+	return file_nebius_tunnel_v1_tunnel_proto_enumTypes[1].Descriptor()
 }
 
 func (TunnelStatus_State) Type() protoreflect.EnumType {
-	return &file_nebius_tunnel_v1_tunnel_proto_enumTypes[0]
+	return &file_nebius_tunnel_v1_tunnel_proto_enumTypes[1]
 }
 
 func (x TunnelStatus_State) Number() protoreflect.EnumNumber {
@@ -204,9 +259,11 @@ type TunnelStatus struct {
 	State TunnelStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.tunnel.v1.TunnelStatus_State" json:"state,omitempty"`
 	// Services reachable through the tunnel. A service is listed while at least
 	// one agent announces it, and follows the agents within about 30 seconds.
-	Services      []*ServiceStatus `protobuf:"bytes,2,rep,name=services,proto3" json:"services,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Services []*ServiceStatus `protobuf:"bytes,2,rep,name=services,proto3" json:"services,omitempty"`
+	// Whether any agent is connected to the tunnel now.
+	ConnectionState ConnectionState `protobuf:"varint,3,opt,name=connection_state,json=connectionState,proto3,enum=nebius.tunnel.v1.ConnectionState" json:"connection_state,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *TunnelStatus) Reset() {
@@ -251,6 +308,13 @@ func (x *TunnelStatus) GetServices() []*ServiceStatus {
 		return x.Services
 	}
 	return nil
+}
+
+func (x *TunnelStatus) GetConnectionState() ConnectionState {
+	if x != nil {
+		return x.ConnectionState
+	}
+	return ConnectionState_CONNECTION_STATE_UNSPECIFIED
 }
 
 // ServiceStatus is a service reachable through the tunnel.
@@ -325,17 +389,22 @@ const file_nebius_tunnel_v1_tunnel_proto_rawDesc = "" +
 	"\n" +
 	"TunnelSpec\x12\x1e\n" +
 	"\x05title\x18\x01 \x01(\tB\b\xbaH\x05r\x03\x18\x80\x02R\x05title\x12*\n" +
-	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\vdescription\"\xbb\x01\n" +
+	"\vdescription\x18\x02 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\vdescription\"\x89\x02\n" +
 	"\fTunnelStatus\x12:\n" +
 	"\x05state\x18\x01 \x01(\x0e2$.nebius.tunnel.v1.TunnelStatus.StateR\x05state\x12;\n" +
-	"\bservices\x18\x02 \x03(\v2\x1f.nebius.tunnel.v1.ServiceStatusR\bservices\"2\n" +
+	"\bservices\x18\x02 \x03(\v2\x1f.nebius.tunnel.v1.ServiceStatusR\bservices\x12L\n" +
+	"\x10connection_state\x18\x03 \x01(\x0e2!.nebius.tunnel.v1.ConnectionStateR\x0fconnectionState\"2\n" +
 	"\x05State\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\v\n" +
 	"\aCREATED\x10\x01\x12\v\n" +
 	"\aDELETED\x10\x02\"?\n" +
 	"\rServiceStatus\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1a\n" +
-	"\bendpoint\x18\x02 \x01(\tR\bendpointBX\n" +
+	"\bendpoint\x18\x02 \x01(\tR\bendpoint*v\n" +
+	"\x0fConnectionState\x12 \n" +
+	"\x1cCONNECTION_STATE_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dCONNECTION_STATE_DISCONNECTED\x10\x01\x12\x1e\n" +
+	"\x1aCONNECTION_STATE_CONNECTED\x10\x02BX\n" +
 	"\x17ai.nebius.pub.tunnel.v1B\vTunnelProtoP\x01Z.github.com/nebius/gosdk/proto/nebius/tunnel/v1b\x06proto3"
 
 var (
@@ -350,27 +419,29 @@ func file_nebius_tunnel_v1_tunnel_proto_rawDescGZIP() []byte {
 	return file_nebius_tunnel_v1_tunnel_proto_rawDescData
 }
 
-var file_nebius_tunnel_v1_tunnel_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_nebius_tunnel_v1_tunnel_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_nebius_tunnel_v1_tunnel_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_nebius_tunnel_v1_tunnel_proto_goTypes = []any{
-	(TunnelStatus_State)(0),     // 0: nebius.tunnel.v1.TunnelStatus.State
-	(*Tunnel)(nil),              // 1: nebius.tunnel.v1.Tunnel
-	(*TunnelSpec)(nil),          // 2: nebius.tunnel.v1.TunnelSpec
-	(*TunnelStatus)(nil),        // 3: nebius.tunnel.v1.TunnelStatus
-	(*ServiceStatus)(nil),       // 4: nebius.tunnel.v1.ServiceStatus
-	(*v1.ResourceMetadata)(nil), // 5: nebius.common.v1.ResourceMetadata
+	(ConnectionState)(0),        // 0: nebius.tunnel.v1.ConnectionState
+	(TunnelStatus_State)(0),     // 1: nebius.tunnel.v1.TunnelStatus.State
+	(*Tunnel)(nil),              // 2: nebius.tunnel.v1.Tunnel
+	(*TunnelSpec)(nil),          // 3: nebius.tunnel.v1.TunnelSpec
+	(*TunnelStatus)(nil),        // 4: nebius.tunnel.v1.TunnelStatus
+	(*ServiceStatus)(nil),       // 5: nebius.tunnel.v1.ServiceStatus
+	(*v1.ResourceMetadata)(nil), // 6: nebius.common.v1.ResourceMetadata
 }
 var file_nebius_tunnel_v1_tunnel_proto_depIdxs = []int32{
-	5, // 0: nebius.tunnel.v1.Tunnel.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	2, // 1: nebius.tunnel.v1.Tunnel.spec:type_name -> nebius.tunnel.v1.TunnelSpec
-	3, // 2: nebius.tunnel.v1.Tunnel.status:type_name -> nebius.tunnel.v1.TunnelStatus
-	0, // 3: nebius.tunnel.v1.TunnelStatus.state:type_name -> nebius.tunnel.v1.TunnelStatus.State
-	4, // 4: nebius.tunnel.v1.TunnelStatus.services:type_name -> nebius.tunnel.v1.ServiceStatus
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	6, // 0: nebius.tunnel.v1.Tunnel.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	3, // 1: nebius.tunnel.v1.Tunnel.spec:type_name -> nebius.tunnel.v1.TunnelSpec
+	4, // 2: nebius.tunnel.v1.Tunnel.status:type_name -> nebius.tunnel.v1.TunnelStatus
+	1, // 3: nebius.tunnel.v1.TunnelStatus.state:type_name -> nebius.tunnel.v1.TunnelStatus.State
+	5, // 4: nebius.tunnel.v1.TunnelStatus.services:type_name -> nebius.tunnel.v1.ServiceStatus
+	0, // 5: nebius.tunnel.v1.TunnelStatus.connection_state:type_name -> nebius.tunnel.v1.ConnectionState
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_nebius_tunnel_v1_tunnel_proto_init() }
@@ -383,7 +454,7 @@ func file_nebius_tunnel_v1_tunnel_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_tunnel_v1_tunnel_proto_rawDesc), len(file_nebius_tunnel_v1_tunnel_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,

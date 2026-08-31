@@ -341,36 +341,41 @@ var File_nebius_compute_v1_gpu_cluster_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_gpu_cluster_service_proto_rawDesc = "" +
 	"\n" +
-	"+nebius/compute/v1/gpu_cluster_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a#nebius/compute/v1/gpu_cluster.proto\x1a)nebius/compute/v1/operation_service.proto\"&\n" +
-	"\x14GetGpuClusterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xdb\x01\n" +
-	"\x16ListGpuClustersRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"+nebius/compute/v1/gpu_cluster_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a#nebius/compute/v1/gpu_cluster.proto\x1a)nebius/compute/v1/operation_service.proto\">\n" +
+	"\x14GetGpuClusterRequest\x12&\n" +
+	"\x02id\x18\x01 \x01(\tB\x16\xe2J\x13\n" +
+	"\x11computegpuclusterR\x02id\"\xe9\x01\n" +
+	"\x16ListGpuClustersRequest\x12)\n" +
+	"\tparent_id\x18\x01 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12h\n" +
 	"\x06filter\x18\x04 \x01(\tBP\xd2JK\n" +
 	"\n" +
-	"2025-06-16\x12=it is not implemented, filtering could be done on client side\x18\x01R\x06filter\"\x90\x01\n" +
-	"\x17CreateGpuClusterRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x125\n" +
-	"\x04spec\x18\x02 \x01(\v2!.nebius.compute.v1.GpuClusterSpecR\x04spec\"\x90\x01\n" +
-	"\x17UpdateGpuClusterRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x125\n" +
-	"\x04spec\x18\x02 \x01(\v2!.nebius.compute.v1.GpuClusterSpecR\x04spec\")\n" +
-	"\x17DeleteGpuClusterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"v\n" +
+	"2025-06-16\x12=it is not implemented, filtering could be done on client side\x18\x01R\x06filter\"\x9e\x01\n" +
+	"\x17CreateGpuClusterRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x125\n" +
+	"\x04spec\x18\x02 \x01(\v2!.nebius.compute.v1.GpuClusterSpecR\x04spec\"\x9e\x01\n" +
+	"\x17UpdateGpuClusterRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x125\n" +
+	"\x04spec\x18\x02 \x01(\v2!.nebius.compute.v1.GpuClusterSpecR\x04spec\"A\n" +
+	"\x17DeleteGpuClusterRequest\x12&\n" +
+	"\x02id\x18\x01 \x01(\tB\x16\xe2J\x13\n" +
+	"\x11computegpuclusterR\x02id\"v\n" +
 	"\x17ListGpuClustersResponse\x123\n" +
 	"\x05items\x18\x01 \x03(\v2\x1d.nebius.compute.v1.GpuClusterR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x8c\x05\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa8\x05\n" +
 	"\x11GpuClusterService\x12M\n" +
 	"\x03Get\x12'.nebius.compute.v1.GetGpuClusterRequest\x1a\x1d.nebius.compute.v1.GpuCluster\x12N\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1d.nebius.compute.v1.GpuCluster\x12]\n" +
 	"\x04List\x12).nebius.compute.v1.ListGpuClustersRequest\x1a*.nebius.compute.v1.ListGpuClustersResponse\x12Q\n" +
 	"\x06Create\x12*.nebius.compute.v1.CreateGpuClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12Q\n" +
 	"\x06Update\x12*.nebius.compute.v1.UpdateGpuClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12Q\n" +
-	"\x06Delete\x12*.nebius.compute.v1.DeleteGpuClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12t\n" +
-	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\x1a\n" +
+	"\x06Delete\x12*.nebius.compute.v1.DeleteGpuClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12\x8f\x01\n" +
+	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x19\xf2J\x16\n" +
+	"\tparent_id\x12\t\n" +
+	"\aproject\x1a\n" +
 	"\xbaJ\acomputeBe\n" +
 	"\x18ai.nebius.pub.compute.v1B\x16GpuClusterServiceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 
