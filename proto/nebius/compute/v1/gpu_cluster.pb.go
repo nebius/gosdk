@@ -131,8 +131,9 @@ func (x *GpuClusterSpec) GetInfinibandFabric() string {
 }
 
 type GpuClusterStatus struct {
-	state     protoimpl.MessageState `protogen:"open.v1"`
-	Instances []string               `protobuf:"bytes,1,rep,name=instances,proto3" json:"instances,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// IDs of Compute instances that belong to this GPU cluster.
+	Instances []string `protobuf:"bytes,1,rep,name=instances,proto3" json:"instances,omitempty"`
 	// Indicates whether there is an ongoing operation
 	Reconciling bool `protobuf:"varint,2,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
 	// Types that are valid to be assigned to Topology:
@@ -313,25 +314,27 @@ var File_nebius_compute_v1_gpu_cluster_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_gpu_cluster_proto_rawDesc = "" +
 	"\n" +
-	"#nebius/compute/v1/gpu_cluster.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc0\x01\n" +
+	"#nebius/compute/v1/gpu_cluster.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xce\x01\n" +
 	"\n" +
-	"GpuCluster\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x125\n" +
+	"GpuCluster\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x125\n" +
 	"\x04spec\x18\x02 \x01(\v2!.nebius.compute.v1.GpuClusterSpecR\x04spec\x12;\n" +
 	"\x06status\x18\x03 \x01(\v2#.nebius.compute.v1.GpuClusterStatusR\x06status\"I\n" +
 	"\x0eGpuClusterSpec\x127\n" +
 	"\x11infiniband_fabric\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x10infinibandFabric\"\xd5\x01\n" +
-	"\x10GpuClusterStatus\x12\x1c\n" +
-	"\tinstances\x18\x01 \x03(\tR\tinstances\x12 \n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x10infinibandFabric\"\xeb\x01\n" +
+	"\x10GpuClusterStatus\x122\n" +
+	"\tinstances\x18\x01 \x03(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\tinstances\x12 \n" +
 	"\vreconciling\x18\x02 \x01(\bR\vreconciling\x12u\n" +
 	"\x18infiniband_topology_path\x18\x03 \x01(\v29.nebius.compute.v1.GpuClusterStatusInfinibandTopologyPathH\x00R\x16infinibandTopologyPathB\n" +
 	"\n" +
 	"\btopology\"\x89\x01\n" +
 	"&GpuClusterStatusInfinibandTopologyPath\x12_\n" +
-	"\tinstances\x18\x01 \x03(\v2A.nebius.compute.v1.GpuClusterStatusInfinibandTopologyPathInstanceR\tinstances\"e\n" +
-	".GpuClusterStatusInfinibandTopologyPathInstance\x12\x1f\n" +
-	"\vinstance_id\x18\x01 \x01(\tR\n" +
+	"\tinstances\x18\x01 \x03(\v2A.nebius.compute.v1.GpuClusterStatusInfinibandTopologyPathInstanceR\tinstances\"{\n" +
+	".GpuClusterStatusInfinibandTopologyPathInstance\x125\n" +
+	"\vinstance_id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\n" +
 	"instanceId\x12\x12\n" +
 	"\x04path\x18\x02 \x03(\tR\x04pathB^\n" +
 	"\x18ai.nebius.pub.compute.v1B\x0fGpuClusterProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
