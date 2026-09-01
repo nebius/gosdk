@@ -1857,6 +1857,232 @@ func (x *TestImmutable) GetR() []int32 {
 	return nil
 }
 
+type TestPartiallyImmutable struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Immutable     int32                  `protobuf:"varint,1,opt,name=immutable,proto3" json:"immutable,omitempty"`
+	Mutable       int32                  `protobuf:"varint,2,opt,name=mutable,proto3" json:"mutable,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TestPartiallyImmutable) Reset() {
+	*x = TestPartiallyImmutable{}
+	mi := &file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TestPartiallyImmutable) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TestPartiallyImmutable) ProtoMessage() {}
+
+func (x *TestPartiallyImmutable) ProtoReflect() protoreflect.Message {
+	mi := &file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TestPartiallyImmutable.ProtoReflect.Descriptor instead.
+func (*TestPartiallyImmutable) Descriptor() ([]byte, []int) {
+	return file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *TestPartiallyImmutable) GetImmutable() int32 {
+	if x != nil {
+		return x.Immutable
+	}
+	return 0
+}
+
+func (x *TestPartiallyImmutable) GetMutable() int32 {
+	if x != nil {
+		return x.Mutable
+	}
+	return 0
+}
+
+type TestImmutableContainer struct {
+	state             protoimpl.MessageState             `protogen:"open.v1"`
+	Msg               *TestPartiallyImmutable            `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	List              []*TestPartiallyImmutable          `protobuf:"bytes,2,rep,name=list,proto3" json:"list,omitempty"`
+	Map               map[string]*TestPartiallyImmutable `protobuf:"bytes,3,rep,name=map,proto3" json:"map,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	OnlyImmutable     *TestImmutable                     `protobuf:"bytes,4,opt,name=only_immutable,json=onlyImmutable,proto3" json:"only_immutable,omitempty"`
+	OnlyImmutableList []*TestImmutable                   `protobuf:"bytes,5,rep,name=only_immutable_list,json=onlyImmutableList,proto3" json:"only_immutable_list,omitempty"`
+	OnlyImmutableMap  map[string]*TestImmutable          `protobuf:"bytes,6,rep,name=only_immutable_map,json=onlyImmutableMap,proto3" json:"only_immutable_map,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *TestImmutableContainer) Reset() {
+	*x = TestImmutableContainer{}
+	mi := &file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TestImmutableContainer) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TestImmutableContainer) ProtoMessage() {}
+
+func (x *TestImmutableContainer) ProtoReflect() protoreflect.Message {
+	mi := &file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TestImmutableContainer.ProtoReflect.Descriptor instead.
+func (*TestImmutableContainer) Descriptor() ([]byte, []int) {
+	return file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *TestImmutableContainer) GetMsg() *TestPartiallyImmutable {
+	if x != nil {
+		return x.Msg
+	}
+	return nil
+}
+
+func (x *TestImmutableContainer) GetList() []*TestPartiallyImmutable {
+	if x != nil {
+		return x.List
+	}
+	return nil
+}
+
+func (x *TestImmutableContainer) GetMap() map[string]*TestPartiallyImmutable {
+	if x != nil {
+		return x.Map
+	}
+	return nil
+}
+
+func (x *TestImmutableContainer) GetOnlyImmutable() *TestImmutable {
+	if x != nil {
+		return x.OnlyImmutable
+	}
+	return nil
+}
+
+func (x *TestImmutableContainer) GetOnlyImmutableList() []*TestImmutable {
+	if x != nil {
+		return x.OnlyImmutableList
+	}
+	return nil
+}
+
+func (x *TestImmutableContainer) GetOnlyImmutableMap() map[string]*TestImmutable {
+	if x != nil {
+		return x.OnlyImmutableMap
+	}
+	return nil
+}
+
+type TestImmutableOneOf struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Value:
+	//
+	//	*TestImmutableOneOf_S
+	//	*TestImmutableOneOf_I
+	Value         isTestImmutableOneOf_Value `protobuf_oneof:"value"`
+	Mutable       string                     `protobuf:"bytes,3,opt,name=mutable,proto3" json:"mutable,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TestImmutableOneOf) Reset() {
+	*x = TestImmutableOneOf{}
+	mi := &file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TestImmutableOneOf) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TestImmutableOneOf) ProtoMessage() {}
+
+func (x *TestImmutableOneOf) ProtoReflect() protoreflect.Message {
+	mi := &file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TestImmutableOneOf.ProtoReflect.Descriptor instead.
+func (*TestImmutableOneOf) Descriptor() ([]byte, []int) {
+	return file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *TestImmutableOneOf) GetValue() isTestImmutableOneOf_Value {
+	if x != nil {
+		return x.Value
+	}
+	return nil
+}
+
+func (x *TestImmutableOneOf) GetS() string {
+	if x != nil {
+		if x, ok := x.Value.(*TestImmutableOneOf_S); ok {
+			return x.S
+		}
+	}
+	return ""
+}
+
+func (x *TestImmutableOneOf) GetI() int32 {
+	if x != nil {
+		if x, ok := x.Value.(*TestImmutableOneOf_I); ok {
+			return x.I
+		}
+	}
+	return 0
+}
+
+func (x *TestImmutableOneOf) GetMutable() string {
+	if x != nil {
+		return x.Mutable
+	}
+	return ""
+}
+
+type isTestImmutableOneOf_Value interface {
+	isTestImmutableOneOf_Value()
+}
+
+type TestImmutableOneOf_S struct {
+	S string `protobuf:"bytes,1,opt,name=s,proto3,oneof"`
+}
+
+type TestImmutableOneOf_I struct {
+	I int32 `protobuf:"varint,2,opt,name=i,proto3,oneof"`
+}
+
+func (*TestImmutableOneOf_S) isTestImmutableOneOf_Value() {}
+
+func (*TestImmutableOneOf_I) isTestImmutableOneOf_Value() {}
+
 var File_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto protoreflect.FileDescriptor
 
 const file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_rawDesc = "" +
@@ -2158,7 +2384,28 @@ const file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_tes
 	"\x01r\x18\x05 \x03(\x05B\x04\xbaJ\x01\x02R\x01r\x1a4\n" +
 	"\x06MEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01*9\n" +
+	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\"V\n" +
+	"\x16TestPartiallyImmutable\x12\"\n" +
+	"\timmutable\x18\x01 \x01(\x05B\x04\xbaJ\x01\x02R\timmutable\x12\x18\n" +
+	"\amutable\x18\x02 \x01(\x05R\amutable\"\x9e\x05\n" +
+	"\x16TestImmutableContainer\x129\n" +
+	"\x03msg\x18\x01 \x01(\v2'.nebius.testdata.TestPartiallyImmutableR\x03msg\x12;\n" +
+	"\x04list\x18\x02 \x03(\v2'.nebius.testdata.TestPartiallyImmutableR\x04list\x12B\n" +
+	"\x03map\x18\x03 \x03(\v20.nebius.testdata.TestImmutableContainer.MapEntryR\x03map\x12E\n" +
+	"\x0eonly_immutable\x18\x04 \x01(\v2\x1e.nebius.testdata.TestImmutableR\ronlyImmutable\x12N\n" +
+	"\x13only_immutable_list\x18\x05 \x03(\v2\x1e.nebius.testdata.TestImmutableR\x11onlyImmutableList\x12k\n" +
+	"\x12only_immutable_map\x18\x06 \x03(\v2=.nebius.testdata.TestImmutableContainer.OnlyImmutableMapEntryR\x10onlyImmutableMap\x1a_\n" +
+	"\bMapEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12=\n" +
+	"\x05value\x18\x02 \x01(\v2'.nebius.testdata.TestPartiallyImmutableR\x05value:\x028\x01\x1ac\n" +
+	"\x15OnlyImmutableMapEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x124\n" +
+	"\x05value\x18\x02 \x01(\v2\x1e.nebius.testdata.TestImmutableR\x05value:\x028\x01\"]\n" +
+	"\x12TestImmutableOneOf\x12\x0e\n" +
+	"\x01s\x18\x01 \x01(\tH\x00R\x01s\x12\x0e\n" +
+	"\x01i\x18\x02 \x01(\x05H\x00R\x01i\x12\x18\n" +
+	"\amutable\x18\x03 \x01(\tR\amutableB\r\n" +
+	"\x05value\x12\x04\xbaJ\x01\x02*9\n" +
 	"\x03ABC\x12\x11\n" +
 	"\rABC_UNDEFINED\x10\x00\x12\t\n" +
 	"\x05ABC_A\x10\x01\x12\t\n" +
@@ -2188,72 +2435,77 @@ func file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test
 }
 
 var file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes = make([]protoimpl.MessageInfo, 60)
+var file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes = make([]protoimpl.MessageInfo, 65)
 var file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_goTypes = []any{
-	(ABC)(0),                      // 0: nebius.testdata.ABC
-	(AliasedABC)(0),               // 1: nebius.testdata.AliasedABC
-	(*RecursiveStruct)(nil),       // 2: nebius.testdata.RecursiveStruct
-	(*TestSimple)(nil),            // 3: nebius.testdata.TestSimple
-	(*TestRepeated)(nil),          // 4: nebius.testdata.TestRepeated
-	(*TestStringMap)(nil),         // 5: nebius.testdata.TestStringMap
-	(*NotAStringMap)(nil),         // 6: nebius.testdata.NotAStringMap
-	(*TestTypeMap)(nil),           // 7: nebius.testdata.TestTypeMap
-	(*WrongTypeMap)(nil),          // 8: nebius.testdata.WrongTypeMap
-	(*TestOptional)(nil),          // 9: nebius.testdata.TestOptional
-	(*TestOneOf)(nil),             // 10: nebius.testdata.TestOneOf
-	(*TestAnotherOneOf)(nil),      // 11: nebius.testdata.TestAnotherOneOf
-	(*TestStructs)(nil),           // 12: nebius.testdata.TestStructs
-	(*TestX)(nil),                 // 13: nebius.testdata.TestX
-	(*TestY)(nil),                 // 14: nebius.testdata.TestY
-	(*TestZ)(nil),                 // 15: nebius.testdata.TestZ
-	(*TestA)(nil),                 // 16: nebius.testdata.TestA
-	(*TestB)(nil),                 // 17: nebius.testdata.TestB
-	(*TestC)(nil),                 // 18: nebius.testdata.TestC
-	(*TestWellKnown)(nil),         // 19: nebius.testdata.TestWellKnown
-	(*TestRecursiveRepeated)(nil), // 20: nebius.testdata.TestRecursiveRepeated
-	(*TestRecursiveMap)(nil),      // 21: nebius.testdata.TestRecursiveMap
-	(*TestRecursiveSingle)(nil),   // 22: nebius.testdata.TestRecursiveSingle
-	(*TestOutputOnly)(nil),        // 23: nebius.testdata.TestOutputOnly
-	(*TestImmutable)(nil),         // 24: nebius.testdata.TestImmutable
-	nil,                           // 25: nebius.testdata.TestStringMap.TestDoubleEntry
-	nil,                           // 26: nebius.testdata.TestStringMap.TestFloatEntry
-	nil,                           // 27: nebius.testdata.TestStringMap.TestInt32Entry
-	nil,                           // 28: nebius.testdata.TestStringMap.TestInt64Entry
-	nil,                           // 29: nebius.testdata.TestStringMap.TestUint32Entry
-	nil,                           // 30: nebius.testdata.TestStringMap.TestUint64Entry
-	nil,                           // 31: nebius.testdata.TestStringMap.TestSint32Entry
-	nil,                           // 32: nebius.testdata.TestStringMap.TestSint64Entry
-	nil,                           // 33: nebius.testdata.TestStringMap.TestFixed32Entry
-	nil,                           // 34: nebius.testdata.TestStringMap.TestFixed64Entry
-	nil,                           // 35: nebius.testdata.TestStringMap.TestSfixed32Entry
-	nil,                           // 36: nebius.testdata.TestStringMap.TestSfixed64Entry
-	nil,                           // 37: nebius.testdata.TestStringMap.TestBoolEntry
-	nil,                           // 38: nebius.testdata.TestStringMap.TestStringEntry
-	nil,                           // 39: nebius.testdata.TestStringMap.TestBytesEntry
-	nil,                           // 40: nebius.testdata.TestStringMap.TestEnumEntry
-	nil,                           // 41: nebius.testdata.TestStringMap.TestAliasedEnumEntry
-	nil,                           // 42: nebius.testdata.TestTypeMap.TestInt32Entry
-	nil,                           // 43: nebius.testdata.TestTypeMap.TestInt64Entry
-	nil,                           // 44: nebius.testdata.TestTypeMap.TestUint32Entry
-	nil,                           // 45: nebius.testdata.TestTypeMap.TestUint64Entry
-	nil,                           // 46: nebius.testdata.TestTypeMap.TestSint32Entry
-	nil,                           // 47: nebius.testdata.TestTypeMap.TestSint64Entry
-	nil,                           // 48: nebius.testdata.TestTypeMap.TestFixed32Entry
-	nil,                           // 49: nebius.testdata.TestTypeMap.TestFixed64Entry
-	nil,                           // 50: nebius.testdata.TestTypeMap.TestSfixed32Entry
-	nil,                           // 51: nebius.testdata.TestTypeMap.TestSfixed64Entry
-	nil,                           // 52: nebius.testdata.TestTypeMap.TestBoolEntry
-	nil,                           // 53: nebius.testdata.TestTypeMap.TestStringEntry
-	nil,                           // 54: nebius.testdata.WrongTypeMap.TestInt32Entry
-	nil,                           // 55: nebius.testdata.TestStructs.TestStringmapEntry
-	nil,                           // 56: nebius.testdata.TestStructs.TestIntmapEntry
-	nil,                           // 57: nebius.testdata.TestA.BEntry
-	nil,                           // 58: nebius.testdata.TestB.CEntry
-	nil,                           // 59: nebius.testdata.TestRecursiveMap.FieldEntry
-	nil,                           // 60: nebius.testdata.TestOutputOnly.MEntry
-	nil,                           // 61: nebius.testdata.TestImmutable.MEntry
-	(*anypb.Any)(nil),             // 62: google.protobuf.Any
-	(*timestamppb.Timestamp)(nil), // 63: google.protobuf.Timestamp
+	(ABC)(0),                       // 0: nebius.testdata.ABC
+	(AliasedABC)(0),                // 1: nebius.testdata.AliasedABC
+	(*RecursiveStruct)(nil),        // 2: nebius.testdata.RecursiveStruct
+	(*TestSimple)(nil),             // 3: nebius.testdata.TestSimple
+	(*TestRepeated)(nil),           // 4: nebius.testdata.TestRepeated
+	(*TestStringMap)(nil),          // 5: nebius.testdata.TestStringMap
+	(*NotAStringMap)(nil),          // 6: nebius.testdata.NotAStringMap
+	(*TestTypeMap)(nil),            // 7: nebius.testdata.TestTypeMap
+	(*WrongTypeMap)(nil),           // 8: nebius.testdata.WrongTypeMap
+	(*TestOptional)(nil),           // 9: nebius.testdata.TestOptional
+	(*TestOneOf)(nil),              // 10: nebius.testdata.TestOneOf
+	(*TestAnotherOneOf)(nil),       // 11: nebius.testdata.TestAnotherOneOf
+	(*TestStructs)(nil),            // 12: nebius.testdata.TestStructs
+	(*TestX)(nil),                  // 13: nebius.testdata.TestX
+	(*TestY)(nil),                  // 14: nebius.testdata.TestY
+	(*TestZ)(nil),                  // 15: nebius.testdata.TestZ
+	(*TestA)(nil),                  // 16: nebius.testdata.TestA
+	(*TestB)(nil),                  // 17: nebius.testdata.TestB
+	(*TestC)(nil),                  // 18: nebius.testdata.TestC
+	(*TestWellKnown)(nil),          // 19: nebius.testdata.TestWellKnown
+	(*TestRecursiveRepeated)(nil),  // 20: nebius.testdata.TestRecursiveRepeated
+	(*TestRecursiveMap)(nil),       // 21: nebius.testdata.TestRecursiveMap
+	(*TestRecursiveSingle)(nil),    // 22: nebius.testdata.TestRecursiveSingle
+	(*TestOutputOnly)(nil),         // 23: nebius.testdata.TestOutputOnly
+	(*TestImmutable)(nil),          // 24: nebius.testdata.TestImmutable
+	(*TestPartiallyImmutable)(nil), // 25: nebius.testdata.TestPartiallyImmutable
+	(*TestImmutableContainer)(nil), // 26: nebius.testdata.TestImmutableContainer
+	(*TestImmutableOneOf)(nil),     // 27: nebius.testdata.TestImmutableOneOf
+	nil,                            // 28: nebius.testdata.TestStringMap.TestDoubleEntry
+	nil,                            // 29: nebius.testdata.TestStringMap.TestFloatEntry
+	nil,                            // 30: nebius.testdata.TestStringMap.TestInt32Entry
+	nil,                            // 31: nebius.testdata.TestStringMap.TestInt64Entry
+	nil,                            // 32: nebius.testdata.TestStringMap.TestUint32Entry
+	nil,                            // 33: nebius.testdata.TestStringMap.TestUint64Entry
+	nil,                            // 34: nebius.testdata.TestStringMap.TestSint32Entry
+	nil,                            // 35: nebius.testdata.TestStringMap.TestSint64Entry
+	nil,                            // 36: nebius.testdata.TestStringMap.TestFixed32Entry
+	nil,                            // 37: nebius.testdata.TestStringMap.TestFixed64Entry
+	nil,                            // 38: nebius.testdata.TestStringMap.TestSfixed32Entry
+	nil,                            // 39: nebius.testdata.TestStringMap.TestSfixed64Entry
+	nil,                            // 40: nebius.testdata.TestStringMap.TestBoolEntry
+	nil,                            // 41: nebius.testdata.TestStringMap.TestStringEntry
+	nil,                            // 42: nebius.testdata.TestStringMap.TestBytesEntry
+	nil,                            // 43: nebius.testdata.TestStringMap.TestEnumEntry
+	nil,                            // 44: nebius.testdata.TestStringMap.TestAliasedEnumEntry
+	nil,                            // 45: nebius.testdata.TestTypeMap.TestInt32Entry
+	nil,                            // 46: nebius.testdata.TestTypeMap.TestInt64Entry
+	nil,                            // 47: nebius.testdata.TestTypeMap.TestUint32Entry
+	nil,                            // 48: nebius.testdata.TestTypeMap.TestUint64Entry
+	nil,                            // 49: nebius.testdata.TestTypeMap.TestSint32Entry
+	nil,                            // 50: nebius.testdata.TestTypeMap.TestSint64Entry
+	nil,                            // 51: nebius.testdata.TestTypeMap.TestFixed32Entry
+	nil,                            // 52: nebius.testdata.TestTypeMap.TestFixed64Entry
+	nil,                            // 53: nebius.testdata.TestTypeMap.TestSfixed32Entry
+	nil,                            // 54: nebius.testdata.TestTypeMap.TestSfixed64Entry
+	nil,                            // 55: nebius.testdata.TestTypeMap.TestBoolEntry
+	nil,                            // 56: nebius.testdata.TestTypeMap.TestStringEntry
+	nil,                            // 57: nebius.testdata.WrongTypeMap.TestInt32Entry
+	nil,                            // 58: nebius.testdata.TestStructs.TestStringmapEntry
+	nil,                            // 59: nebius.testdata.TestStructs.TestIntmapEntry
+	nil,                            // 60: nebius.testdata.TestA.BEntry
+	nil,                            // 61: nebius.testdata.TestB.CEntry
+	nil,                            // 62: nebius.testdata.TestRecursiveMap.FieldEntry
+	nil,                            // 63: nebius.testdata.TestOutputOnly.MEntry
+	nil,                            // 64: nebius.testdata.TestImmutable.MEntry
+	nil,                            // 65: nebius.testdata.TestImmutableContainer.MapEntry
+	nil,                            // 66: nebius.testdata.TestImmutableContainer.OnlyImmutableMapEntry
+	(*anypb.Any)(nil),              // 67: google.protobuf.Any
+	(*timestamppb.Timestamp)(nil),  // 68: google.protobuf.Timestamp
 }
 var file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_depIdxs = []int32{
 	2,  // 0: nebius.testdata.RecursiveStruct.recursive:type_name -> nebius.testdata.RecursiveStruct
@@ -2261,70 +2513,78 @@ var file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_
 	1,  // 2: nebius.testdata.TestSimple.test_aliased_enum:type_name -> nebius.testdata.AliasedABC
 	0,  // 3: nebius.testdata.TestRepeated.test_enum:type_name -> nebius.testdata.ABC
 	1,  // 4: nebius.testdata.TestRepeated.test_aliased_enum:type_name -> nebius.testdata.AliasedABC
-	25, // 5: nebius.testdata.TestStringMap.test_double:type_name -> nebius.testdata.TestStringMap.TestDoubleEntry
-	26, // 6: nebius.testdata.TestStringMap.test_float:type_name -> nebius.testdata.TestStringMap.TestFloatEntry
-	27, // 7: nebius.testdata.TestStringMap.test_int32:type_name -> nebius.testdata.TestStringMap.TestInt32Entry
-	28, // 8: nebius.testdata.TestStringMap.test_int64:type_name -> nebius.testdata.TestStringMap.TestInt64Entry
-	29, // 9: nebius.testdata.TestStringMap.test_uint32:type_name -> nebius.testdata.TestStringMap.TestUint32Entry
-	30, // 10: nebius.testdata.TestStringMap.test_uint64:type_name -> nebius.testdata.TestStringMap.TestUint64Entry
-	31, // 11: nebius.testdata.TestStringMap.test_sint32:type_name -> nebius.testdata.TestStringMap.TestSint32Entry
-	32, // 12: nebius.testdata.TestStringMap.test_sint64:type_name -> nebius.testdata.TestStringMap.TestSint64Entry
-	33, // 13: nebius.testdata.TestStringMap.test_fixed32:type_name -> nebius.testdata.TestStringMap.TestFixed32Entry
-	34, // 14: nebius.testdata.TestStringMap.test_fixed64:type_name -> nebius.testdata.TestStringMap.TestFixed64Entry
-	35, // 15: nebius.testdata.TestStringMap.test_sfixed32:type_name -> nebius.testdata.TestStringMap.TestSfixed32Entry
-	36, // 16: nebius.testdata.TestStringMap.test_sfixed64:type_name -> nebius.testdata.TestStringMap.TestSfixed64Entry
-	37, // 17: nebius.testdata.TestStringMap.test_bool:type_name -> nebius.testdata.TestStringMap.TestBoolEntry
-	38, // 18: nebius.testdata.TestStringMap.test_string:type_name -> nebius.testdata.TestStringMap.TestStringEntry
-	39, // 19: nebius.testdata.TestStringMap.test_bytes:type_name -> nebius.testdata.TestStringMap.TestBytesEntry
-	40, // 20: nebius.testdata.TestStringMap.test_enum:type_name -> nebius.testdata.TestStringMap.TestEnumEntry
-	41, // 21: nebius.testdata.TestStringMap.test_aliased_enum:type_name -> nebius.testdata.TestStringMap.TestAliasedEnumEntry
+	28, // 5: nebius.testdata.TestStringMap.test_double:type_name -> nebius.testdata.TestStringMap.TestDoubleEntry
+	29, // 6: nebius.testdata.TestStringMap.test_float:type_name -> nebius.testdata.TestStringMap.TestFloatEntry
+	30, // 7: nebius.testdata.TestStringMap.test_int32:type_name -> nebius.testdata.TestStringMap.TestInt32Entry
+	31, // 8: nebius.testdata.TestStringMap.test_int64:type_name -> nebius.testdata.TestStringMap.TestInt64Entry
+	32, // 9: nebius.testdata.TestStringMap.test_uint32:type_name -> nebius.testdata.TestStringMap.TestUint32Entry
+	33, // 10: nebius.testdata.TestStringMap.test_uint64:type_name -> nebius.testdata.TestStringMap.TestUint64Entry
+	34, // 11: nebius.testdata.TestStringMap.test_sint32:type_name -> nebius.testdata.TestStringMap.TestSint32Entry
+	35, // 12: nebius.testdata.TestStringMap.test_sint64:type_name -> nebius.testdata.TestStringMap.TestSint64Entry
+	36, // 13: nebius.testdata.TestStringMap.test_fixed32:type_name -> nebius.testdata.TestStringMap.TestFixed32Entry
+	37, // 14: nebius.testdata.TestStringMap.test_fixed64:type_name -> nebius.testdata.TestStringMap.TestFixed64Entry
+	38, // 15: nebius.testdata.TestStringMap.test_sfixed32:type_name -> nebius.testdata.TestStringMap.TestSfixed32Entry
+	39, // 16: nebius.testdata.TestStringMap.test_sfixed64:type_name -> nebius.testdata.TestStringMap.TestSfixed64Entry
+	40, // 17: nebius.testdata.TestStringMap.test_bool:type_name -> nebius.testdata.TestStringMap.TestBoolEntry
+	41, // 18: nebius.testdata.TestStringMap.test_string:type_name -> nebius.testdata.TestStringMap.TestStringEntry
+	42, // 19: nebius.testdata.TestStringMap.test_bytes:type_name -> nebius.testdata.TestStringMap.TestBytesEntry
+	43, // 20: nebius.testdata.TestStringMap.test_enum:type_name -> nebius.testdata.TestStringMap.TestEnumEntry
+	44, // 21: nebius.testdata.TestStringMap.test_aliased_enum:type_name -> nebius.testdata.TestStringMap.TestAliasedEnumEntry
 	9,  // 22: nebius.testdata.NotAStringMap.test_int32:type_name -> nebius.testdata.TestOptional
-	42, // 23: nebius.testdata.TestTypeMap.test_int32:type_name -> nebius.testdata.TestTypeMap.TestInt32Entry
-	43, // 24: nebius.testdata.TestTypeMap.test_int64:type_name -> nebius.testdata.TestTypeMap.TestInt64Entry
-	44, // 25: nebius.testdata.TestTypeMap.test_uint32:type_name -> nebius.testdata.TestTypeMap.TestUint32Entry
-	45, // 26: nebius.testdata.TestTypeMap.test_uint64:type_name -> nebius.testdata.TestTypeMap.TestUint64Entry
-	46, // 27: nebius.testdata.TestTypeMap.test_sint32:type_name -> nebius.testdata.TestTypeMap.TestSint32Entry
-	47, // 28: nebius.testdata.TestTypeMap.test_sint64:type_name -> nebius.testdata.TestTypeMap.TestSint64Entry
-	48, // 29: nebius.testdata.TestTypeMap.test_fixed32:type_name -> nebius.testdata.TestTypeMap.TestFixed32Entry
-	49, // 30: nebius.testdata.TestTypeMap.test_fixed64:type_name -> nebius.testdata.TestTypeMap.TestFixed64Entry
-	50, // 31: nebius.testdata.TestTypeMap.test_sfixed32:type_name -> nebius.testdata.TestTypeMap.TestSfixed32Entry
-	51, // 32: nebius.testdata.TestTypeMap.test_sfixed64:type_name -> nebius.testdata.TestTypeMap.TestSfixed64Entry
-	52, // 33: nebius.testdata.TestTypeMap.test_bool:type_name -> nebius.testdata.TestTypeMap.TestBoolEntry
-	53, // 34: nebius.testdata.TestTypeMap.test_string:type_name -> nebius.testdata.TestTypeMap.TestStringEntry
-	54, // 35: nebius.testdata.WrongTypeMap.test_int32:type_name -> nebius.testdata.WrongTypeMap.TestInt32Entry
+	45, // 23: nebius.testdata.TestTypeMap.test_int32:type_name -> nebius.testdata.TestTypeMap.TestInt32Entry
+	46, // 24: nebius.testdata.TestTypeMap.test_int64:type_name -> nebius.testdata.TestTypeMap.TestInt64Entry
+	47, // 25: nebius.testdata.TestTypeMap.test_uint32:type_name -> nebius.testdata.TestTypeMap.TestUint32Entry
+	48, // 26: nebius.testdata.TestTypeMap.test_uint64:type_name -> nebius.testdata.TestTypeMap.TestUint64Entry
+	49, // 27: nebius.testdata.TestTypeMap.test_sint32:type_name -> nebius.testdata.TestTypeMap.TestSint32Entry
+	50, // 28: nebius.testdata.TestTypeMap.test_sint64:type_name -> nebius.testdata.TestTypeMap.TestSint64Entry
+	51, // 29: nebius.testdata.TestTypeMap.test_fixed32:type_name -> nebius.testdata.TestTypeMap.TestFixed32Entry
+	52, // 30: nebius.testdata.TestTypeMap.test_fixed64:type_name -> nebius.testdata.TestTypeMap.TestFixed64Entry
+	53, // 31: nebius.testdata.TestTypeMap.test_sfixed32:type_name -> nebius.testdata.TestTypeMap.TestSfixed32Entry
+	54, // 32: nebius.testdata.TestTypeMap.test_sfixed64:type_name -> nebius.testdata.TestTypeMap.TestSfixed64Entry
+	55, // 33: nebius.testdata.TestTypeMap.test_bool:type_name -> nebius.testdata.TestTypeMap.TestBoolEntry
+	56, // 34: nebius.testdata.TestTypeMap.test_string:type_name -> nebius.testdata.TestTypeMap.TestStringEntry
+	57, // 35: nebius.testdata.WrongTypeMap.test_int32:type_name -> nebius.testdata.WrongTypeMap.TestInt32Entry
 	3,  // 36: nebius.testdata.TestOptional.test_struct:type_name -> nebius.testdata.TestSimple
 	3,  // 37: nebius.testdata.TestOneOf.test_struct:type_name -> nebius.testdata.TestSimple
 	3,  // 38: nebius.testdata.TestStructs.test_struct:type_name -> nebius.testdata.TestSimple
 	3,  // 39: nebius.testdata.TestStructs.test_repeated:type_name -> nebius.testdata.TestSimple
-	55, // 40: nebius.testdata.TestStructs.test_stringmap:type_name -> nebius.testdata.TestStructs.TestStringmapEntry
-	56, // 41: nebius.testdata.TestStructs.test_intmap:type_name -> nebius.testdata.TestStructs.TestIntmapEntry
+	58, // 40: nebius.testdata.TestStructs.test_stringmap:type_name -> nebius.testdata.TestStructs.TestStringmapEntry
+	59, // 41: nebius.testdata.TestStructs.test_intmap:type_name -> nebius.testdata.TestStructs.TestIntmapEntry
 	14, // 42: nebius.testdata.TestX.y:type_name -> nebius.testdata.TestY
 	15, // 43: nebius.testdata.TestY.z:type_name -> nebius.testdata.TestZ
-	57, // 44: nebius.testdata.TestA.b:type_name -> nebius.testdata.TestA.BEntry
-	58, // 45: nebius.testdata.TestB.c:type_name -> nebius.testdata.TestB.CEntry
-	62, // 46: nebius.testdata.TestWellKnown.test_any:type_name -> google.protobuf.Any
-	63, // 47: nebius.testdata.TestWellKnown.test_ts:type_name -> google.protobuf.Timestamp
-	62, // 48: nebius.testdata.TestWellKnown.test_repeated_any:type_name -> google.protobuf.Any
-	63, // 49: nebius.testdata.TestWellKnown.test_repeated_ts:type_name -> google.protobuf.Timestamp
+	60, // 44: nebius.testdata.TestA.b:type_name -> nebius.testdata.TestA.BEntry
+	61, // 45: nebius.testdata.TestB.c:type_name -> nebius.testdata.TestB.CEntry
+	67, // 46: nebius.testdata.TestWellKnown.test_any:type_name -> google.protobuf.Any
+	68, // 47: nebius.testdata.TestWellKnown.test_ts:type_name -> google.protobuf.Timestamp
+	67, // 48: nebius.testdata.TestWellKnown.test_repeated_any:type_name -> google.protobuf.Any
+	68, // 49: nebius.testdata.TestWellKnown.test_repeated_ts:type_name -> google.protobuf.Timestamp
 	2,  // 50: nebius.testdata.TestRecursiveRepeated.field:type_name -> nebius.testdata.RecursiveStruct
-	59, // 51: nebius.testdata.TestRecursiveMap.field:type_name -> nebius.testdata.TestRecursiveMap.FieldEntry
+	62, // 51: nebius.testdata.TestRecursiveMap.field:type_name -> nebius.testdata.TestRecursiveMap.FieldEntry
 	2,  // 52: nebius.testdata.TestRecursiveSingle.field:type_name -> nebius.testdata.RecursiveStruct
 	3,  // 53: nebius.testdata.TestOutputOnly.msg:type_name -> nebius.testdata.TestSimple
-	60, // 54: nebius.testdata.TestOutputOnly.m:type_name -> nebius.testdata.TestOutputOnly.MEntry
+	63, // 54: nebius.testdata.TestOutputOnly.m:type_name -> nebius.testdata.TestOutputOnly.MEntry
 	3,  // 55: nebius.testdata.TestImmutable.msg:type_name -> nebius.testdata.TestSimple
-	61, // 56: nebius.testdata.TestImmutable.m:type_name -> nebius.testdata.TestImmutable.MEntry
-	0,  // 57: nebius.testdata.TestStringMap.TestEnumEntry.value:type_name -> nebius.testdata.ABC
-	1,  // 58: nebius.testdata.TestStringMap.TestAliasedEnumEntry.value:type_name -> nebius.testdata.AliasedABC
-	3,  // 59: nebius.testdata.TestStructs.TestStringmapEntry.value:type_name -> nebius.testdata.TestSimple
-	3,  // 60: nebius.testdata.TestStructs.TestIntmapEntry.value:type_name -> nebius.testdata.TestSimple
-	17, // 61: nebius.testdata.TestA.BEntry.value:type_name -> nebius.testdata.TestB
-	18, // 62: nebius.testdata.TestB.CEntry.value:type_name -> nebius.testdata.TestC
-	2,  // 63: nebius.testdata.TestRecursiveMap.FieldEntry.value:type_name -> nebius.testdata.RecursiveStruct
-	64, // [64:64] is the sub-list for method output_type
-	64, // [64:64] is the sub-list for method input_type
-	64, // [64:64] is the sub-list for extension type_name
-	64, // [64:64] is the sub-list for extension extendee
-	0,  // [0:64] is the sub-list for field type_name
+	64, // 56: nebius.testdata.TestImmutable.m:type_name -> nebius.testdata.TestImmutable.MEntry
+	25, // 57: nebius.testdata.TestImmutableContainer.msg:type_name -> nebius.testdata.TestPartiallyImmutable
+	25, // 58: nebius.testdata.TestImmutableContainer.list:type_name -> nebius.testdata.TestPartiallyImmutable
+	65, // 59: nebius.testdata.TestImmutableContainer.map:type_name -> nebius.testdata.TestImmutableContainer.MapEntry
+	24, // 60: nebius.testdata.TestImmutableContainer.only_immutable:type_name -> nebius.testdata.TestImmutable
+	24, // 61: nebius.testdata.TestImmutableContainer.only_immutable_list:type_name -> nebius.testdata.TestImmutable
+	66, // 62: nebius.testdata.TestImmutableContainer.only_immutable_map:type_name -> nebius.testdata.TestImmutableContainer.OnlyImmutableMapEntry
+	0,  // 63: nebius.testdata.TestStringMap.TestEnumEntry.value:type_name -> nebius.testdata.ABC
+	1,  // 64: nebius.testdata.TestStringMap.TestAliasedEnumEntry.value:type_name -> nebius.testdata.AliasedABC
+	3,  // 65: nebius.testdata.TestStructs.TestStringmapEntry.value:type_name -> nebius.testdata.TestSimple
+	3,  // 66: nebius.testdata.TestStructs.TestIntmapEntry.value:type_name -> nebius.testdata.TestSimple
+	17, // 67: nebius.testdata.TestA.BEntry.value:type_name -> nebius.testdata.TestB
+	18, // 68: nebius.testdata.TestB.CEntry.value:type_name -> nebius.testdata.TestC
+	2,  // 69: nebius.testdata.TestRecursiveMap.FieldEntry.value:type_name -> nebius.testdata.RecursiveStruct
+	25, // 70: nebius.testdata.TestImmutableContainer.MapEntry.value:type_name -> nebius.testdata.TestPartiallyImmutable
+	24, // 71: nebius.testdata.TestImmutableContainer.OnlyImmutableMapEntry.value:type_name -> nebius.testdata.TestImmutable
+	72, // [72:72] is the sub-list for method output_type
+	72, // [72:72] is the sub-list for method input_type
+	72, // [72:72] is the sub-list for extension type_name
+	72, // [72:72] is the sub-list for extension extendee
+	0,  // [0:72] is the sub-list for field type_name
 }
 
 func init() { file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_init() }
@@ -2342,13 +2602,17 @@ func file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test
 		(*TestAnotherOneOf_TestUint32)(nil),
 		(*TestAnotherOneOf_TestUint64)(nil),
 	}
+	file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_msgTypes[25].OneofWrappers = []any{
+		(*TestImmutableOneOf_S)(nil),
+		(*TestImmutableOneOf_I)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_rawDesc), len(file_api_tools_public_gosdk_proto_fieldmask_protobuf_testdata_data_for_test_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   60,
+			NumMessages:   65,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

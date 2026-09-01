@@ -414,6 +414,15 @@ func TestResetMaskFromMessage(t *testing.T) {
 			Mask: "y.*.z.*.b",
 		},
 		{
+			Input: &testdata.TestX{
+				Y: []*testdata.TestY{
+					{Z: []*testdata.TestZ{{A: "a"}}},
+					{Z: []*testdata.TestZ{{B: "b"}}},
+				},
+			},
+			Mask: "y.*.z.*.(a,b)",
+		},
+		{
 			Input: &testdata.TestA{
 				B: map[string]*testdata.TestB{
 					"1": {
@@ -430,6 +439,15 @@ func TestResetMaskFromMessage(t *testing.T) {
 				},
 			},
 			Mask: "b.*.c.*.y",
+		},
+		{
+			Input: &testdata.TestA{
+				B: map[string]*testdata.TestB{
+					"1": {C: map[string]*testdata.TestC{"1": {X: "x"}}},
+					"2": {C: map[string]*testdata.TestC{"2": {Y: "y"}}},
+				},
+			},
+			Mask: "b.*.c.*.(x,y)",
 		},
 	}
 	for i, c := range cases {
@@ -451,5 +469,63 @@ func TestResetMaskFromMessage(t *testing.T) {
 		ret, err := ResetMaskFromMessage(nil)
 		assert.NoError(t, err)
 		assert.Nil(t, ret)
+	})
+}
+
+func TestResetMaskFromMessageImmutables(t *testing.T) {
+	t.Parallel()
+	input := &testdata.TestImmutableContainer{
+		Msg:  &testdata.TestPartiallyImmutable{},
+		List: []*testdata.TestPartiallyImmutable{{}},
+		Map: map[string]*testdata.TestPartiallyImmutable{
+			"key": {},
+		},
+		OnlyImmutable:     &testdata.TestImmutable{},
+		OnlyImmutableList: []*testdata.TestImmutable{{}},
+		OnlyImmutableMap: map[string]*testdata.TestImmutable{
+			"key": {},
+		},
+	}
+	tests := []struct {
+		name    string
+		options []Option
+		want    string
+	}{
+		{name: "default", want: "list.*.mutable,map.*.mutable,msg.mutable,only_immutable,only_immutable_list.*,only_immutable_map.*"},
+		{name: "no immutables", options: []Option{NoImmutables()}, want: "list.*.mutable,map.*.mutable,msg.mutable,only_immutable,only_immutable_list.*,only_immutable_map.*"},
+		{name: "with immutables", options: []Option{WithImmutables()}, want: "list.*.(immutable,mutable),map.*.(immutable,mutable),msg.(immutable,mutable),only_immutable.(i,m,msg,r,s),only_immutable_list.*.(i,m,msg,r,s),only_immutable_map.*.(i,m,msg,r,s)"},
+		{name: "last option wins", options: []Option{WithImmutables(), NoImmutables()}, want: "list.*.mutable,map.*.mutable,msg.mutable,only_immutable,only_immutable_list.*,only_immutable_map.*"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			got, err := ResetMaskFromMessage(input, test.options...)
+			assert.NoError(t, err)
+			gotString, err := got.Marshal()
+			assert.NoError(t, err)
+			assert.Equal(t, test.want, gotString)
+		})
+	}
+	t.Run("immutable oneof", func(t *testing.T) {
+		t.Parallel()
+		got, err := ResetMaskFromMessage(&testdata.TestImmutableOneOf{})
+		assert.NoError(t, err)
+		gotString, err := got.Marshal()
+		assert.NoError(t, err)
+		assert.Equal(t, "mutable", gotString)
+
+		got, err = ResetMaskFromMessage(&testdata.TestImmutableOneOf{}, WithImmutables())
+		assert.NoError(t, err)
+		gotString, err = got.Marshal()
+		assert.NoError(t, err)
+		assert.Equal(t, "i,mutable,s", gotString)
+
+		got, err = ResetMaskFromMessage(&testdata.TestImmutableOneOf{
+			Value: &testdata.TestImmutableOneOf_I{},
+		})
+		assert.NoError(t, err)
+		gotString, err = got.Marshal()
+		assert.NoError(t, err)
+		assert.Equal(t, "i,mutable", gotString)
 	})
 }

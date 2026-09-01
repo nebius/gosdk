@@ -13,6 +13,7 @@ func rmFromMessageRecursive( //nolint:funlen,gocognit // TODO: simplify
 	resetMask *mask.Mask,
 	updMsg protoreflect.Message,
 	recursion int,
+	options *maskOptions,
 ) error {
 	if recursion >= recursionTooDeep {
 		return mask.ErrRecursionTooDeep
@@ -24,6 +25,9 @@ func rmFromMessageRecursive( //nolint:funlen,gocognit // TODO: simplify
 	desc := updMsg.Descriptor()
 	for i := range desc.Fields().Len() {
 		fieldDesc := desc.Fields().Get(i)
+		if shouldSkipImmutable(fieldDesc, updMsg.Has(fieldDesc), options) {
+			continue
+		}
 		fieldMask := resetMask.FieldParts[mask.FieldKey(fieldDesc.Name())]
 		if fieldMask == nil {
 			fieldMask = mask.New()
@@ -46,19 +50,19 @@ func rmFromMessageRecursive( //nolint:funlen,gocognit // TODO: simplify
 				innerMask := fieldMask.Any
 				if innerMask == nil {
 					innerMask = mask.New()
-					fieldMask.Any = innerMask
 				}
-				resetMask.FieldParts[mask.FieldKey(
-					fieldDesc.Name(),
-				)] = fieldMask
 				for i := range list.Len() {
 					err := rmFromMessageRecursive(
-						innerMask, list.Get(i).Message(), recursion,
+						innerMask, list.Get(i).Message(), recursion, options,
 					)
 					if err != nil {
 						return fmt.Errorf("%s[%d]: %w", desc.Name(), i, err)
 					}
 				}
+				fieldMask.Any = innerMask
+				resetMask.FieldParts[mask.FieldKey(
+					fieldDesc.Name(),
+				)] = fieldMask
 			}
 			continue
 		}
@@ -72,16 +76,12 @@ func rmFromMessageRecursive( //nolint:funlen,gocognit // TODO: simplify
 				innerMask := fieldMask.Any
 				if innerMask == nil {
 					innerMask = mask.New()
-					fieldMask.Any = innerMask
 				}
-				resetMask.FieldParts[mask.FieldKey(
-					fieldDesc.Name(),
-				)] = fieldMask
 				var innerErr error
 				fMap.Range(
 					func(mk protoreflect.MapKey, v protoreflect.Value) bool {
 						err := rmFromMessageRecursive(
-							innerMask, v.Message(), recursion,
+							innerMask, v.Message(), recursion, options,
 						)
 						if err != nil {
 							innerErr = fmt.Errorf(
@@ -95,11 +95,15 @@ func rmFromMessageRecursive( //nolint:funlen,gocognit // TODO: simplify
 				if innerErr != nil {
 					return innerErr
 				}
+				fieldMask.Any = innerMask
+				resetMask.FieldParts[mask.FieldKey(
+					fieldDesc.Name(),
+				)] = fieldMask
 			}
 			continue
 		}
 		if fieldDesc.Message() != nil {
-			err := rmFromMessageRecursive(fieldMask, field.Message(), recursion)
+			err := rmFromMessageRecursive(fieldMask, field.Message(), recursion, options)
 			if err != nil {
 				return fmt.Errorf("%s: %w", desc.Name(), err)
 			}
@@ -124,6 +128,7 @@ func rmFromMessageRecursive( //nolint:funlen,gocognit // TODO: simplify
 // Parameters:
 //   - update: The [proto.Message] to analyze and create the reset
 //     mask from.
+//   - options: Conversion options. Immutable fields are excluded by default.
 //
 // Returns:
 //   - *[mask.Mask]: A [mask.Mask] representing fields that are default or unset
@@ -132,15 +137,17 @@ func rmFromMessageRecursive( //nolint:funlen,gocognit // TODO: simplify
 //   - error: An error if there was any issue collecting the reset mask.
 func ResetMaskFromMessage(
 	update proto.Message,
+	options ...Option,
 ) (*mask.Mask, error) {
 	if update == nil {
 		return nil, nil
 	}
 	updMsg := update.ProtoReflect()
 	ret := mask.New()
+	decodedOptions := decodeOptions(options...)
 
 	// Collect modification mask by comparing initial and modified messages
-	err := rmFromMessageRecursive(ret, updMsg, 0)
+	err := rmFromMessageRecursive(ret, updMsg, 0, &decodedOptions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to collect modification mask: %w", err)
 	}

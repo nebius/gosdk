@@ -437,8 +437,10 @@ type InstanceSpec struct {
 	//   - If set to ALWAYS, keep retrying recovery indefinitely until the instance is recovered. Available only for instances in
 	//     nvlinstancegroup
 	RecoveryPolicy InstanceRecoveryPolicy `protobuf:"varint,15,opt,name=recovery_policy,json=recoveryPolicy,proto3,enum=nebius.compute.v1.InstanceRecoveryPolicy" json:"recovery_policy,omitempty"`
-	// Include these parameters to create a Preemptible VM and omit them to create a Regular VM
+	// Set this field to create a preemptible VM, or omit it to create a regular VM.
 	// For details, see https://docs.nebius.com/compute/virtual-machines/preemptible
+	// A preemptible VM cannot be converted to a regular VM or vice versa. Once set, this field cannot be removed; if the
+	// VM was created without it, the field cannot be added later.
 	Preemptible *PreemptibleSpec `protobuf:"bytes,19,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
 	// Instance's hostname. Used to generate default DNS record in format `<hostname>.<network_id>.compute.internal.`
 	// or `<instance_id>.<network_id>.compute.internal.` if hostname is not specified.
@@ -1566,7 +1568,7 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\bInstance\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\x87\t\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\x81\t\n" +
 	"\fInstanceSpec\x122\n" +
 	"\x12service_account_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x10serviceAccountId\x12F\n" +
 	"\tresources\x18\x02 \x01(\v2 .nebius.compute.v1.ResourcesSpecB\x06\xbaH\x03\xc8\x01\x01R\tresources\x12P\n" +
@@ -1578,8 +1580,8 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\vfilesystems\x18\a \x03(\v2).nebius.compute.v1.AttachedFilesystemSpecR\vfilesystems\x12=\n" +
 	"\x14cloud_init_user_data\x18\b \x01(\tB\f\xbaH\x06r\x04\x18\x80\x80\x02\xc0J\x01R\x11cloudInitUserData\x12\x18\n" +
 	"\astopped\x18\r \x01(\bR\astopped\x12X\n" +
-	"\x0frecovery_policy\x18\x0f \x01(\x0e2).nebius.compute.v1.InstanceRecoveryPolicyB\x04\xbaJ\x01\x02R\x0erecoveryPolicy\x12J\n" +
-	"\vpreemptible\x18\x13 \x01(\v2\".nebius.compute.v1.PreemptibleSpecB\x04\xbaJ\x01\x02R\vpreemptible\x12\x93\x01\n" +
+	"\x0frecovery_policy\x18\x0f \x01(\x0e2).nebius.compute.v1.InstanceRecoveryPolicyB\x04\xbaJ\x01\x02R\x0erecoveryPolicy\x12D\n" +
+	"\vpreemptible\x18\x13 \x01(\v2\".nebius.compute.v1.PreemptibleSpecR\vpreemptible\x12\x93\x01\n" +
 	"\bhostname\x18\x14 \x01(\tBw\xbaHt\xba\x01q\n" +
 	"\x0ehostname.valid\x12\x1evalue must be a valid hostname\x1a?this == '' || this.matches('^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$')R\bhostname\x121\n" +
 	"\x15nvl_instance_group_id\x18\x15 \x01(\tR\x12nvlInstanceGroupId\x12S\n" +

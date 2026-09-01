@@ -11,9 +11,42 @@ import (
 
 const recursionTooDeep = 1000
 
+func knownFieldFromDescRecursive(
+	fieldDesc protoreflect.FieldDescriptor,
+	recursion int,
+	options *maskOptions,
+) (*mask.Mask, error) {
+	// OneOfs are not covered separately as they can be unset by unsetting
+	// their inner fields
+	var innerDesc protoreflect.MessageDescriptor
+	collection := true
+	switch {
+	case fieldDesc.IsList() && fieldDesc.Message() != nil:
+		innerDesc = fieldDesc.Message()
+	case fieldDesc.IsMap() && fieldDesc.MapValue().Message() != nil:
+		innerDesc = fieldDesc.MapValue().Message()
+	case fieldDesc.Message() != nil:
+		innerDesc = fieldDesc.Message()
+		collection = false
+	default:
+		return mask.New(), nil
+	}
+	innerKnown, err := knownFieldsFromDescRecursive(innerDesc, recursion, options)
+	if err != nil {
+		return nil, err
+	}
+	if !collection {
+		return innerKnown, nil
+	}
+	fieldMask := mask.New()
+	fieldMask.Any = innerKnown
+	return fieldMask, nil
+}
+
 func knownFieldsFromDescRecursive(
 	desc protoreflect.MessageDescriptor,
 	recursion int,
+	options *maskOptions,
 ) (*mask.Mask, error) {
 	if recursion >= recursionTooDeep {
 		return nil, mask.ErrRecursionTooDeep
@@ -25,34 +58,12 @@ func knownFieldsFromDescRecursive(
 	ret := mask.New()
 	for i := range desc.Fields().Len() {
 		fieldDesc := desc.Fields().Get(i)
-		fieldMask := mask.New()
-		// OneOfs are not covered separately as they can be unset by unsetting
-		// their inner fields
-		switch {
-		case fieldDesc.IsList() && fieldDesc.Message() != nil:
-			innerKnown, err := knownFieldsFromDescRecursive(
-				fieldDesc.Message(), recursion,
-			)
-			if err != nil {
-				return nil, fmt.Errorf("%s: %w", desc.Name(), err)
-			}
-			fieldMask.Any = innerKnown
-		case fieldDesc.IsMap() && fieldDesc.MapValue().Message() != nil:
-			innerKnown, err := knownFieldsFromDescRecursive(
-				fieldDesc.MapValue().Message(), recursion,
-			)
-			if err != nil {
-				return nil, fmt.Errorf("%s: %w", desc.Name(), err)
-			}
-			fieldMask.Any = innerKnown
-		case fieldDesc.Message() != nil:
-			innerKnown, err := knownFieldsFromDescRecursive(
-				fieldDesc.Message(), recursion,
-			)
-			if err != nil {
-				return nil, fmt.Errorf("%s: %w", desc.Name(), err)
-			}
-			fieldMask = innerKnown
+		if shouldSkipImmutable(fieldDesc, false, options) {
+			continue
+		}
+		fieldMask, err := knownFieldFromDescRecursive(fieldDesc, recursion, options)
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", desc.Name(), err)
 		}
 		ret.FieldParts[mask.FieldKey(fieldDesc.Name())] = fieldMask
 	}
@@ -68,6 +79,8 @@ func knownFieldsFromDescRecursive(
 //
 // Parameters:
 //   - desc: The [protoreflect.MessageDescriptor] to extract known fields from.
+//   - options: Conversion options. Unlike reset-mask converters, this function
+//     defaults to [WithImmutables]. Pass [NoImmutables] to exclude them.
 //
 // Returns:
 //   - *[mask.Mask]: A [mask.Mask] representing the full set of known fields
@@ -75,8 +88,10 @@ func knownFieldsFromDescRecursive(
 //   - error: An error if there was any issue collecting the known fields.
 func KnownFieldsFromDescriptor(
 	desc protoreflect.MessageDescriptor,
+	options ...Option,
 ) (*mask.Mask, error) {
-	ret, err := knownFieldsFromDescRecursive(desc, 0)
+	decodedOptions := decodeOptionsWithDefaults(maskOptions{immutables: true}, options...)
+	ret, err := knownFieldsFromDescRecursive(desc, 0, &decodedOptions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to collect modification mask: %w", err)
 	}
@@ -93,15 +108,17 @@ func KnownFieldsFromDescriptor(
 //
 // This function is just a wrap around [KnownFieldsFromDescriptor]:
 //
-//	KnownFieldsFromDescriptor(msg.ProtoReflect().Descriptor())
+//	KnownFieldsFromDescriptor(msg.ProtoReflect().Descriptor(), options...)
 //
 // Parameters:
 //   - msg: The [proto.Message] to extract known fields from.
+//   - options: Conversion options. Unlike reset-mask converters, this function
+//     defaults to [WithImmutables]. Pass [NoImmutables] to exclude them.
 //
 // Returns:
 //   - *[mask.Mask]: A [mask.Mask] representing the full set of known fields
 //     defined by the message.
 //   - error: An error if there was any issue collecting the known fields.
-func KnownFieldsFromMessage(msg proto.Message) (*mask.Mask, error) {
-	return KnownFieldsFromDescriptor(msg.ProtoReflect().Descriptor())
+func KnownFieldsFromMessage(msg proto.Message, options ...Option) (*mask.Mask, error) {
+	return KnownFieldsFromDescriptor(msg.ProtoReflect().Descriptor(), options...)
 }
