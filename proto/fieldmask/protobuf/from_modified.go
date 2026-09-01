@@ -15,6 +15,7 @@ func rmFrom2ListsRecursive(
 	initList, modList protoreflect.List,
 	desc protoreflect.FieldDescriptor,
 	recursion int,
+	options *maskOptions,
 ) (*mask.Mask, error) {
 	if initList == nil || initList.Len() == 0 {
 		return nil, nil
@@ -30,7 +31,7 @@ func rmFrom2ListsRecursive(
 		initEl := initList.Get(i)
 		modEl := modList.Get(i)
 		resetMask, err := rmFrom2MessagesRecursive(
-			initEl.Message(), modEl.Message(), recursion,
+			initEl.Message(), modEl.Message(), recursion, options,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("%s[%d]: %w", desc.Name(), i, err)
@@ -69,6 +70,7 @@ func rmFrom2MapsRecursive(
 	initMap, modMap protoreflect.Map,
 	desc protoreflect.FieldDescriptor,
 	recursion int,
+	options *maskOptions,
 ) (*mask.Mask, error) {
 	if initMap == nil || initMap.Len() == 0 {
 		return nil, nil
@@ -85,7 +87,7 @@ func rmFrom2MapsRecursive(
 		func(mk protoreflect.MapKey, initVal protoreflect.Value) bool {
 			if modVal := modMap.Get(mk); modVal.IsValid() {
 				innerMask, err := rmFrom2MessagesRecursive(
-					initVal.Message(), modVal.Message(), recursion,
+					initVal.Message(), modVal.Message(), recursion, options,
 				)
 				if err != nil {
 					innerErr = fmt.Errorf(
@@ -119,6 +121,7 @@ func rmFrom2MapsRecursive(
 func rmFrom2MessagesRecursive( //nolint:gocognit // TODO: simplify?
 	initMsg, modMsg protoreflect.Message,
 	recursion int,
+	options *maskOptions,
 ) (*mask.Mask, error) {
 	if recursion >= recursionTooDeep {
 		return nil, mask.ErrRecursionTooDeep
@@ -134,6 +137,9 @@ func rmFrom2MessagesRecursive( //nolint:gocognit // TODO: simplify?
 	ret := mask.New()
 	for i := range initDesc.Fields().Len() {
 		fieldDesc := initDesc.Fields().Get(i)
+		if shouldSkipImmutable(fieldDesc, modMsg.Has(fieldDesc), options) {
+			continue
+		}
 		if !initMsg.Has(fieldDesc) {
 			continue
 		}
@@ -147,7 +153,7 @@ func rmFrom2MessagesRecursive( //nolint:gocognit // TODO: simplify?
 		// their inner fields
 		if fieldDesc.IsList() {
 			innerMask, err := rmFrom2ListsRecursive(
-				initField.List(), modField.List(), fieldDesc, recursion,
+				initField.List(), modField.List(), fieldDesc, recursion, options,
 			)
 			if err != nil {
 				return nil, fmt.Errorf("%s: %w", initDesc.Name(), err)
@@ -159,7 +165,7 @@ func rmFrom2MessagesRecursive( //nolint:gocognit // TODO: simplify?
 		}
 		if fieldDesc.IsMap() {
 			innerMask, err := rmFrom2MapsRecursive(
-				initField.Map(), modField.Map(), fieldDesc, recursion,
+				initField.Map(), modField.Map(), fieldDesc, recursion, options,
 			)
 			if err != nil {
 				return nil, fmt.Errorf("%s: %w", initDesc.Name(), err)
@@ -171,7 +177,7 @@ func rmFrom2MessagesRecursive( //nolint:gocognit // TODO: simplify?
 		}
 		if fieldDesc.Message() != nil {
 			innerMask, err := rmFrom2MessagesRecursive(
-				initField.Message(), modField.Message(), recursion,
+				initField.Message(), modField.Message(), recursion, options,
 			)
 			if err != nil {
 				return nil, fmt.Errorf("%s: %w", initDesc.Name(), err)
@@ -197,6 +203,7 @@ func rmFrom2MessagesRecursive( //nolint:gocognit // TODO: simplify?
 // Parameters:
 //   - initial: The original [proto.Message] before modification.
 //   - modified: The modified [proto.Message] after applying changes.
+//   - options: Conversion options. Immutable fields are excluded by default.
 //
 // Returns:
 //   - *[mask.Mask]: A [mask.Mask] representing fields that have been removed
@@ -207,12 +214,14 @@ func rmFrom2MessagesRecursive( //nolint:gocognit // TODO: simplify?
 // [ResetMask specification]: https://nebius.atlassian.net/wiki/spaces/NEWBIUS/pages/131367768/ResetMask+tech+design
 func ResetMaskFromModified(
 	initial, modified proto.Message,
+	options ...Option,
 ) (*mask.Mask, error) {
 	if initial == nil || modified == nil {
 		return nil, errors.New("received nil")
 	}
 	initMsg := initial.ProtoReflect()
 	modMsg := modified.ProtoReflect()
+	decodedOptions := decodeOptions(options...)
 
 	// Check if the messages are of the same type
 	if initMsg.Descriptor().FullName() != modMsg.Descriptor().FullName() {
@@ -223,7 +232,7 @@ func ResetMaskFromModified(
 	}
 
 	// Collect modification mask by comparing initial and modified messages
-	ret, err := rmFrom2MessagesRecursive(initMsg, modMsg, 0)
+	ret, err := rmFrom2MessagesRecursive(initMsg, modMsg, 0, &decodedOptions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to collect modification mask: %w", err)
 	}

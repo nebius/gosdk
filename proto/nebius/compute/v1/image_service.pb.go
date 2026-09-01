@@ -69,9 +69,10 @@ func (x *GetImageRequest) GetId() string {
 }
 
 type GetImageLatestByFamilyRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ImageFamily   string                 `protobuf:"bytes,1,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
-	ParentId      string                 `protobuf:"bytes,2,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"` // default 'project-{region}public-images'
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	ImageFamily string                 `protobuf:"bytes,1,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
+	// default 'project-{region}public-images'
+	ParentId      string `protobuf:"bytes,2,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -456,28 +457,32 @@ var File_nebius_compute_v1_image_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_image_service_proto_rawDesc = "" +
 	"\n" +
-	"%nebius/compute/v1/image_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a\x1dnebius/compute/v1/image.proto\x1a)nebius/compute/v1/operation_service.proto\"!\n" +
-	"\x0fGetImageRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"_\n" +
+	"%nebius/compute/v1/image_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a\x1dnebius/compute/v1/image.proto\x1a)nebius/compute/v1/operation_service.proto\"4\n" +
+	"\x0fGetImageRequest\x12!\n" +
+	"\x02id\x18\x01 \x01(\tB\x11\xe2J\x0e\n" +
+	"\fcomputeimageR\x02id\"m\n" +
 	"\x1dGetImageLatestByFamilyRequest\x12!\n" +
-	"\fimage_family\x18\x01 \x01(\tR\vimageFamily\x12\x1b\n" +
-	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xd6\x01\n" +
-	"\x11ListImagesRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"\fimage_family\x18\x01 \x01(\tR\vimageFamily\x12)\n" +
+	"\tparent_id\x18\x02 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\"\xe4\x01\n" +
+	"\x11ListImagesRequest\x12)\n" +
+	"\tparent_id\x18\x01 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12h\n" +
 	"\x06filter\x18\x04 \x01(\tBP\xd2JK\n" +
 	"\n" +
-	"2025-06-16\x12=it is not implemented, filtering could be done on client side\x18\x01R\x06filter\"\x86\x01\n" +
-	"\x12CreateImageRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\"\x86\x01\n" +
-	"\x12UpdateImageRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x120\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\"$\n" +
-	"\x12DeleteImageRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"l\n" +
+	"2025-06-16\x12=it is not implemented, filtering could be done on client side\x18\x01R\x06filter\"\x94\x01\n" +
+	"\x12CreateImageRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x120\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\"\x94\x01\n" +
+	"\x12UpdateImageRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x120\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.compute.v1.ImageSpecR\x04spec\"7\n" +
+	"\x12DeleteImageRequest\x12!\n" +
+	"\x02id\x18\x01 \x01(\tB\x11\xe2J\x0e\n" +
+	"\fcomputeimageR\x02id\"l\n" +
 	"\x12ListImagesResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.compute.v1.ImageR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"o\n" +
@@ -485,7 +490,7 @@ const file_nebius_compute_v1_image_service_proto_rawDesc = "" +
 	"\x06region\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken2\x9b\x06\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken2\xb7\x06\n" +
 	"\fImageService\x12C\n" +
 	"\x03Get\x12\".nebius.compute.v1.GetImageRequest\x1a\x18.nebius.compute.v1.Image\x12I\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x18.nebius.compute.v1.Image\x12_\n" +
@@ -493,8 +498,10 @@ const file_nebius_compute_v1_image_service_proto_rawDesc = "" +
 	"\x04List\x12$.nebius.compute.v1.ListImagesRequest\x1a%.nebius.compute.v1.ListImagesResponse\x12L\n" +
 	"\x06Create\x12%.nebius.compute.v1.CreateImageRequest\x1a\x1b.nebius.common.v1.Operation\x12L\n" +
 	"\x06Update\x12%.nebius.compute.v1.UpdateImageRequest\x1a\x1b.nebius.common.v1.Operation\x12L\n" +
-	"\x06Delete\x12%.nebius.compute.v1.DeleteImageRequest\x1a\x1b.nebius.common.v1.Operation\x12t\n" +
-	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\x12Y\n" +
+	"\x06Delete\x12%.nebius.compute.v1.DeleteImageRequest\x1a\x1b.nebius.common.v1.Operation\x12\x8f\x01\n" +
+	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x19\xf2J\x16\n" +
+	"\tparent_id\x12\t\n" +
+	"\aproject\x12Y\n" +
 	"\n" +
 	"ListPublic\x12$.nebius.compute.v1.ListPublicRequest\x1a%.nebius.compute.v1.ListImagesResponse\x1a\n" +
 	"\xbaJ\acomputeB`\n" +

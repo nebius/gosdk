@@ -187,6 +187,7 @@
     "proto/fieldmask/protobuf/from_modified_test.go",
     "proto/fieldmask/protobuf/manipulate.go",
     "proto/fieldmask/protobuf/manipulate_test.go",
+    "proto/fieldmask/protobuf/options.go",
     "proto/fieldmask/protobuf/patch.go",
     "proto/fieldmask/protobuf/patch_test.go",
     "proto/fieldmask/protobuf/testdata/data_for_test.pb.go",

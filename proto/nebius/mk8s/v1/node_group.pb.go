@@ -492,33 +492,9 @@ type NodeTemplate struct {
 	// GPU-related settings.
 	GpuSettings *GpuSettings `protobuf:"bytes,13,opt,name=gpu_settings,json=gpuSettings,proto3" json:"gpu_settings,omitempty"`
 	// OS version that will be used to create the boot disk of Compute Instances in the NodeGroup.
-	// Supported platform / Kubernetes version / OS / driver presets combinations
-	// * `gpu-l40s-a`, `gpu-l40s-d`, `gpu-h100-sxm`, `gpu-h200-sxm`, `cpu-e1`, `cpu-e2`, `cpu-d3`:
-	//   - `drivers_preset`: `""`
-	//   - `version`: 1.30 → `"ubuntu22.04"`
-	//   - `version`: 1.31 → `"ubuntu22.04"` (default), `"ubuntu24.04"`
-	//
-	// * `gpu-l40s-a`, `gpu-l40s-d`, `gpu-h100-sxm`, `gpu-h200-sxm`:
-	//   - `drivers_preset`: `"cuda12"` (CUDA 12.4)
-	//   - `version`: 1.30, 1.31 → `"ubuntu22.04"`
-	//   - `drivers_preset`: `"cuda12.4"`
-	//   - `version`: 1.31 → `"ubuntu22.04"`
-	//   - `drivers_preset`: `"cuda12.8"`
-	//   - `version`: 1.31 → `"ubuntu24.04"`
-	//
-	// * `gpu-b200-sxm`:
-	//   - `drivers_preset`: `""`
-	//   - `version`: 1.30, 1.31 → `"ubuntu24.04"`
-	//   - `drivers_preset`: `"cuda12"` (CUDA 12.8)
-	//   - `version`: 1.30, 1.31 → `"ubuntu24.04"`
-	//   - `drivers_preset`: `"cuda12.8"`
-	//   - `version`: 1.31 → `"ubuntu24.04"`
-	//
-	// * `gpu-b200-sxm-a`:
-	//   - `drivers_preset`: `""`
-	//   - `version`: 1.31 → `"ubuntu24.04"`
-	//   - `drivers_preset`: `"cuda12.8"`
-	//   - `version`: 1.31 → `"ubuntu24.04"`
+	// Supported OS depend on the platform and Kubernetes version.
+	// To get the up-to-date list of supported OS for a given Kubernetes version and platform, run:
+	// nebius mk8s node-group get-compatibility-matrix --cluster-kubernetes-version VERSION --platform PLATFORM
 	Os string `protobuf:"bytes,16,opt,name=os,proto3" json:"os,omitempty"`
 	// Nebius Compute GPUCluster ID that will be attached to node.
 	GpuCluster        *GpuClusterSpec             `protobuf:"bytes,4,opt,name=gpu_cluster,json=gpuCluster,proto3" json:"gpu_cluster,omitempty"`
@@ -823,16 +799,10 @@ func (x *NodeMetadataTemplate) GetLabels() map[string]string {
 type GpuSettings struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of the predefined set of drivers included in the ComputeImage deployed on ComputeInstances that are part of the NodeGroup.
-	// Supported presets for different platform / Kubernetes version combinations:
-	// * `gpu-l40s-a`, `gpu-l40s-d`, `gpu-h100-sxm`, `gpu-h200-sxm`:
-	//   - `version`: 1.30 → `"cuda12"` (CUDA 12.4)
-	//   - `version`: 1.31 → `"cuda12"` (CUDA 12.4), `"cuda12.4"`, `"cuda12.8"`
-	//
-	// * `gpu-b200-sxm`:
-	//   - `version`: 1.31 → `"cuda12"` (CUDA 12.8), `"cuda12.8"`
-	//
-	// * `gpu-b200-sxm-a`:
-	//   - `version`: 1.31 → `"cuda12.8"`
+	// Supported presets depend on the platform and Kubernetes version.
+	// To get the up-to-date list of supported presets for a given Kubernetes version and platform, run:
+	// nebius mk8s node-group get-compatibility-matrix --cluster-kubernetes-version VERSION --platform PLATFORM
+	// Leave empty for GPU nodes that do not have preinstalled drivers, including DRA-enabled node groups.
 	DriversPreset string `protobuf:"bytes,1,opt,name=drivers_preset,json=driversPreset,proto3" json:"drivers_preset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -2131,9 +2101,9 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\x06labels\x18\x01 \x03(\v20.nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntryB\b\xbaH\x05\x9a\x01\x02\x10dR\x06labels\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"<\n" +
-	"\vGpuSettings\x12-\n" +
-	"\x0edrivers_preset\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rdriversPreset\"8\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"4\n" +
+	"\vGpuSettings\x12%\n" +
+	"\x0edrivers_preset\x18\x01 \x01(\tR\rdriversPreset\"8\n" +
 	"\x0eGpuClusterSpec\x12&\n" +
 	"\x02id\x18\x01 \x01(\tB\x16\xe2J\x13\n" +
 	"\x11computegpuclusterR\x02id\"\xe6\x01\n" +

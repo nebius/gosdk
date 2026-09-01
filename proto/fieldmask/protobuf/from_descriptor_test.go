@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
 
+	"github.com/nebius/gosdk/proto/fieldmask/mask"
 	"github.com/nebius/gosdk/proto/fieldmask/protobuf/testdata"
 )
 
@@ -105,4 +106,55 @@ func TestKnownFieldsFromMessage(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestKnownFieldsImmutables(t *testing.T) {
+	t.Parallel()
+	input := &testdata.TestImmutableContainer{}
+	fromMessage, err := KnownFieldsFromMessage(input)
+	assert.NoError(t, err)
+	assert.Contains(t, fromMessage.FieldParts["msg"].FieldParts, mask.FieldKey("immutable"))
+	assert.Contains(t, fromMessage.FieldParts["only_immutable"].FieldParts, mask.FieldKey("i"))
+
+	withImmutables, err := KnownFieldsFromMessage(input, WithImmutables())
+	assert.NoError(t, err)
+	assert.Equal(t, fromMessage, withImmutables)
+
+	fromDescriptor, err := KnownFieldsFromDescriptor(
+		input.ProtoReflect().Descriptor(),
+	)
+	assert.NoError(t, err)
+	assert.Equal(t, fromMessage, fromDescriptor)
+
+	withoutImmutables, err := KnownFieldsFromMessage(input, NoImmutables())
+	assert.NoError(t, err)
+	withoutImmutablesString, err := withoutImmutables.Marshal()
+	assert.NoError(t, err)
+	assert.Equal(
+		t,
+		"list.*.mutable,map.*.mutable,msg.mutable,only_immutable,"+
+			"only_immutable_list.*,only_immutable_map.*",
+		withoutImmutablesString,
+	)
+
+	lastOptionWins, err := KnownFieldsFromMessage(input, NoImmutables(), WithImmutables())
+	assert.NoError(t, err)
+	assert.Equal(t, fromMessage, lastOptionWins)
+
+	oneof, err := KnownFieldsFromDescriptor(
+		(&testdata.TestImmutableOneOf{}).ProtoReflect().Descriptor(),
+	)
+	assert.NoError(t, err)
+	oneofString, err := oneof.Marshal()
+	assert.NoError(t, err)
+	assert.Equal(t, "i,mutable,s", oneofString)
+
+	oneof, err = KnownFieldsFromDescriptor(
+		(&testdata.TestImmutableOneOf{}).ProtoReflect().Descriptor(),
+		NoImmutables(),
+	)
+	assert.NoError(t, err)
+	oneofString, err = oneof.Marshal()
+	assert.NoError(t, err)
+	assert.Equal(t, "mutable", oneofString)
 }

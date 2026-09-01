@@ -883,3 +883,69 @@ func TestResetMaskFromModified(t *testing.T) {
 		})
 	}
 }
+
+func TestResetMaskFromModifiedImmutables(t *testing.T) {
+	t.Parallel()
+	initial := &testdata.TestImmutableContainer{
+		Msg: &testdata.TestPartiallyImmutable{Immutable: 1, Mutable: 1},
+		List: []*testdata.TestPartiallyImmutable{
+			{Immutable: 1, Mutable: 1},
+		},
+		Map: map[string]*testdata.TestPartiallyImmutable{
+			"key": {Immutable: 1, Mutable: 1},
+		},
+		OnlyImmutable: &testdata.TestImmutable{I: 1},
+	}
+	modified := &testdata.TestImmutableContainer{
+		Msg:  &testdata.TestPartiallyImmutable{},
+		List: []*testdata.TestPartiallyImmutable{{}},
+		Map: map[string]*testdata.TestPartiallyImmutable{
+			"key": {},
+		},
+		OnlyImmutable: &testdata.TestImmutable{},
+	}
+	tests := []struct {
+		name    string
+		options []Option
+		want    string
+	}{
+		{name: "default", want: "list.0.mutable,map.key.mutable,msg.mutable"},
+		{name: "no immutables", options: []Option{NoImmutables()}, want: "list.0.mutable,map.key.mutable,msg.mutable"},
+		{name: "with immutables", options: []Option{WithImmutables()}, want: "list.0.(immutable,mutable),map.key.(immutable,mutable),msg.(immutable,mutable),only_immutable.i"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			got, err := ResetMaskFromModified(initial, modified, test.options...)
+			assert.NoError(t, err)
+			gotString, err := got.Marshal()
+			assert.NoError(t, err)
+			assert.Equal(t, test.want, gotString)
+		})
+	}
+	t.Run("immutable oneof", func(t *testing.T) {
+		t.Parallel()
+		initial := &testdata.TestImmutableOneOf{
+			Value: &testdata.TestImmutableOneOf_S{S: "value"},
+		}
+		modified := &testdata.TestImmutableOneOf{}
+		got, err := ResetMaskFromModified(initial, modified)
+		assert.NoError(t, err)
+		assert.True(t, got.IsEmpty())
+
+		got, err = ResetMaskFromModified(initial, modified, WithImmutables())
+		assert.NoError(t, err)
+		gotString, err := got.Marshal()
+		assert.NoError(t, err)
+		assert.Equal(t, "s", gotString)
+
+		modified = &testdata.TestImmutableOneOf{
+			Value: &testdata.TestImmutableOneOf_S{},
+		}
+		got, err = ResetMaskFromModified(initial, modified)
+		assert.NoError(t, err)
+		gotString, err = got.Marshal()
+		assert.NoError(t, err)
+		assert.Equal(t, "s", gotString)
+	})
+}

@@ -152,6 +152,16 @@ func TestAddMessageResetMaskToOutgoingContext(t *testing.T) {
 		md, _ := metadata.FromOutgoingContext(ctx)
 		assert.Equal(t, []string{"a,b.d", "field"}, md["x-resetmask"])
 	})
+	t.Run("immutables", func(t *testing.T) {
+		t.Parallel()
+		ctx, err := AddMessageResetMaskToOutgoingContext(
+			context.Background(),
+			&testdata.TestImmutable{},
+		)
+		assert.NoError(t, err)
+		md, _ := metadata.FromOutgoingContext(ctx)
+		assert.Equal(t, []string{""}, md["x-resetmask"])
+	})
 }
 func TestEnsureMessageResetMaskInOutgoingContext(t *testing.T) {
 	t.Parallel()
