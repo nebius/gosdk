@@ -78,6 +78,52 @@ func (DiskSpec_DiskType) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1_instance_template_proto_rawDescGZIP(), []int{0, 0}
 }
 
+type DiskEncryption_DiskEncryptionType int32
+
+const (
+	DiskEncryption_DISK_ENCRYPTION_UNSPECIFIED DiskEncryption_DiskEncryptionType = 0
+	DiskEncryption_DISK_ENCRYPTION_MANAGED     DiskEncryption_DiskEncryptionType = 1
+)
+
+// Enum value maps for DiskEncryption_DiskEncryptionType.
+var (
+	DiskEncryption_DiskEncryptionType_name = map[int32]string{
+		0: "DISK_ENCRYPTION_UNSPECIFIED",
+		1: "DISK_ENCRYPTION_MANAGED",
+	}
+	DiskEncryption_DiskEncryptionType_value = map[string]int32{
+		"DISK_ENCRYPTION_UNSPECIFIED": 0,
+		"DISK_ENCRYPTION_MANAGED":     1,
+	}
+)
+
+func (x DiskEncryption_DiskEncryptionType) Enum() *DiskEncryption_DiskEncryptionType {
+	p := new(DiskEncryption_DiskEncryptionType)
+	*p = x
+	return p
+}
+
+func (x DiskEncryption_DiskEncryptionType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (DiskEncryption_DiskEncryptionType) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_mk8s_v1_instance_template_proto_enumTypes[1].Descriptor()
+}
+
+func (DiskEncryption_DiskEncryptionType) Type() protoreflect.EnumType {
+	return &file_nebius_mk8s_v1_instance_template_proto_enumTypes[1]
+}
+
+func (x DiskEncryption_DiskEncryptionType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use DiskEncryption_DiskEncryptionType.Descriptor instead.
+func (DiskEncryption_DiskEncryptionType) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_instance_template_proto_rawDescGZIP(), []int{1, 0}
+}
+
 type DiskSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Size:
@@ -89,6 +135,7 @@ type DiskSpec struct {
 	Size           isDiskSpec_Size   `protobuf_oneof:"size"`
 	BlockSizeBytes int64             `protobuf:"varint,5,opt,name=block_size_bytes,json=blockSizeBytes,proto3" json:"block_size_bytes,omitempty"`
 	Type           DiskSpec_DiskType `protobuf:"varint,6,opt,name=type,proto3,enum=nebius.mk8s.v1.DiskSpec_DiskType" json:"type,omitempty"`
+	DiskEncryption *DiskEncryption   `protobuf:"bytes,11,opt,name=disk_encryption,json=diskEncryption,proto3" json:"disk_encryption,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -180,6 +227,13 @@ func (x *DiskSpec) GetType() DiskSpec_DiskType {
 	return DiskSpec_UNSPECIFIED
 }
 
+func (x *DiskSpec) GetDiskEncryption() *DiskEncryption {
+	if x != nil {
+		return x.DiskEncryption
+	}
+	return nil
+}
+
 type isDiskSpec_Size interface {
 	isDiskSpec_Size()
 }
@@ -208,6 +262,50 @@ func (*DiskSpec_SizeMebibytes) isDiskSpec_Size() {}
 
 func (*DiskSpec_SizeGibibytes) isDiskSpec_Size() {}
 
+type DiskEncryption struct {
+	state         protoimpl.MessageState            `protogen:"open.v1"`
+	Type          DiskEncryption_DiskEncryptionType `protobuf:"varint,1,opt,name=type,proto3,enum=nebius.mk8s.v1.DiskEncryption_DiskEncryptionType" json:"type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DiskEncryption) Reset() {
+	*x = DiskEncryption{}
+	mi := &file_nebius_mk8s_v1_instance_template_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DiskEncryption) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DiskEncryption) ProtoMessage() {}
+
+func (x *DiskEncryption) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_instance_template_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DiskEncryption.ProtoReflect.Descriptor instead.
+func (*DiskEncryption) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_instance_template_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DiskEncryption) GetType() DiskEncryption_DiskEncryptionType {
+	if x != nil {
+		return x.Type
+	}
+	return DiskEncryption_DISK_ENCRYPTION_UNSPECIFIED
+}
+
 type ResourcesSpec struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	Platform string                 `protobuf:"bytes,1,opt,name=platform,proto3" json:"platform,omitempty"`
@@ -221,7 +319,7 @@ type ResourcesSpec struct {
 
 func (x *ResourcesSpec) Reset() {
 	*x = ResourcesSpec{}
-	mi := &file_nebius_mk8s_v1_instance_template_proto_msgTypes[1]
+	mi := &file_nebius_mk8s_v1_instance_template_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -233,7 +331,7 @@ func (x *ResourcesSpec) String() string {
 func (*ResourcesSpec) ProtoMessage() {}
 
 func (x *ResourcesSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_instance_template_proto_msgTypes[1]
+	mi := &file_nebius_mk8s_v1_instance_template_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -246,7 +344,7 @@ func (x *ResourcesSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourcesSpec.ProtoReflect.Descriptor instead.
 func (*ResourcesSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_instance_template_proto_rawDescGZIP(), []int{1}
+	return file_nebius_mk8s_v1_instance_template_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ResourcesSpec) GetPlatform() string {
@@ -286,7 +384,7 @@ var File_nebius_mk8s_v1_instance_template_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_instance_template_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/mk8s/v1/instance_template.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xc0\x03\n" +
+	"&nebius/mk8s/v1/instance_template.proto\x12\x0enebius.mk8s.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\x89\x04\n" +
 	"\bDiskSpec\x12-\n" +
 	"\n" +
 	"size_bytes\x18\x01 \x01(\x03B\f\xbaH\t\"\a(\x80\x80\x80\x80\x80\x02H\x00R\tsizeBytes\x123\n" +
@@ -295,14 +393,20 @@ const file_nebius_mk8s_v1_instance_template_proto_rawDesc = "" +
 	"\x0esize_mebibytes\x18\x03 \x01(\x03B\t\xbaH\x06\"\x04(\x80\x80\x04H\x00R\rsizeMebibytes\x120\n" +
 	"\x0esize_gibibytes\x18\x04 \x01(\x03B\a\xbaH\x04\"\x02(@H\x00R\rsizeGibibytes\x12(\n" +
 	"\x10block_size_bytes\x18\x05 \x01(\x03R\x0eblockSizeBytes\x12;\n" +
-	"\x04type\x18\x06 \x01(\x0e2!.nebius.mk8s.v1.DiskSpec.DiskTypeB\x04\xbaJ\x01\aR\x04type\"t\n" +
+	"\x04type\x18\x06 \x01(\x0e2!.nebius.mk8s.v1.DiskSpec.DiskTypeB\x04\xbaJ\x01\aR\x04type\x12G\n" +
+	"\x0fdisk_encryption\x18\v \x01(\v2\x1e.nebius.mk8s.v1.DiskEncryptionR\x0ediskEncryption\"t\n" +
 	"\bDiskType\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vNETWORK_SSD\x10\x01\x12\x0f\n" +
 	"\vNETWORK_HDD\x10\x02\x12\x15\n" +
 	"\x11NETWORK_SSD_IO_M3\x10\x03\x12\x1e\n" +
 	"\x1aNETWORK_SSD_NON_REPLICATED\x10\x04B\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\\\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\xab\x01\n" +
+	"\x0eDiskEncryption\x12E\n" +
+	"\x04type\x18\x01 \x01(\x0e21.nebius.mk8s.v1.DiskEncryption.DiskEncryptionTypeR\x04type\"R\n" +
+	"\x12DiskEncryptionType\x12\x1f\n" +
+	"\x1bDISK_ENCRYPTION_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17DISK_ENCRYPTION_MANAGED\x10\x01\"\\\n" +
 	"\rResourcesSpec\x12\"\n" +
 	"\bplatform\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bplatform\x12\x18\n" +
 	"\x06preset\x18\x02 \x01(\tH\x00R\x06presetB\r\n" +
@@ -321,20 +425,24 @@ func file_nebius_mk8s_v1_instance_template_proto_rawDescGZIP() []byte {
 	return file_nebius_mk8s_v1_instance_template_proto_rawDescData
 }
 
-var file_nebius_mk8s_v1_instance_template_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nebius_mk8s_v1_instance_template_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_nebius_mk8s_v1_instance_template_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_nebius_mk8s_v1_instance_template_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_nebius_mk8s_v1_instance_template_proto_goTypes = []any{
-	(DiskSpec_DiskType)(0), // 0: nebius.mk8s.v1.DiskSpec.DiskType
-	(*DiskSpec)(nil),       // 1: nebius.mk8s.v1.DiskSpec
-	(*ResourcesSpec)(nil),  // 2: nebius.mk8s.v1.ResourcesSpec
+	(DiskSpec_DiskType)(0),                 // 0: nebius.mk8s.v1.DiskSpec.DiskType
+	(DiskEncryption_DiskEncryptionType)(0), // 1: nebius.mk8s.v1.DiskEncryption.DiskEncryptionType
+	(*DiskSpec)(nil),                       // 2: nebius.mk8s.v1.DiskSpec
+	(*DiskEncryption)(nil),                 // 3: nebius.mk8s.v1.DiskEncryption
+	(*ResourcesSpec)(nil),                  // 4: nebius.mk8s.v1.ResourcesSpec
 }
 var file_nebius_mk8s_v1_instance_template_proto_depIdxs = []int32{
 	0, // 0: nebius.mk8s.v1.DiskSpec.type:type_name -> nebius.mk8s.v1.DiskSpec.DiskType
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 1: nebius.mk8s.v1.DiskSpec.disk_encryption:type_name -> nebius.mk8s.v1.DiskEncryption
+	1, // 2: nebius.mk8s.v1.DiskEncryption.type:type_name -> nebius.mk8s.v1.DiskEncryption.DiskEncryptionType
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_instance_template_proto_init() }
@@ -348,7 +456,7 @@ func file_nebius_mk8s_v1_instance_template_proto_init() {
 		(*DiskSpec_SizeMebibytes)(nil),
 		(*DiskSpec_SizeGibibytes)(nil),
 	}
-	file_nebius_mk8s_v1_instance_template_proto_msgTypes[1].OneofWrappers = []any{
+	file_nebius_mk8s_v1_instance_template_proto_msgTypes[2].OneofWrappers = []any{
 		(*ResourcesSpec_Preset)(nil),
 	}
 	type x struct{}
@@ -356,8 +464,8 @@ func file_nebius_mk8s_v1_instance_template_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1_instance_template_proto_rawDesc), len(file_nebius_mk8s_v1_instance_template_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   2,
+			NumEnums:      2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
