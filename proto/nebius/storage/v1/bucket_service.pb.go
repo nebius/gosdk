@@ -535,6 +535,186 @@ func (x *ListBucketsResponse) GetNextPageToken() string {
 	return ""
 }
 
+type ListBucketsWithFilterRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Represents the container ID.
+	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	// Specifies the maximum number of items to return in the response.
+	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Token for pagination, allowing the retrieval of the next set of results.
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// Additional filters for buckets.
+	Filters       *ListBucketsWithFilterRequest_Filters `protobuf:"bytes,4,opt,name=filters,proto3" json:"filters,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBucketsWithFilterRequest) Reset() {
+	*x = ListBucketsWithFilterRequest{}
+	mi := &file_nebius_storage_v1_bucket_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBucketsWithFilterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBucketsWithFilterRequest) ProtoMessage() {}
+
+func (x *ListBucketsWithFilterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_bucket_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBucketsWithFilterRequest.ProtoReflect.Descriptor instead.
+func (*ListBucketsWithFilterRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ListBucketsWithFilterRequest) GetParentId() string {
+	if x != nil {
+		return x.ParentId
+	}
+	return ""
+}
+
+func (x *ListBucketsWithFilterRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListBucketsWithFilterRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListBucketsWithFilterRequest) GetFilters() *ListBucketsWithFilterRequest_Filters {
+	if x != nil {
+		return x.Filters
+	}
+	return nil
+}
+
+type ListBucketsWithFilterResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// List of buckets returned in the response. The field should be named as `items` for consistency.
+	Items []*Bucket `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	// Token for pagination, indicating the next set of results can be retrieved using this token.
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBucketsWithFilterResponse) Reset() {
+	*x = ListBucketsWithFilterResponse{}
+	mi := &file_nebius_storage_v1_bucket_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBucketsWithFilterResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBucketsWithFilterResponse) ProtoMessage() {}
+
+func (x *ListBucketsWithFilterResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_bucket_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBucketsWithFilterResponse.ProtoReflect.Descriptor instead.
+func (*ListBucketsWithFilterResponse) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ListBucketsWithFilterResponse) GetItems() []*Bucket {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *ListBucketsWithFilterResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type ListBucketsWithFilterRequest_Filters struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// If set, only buckets of the specified type will be returned. If not set, all bucket types will be returned.
+	BucketType BucketStatus_BucketType `protobuf:"varint,1,opt,name=bucket_type,json=bucketType,proto3,enum=nebius.storage.v1.BucketStatus_BucketType" json:"bucket_type,omitempty"`
+	// If not empty, only buckets mounted to the specified filesystem will be returned.
+	FilesystemId  string `protobuf:"bytes,2,opt,name=filesystem_id,json=filesystemId,proto3" json:"filesystem_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBucketsWithFilterRequest_Filters) Reset() {
+	*x = ListBucketsWithFilterRequest_Filters{}
+	mi := &file_nebius_storage_v1_bucket_service_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBucketsWithFilterRequest_Filters) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBucketsWithFilterRequest_Filters) ProtoMessage() {}
+
+func (x *ListBucketsWithFilterRequest_Filters) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_bucket_service_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBucketsWithFilterRequest_Filters.ProtoReflect.Descriptor instead.
+func (*ListBucketsWithFilterRequest_Filters) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_service_proto_rawDescGZIP(), []int{9, 0}
+}
+
+func (x *ListBucketsWithFilterRequest_Filters) GetBucketType() BucketStatus_BucketType {
+	if x != nil {
+		return x.BucketType
+	}
+	return BucketStatus_BUCKET_TYPE_UNSPECIFIED
+}
+
+func (x *ListBucketsWithFilterRequest_Filters) GetFilesystemId() string {
+	if x != nil {
+		return x.FilesystemId
+	}
+	return ""
+}
+
 var File_nebius_storage_v1_bucket_service_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_service_proto_rawDesc = "" +
@@ -574,11 +754,27 @@ const file_nebius_storage_v1_bucket_service_proto_rawDesc = "" +
 	"\x06filter\x18\x04 \x01(\tR\x06filterJ\x04\b\x05\x10\x06\"n\n" +
 	"\x13ListBucketsResponse\x12/\n" +
 	"\x05items\x18\x01 \x03(\v2\x19.nebius.storage.v1.BucketR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x9d\x05\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xf4\x02\n" +
+	"\x1cListBucketsWithFilterRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12Q\n" +
+	"\afilters\x18\x04 \x01(\v27.nebius.storage.v1.ListBucketsWithFilterRequest.FiltersR\afilters\x1a\x93\x01\n" +
+	"\aFilters\x12K\n" +
+	"\vbucket_type\x18\x01 \x01(\x0e2*.nebius.storage.v1.BucketStatus.BucketTypeR\n" +
+	"bucketType\x12;\n" +
+	"\rfilesystem_id\x18\x02 \x01(\tB\x16\xe2J\x13\n" +
+	"\x11computefilesystemR\ffilesystemId\"x\n" +
+	"\x1dListBucketsWithFilterResponse\x12/\n" +
+	"\x05items\x18\x01 \x03(\v2\x19.nebius.storage.v1.BucketR\x05items\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x92\x06\n" +
 	"\rBucketService\x12E\n" +
 	"\x03Get\x12#.nebius.storage.v1.GetBucketRequest\x1a\x19.nebius.storage.v1.Bucket\x12Q\n" +
 	"\tGetByName\x12).nebius.storage.v1.GetBucketByNameRequest\x1a\x19.nebius.storage.v1.Bucket\x12U\n" +
-	"\x04List\x12%.nebius.storage.v1.ListBucketsRequest\x1a&.nebius.storage.v1.ListBucketsResponse\x12M\n" +
+	"\x04List\x12%.nebius.storage.v1.ListBucketsRequest\x1a&.nebius.storage.v1.ListBucketsResponse\x12s\n" +
+	"\x0eListWithFilter\x12/.nebius.storage.v1.ListBucketsWithFilterRequest\x1a0.nebius.storage.v1.ListBucketsWithFilterResponse\x12M\n" +
 	"\x06Create\x12&.nebius.storage.v1.CreateBucketRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Update\x12&.nebius.storage.v1.UpdateBucketRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Delete\x12&.nebius.storage.v1.DeleteBucketRequest\x1a\x1b.nebius.common.v1.Operation\x12K\n" +
@@ -598,53 +794,62 @@ func file_nebius_storage_v1_bucket_service_proto_rawDescGZIP() []byte {
 	return file_nebius_storage_v1_bucket_service_proto_rawDescData
 }
 
-var file_nebius_storage_v1_bucket_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_nebius_storage_v1_bucket_service_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_nebius_storage_v1_bucket_service_proto_goTypes = []any{
-	(*GetBucketRequest)(nil),       // 0: nebius.storage.v1.GetBucketRequest
-	(*GetBucketByNameRequest)(nil), // 1: nebius.storage.v1.GetBucketByNameRequest
-	(*CreateBucketRequest)(nil),    // 2: nebius.storage.v1.CreateBucketRequest
-	(*UpdateBucketRequest)(nil),    // 3: nebius.storage.v1.UpdateBucketRequest
-	(*DeleteBucketRequest)(nil),    // 4: nebius.storage.v1.DeleteBucketRequest
-	(*PurgeBucketRequest)(nil),     // 5: nebius.storage.v1.PurgeBucketRequest
-	(*UndeleteBucketRequest)(nil),  // 6: nebius.storage.v1.UndeleteBucketRequest
-	(*ListBucketsRequest)(nil),     // 7: nebius.storage.v1.ListBucketsRequest
-	(*ListBucketsResponse)(nil),    // 8: nebius.storage.v1.ListBucketsResponse
-	(*v1.ResourceMetadata)(nil),    // 9: nebius.common.v1.ResourceMetadata
-	(*BucketSpec)(nil),             // 10: nebius.storage.v1.BucketSpec
-	(*timestamppb.Timestamp)(nil),  // 11: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),    // 12: google.protobuf.Duration
-	(*Bucket)(nil),                 // 13: nebius.storage.v1.Bucket
-	(*v1.Operation)(nil),           // 14: nebius.common.v1.Operation
+	(*GetBucketRequest)(nil),                     // 0: nebius.storage.v1.GetBucketRequest
+	(*GetBucketByNameRequest)(nil),               // 1: nebius.storage.v1.GetBucketByNameRequest
+	(*CreateBucketRequest)(nil),                  // 2: nebius.storage.v1.CreateBucketRequest
+	(*UpdateBucketRequest)(nil),                  // 3: nebius.storage.v1.UpdateBucketRequest
+	(*DeleteBucketRequest)(nil),                  // 4: nebius.storage.v1.DeleteBucketRequest
+	(*PurgeBucketRequest)(nil),                   // 5: nebius.storage.v1.PurgeBucketRequest
+	(*UndeleteBucketRequest)(nil),                // 6: nebius.storage.v1.UndeleteBucketRequest
+	(*ListBucketsRequest)(nil),                   // 7: nebius.storage.v1.ListBucketsRequest
+	(*ListBucketsResponse)(nil),                  // 8: nebius.storage.v1.ListBucketsResponse
+	(*ListBucketsWithFilterRequest)(nil),         // 9: nebius.storage.v1.ListBucketsWithFilterRequest
+	(*ListBucketsWithFilterResponse)(nil),        // 10: nebius.storage.v1.ListBucketsWithFilterResponse
+	(*ListBucketsWithFilterRequest_Filters)(nil), // 11: nebius.storage.v1.ListBucketsWithFilterRequest.Filters
+	(*v1.ResourceMetadata)(nil),                  // 12: nebius.common.v1.ResourceMetadata
+	(*BucketSpec)(nil),                           // 13: nebius.storage.v1.BucketSpec
+	(*timestamppb.Timestamp)(nil),                // 14: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),                  // 15: google.protobuf.Duration
+	(*Bucket)(nil),                               // 16: nebius.storage.v1.Bucket
+	(BucketStatus_BucketType)(0),                 // 17: nebius.storage.v1.BucketStatus.BucketType
+	(*v1.Operation)(nil),                         // 18: nebius.common.v1.Operation
 }
 var file_nebius_storage_v1_bucket_service_proto_depIdxs = []int32{
-	9,  // 0: nebius.storage.v1.CreateBucketRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 1: nebius.storage.v1.CreateBucketRequest.spec:type_name -> nebius.storage.v1.BucketSpec
-	9,  // 2: nebius.storage.v1.UpdateBucketRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 3: nebius.storage.v1.UpdateBucketRequest.spec:type_name -> nebius.storage.v1.BucketSpec
-	11, // 4: nebius.storage.v1.DeleteBucketRequest.purge_at:type_name -> google.protobuf.Timestamp
-	12, // 5: nebius.storage.v1.DeleteBucketRequest.ttl:type_name -> google.protobuf.Duration
-	13, // 6: nebius.storage.v1.ListBucketsResponse.items:type_name -> nebius.storage.v1.Bucket
-	0,  // 7: nebius.storage.v1.BucketService.Get:input_type -> nebius.storage.v1.GetBucketRequest
-	1,  // 8: nebius.storage.v1.BucketService.GetByName:input_type -> nebius.storage.v1.GetBucketByNameRequest
-	7,  // 9: nebius.storage.v1.BucketService.List:input_type -> nebius.storage.v1.ListBucketsRequest
-	2,  // 10: nebius.storage.v1.BucketService.Create:input_type -> nebius.storage.v1.CreateBucketRequest
-	3,  // 11: nebius.storage.v1.BucketService.Update:input_type -> nebius.storage.v1.UpdateBucketRequest
-	4,  // 12: nebius.storage.v1.BucketService.Delete:input_type -> nebius.storage.v1.DeleteBucketRequest
-	5,  // 13: nebius.storage.v1.BucketService.Purge:input_type -> nebius.storage.v1.PurgeBucketRequest
-	6,  // 14: nebius.storage.v1.BucketService.Undelete:input_type -> nebius.storage.v1.UndeleteBucketRequest
-	13, // 15: nebius.storage.v1.BucketService.Get:output_type -> nebius.storage.v1.Bucket
-	13, // 16: nebius.storage.v1.BucketService.GetByName:output_type -> nebius.storage.v1.Bucket
-	8,  // 17: nebius.storage.v1.BucketService.List:output_type -> nebius.storage.v1.ListBucketsResponse
-	14, // 18: nebius.storage.v1.BucketService.Create:output_type -> nebius.common.v1.Operation
-	14, // 19: nebius.storage.v1.BucketService.Update:output_type -> nebius.common.v1.Operation
-	14, // 20: nebius.storage.v1.BucketService.Delete:output_type -> nebius.common.v1.Operation
-	14, // 21: nebius.storage.v1.BucketService.Purge:output_type -> nebius.common.v1.Operation
-	14, // 22: nebius.storage.v1.BucketService.Undelete:output_type -> nebius.common.v1.Operation
-	15, // [15:23] is the sub-list for method output_type
-	7,  // [7:15] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	12, // 0: nebius.storage.v1.CreateBucketRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	13, // 1: nebius.storage.v1.CreateBucketRequest.spec:type_name -> nebius.storage.v1.BucketSpec
+	12, // 2: nebius.storage.v1.UpdateBucketRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	13, // 3: nebius.storage.v1.UpdateBucketRequest.spec:type_name -> nebius.storage.v1.BucketSpec
+	14, // 4: nebius.storage.v1.DeleteBucketRequest.purge_at:type_name -> google.protobuf.Timestamp
+	15, // 5: nebius.storage.v1.DeleteBucketRequest.ttl:type_name -> google.protobuf.Duration
+	16, // 6: nebius.storage.v1.ListBucketsResponse.items:type_name -> nebius.storage.v1.Bucket
+	11, // 7: nebius.storage.v1.ListBucketsWithFilterRequest.filters:type_name -> nebius.storage.v1.ListBucketsWithFilterRequest.Filters
+	16, // 8: nebius.storage.v1.ListBucketsWithFilterResponse.items:type_name -> nebius.storage.v1.Bucket
+	17, // 9: nebius.storage.v1.ListBucketsWithFilterRequest.Filters.bucket_type:type_name -> nebius.storage.v1.BucketStatus.BucketType
+	0,  // 10: nebius.storage.v1.BucketService.Get:input_type -> nebius.storage.v1.GetBucketRequest
+	1,  // 11: nebius.storage.v1.BucketService.GetByName:input_type -> nebius.storage.v1.GetBucketByNameRequest
+	7,  // 12: nebius.storage.v1.BucketService.List:input_type -> nebius.storage.v1.ListBucketsRequest
+	9,  // 13: nebius.storage.v1.BucketService.ListWithFilter:input_type -> nebius.storage.v1.ListBucketsWithFilterRequest
+	2,  // 14: nebius.storage.v1.BucketService.Create:input_type -> nebius.storage.v1.CreateBucketRequest
+	3,  // 15: nebius.storage.v1.BucketService.Update:input_type -> nebius.storage.v1.UpdateBucketRequest
+	4,  // 16: nebius.storage.v1.BucketService.Delete:input_type -> nebius.storage.v1.DeleteBucketRequest
+	5,  // 17: nebius.storage.v1.BucketService.Purge:input_type -> nebius.storage.v1.PurgeBucketRequest
+	6,  // 18: nebius.storage.v1.BucketService.Undelete:input_type -> nebius.storage.v1.UndeleteBucketRequest
+	16, // 19: nebius.storage.v1.BucketService.Get:output_type -> nebius.storage.v1.Bucket
+	16, // 20: nebius.storage.v1.BucketService.GetByName:output_type -> nebius.storage.v1.Bucket
+	8,  // 21: nebius.storage.v1.BucketService.List:output_type -> nebius.storage.v1.ListBucketsResponse
+	10, // 22: nebius.storage.v1.BucketService.ListWithFilter:output_type -> nebius.storage.v1.ListBucketsWithFilterResponse
+	18, // 23: nebius.storage.v1.BucketService.Create:output_type -> nebius.common.v1.Operation
+	18, // 24: nebius.storage.v1.BucketService.Update:output_type -> nebius.common.v1.Operation
+	18, // 25: nebius.storage.v1.BucketService.Delete:output_type -> nebius.common.v1.Operation
+	18, // 26: nebius.storage.v1.BucketService.Purge:output_type -> nebius.common.v1.Operation
+	18, // 27: nebius.storage.v1.BucketService.Undelete:output_type -> nebius.common.v1.Operation
+	19, // [19:28] is the sub-list for method output_type
+	10, // [10:19] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_bucket_service_proto_init() }
@@ -663,7 +868,7 @@ func file_nebius_storage_v1_bucket_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_storage_v1_bucket_service_proto_rawDesc), len(file_nebius_storage_v1_bucket_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

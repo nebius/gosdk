@@ -31,6 +31,7 @@ type BucketService interface {
 	GetByName(context.Context, *v1.GetBucketByNameRequest, ...grpc.CallOption) (*v1.Bucket, error)
 	List(context.Context, *v1.ListBucketsRequest, ...grpc.CallOption) (*v1.ListBucketsResponse, error)
 	Filter(context.Context, *v1.ListBucketsRequest, ...grpc.CallOption) iter.Seq2[*v1.Bucket, error]
+	ListWithFilter(context.Context, *v1.ListBucketsWithFilterRequest, ...grpc.CallOption) (*v1.ListBucketsWithFilterResponse, error)
 	Create(context.Context, *v1.CreateBucketRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdateBucketRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteBucketRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -146,6 +147,21 @@ func (s bucketService) Filter(ctx context.Context, request *v1.ListBucketsReques
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s bucketService) ListWithFilter(ctx context.Context, request *v1.ListBucketsWithFilterRequest, opts ...grpc.CallOption) (
+	*v1.ListBucketsWithFilterResponse,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, BucketServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewBucketServiceClient(con).ListWithFilter(ctx, request, opts...)
 }
 
 func (s bucketService) Create(ctx context.Context, request *v1.CreateBucketRequest, opts ...grpc.CallOption) (

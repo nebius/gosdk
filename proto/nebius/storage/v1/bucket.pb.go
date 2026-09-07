@@ -190,6 +190,58 @@ func (BucketStatus_SuspensionState) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_storage_v1_bucket_proto_rawDescGZIP(), []int{2, 1}
 }
 
+// BucketType is a type of the bucket.
+type BucketStatus_BucketType int32
+
+const (
+	BucketStatus_BUCKET_TYPE_UNSPECIFIED BucketStatus_BucketType = 0
+	// Regular object storage bucket.
+	BucketStatus_REGULAR BucketStatus_BucketType = 1
+	// Object storage bucket that is mounted to an existing compute filesystem.
+	BucketStatus_FILESYSTEM BucketStatus_BucketType = 2
+)
+
+// Enum value maps for BucketStatus_BucketType.
+var (
+	BucketStatus_BucketType_name = map[int32]string{
+		0: "BUCKET_TYPE_UNSPECIFIED",
+		1: "REGULAR",
+		2: "FILESYSTEM",
+	}
+	BucketStatus_BucketType_value = map[string]int32{
+		"BUCKET_TYPE_UNSPECIFIED": 0,
+		"REGULAR":                 1,
+		"FILESYSTEM":              2,
+	}
+)
+
+func (x BucketStatus_BucketType) Enum() *BucketStatus_BucketType {
+	p := new(BucketStatus_BucketType)
+	*p = x
+	return p
+}
+
+func (x BucketStatus_BucketType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (BucketStatus_BucketType) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_storage_v1_bucket_proto_enumTypes[3].Descriptor()
+}
+
+func (BucketStatus_BucketType) Type() protoreflect.EnumType {
+	return &file_nebius_storage_v1_bucket_proto_enumTypes[3]
+}
+
+func (x BucketStatus_BucketType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use BucketStatus_BucketType.Descriptor instead.
+func (BucketStatus_BucketType) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_proto_rawDescGZIP(), []int{2, 2}
+}
+
 type Bucket struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
@@ -273,7 +325,13 @@ type BucketSpec struct {
 	// Object audit logging specifies which requests must be logged - none, all or mutational only.
 	ObjectAuditLogging BucketSpec_ObjectAuditLogging `protobuf:"varint,12,opt,name=object_audit_logging,json=objectAuditLogging,proto3,enum=nebius.storage.v1.BucketSpec_ObjectAuditLogging" json:"object_audit_logging,omitempty"`
 	// Bucket policy specifies granular permissions for a bucket.
-	BucketPolicy  *BucketPolicy `protobuf:"bytes,13,opt,name=bucket_policy,json=bucketPolicy,proto3" json:"bucket_policy,omitempty"`
+	BucketPolicy *BucketPolicy `protobuf:"bytes,13,opt,name=bucket_policy,json=bucketPolicy,proto3" json:"bucket_policy,omitempty"`
+	// Bucket type allows to create non-regular object storage buckets.
+	//
+	// Types that are valid to be assigned to BucketType:
+	//
+	//	*BucketSpec_FilesystemBucket
+	BucketType    isBucketSpec_BucketType `protobuf_oneof:"bucket_type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -364,6 +422,33 @@ func (x *BucketSpec) GetBucketPolicy() *BucketPolicy {
 	return nil
 }
 
+func (x *BucketSpec) GetBucketType() isBucketSpec_BucketType {
+	if x != nil {
+		return x.BucketType
+	}
+	return nil
+}
+
+func (x *BucketSpec) GetFilesystemBucket() *BucketSpec_FilesystemBucketType {
+	if x != nil {
+		if x, ok := x.BucketType.(*BucketSpec_FilesystemBucket); ok {
+			return x.FilesystemBucket
+		}
+	}
+	return nil
+}
+
+type isBucketSpec_BucketType interface {
+	isBucketSpec_BucketType()
+}
+
+type BucketSpec_FilesystemBucket struct {
+	// Bucket that uses the existing client's compute filesystem.
+	FilesystemBucket *BucketSpec_FilesystemBucketType `protobuf:"bytes,30,opt,name=filesystem_bucket,json=filesystemBucket,proto3,oneof"`
+}
+
+func (*BucketSpec_FilesystemBucket) isBucketSpec_BucketType() {}
+
 type BucketStatus struct {
 	state           protoimpl.MessageState       `protogen:"open.v1"`
 	Counters        []*BucketCounters            `protobuf:"bytes,1,rep,name=counters,proto3" json:"counters,omitempty"`
@@ -384,7 +469,8 @@ type BucketStatus struct {
 	AnonymousAccessEnabled bool `protobuf:"varint,9,opt,name=anonymous_access_enabled,json=anonymousAccessEnabled,proto3" json:"anonymous_access_enabled,omitempty"`
 	// Insecure endpoint mode shows whether plain HTTP (without TLS) is forbidden, allowed for traffic from the
 	// same region or allowed from everywhere.
-	InsecureEndpoint *InsecureEndpoint `protobuf:"bytes,10,opt,name=insecure_endpoint,json=insecureEndpoint,proto3" json:"insecure_endpoint,omitempty"`
+	InsecureEndpoint *InsecureEndpoint       `protobuf:"bytes,10,opt,name=insecure_endpoint,json=insecureEndpoint,proto3" json:"insecure_endpoint,omitempty"`
+	BucketType       BucketStatus_BucketType `protobuf:"varint,11,opt,name=bucket_type,json=bucketType,proto3,enum=nebius.storage.v1.BucketStatus_BucketType" json:"bucket_type,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -482,6 +568,111 @@ func (x *BucketStatus) GetInsecureEndpoint() *InsecureEndpoint {
 	return nil
 }
 
+func (x *BucketStatus) GetBucketType() BucketStatus_BucketType {
+	if x != nil {
+		return x.BucketType
+	}
+	return BucketStatus_BUCKET_TYPE_UNSPECIFIED
+}
+
+type BucketSpec_FilesystemBucketType struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifier of filesystem to be exposed via Object Storage API.
+	FilesystemId string `protobuf:"bytes,1,opt,name=filesystem_id,json=filesystemId,proto3" json:"filesystem_id,omitempty"`
+	// Directory within the filesystem that will be used as a root for the bucket.
+	// If not empty, it must be an absolute normalized path (no ., .., or doubled /).
+	// Empty value means that the bucket will be mounted at the filesystem root (/).
+	Directory string `protobuf:"bytes,2,opt,name=directory,proto3" json:"directory,omitempty"`
+	// UID that will be used for write operations to the filesystem.
+	// By default, root user (UID=0, GID=0) is used.
+	Uid uint32 `protobuf:"varint,3,opt,name=uid,proto3" json:"uid,omitempty"`
+	// GID that will be used for write operations to the filesystem.
+	// By default, root user (UID=0, GID=0) is used.
+	Gid uint32 `protobuf:"varint,4,opt,name=gid,proto3" json:"gid,omitempty"`
+	// Linux permissions that will be applied for uploaded files.
+	// Permissions are specified in octal format (one to four octal numbers), e.g. "644" or "755".
+	// The default value is 644 (rw-r--r--).
+	FileMode string `protobuf:"bytes,5,opt,name=file_mode,json=fileMode,proto3" json:"file_mode,omitempty"`
+	// Linux permissions that will be applied for uploaded directories.
+	// Permissions are specified in octal format (one to four octal numbers), e.g. "644" or "755".
+	// The default value is 755 (rwxr-xr-x).
+	DirectoryMode string `protobuf:"bytes,6,opt,name=directory_mode,json=directoryMode,proto3" json:"directory_mode,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BucketSpec_FilesystemBucketType) Reset() {
+	*x = BucketSpec_FilesystemBucketType{}
+	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BucketSpec_FilesystemBucketType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BucketSpec_FilesystemBucketType) ProtoMessage() {}
+
+func (x *BucketSpec_FilesystemBucketType) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BucketSpec_FilesystemBucketType.ProtoReflect.Descriptor instead.
+func (*BucketSpec_FilesystemBucketType) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_proto_rawDescGZIP(), []int{1, 0}
+}
+
+func (x *BucketSpec_FilesystemBucketType) GetFilesystemId() string {
+	if x != nil {
+		return x.FilesystemId
+	}
+	return ""
+}
+
+func (x *BucketSpec_FilesystemBucketType) GetDirectory() string {
+	if x != nil {
+		return x.Directory
+	}
+	return ""
+}
+
+func (x *BucketSpec_FilesystemBucketType) GetUid() uint32 {
+	if x != nil {
+		return x.Uid
+	}
+	return 0
+}
+
+func (x *BucketSpec_FilesystemBucketType) GetGid() uint32 {
+	if x != nil {
+		return x.Gid
+	}
+	return 0
+}
+
+func (x *BucketSpec_FilesystemBucketType) GetFileMode() string {
+	if x != nil {
+		return x.FileMode
+	}
+	return ""
+}
+
+func (x *BucketSpec_FilesystemBucketType) GetDirectoryMode() string {
+	if x != nil {
+		return x.DirectoryMode
+	}
+	return ""
+}
+
 var File_nebius_storage_v1_bucket_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
@@ -490,7 +681,8 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x06Bucket\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\xc3\x05\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\x8b\n" +
+	"\n" +
 	"\n" +
 	"BucketSpec\x12V\n" +
 	"\x11versioning_policy\x18\x02 \x01(\x0e2#.nebius.storage.v1.VersioningPolicyB\x04\xbaJ\x01\aR\x10versioningPolicy\x12$\n" +
@@ -500,13 +692,25 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x15default_storage_class\x18\t \x01(\x0e2\x1f.nebius.storage.v1.StorageClassR\x13defaultStorageClass\x12.\n" +
 	"\x13force_storage_class\x18\v \x01(\bR\x11forceStorageClass\x12b\n" +
 	"\x14object_audit_logging\x18\f \x01(\x0e20.nebius.storage.v1.BucketSpec.ObjectAuditLoggingR\x12objectAuditLogging\x12D\n" +
-	"\rbucket_policy\x18\r \x01(\v2\x1f.nebius.storage.v1.BucketPolicyR\fbucketPolicy\"^\n" +
+	"\rbucket_policy\x18\r \x01(\v2\x1f.nebius.storage.v1.BucketPolicyR\fbucketPolicy\x12a\n" +
+	"\x11filesystem_bucket\x18\x1e \x01(\v22.nebius.storage.v1.BucketSpec.FilesystemBucketTypeH\x00R\x10filesystemBucket\x1a\xcd\x03\n" +
+	"\x14FilesystemBucketType\x12E\n" +
+	"\rfilesystem_id\x18\x01 \x01(\tB \xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\x13\n" +
+	"\x11computefilesystemR\ffilesystemId\x12\"\n" +
+	"\tdirectory\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\tdirectory\x12\x1b\n" +
+	"\x03uid\x18\x03 \x01(\rB\t\xbaH\x06*\x04\x18\xff\xff\x03R\x03uid\x12\x1b\n" +
+	"\x03gid\x18\x04 \x01(\rB\t\xbaH\x06*\x04\x18\xff\xff\x03R\x03gid\x12\x81\x01\n" +
+	"\tfile_mode\x18\x05 \x01(\tBd\xbaHa\xba\x01^\n" +
+	"\x10file_permissions\x12\x1emust be valid file permissions\x1a*this == '' || this.matches('^[0-7]{1,4}$')R\bfileMode\x12\x8b\x01\n" +
+	"\x0edirectory_mode\x18\x06 \x01(\tBd\xbaHa\xba\x01^\n" +
+	"\x10file_permissions\x12\x1emust be valid file permissions\x1a*this == '' || this.matches('^[0-7]{1,4}$')R\rdirectoryMode\"^\n" +
 	"\x12ObjectAuditLogging\x12$\n" +
 	" OBJECT_AUDIT_LOGGING_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04NONE\x10\x01\x12\x0f\n" +
 	"\vMUTATE_ONLY\x10\x02\x12\a\n" +
-	"\x03ALL\x10\x03J\x04\b\x03\x10\x04J\x04\b\n" +
-	"\x10\v\"\xd8\x05\n" +
+	"\x03ALL\x10\x03B\x13\n" +
+	"\vbucket_type\x12\x04\xbaJ\x01\x02J\x04\b\x03\x10\x04J\x04\b\n" +
+	"\x10\v\"\xed\x06\n" +
 	"\fBucketStatus\x12=\n" +
 	"\bcounters\x18\x01 \x03(\v2!.nebius.storage.v1.BucketCountersR\bcounters\x12;\n" +
 	"\x05state\x18\x02 \x01(\x0e2%.nebius.storage.v1.BucketStatus.StateR\x05state\x12Z\n" +
@@ -519,7 +723,9 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x06region\x18\b \x01(\tR\x06region\x128\n" +
 	"\x18anonymous_access_enabled\x18\t \x01(\bR\x16anonymousAccessEnabled\x12P\n" +
 	"\x11insecure_endpoint\x18\n" +
-	" \x01(\v2#.nebius.storage.v1.InsecureEndpointR\x10insecureEndpoint\"b\n" +
+	" \x01(\v2#.nebius.storage.v1.InsecureEndpointR\x10insecureEndpoint\x12K\n" +
+	"\vbucket_type\x18\v \x01(\x0e2*.nebius.storage.v1.BucketStatus.BucketTypeR\n" +
+	"bucketType\"b\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\n" +
@@ -530,7 +736,13 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x0fSuspensionState\x12 \n" +
 	"\x1cSUSPENSION_STATE_UNSPECIFIED\x10\x00\x12\x11\n" +
 	"\rNOT_SUSPENDED\x10\x01\x12\r\n" +
-	"\tSUSPENDED\x10\x02BZ\n" +
+	"\tSUSPENDED\x10\x02\"F\n" +
+	"\n" +
+	"BucketType\x12\x1b\n" +
+	"\x17BUCKET_TYPE_UNSPECIFIED\x10\x00\x12\v\n" +
+	"\aREGULAR\x10\x01\x12\x0e\n" +
+	"\n" +
+	"FILESYSTEM\x10\x02BZ\n" +
 	"\x18ai.nebius.pub.storage.v1B\vBucketProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/storage/v1b\x06proto3"
 
 var (
@@ -545,46 +757,50 @@ func file_nebius_storage_v1_bucket_proto_rawDescGZIP() []byte {
 	return file_nebius_storage_v1_bucket_proto_rawDescData
 }
 
-var file_nebius_storage_v1_bucket_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_nebius_storage_v1_bucket_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_nebius_storage_v1_bucket_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_nebius_storage_v1_bucket_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_nebius_storage_v1_bucket_proto_goTypes = []any{
-	(BucketSpec_ObjectAuditLogging)(0), // 0: nebius.storage.v1.BucketSpec.ObjectAuditLogging
-	(BucketStatus_State)(0),            // 1: nebius.storage.v1.BucketStatus.State
-	(BucketStatus_SuspensionState)(0),  // 2: nebius.storage.v1.BucketStatus.SuspensionState
-	(*Bucket)(nil),                     // 3: nebius.storage.v1.Bucket
-	(*BucketSpec)(nil),                 // 4: nebius.storage.v1.BucketSpec
-	(*BucketStatus)(nil),               // 5: nebius.storage.v1.BucketStatus
-	(*v1.ResourceMetadata)(nil),        // 6: nebius.common.v1.ResourceMetadata
-	(VersioningPolicy)(0),              // 7: nebius.storage.v1.VersioningPolicy
-	(*LifecycleConfiguration)(nil),     // 8: nebius.storage.v1.LifecycleConfiguration
-	(*CORSConfiguration)(nil),          // 9: nebius.storage.v1.CORSConfiguration
-	(StorageClass)(0),                  // 10: nebius.storage.v1.StorageClass
-	(*BucketPolicy)(nil),               // 11: nebius.storage.v1.BucketPolicy
-	(*BucketCounters)(nil),             // 12: nebius.storage.v1.BucketCounters
-	(*timestamppb.Timestamp)(nil),      // 13: google.protobuf.Timestamp
-	(*InsecureEndpoint)(nil),           // 14: nebius.storage.v1.InsecureEndpoint
+	(BucketSpec_ObjectAuditLogging)(0),      // 0: nebius.storage.v1.BucketSpec.ObjectAuditLogging
+	(BucketStatus_State)(0),                 // 1: nebius.storage.v1.BucketStatus.State
+	(BucketStatus_SuspensionState)(0),       // 2: nebius.storage.v1.BucketStatus.SuspensionState
+	(BucketStatus_BucketType)(0),            // 3: nebius.storage.v1.BucketStatus.BucketType
+	(*Bucket)(nil),                          // 4: nebius.storage.v1.Bucket
+	(*BucketSpec)(nil),                      // 5: nebius.storage.v1.BucketSpec
+	(*BucketStatus)(nil),                    // 6: nebius.storage.v1.BucketStatus
+	(*BucketSpec_FilesystemBucketType)(nil), // 7: nebius.storage.v1.BucketSpec.FilesystemBucketType
+	(*v1.ResourceMetadata)(nil),             // 8: nebius.common.v1.ResourceMetadata
+	(VersioningPolicy)(0),                   // 9: nebius.storage.v1.VersioningPolicy
+	(*LifecycleConfiguration)(nil),          // 10: nebius.storage.v1.LifecycleConfiguration
+	(*CORSConfiguration)(nil),               // 11: nebius.storage.v1.CORSConfiguration
+	(StorageClass)(0),                       // 12: nebius.storage.v1.StorageClass
+	(*BucketPolicy)(nil),                    // 13: nebius.storage.v1.BucketPolicy
+	(*BucketCounters)(nil),                  // 14: nebius.storage.v1.BucketCounters
+	(*timestamppb.Timestamp)(nil),           // 15: google.protobuf.Timestamp
+	(*InsecureEndpoint)(nil),                // 16: nebius.storage.v1.InsecureEndpoint
 }
 var file_nebius_storage_v1_bucket_proto_depIdxs = []int32{
-	6,  // 0: nebius.storage.v1.Bucket.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	4,  // 1: nebius.storage.v1.Bucket.spec:type_name -> nebius.storage.v1.BucketSpec
-	5,  // 2: nebius.storage.v1.Bucket.status:type_name -> nebius.storage.v1.BucketStatus
-	7,  // 3: nebius.storage.v1.BucketSpec.versioning_policy:type_name -> nebius.storage.v1.VersioningPolicy
-	8,  // 4: nebius.storage.v1.BucketSpec.lifecycle_configuration:type_name -> nebius.storage.v1.LifecycleConfiguration
-	9,  // 5: nebius.storage.v1.BucketSpec.cors:type_name -> nebius.storage.v1.CORSConfiguration
-	10, // 6: nebius.storage.v1.BucketSpec.default_storage_class:type_name -> nebius.storage.v1.StorageClass
+	8,  // 0: nebius.storage.v1.Bucket.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	5,  // 1: nebius.storage.v1.Bucket.spec:type_name -> nebius.storage.v1.BucketSpec
+	6,  // 2: nebius.storage.v1.Bucket.status:type_name -> nebius.storage.v1.BucketStatus
+	9,  // 3: nebius.storage.v1.BucketSpec.versioning_policy:type_name -> nebius.storage.v1.VersioningPolicy
+	10, // 4: nebius.storage.v1.BucketSpec.lifecycle_configuration:type_name -> nebius.storage.v1.LifecycleConfiguration
+	11, // 5: nebius.storage.v1.BucketSpec.cors:type_name -> nebius.storage.v1.CORSConfiguration
+	12, // 6: nebius.storage.v1.BucketSpec.default_storage_class:type_name -> nebius.storage.v1.StorageClass
 	0,  // 7: nebius.storage.v1.BucketSpec.object_audit_logging:type_name -> nebius.storage.v1.BucketSpec.ObjectAuditLogging
-	11, // 8: nebius.storage.v1.BucketSpec.bucket_policy:type_name -> nebius.storage.v1.BucketPolicy
-	12, // 9: nebius.storage.v1.BucketStatus.counters:type_name -> nebius.storage.v1.BucketCounters
-	1,  // 10: nebius.storage.v1.BucketStatus.state:type_name -> nebius.storage.v1.BucketStatus.State
-	2,  // 11: nebius.storage.v1.BucketStatus.suspension_state:type_name -> nebius.storage.v1.BucketStatus.SuspensionState
-	13, // 12: nebius.storage.v1.BucketStatus.deleted_at:type_name -> google.protobuf.Timestamp
-	13, // 13: nebius.storage.v1.BucketStatus.purge_at:type_name -> google.protobuf.Timestamp
-	14, // 14: nebius.storage.v1.BucketStatus.insecure_endpoint:type_name -> nebius.storage.v1.InsecureEndpoint
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	13, // 8: nebius.storage.v1.BucketSpec.bucket_policy:type_name -> nebius.storage.v1.BucketPolicy
+	7,  // 9: nebius.storage.v1.BucketSpec.filesystem_bucket:type_name -> nebius.storage.v1.BucketSpec.FilesystemBucketType
+	14, // 10: nebius.storage.v1.BucketStatus.counters:type_name -> nebius.storage.v1.BucketCounters
+	1,  // 11: nebius.storage.v1.BucketStatus.state:type_name -> nebius.storage.v1.BucketStatus.State
+	2,  // 12: nebius.storage.v1.BucketStatus.suspension_state:type_name -> nebius.storage.v1.BucketStatus.SuspensionState
+	15, // 13: nebius.storage.v1.BucketStatus.deleted_at:type_name -> google.protobuf.Timestamp
+	15, // 14: nebius.storage.v1.BucketStatus.purge_at:type_name -> google.protobuf.Timestamp
+	16, // 15: nebius.storage.v1.BucketStatus.insecure_endpoint:type_name -> nebius.storage.v1.InsecureEndpoint
+	3,  // 16: nebius.storage.v1.BucketStatus.bucket_type:type_name -> nebius.storage.v1.BucketStatus.BucketType
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_bucket_proto_init() }
@@ -598,13 +814,16 @@ func file_nebius_storage_v1_bucket_proto_init() {
 	file_nebius_storage_v1_cors_proto_init()
 	file_nebius_storage_v1_insecure_endpoint_proto_init()
 	file_nebius_storage_v1_lifecycle_proto_init()
+	file_nebius_storage_v1_bucket_proto_msgTypes[1].OneofWrappers = []any{
+		(*BucketSpec_FilesystemBucket)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_storage_v1_bucket_proto_rawDesc), len(file_nebius_storage_v1_bucket_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   3,
+			NumEnums:      4,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

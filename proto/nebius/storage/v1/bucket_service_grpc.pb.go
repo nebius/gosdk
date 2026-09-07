@@ -20,14 +20,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	BucketService_Get_FullMethodName       = "/nebius.storage.v1.BucketService/Get"
-	BucketService_GetByName_FullMethodName = "/nebius.storage.v1.BucketService/GetByName"
-	BucketService_List_FullMethodName      = "/nebius.storage.v1.BucketService/List"
-	BucketService_Create_FullMethodName    = "/nebius.storage.v1.BucketService/Create"
-	BucketService_Update_FullMethodName    = "/nebius.storage.v1.BucketService/Update"
-	BucketService_Delete_FullMethodName    = "/nebius.storage.v1.BucketService/Delete"
-	BucketService_Purge_FullMethodName     = "/nebius.storage.v1.BucketService/Purge"
-	BucketService_Undelete_FullMethodName  = "/nebius.storage.v1.BucketService/Undelete"
+	BucketService_Get_FullMethodName            = "/nebius.storage.v1.BucketService/Get"
+	BucketService_GetByName_FullMethodName      = "/nebius.storage.v1.BucketService/GetByName"
+	BucketService_List_FullMethodName           = "/nebius.storage.v1.BucketService/List"
+	BucketService_ListWithFilter_FullMethodName = "/nebius.storage.v1.BucketService/ListWithFilter"
+	BucketService_Create_FullMethodName         = "/nebius.storage.v1.BucketService/Create"
+	BucketService_Update_FullMethodName         = "/nebius.storage.v1.BucketService/Update"
+	BucketService_Delete_FullMethodName         = "/nebius.storage.v1.BucketService/Delete"
+	BucketService_Purge_FullMethodName          = "/nebius.storage.v1.BucketService/Purge"
+	BucketService_Undelete_FullMethodName       = "/nebius.storage.v1.BucketService/Undelete"
 )
 
 // BucketServiceClient is the client API for BucketService service.
@@ -37,6 +38,8 @@ type BucketServiceClient interface {
 	Get(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
 	GetByName(ctx context.Context, in *GetBucketByNameRequest, opts ...grpc.CallOption) (*Bucket, error)
 	List(ctx context.Context, in *ListBucketsRequest, opts ...grpc.CallOption) (*ListBucketsResponse, error)
+	// ListWithFilter lists only buckets with specified filters (e.g. bucket_type and filesystem_id).
+	ListWithFilter(ctx context.Context, in *ListBucketsWithFilterRequest, opts ...grpc.CallOption) (*ListBucketsWithFilterResponse, error)
 	Create(ctx context.Context, in *CreateBucketRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Update(ctx context.Context, in *UpdateBucketRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Delete(ctx context.Context, in *DeleteBucketRequest, opts ...grpc.CallOption) (*v1.Operation, error)
@@ -77,6 +80,15 @@ func (c *bucketServiceClient) GetByName(ctx context.Context, in *GetBucketByName
 func (c *bucketServiceClient) List(ctx context.Context, in *ListBucketsRequest, opts ...grpc.CallOption) (*ListBucketsResponse, error) {
 	out := new(ListBucketsResponse)
 	err := c.cc.Invoke(ctx, BucketService_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketServiceClient) ListWithFilter(ctx context.Context, in *ListBucketsWithFilterRequest, opts ...grpc.CallOption) (*ListBucketsWithFilterResponse, error) {
+	out := new(ListBucketsWithFilterResponse)
+	err := c.cc.Invoke(ctx, BucketService_ListWithFilter_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -135,6 +147,8 @@ type BucketServiceServer interface {
 	Get(context.Context, *GetBucketRequest) (*Bucket, error)
 	GetByName(context.Context, *GetBucketByNameRequest) (*Bucket, error)
 	List(context.Context, *ListBucketsRequest) (*ListBucketsResponse, error)
+	// ListWithFilter lists only buckets with specified filters (e.g. bucket_type and filesystem_id).
+	ListWithFilter(context.Context, *ListBucketsWithFilterRequest) (*ListBucketsWithFilterResponse, error)
 	Create(context.Context, *CreateBucketRequest) (*v1.Operation, error)
 	Update(context.Context, *UpdateBucketRequest) (*v1.Operation, error)
 	Delete(context.Context, *DeleteBucketRequest) (*v1.Operation, error)
@@ -158,6 +172,9 @@ func (UnimplementedBucketServiceServer) GetByName(context.Context, *GetBucketByN
 }
 func (UnimplementedBucketServiceServer) List(context.Context, *ListBucketsRequest) (*ListBucketsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedBucketServiceServer) ListWithFilter(context.Context, *ListBucketsWithFilterRequest) (*ListBucketsWithFilterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListWithFilter not implemented")
 }
 func (UnimplementedBucketServiceServer) Create(context.Context, *CreateBucketRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -236,6 +253,24 @@ func _BucketService_List_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketServiceServer).List(ctx, req.(*ListBucketsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketService_ListWithFilter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBucketsWithFilterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketServiceServer).ListWithFilter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BucketService_ListWithFilter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketServiceServer).ListWithFilter(ctx, req.(*ListBucketsWithFilterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -348,6 +383,10 @@ var BucketService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _BucketService_List_Handler,
+		},
+		{
+			MethodName: "ListWithFilter",
+			Handler:    _BucketService_ListWithFilter_Handler,
 		},
 		{
 			MethodName: "Create",
