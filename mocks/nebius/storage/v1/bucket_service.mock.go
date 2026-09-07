@@ -395,6 +395,50 @@ func (c *MockBucketServiceListOperationsCall) DoAndReturn(f func(context.Context
 	return c
 }
 
+// ListWithFilter mocks base method.
+func (m *MockBucketService) ListWithFilter(arg0 context.Context, arg1 *v10.ListBucketsWithFilterRequest, arg2 ...grpc.CallOption) (*v10.ListBucketsWithFilterResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListWithFilter", varargs...)
+	ret0, _ := ret[0].(*v10.ListBucketsWithFilterResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListWithFilter indicates an expected call of ListWithFilter.
+func (mr *MockBucketServiceMockRecorder) ListWithFilter(arg0, arg1 any, arg2 ...any) *MockBucketServiceListWithFilterCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWithFilter", reflect.TypeOf((*MockBucketService)(nil).ListWithFilter), varargs...)
+	return &MockBucketServiceListWithFilterCall{Call: call}
+}
+
+// MockBucketServiceListWithFilterCall wrap *gomock.Call
+type MockBucketServiceListWithFilterCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockBucketServiceListWithFilterCall) Return(arg0 *v10.ListBucketsWithFilterResponse, arg1 error) *MockBucketServiceListWithFilterCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockBucketServiceListWithFilterCall) Do(f func(context.Context, *v10.ListBucketsWithFilterRequest, ...grpc.CallOption) (*v10.ListBucketsWithFilterResponse, error)) *MockBucketServiceListWithFilterCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockBucketServiceListWithFilterCall) DoAndReturn(f func(context.Context, *v10.ListBucketsWithFilterRequest, ...grpc.CallOption) (*v10.ListBucketsWithFilterResponse, error)) *MockBucketServiceListWithFilterCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Purge mocks base method.
 func (m *MockBucketService) Purge(arg0 context.Context, arg1 *v10.PurgeBucketRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()

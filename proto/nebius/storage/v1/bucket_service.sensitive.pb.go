@@ -28,3 +28,9 @@ package v1
 
 // func (x *ListBucketsResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListBucketsResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ListBucketsWithFilterRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListBucketsWithFilterRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ListBucketsWithFilterResponse) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListBucketsWithFilterResponse) LogValue() slog.Value // is not generated as no sensitive fields found
