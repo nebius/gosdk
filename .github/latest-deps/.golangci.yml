@@ -4,6 +4,12 @@ linters:
   exclusions:
     rules:
       # patch for latest deps
+      - text: 'reflecttypeassert: .* can be simplified using reflect.TypeAssert' # remove after go 1.25+
+        linters:
+          - modernize
       - text: 'newexpr: call of .* can be simplified to new' # remove after go 1.26+
+        linters:
+          - modernize
+      - text: 'errorsastype: errors.As can be simplified using .*' # remove after go 1.26+
         linters:
           - modernize
