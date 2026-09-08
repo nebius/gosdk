@@ -658,36 +658,43 @@ var File_nebius_compute_v1_instance_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_instance_service_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/compute/v1/instance_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x17google/rpc/status.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a nebius/compute/v1/instance.proto\x1a)nebius/compute/v1/operation_service.proto\"$\n" +
-	"\x12GetInstanceRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"o\n" +
-	"\x14ListInstancesRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"(nebius/compute/v1/instance_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x17google/rpc/status.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/common/v1/operation_service.proto\x1a nebius/compute/v1/instance.proto\x1a)nebius/compute/v1/operation_service.proto\":\n" +
+	"\x12GetInstanceRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x02id\"}\n" +
+	"\x14ListInstancesRequest\x12)\n" +
+	"\tparent_id\x18\x01 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\x8c\x01\n" +
-	"\x15CreateInstanceRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\"\x8c\x01\n" +
-	"\x15UpdateInstanceRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\"'\n" +
-	"\x15DeleteInstanceRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"r\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x9a\x01\n" +
+	"\x15CreateInstanceRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x123\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\"\x9a\x01\n" +
+	"\x15UpdateInstanceRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x123\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\"=\n" +
+	"\x15DeleteInstanceRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x02id\"r\n" +
 	"\x15ListInstancesResponse\x121\n" +
 	"\x05items\x18\x01 \x03(\v2\x1b.nebius.compute.v1.InstanceR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"&\n" +
-	"\x14StartInstanceRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"%\n" +
-	"\x13StopInstanceRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x9f\x01\n" +
-	"&ListInstancesByNVLInstanceGroupRequest\x129\n" +
-	"\x15nvl_instance_group_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x12nvlInstanceGroupId\x12\x1b\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"<\n" +
+	"\x14StartInstanceRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x02id\";\n" +
+	"\x13StopInstanceRequest\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\x02id\"\xbb\x01\n" +
+	"&ListInstancesByNVLInstanceGroupRequest\x12U\n" +
+	"\x15nvl_instance_group_id\x18\x01 \x01(\tB\"\xbaH\x03\xc8\x01\x01\xe2J\x19\n" +
+	"\x17computenvlinstancegroupR\x12nvlInstanceGroupId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"B\n" +
-	"\x0fBatchGetRequest\x12/\n" +
-	"\finstance_ids\x18\x01 \x03(\tB\f\xbaH\t\xc8\x01\x01\x92\x01\x03\x10\xe8\aR\vinstanceIds\"\xca\x02\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"V\n" +
+	"\x0fBatchGetRequest\x12C\n" +
+	"\finstance_ids\x18\x01 \x03(\tB \xbaH\t\xc8\x01\x01\x92\x01\x03\x10\xe8\a\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\vinstanceIds\"\xca\x02\n" +
 	"\x10BatchGetResponse\x12D\n" +
 	"\x05items\x18\x01 \x03(\v2..nebius.compute.v1.BatchGetResponse.ItemsEntryR\x05items\x1a\x81\x01\n" +
 	"\x0eBatchGetResult\x129\n" +
@@ -697,7 +704,7 @@ const file_nebius_compute_v1_instance_service_proto_rawDesc = "" +
 	"\n" +
 	"ItemsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12H\n" +
-	"\x05value\x18\x02 \x01(\v22.nebius.compute.v1.BatchGetResponse.BatchGetResultR\x05value:\x028\x012\xf4\a\n" +
+	"\x05value\x18\x02 \x01(\v22.nebius.compute.v1.BatchGetResponse.BatchGetResultR\x05value:\x028\x012\x90\b\n" +
 	"\x0fInstanceService\x12I\n" +
 	"\x03Get\x12%.nebius.compute.v1.GetInstanceRequest\x1a\x1b.nebius.compute.v1.Instance\x12L\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1b.nebius.compute.v1.Instance\x12S\n" +
@@ -708,8 +715,10 @@ const file_nebius_compute_v1_instance_service_proto_rawDesc = "" +
 	"\x06Update\x12(.nebius.compute.v1.UpdateInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12O\n" +
 	"\x06Delete\x12(.nebius.compute.v1.DeleteInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x05Start\x12'.nebius.compute.v1.StartInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12K\n" +
-	"\x04Stop\x12&.nebius.compute.v1.StopInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12t\n" +
-	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\x1a\n" +
+	"\x04Stop\x12&.nebius.compute.v1.StopInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12\x8f\x01\n" +
+	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x19\xf2J\x16\n" +
+	"\tparent_id\x12\t\n" +
+	"\aproject\x1a\n" +
 	"\xbaJ\acomputeBc\n" +
 	"\x18ai.nebius.pub.compute.v1B\x14InstanceServiceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 

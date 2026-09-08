@@ -1161,7 +1161,8 @@ type InstanceStatus struct {
 	State             InstanceStatus_InstanceState `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.compute.v1.InstanceStatus_InstanceState" json:"state,omitempty"`
 	NetworkInterfaces []*NetworkInterfaceStatus    `protobuf:"bytes,2,rep,name=network_interfaces,json=networkInterfaces,proto3" json:"network_interfaces,omitempty"`
 	// Indicates whether there is an ongoing operation
-	Reconciling        bool   `protobuf:"varint,5,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
+	Reconciling bool `protobuf:"varint,5,opt,name=reconciling,proto3" json:"reconciling,omitempty"`
+	// Identifier of the maintenance event associated with the instance, if any.
 	MaintenanceEventId string `protobuf:"bytes,7,opt,name=maintenance_event_id,json=maintenanceEventId,proto3" json:"maintenance_event_id,omitempty"`
 	// Types that are valid to be assigned to GpuClusterTopology:
 	//
@@ -1564,13 +1565,14 @@ var File_nebius_compute_v1_instance_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\n" +
-	" nebius/compute/v1/instance.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a)nebius/compute/v1/network_interface.proto\"\xba\x01\n" +
-	"\bInstance\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
+	" nebius/compute/v1/instance.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a)nebius/compute/v1/network_interface.proto\"\xc8\x01\n" +
+	"\bInstance\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\x81\t\n" +
-	"\fInstanceSpec\x122\n" +
-	"\x12service_account_id\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x10serviceAccountId\x12F\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\xb2\t\n" +
+	"\fInstanceSpec\x12E\n" +
+	"\x12service_account_id\x18\x01 \x01(\tB\x17\xbaJ\x01\x02\xe2J\x10\n" +
+	"\x0eserviceaccountR\x10serviceAccountId\x12F\n" +
 	"\tresources\x18\x02 \x01(\v2 .nebius.compute.v1.ResourcesSpecB\x06\xbaH\x03\xc8\x01\x01R\tresources\x12P\n" +
 	"\vgpu_cluster\x18\x03 \x01(\v2).nebius.compute.v1.InstanceGpuClusterSpecB\x04\xbaJ\x01\x02R\n" +
 	"gpuCluster\x12c\n" +
@@ -1583,8 +1585,9 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x0frecovery_policy\x18\x0f \x01(\x0e2).nebius.compute.v1.InstanceRecoveryPolicyB\x04\xbaJ\x01\x02R\x0erecoveryPolicy\x12D\n" +
 	"\vpreemptible\x18\x13 \x01(\v2\".nebius.compute.v1.PreemptibleSpecR\vpreemptible\x12\x93\x01\n" +
 	"\bhostname\x18\x14 \x01(\tBw\xbaHt\xba\x01q\n" +
-	"\x0ehostname.valid\x12\x1evalue must be a valid hostname\x1a?this == '' || this.matches('^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$')R\bhostname\x121\n" +
-	"\x15nvl_instance_group_id\x18\x15 \x01(\tR\x12nvlInstanceGroupId\x12S\n" +
+	"\x0ehostname.valid\x12\x1evalue must be a valid hostname\x1a?this == '' || this.matches('^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$')R\bhostname\x12O\n" +
+	"\x15nvl_instance_group_id\x18\x15 \x01(\tB\x1c\xe2J\x19\n" +
+	"\x17computenvlinstancegroupR\x12nvlInstanceGroupId\x12S\n" +
 	"\x12reservation_policy\x18\x17 \x01(\v2$.nebius.compute.v1.ReservationPolicyR\x11reservationPolicy\x12B\n" +
 	"\vlocal_disks\x18\x18 \x01(\v2!.nebius.compute.v1.LocalDisksSpecR\n" +
 	"localDisks\"\x9b\x02\n" +
@@ -1617,18 +1620,20 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\tREAD_ONLY\x10\x01\x12\x0e\n" +
 	"\n" +
 	"READ_WRITE\x10\x02B\r\n" +
-	"\x04type\x12\x05\xbaH\x02\b\x01\"&\n" +
-	"\fExistingDisk\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xe1\x01\n" +
+	"\x04type\x12\x05\xbaH\x02\b\x01\"6\n" +
+	"\fExistingDisk\x12&\n" +
+	"\x02id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
+	"\vcomputediskR\x02id\"\xe1\x01\n" +
 	"\vManagedDisk\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12B\n" +
 	"\x06labels\x18\x02 \x03(\v2*.nebius.compute.v1.ManagedDisk.LabelsEntryR\x06labels\x127\n" +
 	"\x04spec\x18\x04 \x01(\v2\x1b.nebius.compute.v1.DiskSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\",\n" +
-	"\x12ExistingFilesystem\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xc7\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"B\n" +
+	"\x12ExistingFilesystem\x12,\n" +
+	"\x02id\x18\x01 \x01(\tB\x1c\xbaH\x03\xc8\x01\x01\xe2J\x13\n" +
+	"\x11computefilesystemR\x02id\"\xc7\x02\n" +
 	"\x16AttachedFilesystemSpec\x12]\n" +
 	"\vattach_mode\x18\x01 \x01(\x0e24.nebius.compute.v1.AttachedFilesystemSpec.AttachModeB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"attachMode\x12'\n" +
@@ -1641,12 +1646,13 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\tREAD_ONLY\x10\x01\x12\x0e\n" +
 	"\n" +
 	"READ_WRITE\x10\x02B\r\n" +
-	"\x04type\x12\x05\xbaH\x02\b\x01\"\xa1\x05\n" +
+	"\x04type\x12\x05\xbaH\x02\b\x01\"\xba\x05\n" +
 	"\x0eInstanceStatus\x12E\n" +
 	"\x05state\x18\x01 \x01(\x0e2/.nebius.compute.v1.InstanceStatus.InstanceStateR\x05state\x12X\n" +
 	"\x12network_interfaces\x18\x02 \x03(\v2).nebius.compute.v1.NetworkInterfaceStatusR\x11networkInterfaces\x12 \n" +
-	"\vreconciling\x18\x05 \x01(\bR\vreconciling\x120\n" +
-	"\x14maintenance_event_id\x18\a \x01(\tR\x12maintenanceEventId\x12s\n" +
+	"\vreconciling\x18\x05 \x01(\bR\vreconciling\x12I\n" +
+	"\x14maintenance_event_id\x18\a \x01(\tB\x17\xe2J\x14\n" +
+	"\x12computemaintenanceR\x12maintenanceEventId\x12s\n" +
 	"\x18infiniband_topology_path\x18\n" +
 	" \x01(\v27.nebius.compute.v1.InstanceStatusInfinibandTopologyPathH\x00R\x16infinibandTopologyPath\x12%\n" +
 	"\x0ereservation_id\x18\f \x01(\tR\rreservationId\x12R\n" +
@@ -1661,9 +1667,10 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\aSTOPPED\x10\x06\x12\f\n" +
 	"\bDELETING\x10\a\x12\t\n" +
 	"\x05ERROR\x10\bB\x16\n" +
-	"\x14gpu_cluster_topologyJ\x04\b\x06\x10\a\"Y\n" +
-	"\x14DiskAttachmentStatus\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x14gpu_cluster_topologyJ\x04\b\x06\x10\a\"k\n" +
+	"\x14DiskAttachmentStatus\x12 \n" +
+	"\x02id\x18\x01 \x01(\tB\x10\xe2J\r\n" +
+	"\vcomputediskR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
 	"is_managed\x18\x03 \x01(\bR\tisManaged\":\n" +
