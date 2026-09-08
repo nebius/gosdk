@@ -13,3 +13,6 @@ linters:
       - text: 'errorsastype: errors.As can be simplified using .*' # remove after go 1.26+
         linters:
           - modernize
+      - text: 'embedlit: embedded field type can be removed from struct literal' # remove after go 1.27+
+        linters:
+          - modernize
