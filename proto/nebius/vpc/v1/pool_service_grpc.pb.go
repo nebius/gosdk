@@ -33,12 +33,19 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PoolServiceClient interface {
+	// Retrieves a pool by its ID.
 	Get(ctx context.Context, in *GetPoolRequest, opts ...grpc.CallOption) (*Pool, error)
+	// Retrieves a pool by its name within a specified parent.
 	GetByName(ctx context.Context, in *GetPoolByNameRequest, opts ...grpc.CallOption) (*Pool, error)
+	// Lists pools within a specified parent.
 	List(ctx context.Context, in *ListPoolsRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
+	// Lists pools that use a specified pool as their source.
 	ListBySourcePool(ctx context.Context, in *ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
+	// Creates a new pool with the specified configuration.
 	Create(ctx context.Context, in *CreatePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing pool with new configuration parameters.
 	Update(ctx context.Context, in *UpdatePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a pool by its ID.
 	Delete(ctx context.Context, in *DeletePoolRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -117,12 +124,19 @@ func (c *poolServiceClient) Delete(ctx context.Context, in *DeletePoolRequest, o
 // All implementations should embed UnimplementedPoolServiceServer
 // for forward compatibility
 type PoolServiceServer interface {
+	// Retrieves a pool by its ID.
 	Get(context.Context, *GetPoolRequest) (*Pool, error)
+	// Retrieves a pool by its name within a specified parent.
 	GetByName(context.Context, *GetPoolByNameRequest) (*Pool, error)
+	// Lists pools within a specified parent.
 	List(context.Context, *ListPoolsRequest) (*ListPoolsResponse, error)
+	// Lists pools that use a specified pool as their source.
 	ListBySourcePool(context.Context, *ListPoolsBySourcePoolRequest) (*ListPoolsResponse, error)
+	// Creates a new pool with the specified configuration.
 	Create(context.Context, *CreatePoolRequest) (*v1.Operation, error)
+	// Updates an existing pool with new configuration parameters.
 	Update(context.Context, *UpdatePoolRequest) (*v1.Operation, error)
+	// Deletes a pool by its ID.
 	Delete(context.Context, *DeletePoolRequest) (*v1.Operation, error)
 }
 

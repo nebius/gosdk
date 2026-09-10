@@ -34,13 +34,21 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AllocationServiceClient interface {
+	// Retrieves an allocation by its ID.
 	Get(ctx context.Context, in *GetAllocationRequest, opts ...grpc.CallOption) (*Allocation, error)
+	// Retrieves an allocation by its name within a specified parent.
 	GetByName(ctx context.Context, in *GetAllocationByNameRequest, opts ...grpc.CallOption) (*Allocation, error)
+	// Lists allocations within a specified parent.
 	List(ctx context.Context, in *ListAllocationsRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
+	// Lists allocations from a specified pool.
 	ListByPool(ctx context.Context, in *ListAllocationsByPoolRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
+	// Lists allocations available to a specified subnet, including unassigned allocations from compatible pools.
 	ListBySubnet(ctx context.Context, in *ListAllocationsBySubnetRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
+	// Creates a new allocation with the specified configuration.
 	Create(ctx context.Context, in *CreateAllocationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing allocation with new configuration parameters.
 	Update(ctx context.Context, in *UpdateAllocationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes an allocation by its ID.
 	Delete(ctx context.Context, in *DeleteAllocationRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -128,13 +136,21 @@ func (c *allocationServiceClient) Delete(ctx context.Context, in *DeleteAllocati
 // All implementations should embed UnimplementedAllocationServiceServer
 // for forward compatibility
 type AllocationServiceServer interface {
+	// Retrieves an allocation by its ID.
 	Get(context.Context, *GetAllocationRequest) (*Allocation, error)
+	// Retrieves an allocation by its name within a specified parent.
 	GetByName(context.Context, *GetAllocationByNameRequest) (*Allocation, error)
+	// Lists allocations within a specified parent.
 	List(context.Context, *ListAllocationsRequest) (*ListAllocationsResponse, error)
+	// Lists allocations from a specified pool.
 	ListByPool(context.Context, *ListAllocationsByPoolRequest) (*ListAllocationsResponse, error)
+	// Lists allocations available to a specified subnet, including unassigned allocations from compatible pools.
 	ListBySubnet(context.Context, *ListAllocationsBySubnetRequest) (*ListAllocationsResponse, error)
+	// Creates a new allocation with the specified configuration.
 	Create(context.Context, *CreateAllocationRequest) (*v1.Operation, error)
+	// Updates an existing allocation with new configuration parameters.
 	Update(context.Context, *UpdateAllocationRequest) (*v1.Operation, error)
+	// Deletes an allocation by its ID.
 	Delete(context.Context, *DeleteAllocationRequest) (*v1.Operation, error)
 }
 

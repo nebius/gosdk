@@ -33,12 +33,20 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NetworkServiceClient interface {
+	// Retrieves a network by its ID.
 	Get(ctx context.Context, in *GetNetworkRequest, opts ...grpc.CallOption) (*Network, error)
+	// Retrieves a network by its name within a specified parent.
 	GetByName(ctx context.Context, in *GetNetworkByNameRequest, opts ...grpc.CallOption) (*Network, error)
+	// Lists networks within a specified parent.
 	List(ctx context.Context, in *ListNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error)
+	// Creates a new network with the specified configuration.
 	Create(ctx context.Context, in *CreateNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Creates a default network, subnet, pools, and route table for a specified project.
+	// Creates a default security group when that feature is enabled for the project.
 	CreateDefault(ctx context.Context, in *CreateDefaultNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing network with new configuration parameters.
 	Update(ctx context.Context, in *UpdateNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a network by its ID.
 	Delete(ctx context.Context, in *DeleteNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -117,12 +125,20 @@ func (c *networkServiceClient) Delete(ctx context.Context, in *DeleteNetworkRequ
 // All implementations should embed UnimplementedNetworkServiceServer
 // for forward compatibility
 type NetworkServiceServer interface {
+	// Retrieves a network by its ID.
 	Get(context.Context, *GetNetworkRequest) (*Network, error)
+	// Retrieves a network by its name within a specified parent.
 	GetByName(context.Context, *GetNetworkByNameRequest) (*Network, error)
+	// Lists networks within a specified parent.
 	List(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error)
+	// Creates a new network with the specified configuration.
 	Create(context.Context, *CreateNetworkRequest) (*v1.Operation, error)
+	// Creates a default network, subnet, pools, and route table for a specified project.
+	// Creates a default security group when that feature is enabled for the project.
 	CreateDefault(context.Context, *CreateDefaultNetworkRequest) (*v1.Operation, error)
+	// Updates an existing network with new configuration parameters.
 	Update(context.Context, *UpdateNetworkRequest) (*v1.Operation, error)
+	// Deletes a network by its ID.
 	Delete(context.Context, *DeleteNetworkRequest) (*v1.Operation, error)
 }
 

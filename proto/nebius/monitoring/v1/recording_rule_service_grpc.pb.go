@@ -20,11 +20,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	RecordingRuleService_Get_FullMethodName    = "/nebius.monitoring.v1.RecordingRuleService/Get"
-	RecordingRuleService_List_FullMethodName   = "/nebius.monitoring.v1.RecordingRuleService/List"
-	RecordingRuleService_Create_FullMethodName = "/nebius.monitoring.v1.RecordingRuleService/Create"
-	RecordingRuleService_Update_FullMethodName = "/nebius.monitoring.v1.RecordingRuleService/Update"
-	RecordingRuleService_Delete_FullMethodName = "/nebius.monitoring.v1.RecordingRuleService/Delete"
+	RecordingRuleService_Get_FullMethodName       = "/nebius.monitoring.v1.RecordingRuleService/Get"
+	RecordingRuleService_GetByName_FullMethodName = "/nebius.monitoring.v1.RecordingRuleService/GetByName"
+	RecordingRuleService_List_FullMethodName      = "/nebius.monitoring.v1.RecordingRuleService/List"
+	RecordingRuleService_Create_FullMethodName    = "/nebius.monitoring.v1.RecordingRuleService/Create"
+	RecordingRuleService_Update_FullMethodName    = "/nebius.monitoring.v1.RecordingRuleService/Update"
+	RecordingRuleService_Delete_FullMethodName    = "/nebius.monitoring.v1.RecordingRuleService/Delete"
 )
 
 // RecordingRuleServiceClient is the client API for RecordingRuleService service.
@@ -33,6 +34,8 @@ const (
 type RecordingRuleServiceClient interface {
 	// Returns the specified recording rule.
 	Get(ctx context.Context, in *GetRecordingRuleRequest, opts ...grpc.CallOption) (*RecordingRule, error)
+	// Returns a recording rule by its unique name within a parent.
+	GetByName(ctx context.Context, in *GetRecordingRuleByNameRequest, opts ...grpc.CallOption) (*RecordingRule, error)
 	// Returns recording rules under the specified parent.
 	List(ctx context.Context, in *ListRecordingRulesRequest, opts ...grpc.CallOption) (*ListRecordingRulesResponse, error)
 	// Creates a recording rule.
@@ -54,6 +57,15 @@ func NewRecordingRuleServiceClient(cc grpc.ClientConnInterface) RecordingRuleSer
 func (c *recordingRuleServiceClient) Get(ctx context.Context, in *GetRecordingRuleRequest, opts ...grpc.CallOption) (*RecordingRule, error) {
 	out := new(RecordingRule)
 	err := c.cc.Invoke(ctx, RecordingRuleService_Get_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *recordingRuleServiceClient) GetByName(ctx context.Context, in *GetRecordingRuleByNameRequest, opts ...grpc.CallOption) (*RecordingRule, error) {
+	out := new(RecordingRule)
+	err := c.cc.Invoke(ctx, RecordingRuleService_GetByName_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,6 +114,8 @@ func (c *recordingRuleServiceClient) Delete(ctx context.Context, in *DeleteRecor
 type RecordingRuleServiceServer interface {
 	// Returns the specified recording rule.
 	Get(context.Context, *GetRecordingRuleRequest) (*RecordingRule, error)
+	// Returns a recording rule by its unique name within a parent.
+	GetByName(context.Context, *GetRecordingRuleByNameRequest) (*RecordingRule, error)
 	// Returns recording rules under the specified parent.
 	List(context.Context, *ListRecordingRulesRequest) (*ListRecordingRulesResponse, error)
 	// Creates a recording rule.
@@ -118,6 +132,9 @@ type UnimplementedRecordingRuleServiceServer struct {
 
 func (UnimplementedRecordingRuleServiceServer) Get(context.Context, *GetRecordingRuleRequest) (*RecordingRule, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRecordingRuleServiceServer) GetByName(context.Context, *GetRecordingRuleByNameRequest) (*RecordingRule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
 }
 func (UnimplementedRecordingRuleServiceServer) List(context.Context, *ListRecordingRulesRequest) (*ListRecordingRulesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
@@ -157,6 +174,24 @@ func _RecordingRuleService_Get_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RecordingRuleServiceServer).Get(ctx, req.(*GetRecordingRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RecordingRuleService_GetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRecordingRuleByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RecordingRuleServiceServer).GetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RecordingRuleService_GetByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RecordingRuleServiceServer).GetByName(ctx, req.(*GetRecordingRuleByNameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -243,6 +278,10 @@ var RecordingRuleService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _RecordingRuleService_Get_Handler,
+		},
+		{
+			MethodName: "GetByName",
+			Handler:    _RecordingRuleService_GetByName_Handler,
 		},
 		{
 			MethodName: "List",

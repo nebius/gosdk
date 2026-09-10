@@ -28,7 +28,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TargetGroupServiceClient interface {
+	// Retrieves a target group by its ID.
 	Get(ctx context.Context, in *GetTargetGroupRequest, opts ...grpc.CallOption) (*TargetGroup, error)
+	// Updates an existing target group with new configuration parameters.
 	Update(ctx context.Context, in *UpdateTargetGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -62,7 +64,9 @@ func (c *targetGroupServiceClient) Update(ctx context.Context, in *UpdateTargetG
 // All implementations should embed UnimplementedTargetGroupServiceServer
 // for forward compatibility
 type TargetGroupServiceServer interface {
+	// Retrieves a target group by its ID.
 	Get(context.Context, *GetTargetGroupRequest) (*TargetGroup, error)
+	// Updates an existing target group with new configuration parameters.
 	Update(context.Context, *UpdateTargetGroupRequest) (*v1.Operation, error)
 }
 

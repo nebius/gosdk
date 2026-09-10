@@ -202,11 +202,11 @@ var File_nebius_monitoring_v1_recording_rule_proto protoreflect.FileDescriptor
 
 const file_nebius_monitoring_v1_recording_rule_proto_rawDesc = "" +
 	"\n" +
-	")nebius/monitoring/v1/recording_rule.proto\x12\x14nebius.monitoring.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xe3\x01\n" +
-	"\rRecordingRule\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12;\n" +
+	")nebius/monitoring/v1/recording_rule.proto\x12\x14nebius.monitoring.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xe9\x01\n" +
+	"\rRecordingRule\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.monitoring.v1.RecordingRuleSpecR\x04spec\x12G\n" +
-	"\x06status\x18\x03 \x01(\v2).nebius.monitoring.v1.RecordingRuleStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02\"\x90\x02\n" +
+	"\x06status\x18\x03 \x01(\v2).nebius.monitoring.v1.RecordingRuleStatusB\x04\xbaJ\x01\x05R\x06status\"\x90\x02\n" +
 	"\x11RecordingRuleSpec\x12\x1e\n" +
 	"\x06bucket\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06bucket\x12\x1e\n" +
 	"\x06record\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06record\x12\x1a\n" +

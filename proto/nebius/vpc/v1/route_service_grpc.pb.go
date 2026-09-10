@@ -32,11 +32,17 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RouteServiceClient interface {
+	// Retrieves a route by its ID.
 	Get(ctx context.Context, in *GetRouteRequest, opts ...grpc.CallOption) (*Route, error)
+	// Retrieves a route by its name within a specified route table.
 	GetByName(ctx context.Context, in *GetRouteByNameRequest, opts ...grpc.CallOption) (*Route, error)
+	// Lists routes in a specified route table.
 	List(ctx context.Context, in *ListRoutesRequest, opts ...grpc.CallOption) (*ListRoutesResponse, error)
+	// Creates a new route with the specified configuration.
 	Create(ctx context.Context, in *CreateRouteRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing route with new configuration parameters.
 	Update(ctx context.Context, in *UpdateRouteRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a route by its ID.
 	Delete(ctx context.Context, in *DeleteRouteRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -106,11 +112,17 @@ func (c *routeServiceClient) Delete(ctx context.Context, in *DeleteRouteRequest,
 // All implementations should embed UnimplementedRouteServiceServer
 // for forward compatibility
 type RouteServiceServer interface {
+	// Retrieves a route by its ID.
 	Get(context.Context, *GetRouteRequest) (*Route, error)
+	// Retrieves a route by its name within a specified route table.
 	GetByName(context.Context, *GetRouteByNameRequest) (*Route, error)
+	// Lists routes in a specified route table.
 	List(context.Context, *ListRoutesRequest) (*ListRoutesResponse, error)
+	// Creates a new route with the specified configuration.
 	Create(context.Context, *CreateRouteRequest) (*v1.Operation, error)
+	// Updates an existing route with new configuration parameters.
 	Update(context.Context, *UpdateRouteRequest) (*v1.Operation, error)
+	// Deletes a route by its ID.
 	Delete(context.Context, *DeleteRouteRequest) (*v1.Operation, error)
 }
 
