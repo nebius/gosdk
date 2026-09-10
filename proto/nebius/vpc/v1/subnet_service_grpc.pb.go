@@ -33,12 +33,19 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SubnetServiceClient interface {
+	// Retrieves a subnet by its ID.
 	Get(ctx context.Context, in *GetSubnetRequest, opts ...grpc.CallOption) (*Subnet, error)
+	// Retrieves a subnet by its name within a specified parent.
 	GetByName(ctx context.Context, in *GetSubnetByNameRequest, opts ...grpc.CallOption) (*Subnet, error)
+	// Lists subnets within a specified parent.
 	List(ctx context.Context, in *ListSubnetsRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error)
+	// Lists subnets that belong to a specified network.
 	ListByNetwork(ctx context.Context, in *ListSubnetsByNetworkRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error)
+	// Creates a new subnet with the specified configuration.
 	Create(ctx context.Context, in *CreateSubnetRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing subnet with new configuration parameters.
 	Update(ctx context.Context, in *UpdateSubnetRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a subnet by its ID.
 	Delete(ctx context.Context, in *DeleteSubnetRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -117,12 +124,19 @@ func (c *subnetServiceClient) Delete(ctx context.Context, in *DeleteSubnetReques
 // All implementations should embed UnimplementedSubnetServiceServer
 // for forward compatibility
 type SubnetServiceServer interface {
+	// Retrieves a subnet by its ID.
 	Get(context.Context, *GetSubnetRequest) (*Subnet, error)
+	// Retrieves a subnet by its name within a specified parent.
 	GetByName(context.Context, *GetSubnetByNameRequest) (*Subnet, error)
+	// Lists subnets within a specified parent.
 	List(context.Context, *ListSubnetsRequest) (*ListSubnetsResponse, error)
+	// Lists subnets that belong to a specified network.
 	ListByNetwork(context.Context, *ListSubnetsByNetworkRequest) (*ListSubnetsResponse, error)
+	// Creates a new subnet with the specified configuration.
 	Create(context.Context, *CreateSubnetRequest) (*v1.Operation, error)
+	// Updates an existing subnet with new configuration parameters.
 	Update(context.Context, *UpdateSubnetRequest) (*v1.Operation, error)
+	// Deletes a subnet by its ID.
 	Delete(context.Context, *DeleteSubnetRequest) (*v1.Operation, error)
 }
 

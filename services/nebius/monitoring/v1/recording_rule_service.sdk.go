@@ -29,6 +29,7 @@ const RecordingRuleServiceID conn.ServiceID = "nebius.monitoring.v1.RecordingRul
 
 type RecordingRuleService interface {
 	Get(context.Context, *v1.GetRecordingRuleRequest, ...grpc.CallOption) (*v1.RecordingRule, error)
+	GetByName(context.Context, *v1.GetRecordingRuleByNameRequest, ...grpc.CallOption) (*v1.RecordingRule, error)
 	List(context.Context, *v1.ListRecordingRulesRequest, ...grpc.CallOption) (*v1.ListRecordingRulesResponse, error)
 	Filter(context.Context, *v1.ListRecordingRulesRequest, ...grpc.CallOption) iter.Seq2[*v1.RecordingRule, error]
 	Create(context.Context, *v1.CreateRecordingRuleRequest, ...grpc.CallOption) (*alphaops.Operation, error)
@@ -63,19 +64,48 @@ func (s recordingRuleService) Get(ctx context.Context, request *v1.GetRecordingR
 	return v1.NewRecordingRuleServiceClient(con).Get(ctx, request, opts...)
 }
 
+func (s recordingRuleService) GetByName(ctx context.Context, request *v1.GetRecordingRuleByNameRequest, opts ...grpc.CallOption) (
+	*v1.RecordingRule,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, RecordingRuleServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewRecordingRuleServiceClient(con).GetByName(ctx, request, opts...)
+}
+
 func (s recordingRuleService) List(ctx context.Context, request *v1.ListRecordingRulesRequest, opts ...grpc.CallOption) (
 	*v1.ListRecordingRulesResponse,
 	error,
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 					request.ParentId = tenantID
 				}
 			}
@@ -123,7 +153,7 @@ func (s recordingRuleService) Create(ctx context.Context, request *v1.CreateReco
 ) {
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -133,7 +163,7 @@ func (s recordingRuleService) Create(ctx context.Context, request *v1.CreateReco
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}

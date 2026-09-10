@@ -219,6 +219,50 @@ func (c *MockRecordingRuleServiceGetCall) DoAndReturn(f func(context.Context, *v
 	return c
 }
 
+// GetByName mocks base method.
+func (m *MockRecordingRuleService) GetByName(arg0 context.Context, arg1 *v1.GetRecordingRuleByNameRequest, arg2 ...grpc.CallOption) (*v1.RecordingRule, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetByName", varargs...)
+	ret0, _ := ret[0].(*v1.RecordingRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByName indicates an expected call of GetByName.
+func (mr *MockRecordingRuleServiceMockRecorder) GetByName(arg0, arg1 any, arg2 ...any) *MockRecordingRuleServiceGetByNameCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByName", reflect.TypeOf((*MockRecordingRuleService)(nil).GetByName), varargs...)
+	return &MockRecordingRuleServiceGetByNameCall{Call: call}
+}
+
+// MockRecordingRuleServiceGetByNameCall wrap *gomock.Call
+type MockRecordingRuleServiceGetByNameCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockRecordingRuleServiceGetByNameCall) Return(arg0 *v1.RecordingRule, arg1 error) *MockRecordingRuleServiceGetByNameCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockRecordingRuleServiceGetByNameCall) Do(f func(context.Context, *v1.GetRecordingRuleByNameRequest, ...grpc.CallOption) (*v1.RecordingRule, error)) *MockRecordingRuleServiceGetByNameCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockRecordingRuleServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.GetRecordingRuleByNameRequest, ...grpc.CallOption) (*v1.RecordingRule, error)) *MockRecordingRuleServiceGetByNameCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // GetOperation mocks base method.
 func (m *MockRecordingRuleService) GetOperation(arg0 context.Context, arg1 *v1alpha1.GetOperationRequest, arg2 ...grpc.CallOption) (*alphaops.Operation, error) {
 	m.ctrl.T.Helper()

@@ -74,7 +74,7 @@ func (x *GetRecordingRuleRequest) GetId() string {
 // Request to list recording rules.
 type ListRecordingRulesRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// ID of the parent workspace.
+	// ID of the parent.
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Maximum number of recording rules to return.
 	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
@@ -135,6 +135,60 @@ func (x *ListRecordingRulesRequest) GetPageToken() string {
 	return ""
 }
 
+type GetRecordingRuleByNameRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the parent.
+	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	// Resource name, not the recorded metric name.
+	Name          string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetRecordingRuleByNameRequest) Reset() {
+	*x = GetRecordingRuleByNameRequest{}
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRecordingRuleByNameRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRecordingRuleByNameRequest) ProtoMessage() {}
+
+func (x *GetRecordingRuleByNameRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRecordingRuleByNameRequest.ProtoReflect.Descriptor instead.
+func (*GetRecordingRuleByNameRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetRecordingRuleByNameRequest) GetParentId() string {
+	if x != nil {
+		return x.ParentId
+	}
+	return ""
+}
+
+func (x *GetRecordingRuleByNameRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 // Response containing recording rules under the specified parent.
 type ListRecordingRulesResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -148,7 +202,7 @@ type ListRecordingRulesResponse struct {
 
 func (x *ListRecordingRulesResponse) Reset() {
 	*x = ListRecordingRulesResponse{}
-	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[2]
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -160,7 +214,7 @@ func (x *ListRecordingRulesResponse) String() string {
 func (*ListRecordingRulesResponse) ProtoMessage() {}
 
 func (x *ListRecordingRulesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[2]
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -173,7 +227,7 @@ func (x *ListRecordingRulesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRecordingRulesResponse.ProtoReflect.Descriptor instead.
 func (*ListRecordingRulesResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{2}
+	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListRecordingRulesResponse) GetItems() []*RecordingRule {
@@ -203,7 +257,7 @@ type CreateRecordingRuleRequest struct {
 
 func (x *CreateRecordingRuleRequest) Reset() {
 	*x = CreateRecordingRuleRequest{}
-	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[3]
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -215,7 +269,7 @@ func (x *CreateRecordingRuleRequest) String() string {
 func (*CreateRecordingRuleRequest) ProtoMessage() {}
 
 func (x *CreateRecordingRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[3]
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -228,7 +282,7 @@ func (x *CreateRecordingRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRecordingRuleRequest.ProtoReflect.Descriptor instead.
 func (*CreateRecordingRuleRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CreateRecordingRuleRequest) GetMetadata() *v1.ResourceMetadata {
@@ -258,7 +312,7 @@ type UpdateRecordingRuleRequest struct {
 
 func (x *UpdateRecordingRuleRequest) Reset() {
 	*x = UpdateRecordingRuleRequest{}
-	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[4]
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -270,7 +324,7 @@ func (x *UpdateRecordingRuleRequest) String() string {
 func (*UpdateRecordingRuleRequest) ProtoMessage() {}
 
 func (x *UpdateRecordingRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[4]
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -283,7 +337,7 @@ func (x *UpdateRecordingRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRecordingRuleRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRecordingRuleRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *UpdateRecordingRuleRequest) GetMetadata() *v1.ResourceMetadata {
@@ -311,7 +365,7 @@ type DeleteRecordingRuleRequest struct {
 
 func (x *DeleteRecordingRuleRequest) Reset() {
 	*x = DeleteRecordingRuleRequest{}
-	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[5]
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -323,7 +377,7 @@ func (x *DeleteRecordingRuleRequest) String() string {
 func (*DeleteRecordingRuleRequest) ProtoMessage() {}
 
 func (x *DeleteRecordingRuleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[5]
+	mi := &file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -336,7 +390,7 @@ func (x *DeleteRecordingRuleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRecordingRuleRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRecordingRuleRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteRecordingRuleRequest) GetId() string {
@@ -352,25 +406,31 @@ const file_nebius_monitoring_v1_recording_rule_service_proto_rawDesc = "" +
 	"\n" +
 	"1nebius/monitoring/v1/recording_rule_service.proto\x12\x14nebius.monitoring.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a&nebius/common/v1alpha1/operation.proto\x1a)nebius/monitoring/v1/recording_rule.proto\"1\n" +
 	"\x17GetRecordingRuleRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"|\n" +
-	"\x19ListRecordingRulesRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x88\x01\n" +
+	"\x19ListRecordingRulesRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\x7f\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"l\n" +
+	"\x1dGetRecordingRuleByNameRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1a\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\x7f\n" +
 	"\x1aListRecordingRulesResponse\x129\n" +
 	"\x05items\x18\x01 \x03(\v2#.nebius.monitoring.v1.RecordingRuleR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa9\x01\n" +
-	"\x1aCreateRecordingRuleRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12C\n" +
-	"\x04spec\x18\x02 \x01(\v2'.nebius.monitoring.v1.RecordingRuleSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xa1\x01\n" +
-	"\x1aUpdateRecordingRuleRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12;\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xb5\x01\n" +
+	"\x1aCreateRecordingRuleRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12C\n" +
+	"\x04spec\x18\x02 \x01(\v2'.nebius.monitoring.v1.RecordingRuleSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xad\x01\n" +
+	"\x1aUpdateRecordingRuleRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.monitoring.v1.RecordingRuleSpecR\x04spec\"4\n" +
 	"\x1aDeleteRecordingRuleRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\x88\x04\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id2\xef\x04\n" +
 	"\x14RecordingRuleService\x12Y\n" +
-	"\x03Get\x12-.nebius.monitoring.v1.GetRecordingRuleRequest\x1a#.nebius.monitoring.v1.RecordingRule\x12i\n" +
+	"\x03Get\x12-.nebius.monitoring.v1.GetRecordingRuleRequest\x1a#.nebius.monitoring.v1.RecordingRule\x12e\n" +
+	"\tGetByName\x123.nebius.monitoring.v1.GetRecordingRuleByNameRequest\x1a#.nebius.monitoring.v1.RecordingRule\x12i\n" +
 	"\x04List\x12/.nebius.monitoring.v1.ListRecordingRulesRequest\x1a0.nebius.monitoring.v1.ListRecordingRulesResponse\x12]\n" +
 	"\x06Create\x120.nebius.monitoring.v1.CreateRecordingRuleRequest\x1a!.nebius.common.v1alpha1.Operation\x12]\n" +
 	"\x06Update\x120.nebius.monitoring.v1.UpdateRecordingRuleRequest\x1a!.nebius.common.v1alpha1.Operation\x12]\n" +
@@ -390,37 +450,40 @@ func file_nebius_monitoring_v1_recording_rule_service_proto_rawDescGZIP() []byte
 	return file_nebius_monitoring_v1_recording_rule_service_proto_rawDescData
 }
 
-var file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_nebius_monitoring_v1_recording_rule_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_nebius_monitoring_v1_recording_rule_service_proto_goTypes = []any{
-	(*GetRecordingRuleRequest)(nil),    // 0: nebius.monitoring.v1.GetRecordingRuleRequest
-	(*ListRecordingRulesRequest)(nil),  // 1: nebius.monitoring.v1.ListRecordingRulesRequest
-	(*ListRecordingRulesResponse)(nil), // 2: nebius.monitoring.v1.ListRecordingRulesResponse
-	(*CreateRecordingRuleRequest)(nil), // 3: nebius.monitoring.v1.CreateRecordingRuleRequest
-	(*UpdateRecordingRuleRequest)(nil), // 4: nebius.monitoring.v1.UpdateRecordingRuleRequest
-	(*DeleteRecordingRuleRequest)(nil), // 5: nebius.monitoring.v1.DeleteRecordingRuleRequest
-	(*RecordingRule)(nil),              // 6: nebius.monitoring.v1.RecordingRule
-	(*v1.ResourceMetadata)(nil),        // 7: nebius.common.v1.ResourceMetadata
-	(*RecordingRuleSpec)(nil),          // 8: nebius.monitoring.v1.RecordingRuleSpec
-	(*v1alpha1.Operation)(nil),         // 9: nebius.common.v1alpha1.Operation
+	(*GetRecordingRuleRequest)(nil),       // 0: nebius.monitoring.v1.GetRecordingRuleRequest
+	(*ListRecordingRulesRequest)(nil),     // 1: nebius.monitoring.v1.ListRecordingRulesRequest
+	(*GetRecordingRuleByNameRequest)(nil), // 2: nebius.monitoring.v1.GetRecordingRuleByNameRequest
+	(*ListRecordingRulesResponse)(nil),    // 3: nebius.monitoring.v1.ListRecordingRulesResponse
+	(*CreateRecordingRuleRequest)(nil),    // 4: nebius.monitoring.v1.CreateRecordingRuleRequest
+	(*UpdateRecordingRuleRequest)(nil),    // 5: nebius.monitoring.v1.UpdateRecordingRuleRequest
+	(*DeleteRecordingRuleRequest)(nil),    // 6: nebius.monitoring.v1.DeleteRecordingRuleRequest
+	(*RecordingRule)(nil),                 // 7: nebius.monitoring.v1.RecordingRule
+	(*v1.ResourceMetadata)(nil),           // 8: nebius.common.v1.ResourceMetadata
+	(*RecordingRuleSpec)(nil),             // 9: nebius.monitoring.v1.RecordingRuleSpec
+	(*v1alpha1.Operation)(nil),            // 10: nebius.common.v1alpha1.Operation
 }
 var file_nebius_monitoring_v1_recording_rule_service_proto_depIdxs = []int32{
-	6,  // 0: nebius.monitoring.v1.ListRecordingRulesResponse.items:type_name -> nebius.monitoring.v1.RecordingRule
-	7,  // 1: nebius.monitoring.v1.CreateRecordingRuleRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8,  // 2: nebius.monitoring.v1.CreateRecordingRuleRequest.spec:type_name -> nebius.monitoring.v1.RecordingRuleSpec
-	7,  // 3: nebius.monitoring.v1.UpdateRecordingRuleRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8,  // 4: nebius.monitoring.v1.UpdateRecordingRuleRequest.spec:type_name -> nebius.monitoring.v1.RecordingRuleSpec
+	7,  // 0: nebius.monitoring.v1.ListRecordingRulesResponse.items:type_name -> nebius.monitoring.v1.RecordingRule
+	8,  // 1: nebius.monitoring.v1.CreateRecordingRuleRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	9,  // 2: nebius.monitoring.v1.CreateRecordingRuleRequest.spec:type_name -> nebius.monitoring.v1.RecordingRuleSpec
+	8,  // 3: nebius.monitoring.v1.UpdateRecordingRuleRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	9,  // 4: nebius.monitoring.v1.UpdateRecordingRuleRequest.spec:type_name -> nebius.monitoring.v1.RecordingRuleSpec
 	0,  // 5: nebius.monitoring.v1.RecordingRuleService.Get:input_type -> nebius.monitoring.v1.GetRecordingRuleRequest
-	1,  // 6: nebius.monitoring.v1.RecordingRuleService.List:input_type -> nebius.monitoring.v1.ListRecordingRulesRequest
-	3,  // 7: nebius.monitoring.v1.RecordingRuleService.Create:input_type -> nebius.monitoring.v1.CreateRecordingRuleRequest
-	4,  // 8: nebius.monitoring.v1.RecordingRuleService.Update:input_type -> nebius.monitoring.v1.UpdateRecordingRuleRequest
-	5,  // 9: nebius.monitoring.v1.RecordingRuleService.Delete:input_type -> nebius.monitoring.v1.DeleteRecordingRuleRequest
-	6,  // 10: nebius.monitoring.v1.RecordingRuleService.Get:output_type -> nebius.monitoring.v1.RecordingRule
-	2,  // 11: nebius.monitoring.v1.RecordingRuleService.List:output_type -> nebius.monitoring.v1.ListRecordingRulesResponse
-	9,  // 12: nebius.monitoring.v1.RecordingRuleService.Create:output_type -> nebius.common.v1alpha1.Operation
-	9,  // 13: nebius.monitoring.v1.RecordingRuleService.Update:output_type -> nebius.common.v1alpha1.Operation
-	9,  // 14: nebius.monitoring.v1.RecordingRuleService.Delete:output_type -> nebius.common.v1alpha1.Operation
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
+	2,  // 6: nebius.monitoring.v1.RecordingRuleService.GetByName:input_type -> nebius.monitoring.v1.GetRecordingRuleByNameRequest
+	1,  // 7: nebius.monitoring.v1.RecordingRuleService.List:input_type -> nebius.monitoring.v1.ListRecordingRulesRequest
+	4,  // 8: nebius.monitoring.v1.RecordingRuleService.Create:input_type -> nebius.monitoring.v1.CreateRecordingRuleRequest
+	5,  // 9: nebius.monitoring.v1.RecordingRuleService.Update:input_type -> nebius.monitoring.v1.UpdateRecordingRuleRequest
+	6,  // 10: nebius.monitoring.v1.RecordingRuleService.Delete:input_type -> nebius.monitoring.v1.DeleteRecordingRuleRequest
+	7,  // 11: nebius.monitoring.v1.RecordingRuleService.Get:output_type -> nebius.monitoring.v1.RecordingRule
+	7,  // 12: nebius.monitoring.v1.RecordingRuleService.GetByName:output_type -> nebius.monitoring.v1.RecordingRule
+	3,  // 13: nebius.monitoring.v1.RecordingRuleService.List:output_type -> nebius.monitoring.v1.ListRecordingRulesResponse
+	10, // 14: nebius.monitoring.v1.RecordingRuleService.Create:output_type -> nebius.common.v1alpha1.Operation
+	10, // 15: nebius.monitoring.v1.RecordingRuleService.Update:output_type -> nebius.common.v1alpha1.Operation
+	10, // 16: nebius.monitoring.v1.RecordingRuleService.Delete:output_type -> nebius.common.v1alpha1.Operation
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -438,7 +501,7 @@ func file_nebius_monitoring_v1_recording_rule_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_monitoring_v1_recording_rule_service_proto_rawDesc), len(file_nebius_monitoring_v1_recording_rule_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

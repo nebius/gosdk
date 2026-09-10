@@ -25,8 +25,9 @@ const (
 )
 
 type GetNetworkRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the network.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -70,8 +71,9 @@ func (x *GetNetworkRequest) GetId() string {
 
 type GetNetworkByNameRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// ID of the project.
-	ParentId      string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	// ID of the parent project.
+	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	// Name of the network.
 	Name          string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -123,9 +125,11 @@ func (x *GetNetworkByNameRequest) GetName() string {
 
 type ListNetworksRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// ID of the project.
-	ParentId      string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	PageSize      int64  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// ID of the parent project.
+	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	// Maximum number of networks to return.
+	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Token to retrieve the next page of networks.
 	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -235,9 +239,11 @@ func (x *ListNetworksResponse) GetNextPageToken() string {
 }
 
 type CreateNetworkRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *NetworkSpec           `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Metadata of the network.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Specification of the network.
+	Spec          *NetworkSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -287,8 +293,9 @@ func (x *CreateNetworkRequest) GetSpec() *NetworkSpec {
 }
 
 type CreateDefaultNetworkRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Metadata of the default network.
+	Metadata      *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -331,9 +338,11 @@ func (x *CreateDefaultNetworkRequest) GetMetadata() *v1.ResourceMetadata {
 }
 
 type UpdateNetworkRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec          *NetworkSpec           `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Updated metadata of the network.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Updated specification of the network.
+	Spec          *NetworkSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -383,8 +392,9 @@ func (x *UpdateNetworkRequest) GetSpec() *NetworkSpec {
 }
 
 type DeleteNetworkRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the network.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

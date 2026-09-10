@@ -101,13 +101,13 @@ func (s transferService) List(ctx context.Context, request *v1.ListTransfersRequ
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 					request.ParentId = tenantID
 				}
 			}
@@ -155,7 +155,7 @@ func (s transferService) Create(ctx context.Context, request *v1.CreateTransferR
 ) {
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -165,7 +165,7 @@ func (s transferService) Create(ctx context.Context, request *v1.CreateTransferR
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}

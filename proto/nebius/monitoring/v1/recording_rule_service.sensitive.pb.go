@@ -8,6 +8,9 @@ package v1
 // func (x *ListRecordingRulesRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListRecordingRulesRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *GetRecordingRuleByNameRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *GetRecordingRuleByNameRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ListRecordingRulesResponse) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListRecordingRulesResponse) LogValue() slog.Value // is not generated as no sensitive fields found
 

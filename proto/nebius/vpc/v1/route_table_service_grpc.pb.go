@@ -33,12 +33,19 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RouteTableServiceClient interface {
+	// Retrieves a route table by its ID.
 	Get(ctx context.Context, in *GetRouteTableRequest, opts ...grpc.CallOption) (*RouteTable, error)
+	// Retrieves a route table by its name within a specified parent.
 	GetByName(ctx context.Context, in *GetRouteTableByNameRequest, opts ...grpc.CallOption) (*RouteTable, error)
+	// Lists route tables within a specified parent.
 	List(ctx context.Context, in *ListRouteTablesRequest, opts ...grpc.CallOption) (*ListRouteTablesResponse, error)
+	// Lists route tables that belong to a specified network.
 	ListByNetwork(ctx context.Context, in *ListRouteTablesByNetworkRequest, opts ...grpc.CallOption) (*ListRouteTablesResponse, error)
+	// Creates a new route table with the specified configuration.
 	Create(ctx context.Context, in *CreateRouteTableRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing route table with new configuration parameters.
 	Update(ctx context.Context, in *UpdateRouteTableRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a route table by its ID.
 	Delete(ctx context.Context, in *DeleteRouteTableRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -117,12 +124,19 @@ func (c *routeTableServiceClient) Delete(ctx context.Context, in *DeleteRouteTab
 // All implementations should embed UnimplementedRouteTableServiceServer
 // for forward compatibility
 type RouteTableServiceServer interface {
+	// Retrieves a route table by its ID.
 	Get(context.Context, *GetRouteTableRequest) (*RouteTable, error)
+	// Retrieves a route table by its name within a specified parent.
 	GetByName(context.Context, *GetRouteTableByNameRequest) (*RouteTable, error)
+	// Lists route tables within a specified parent.
 	List(context.Context, *ListRouteTablesRequest) (*ListRouteTablesResponse, error)
+	// Lists route tables that belong to a specified network.
 	ListByNetwork(context.Context, *ListRouteTablesByNetworkRequest) (*ListRouteTablesResponse, error)
+	// Creates a new route table with the specified configuration.
 	Create(context.Context, *CreateRouteTableRequest) (*v1.Operation, error)
+	// Updates an existing route table with new configuration parameters.
 	Update(context.Context, *UpdateRouteTableRequest) (*v1.Operation, error)
+	// Deletes a route table by its ID.
 	Delete(context.Context, *DeleteRouteTableRequest) (*v1.Operation, error)
 }
 

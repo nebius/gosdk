@@ -1852,9 +1852,9 @@ var File_nebius_storage_v1_transfer_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_transfer_proto_rawDesc = "" +
 	"\n" +
-	" nebius/storage/v1/transfer.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xd0\x01\n" +
-	"\bTransfer\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12;\n" +
+	" nebius/storage/v1/transfer.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xdc\x01\n" +
+	"\bTransfer\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.storage.v1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12?\n" +
 	"\x06status\x18\x03 \x01(\v2!.nebius.storage.v1.TransferStatusB\x04\xbaJ\x01\x05R\x06status\"\x8f\n" +
 	"\n" +

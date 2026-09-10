@@ -33,13 +33,19 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SecurityGroupServiceClient interface {
+	// Retrieves a security group by its ID.
 	Get(ctx context.Context, in *GetSecurityGroupRequest, opts ...grpc.CallOption) (*SecurityGroup, error)
+	// Retrieves a security group by its name within a specified parent.
 	GetByName(ctx context.Context, in *GetSecurityGroupByNameRequest, opts ...grpc.CallOption) (*SecurityGroup, error)
+	// Lists security groups within a specified parent.
 	List(ctx context.Context, in *ListSecurityGroupsRequest, opts ...grpc.CallOption) (*ListSecurityGroupsResponse, error)
-	// Lists security groups in a specific network.
+	// Lists security groups in a specified network.
 	ListByNetwork(ctx context.Context, in *ListSecurityGroupsByNetworkRequest, opts ...grpc.CallOption) (*ListSecurityGroupsResponse, error)
+	// Creates a new security group with the specified configuration.
 	Create(ctx context.Context, in *CreateSecurityGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing security group with new configuration parameters.
 	Update(ctx context.Context, in *UpdateSecurityGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a security group by its ID.
 	Delete(ctx context.Context, in *DeleteSecurityGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -118,13 +124,19 @@ func (c *securityGroupServiceClient) Delete(ctx context.Context, in *DeleteSecur
 // All implementations should embed UnimplementedSecurityGroupServiceServer
 // for forward compatibility
 type SecurityGroupServiceServer interface {
+	// Retrieves a security group by its ID.
 	Get(context.Context, *GetSecurityGroupRequest) (*SecurityGroup, error)
+	// Retrieves a security group by its name within a specified parent.
 	GetByName(context.Context, *GetSecurityGroupByNameRequest) (*SecurityGroup, error)
+	// Lists security groups within a specified parent.
 	List(context.Context, *ListSecurityGroupsRequest) (*ListSecurityGroupsResponse, error)
-	// Lists security groups in a specific network.
+	// Lists security groups in a specified network.
 	ListByNetwork(context.Context, *ListSecurityGroupsByNetworkRequest) (*ListSecurityGroupsResponse, error)
+	// Creates a new security group with the specified configuration.
 	Create(context.Context, *CreateSecurityGroupRequest) (*v1.Operation, error)
+	// Updates an existing security group with new configuration parameters.
 	Update(context.Context, *UpdateSecurityGroupRequest) (*v1.Operation, error)
+	// Deletes a security group by its ID.
 	Delete(context.Context, *DeleteSecurityGroupRequest) (*v1.Operation, error)
 }
 

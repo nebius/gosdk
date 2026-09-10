@@ -32,11 +32,17 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SecurityRuleServiceClient interface {
+	// Retrieves a security rule by its ID.
 	Get(ctx context.Context, in *GetSecurityRuleRequest, opts ...grpc.CallOption) (*SecurityRule, error)
+	// Retrieves a security rule by its name within a specified security group.
 	GetByName(ctx context.Context, in *GetSecurityRuleByNameRequest, opts ...grpc.CallOption) (*SecurityRule, error)
+	// Lists security rules in a specified security group.
 	List(ctx context.Context, in *ListSecurityRulesRequest, opts ...grpc.CallOption) (*ListSecurityRulesResponse, error)
+	// Creates a new security rule with the specified configuration.
 	Create(ctx context.Context, in *CreateSecurityRuleRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Updates an existing security rule with new configuration parameters.
 	Update(ctx context.Context, in *UpdateSecurityRuleRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	// Deletes a security rule by its ID.
 	Delete(ctx context.Context, in *DeleteSecurityRuleRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 }
 
@@ -106,11 +112,17 @@ func (c *securityRuleServiceClient) Delete(ctx context.Context, in *DeleteSecuri
 // All implementations should embed UnimplementedSecurityRuleServiceServer
 // for forward compatibility
 type SecurityRuleServiceServer interface {
+	// Retrieves a security rule by its ID.
 	Get(context.Context, *GetSecurityRuleRequest) (*SecurityRule, error)
+	// Retrieves a security rule by its name within a specified security group.
 	GetByName(context.Context, *GetSecurityRuleByNameRequest) (*SecurityRule, error)
+	// Lists security rules in a specified security group.
 	List(context.Context, *ListSecurityRulesRequest) (*ListSecurityRulesResponse, error)
+	// Creates a new security rule with the specified configuration.
 	Create(context.Context, *CreateSecurityRuleRequest) (*v1.Operation, error)
+	// Updates an existing security rule with new configuration parameters.
 	Update(context.Context, *UpdateSecurityRuleRequest) (*v1.Operation, error)
+	// Deletes a security rule by its ID.
 	Delete(context.Context, *DeleteSecurityRuleRequest) (*v1.Operation, error)
 }
 

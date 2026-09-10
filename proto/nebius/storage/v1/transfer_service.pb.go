@@ -556,17 +556,18 @@ const file_nebius_storage_v1_transfer_service_proto_rawDesc = "" +
 	"(nebius/storage/v1/transfer_service.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a nebius/storage/v1/transfer.proto\"@\n" +
 	"\x12GetTransferRequest\x12*\n" +
 	"\x02id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
-	"\x0fstoragetransferR\x02id\"w\n" +
-	"\x14ListTransfersRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\x0fstoragetransferR\x02id\"\x83\x01\n" +
+	"\x14ListTransfersRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"r\n" +
 	"\x15ListTransfersResponse\x121\n" +
 	"\x05items\x18\x01 \x03(\v2\x1b.nebius.storage.v1.TransferR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x9c\x01\n" +
-	"\x15CreateTransferRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12;\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa8\x01\n" +
+	"\x15CreateTransferRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.storage.v1.TransferSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\x9c\x01\n" +
 	"\x15UpdateTransferRequest\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12;\n" +

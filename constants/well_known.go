@@ -9,6 +9,7 @@ const (
 	MethodListAggregated = "ListAggregated"
 	MethodCreate         = "Create"
 	MethodDelete         = "Delete"
+	MethodPreflightCheck = "PreflightCheck"
 	MethodUpdate         = "Update"
 )
 
@@ -24,19 +25,23 @@ const (
 	FieldLabelsAll       = "labels_all"
 
 	FieldSpec        = "spec"
+	FieldContext     = "context"
 	FieldStatus      = "status"
 	FieldMetadata    = "metadata"
 	FieldWellKnownID = "well_known_id"
 )
 
 const (
-	AlphaOperationMessageFilePath = "nebius/common/v1alpha1/operation.proto"
-	AlphaOperationMessageFullName = "nebius.common.v1alpha1.Operation"
-	OperationMessageFilePath      = "nebius/common/v1/operation.proto"
-	OperationMessageFullName      = "nebius.common.v1.Operation"
-	MetadataMessageFullName       = "nebius.common.v1.ResourceMetadata"
-	GetByNameRequestFullName      = "nebius.common.v1.GetByNameRequest"
-	ServiceSuffix                 = "Service"
+	AlphaOperationMessageFilePath           = "nebius/common/v1alpha1/operation.proto"
+	AlphaOperationMessageFullName           = "nebius.common.v1alpha1.Operation"
+	OperationMessageFilePath                = "nebius/common/v1/operation.proto"
+	OperationMessageFullName                = "nebius.common.v1.Operation"
+	MetadataMessageFullName                 = "nebius.common.v1.ResourceMetadata"
+	PreflightCheckContextMessageFullName    = "nebius.common.v1.PreflightCheckContext"
+	PreflightCheckDiagnosticMessageFullName = "nebius.common.v1.PreflightCheckDiagnostic"
+	PreflightCheckResultMessageFullName     = "nebius.common.v1.PreflightCheckResult"
+	GetByNameRequestFullName                = "nebius.common.v1.GetByNameRequest"
+	ServiceSuffix                           = "Service"
 )
 
 var MetadataUnwrapped = []protoreflect.Name{

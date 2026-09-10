@@ -13,6 +13,8 @@ import (
 
 // CachedServiceTokener is a [BearerTokener] decorator that enhances its functionality
 // with [BearerToken] caching and automatic background refresh to ensure that token is always valid.
+// Callers can cancel their wait independently. Shared acquisition preserves the first
+// caller's context values and uses WithCachedTokenerAcquireTimeout instead of its deadline.
 //
 // Recommended parameters from the IAM team:
 //   - lifetime: 0.9 of token lifespan (90% of the token lifespan)
@@ -26,6 +28,7 @@ type CachedServiceTokener struct {
 	initialRetry    time.Duration
 	retryMultiplier float64
 	maxRetry        time.Duration
+	acquireTimeout  time.Duration
 	ticker          *time.Ticker
 	now             func() time.Time
 	group           singleflight.Group
@@ -49,6 +52,8 @@ const (
 	defaultCachedTokenerRetryMultiplier = 1.5
 	// Recommended by the IAM team: cap retry delay at 1 minute.
 	defaultCachedTokenerMaxRetry = time.Minute
+	// Match the Python SDK token refresh request timeout.
+	defaultCachedTokenerAcquireTimeout = 5 * time.Second
 )
 
 func newStoppedTicker() *time.Ticker {
@@ -93,6 +98,15 @@ func WithCachedTokenerMaxRetry(maxRetry time.Duration) Option {
 	})
 }
 
+// WithCachedTokenerAcquireTimeout bounds each shared token acquisition independently
+// of caller deadlines. Non-positive values use the default of 5 seconds.
+// Use a longer timeout for interactive federation login.
+func WithCachedTokenerAcquireTimeout(timeout time.Duration) Option {
+	return CachedTokenerOptionFunc(func(c *CachedServiceTokener) {
+		c.acquireTimeout = timeout
+	})
+}
+
 func NewCachedTokener(tokener BearerTokener, opts ...Option) *CachedServiceTokener {
 	c := &CachedServiceTokener{
 		tokener:         tokener,
@@ -121,6 +135,9 @@ func NewCachedTokener(tokener BearerTokener, opts ...Option) *CachedServiceToken
 	}
 	if c.maxRetry <= 0 {
 		c.maxRetry = defaultCachedTokenerMaxRetry
+	}
+	if c.acquireTimeout <= 0 {
+		c.acquireTimeout = defaultCachedTokenerAcquireTimeout
 	}
 	if c.logger == nil {
 		c.logger = slog.New(slog.DiscardHandler)
@@ -292,28 +309,47 @@ func (c *CachedServiceTokener) getToken() (*BearerToken, time.Time, int) {
 }
 
 func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool) (BearerToken, error) {
-	res, err, _ := c.group.Do("", func() (any, error) {
+	if err := ctx.Err(); err != nil {
+		return BearerToken{}, err
+	}
+
+	resultCh := c.group.DoChan("", func() (any, error) {
+		// A previous flight may have populated the cache before this caller joined.
+		if !background {
+			if token, _, _ := c.getToken(); token != nil {
+				return *token, nil
+			}
+		}
+		// A caller can stop waiting without canceling acquisition for other callers.
+		acquireCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), c.acquireTimeout)
+		defer cancel()
+
 		start := c.now()
 		now := c.now()
-		token, err := c.tokener.BearerToken(contextWithTokenAcquireAttempt(ctx, c.acquireAttempt(background)))
+		token, err := c.tokener.BearerToken(contextWithTokenAcquireAttempt(acquireCtx, c.acquireAttempt(background)))
 		if err != nil {
-			c.recordRequestError(ctx, background, start)
+			c.recordRequestError(acquireCtx, background, start)
 			return nil, err
 		}
 
-		refreshAfter := c.refreshDelay(ctx, token, now)
+		refreshAfter := c.refreshDelay(acquireCtx, token, now)
 		c.storeToken(token, now, refreshAfter)
 		if refreshAfter > 0 {
 			c.ticker.Reset(refreshAfter)
 		}
-		c.recordRequestSuccess(ctx, background, start)
+		c.recordRequestSuccess(acquireCtx, background, start)
 		return token, nil
 	})
-	if err != nil {
-		return BearerToken{}, err
-	}
 
-	return res.(BearerToken), nil //nolint:errcheck // ok to panic
+	select {
+	case <-ctx.Done():
+		return BearerToken{}, ctx.Err()
+	case result := <-resultCh:
+		if result.Err != nil {
+			return BearerToken{}, result.Err
+		}
+		return result.Val.(BearerToken), nil //nolint:errcheck // ok to panic
+	}
 }
 
 func (c *CachedServiceTokener) recordRequestError(ctx context.Context, background bool, start time.Time) {
