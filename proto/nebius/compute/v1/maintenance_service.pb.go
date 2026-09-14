@@ -67,10 +67,11 @@ func (x *GetMaintenanceEventByInstanceRequest) GetInstanceId() string {
 }
 
 type ListMaintenanceEventsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	PageSize      int64                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Parent ID of maintenance events.
+	ParentId      string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	PageSize      int64  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -182,12 +183,14 @@ var File_nebius_compute_v1_maintenance_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_maintenance_service_proto_rawDesc = "" +
 	"\n" +
-	"+nebius/compute/v1/maintenance_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a)nebius/compute/v1/maintenance_event.proto\"G\n" +
-	"$GetMaintenanceEventByInstanceRequest\x12\x1f\n" +
-	"\vinstance_id\x18\x01 \x01(\tR\n" +
-	"instanceId\"w\n" +
-	"\x1cListMaintenanceEventsRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"+nebius/compute/v1/maintenance_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a)nebius/compute/v1/maintenance_event.proto\"]\n" +
+	"$GetMaintenanceEventByInstanceRequest\x125\n" +
+	"\vinstance_id\x18\x01 \x01(\tB\x14\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\n" +
+	"instanceId\"\x85\x01\n" +
+	"\x1cListMaintenanceEventsRequest\x12)\n" +
+	"\tparent_id\x18\x01 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x03 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x04 \x01(\tR\tpageToken\"\x82\x01\n" +

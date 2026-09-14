@@ -340,6 +340,94 @@ func (x *DeleteClusterRequest) GetId() string {
 	return ""
 }
 
+type StopClusterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StopClusterRequest) Reset() {
+	*x = StopClusterRequest{}
+	mi := &file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StopClusterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StopClusterRequest) ProtoMessage() {}
+
+func (x *StopClusterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StopClusterRequest.ProtoReflect.Descriptor instead.
+func (*StopClusterRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *StopClusterRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type StartClusterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StartClusterRequest) Reset() {
+	*x = StartClusterRequest{}
+	mi := &file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StartClusterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StartClusterRequest) ProtoMessage() {}
+
+func (x *StartClusterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StartClusterRequest.ProtoReflect.Descriptor instead.
+func (*StartClusterRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *StartClusterRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 var File_nebius_msp_mlflow_v1alpha1_cluster_service_proto protoreflect.FileDescriptor
 
 const file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDesc = "" +
@@ -366,13 +454,21 @@ const file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\rmetadata.name\x12!metadata.name should not be empty\x1a\x17has(this.metadata.name)\"9\n" +
 	"\x14DeleteClusterRequest\x12!\n" +
 	"\x02id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +
-	"\x06mlflowR\x02id2\x8a\x04\n" +
+	"\x06mlflowR\x02id\"7\n" +
+	"\x12StopClusterRequest\x12!\n" +
+	"\x02id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +
+	"\x06mlflowR\x02id\"8\n" +
+	"\x13StartClusterRequest\x12!\n" +
+	"\x02id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +
+	"\x06mlflowR\x02id2\xc2\x05\n" +
 	"\x0eClusterService\x12Y\n" +
 	"\x03Get\x12-.nebius.msp.mlflow.v1alpha1.GetClusterRequest\x1a#.nebius.msp.mlflow.v1alpha1.Cluster\x12e\n" +
 	"\tGetByName\x123.nebius.msp.mlflow.v1alpha1.GetClusterByNameRequest\x1a#.nebius.msp.mlflow.v1alpha1.Cluster\x12i\n" +
 	"\x04List\x12/.nebius.msp.mlflow.v1alpha1.ListClustersRequest\x1a0.nebius.msp.mlflow.v1alpha1.ListClustersResponse\x12]\n" +
 	"\x06Create\x120.nebius.msp.mlflow.v1alpha1.CreateClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x12]\n" +
-	"\x06Delete\x120.nebius.msp.mlflow.v1alpha1.DeleteClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x1a\r\xbaJ\n" +
+	"\x06Delete\x120.nebius.msp.mlflow.v1alpha1.DeleteClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x12Y\n" +
+	"\x04Stop\x12..nebius.msp.mlflow.v1alpha1.StopClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x12[\n" +
+	"\x05Start\x12/.nebius.msp.mlflow.v1alpha1.StartClusterRequest\x1a!.nebius.common.v1alpha1.Operation\x1a\r\xbaJ\n" +
 	"mlflow.mspBt\n" +
 	"!ai.nebius.pub.msp.mlflow.v1alpha1B\x13ClusterServiceProtoP\x01Z8github.com/nebius/gosdk/proto/nebius/msp/mlflow/v1alpha1b\x06proto3"
 
@@ -388,7 +484,7 @@ func file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDescGZIP() []byte 
 	return file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDescData
 }
 
-var file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_goTypes = []any{
 	(*GetClusterRequest)(nil),       // 0: nebius.msp.mlflow.v1alpha1.GetClusterRequest
 	(*GetClusterByNameRequest)(nil), // 1: nebius.msp.mlflow.v1alpha1.GetClusterByNameRequest
@@ -396,30 +492,36 @@ var file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_goTypes = []any{
 	(*ListClustersResponse)(nil),    // 3: nebius.msp.mlflow.v1alpha1.ListClustersResponse
 	(*CreateClusterRequest)(nil),    // 4: nebius.msp.mlflow.v1alpha1.CreateClusterRequest
 	(*DeleteClusterRequest)(nil),    // 5: nebius.msp.mlflow.v1alpha1.DeleteClusterRequest
-	(*Cluster)(nil),                 // 6: nebius.msp.mlflow.v1alpha1.Cluster
-	(*v1.ResourceMetadata)(nil),     // 7: nebius.common.v1.ResourceMetadata
-	(*ClusterSpec)(nil),             // 8: nebius.msp.mlflow.v1alpha1.ClusterSpec
-	(*v1alpha1.Operation)(nil),      // 9: nebius.common.v1alpha1.Operation
+	(*StopClusterRequest)(nil),      // 6: nebius.msp.mlflow.v1alpha1.StopClusterRequest
+	(*StartClusterRequest)(nil),     // 7: nebius.msp.mlflow.v1alpha1.StartClusterRequest
+	(*Cluster)(nil),                 // 8: nebius.msp.mlflow.v1alpha1.Cluster
+	(*v1.ResourceMetadata)(nil),     // 9: nebius.common.v1.ResourceMetadata
+	(*ClusterSpec)(nil),             // 10: nebius.msp.mlflow.v1alpha1.ClusterSpec
+	(*v1alpha1.Operation)(nil),      // 11: nebius.common.v1alpha1.Operation
 }
 var file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_depIdxs = []int32{
-	6, // 0: nebius.msp.mlflow.v1alpha1.ListClustersResponse.items:type_name -> nebius.msp.mlflow.v1alpha1.Cluster
-	7, // 1: nebius.msp.mlflow.v1alpha1.CreateClusterRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	8, // 2: nebius.msp.mlflow.v1alpha1.CreateClusterRequest.spec:type_name -> nebius.msp.mlflow.v1alpha1.ClusterSpec
-	0, // 3: nebius.msp.mlflow.v1alpha1.ClusterService.Get:input_type -> nebius.msp.mlflow.v1alpha1.GetClusterRequest
-	1, // 4: nebius.msp.mlflow.v1alpha1.ClusterService.GetByName:input_type -> nebius.msp.mlflow.v1alpha1.GetClusterByNameRequest
-	2, // 5: nebius.msp.mlflow.v1alpha1.ClusterService.List:input_type -> nebius.msp.mlflow.v1alpha1.ListClustersRequest
-	4, // 6: nebius.msp.mlflow.v1alpha1.ClusterService.Create:input_type -> nebius.msp.mlflow.v1alpha1.CreateClusterRequest
-	5, // 7: nebius.msp.mlflow.v1alpha1.ClusterService.Delete:input_type -> nebius.msp.mlflow.v1alpha1.DeleteClusterRequest
-	6, // 8: nebius.msp.mlflow.v1alpha1.ClusterService.Get:output_type -> nebius.msp.mlflow.v1alpha1.Cluster
-	6, // 9: nebius.msp.mlflow.v1alpha1.ClusterService.GetByName:output_type -> nebius.msp.mlflow.v1alpha1.Cluster
-	3, // 10: nebius.msp.mlflow.v1alpha1.ClusterService.List:output_type -> nebius.msp.mlflow.v1alpha1.ListClustersResponse
-	9, // 11: nebius.msp.mlflow.v1alpha1.ClusterService.Create:output_type -> nebius.common.v1alpha1.Operation
-	9, // 12: nebius.msp.mlflow.v1alpha1.ClusterService.Delete:output_type -> nebius.common.v1alpha1.Operation
-	8, // [8:13] is the sub-list for method output_type
-	3, // [3:8] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	8,  // 0: nebius.msp.mlflow.v1alpha1.ListClustersResponse.items:type_name -> nebius.msp.mlflow.v1alpha1.Cluster
+	9,  // 1: nebius.msp.mlflow.v1alpha1.CreateClusterRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	10, // 2: nebius.msp.mlflow.v1alpha1.CreateClusterRequest.spec:type_name -> nebius.msp.mlflow.v1alpha1.ClusterSpec
+	0,  // 3: nebius.msp.mlflow.v1alpha1.ClusterService.Get:input_type -> nebius.msp.mlflow.v1alpha1.GetClusterRequest
+	1,  // 4: nebius.msp.mlflow.v1alpha1.ClusterService.GetByName:input_type -> nebius.msp.mlflow.v1alpha1.GetClusterByNameRequest
+	2,  // 5: nebius.msp.mlflow.v1alpha1.ClusterService.List:input_type -> nebius.msp.mlflow.v1alpha1.ListClustersRequest
+	4,  // 6: nebius.msp.mlflow.v1alpha1.ClusterService.Create:input_type -> nebius.msp.mlflow.v1alpha1.CreateClusterRequest
+	5,  // 7: nebius.msp.mlflow.v1alpha1.ClusterService.Delete:input_type -> nebius.msp.mlflow.v1alpha1.DeleteClusterRequest
+	6,  // 8: nebius.msp.mlflow.v1alpha1.ClusterService.Stop:input_type -> nebius.msp.mlflow.v1alpha1.StopClusterRequest
+	7,  // 9: nebius.msp.mlflow.v1alpha1.ClusterService.Start:input_type -> nebius.msp.mlflow.v1alpha1.StartClusterRequest
+	8,  // 10: nebius.msp.mlflow.v1alpha1.ClusterService.Get:output_type -> nebius.msp.mlflow.v1alpha1.Cluster
+	8,  // 11: nebius.msp.mlflow.v1alpha1.ClusterService.GetByName:output_type -> nebius.msp.mlflow.v1alpha1.Cluster
+	3,  // 12: nebius.msp.mlflow.v1alpha1.ClusterService.List:output_type -> nebius.msp.mlflow.v1alpha1.ListClustersResponse
+	11, // 13: nebius.msp.mlflow.v1alpha1.ClusterService.Create:output_type -> nebius.common.v1alpha1.Operation
+	11, // 14: nebius.msp.mlflow.v1alpha1.ClusterService.Delete:output_type -> nebius.common.v1alpha1.Operation
+	11, // 15: nebius.msp.mlflow.v1alpha1.ClusterService.Stop:output_type -> nebius.common.v1alpha1.Operation
+	11, // 16: nebius.msp.mlflow.v1alpha1.ClusterService.Start:output_type -> nebius.common.v1alpha1.Operation
+	10, // [10:17] is the sub-list for method output_type
+	3,  // [3:10] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_init() }
@@ -434,7 +536,7 @@ func file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDesc), len(file_nebius_msp_mlflow_v1alpha1_cluster_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
