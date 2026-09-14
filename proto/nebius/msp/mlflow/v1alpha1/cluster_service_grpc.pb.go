@@ -25,6 +25,8 @@ const (
 	ClusterService_List_FullMethodName      = "/nebius.msp.mlflow.v1alpha1.ClusterService/List"
 	ClusterService_Create_FullMethodName    = "/nebius.msp.mlflow.v1alpha1.ClusterService/Create"
 	ClusterService_Delete_FullMethodName    = "/nebius.msp.mlflow.v1alpha1.ClusterService/Delete"
+	ClusterService_Stop_FullMethodName      = "/nebius.msp.mlflow.v1alpha1.ClusterService/Stop"
+	ClusterService_Start_FullMethodName     = "/nebius.msp.mlflow.v1alpha1.ClusterService/Start"
 )
 
 // ClusterServiceClient is the client API for ClusterService service.
@@ -41,6 +43,10 @@ type ClusterServiceClient interface {
 	Create(ctx context.Context, in *CreateClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
 	// Delete a cluster.
 	Delete(ctx context.Context, in *DeleteClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
+	// Stops a cluster.
+	Stop(ctx context.Context, in *StopClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
+	// Starts a cluster.
+	Start(ctx context.Context, in *StartClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error)
 }
 
 type clusterServiceClient struct {
@@ -96,6 +102,24 @@ func (c *clusterServiceClient) Delete(ctx context.Context, in *DeleteClusterRequ
 	return out, nil
 }
 
+func (c *clusterServiceClient) Stop(ctx context.Context, in *StopClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error) {
+	out := new(v1alpha1.Operation)
+	err := c.cc.Invoke(ctx, ClusterService_Stop_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clusterServiceClient) Start(ctx context.Context, in *StartClusterRequest, opts ...grpc.CallOption) (*v1alpha1.Operation, error) {
+	out := new(v1alpha1.Operation)
+	err := c.cc.Invoke(ctx, ClusterService_Start_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClusterServiceServer is the server API for ClusterService service.
 // All implementations should embed UnimplementedClusterServiceServer
 // for forward compatibility
@@ -110,6 +134,10 @@ type ClusterServiceServer interface {
 	Create(context.Context, *CreateClusterRequest) (*v1alpha1.Operation, error)
 	// Delete a cluster.
 	Delete(context.Context, *DeleteClusterRequest) (*v1alpha1.Operation, error)
+	// Stops a cluster.
+	Stop(context.Context, *StopClusterRequest) (*v1alpha1.Operation, error)
+	// Starts a cluster.
+	Start(context.Context, *StartClusterRequest) (*v1alpha1.Operation, error)
 }
 
 // UnimplementedClusterServiceServer should be embedded to have forward compatible implementations.
@@ -130,6 +158,12 @@ func (UnimplementedClusterServiceServer) Create(context.Context, *CreateClusterR
 }
 func (UnimplementedClusterServiceServer) Delete(context.Context, *DeleteClusterRequest) (*v1alpha1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedClusterServiceServer) Stop(context.Context, *StopClusterRequest) (*v1alpha1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Stop not implemented")
+}
+func (UnimplementedClusterServiceServer) Start(context.Context, *StartClusterRequest) (*v1alpha1.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Start not implemented")
 }
 
 // UnsafeClusterServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -233,6 +267,42 @@ func _ClusterService_Delete_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClusterService_Stop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StopClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterServiceServer).Stop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClusterService_Stop_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterServiceServer).Stop(ctx, req.(*StopClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClusterService_Start_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StartClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterServiceServer).Start(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClusterService_Start_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterServiceServer).Start(ctx, req.(*StartClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClusterService_ServiceDesc is the grpc.ServiceDesc for ClusterService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -259,6 +329,14 @@ var ClusterService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _ClusterService_Delete_Handler,
+		},
+		{
+			MethodName: "Stop",
+			Handler:    _ClusterService_Stop_Handler,
+		},
+		{
+			MethodName: "Start",
+			Handler:    _ClusterService_Start_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -109,3 +109,9 @@ func (w *wrapperCreateClusterRequest) ProtoReflect() protoreflect.Message {
 
 // func (x *DeleteClusterRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DeleteClusterRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *StopClusterRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *StopClusterRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *StartClusterRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *StartClusterRequest) LogValue() slog.Value // is not generated as no sensitive fields found

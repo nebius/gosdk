@@ -215,16 +215,18 @@ var File_nebius_compute_v1_maintenance_event_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_maintenance_event_proto_rawDesc = "" +
 	"\n" +
-	")nebius/compute/v1/maintenance_event.proto\x12\x11nebius.compute.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\"\xa8\x01\n" +
-	"\x10MaintenanceEvent\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12;\n" +
+	")nebius/compute/v1/maintenance_event.proto\x12\x11nebius.compute.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\"\xc1\x01\n" +
+	"\x10MaintenanceEvent\x12'\n" +
+	"\x02id\x18\x01 \x01(\tB\x17\xe2J\x14\n" +
+	"\x12computemaintenanceR\x02id\x12;\n" +
 	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1.MaintenanceEventSpecR\x04spec\x12G\n" +
 	"\x06status\x18\x03 \x01(\v2).nebius.compute.v1.MaintenanceEventStatusB\x04\xbaJ\x01\x05R\x06status\";\n" +
 	"\x14MaintenanceEventSpec\x12#\n" +
 	"\n" +
-	"is_planned\x18\x05 \x01(\bB\x04\xbaJ\x01\x02R\tisPlanned\"\xe3\x02\n" +
-	"\x16MaintenanceEventStatus\x12%\n" +
-	"\x0emaintenance_id\x18\x01 \x01(\tR\rmaintenanceId\x129\n" +
+	"is_planned\x18\x05 \x01(\bB\x04\xbaJ\x01\x02R\tisPlanned\"\xfc\x02\n" +
+	"\x16MaintenanceEventStatus\x12>\n" +
+	"\x0emaintenance_id\x18\x01 \x01(\tB\x17\xe2J\x14\n" +
+	"\x12computemaintenanceR\rmaintenanceId\x129\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12;\n" +
 	"\vfinished_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\n" +

@@ -33,6 +33,8 @@ type ClusterService interface {
 	Filter(context.Context, *v1alpha1.ListClustersRequest, ...grpc.CallOption) iter.Seq2[*v1alpha1.Cluster, error]
 	Create(context.Context, *v1alpha1.CreateClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	Delete(context.Context, *v1alpha1.DeleteClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
+	Stop(context.Context, *v1alpha1.StopClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
+	Start(context.Context, *v1alpha1.StartClusterRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	GetOperation(context.Context, *v1alpha11.GetOperationRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	ListOperations(context.Context, *v1alpha11.ListOperationsRequest, ...grpc.CallOption) (*v1alpha11.ListOperationsResponse, error)
 }
@@ -199,6 +201,44 @@ func (s clusterService) Delete(ctx context.Context, request *v1alpha1.DeleteClus
 		return nil, err
 	}
 	op, err := v1alpha1.NewClusterServiceClient(con).Delete(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
+}
+
+func (s clusterService) Stop(ctx context.Context, request *v1alpha1.StopClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1alpha1.NewClusterServiceClient(con).Stop(ctx, request, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return alphaops.Wrap(op, v1alpha11.NewOperationServiceClient(con))
+}
+
+func (s clusterService) Start(ctx context.Context, request *v1alpha1.StartClusterRequest, opts ...grpc.CallOption) (
+	*alphaops.Operation,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, ClusterServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	op, err := v1alpha1.NewClusterServiceClient(con).Start(ctx, request, opts...)
 	if err != nil {
 		return nil, err
 	}
