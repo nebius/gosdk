@@ -27,6 +27,7 @@ const (
 	NodeGroupService_Update_FullMethodName                 = "/nebius.mk8s.v1.NodeGroupService/Update"
 	NodeGroupService_Delete_FullMethodName                 = "/nebius.mk8s.v1.NodeGroupService/Delete"
 	NodeGroupService_Upgrade_FullMethodName                = "/nebius.mk8s.v1.NodeGroupService/Upgrade"
+	NodeGroupService_PreflightCheck_FullMethodName         = "/nebius.mk8s.v1.NodeGroupService/PreflightCheck"
 	NodeGroupService_GetCompatibilityMatrix_FullMethodName = "/nebius.mk8s.v1.NodeGroupService/GetCompatibilityMatrix"
 )
 
@@ -41,6 +42,7 @@ type NodeGroupServiceClient interface {
 	Update(ctx context.Context, in *UpdateNodeGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Delete(ctx context.Context, in *DeleteNodeGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Upgrade(ctx context.Context, in *UpgradeNodeGroupRequest, opts ...grpc.CallOption) (*v1.Operation, error)
+	PreflightCheck(ctx context.Context, in *PreflightCheckNodeGroupRequest, opts ...grpc.CallOption) (*PreflightCheckNodeGroupResponse, error)
 	GetCompatibilityMatrix(ctx context.Context, in *GetNodeGroupCompatibilityMatrixRequest, opts ...grpc.CallOption) (*NodeGroupCompatibilityMatrix, error)
 }
 
@@ -115,6 +117,15 @@ func (c *nodeGroupServiceClient) Upgrade(ctx context.Context, in *UpgradeNodeGro
 	return out, nil
 }
 
+func (c *nodeGroupServiceClient) PreflightCheck(ctx context.Context, in *PreflightCheckNodeGroupRequest, opts ...grpc.CallOption) (*PreflightCheckNodeGroupResponse, error) {
+	out := new(PreflightCheckNodeGroupResponse)
+	err := c.cc.Invoke(ctx, NodeGroupService_PreflightCheck_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *nodeGroupServiceClient) GetCompatibilityMatrix(ctx context.Context, in *GetNodeGroupCompatibilityMatrixRequest, opts ...grpc.CallOption) (*NodeGroupCompatibilityMatrix, error) {
 	out := new(NodeGroupCompatibilityMatrix)
 	err := c.cc.Invoke(ctx, NodeGroupService_GetCompatibilityMatrix_FullMethodName, in, out, opts...)
@@ -135,6 +146,7 @@ type NodeGroupServiceServer interface {
 	Update(context.Context, *UpdateNodeGroupRequest) (*v1.Operation, error)
 	Delete(context.Context, *DeleteNodeGroupRequest) (*v1.Operation, error)
 	Upgrade(context.Context, *UpgradeNodeGroupRequest) (*v1.Operation, error)
+	PreflightCheck(context.Context, *PreflightCheckNodeGroupRequest) (*PreflightCheckNodeGroupResponse, error)
 	GetCompatibilityMatrix(context.Context, *GetNodeGroupCompatibilityMatrixRequest) (*NodeGroupCompatibilityMatrix, error)
 }
 
@@ -162,6 +174,9 @@ func (UnimplementedNodeGroupServiceServer) Delete(context.Context, *DeleteNodeGr
 }
 func (UnimplementedNodeGroupServiceServer) Upgrade(context.Context, *UpgradeNodeGroupRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Upgrade not implemented")
+}
+func (UnimplementedNodeGroupServiceServer) PreflightCheck(context.Context, *PreflightCheckNodeGroupRequest) (*PreflightCheckNodeGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PreflightCheck not implemented")
 }
 func (UnimplementedNodeGroupServiceServer) GetCompatibilityMatrix(context.Context, *GetNodeGroupCompatibilityMatrixRequest) (*NodeGroupCompatibilityMatrix, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCompatibilityMatrix not implemented")
@@ -304,6 +319,24 @@ func _NodeGroupService_Upgrade_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NodeGroupService_PreflightCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PreflightCheckNodeGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NodeGroupServiceServer).PreflightCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NodeGroupService_PreflightCheck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NodeGroupServiceServer).PreflightCheck(ctx, req.(*PreflightCheckNodeGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NodeGroupService_GetCompatibilityMatrix_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetNodeGroupCompatibilityMatrixRequest)
 	if err := dec(in); err != nil {
@@ -356,6 +389,10 @@ var NodeGroupService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Upgrade",
 			Handler:    _NodeGroupService_Upgrade_Handler,
+		},
+		{
+			MethodName: "PreflightCheck",
+			Handler:    _NodeGroupService_PreflightCheck_Handler,
 		},
 		{
 			MethodName: "GetCompatibilityMatrix",

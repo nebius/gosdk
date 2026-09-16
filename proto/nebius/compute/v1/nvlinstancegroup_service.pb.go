@@ -172,10 +172,11 @@ func (x *GetNVLInstanceGroupRequest) GetId() string {
 }
 
 type ListNVLInstanceGroupsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifier of the parent project for the NVL InstanceGroup.
+	ParentId      string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	PageSize      int64  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -331,25 +332,28 @@ var File_nebius_compute_v1_nvlinstancegroup_service_proto protoreflect.FileDescr
 
 const file_nebius_compute_v1_nvlinstancegroup_service_proto_rawDesc = "" +
 	"\n" +
-	"0nebius/compute/v1/nvlinstancegroup_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/compute/v1/nvlinstancegroup.proto\"\x9c\x01\n" +
-	"\x1dCreateNVLInstanceGroupRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +
-	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1.NVLInstanceGroupSpecR\x04spec\"\x9c\x01\n" +
-	"\x1dUpdateNVLInstanceGroupRequest\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x12;\n" +
-	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1.NVLInstanceGroupSpecR\x04spec\",\n" +
-	"\x1aGetNVLInstanceGroupRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"w\n" +
-	"\x1cListNVLInstanceGroupsRequest\x12\x1b\n" +
-	"\tparent_id\x18\x01 \x01(\tR\bparentId\x12\x1b\n" +
+	"0nebius/compute/v1/nvlinstancegroup_service.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a(nebius/compute/v1/nvlinstancegroup.proto\"\xaa\x01\n" +
+	"\x1dCreateNVLInstanceGroupRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12;\n" +
+	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1.NVLInstanceGroupSpecR\x04spec\"\xaa\x01\n" +
+	"\x1dUpdateNVLInstanceGroupRequest\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x12;\n" +
+	"\x04spec\x18\x02 \x01(\v2'.nebius.compute.v1.NVLInstanceGroupSpecR\x04spec\"J\n" +
+	"\x1aGetNVLInstanceGroupRequest\x12,\n" +
+	"\x02id\x18\x01 \x01(\tB\x1c\xe2J\x19\n" +
+	"\x17computenvlinstancegroupR\x02id\"\x85\x01\n" +
+	"\x1cListNVLInstanceGroupsRequest\x12)\n" +
+	"\tparent_id\x18\x01 \x01(\tB\f\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x82\x01\n" +
 	"\x1dListNVLInstanceGroupsResponse\x129\n" +
 	"\x05items\x18\x01 \x03(\v2#.nebius.compute.v1.NVLInstanceGroupR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"/\n" +
-	"\x1dDeleteNVLInstanceGroupRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\xcc\x04\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"M\n" +
+	"\x1dDeleteNVLInstanceGroupRequest\x12,\n" +
+	"\x02id\x18\x01 \x01(\tB\x1c\xe2J\x19\n" +
+	"\x17computenvlinstancegroupR\x02id2\xcc\x04\n" +
 	"\x17NVLInstanceGroupService\x12W\n" +
 	"\x06Create\x120.nebius.compute.v1.CreateNVLInstanceGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12Y\n" +
 	"\x03Get\x12-.nebius.compute.v1.GetNVLInstanceGroupRequest\x1a#.nebius.compute.v1.NVLInstanceGroup\x12T\n" +
