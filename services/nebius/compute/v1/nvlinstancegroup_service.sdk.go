@@ -54,7 +54,7 @@ func (s nVLInstanceGroupService) Create(ctx context.Context, request *v1.CreateN
 ) {
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -64,7 +64,7 @@ func (s nVLInstanceGroupService) Create(ctx context.Context, request *v1.CreateN
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v11.ResourceMetadata{}
@@ -139,13 +139,13 @@ func (s nVLInstanceGroupService) List(ctx context.Context, request *v1.ListNVLIn
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 					request.ParentId = tenantID
 				}
 			}

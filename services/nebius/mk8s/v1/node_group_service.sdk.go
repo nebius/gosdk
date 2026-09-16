@@ -35,6 +35,7 @@ type NodeGroupService interface {
 	Update(context.Context, *v1.UpdateNodeGroupRequest, ...grpc.CallOption) (operations.Operation, error)
 	Delete(context.Context, *v1.DeleteNodeGroupRequest, ...grpc.CallOption) (operations.Operation, error)
 	Upgrade(context.Context, *v1.UpgradeNodeGroupRequest, ...grpc.CallOption) (operations.Operation, error)
+	PreflightCheck(context.Context, *v1.PreflightCheckNodeGroupRequest, ...grpc.CallOption) (*v1.PreflightCheckNodeGroupResponse, error)
 	GetCompatibilityMatrix(context.Context, *v1.GetNodeGroupCompatibilityMatrixRequest, ...grpc.CallOption) (*v1.NodeGroupCompatibilityMatrix, error)
 	GetOperation(context.Context, *v11.GetOperationRequest, ...grpc.CallOption) (operations.Operation, error)
 	ListOperations(context.Context, *v11.ListOperationsRequest, ...grpc.CallOption) (*v11.ListOperationsResponse, error)
@@ -248,6 +249,43 @@ func (s nodeGroupService) Upgrade(ctx context.Context, request *v1.UpgradeNodeGr
 		return nil, err
 	}
 	return operations.New(op, v11.NewOperationServiceClient(con))
+}
+
+func (s nodeGroupService) PreflightCheck(ctx context.Context, request *v1.PreflightCheckNodeGroupRequest, opts ...grpc.CallOption) (
+	*v1.PreflightCheckNodeGroupResponse,
+	error,
+) {
+	if request.GetMetadata().GetParentId() == "" {
+		if tenantID := s.sdk.TenantID(); tenantID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"mk8scluster"}) {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = tenantID
+				request.Metadata = md
+			}
+		}
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"mk8scluster"}) {
+				md := request.GetMetadata()
+				if md == nil {
+					md = &v11.ResourceMetadata{}
+				}
+				md.ParentId = parentID
+				request.Metadata = md
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, NodeGroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewNodeGroupServiceClient(con).PreflightCheck(ctx, request, opts...)
 }
 
 func (s nodeGroupService) GetCompatibilityMatrix(ctx context.Context, request *v1.GetNodeGroupCompatibilityMatrixRequest, opts ...grpc.CallOption) (

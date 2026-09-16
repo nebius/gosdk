@@ -439,6 +439,50 @@ func (c *MockNodeGroupServiceListOperationsCall) DoAndReturn(f func(context.Cont
 	return c
 }
 
+// PreflightCheck mocks base method.
+func (m *MockNodeGroupService) PreflightCheck(arg0 context.Context, arg1 *v10.PreflightCheckNodeGroupRequest, arg2 ...grpc.CallOption) (*v10.PreflightCheckNodeGroupResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PreflightCheck", varargs...)
+	ret0, _ := ret[0].(*v10.PreflightCheckNodeGroupResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PreflightCheck indicates an expected call of PreflightCheck.
+func (mr *MockNodeGroupServiceMockRecorder) PreflightCheck(arg0, arg1 any, arg2 ...any) *MockNodeGroupServicePreflightCheckCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PreflightCheck", reflect.TypeOf((*MockNodeGroupService)(nil).PreflightCheck), varargs...)
+	return &MockNodeGroupServicePreflightCheckCall{Call: call}
+}
+
+// MockNodeGroupServicePreflightCheckCall wrap *gomock.Call
+type MockNodeGroupServicePreflightCheckCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNodeGroupServicePreflightCheckCall) Return(arg0 *v10.PreflightCheckNodeGroupResponse, arg1 error) *MockNodeGroupServicePreflightCheckCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNodeGroupServicePreflightCheckCall) Do(f func(context.Context, *v10.PreflightCheckNodeGroupRequest, ...grpc.CallOption) (*v10.PreflightCheckNodeGroupResponse, error)) *MockNodeGroupServicePreflightCheckCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNodeGroupServicePreflightCheckCall) DoAndReturn(f func(context.Context, *v10.PreflightCheckNodeGroupRequest, ...grpc.CallOption) (*v10.PreflightCheckNodeGroupResponse, error)) *MockNodeGroupServicePreflightCheckCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // Update mocks base method.
 func (m *MockNodeGroupService) Update(arg0 context.Context, arg1 *v10.UpdateNodeGroupRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()

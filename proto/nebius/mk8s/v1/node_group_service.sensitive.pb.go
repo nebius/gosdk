@@ -168,6 +168,53 @@ func (w *wrapperUpdateNodeGroupRequest) ProtoReflect() protoreflect.Message {
 	return (*UpdateNodeGroupRequest)(w).ProtoReflect()
 }
 
+// Sanitize mutates [PreflightCheckNodeGroupRequest] to remove/mask all sensitive values.
+// Sensitive fields are marked with [(nebius.sensitive) = true].
+func (x *PreflightCheckNodeGroupRequest) Sanitize() {
+	if x == nil {
+		return
+	}
+	x.Spec.Sanitize()
+}
+
+// LogValue implements [slog.LogValuer] interface. It returns sanitized copy of [PreflightCheckNodeGroupRequest].
+// Properly implemented [slog.Handler] must call LogValue, so sensitive values are not logged.
+// Sensitive strings and bytes are masked with "**HIDDEN**", other sensitive fields are omitted.
+//
+// Returning value has kind [slog.KindAny]. To extract [proto.Message], use the following code:
+//
+//	var original *PreflightCheckNodeGroupRequest
+//	sanitized := original.LogValue().Any().(proto.Message)
+//
+// If you need to extract [PreflightCheckNodeGroupRequest], use the following code:
+//
+//	var original *PreflightCheckNodeGroupRequest
+//	sanitized := original.LogValue().Any().(proto.Message).ProtoReflect().Interface().(*PreflightCheckNodeGroupRequest)
+func (x *PreflightCheckNodeGroupRequest) LogValue() slog.Value {
+	if x == nil {
+		return slog.AnyValue(x)
+	}
+	c := proto.Clone(x).(*PreflightCheckNodeGroupRequest) // TODO: generate static cloner without protoreflect
+	c.Sanitize()
+	return slog.AnyValue((*wrapperPreflightCheckNodeGroupRequest)(c))
+}
+
+// wrapperPreflightCheckNodeGroupRequest is used to return [PreflightCheckNodeGroupRequest] not implementing [slog.LogValuer] to avoid recursion while resolving.
+type wrapperPreflightCheckNodeGroupRequest PreflightCheckNodeGroupRequest
+
+func (w *wrapperPreflightCheckNodeGroupRequest) String() string {
+	return (*PreflightCheckNodeGroupRequest)(w).String()
+}
+
+func (*wrapperPreflightCheckNodeGroupRequest) ProtoMessage() {}
+
+func (w *wrapperPreflightCheckNodeGroupRequest) ProtoReflect() protoreflect.Message {
+	return (*PreflightCheckNodeGroupRequest)(w).ProtoReflect()
+}
+
+// func (x *PreflightCheckNodeGroupResponse) Sanitize()            // is not generated as no sensitive fields found
+// func (x *PreflightCheckNodeGroupResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *DeleteNodeGroupRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *DeleteNodeGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
