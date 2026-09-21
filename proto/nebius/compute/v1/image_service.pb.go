@@ -490,7 +490,7 @@ const file_nebius_compute_v1_image_service_proto_rawDesc = "" +
 	"\x06region\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken2\xb7\x06\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken2\xb1\x06\n" +
 	"\fImageService\x12C\n" +
 	"\x03Get\x12\".nebius.compute.v1.GetImageRequest\x1a\x18.nebius.compute.v1.Image\x12I\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x18.nebius.compute.v1.Image\x12_\n" +
@@ -498,10 +498,10 @@ const file_nebius_compute_v1_image_service_proto_rawDesc = "" +
 	"\x04List\x12$.nebius.compute.v1.ListImagesRequest\x1a%.nebius.compute.v1.ListImagesResponse\x12L\n" +
 	"\x06Create\x12%.nebius.compute.v1.CreateImageRequest\x1a\x1b.nebius.common.v1.Operation\x12L\n" +
 	"\x06Update\x12%.nebius.compute.v1.UpdateImageRequest\x1a\x1b.nebius.common.v1.Operation\x12L\n" +
-	"\x06Delete\x12%.nebius.compute.v1.DeleteImageRequest\x1a\x1b.nebius.common.v1.Operation\x12\x8f\x01\n" +
-	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x19\xf2J\x16\n" +
-	"\tparent_id\x12\t\n" +
-	"\aproject\x12Y\n" +
+	"\x06Delete\x12%.nebius.compute.v1.DeleteImageRequest\x1a\x1b.nebius.common.v1.Operation\x12\x89\x01\n" +
+	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x13\xf2J\x10\n" +
+	"\tparent_id\x12\x03\n" +
+	"\x01*\x12Y\n" +
 	"\n" +
 	"ListPublic\x12$.nebius.compute.v1.ListPublicRequest\x1a%.nebius.compute.v1.ListImagesResponse\x1a\n" +
 	"\xbaJ\acomputeB`\n" +

@@ -128,7 +128,8 @@ func (x *MaintenanceEventSpec) GetIsPlanned() bool {
 }
 
 type MaintenanceEventStatus struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the maintenance event.
 	MaintenanceId         string                 `protobuf:"bytes,1,opt,name=maintenance_id,json=maintenanceId,proto3" json:"maintenance_id,omitempty"`
 	CreatedAt             *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                                         // Time when the maintenance event is created
 	FinishedAt            *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"`                                      // Time when the maintenance event is finished

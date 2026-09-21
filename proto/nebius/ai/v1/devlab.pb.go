@@ -692,7 +692,9 @@ type DevlabStateDetails struct {
 	// Short state description.
 	Code string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
 	// Detailed human-readable description.
-	Message       string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	// Structured error details for the failure, if available.
+	ServiceError  *v1.ServiceError `protobuf:"bytes,3,opt,name=service_error,json=serviceError,proto3" json:"service_error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -739,6 +741,13 @@ func (x *DevlabStateDetails) GetMessage() string {
 		return x.Message
 	}
 	return ""
+}
+
+func (x *DevlabStateDetails) GetServiceError() *v1.ServiceError {
+	if x != nil {
+		return x.ServiceError
+	}
+	return nil
 }
 
 // DevlabInstanceStatus represents the status of a Devlab runtime instance.
@@ -1546,7 +1555,7 @@ var File_nebius_ai_v1_devlab_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\n" +
-	"\x19nebius/ai/v1/devlab.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xcc\x01\n" +
+	"\x19nebius/ai/v1/devlab.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18nebius/annotations.proto\x1a\x1cnebius/common/v1/error.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xcc\x01\n" +
 	"\x06Devlab\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2\x18.nebius.ai.v1.DevlabSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x128\n" +
@@ -1675,10 +1684,11 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\n" +
 	"\x06FAILED\x10\a\x12\t\n" +
 	"\x05ERROR\x10\b\x12\x11\n" +
-	"\rIMAGE_PULLING\x10\t\"J\n" +
+	"\rIMAGE_PULLING\x10\t\"\x8f\x01\n" +
 	"\x12DevlabStateDetails\x12\x1a\n" +
 	"\x04code\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\xe8\x03\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12C\n" +
+	"\rservice_error\x18\x03 \x01(\v2\x1e.nebius.common.v1.ServiceErrorR\fserviceError\"\xe8\x03\n" +
 	"\x14DevlabInstanceStatus\x12F\n" +
 	"\x05state\x18\x01 \x01(\x0e2(.nebius.ai.v1.DevlabInstanceStatus.StateB\x06\xbaH\x03\xc8\x01\x01R\x05state\x12D\n" +
 	"\x13compute_instance_id\x18\n" +
@@ -1739,9 +1749,10 @@ var file_nebius_ai_v1_devlab_proto_goTypes = []any{
 	(*DevlabSpec_VolumeMount_S3Config)(nil), // 19: nebius.ai.v1.DevlabSpec.VolumeMount.S3Config
 	nil,                                     // 20: nebius.ai.v1.DevlabSpec.Template.InputFieldValuesEntry
 	(*v1.ResourceMetadata)(nil),             // 21: nebius.common.v1.ResourceMetadata
-	(v11.InstanceStatus_InstanceState)(0),   // 22: nebius.compute.v1.InstanceStatus.InstanceState
-	(v11.DiskSpec_DiskType)(0),              // 23: nebius.compute.v1.DiskSpec.DiskType
-	(*structpb.Value)(nil),                  // 24: google.protobuf.Value
+	(*v1.ServiceError)(nil),                 // 22: nebius.common.v1.ServiceError
+	(v11.InstanceStatus_InstanceState)(0),   // 23: nebius.compute.v1.InstanceStatus.InstanceState
+	(v11.DiskSpec_DiskType)(0),              // 24: nebius.compute.v1.DiskSpec.DiskType
+	(*structpb.Value)(nil),                  // 25: google.protobuf.Value
 }
 var file_nebius_ai_v1_devlab_proto_depIdxs = []int32{
 	21, // 0: nebius.ai.v1.Devlab.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -1760,21 +1771,22 @@ var file_nebius_ai_v1_devlab_proto_depIdxs = []int32{
 	8,  // 13: nebius.ai.v1.DevlabStatus.instances:type_name -> nebius.ai.v1.DevlabInstanceStatus
 	2,  // 14: nebius.ai.v1.DevlabStatus.state:type_name -> nebius.ai.v1.DevlabStatus.State
 	7,  // 15: nebius.ai.v1.DevlabStatus.state_details:type_name -> nebius.ai.v1.DevlabStateDetails
-	3,  // 16: nebius.ai.v1.DevlabInstanceStatus.state:type_name -> nebius.ai.v1.DevlabInstanceStatus.State
-	22, // 17: nebius.ai.v1.DevlabInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
-	18, // 18: nebius.ai.v1.DevlabSpec.EnvironmentVariable.mysterybox_secret:type_name -> nebius.ai.v1.DevlabSpec.MysteryBoxSecretRef
-	0,  // 19: nebius.ai.v1.DevlabSpec.Port.protocol:type_name -> nebius.ai.v1.DevlabSpec.Port.Protocol
-	1,  // 20: nebius.ai.v1.DevlabSpec.VolumeMount.mode:type_name -> nebius.ai.v1.DevlabSpec.VolumeMount.Mode
-	19, // 21: nebius.ai.v1.DevlabSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.DevlabSpec.VolumeMount.S3Config
-	23, // 22: nebius.ai.v1.DevlabSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
-	20, // 23: nebius.ai.v1.DevlabSpec.Template.input_field_values:type_name -> nebius.ai.v1.DevlabSpec.Template.InputFieldValuesEntry
-	18, // 24: nebius.ai.v1.DevlabSpec.VolumeMount.S3Config.mysterybox_secret:type_name -> nebius.ai.v1.DevlabSpec.MysteryBoxSecretRef
-	24, // 25: nebius.ai.v1.DevlabSpec.Template.InputFieldValuesEntry.value:type_name -> google.protobuf.Value
-	26, // [26:26] is the sub-list for method output_type
-	26, // [26:26] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	22, // 16: nebius.ai.v1.DevlabStateDetails.service_error:type_name -> nebius.common.v1.ServiceError
+	3,  // 17: nebius.ai.v1.DevlabInstanceStatus.state:type_name -> nebius.ai.v1.DevlabInstanceStatus.State
+	23, // 18: nebius.ai.v1.DevlabInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	18, // 19: nebius.ai.v1.DevlabSpec.EnvironmentVariable.mysterybox_secret:type_name -> nebius.ai.v1.DevlabSpec.MysteryBoxSecretRef
+	0,  // 20: nebius.ai.v1.DevlabSpec.Port.protocol:type_name -> nebius.ai.v1.DevlabSpec.Port.Protocol
+	1,  // 21: nebius.ai.v1.DevlabSpec.VolumeMount.mode:type_name -> nebius.ai.v1.DevlabSpec.VolumeMount.Mode
+	19, // 22: nebius.ai.v1.DevlabSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.DevlabSpec.VolumeMount.S3Config
+	24, // 23: nebius.ai.v1.DevlabSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
+	20, // 24: nebius.ai.v1.DevlabSpec.Template.input_field_values:type_name -> nebius.ai.v1.DevlabSpec.Template.InputFieldValuesEntry
+	18, // 25: nebius.ai.v1.DevlabSpec.VolumeMount.S3Config.mysterybox_secret:type_name -> nebius.ai.v1.DevlabSpec.MysteryBoxSecretRef
+	25, // 26: nebius.ai.v1.DevlabSpec.Template.InputFieldValuesEntry.value:type_name -> google.protobuf.Value
+	27, // [27:27] is the sub-list for method output_type
+	27, // [27:27] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_nebius_ai_v1_devlab_proto_init() }

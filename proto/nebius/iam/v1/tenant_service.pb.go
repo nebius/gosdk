@@ -197,11 +197,12 @@ const file_nebius_iam_v1_tenant_service_proto_rawDesc = "" +
 	"\x06filter\x18\x03 \x01(\tR\x06filter\"m\n" +
 	"\x13ListTenantsResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.iam.v1.ContainerR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xac\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x9f\x03\n" +
 	"\rTenantService\x12@\n" +
 	"\x03Get\x12\x1f.nebius.iam.v1.GetTenantRequest\x1a\x18.nebius.iam.v1.Container\x12M\n" +
-	"\x04List\x12!.nebius.iam.v1.ListTenantsRequest\x1a\".nebius.iam.v1.ListTenantsResponse\x1a\n" +
-	"\xbaJ\acpl.iamBY\n" +
+	"\x04List\x12!.nebius.iam.v1.ListTenantsRequest\x1a\".nebius.iam.v1.ListTenantsResponse\x1a\xfc\x01\xbaJ\acpl.iam\xd2J\xeb\x01\n" +
+	"\n" +
+	"2026-12-16\x12uTenant service v1 API is deprecated. Please use the v2 API instead. All tenants remain accessible through the v2 API.\x1afPlease use the 'iam v2 tenant' command instead. All tenants remain accessible through the new command.\x88\x02\x01BY\n" +
 	"\x14ai.nebius.pub.iam.v1B\x12TenantServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
 
 var (

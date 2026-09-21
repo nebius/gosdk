@@ -355,9 +355,9 @@ var File_nebius_compute_v1_platform_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_platform_proto_rawDesc = "" +
 	"\n" +
-	" nebius/compute/v1/platform.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xc0\x01\n" +
-	"\bPlatform\x12>\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x123\n" +
+	" nebius/compute/v1/platform.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xce\x01\n" +
+	"\bPlatform\x12L\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.PlatformSpecR\x04spec\x12?\n" +
 	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.PlatformStatusB\x04\xbaJ\x01\x05R\x06status\"\xb0\x03\n" +
 	"\fPlatformSpec\x123\n" +

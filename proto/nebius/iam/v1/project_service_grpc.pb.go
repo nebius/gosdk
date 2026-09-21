@@ -30,6 +30,8 @@ const (
 // ProjectServiceClient is the client API for ProjectService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type ProjectServiceClient interface {
 	Create(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Get(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*Container, error)
@@ -42,6 +44,7 @@ type projectServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewProjectServiceClient(cc grpc.ClientConnInterface) ProjectServiceClient {
 	return &projectServiceClient{cc}
 }
@@ -94,6 +97,8 @@ func (c *projectServiceClient) Update(ctx context.Context, in *UpdateProjectRequ
 // ProjectServiceServer is the server API for ProjectService service.
 // All implementations should embed UnimplementedProjectServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type ProjectServiceServer interface {
 	Create(context.Context, *CreateProjectRequest) (*v1.Operation, error)
 	Get(context.Context, *GetProjectRequest) (*Container, error)
@@ -129,6 +134,7 @@ type UnsafeProjectServiceServer interface {
 	mustEmbedUnimplementedProjectServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterProjectServiceServer(s grpc.ServiceRegistrar, srv ProjectServiceServer) {
 	s.RegisterService(&ProjectService_ServiceDesc, srv)
 }

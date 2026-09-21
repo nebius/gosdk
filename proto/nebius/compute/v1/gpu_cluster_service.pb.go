@@ -365,17 +365,17 @@ const file_nebius_compute_v1_gpu_cluster_service_proto_rawDesc = "" +
 	"\x11computegpuclusterR\x02id\"v\n" +
 	"\x17ListGpuClustersResponse\x123\n" +
 	"\x05items\x18\x01 \x03(\v2\x1d.nebius.compute.v1.GpuClusterR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa8\x05\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa2\x05\n" +
 	"\x11GpuClusterService\x12M\n" +
 	"\x03Get\x12'.nebius.compute.v1.GetGpuClusterRequest\x1a\x1d.nebius.compute.v1.GpuCluster\x12N\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1d.nebius.compute.v1.GpuCluster\x12]\n" +
 	"\x04List\x12).nebius.compute.v1.ListGpuClustersRequest\x1a*.nebius.compute.v1.ListGpuClustersResponse\x12Q\n" +
 	"\x06Create\x12*.nebius.compute.v1.CreateGpuClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12Q\n" +
 	"\x06Update\x12*.nebius.compute.v1.UpdateGpuClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12Q\n" +
-	"\x06Delete\x12*.nebius.compute.v1.DeleteGpuClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12\x8f\x01\n" +
-	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x19\xf2J\x16\n" +
-	"\tparent_id\x12\t\n" +
-	"\aproject\x1a\n" +
+	"\x06Delete\x12*.nebius.compute.v1.DeleteGpuClusterRequest\x1a\x1b.nebius.common.v1.Operation\x12\x89\x01\n" +
+	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x13\xf2J\x10\n" +
+	"\tparent_id\x12\x03\n" +
+	"\x01*\x1a\n" +
 	"\xbaJ\acomputeBe\n" +
 	"\x18ai.nebius.pub.compute.v1B\x16GpuClusterServiceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 

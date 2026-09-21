@@ -26,6 +26,8 @@ const (
 // TenantServiceClient is the client API for TenantService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type TenantServiceClient interface {
 	Get(ctx context.Context, in *GetTenantRequest, opts ...grpc.CallOption) (*Container, error)
 	List(ctx context.Context, in *ListTenantsRequest, opts ...grpc.CallOption) (*ListTenantsResponse, error)
@@ -35,6 +37,7 @@ type tenantServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewTenantServiceClient(cc grpc.ClientConnInterface) TenantServiceClient {
 	return &tenantServiceClient{cc}
 }
@@ -60,6 +63,8 @@ func (c *tenantServiceClient) List(ctx context.Context, in *ListTenantsRequest, 
 // TenantServiceServer is the server API for TenantService service.
 // All implementations should embed UnimplementedTenantServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type TenantServiceServer interface {
 	Get(context.Context, *GetTenantRequest) (*Container, error)
 	List(context.Context, *ListTenantsRequest) (*ListTenantsResponse, error)
@@ -83,6 +88,7 @@ type UnsafeTenantServiceServer interface {
 	mustEmbedUnimplementedTenantServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterTenantServiceServer(s grpc.ServiceRegistrar, srv TenantServiceServer) {
 	s.RegisterService(&TenantService_ServiceDesc, srv)
 }

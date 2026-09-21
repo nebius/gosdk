@@ -404,6 +404,9 @@ type JobSpec struct {
 	// Whether to use a preemptible VM for the job.
 	// Preemptible VMs are cheaper but can be stopped by the platform at any time.
 	Preemptible bool `protobuf:"varint,27,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
+	// Pricing model for the VM. Must match the preemptible flag: on_demand for non-preemptible VMs,
+	// follows_spot_price or spot_pricing_policy for preemptible VMs.
+	PricingModel *PricingModelSpec `protobuf:"bytes,28,opt,name=pricing_model,json=pricingModel,proto3" json:"pricing_model,omitempty"`
 	// Restart attempts for the job.
 	RestartAttempts int64 `protobuf:"varint,30,opt,name=restart_attempts,json=restartAttempts,proto3" json:"restart_attempts,omitempty"`
 	// Job timeout.
@@ -556,6 +559,13 @@ func (x *JobSpec) GetPreemptible() bool {
 		return x.Preemptible
 	}
 	return false
+}
+
+func (x *JobSpec) GetPricingModel() *PricingModelSpec {
+	if x != nil {
+		return x.PricingModel
+	}
+	return nil
 }
 
 func (x *JobSpec) GetRestartAttempts() int64 {
@@ -1536,11 +1546,11 @@ var File_nebius_ai_v1_job_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
-	"\x16nebius/ai/v1/job.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1cnebius/common/v1/error.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xc3\x01\n" +
+	"\x16nebius/ai/v1/job.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1anebius/ai/v1/pricing.proto\x1a\x18nebius/annotations.proto\x1a\x1cnebius/common/v1/error.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xc3\x01\n" +
 	"\x03Job\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xab\x19\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xfa\x1b\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1560,7 +1570,8 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\tvpcsubnetR\bsubnetId\x12\x1b\n" +
 	"\tpublic_ip\x18\x19 \x01(\bR\bpublicIp\x12.\n" +
 	"\x13ssh_authorized_keys\x18\x1a \x03(\tR\x11sshAuthorizedKeys\x12 \n" +
-	"\vpreemptible\x18\x1b \x01(\bR\vpreemptible\x12;\n" +
+	"\vpreemptible\x18\x1b \x01(\bR\vpreemptible\x12I\n" +
+	"\rpricing_model\x18\x1c \x01(\v2\x1e.nebius.ai.v1.PricingModelSpecB\x04\xbaJ\x01\x02R\fpricingModel\x12;\n" +
 	"\x10restart_attempts\x18\x1e \x01(\x03B\x10\xbaH\r\"\v(\xff\xff\xff\xff\xff\xff\xff\xff\xff\x01R\x0frestartAttempts\x123\n" +
 	"\atimeout\x18\x1f \x01(\v2\x19.google.protobuf.DurationR\atimeout\x12P\n" +
 	"\x0einjected_files\x18  \x03(\v2#.nebius.ai.v1.JobSpec.FileInjectionB\x04\xbaJ\x01\x02R\rinjectedFiles\x1a\x8b\x03\n" +
@@ -1628,7 +1639,8 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key\"\xc7\x04\n" +
+	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\x81\x02\xbaH\xfd\x01\x1a\xfa\x01\n" +
+	"!pricing_model_matches_preemptible\x12mpricing_model.on_demand requires preemptible to be false; other pricing models require preemptible to be true\x1af!has(this.pricing_model) || (has(this.pricing_model.on_demand) ? !this.preemptible : this.preemptible)\"\xc7\x04\n" +
 	"\tJobStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12=\n" +
@@ -1722,11 +1734,12 @@ var file_nebius_ai_v1_job_proto_goTypes = []any{
 	(*JobSpec_VolumeMount_S3Config_S3Credentials)(nil),       // 17: nebius.ai.v1.JobSpec.VolumeMount.S3Config.S3Credentials
 	(*JobSpec_VolumeMount_S3Config_MysteryBoxSecretRef)(nil), // 18: nebius.ai.v1.JobSpec.VolumeMount.S3Config.MysteryBoxSecretRef
 	(*v1.ResourceMetadata)(nil),                              // 19: nebius.common.v1.ResourceMetadata
-	(*durationpb.Duration)(nil),                              // 20: google.protobuf.Duration
-	(*timestamppb.Timestamp)(nil),                            // 21: google.protobuf.Timestamp
-	(*v1.ServiceError)(nil),                                  // 22: nebius.common.v1.ServiceError
-	(v11.InstanceStatus_InstanceState)(0),                    // 23: nebius.compute.v1.InstanceStatus.InstanceState
-	(v11.DiskSpec_DiskType)(0),                               // 24: nebius.compute.v1.DiskSpec.DiskType
+	(*PricingModelSpec)(nil),                                 // 20: nebius.ai.v1.PricingModelSpec
+	(*durationpb.Duration)(nil),                              // 21: google.protobuf.Duration
+	(*timestamppb.Timestamp)(nil),                            // 22: google.protobuf.Timestamp
+	(*v1.ServiceError)(nil),                                  // 23: nebius.common.v1.ServiceError
+	(v11.InstanceStatus_InstanceState)(0),                    // 24: nebius.compute.v1.InstanceStatus.InstanceState
+	(v11.DiskSpec_DiskType)(0),                               // 25: nebius.compute.v1.DiskSpec.DiskType
 }
 var file_nebius_ai_v1_job_proto_depIdxs = []int32{
 	19, // 0: nebius.ai.v1.Job.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -1737,28 +1750,29 @@ var file_nebius_ai_v1_job_proto_depIdxs = []int32{
 	11, // 5: nebius.ai.v1.JobSpec.volumes:type_name -> nebius.ai.v1.JobSpec.VolumeMount
 	13, // 6: nebius.ai.v1.JobSpec.registry_credentials:type_name -> nebius.ai.v1.JobSpec.RegistryCredentials
 	12, // 7: nebius.ai.v1.JobSpec.disk:type_name -> nebius.ai.v1.JobSpec.DiskSpec
-	20, // 8: nebius.ai.v1.JobSpec.timeout:type_name -> google.protobuf.Duration
-	14, // 9: nebius.ai.v1.JobSpec.injected_files:type_name -> nebius.ai.v1.JobSpec.FileInjection
-	8,  // 10: nebius.ai.v1.JobStatus.instances:type_name -> nebius.ai.v1.JobInstanceStatus
-	2,  // 11: nebius.ai.v1.JobStatus.state:type_name -> nebius.ai.v1.JobStatus.State
-	7,  // 12: nebius.ai.v1.JobStatus.state_details:type_name -> nebius.ai.v1.JobStateDetails
-	21, // 13: nebius.ai.v1.JobStatus.started_at:type_name -> google.protobuf.Timestamp
-	21, // 14: nebius.ai.v1.JobStatus.finished_at:type_name -> google.protobuf.Timestamp
-	22, // 15: nebius.ai.v1.JobStateDetails.service_error:type_name -> nebius.common.v1.ServiceError
-	3,  // 16: nebius.ai.v1.JobInstanceStatus.state:type_name -> nebius.ai.v1.JobInstanceStatus.State
-	23, // 17: nebius.ai.v1.JobInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
-	15, // 18: nebius.ai.v1.JobSpec.EnvironmentVariable.mysterybox_secret:type_name -> nebius.ai.v1.JobSpec.MysteryBoxSecretRef
-	0,  // 19: nebius.ai.v1.JobSpec.Port.protocol:type_name -> nebius.ai.v1.JobSpec.Port.Protocol
-	1,  // 20: nebius.ai.v1.JobSpec.VolumeMount.mode:type_name -> nebius.ai.v1.JobSpec.VolumeMount.Mode
-	16, // 21: nebius.ai.v1.JobSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config
-	24, // 22: nebius.ai.v1.JobSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
-	17, // 23: nebius.ai.v1.JobSpec.VolumeMount.S3Config.credentials:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.S3Credentials
-	18, // 24: nebius.ai.v1.JobSpec.VolumeMount.S3Config.mysterybox_secret:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.MysteryBoxSecretRef
-	25, // [25:25] is the sub-list for method output_type
-	25, // [25:25] is the sub-list for method input_type
-	25, // [25:25] is the sub-list for extension type_name
-	25, // [25:25] is the sub-list for extension extendee
-	0,  // [0:25] is the sub-list for field type_name
+	20, // 8: nebius.ai.v1.JobSpec.pricing_model:type_name -> nebius.ai.v1.PricingModelSpec
+	21, // 9: nebius.ai.v1.JobSpec.timeout:type_name -> google.protobuf.Duration
+	14, // 10: nebius.ai.v1.JobSpec.injected_files:type_name -> nebius.ai.v1.JobSpec.FileInjection
+	8,  // 11: nebius.ai.v1.JobStatus.instances:type_name -> nebius.ai.v1.JobInstanceStatus
+	2,  // 12: nebius.ai.v1.JobStatus.state:type_name -> nebius.ai.v1.JobStatus.State
+	7,  // 13: nebius.ai.v1.JobStatus.state_details:type_name -> nebius.ai.v1.JobStateDetails
+	22, // 14: nebius.ai.v1.JobStatus.started_at:type_name -> google.protobuf.Timestamp
+	22, // 15: nebius.ai.v1.JobStatus.finished_at:type_name -> google.protobuf.Timestamp
+	23, // 16: nebius.ai.v1.JobStateDetails.service_error:type_name -> nebius.common.v1.ServiceError
+	3,  // 17: nebius.ai.v1.JobInstanceStatus.state:type_name -> nebius.ai.v1.JobInstanceStatus.State
+	24, // 18: nebius.ai.v1.JobInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	15, // 19: nebius.ai.v1.JobSpec.EnvironmentVariable.mysterybox_secret:type_name -> nebius.ai.v1.JobSpec.MysteryBoxSecretRef
+	0,  // 20: nebius.ai.v1.JobSpec.Port.protocol:type_name -> nebius.ai.v1.JobSpec.Port.Protocol
+	1,  // 21: nebius.ai.v1.JobSpec.VolumeMount.mode:type_name -> nebius.ai.v1.JobSpec.VolumeMount.Mode
+	16, // 22: nebius.ai.v1.JobSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config
+	25, // 23: nebius.ai.v1.JobSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
+	17, // 24: nebius.ai.v1.JobSpec.VolumeMount.S3Config.credentials:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.S3Credentials
+	18, // 25: nebius.ai.v1.JobSpec.VolumeMount.S3Config.mysterybox_secret:type_name -> nebius.ai.v1.JobSpec.VolumeMount.S3Config.MysteryBoxSecretRef
+	26, // [26:26] is the sub-list for method output_type
+	26, // [26:26] is the sub-list for method input_type
+	26, // [26:26] is the sub-list for extension type_name
+	26, // [26:26] is the sub-list for extension extendee
+	0,  // [0:26] is the sub-list for field type_name
 }
 
 func init() { file_nebius_ai_v1_job_proto_init() }
@@ -1766,6 +1780,7 @@ func file_nebius_ai_v1_job_proto_init() {
 	if File_nebius_ai_v1_job_proto != nil {
 		return
 	}
+	file_nebius_ai_v1_pricing_proto_init()
 	file_nebius_ai_v1_job_proto_msgTypes[7].OneofWrappers = []any{
 		(*JobSpec_VolumeMount_S3Config_)(nil),
 	}

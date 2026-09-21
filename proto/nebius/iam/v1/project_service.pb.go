@@ -374,14 +374,15 @@ const file_nebius_iam_v1_project_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.iam.v1.ContainerSpecR\x04spec\"n\n" +
 	"\x14ListProjectsResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.iam.v1.ContainerR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x97\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x8e\x05\n" +
 	"\x0eProjectService\x12J\n" +
 	"\x06Create\x12#.nebius.iam.v1.CreateProjectRequest\x1a\x1b.nebius.common.v1.Operation\x12A\n" +
 	"\x03Get\x12 .nebius.iam.v1.GetProjectRequest\x1a\x18.nebius.iam.v1.Container\x12M\n" +
 	"\tGetByName\x12&.nebius.iam.v1.GetProjectByNameRequest\x1a\x18.nebius.iam.v1.Container\x12O\n" +
 	"\x04List\x12\".nebius.iam.v1.ListProjectsRequest\x1a#.nebius.iam.v1.ListProjectsResponse\x12J\n" +
-	"\x06Update\x12#.nebius.iam.v1.UpdateProjectRequest\x1a\x1b.nebius.common.v1.Operation\x1a\n" +
-	"\xbaJ\acpl.iamBZ\n" +
+	"\x06Update\x12#.nebius.iam.v1.UpdateProjectRequest\x1a\x1b.nebius.common.v1.Operation\x1a\x80\x02\xbaJ\acpl.iam\xd2J\xef\x01\n" +
+	"\n" +
+	"2026-12-16\x12wProject service v1 API is deprecated. Please use the v2 API instead. All projects remain accessible through the v2 API.\x1ahPlease use the 'iam v2 project' command instead. All projects remain accessible through the new command.\x88\x02\x01BZ\n" +
 	"\x14ai.nebius.pub.iam.v1B\x13ProjectServiceProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/iam/v1b\x06proto3"
 
 var (
