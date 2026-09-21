@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -89,9 +90,10 @@ var File_nebius_compute_v1_operation_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_operation_service_proto_rawDesc = "" +
 	"\n" +
-	")nebius/compute/v1/operation_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\"\x80\x01\n" +
-	"\x1dListOperationsByParentRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	")nebius/compute/v1/operation_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\x86\x01\n" +
+	"\x1dListOperationsByParentRequest\x12)\n" +
+	"\tparent_id\x18\x01 \x01(\tB\f\xbaH\x03\xc8\x01\x01\xe2J\x03\n" +
+	"\x01*R\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageTokenBd\n" +

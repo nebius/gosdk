@@ -386,6 +386,9 @@ type EndpointSpec struct {
 	// Whether to use a preemptible VM for the endpoint.
 	// Preemptible VMs are cheaper but can be stopped by the platform at any time.
 	Preemptible bool `protobuf:"varint,27,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
+	// Pricing model for the VM. Must match the preemptible flag: on_demand for non-preemptible VMs,
+	// follows_spot_price or spot_pricing_policy for preemptible VMs.
+	PricingModel *PricingModelSpec `protobuf:"bytes,28,opt,name=pricing_model,json=pricingModel,proto3" json:"pricing_model,omitempty"`
 	// Authentication token needed to access the endpoint.
 	//
 	// Authentication can only be enabled if the endpoint exposes one and only one HTTP port.
@@ -545,6 +548,13 @@ func (x *EndpointSpec) GetPreemptible() bool {
 		return x.Preemptible
 	}
 	return false
+}
+
+func (x *EndpointSpec) GetPricingModel() *PricingModelSpec {
+	if x != nil {
+		return x.PricingModel
+	}
+	return nil
 }
 
 func (x *EndpointSpec) GetAuthToken() string {
@@ -1508,11 +1518,11 @@ var File_nebius_ai_v1_endpoint_proto protoreflect.FileDescriptor
 
 const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
-	"\x1bnebius/ai/v1/endpoint.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1cnebius/common/v1/error.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xd2\x01\n" +
+	"\x1bnebius/ai/v1/endpoint.proto\x12\fnebius.ai.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1anebius/ai/v1/pricing.proto\x1a\x18nebius/annotations.proto\x1a\x1cnebius/common/v1/error.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1cnebius/compute/v1/disk.proto\x1a nebius/compute/v1/instance.proto\"\xd2\x01\n" +
 	"\bEndpoint\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\x92\x1c\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xda\x1e\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1532,7 +1542,8 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\tvpcsubnetR\bsubnetId\x12\x1b\n" +
 	"\tpublic_ip\x18\x19 \x01(\bR\bpublicIp\x12.\n" +
 	"\x13ssh_authorized_keys\x18\x1a \x03(\tR\x11sshAuthorizedKeys\x12 \n" +
-	"\vpreemptible\x18\x1b \x01(\bR\vpreemptible\x12\"\n" +
+	"\vpreemptible\x18\x1b \x01(\bR\vpreemptible\x12I\n" +
+	"\rpricing_model\x18\x1c \x01(\v2\x1e.nebius.ai.v1.PricingModelSpecB\x04\xbaJ\x01\x02R\fpricingModel\x12\"\n" +
 	"\n" +
 	"auth_token\x18\x1e \x01(\tB\x03\xc0J\x01R\tauthToken\x12o\n" +
 	"\x1cauth_token_mysterybox_secret\x18\x1f \x01(\v2..nebius.ai.v1.EndpointSpec.MysteryBoxSecretRefR\x19authTokenMysteryboxSecret\x12U\n" +
@@ -1601,7 +1612,8 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\x80\x02\xbaH\xfc\x01\x1a\xf9\x01\n" +
+	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\xfd\x03\xbaH\xf9\x03\x1a\xfa\x01\n" +
+	"!pricing_model_matches_preemptible\x12mpricing_model.on_demand requires preemptible to be false; other pricing models require preemptible to be true\x1af!has(this.pricing_model) || (has(this.pricing_model.on_demand) ? !this.preemptible : this.preemptible)\x1a\xf9\x01\n" +
 	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xc4\x03\n" +
 	"\x0eEndpointStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
@@ -1682,9 +1694,10 @@ var file_nebius_ai_v1_endpoint_proto_goTypes = []any{
 	(*EndpointSpec_VolumeMount_S3Config_S3Credentials)(nil),       // 17: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.S3Credentials
 	(*EndpointSpec_VolumeMount_S3Config_MysteryBoxSecretRef)(nil), // 18: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.MysteryBoxSecretRef
 	(*v1.ResourceMetadata)(nil),                                   // 19: nebius.common.v1.ResourceMetadata
-	(*v1.ServiceError)(nil),                                       // 20: nebius.common.v1.ServiceError
-	(v11.InstanceStatus_InstanceState)(0),                         // 21: nebius.compute.v1.InstanceStatus.InstanceState
-	(v11.DiskSpec_DiskType)(0),                                    // 22: nebius.compute.v1.DiskSpec.DiskType
+	(*PricingModelSpec)(nil),                                      // 20: nebius.ai.v1.PricingModelSpec
+	(*v1.ServiceError)(nil),                                       // 21: nebius.common.v1.ServiceError
+	(v11.InstanceStatus_InstanceState)(0),                         // 22: nebius.compute.v1.InstanceStatus.InstanceState
+	(v11.DiskSpec_DiskType)(0),                                    // 23: nebius.compute.v1.DiskSpec.DiskType
 }
 var file_nebius_ai_v1_endpoint_proto_depIdxs = []int32{
 	19, // 0: nebius.ai.v1.Endpoint.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -1695,26 +1708,27 @@ var file_nebius_ai_v1_endpoint_proto_depIdxs = []int32{
 	11, // 5: nebius.ai.v1.EndpointSpec.volumes:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount
 	13, // 6: nebius.ai.v1.EndpointSpec.registry_credentials:type_name -> nebius.ai.v1.EndpointSpec.RegistryCredentials
 	12, // 7: nebius.ai.v1.EndpointSpec.disk:type_name -> nebius.ai.v1.EndpointSpec.DiskSpec
-	15, // 8: nebius.ai.v1.EndpointSpec.auth_token_mysterybox_secret:type_name -> nebius.ai.v1.EndpointSpec.MysteryBoxSecretRef
-	14, // 9: nebius.ai.v1.EndpointSpec.injected_files:type_name -> nebius.ai.v1.EndpointSpec.FileInjection
-	8,  // 10: nebius.ai.v1.EndpointStatus.instances:type_name -> nebius.ai.v1.EndpointInstanceStatus
-	2,  // 11: nebius.ai.v1.EndpointStatus.state:type_name -> nebius.ai.v1.EndpointStatus.State
-	7,  // 12: nebius.ai.v1.EndpointStatus.state_details:type_name -> nebius.ai.v1.EndpointStateDetails
-	20, // 13: nebius.ai.v1.EndpointStateDetails.service_error:type_name -> nebius.common.v1.ServiceError
-	3,  // 14: nebius.ai.v1.EndpointInstanceStatus.state:type_name -> nebius.ai.v1.EndpointInstanceStatus.State
-	21, // 15: nebius.ai.v1.EndpointInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
-	15, // 16: nebius.ai.v1.EndpointSpec.EnvironmentVariable.mysterybox_secret:type_name -> nebius.ai.v1.EndpointSpec.MysteryBoxSecretRef
-	0,  // 17: nebius.ai.v1.EndpointSpec.Port.protocol:type_name -> nebius.ai.v1.EndpointSpec.Port.Protocol
-	1,  // 18: nebius.ai.v1.EndpointSpec.VolumeMount.mode:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.Mode
-	16, // 19: nebius.ai.v1.EndpointSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.S3Config
-	22, // 20: nebius.ai.v1.EndpointSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
-	17, // 21: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.credentials:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.S3Credentials
-	18, // 22: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.mysterybox_secret:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.MysteryBoxSecretRef
-	23, // [23:23] is the sub-list for method output_type
-	23, // [23:23] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	20, // 8: nebius.ai.v1.EndpointSpec.pricing_model:type_name -> nebius.ai.v1.PricingModelSpec
+	15, // 9: nebius.ai.v1.EndpointSpec.auth_token_mysterybox_secret:type_name -> nebius.ai.v1.EndpointSpec.MysteryBoxSecretRef
+	14, // 10: nebius.ai.v1.EndpointSpec.injected_files:type_name -> nebius.ai.v1.EndpointSpec.FileInjection
+	8,  // 11: nebius.ai.v1.EndpointStatus.instances:type_name -> nebius.ai.v1.EndpointInstanceStatus
+	2,  // 12: nebius.ai.v1.EndpointStatus.state:type_name -> nebius.ai.v1.EndpointStatus.State
+	7,  // 13: nebius.ai.v1.EndpointStatus.state_details:type_name -> nebius.ai.v1.EndpointStateDetails
+	21, // 14: nebius.ai.v1.EndpointStateDetails.service_error:type_name -> nebius.common.v1.ServiceError
+	3,  // 15: nebius.ai.v1.EndpointInstanceStatus.state:type_name -> nebius.ai.v1.EndpointInstanceStatus.State
+	22, // 16: nebius.ai.v1.EndpointInstanceStatus.compute_instance_state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	15, // 17: nebius.ai.v1.EndpointSpec.EnvironmentVariable.mysterybox_secret:type_name -> nebius.ai.v1.EndpointSpec.MysteryBoxSecretRef
+	0,  // 18: nebius.ai.v1.EndpointSpec.Port.protocol:type_name -> nebius.ai.v1.EndpointSpec.Port.Protocol
+	1,  // 19: nebius.ai.v1.EndpointSpec.VolumeMount.mode:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.Mode
+	16, // 20: nebius.ai.v1.EndpointSpec.VolumeMount.s3_config:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.S3Config
+	23, // 21: nebius.ai.v1.EndpointSpec.DiskSpec.type:type_name -> nebius.compute.v1.DiskSpec.DiskType
+	17, // 22: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.credentials:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.S3Credentials
+	18, // 23: nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.mysterybox_secret:type_name -> nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.MysteryBoxSecretRef
+	24, // [24:24] is the sub-list for method output_type
+	24, // [24:24] is the sub-list for method input_type
+	24, // [24:24] is the sub-list for extension type_name
+	24, // [24:24] is the sub-list for extension extendee
+	0,  // [0:24] is the sub-list for field type_name
 }
 
 func init() { file_nebius_ai_v1_endpoint_proto_init() }
@@ -1722,6 +1736,7 @@ func file_nebius_ai_v1_endpoint_proto_init() {
 	if File_nebius_ai_v1_endpoint_proto != nil {
 		return
 	}
+	file_nebius_ai_v1_pricing_proto_init()
 	file_nebius_ai_v1_endpoint_proto_msgTypes[7].OneofWrappers = []any{
 		(*EndpointSpec_VolumeMount_S3Config_)(nil),
 	}

@@ -137,3 +137,12 @@ func (w *wrapperInstanceSpec) ProtoReflect() protoreflect.Message {
 
 // func (x *PassthroughGroupRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PassthroughGroupRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *OnDemandSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *OnDemandSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *FollowsSpotPriceSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *FollowsSpotPriceSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *SpotPricingPolicySpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *SpotPricingPolicySpec) LogValue() slog.Value // is not generated as no sensitive fields found

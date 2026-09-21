@@ -25,10 +25,11 @@ const (
 )
 
 type ListPlatformsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PageSize      int64                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	ParentId      string                 `protobuf:"bytes,3,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	PageSize  int64                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken string                 `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// ID of the parent project for the platform request.
+	ParentId      string `protobuf:"bytes,3,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -140,12 +141,13 @@ var File_nebius_compute_v1_platform_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_platform_service_proto_rawDesc = "" +
 	"\n" +
-	"(nebius/compute/v1/platform_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/compute/v1/platform.proto\"w\n" +
+	"(nebius/compute/v1/platform_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/compute/v1/platform.proto\"\x83\x01\n" +
 	"\x14ListPlatformsRequest\x12\x1b\n" +
 	"\tpage_size\x18\x01 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x02 \x01(\tR\tpageToken\x12#\n" +
-	"\tparent_id\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\"r\n" +
+	"page_token\x18\x02 \x01(\tR\tpageToken\x12/\n" +
+	"\tparent_id\x18\x03 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\"r\n" +
 	"\x15ListPlatformsResponse\x121\n" +
 	"\x05items\x18\x01 \x03(\v2\x1b.nebius.compute.v1.PlatformR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xc6\x01\n" +

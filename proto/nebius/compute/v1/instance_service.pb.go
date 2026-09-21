@@ -704,7 +704,7 @@ const file_nebius_compute_v1_instance_service_proto_rawDesc = "" +
 	"\n" +
 	"ItemsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12H\n" +
-	"\x05value\x18\x02 \x01(\v22.nebius.compute.v1.BatchGetResponse.BatchGetResultR\x05value:\x028\x012\x90\b\n" +
+	"\x05value\x18\x02 \x01(\v22.nebius.compute.v1.BatchGetResponse.BatchGetResultR\x05value:\x028\x012\x8a\b\n" +
 	"\x0fInstanceService\x12I\n" +
 	"\x03Get\x12%.nebius.compute.v1.GetInstanceRequest\x1a\x1b.nebius.compute.v1.Instance\x12L\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1b.nebius.compute.v1.Instance\x12S\n" +
@@ -715,10 +715,10 @@ const file_nebius_compute_v1_instance_service_proto_rawDesc = "" +
 	"\x06Update\x12(.nebius.compute.v1.UpdateInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12O\n" +
 	"\x06Delete\x12(.nebius.compute.v1.DeleteInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x05Start\x12'.nebius.compute.v1.StartInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12K\n" +
-	"\x04Stop\x12&.nebius.compute.v1.StopInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12\x8f\x01\n" +
-	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x19\xf2J\x16\n" +
-	"\tparent_id\x12\t\n" +
-	"\aproject\x1a\n" +
+	"\x04Stop\x12&.nebius.compute.v1.StopInstanceRequest\x1a\x1b.nebius.common.v1.Operation\x12\x89\x01\n" +
+	"\x16ListOperationsByParent\x120.nebius.compute.v1.ListOperationsByParentRequest\x1a(.nebius.common.v1.ListOperationsResponse\"\x13\xf2J\x10\n" +
+	"\tparent_id\x12\x03\n" +
+	"\x01*\x1a\n" +
 	"\xbaJ\acomputeBc\n" +
 	"\x18ai.nebius.pub.compute.v1B\x14InstanceServiceProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 

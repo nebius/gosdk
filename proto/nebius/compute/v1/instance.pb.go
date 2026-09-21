@@ -454,7 +454,15 @@ type InstanceSpec struct {
 	// Local disks are not provided by default. To get them, explicitly request them via this field.
 	// Availability depends on the selected platform, preset and region.
 	// Changing this field will result in disks change and content loss, but only after stop and start the instance.
-	LocalDisks    *LocalDisksSpec `protobuf:"bytes,24,opt,name=local_disks,json=localDisks,proto3" json:"local_disks,omitempty"`
+	LocalDisks *LocalDisksSpec `protobuf:"bytes,24,opt,name=local_disks,json=localDisks,proto3" json:"local_disks,omitempty"`
+	// Default is on_demand.
+	//
+	// Types that are valid to be assigned to PricingModel:
+	//
+	//	*InstanceSpec_OnDemand
+	//	*InstanceSpec_FollowsSpotPrice
+	//	*InstanceSpec_SpotPricingPolicy
+	PricingModel  isInstanceSpec_PricingModel `protobuf_oneof:"pricing_model"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -593,6 +601,66 @@ func (x *InstanceSpec) GetLocalDisks() *LocalDisksSpec {
 	}
 	return nil
 }
+
+func (x *InstanceSpec) GetPricingModel() isInstanceSpec_PricingModel {
+	if x != nil {
+		return x.PricingModel
+	}
+	return nil
+}
+
+func (x *InstanceSpec) GetOnDemand() *OnDemandSpec {
+	if x != nil {
+		if x, ok := x.PricingModel.(*InstanceSpec_OnDemand); ok {
+			return x.OnDemand
+		}
+	}
+	return nil
+}
+
+func (x *InstanceSpec) GetFollowsSpotPrice() *FollowsSpotPriceSpec {
+	if x != nil {
+		if x, ok := x.PricingModel.(*InstanceSpec_FollowsSpotPrice); ok {
+			return x.FollowsSpotPrice
+		}
+	}
+	return nil
+}
+
+func (x *InstanceSpec) GetSpotPricingPolicy() *SpotPricingPolicySpec {
+	if x != nil {
+		if x, ok := x.PricingModel.(*InstanceSpec_SpotPricingPolicy); ok {
+			return x.SpotPricingPolicy
+		}
+	}
+	return nil
+}
+
+type isInstanceSpec_PricingModel interface {
+	isInstanceSpec_PricingModel()
+}
+
+type InstanceSpec_OnDemand struct {
+	// A regular, non-preemptible VM.
+	OnDemand *OnDemandSpec `protobuf:"bytes,25,opt,name=on_demand,json=onDemand,proto3,oneof"`
+}
+
+type InstanceSpec_FollowsSpotPrice struct {
+	// The preemptible VM accepts the current spot price.
+	FollowsSpotPrice *FollowsSpotPriceSpec `protobuf:"bytes,26,opt,name=follows_spot_price,json=followsSpotPrice,proto3,oneof"`
+}
+
+type InstanceSpec_SpotPricingPolicy struct {
+	// The preemptible VM accepts the current spot price unless it exceeds the maximum price specified by the selected
+	// pricing policy. When the spot price exceeds that maximum price, the VM is preempted.
+	SpotPricingPolicy *SpotPricingPolicySpec `protobuf:"bytes,27,opt,name=spot_pricing_policy,json=spotPricingPolicy,proto3,oneof"`
+}
+
+func (*InstanceSpec_OnDemand) isInstanceSpec_PricingModel() {}
+
+func (*InstanceSpec_FollowsSpotPrice) isInstanceSpec_PricingModel() {}
+
+func (*InstanceSpec_SpotPricingPolicy) isInstanceSpec_PricingModel() {}
 
 type PreemptibleSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1561,6 +1629,123 @@ func (x *PassthroughGroupRequest) GetRequested() bool {
 	return false
 }
 
+type OnDemandSpec struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OnDemandSpec) Reset() {
+	*x = OnDemandSpec{}
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OnDemandSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OnDemandSpec) ProtoMessage() {}
+
+func (x *OnDemandSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OnDemandSpec.ProtoReflect.Descriptor instead.
+func (*OnDemandSpec) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{16}
+}
+
+type FollowsSpotPriceSpec struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FollowsSpotPriceSpec) Reset() {
+	*x = FollowsSpotPriceSpec{}
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FollowsSpotPriceSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FollowsSpotPriceSpec) ProtoMessage() {}
+
+func (x *FollowsSpotPriceSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FollowsSpotPriceSpec.ProtoReflect.Descriptor instead.
+func (*FollowsSpotPriceSpec) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{17}
+}
+
+type SpotPricingPolicySpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// PricingPolicy ID used as the maximum agreed price for the preemptible VM.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpotPricingPolicySpec) Reset() {
+	*x = SpotPricingPolicySpec{}
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpotPricingPolicySpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpotPricingPolicySpec) ProtoMessage() {}
+
+func (x *SpotPricingPolicySpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_compute_v1_instance_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpotPricingPolicySpec.ProtoReflect.Descriptor instead.
+func (*SpotPricingPolicySpec) Descriptor() ([]byte, []int) {
+	return file_nebius_compute_v1_instance_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *SpotPricingPolicySpec) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 var File_nebius_compute_v1_instance_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_instance_proto_rawDesc = "" +
@@ -1569,7 +1754,7 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\bInstance\x12L\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.InstanceSpecR\x04spec\x129\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\xb2\t\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.InstanceStatusR\x06status\"\xc4\v\n" +
 	"\fInstanceSpec\x12E\n" +
 	"\x12service_account_id\x18\x01 \x01(\tB\x17\xbaJ\x01\x02\xe2J\x10\n" +
 	"\x0eserviceaccountR\x10serviceAccountId\x12F\n" +
@@ -1590,7 +1775,11 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x17computenvlinstancegroupR\x12nvlInstanceGroupId\x12S\n" +
 	"\x12reservation_policy\x18\x17 \x01(\v2$.nebius.compute.v1.ReservationPolicyR\x11reservationPolicy\x12B\n" +
 	"\vlocal_disks\x18\x18 \x01(\v2!.nebius.compute.v1.LocalDisksSpecR\n" +
-	"localDisks\"\x9b\x02\n" +
+	"localDisks\x12D\n" +
+	"\ton_demand\x18\x19 \x01(\v2\x1f.nebius.compute.v1.OnDemandSpecB\x04\xbaJ\x01\x06H\x00R\bonDemand\x12]\n" +
+	"\x12follows_spot_price\x18\x1a \x01(\v2'.nebius.compute.v1.FollowsSpotPriceSpecB\x04\xbaJ\x01\x06H\x00R\x10followsSpotPrice\x12Z\n" +
+	"\x13spot_pricing_policy\x18\x1b \x01(\v2(.nebius.compute.v1.SpotPricingPolicySpecH\x00R\x11spotPricingPolicyB\x0f\n" +
+	"\rpricing_model\"\x9b\x02\n" +
 	"\x0fPreemptibleSpec\x12d\n" +
 	"\ron_preemption\x18\x01 \x01(\x0e23.nebius.compute.v1.PreemptibleSpec.PreemptionPolicyB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\fonPreemption\x12s\n" +
@@ -1689,7 +1878,11 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\x11passthrough_group\x18\x01 \x01(\v2*.nebius.compute.v1.PassthroughGroupRequestH\x00R\x10passthroughGroupB\x10\n" +
 	"\arequest\x12\x05\xbaH\x02\b\x01\"7\n" +
 	"\x17PassthroughGroupRequest\x12\x1c\n" +
-	"\trequested\x18\x01 \x01(\bR\trequested*;\n" +
+	"\trequested\x18\x01 \x01(\bR\trequested\"\x0e\n" +
+	"\fOnDemandSpec\"\x16\n" +
+	"\x14FollowsSpotPriceSpec\"/\n" +
+	"\x15SpotPricingPolicySpec\x12\x16\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id*;\n" +
 	"\x16InstanceRecoveryPolicy\x12\v\n" +
 	"\aRECOVER\x10\x00\x12\b\n" +
 	"\x04FAIL\x10\x01\x12\n" +
@@ -1710,7 +1903,7 @@ func file_nebius_compute_v1_instance_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_compute_v1_instance_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_nebius_compute_v1_instance_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_nebius_compute_v1_instance_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_nebius_compute_v1_instance_proto_goTypes = []any{
 	(InstanceRecoveryPolicy)(0),                  // 0: nebius.compute.v1.InstanceRecoveryPolicy
 	(PreemptibleSpec_PreemptionPolicy)(0),        // 1: nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
@@ -1734,19 +1927,22 @@ var file_nebius_compute_v1_instance_proto_goTypes = []any{
 	(*ReservationPolicy)(nil),                    // 19: nebius.compute.v1.ReservationPolicy
 	(*LocalDisksSpec)(nil),                       // 20: nebius.compute.v1.LocalDisksSpec
 	(*PassthroughGroupRequest)(nil),              // 21: nebius.compute.v1.PassthroughGroupRequest
-	nil,                                          // 22: nebius.compute.v1.ManagedDisk.LabelsEntry
-	(*v1.ResourceMetadata)(nil),                  // 23: nebius.common.v1.ResourceMetadata
-	(*NetworkInterfaceSpec)(nil),                 // 24: nebius.compute.v1.NetworkInterfaceSpec
-	(*DiskSpec)(nil),                             // 25: nebius.compute.v1.DiskSpec
-	(*NetworkInterfaceStatus)(nil),               // 26: nebius.compute.v1.NetworkInterfaceStatus
+	(*OnDemandSpec)(nil),                         // 22: nebius.compute.v1.OnDemandSpec
+	(*FollowsSpotPriceSpec)(nil),                 // 23: nebius.compute.v1.FollowsSpotPriceSpec
+	(*SpotPricingPolicySpec)(nil),                // 24: nebius.compute.v1.SpotPricingPolicySpec
+	nil,                                          // 25: nebius.compute.v1.ManagedDisk.LabelsEntry
+	(*v1.ResourceMetadata)(nil),                  // 26: nebius.common.v1.ResourceMetadata
+	(*NetworkInterfaceSpec)(nil),                 // 27: nebius.compute.v1.NetworkInterfaceSpec
+	(*DiskSpec)(nil),                             // 28: nebius.compute.v1.DiskSpec
+	(*NetworkInterfaceStatus)(nil),               // 29: nebius.compute.v1.NetworkInterfaceStatus
 }
 var file_nebius_compute_v1_instance_proto_depIdxs = []int32{
-	23, // 0: nebius.compute.v1.Instance.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	26, // 0: nebius.compute.v1.Instance.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	7,  // 1: nebius.compute.v1.Instance.spec:type_name -> nebius.compute.v1.InstanceSpec
 	16, // 2: nebius.compute.v1.Instance.status:type_name -> nebius.compute.v1.InstanceStatus
 	9,  // 3: nebius.compute.v1.InstanceSpec.resources:type_name -> nebius.compute.v1.ResourcesSpec
 	10, // 4: nebius.compute.v1.InstanceSpec.gpu_cluster:type_name -> nebius.compute.v1.InstanceGpuClusterSpec
-	24, // 5: nebius.compute.v1.InstanceSpec.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceSpec
+	27, // 5: nebius.compute.v1.InstanceSpec.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceSpec
 	11, // 6: nebius.compute.v1.InstanceSpec.boot_disk:type_name -> nebius.compute.v1.AttachedDiskSpec
 	11, // 7: nebius.compute.v1.InstanceSpec.secondary_disks:type_name -> nebius.compute.v1.AttachedDiskSpec
 	15, // 8: nebius.compute.v1.InstanceSpec.filesystems:type_name -> nebius.compute.v1.AttachedFilesystemSpec
@@ -1754,25 +1950,28 @@ var file_nebius_compute_v1_instance_proto_depIdxs = []int32{
 	8,  // 10: nebius.compute.v1.InstanceSpec.preemptible:type_name -> nebius.compute.v1.PreemptibleSpec
 	19, // 11: nebius.compute.v1.InstanceSpec.reservation_policy:type_name -> nebius.compute.v1.ReservationPolicy
 	20, // 12: nebius.compute.v1.InstanceSpec.local_disks:type_name -> nebius.compute.v1.LocalDisksSpec
-	1,  // 13: nebius.compute.v1.PreemptibleSpec.on_preemption:type_name -> nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
-	2,  // 14: nebius.compute.v1.AttachedDiskSpec.attach_mode:type_name -> nebius.compute.v1.AttachedDiskSpec.AttachMode
-	12, // 15: nebius.compute.v1.AttachedDiskSpec.existing_disk:type_name -> nebius.compute.v1.ExistingDisk
-	13, // 16: nebius.compute.v1.AttachedDiskSpec.managed_disk:type_name -> nebius.compute.v1.ManagedDisk
-	22, // 17: nebius.compute.v1.ManagedDisk.labels:type_name -> nebius.compute.v1.ManagedDisk.LabelsEntry
-	25, // 18: nebius.compute.v1.ManagedDisk.spec:type_name -> nebius.compute.v1.DiskSpec
-	3,  // 19: nebius.compute.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.compute.v1.AttachedFilesystemSpec.AttachMode
-	14, // 20: nebius.compute.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.compute.v1.ExistingFilesystem
-	4,  // 21: nebius.compute.v1.InstanceStatus.state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
-	26, // 22: nebius.compute.v1.InstanceStatus.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceStatus
-	18, // 23: nebius.compute.v1.InstanceStatus.infiniband_topology_path:type_name -> nebius.compute.v1.InstanceStatusInfinibandTopologyPath
-	17, // 24: nebius.compute.v1.InstanceStatus.disk_attachments:type_name -> nebius.compute.v1.DiskAttachmentStatus
-	5,  // 25: nebius.compute.v1.ReservationPolicy.policy:type_name -> nebius.compute.v1.ReservationPolicy.Policy
-	21, // 26: nebius.compute.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.compute.v1.PassthroughGroupRequest
-	27, // [27:27] is the sub-list for method output_type
-	27, // [27:27] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	22, // 13: nebius.compute.v1.InstanceSpec.on_demand:type_name -> nebius.compute.v1.OnDemandSpec
+	23, // 14: nebius.compute.v1.InstanceSpec.follows_spot_price:type_name -> nebius.compute.v1.FollowsSpotPriceSpec
+	24, // 15: nebius.compute.v1.InstanceSpec.spot_pricing_policy:type_name -> nebius.compute.v1.SpotPricingPolicySpec
+	1,  // 16: nebius.compute.v1.PreemptibleSpec.on_preemption:type_name -> nebius.compute.v1.PreemptibleSpec.PreemptionPolicy
+	2,  // 17: nebius.compute.v1.AttachedDiskSpec.attach_mode:type_name -> nebius.compute.v1.AttachedDiskSpec.AttachMode
+	12, // 18: nebius.compute.v1.AttachedDiskSpec.existing_disk:type_name -> nebius.compute.v1.ExistingDisk
+	13, // 19: nebius.compute.v1.AttachedDiskSpec.managed_disk:type_name -> nebius.compute.v1.ManagedDisk
+	25, // 20: nebius.compute.v1.ManagedDisk.labels:type_name -> nebius.compute.v1.ManagedDisk.LabelsEntry
+	28, // 21: nebius.compute.v1.ManagedDisk.spec:type_name -> nebius.compute.v1.DiskSpec
+	3,  // 22: nebius.compute.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.compute.v1.AttachedFilesystemSpec.AttachMode
+	14, // 23: nebius.compute.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.compute.v1.ExistingFilesystem
+	4,  // 24: nebius.compute.v1.InstanceStatus.state:type_name -> nebius.compute.v1.InstanceStatus.InstanceState
+	29, // 25: nebius.compute.v1.InstanceStatus.network_interfaces:type_name -> nebius.compute.v1.NetworkInterfaceStatus
+	18, // 26: nebius.compute.v1.InstanceStatus.infiniband_topology_path:type_name -> nebius.compute.v1.InstanceStatusInfinibandTopologyPath
+	17, // 27: nebius.compute.v1.InstanceStatus.disk_attachments:type_name -> nebius.compute.v1.DiskAttachmentStatus
+	5,  // 28: nebius.compute.v1.ReservationPolicy.policy:type_name -> nebius.compute.v1.ReservationPolicy.Policy
+	21, // 29: nebius.compute.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.compute.v1.PassthroughGroupRequest
+	30, // [30:30] is the sub-list for method output_type
+	30, // [30:30] is the sub-list for method input_type
+	30, // [30:30] is the sub-list for extension type_name
+	30, // [30:30] is the sub-list for extension extendee
+	0,  // [0:30] is the sub-list for field type_name
 }
 
 func init() { file_nebius_compute_v1_instance_proto_init() }
@@ -1782,6 +1981,11 @@ func file_nebius_compute_v1_instance_proto_init() {
 	}
 	file_nebius_compute_v1_disk_proto_init()
 	file_nebius_compute_v1_network_interface_proto_init()
+	file_nebius_compute_v1_instance_proto_msgTypes[1].OneofWrappers = []any{
+		(*InstanceSpec_OnDemand)(nil),
+		(*InstanceSpec_FollowsSpotPrice)(nil),
+		(*InstanceSpec_SpotPricingPolicy)(nil),
+	}
 	file_nebius_compute_v1_instance_proto_msgTypes[3].OneofWrappers = []any{
 		(*ResourcesSpec_Preset)(nil),
 	}
@@ -1804,7 +2008,7 @@ func file_nebius_compute_v1_instance_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_compute_v1_instance_proto_rawDesc), len(file_nebius_compute_v1_instance_proto_rawDesc)),
 			NumEnums:      6,
-			NumMessages:   17,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
