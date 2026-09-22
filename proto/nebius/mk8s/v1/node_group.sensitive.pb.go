@@ -200,6 +200,15 @@ func (w *wrapperNodeTemplate) ProtoReflect() protoreflect.Message {
 // func (x *PreemptibleSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *PreemptibleSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *OnDemandSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *OnDemandSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *FollowsSpotPriceSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *FollowsSpotPriceSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *SpotPricingPolicySpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *SpotPricingPolicySpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ReservationPolicy) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ReservationPolicy) LogValue() slog.Value // is not generated as no sensitive fields found
 
