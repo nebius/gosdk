@@ -233,7 +233,7 @@ func (x ReservationPolicy_Policy) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ReservationPolicy_Policy.Descriptor instead.
 func (ReservationPolicy_Policy) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{20, 0}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{23, 0}
 }
 
 type NodeGroupStatus_State int32
@@ -285,7 +285,7 @@ func (x NodeGroupStatus_State) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use NodeGroupStatus_State.Descriptor instead.
 func (NodeGroupStatus_State) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{24, 0}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{27, 0}
 }
 
 // NodeGroup represents Kubernetes node pool - set of worker machines having the same configuration.
@@ -528,7 +528,15 @@ type NodeTemplate struct {
 	// configure the maximum number of Pods per node for the cluster, MK8S uses this value to allocate a CIDR range for every node
 	// in group. The node CIDR prefix is calculated as `32 - ceil(log2(2 * max_pods))`, i.e. the smallest IPv4 subnet whose total address
 	// count is at least `2 * max_pods`. Not all IPs are usable for workload Pods because some of them are consumed by system Pods.
-	MaxPods       int64 `protobuf:"varint,20,opt,name=max_pods,json=maxPods,proto3" json:"max_pods,omitempty"`
+	MaxPods int64 `protobuf:"varint,20,opt,name=max_pods,json=maxPods,proto3" json:"max_pods,omitempty"`
+	// Default is on_demand.
+	//
+	// Types that are valid to be assigned to PricingModel:
+	//
+	//	*NodeTemplate_OnDemand
+	//	*NodeTemplate_FollowsSpotPrice
+	//	*NodeTemplate_SpotPricingPolicy
+	PricingModel  isNodeTemplate_PricingModel `protobuf_oneof:"pricing_model"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -681,6 +689,66 @@ func (x *NodeTemplate) GetMaxPods() int64 {
 	}
 	return 0
 }
+
+func (x *NodeTemplate) GetPricingModel() isNodeTemplate_PricingModel {
+	if x != nil {
+		return x.PricingModel
+	}
+	return nil
+}
+
+func (x *NodeTemplate) GetOnDemand() *OnDemandSpec {
+	if x != nil {
+		if x, ok := x.PricingModel.(*NodeTemplate_OnDemand); ok {
+			return x.OnDemand
+		}
+	}
+	return nil
+}
+
+func (x *NodeTemplate) GetFollowsSpotPrice() *FollowsSpotPriceSpec {
+	if x != nil {
+		if x, ok := x.PricingModel.(*NodeTemplate_FollowsSpotPrice); ok {
+			return x.FollowsSpotPrice
+		}
+	}
+	return nil
+}
+
+func (x *NodeTemplate) GetSpotPricingPolicy() *SpotPricingPolicySpec {
+	if x != nil {
+		if x, ok := x.PricingModel.(*NodeTemplate_SpotPricingPolicy); ok {
+			return x.SpotPricingPolicy
+		}
+	}
+	return nil
+}
+
+type isNodeTemplate_PricingModel interface {
+	isNodeTemplate_PricingModel()
+}
+
+type NodeTemplate_OnDemand struct {
+	// A regular, non-preemptible VM.
+	OnDemand *OnDemandSpec `protobuf:"bytes,21,opt,name=on_demand,json=onDemand,proto3,oneof"`
+}
+
+type NodeTemplate_FollowsSpotPrice struct {
+	// The preemptible VM accepts the current spot price.
+	FollowsSpotPrice *FollowsSpotPriceSpec `protobuf:"bytes,22,opt,name=follows_spot_price,json=followsSpotPrice,proto3,oneof"`
+}
+
+type NodeTemplate_SpotPricingPolicy struct {
+	// The preemptible VM accepts the current spot price unless it exceeds the maximum price specified by the selected
+	// pricing policy. When the spot price exceeds that maximum price, the VM is preempted.
+	SpotPricingPolicy *SpotPricingPolicySpec `protobuf:"bytes,23,opt,name=spot_pricing_policy,json=spotPricingPolicy,proto3,oneof"`
+}
+
+func (*NodeTemplate_OnDemand) isNodeTemplate_PricingModel() {}
+
+func (*NodeTemplate_FollowsSpotPrice) isNodeTemplate_PricingModel() {}
+
+func (*NodeTemplate_SpotPricingPolicy) isNodeTemplate_PricingModel() {}
 
 type NVLinkSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1718,6 +1786,123 @@ func (*PreemptibleSpec) Descriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{19}
 }
 
+type OnDemandSpec struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OnDemandSpec) Reset() {
+	*x = OnDemandSpec{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OnDemandSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OnDemandSpec) ProtoMessage() {}
+
+func (x *OnDemandSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OnDemandSpec.ProtoReflect.Descriptor instead.
+func (*OnDemandSpec) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{20}
+}
+
+type FollowsSpotPriceSpec struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FollowsSpotPriceSpec) Reset() {
+	*x = FollowsSpotPriceSpec{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FollowsSpotPriceSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FollowsSpotPriceSpec) ProtoMessage() {}
+
+func (x *FollowsSpotPriceSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FollowsSpotPriceSpec.ProtoReflect.Descriptor instead.
+func (*FollowsSpotPriceSpec) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{21}
+}
+
+type SpotPricingPolicySpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// PricingPolicy ID used as the maximum agreed price for the preemptible VM.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpotPricingPolicySpec) Reset() {
+	*x = SpotPricingPolicySpec{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpotPricingPolicySpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpotPricingPolicySpec) ProtoMessage() {}
+
+func (x *SpotPricingPolicySpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpotPricingPolicySpec.ProtoReflect.Descriptor instead.
+func (*SpotPricingPolicySpec) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *SpotPricingPolicySpec) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 // ReservationPolicy is copied as-is from NebiusAPI `compute/v1/instance.proto`.
 type ReservationPolicy struct {
 	state  protoimpl.MessageState   `protogen:"open.v1"`
@@ -1730,7 +1915,7 @@ type ReservationPolicy struct {
 
 func (x *ReservationPolicy) Reset() {
 	*x = ReservationPolicy{}
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[20]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1742,7 +1927,7 @@ func (x *ReservationPolicy) String() string {
 func (*ReservationPolicy) ProtoMessage() {}
 
 func (x *ReservationPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[20]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1755,7 +1940,7 @@ func (x *ReservationPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReservationPolicy.ProtoReflect.Descriptor instead.
 func (*ReservationPolicy) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{20}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ReservationPolicy) GetPolicy() ReservationPolicy_Policy {
@@ -1789,7 +1974,7 @@ type LocalDisksSpec struct {
 
 func (x *LocalDisksSpec) Reset() {
 	*x = LocalDisksSpec{}
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[21]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1801,7 +1986,7 @@ func (x *LocalDisksSpec) String() string {
 func (*LocalDisksSpec) ProtoMessage() {}
 
 func (x *LocalDisksSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[21]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1814,7 +1999,7 @@ func (x *LocalDisksSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocalDisksSpec.ProtoReflect.Descriptor instead.
 func (*LocalDisksSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{21}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *LocalDisksSpec) GetRequest() isLocalDisksSpec_Request {
@@ -1867,7 +2052,7 @@ type PassthroughGroupRequest struct {
 
 func (x *PassthroughGroupRequest) Reset() {
 	*x = PassthroughGroupRequest{}
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[22]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1879,7 +2064,7 @@ func (x *PassthroughGroupRequest) String() string {
 func (*PassthroughGroupRequest) ProtoMessage() {}
 
 func (x *PassthroughGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[22]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1892,7 +2077,7 @@ func (x *PassthroughGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassthroughGroupRequest.ProtoReflect.Descriptor instead.
 func (*PassthroughGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{22}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *PassthroughGroupRequest) GetRequested() bool {
@@ -1917,7 +2102,7 @@ type LocalDisksSpecConfig struct {
 
 func (x *LocalDisksSpecConfig) Reset() {
 	*x = LocalDisksSpecConfig{}
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[23]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1929,7 +2114,7 @@ func (x *LocalDisksSpecConfig) String() string {
 func (*LocalDisksSpecConfig) ProtoMessage() {}
 
 func (x *LocalDisksSpecConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[23]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1942,7 +2127,7 @@ func (x *LocalDisksSpecConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocalDisksSpecConfig.ProtoReflect.Descriptor instead.
 func (*LocalDisksSpecConfig) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{23}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *LocalDisksSpecConfig) GetType() isLocalDisksSpecConfig_Type {
@@ -2024,7 +2209,7 @@ type NodeGroupStatus struct {
 
 func (x *NodeGroupStatus) Reset() {
 	*x = NodeGroupStatus{}
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[24]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2036,7 +2221,7 @@ func (x *NodeGroupStatus) String() string {
 func (*NodeGroupStatus) ProtoMessage() {}
 
 func (x *NodeGroupStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[24]
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2049,7 +2234,7 @@ func (x *NodeGroupStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NodeGroupStatus.ProtoReflect.Descriptor instead.
 func (*NodeGroupStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{24}
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *NodeGroupStatus) GetState() NodeGroupStatus_State {
@@ -2135,7 +2320,8 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"autoRepair:\xd0\x03\xbaH\xcc\x03\x1a\x94\x01\n" +
 	"\"node_group_spec.nvlink_autoscaling\x127autoscaling cannot be used for a node group with NVLink\x1a5!(has(this.template.nvlink) && has(this.autoscaling))\x1a\xb2\x02\n" +
 	" node_group_spec.nvlink_max_surge\x120max_surge must be 0 for a node group with NVLink\x1a\xdb\x01!has(this.template.nvlink) || !has(this.strategy.max_surge) || (has(this.strategy.max_surge.count) && this.strategy.max_surge.count == 0) || (has(this.strategy.max_surge.percent) && this.strategy.max_surge.percent == 0)B\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\xdb\b\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\xe4\n" +
+	"\n" +
 	"\fNodeTemplate\x12@\n" +
 	"\bmetadata\x18\x01 \x01(\v2$.nebius.mk8s.v1.NodeMetadataTemplateR\bmetadata\x12;\n" +
 	"\x06taints\x18\x02 \x03(\v2\x19.nebius.mk8s.v1.NodeTaintB\b\xbaH\x05\x92\x01\x02\x10dR\x06taints\x12C\n" +
@@ -2158,7 +2344,11 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\vlocal_disks\x18\x13 \x01(\v2\x1e.nebius.mk8s.v1.LocalDisksSpecR\n" +
 	"localDisks\x12(\n" +
 	"\bmax_pods\x18\x14 \x01(\x03B\r\xbaH\n" +
-	"\xd8\x01\x01\"\x05\x18\x80\x02(\bR\amaxPods\"w\n" +
+	"\xd8\x01\x01\"\x05\x18\x80\x02(\bR\amaxPods\x12A\n" +
+	"\ton_demand\x18\x15 \x01(\v2\x1c.nebius.mk8s.v1.OnDemandSpecB\x04\xbaJ\x01\x06H\x00R\bonDemand\x12Z\n" +
+	"\x12follows_spot_price\x18\x16 \x01(\v2$.nebius.mk8s.v1.FollowsSpotPriceSpecB\x04\xbaJ\x01\x06H\x00R\x10followsSpotPrice\x12W\n" +
+	"\x13spot_pricing_policy\x18\x17 \x01(\v2%.nebius.mk8s.v1.SpotPricingPolicySpecH\x00R\x11spotPricingPolicyB\x0f\n" +
+	"\rpricing_model\"w\n" +
 	"\n" +
 	"NVLinkSpec\x12U\n" +
 	"\x15nvl_instance_group_id\x18\x02 \x01(\tB \xbaJ\x01\x02\xe2J\x19\n" +
@@ -2236,7 +2426,12 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationH\x00R\atimeout\x12\x1c\n" +
 	"\bdisabled\x18\x04 \x01(\bH\x00R\bdisabledB\x10\n" +
 	"\atrigger\x12\x05\xbaH\x02\b\x01\"\x11\n" +
-	"\x0fPreemptibleSpec\"\xc3\x01\n" +
+	"\x0fPreemptibleSpec\"\x0e\n" +
+	"\fOnDemandSpec\"\x16\n" +
+	"\x14FollowsSpotPriceSpec\"A\n" +
+	"\x15SpotPricingPolicySpec\x12(\n" +
+	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
+	"\rpricingpolicyR\x02id\"\xc3\x01\n" +
 	"\x11ReservationPolicy\x12@\n" +
 	"\x06policy\x18\x01 \x01(\x0e2(.nebius.mk8s.v1.ReservationPolicy.PolicyR\x06policy\x12@\n" +
 	"\x0freservation_ids\x18\x02 \x03(\tB\x17\xe2J\x14\n" +
@@ -2293,7 +2488,7 @@ func file_nebius_mk8s_v1_node_group_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_mk8s_v1_node_group_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_nebius_mk8s_v1_node_group_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_nebius_mk8s_v1_node_group_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_nebius_mk8s_v1_node_group_proto_goTypes = []any{
 	(ConditionStatus)(0),                   // 0: nebius.mk8s.v1.ConditionStatus
 	(AttachedFilesystemSpec_AttachMode)(0), // 1: nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
@@ -2320,31 +2515,34 @@ var file_nebius_mk8s_v1_node_group_proto_goTypes = []any{
 	(*NodeGroupAutoRepairSpec)(nil),        // 22: nebius.mk8s.v1.NodeGroupAutoRepairSpec
 	(*NodeAutoRepairCondition)(nil),        // 23: nebius.mk8s.v1.NodeAutoRepairCondition
 	(*PreemptibleSpec)(nil),                // 24: nebius.mk8s.v1.PreemptibleSpec
-	(*ReservationPolicy)(nil),              // 25: nebius.mk8s.v1.ReservationPolicy
-	(*LocalDisksSpec)(nil),                 // 26: nebius.mk8s.v1.LocalDisksSpec
-	(*PassthroughGroupRequest)(nil),        // 27: nebius.mk8s.v1.PassthroughGroupRequest
-	(*LocalDisksSpecConfig)(nil),           // 28: nebius.mk8s.v1.LocalDisksSpecConfig
-	(*NodeGroupStatus)(nil),                // 29: nebius.mk8s.v1.NodeGroupStatus
-	nil,                                    // 30: nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
-	nil,                                    // 31: nebius.mk8s.v1.InstanceMetadataTemplate.LabelsEntry
-	(*v1.ResourceMetadata)(nil),            // 32: nebius.common.v1.ResourceMetadata
-	(*ResourcesSpec)(nil),                  // 33: nebius.mk8s.v1.ResourcesSpec
-	(*DiskSpec)(nil),                       // 34: nebius.mk8s.v1.DiskSpec
-	(*durationpb.Duration)(nil),            // 35: google.protobuf.Duration
-	(*v1.RecurrentResourceEvent)(nil),      // 36: nebius.common.v1.RecurrentResourceEvent
+	(*OnDemandSpec)(nil),                   // 25: nebius.mk8s.v1.OnDemandSpec
+	(*FollowsSpotPriceSpec)(nil),           // 26: nebius.mk8s.v1.FollowsSpotPriceSpec
+	(*SpotPricingPolicySpec)(nil),          // 27: nebius.mk8s.v1.SpotPricingPolicySpec
+	(*ReservationPolicy)(nil),              // 28: nebius.mk8s.v1.ReservationPolicy
+	(*LocalDisksSpec)(nil),                 // 29: nebius.mk8s.v1.LocalDisksSpec
+	(*PassthroughGroupRequest)(nil),        // 30: nebius.mk8s.v1.PassthroughGroupRequest
+	(*LocalDisksSpecConfig)(nil),           // 31: nebius.mk8s.v1.LocalDisksSpecConfig
+	(*NodeGroupStatus)(nil),                // 32: nebius.mk8s.v1.NodeGroupStatus
+	nil,                                    // 33: nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
+	nil,                                    // 34: nebius.mk8s.v1.InstanceMetadataTemplate.LabelsEntry
+	(*v1.ResourceMetadata)(nil),            // 35: nebius.common.v1.ResourceMetadata
+	(*ResourcesSpec)(nil),                  // 36: nebius.mk8s.v1.ResourcesSpec
+	(*DiskSpec)(nil),                       // 37: nebius.mk8s.v1.DiskSpec
+	(*durationpb.Duration)(nil),            // 38: google.protobuf.Duration
+	(*v1.RecurrentResourceEvent)(nil),      // 39: nebius.common.v1.RecurrentResourceEvent
 }
 var file_nebius_mk8s_v1_node_group_proto_depIdxs = []int32{
-	32, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	35, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	6,  // 1: nebius.mk8s.v1.NodeGroup.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
-	29, // 2: nebius.mk8s.v1.NodeGroup.status:type_name -> nebius.mk8s.v1.NodeGroupStatus
+	32, // 2: nebius.mk8s.v1.NodeGroup.status:type_name -> nebius.mk8s.v1.NodeGroupStatus
 	17, // 3: nebius.mk8s.v1.NodeGroupSpec.autoscaling:type_name -> nebius.mk8s.v1.NodeGroupAutoscalingSpec
 	7,  // 4: nebius.mk8s.v1.NodeGroupSpec.template:type_name -> nebius.mk8s.v1.NodeTemplate
 	20, // 5: nebius.mk8s.v1.NodeGroupSpec.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
 	22, // 6: nebius.mk8s.v1.NodeGroupSpec.auto_repair:type_name -> nebius.mk8s.v1.NodeGroupAutoRepairSpec
 	9,  // 7: nebius.mk8s.v1.NodeTemplate.metadata:type_name -> nebius.mk8s.v1.NodeMetadataTemplate
 	19, // 8: nebius.mk8s.v1.NodeTemplate.taints:type_name -> nebius.mk8s.v1.NodeTaint
-	33, // 9: nebius.mk8s.v1.NodeTemplate.resources:type_name -> nebius.mk8s.v1.ResourcesSpec
-	34, // 10: nebius.mk8s.v1.NodeTemplate.boot_disk:type_name -> nebius.mk8s.v1.DiskSpec
+	36, // 9: nebius.mk8s.v1.NodeTemplate.resources:type_name -> nebius.mk8s.v1.ResourcesSpec
+	37, // 10: nebius.mk8s.v1.NodeTemplate.boot_disk:type_name -> nebius.mk8s.v1.DiskSpec
 	10, // 11: nebius.mk8s.v1.NodeTemplate.gpu_settings:type_name -> nebius.mk8s.v1.GpuSettings
 	11, // 12: nebius.mk8s.v1.NodeTemplate.gpu_cluster:type_name -> nebius.mk8s.v1.GpuClusterSpec
 	12, // 13: nebius.mk8s.v1.NodeTemplate.network_interfaces:type_name -> nebius.mk8s.v1.NetworkInterfaceTemplate
@@ -2352,32 +2550,35 @@ var file_nebius_mk8s_v1_node_group_proto_depIdxs = []int32{
 	18, // 15: nebius.mk8s.v1.NodeTemplate.instance_metadata:type_name -> nebius.mk8s.v1.InstanceMetadataTemplate
 	24, // 16: nebius.mk8s.v1.NodeTemplate.preemptible:type_name -> nebius.mk8s.v1.PreemptibleSpec
 	8,  // 17: nebius.mk8s.v1.NodeTemplate.nvlink:type_name -> nebius.mk8s.v1.NVLinkSpec
-	25, // 18: nebius.mk8s.v1.NodeTemplate.reservation_policy:type_name -> nebius.mk8s.v1.ReservationPolicy
-	26, // 19: nebius.mk8s.v1.NodeTemplate.local_disks:type_name -> nebius.mk8s.v1.LocalDisksSpec
-	30, // 20: nebius.mk8s.v1.NodeMetadataTemplate.labels:type_name -> nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
-	13, // 21: nebius.mk8s.v1.NetworkInterfaceTemplate.public_ip_address:type_name -> nebius.mk8s.v1.PublicIPAddress
-	14, // 22: nebius.mk8s.v1.NetworkInterfaceTemplate.security_groups:type_name -> nebius.mk8s.v1.SecurityGroup
-	1,  // 23: nebius.mk8s.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
-	16, // 24: nebius.mk8s.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.mk8s.v1.ExistingFilesystem
-	31, // 25: nebius.mk8s.v1.InstanceMetadataTemplate.labels:type_name -> nebius.mk8s.v1.InstanceMetadataTemplate.LabelsEntry
-	2,  // 26: nebius.mk8s.v1.NodeTaint.effect:type_name -> nebius.mk8s.v1.NodeTaint.Effect
-	21, // 27: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_unavailable:type_name -> nebius.mk8s.v1.PercentOrCount
-	21, // 28: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_surge:type_name -> nebius.mk8s.v1.PercentOrCount
-	35, // 29: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
-	23, // 30: nebius.mk8s.v1.NodeGroupAutoRepairSpec.conditions:type_name -> nebius.mk8s.v1.NodeAutoRepairCondition
-	0,  // 31: nebius.mk8s.v1.NodeAutoRepairCondition.status:type_name -> nebius.mk8s.v1.ConditionStatus
-	35, // 32: nebius.mk8s.v1.NodeAutoRepairCondition.timeout:type_name -> google.protobuf.Duration
-	3,  // 33: nebius.mk8s.v1.ReservationPolicy.policy:type_name -> nebius.mk8s.v1.ReservationPolicy.Policy
-	27, // 34: nebius.mk8s.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.mk8s.v1.PassthroughGroupRequest
-	28, // 35: nebius.mk8s.v1.LocalDisksSpec.config:type_name -> nebius.mk8s.v1.LocalDisksSpecConfig
-	4,  // 36: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
-	36, // 37: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
-	20, // 38: nebius.mk8s.v1.NodeGroupStatus.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
-	39, // [39:39] is the sub-list for method output_type
-	39, // [39:39] is the sub-list for method input_type
-	39, // [39:39] is the sub-list for extension type_name
-	39, // [39:39] is the sub-list for extension extendee
-	0,  // [0:39] is the sub-list for field type_name
+	28, // 18: nebius.mk8s.v1.NodeTemplate.reservation_policy:type_name -> nebius.mk8s.v1.ReservationPolicy
+	29, // 19: nebius.mk8s.v1.NodeTemplate.local_disks:type_name -> nebius.mk8s.v1.LocalDisksSpec
+	25, // 20: nebius.mk8s.v1.NodeTemplate.on_demand:type_name -> nebius.mk8s.v1.OnDemandSpec
+	26, // 21: nebius.mk8s.v1.NodeTemplate.follows_spot_price:type_name -> nebius.mk8s.v1.FollowsSpotPriceSpec
+	27, // 22: nebius.mk8s.v1.NodeTemplate.spot_pricing_policy:type_name -> nebius.mk8s.v1.SpotPricingPolicySpec
+	33, // 23: nebius.mk8s.v1.NodeMetadataTemplate.labels:type_name -> nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
+	13, // 24: nebius.mk8s.v1.NetworkInterfaceTemplate.public_ip_address:type_name -> nebius.mk8s.v1.PublicIPAddress
+	14, // 25: nebius.mk8s.v1.NetworkInterfaceTemplate.security_groups:type_name -> nebius.mk8s.v1.SecurityGroup
+	1,  // 26: nebius.mk8s.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
+	16, // 27: nebius.mk8s.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.mk8s.v1.ExistingFilesystem
+	34, // 28: nebius.mk8s.v1.InstanceMetadataTemplate.labels:type_name -> nebius.mk8s.v1.InstanceMetadataTemplate.LabelsEntry
+	2,  // 29: nebius.mk8s.v1.NodeTaint.effect:type_name -> nebius.mk8s.v1.NodeTaint.Effect
+	21, // 30: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_unavailable:type_name -> nebius.mk8s.v1.PercentOrCount
+	21, // 31: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_surge:type_name -> nebius.mk8s.v1.PercentOrCount
+	38, // 32: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
+	23, // 33: nebius.mk8s.v1.NodeGroupAutoRepairSpec.conditions:type_name -> nebius.mk8s.v1.NodeAutoRepairCondition
+	0,  // 34: nebius.mk8s.v1.NodeAutoRepairCondition.status:type_name -> nebius.mk8s.v1.ConditionStatus
+	38, // 35: nebius.mk8s.v1.NodeAutoRepairCondition.timeout:type_name -> google.protobuf.Duration
+	3,  // 36: nebius.mk8s.v1.ReservationPolicy.policy:type_name -> nebius.mk8s.v1.ReservationPolicy.Policy
+	30, // 37: nebius.mk8s.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.mk8s.v1.PassthroughGroupRequest
+	31, // 38: nebius.mk8s.v1.LocalDisksSpec.config:type_name -> nebius.mk8s.v1.LocalDisksSpecConfig
+	4,  // 39: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
+	39, // 40: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
+	20, // 41: nebius.mk8s.v1.NodeGroupStatus.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
+	42, // [42:42] is the sub-list for method output_type
+	42, // [42:42] is the sub-list for method input_type
+	42, // [42:42] is the sub-list for extension type_name
+	42, // [42:42] is the sub-list for extension extendee
+	0,  // [0:42] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_node_group_proto_init() }
@@ -2389,6 +2590,11 @@ func file_nebius_mk8s_v1_node_group_proto_init() {
 	file_nebius_mk8s_v1_node_group_proto_msgTypes[1].OneofWrappers = []any{
 		(*NodeGroupSpec_FixedNodeCount)(nil),
 		(*NodeGroupSpec_Autoscaling)(nil),
+	}
+	file_nebius_mk8s_v1_node_group_proto_msgTypes[2].OneofWrappers = []any{
+		(*NodeTemplate_OnDemand)(nil),
+		(*NodeTemplate_FollowsSpotPrice)(nil),
+		(*NodeTemplate_SpotPricingPolicy)(nil),
 	}
 	file_nebius_mk8s_v1_node_group_proto_msgTypes[3].OneofWrappers = []any{
 		(*NVLinkSpec_NvlInstanceGroupId)(nil),
@@ -2404,10 +2610,10 @@ func file_nebius_mk8s_v1_node_group_proto_init() {
 		(*NodeAutoRepairCondition_Timeout)(nil),
 		(*NodeAutoRepairCondition_Disabled)(nil),
 	}
-	file_nebius_mk8s_v1_node_group_proto_msgTypes[21].OneofWrappers = []any{
+	file_nebius_mk8s_v1_node_group_proto_msgTypes[24].OneofWrappers = []any{
 		(*LocalDisksSpec_PassthroughGroup)(nil),
 	}
-	file_nebius_mk8s_v1_node_group_proto_msgTypes[23].OneofWrappers = []any{
+	file_nebius_mk8s_v1_node_group_proto_msgTypes[26].OneofWrappers = []any{
 		(*LocalDisksSpecConfig_None)(nil),
 		(*LocalDisksSpecConfig_KubeletEphemeral)(nil),
 	}
@@ -2417,7 +2623,7 @@ func file_nebius_mk8s_v1_node_group_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1_node_group_proto_rawDesc), len(file_nebius_mk8s_v1_node_group_proto_rawDesc)),
 			NumEnums:      5,
-			NumMessages:   27,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
