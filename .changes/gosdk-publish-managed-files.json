@@ -452,6 +452,8 @@
     "proto/nebius/iam/v1/invitation_service.pb.go",
     "proto/nebius/iam/v1/invitation_service.sensitive.pb.go",
     "proto/nebius/iam/v1/invitation_service_grpc.pb.go",
+    "proto/nebius/iam/v1/invitation_web_console_service.pb.go",
+    "proto/nebius/iam/v1/invitation_web_console_service.sensitive.pb.go",
     "proto/nebius/iam/v1/profile_service.pb.go",
     "proto/nebius/iam/v1/profile_service.sensitive.pb.go",
     "proto/nebius/iam/v1/profile_service_grpc.pb.go",

@@ -32,11 +32,6 @@ type StartRequest struct {
 	Spec *AuditEventExportSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	// Region to retrieve audit logs (e.g. eu-north2, us-central1, eu-west1)
 	// See https://docs.nebius.com/overview/regions
-	// Default: eu-north1
-	//
-	// During a transition period (until 13-08-2026), events are written to
-	// both eu-north1 and their origin region.
-	// After that, events are only stored in their origin region, and this field becomes required.
 	Region        string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -193,9 +188,6 @@ type ListRequest struct {
 	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Region to retrieve audit exports (e.g. eu-north2, us-central1, eu-west1)
 	// See https://docs.nebius.com/overview/regions
-	// Default: eu-north1
-	//
-	// After a transition period (13-08-2026) this field becomes required.
 	Region        string `protobuf:"bytes,4,opt,name=region,proto3" json:"region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -317,22 +309,22 @@ var File_nebius_audit_v2_audit_event_export_service_proto protoreflect.FileDescr
 
 const file_nebius_audit_v2_audit_event_export_service_proto_rawDesc = "" +
 	"\n" +
-	"0nebius/audit/v2/audit_event_export_service.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a(nebius/audit/v2/audit_event_export.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\"\xa1\x01\n" +
+	"0nebius/audit/v2/audit_event_export_service.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a(nebius/audit/v2/audit_event_export.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\"\xa9\x01\n" +
 	"\fStartRequest\x12>\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataR\bmetadata\x129\n" +
-	"\x04spec\x18\x02 \x01(\v2%.nebius.audit.v2.AuditEventExportSpecR\x04spec\x12\x16\n" +
-	"\x06region\x18\x03 \x01(\tR\x06region\"'\n" +
+	"\x04spec\x18\x02 \x01(\v2%.nebius.audit.v2.AuditEventExportSpecR\x04spec\x12\x1e\n" +
+	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\"'\n" +
 	"\rCancelRequest\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"$\n" +
 	"\n" +
 	"GetRequest\x12\x16\n" +
-	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x86\x01\n" +
+	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\x8e\x01\n" +
 	"\vListRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06region\x18\x04 \x01(\tR\x06region\"\x7f\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x1e\n" +
+	"\x06region\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\"\x7f\n" +
 	"\x1cListAuditEventExportResponse\x127\n" +
 	"\x05items\x18\x01 \x03(\v2!.nebius.audit.v2.AuditEventExportR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xcb\x02\n" +

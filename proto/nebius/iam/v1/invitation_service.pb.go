@@ -25,12 +25,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Request to create an invitation.
 type CreateInvitationRequest struct {
-	state    protoimpl.MessageState `protogen:"open.v1"`
-	Metadata *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	Spec     *InvitationSpec        `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
-	NoSend   bool                   `protobuf:"varint,3,opt,name=no_send,json=noSend,proto3" json:"no_send,omitempty"` // if set, no sending is attempted (it's supposed that later a Resend method is called)
-	// How long the invitation remains valid after creation. If omitted, the service default is used.
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Invitation metadata.
+	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Invitation specification.
+	Spec *InvitationSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	// If set, no immediate sending is attempted (it is assumed that a Resend method will be called later).
+	NoSend bool `protobuf:"varint,3,opt,name=no_send,json=noSend,proto3" json:"no_send,omitempty"` // if set, no sending is attempted (it's supposed that later a Resend method is called)
+	// Duration for which the invitation remains valid after creation.
+	// If omitted, the service's default value is used.
 	ExpiresIn     *durationpb.Duration `protobuf:"bytes,4,opt,name=expires_in,json=expiresIn,proto3" json:"expires_in,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
