@@ -100,7 +100,6 @@ type ListAuditEventRequest struct {
 	// authentication.subject.service_account_id
 	// authentication.subject.tenant_user_id
 	// authentication.token_credential.masked_token
-	// project_region.name
 	// resource.hierarchy.id
 	// resource.hierarchy.name
 	// resource.metadata.id
