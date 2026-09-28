@@ -378,6 +378,7 @@ type EndpointSpec struct {
 	// Disk spec for the main disk of the endpoint.
 	Disk *EndpointSpec_DiskSpec `protobuf:"bytes,23,opt,name=disk,proto3" json:"disk,omitempty"`
 	// Subnet ID where the endpoint will be deployed.
+	// If omitted, the service uses the project's default subnet in the workload region.
 	SubnetId string `protobuf:"bytes,24,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
 	// Whether to assign a public IP to the endpoint.
 	PublicIp bool `protobuf:"varint,25,opt,name=public_ip,json=publicIp,proto3" json:"public_ip,omitempty"`
@@ -1522,7 +1523,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xda\x1e\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xd4\x1e\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1537,8 +1538,8 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bplatform\x18\x14 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bplatform\x12\x1e\n" +
 	"\x06preset\x18\x15 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06preset\x12-\n" +
 	"\x0eshm_size_bytes\x18\x16 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\fshmSizeBytes\x12?\n" +
-	"\x04disk\x18\x17 \x01(\v2#.nebius.ai.v1.EndpointSpec.DiskSpecB\x06\xbaH\x03\xc8\x01\x01R\x04disk\x121\n" +
-	"\tsubnet_id\x18\x18 \x01(\tB\x14\xbaH\x03\xc8\x01\x01\xe2J\v\n" +
+	"\x04disk\x18\x17 \x01(\v2#.nebius.ai.v1.EndpointSpec.DiskSpecB\x06\xbaH\x03\xc8\x01\x01R\x04disk\x12+\n" +
+	"\tsubnet_id\x18\x18 \x01(\tB\x0e\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x12\x1b\n" +
 	"\tpublic_ip\x18\x19 \x01(\bR\bpublicIp\x12.\n" +
 	"\x13ssh_authorized_keys\x18\x1a \x03(\tR\x11sshAuthorizedKeys\x12 \n" +

@@ -681,7 +681,7 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x06Bucket\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\x8b\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\x91\n" +
 	"\n" +
 	"\n" +
 	"BucketSpec\x12V\n" +
@@ -710,7 +710,7 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\vMUTATE_ONLY\x10\x02\x12\a\n" +
 	"\x03ALL\x10\x03B\x13\n" +
 	"\vbucket_type\x12\x04\xbaJ\x01\x02J\x04\b\x03\x10\x04J\x04\b\n" +
-	"\x10\v\"\xed\x06\n" +
+	"\x10\vJ\x04\b\x0e\x10\x0f\"\xed\x06\n" +
 	"\fBucketStatus\x12=\n" +
 	"\bcounters\x18\x01 \x03(\v2!.nebius.storage.v1.BucketCountersR\bcounters\x12;\n" +
 	"\x05state\x18\x02 \x01(\x0e2%.nebius.storage.v1.BucketStatus.StateR\x05state\x12Z\n" +

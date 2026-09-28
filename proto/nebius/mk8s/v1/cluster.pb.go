@@ -342,6 +342,7 @@ type PublicEndpointSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// List of CIDR blocks from which access to public endpoint is allowed.
 	// If field is not set, or list is empty, it means that access is not restricted at all.
+	// You can specify a maximum of 8 CIDRs.
 	AllowedCidrs  []string `protobuf:"bytes,2,rep,name=allowed_cidrs,json=allowedCidrs,proto3" json:"allowed_cidrs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -774,9 +775,9 @@ const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"audit_logs\x18\x05 \x01(\v2\x1d.nebius.mk8s.v1.AuditLogsSpecB\x04\xbaJ\x01\x06R\tauditLogs\x12=\n" +
 	"\tkarpenter\x18\x06 \x01(\v2\x19.nebius.mk8s.v1.KarpenterB\x04\xbaJ\x01\x06R\tkarpenter\"n\n" +
 	"\x19ControlPlaneEndpointsSpec\x12Q\n" +
-	"\x0fpublic_endpoint\x18\x01 \x01(\v2\".nebius.mk8s.v1.PublicEndpointSpecB\x04\xbaJ\x01\x06R\x0epublicEndpoint\"\x8d\x02\n" +
-	"\x12PublicEndpointSpec\x12\xf6\x01\n" +
-	"\rallowed_cidrs\x18\x02 \x03(\tB\xd0\x01\xbaH\xcc\x01\x92\x01\xc8\x01\"\xc5\x01\xba\x01\xc1\x01\n" +
+	"\x0fpublic_endpoint\x18\x01 \x01(\v2\".nebius.mk8s.v1.PublicEndpointSpecB\x04\xbaJ\x01\x06R\x0epublicEndpoint\"\x8f\x02\n" +
+	"\x12PublicEndpointSpec\x12\xf8\x01\n" +
+	"\rallowed_cidrs\x18\x02 \x03(\tB\xd2\x01\xbaH\xce\x01\x92\x01\xca\x01\x10\b\"\xc5\x01\xba\x01\xc1\x01\n" +
 	"\x16string.valid_ipv4_cidr\x12\x8c\x01Value must be a valid IPv4 CIDR, the prefix must have all zeros for the masked bits of the prefix (e.g. `127.0.0.0/16`, not `127.0.0.1/16`).\x1a\x18this.isIpPrefix(4, true)R\fallowedCidrs\"\xd1\x01\n" +
 	"\x0fKubeNetworkSpec\x12\xbd\x01\n" +
 	"\rservice_cidrs\x18\x01 \x03(\tB\x97\x01\xbaH\x8f\x01\xba\x01\x86\x01\n" +

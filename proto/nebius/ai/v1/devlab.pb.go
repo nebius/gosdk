@@ -392,6 +392,7 @@ type DevlabSpec struct {
 	// Disk spec for the main disk of the Devlab runtime VM.
 	Disk *DevlabSpec_DiskSpec `protobuf:"bytes,23,opt,name=disk,proto3" json:"disk,omitempty"`
 	// Subnet ID where the Devlab will be deployed.
+	// If omitted, the service uses the project's default subnet in the workload region.
 	SubnetId string `protobuf:"bytes,24,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
 	// Whether to assign a public IP to the Devlab runtime VM.
 	PublicIp bool `protobuf:"varint,25,opt,name=public_ip,json=publicIp,proto3" json:"public_ip,omitempty"`
@@ -1559,7 +1560,7 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x06Devlab\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2\x18.nebius.ai.v1.DevlabSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x128\n" +
-	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\x8f2\n" +
+	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\x892\n" +
 	"\n" +
 	"DevlabSpec\x12\x1a\n" +
 	"\x05image\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x05image\x12g\n" +
@@ -1578,8 +1579,8 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x06preset\x121\n" +
 	"\x0eshm_size_bytes\x18\x16 \x01(\x03B\v\xbaH\x04\"\x02(\x00\xbaJ\x01\x02R\fshmSizeBytes\x12A\n" +
 	"\x04disk\x18\x17 \x01(\v2!.nebius.ai.v1.DevlabSpec.DiskSpecB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04disk\x125\n" +
-	"\tsubnet_id\x18\x18 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\v\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04disk\x12/\n" +
+	"\tsubnet_id\x18\x18 \x01(\tB\x12\xbaJ\x01\x02\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x12!\n" +
 	"\tpublic_ip\x18\x19 \x01(\bB\x04\xbaJ\x01\x02R\bpublicIp\x124\n" +
 	"\x13ssh_authorized_keys\x18\x1a \x03(\tB\x04\xbaJ\x01\x02R\x11sshAuthorizedKeys\x12L\n" +
