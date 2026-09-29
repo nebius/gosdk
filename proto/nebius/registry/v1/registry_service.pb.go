@@ -295,6 +295,7 @@ func (x *UpdateRegistryRequest) GetSpec() *RegistrySpec {
 type DeleteRegistryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Force         bool                   `protobuf:"varint,2,opt,name=force,proto3" json:"force,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -336,6 +337,13 @@ func (x *DeleteRegistryRequest) GetId() string {
 	return ""
 }
 
+func (x *DeleteRegistryRequest) GetForce() bool {
+	if x != nil {
+		return x.Force
+	}
+	return false
+}
+
 var File_nebius_registry_v1_registry_service_proto protoreflect.FileDescriptor
 
 const file_nebius_registry_v1_registry_service_proto_rawDesc = "" +
@@ -360,11 +368,12 @@ const file_nebius_registry_v1_registry_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.registry.v1.RegistrySpecR\x04spec\"\x9b\x01\n" +
 	"\x15UpdateRegistryRequest\x12L\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\f\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
-	"\x04spec\x18\x02 \x01(\v2 .nebius.registry.v1.RegistrySpecR\x04spec\"<\n" +
+	"\x04spec\x18\x02 \x01(\v2 .nebius.registry.v1.RegistrySpecR\x04spec\"R\n" +
 	"\x15DeleteRegistryRequest\x12#\n" +
 	"\x02id\x18\x01 \x01(\tB\x13\xbaH\x03\xc8\x01\x01\xe2J\n" +
 	"\n" +
-	"\bregistryR\x02id2\x8f\x04\n" +
+	"\bregistryR\x02id\x12\x14\n" +
+	"\x05force\x18\x02 \x01(\bR\x05force2\x8f\x04\n" +
 	"\x0fRegistryService\x12K\n" +
 	"\x03Get\x12&.nebius.registry.v1.GetRegistryRequest\x1a\x1c.nebius.registry.v1.Registry\x12M\n" +
 	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1c.nebius.registry.v1.Registry\x12]\n" +

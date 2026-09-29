@@ -1,6 +1,12 @@
 package auth
 
-import "context"
+import (
+	"context"
+	"fmt"
+	"log/slog"
+
+	"github.com/nebius/gosdk/internal/logging"
+)
 
 type NamedTokener interface {
 	BearerTokener
@@ -17,6 +23,10 @@ type Wrapper interface {
 
 // NameWrapper is a wrapper around a [BearerTokener] that adds a name to the tokener
 // if the tokener does not have a name.
+//
+// Formatting uses %v for the wrapped tokener.
+// Structured logging uses LogValue, then String, or only the wrapped type.
+// The wrapped type should sanitize its own sensitive values for both formatting and structured logging.
 type NameWrapper struct {
 	name    string
 	typ     string
@@ -37,6 +47,22 @@ func NewTypedNameWrapper(name string, typ string, tokener BearerTokener) *NameWr
 		typ:     typ,
 		tokener: tokener,
 	}
+}
+
+func (n *NameWrapper) LogValue() slog.Value {
+	if n == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "NameWrapper"),
+		slog.String("name", n.name),
+		slog.String("tokener_type", n.Type()),
+		logging.Object("tokener", n.tokener),
+	)
+}
+
+func (n *NameWrapper) String() string {
+	return fmt.Sprintf("NameWrapper(name=%q, type=%q, tokener=%v)", n.name, n.Type(), n.tokener)
 }
 
 func (n *NameWrapper) Name() string {

@@ -1,10 +1,11 @@
 package gosdk
 
 import (
-	"fmt"
 	"log/slog"
+	"sort"
 
 	"github.com/nebius/gosdk/auth"
+	"github.com/nebius/gosdk/internal/logging"
 )
 
 // Credentials are used to authenticate outgoing gRPC requests.
@@ -23,12 +24,16 @@ func IAMToken(token string) Credentials {
 	return credsTokener{tokener: auth.StaticBearerToken(token)}
 }
 
-// CustomTokener allows the user to define its own [auth.BearerTokener] implementation for authentication.
+// CustomTokener uses a custom [auth.BearerTokener] implementation for authentication.
+// Structured logs use [slog.LogValuer.LogValue], then [fmt.Stringer.String], or only the implementation type.
+// LogValue and String implementations must sanitize their own sensitive values.
 func CustomTokener(tokener auth.BearerTokener) Credentials {
 	return credsTokener{tokener: tokener}
 }
 
-// CustomAuthenticator allows the user to define its own [auth.Authenticator] implementation.
+// CustomAuthenticator uses a custom [auth.Authenticator] implementation.
+// Structured logs use [slog.LogValuer.LogValue], then [fmt.Stringer.String], or only the implementation type.
+// LogValue and String implementations must sanitize their own sensitive values.
 func CustomAuthenticator(auth auth.Authenticator) Credentials {
 	return credsAuthenticator{auth: auth}
 }
@@ -44,6 +49,10 @@ func ServiceAccount(account auth.ServiceAccount) Credentials {
 //
 // The [SDK] ensures a continuously valid bearer token by caching the current token
 // and asynchronously requesting a new one before expiration.
+//
+// The SDK can log the reader.
+// Structured logs use [slog.LogValuer.LogValue], then [fmt.Stringer.String], or only the reader type.
+// LogValue and String implementations must sanitize their own sensitive values.
 //
 // Note: the reader is used only once as it is wrapped with [auth.CachedServiceAccount].
 func ServiceAccountReader(reader auth.ServiceAccountReader) Credentials {
@@ -79,21 +88,34 @@ type (
 	credsPropagate      struct{}
 )
 
-func (credsNoCreds) LogValue() slog.Value { return slog.AnyValue("NoCredentials") }
+func (credsNoCreds) LogValue() slog.Value {
+	return slog.GroupValue(slog.String("type", "NoCredentials"))
+}
 func (c credsTokener) LogValue() slog.Value {
-	return slog.AnyValue(fmt.Sprintf("Tokener(%v)", c.tokener))
+	return slog.GroupValue(slog.String("type", "Tokener"), logging.Object("tokener", c.tokener))
 }
 func (c credsAuthenticator) LogValue() slog.Value {
-	return slog.AnyValue(fmt.Sprintf("Authenticator(%v)", c.auth))
+	return slog.GroupValue(slog.String("type", "Authenticator"), logging.Object("authenticator", c.auth))
 }
 func (c credsServiceAccount) LogValue() slog.Value {
-	return slog.AnyValue(fmt.Sprintf("ServiceAccountReader(%v)", c.reader))
+	return slog.GroupValue(slog.String("type", "ServiceAccountReader"), logging.Object("reader", c.reader))
 }
 
 func (c credsOneOf) LogValue() slog.Value {
-	return slog.AnyValue(fmt.Sprintf("OneOfCredentials(%d options)", len(c)))
+	options := make([]slog.Attr, 0, len(c))
+	for selector, credentials := range c {
+		options = append(options, logging.Object(selector.Name, credentials))
+	}
+	sort.Slice(options, func(i, j int) bool { return options[i].Key < options[j].Key })
+	return slog.GroupValue(
+		slog.String("type", "OneOfCredentials"),
+		slog.Int("count", len(c)),
+		slog.Attr{Key: "options", Value: slog.GroupValue(options...)},
+	)
 }
-func (credsPropagate) LogValue() slog.Value { return slog.AnyValue("PropagateAuthorizationHeader") }
+func (credsPropagate) LogValue() slog.Value {
+	return slog.GroupValue(slog.String("type", "PropagateAuthorizationHeader"))
+}
 
 func (credsNoCreds) credentials()        {}
 func (credsTokener) credentials()        {}

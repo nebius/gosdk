@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -16,6 +17,8 @@ import (
 	"golang.org/x/sync/singleflight"
 
 	iampb "github.com/nebius/gosdk/proto/nebius/iam/v1"
+
+	"github.com/nebius/gosdk/internal/logging"
 )
 
 type ServiceAccount struct {
@@ -24,6 +27,9 @@ type ServiceAccount struct {
 	ServiceAccountID string
 }
 
+// ServiceAccountReader reads a service account.
+// Wrappers log the reader through LogValue, then String, or only its type.
+// LogValue and String implementations must sanitize their own sensitive values.
 type ServiceAccountReader interface {
 	ServiceAccount(context.Context) (ServiceAccount, error)
 }
@@ -338,4 +344,48 @@ func (c SubjectCredentials) validate() error {
 	}
 
 	return nil
+}
+
+// LogValue includes account identifiers and omits the private key.
+func (s ServiceAccount) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("service_account_id", s.ServiceAccountID),
+		slog.String("public_key_id", s.PublicKeyID),
+	)
+}
+
+func (s StaticServiceAccount) LogValue() slog.Value {
+	return ServiceAccount(s).LogValue()
+}
+
+// LogValue delegates to the reader without reading or refreshing the cache.
+func (c *CachedServiceAccount) LogValue() slog.Value {
+	if c == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "CachedServiceAccount"), logging.Object("reader", c.reader))
+}
+
+func (p PrivateKeyParser) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("type", "PrivateKeyParser"),
+		slog.String("service_account_id", p.serviceAccountID),
+		slog.String("public_key_id", p.publicKeyID),
+	)
+}
+
+func (p PrivateKeyFileParser) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("type", "PrivateKeyFileParser"),
+		slog.String("path", p.privateKeyPath),
+		slog.String("service_account_id", p.serviceAccountID),
+		slog.String("public_key_id", p.publicKeyID),
+	)
+}
+
+func (p ServiceAccountCredentialsFileParser) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("type", "ServiceAccountCredentialsFileParser"),
+		slog.String("path", p.credentialsPath),
+	)
 }

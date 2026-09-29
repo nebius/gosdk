@@ -3,9 +3,13 @@ package auth
 import (
 	"context"
 	"errors"
+	"fmt"
+	"log/slog"
 	"time"
 
 	"google.golang.org/grpc/metadata"
+
+	"github.com/nebius/gosdk/internal/logging"
 )
 
 const AuthorizationHeader = "Authorization"
@@ -14,6 +18,10 @@ const AuthorizationHeader = "Authorization"
 // Most implementations provided in this package are decorators,
 // allowing you to layer additional behavior on top of a base implementation.
 // These can be combined or extended to fit custom authentication requirements.
+//
+// Structured logging of SDK wrappers can include the wrapped tokener.
+// Wrappers use LogValue if available, then fall back to String, or only the type name.
+// LogValue and String implementations must sanitize their own sensitive values.
 type BearerTokener interface {
 	// BearerToken returns a [BearerToken] for use in the [AuthorizationHeader].
 	BearerToken(context.Context) (BearerToken, error)
@@ -34,6 +42,19 @@ var _ TypedTokener = StaticBearerToken("")
 // NewStaticBearerToken returns a [BearerTokener] that always returns a fixed [BearerToken].
 func NewStaticBearerToken(token string) StaticBearerToken {
 	return StaticBearerToken(token)
+}
+
+func (t StaticBearerToken) String() string {
+	return fmt.Sprintf("StaticBearerToken(token=%s)", iamTokenSanitizer.Sanitize(string(t)))
+}
+
+func (t StaticBearerToken) Format(state fmt.State, _ rune) { _, _ = fmt.Fprint(state, t.String()) }
+
+func (t StaticBearerToken) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("type", "StaticBearerToken"),
+		slog.String("token", iamTokenSanitizer.Sanitize(string(t))),
+	)
 }
 
 func (t StaticBearerToken) BearerToken(context.Context) (BearerToken, error) {
@@ -57,6 +78,10 @@ func (t StaticBearerToken) Type() string {
 // If the wrapped tokener already emits metrics and receives the same metrics
 // through SetMetrics, both layers will report observations. Use this wrapper
 // when that extra outer observation is desired.
+//
+// Formatting uses %v for the wrapped tokener.
+// Structured logging uses LogValue, then String, or only the wrapped type.
+// The wrapped type should sanitize its own sensitive values for both formatting and structured logging.
 type InstrumentedBearerTokener struct {
 	tokener BearerTokener
 	metrics atomicMetrics
@@ -76,6 +101,17 @@ func NewStaticTokener(token string, opts ...Option) *InstrumentedBearerTokener {
 	tokener := NewInstrumentedBearerTokener(StaticBearerToken(token))
 	applyOptions(tokener, opts...)
 	return tokener
+}
+
+func (t *InstrumentedBearerTokener) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("type", "InstrumentedBearerTokener"),
+		logging.Object("tokener", t.Unwrap()),
+	)
+}
+
+func (t *InstrumentedBearerTokener) String() string {
+	return fmt.Sprintf("InstrumentedBearerTokener(%v)", t.Unwrap())
 }
 
 func (t *InstrumentedBearerTokener) BearerToken(ctx context.Context) (BearerToken, error) {
@@ -121,6 +157,10 @@ func (t *InstrumentedBearerTokener) Unwrap() BearerTokener {
 
 // AuthenticatorFromBearerTokener is an [Authenticator] that uses a [BearerTokener]
 // to populate the [AuthorizationHeader] with a "Bearer " prefix.
+//
+// Formatting uses %v for the wrapped tokener.
+// Structured logging uses LogValue, then String, or only the wrapped type.
+// The wrapped type should sanitize its own sensitive values for both formatting and structured logging.
 type AuthenticatorFromBearerTokener struct {
 	tokener BearerTokener
 }
@@ -133,6 +173,17 @@ func NewAuthenticatorFromBearerTokener(tokener BearerTokener) AuthenticatorFromB
 	return AuthenticatorFromBearerTokener{
 		tokener: tokener,
 	}
+}
+
+func (a AuthenticatorFromBearerTokener) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("type", "AuthenticatorFromBearerTokener"),
+		logging.Object("tokener", a.tokener),
+	)
+}
+
+func (a AuthenticatorFromBearerTokener) String() string {
+	return fmt.Sprintf("AuthenticatorFromBearerTokener(%v)", a.tokener)
 }
 
 func (a AuthenticatorFromBearerTokener) Auth(ctx context.Context) (context.Context, error) {

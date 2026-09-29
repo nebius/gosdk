@@ -3,13 +3,22 @@ package auth
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"os"
 
+	"github.com/nebius/gosdk/internal/logging"
 	iampb "github.com/nebius/gosdk/proto/nebius/iam/v1"
 )
 
 type FederatedCredentials string
 
+func (c FederatedCredentials) LogValue() slog.Value {
+	return (BearerToken{Token: string(c)}).LogValue()
+}
+
+// FederatedCredentialsReader reads federated credentials.
+// Wrappers log the reader through LogValue, then String, or only its type.
+// LogValue and String implementations must sanitize their own sensitive values.
 type FederatedCredentialsReader interface {
 	GetFederatedCredentials() (FederatedCredentials, error)
 }
@@ -24,6 +33,17 @@ func NewFederatedCredentialsTokenRequester(serviceAccountID string, reader Feder
 		serviceAccountID: serviceAccountID,
 		reader:           reader,
 	}
+}
+
+func (f *FederatedCredentialsTokenRequester) LogValue() slog.Value {
+	if f == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "FederatedCredentialsTokenRequester"),
+		slog.String("service_account_id", f.serviceAccountID),
+		logging.Object("reader", f.reader),
+	)
 }
 
 // GetExchangeTokenRequest implements ExchangeTokenRequester.
@@ -56,6 +76,16 @@ func NewStaticFederatedCredentialsReader(credentials FederatedCredentials) *Stat
 	}
 }
 
+func (s *StaticFederatedCredentialsReader) LogValue() slog.Value {
+	if s == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "StaticFederatedCredentialsReader"),
+		logging.Object("credentials", s.credentials),
+	)
+}
+
 func (s *StaticFederatedCredentialsReader) GetFederatedCredentials() (FederatedCredentials, error) {
 	return s.credentials, nil
 }
@@ -70,6 +100,13 @@ func NewFileFederatedCredentialsReader(filePath string) *FileFederatedCredential
 	return &FileFederatedCredentialsReader{
 		filePath: filePath,
 	}
+}
+
+func (f *FileFederatedCredentialsReader) LogValue() slog.Value {
+	if f == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "FileFederatedCredentialsReader"), slog.String("path", f.filePath))
 }
 
 func (f *FileFederatedCredentialsReader) GetFederatedCredentials() (FederatedCredentials, error) {

@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"fmt"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -37,6 +39,16 @@ func (t BearerToken) String() string {
 	}
 	sb.WriteString(")")
 	return sb.String()
+}
+
+func (t BearerToken) Format(state fmt.State, _ rune) { _, _ = fmt.Fprint(state, t.String()) }
+
+func (t BearerToken) LogValue() slog.Value {
+	attrs := []slog.Attr{slog.String("token", iamTokenSanitizer.Sanitize(t.Token))}
+	if !t.ExpiresAt.IsZero() {
+		attrs = append(attrs, slog.Time("expires_at", t.ExpiresAt))
+	}
+	return slog.GroupValue(attrs...)
 }
 
 func (t BearerToken) MarshalYAML() (any, error) {

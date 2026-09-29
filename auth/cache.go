@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"golang.org/x/sync/singleflight"
+
+	"github.com/nebius/gosdk/internal/logging"
 )
 
 // CachedServiceTokener is a [BearerTokener] decorator that enhances its functionality
@@ -182,6 +184,13 @@ func NewCachedServiceTokener(
 		WithCachedTokenerRetryMultiplier(retryMultiplier),
 		WithCachedTokenerMaxRetry(maxRetry),
 	)
+}
+
+func (c *CachedServiceTokener) LogValue() slog.Value {
+	if c == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "CachedServiceTokener"), logging.Object("tokener", c.tokener))
 }
 
 func (c *CachedServiceTokener) SetLogger(logger *slog.Logger) {
@@ -430,6 +439,13 @@ func NewCachedBearerTokener(tokener BearerTokener) *CachedBearerTokener {
 		mu:    sync.RWMutex{},
 		cache: nil,
 	}
+}
+
+func (c *CachedBearerTokener) LogValue() slog.Value {
+	if c == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "CachedBearerTokener"), logging.Object("tokener", c.tokener))
 }
 
 func (c *CachedBearerTokener) Unwrap() BearerTokener {

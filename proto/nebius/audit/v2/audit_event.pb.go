@@ -8,7 +8,6 @@ package v2
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/nebius/gosdk/proto/nebius"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -54,11 +53,7 @@ type AuditEvent struct {
 	// Contains information about the response from the server.
 	Response *Response `protobuf:"bytes,13,opt,name=response,proto3" json:"response,omitempty"`
 	// The async operation status
-	Status Status `protobuf:"varint,16,opt,name=status,proto3,enum=nebius.audit.v2.Status" json:"status,omitempty"`
-	// Region of an application
-	//
-	// Deprecated: Marked as deprecated in nebius/audit/v2/audit_event.proto.
-	ProjectRegion *Region `protobuf:"bytes,17,opt,name=project_region,json=projectRegion,proto3" json:"project_region,omitempty"`
+	Status        Status `protobuf:"varint,16,opt,name=status,proto3,enum=nebius.audit.v2.Status" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -191,19 +186,11 @@ func (x *AuditEvent) GetStatus() Status {
 	return Status_RESPONSE_STATUS_UNSPECIFIED
 }
 
-// Deprecated: Marked as deprecated in nebius/audit/v2/audit_event.proto.
-func (x *AuditEvent) GetProjectRegion() *Region {
-	if x != nil {
-		return x.ProjectRegion
-	}
-	return nil
-}
-
 var File_nebius_audit_v2_audit_event_proto protoreflect.FileDescriptor
 
 const file_nebius_audit_v2_audit_event_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/audit/v2/audit_event.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a$nebius/audit/v2/authentication.proto\x1a#nebius/audit/v2/authorization.proto\x1a\x1cnebius/audit/v2/region.proto\x1a\x1dnebius/audit/v2/request.proto\x1a\x1enebius/audit/v2/resource.proto\x1a\x1enebius/audit/v2/response.proto\x1a\x1dnebius/audit/v2/service.proto\x1a\x1cnebius/audit/v2/status.proto\"\xb5\x06\n" +
+	"!nebius/audit/v2/audit_event.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a$nebius/audit/v2/authentication.proto\x1a#nebius/audit/v2/authorization.proto\x1a\x1dnebius/audit/v2/request.proto\x1a\x1enebius/audit/v2/resource.proto\x1a\x1enebius/audit/v2/response.proto\x1a\x1dnebius/audit/v2/service.proto\x1a\x1cnebius/audit/v2/status.proto\"\xcc\x05\n" +
 	"\n" +
 	"AuditEvent\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12\x1e\n" +
@@ -220,8 +207,7 @@ const file_nebius_audit_v2_audit_event_proto_rawDesc = "" +
 	"\bresource\x18\v \x01(\v2\x19.nebius.audit.v2.ResourceR\bresource\x122\n" +
 	"\arequest\x18\f \x01(\v2\x18.nebius.audit.v2.RequestR\arequest\x125\n" +
 	"\bresponse\x18\r \x01(\v2\x19.nebius.audit.v2.ResponseR\bresponse\x127\n" +
-	"\x06status\x18\x10 \x01(\x0e2\x17.nebius.audit.v2.StatusB\x06\xbaH\x03\xc8\x01\x01R\x06status\x12}\n" +
-	"\x0eproject_region\x18\x11 \x01(\v2\x17.nebius.audit.v2.RegionB=\xd2J8\x126Region should be tied to a resource, not to a project.\x18\x01R\rprojectRegionBZ\n" +
+	"\x06status\x18\x10 \x01(\x0e2\x17.nebius.audit.v2.StatusB\x06\xbaH\x03\xc8\x01\x01R\x06statusJ\x04\b\x11\x10\x12R\x0eproject_regionBZ\n" +
 	"\x16ai.nebius.pub.audit.v2B\x0fAuditEventProtoP\x01Z-github.com/nebius/gosdk/proto/nebius/audit/v2b\x06proto3"
 
 var (
@@ -247,7 +233,6 @@ var file_nebius_audit_v2_audit_event_proto_goTypes = []any{
 	(*Request)(nil),               // 6: nebius.audit.v2.Request
 	(*Response)(nil),              // 7: nebius.audit.v2.Response
 	(Status)(0),                   // 8: nebius.audit.v2.Status
-	(*Region)(nil),                // 9: nebius.audit.v2.Region
 }
 var file_nebius_audit_v2_audit_event_proto_depIdxs = []int32{
 	1, // 0: nebius.audit.v2.AuditEvent.service:type_name -> nebius.audit.v2.Service
@@ -258,12 +243,11 @@ var file_nebius_audit_v2_audit_event_proto_depIdxs = []int32{
 	6, // 5: nebius.audit.v2.AuditEvent.request:type_name -> nebius.audit.v2.Request
 	7, // 6: nebius.audit.v2.AuditEvent.response:type_name -> nebius.audit.v2.Response
 	8, // 7: nebius.audit.v2.AuditEvent.status:type_name -> nebius.audit.v2.Status
-	9, // 8: nebius.audit.v2.AuditEvent.project_region:type_name -> nebius.audit.v2.Region
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_nebius_audit_v2_audit_event_proto_init() }
@@ -273,7 +257,6 @@ func file_nebius_audit_v2_audit_event_proto_init() {
 	}
 	file_nebius_audit_v2_authentication_proto_init()
 	file_nebius_audit_v2_authorization_proto_init()
-	file_nebius_audit_v2_region_proto_init()
 	file_nebius_audit_v2_request_proto_init()
 	file_nebius_audit_v2_resource_proto_init()
 	file_nebius_audit_v2_response_proto_init()

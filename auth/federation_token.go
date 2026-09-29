@@ -50,6 +50,19 @@ func NewFederationTokener(
 	return t
 }
 
+func (f *FederationTokener) LogValue() slog.Value {
+	if f == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "FederationTokener"),
+		slog.String("client_id", f.clientID),
+		slog.String("federation_id", f.federationID),
+		slog.String("endpoint", f.federationEndpoint),
+		slog.String("profile", f.profileName),
+	)
+}
+
 func (f *FederationTokener) SetLogger(logger *slog.Logger) {
 	if logger == nil {
 		logger = slog.New(slog.DiscardHandler)
