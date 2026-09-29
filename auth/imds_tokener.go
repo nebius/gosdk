@@ -94,6 +94,13 @@ func NewIMDSTokenizer(endpoint string, opts ...Option) (*IMDSTokenizer, error) {
 	return t, nil
 }
 
+func (t *IMDSTokenizer) LogValue() slog.Value {
+	if t == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "IMDSTokenizer"), slog.String("endpoint", t.endpoint))
+}
+
 func (t *IMDSTokenizer) SetLogger(logger *slog.Logger) {
 	if logger == nil {
 		logger = slog.New(slog.DiscardHandler)

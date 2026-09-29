@@ -47,25 +47,27 @@ type Profile struct {
 }
 
 func (p *Profile) LogValue() slog.Value {
-	return slog.AnyValue(map[string]any{
-		"name":                p.Name,
-		"endpoint":            p.Endpoint,
-		"federation-endpoint": p.FederationEndpoint,
-		"federation-id":       p.FederationID,
-		"service-account-id":  p.ServiceAccountID,
-		"public-key-id":       p.PublicKeyID,
-		// Do not log private key
-		// "private-key":         p.PrivateKey,
-		"private-key-file-path":                   p.PrivateKeyFilePath,
-		"service-account-credentials-file-path":   p.ServiceAccountCredentialsFilePath,
-		"federated-subject-credentials-file-path": p.FederatedSubjectCredentialsFilePath,
-		"auth-type":                      p.AuthType,
-		"parent-id":                      p.ParentID,
-		"tenant-id":                      p.TenantID,
-		"token-file":                     p.TokenFile,
-		"token-endpoint":                 p.TokenEndpoint,
-		"impersonate-service-account-id": p.ImpersonateServiceAccountID,
-	})
+	if p == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("name", p.Name),
+		slog.String("endpoint", p.Endpoint),
+		slog.String("federation-endpoint", p.FederationEndpoint),
+		slog.String("federation-id", p.FederationID),
+		slog.String("service-account-id", p.ServiceAccountID),
+		slog.String("public-key-id", p.PublicKeyID),
+		// Omit the private key.
+		slog.String("private-key-file-path", p.PrivateKeyFilePath),
+		slog.String("service-account-credentials-file-path", p.ServiceAccountCredentialsFilePath),
+		slog.String("federated-subject-credentials-file-path", p.FederatedSubjectCredentialsFilePath),
+		slog.String("auth-type", string(p.AuthType)),
+		slog.String("parent-id", p.ParentID),
+		slog.String("tenant-id", p.TenantID),
+		slog.String("token-file", p.TokenFile),
+		slog.String("token-endpoint", p.TokenEndpoint),
+		slog.String("impersonate-service-account-id", p.ImpersonateServiceAccountID),
+	)
 }
 
 func NewConfig() *Config {

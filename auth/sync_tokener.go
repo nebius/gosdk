@@ -6,11 +6,14 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"sync"
 
 	"github.com/gofrs/flock"
+
+	"github.com/nebius/gosdk/internal/logging"
 )
 
 const syncLockFilePrefix = "tokener-sync-"
@@ -33,6 +36,13 @@ func NewInAppSyncTokener(tokener BearerTokener) *InAppSyncTokener {
 		tokener: tokener,
 		mu:      sync.Mutex{},
 	}
+}
+
+func (t *InAppSyncTokener) LogValue() slog.Value {
+	if t == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "InAppSyncTokener"), logging.Object("tokener", t.tokener))
 }
 
 func (t *InAppSyncTokener) Unwrap() BearerTokener {
@@ -85,6 +95,17 @@ func NewMultiprocessSyncTokener(tokener BearerTokener) (*MultiprocessSyncTokener
 		lock:     flock.New(lockPath),
 		lockPath: lockPath,
 	}, nil
+}
+
+func (t *MultiprocessSyncTokener) LogValue() slog.Value {
+	if t == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "MultiprocessSyncTokener"),
+		logging.Object("tokener", t.tokener),
+		slog.String("lock_path", t.lockPath),
+	)
 }
 
 func (t *MultiprocessSyncTokener) Unwrap() BearerTokener {

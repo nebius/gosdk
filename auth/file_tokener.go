@@ -4,12 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/nebius/gosdk/config/paths"
+	"github.com/nebius/gosdk/internal/logging"
 )
 
 // fileTokener is a [BearerTokener] that serves token from file, reading it every time.
@@ -31,6 +33,13 @@ func newFileTokener(path string) (*fileTokener, error) {
 		return nil, fmt.Errorf("expand home: %w", err)
 	}
 	return &fileTokener{path: path}, nil
+}
+
+func (t *fileTokener) LogValue() slog.Value {
+	if t == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "fileTokener"), slog.String("path", t.path))
 }
 
 func (t *fileTokener) BearerToken(ctx context.Context) (BearerToken, error) {
@@ -103,6 +112,13 @@ func NewFileTokener(
 	}
 	applyOptions(res, opts...)
 	return res, nil
+}
+
+func (c *FileTokener) LogValue() slog.Value {
+	if c == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "FileTokener"), logging.Object("tokener", c.tokener))
 }
 
 func (c *FileTokener) BearerToken(ctx context.Context) (BearerToken, error) {

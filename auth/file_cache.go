@@ -15,6 +15,7 @@ import (
 	"golang.org/x/sync/singleflight"
 
 	"github.com/nebius/gosdk/config/paths"
+	"github.com/nebius/gosdk/internal/logging"
 )
 
 const cacheFileName = "credentials.yaml"
@@ -520,6 +521,17 @@ func NewPureFileCachedTokener(
 	return t
 }
 
+func (p *pureFileCachedTokener) LogValue() slog.Value {
+	if p == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "pureFileCachedTokener"),
+		slog.String("name", p.name),
+		slog.String("path", p.fileName),
+	)
+}
+
 func (p *pureFileCachedTokener) SetLogger(logger *slog.Logger) {
 	if logger == nil {
 		logger = slog.New(slog.DiscardHandler)
@@ -724,6 +736,17 @@ func NewFileCachedTokener(
 		WithFileCacheFileName(cacheFile),
 		WithFileCacheSafetyMargin(safetyMargin),
 		WithLogger(logger),
+	)
+}
+
+func (f *RenewableFileCachedTokener) LogValue() slog.Value {
+	if f == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "RenewableFileCachedTokener"),
+		logging.Object("tokener", f.tokener),
+		slog.String("name", f.name),
 	)
 }
 
@@ -967,6 +990,17 @@ func NewAsynchronouslyRenewableFileCachedTokener(
 		WithFileCacheFileName(cacheFile),
 		WithFileCacheSafetyMargin(safetyMargin),
 		WithLogger(logger),
+	)
+}
+
+func (f *AsynchronouslyRenewableFileCachedTokener) LogValue() slog.Value {
+	if f == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "AsynchronouslyRenewableFileCachedTokener"),
+		logging.Object("tokener", f.tokener),
+		slog.String("name", f.name),
 	)
 }
 

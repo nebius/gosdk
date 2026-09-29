@@ -4,11 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/nebius/gosdk/internal/logging"
 	iampb "github.com/nebius/gosdk/proto/nebius/iam/v1"
 )
 
@@ -44,6 +46,17 @@ func NewExchangeImpersonatedBearerTokener(
 		clientFunc:       clientFunc,
 		now:              time.Now,
 	}
+}
+
+func (t *ExchangeImpersonatedBearerTokener) LogValue() slog.Value {
+	if t == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(
+		slog.String("type", "ExchangeImpersonatedBearerTokener"),
+		logging.Object("tokener", t.tokener),
+		slog.String("service_account_id", t.serviceAccountID),
+	)
 }
 
 func (t *ExchangeImpersonatedBearerTokener) SetMetrics(metrics Metrics) {

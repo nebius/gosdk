@@ -4,11 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 
+	"github.com/nebius/gosdk/internal/logging"
 	iampb "github.com/nebius/gosdk/proto/nebius/iam/v1"
 )
 
@@ -58,6 +60,13 @@ func NewExchangeableBearerTokenerWithDeferredClient(
 		clientFunc: clientFunc,
 		now:        time.Now,
 	}
+}
+
+func (t *ExchangeableBearerTokener) LogValue() slog.Value {
+	if t == nil {
+		return slog.AnyValue(nil)
+	}
+	return slog.GroupValue(slog.String("type", "ExchangeableBearerTokener"), logging.Object("requester", t.creds))
 }
 
 // SetClient updates the gRPC client.
@@ -139,6 +148,13 @@ func NewServiceAccountExchangeTokenRequester(account ServiceAccountReader) Servi
 		account: account,
 		now:     time.Now,
 	}
+}
+
+func (s ServiceAccountExchangeTokenRequester) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("type", "ServiceAccountExchangeTokenRequester"),
+		logging.Object("account", s.account),
+	)
 }
 
 func (s ServiceAccountExchangeTokenRequester) GetExchangeTokenRequest(
