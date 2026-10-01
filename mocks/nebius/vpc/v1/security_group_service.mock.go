@@ -351,6 +351,50 @@ func (c *MockSecurityGroupServiceListCall) DoAndReturn(f func(context.Context, *
 	return c
 }
 
+// ListAggregated mocks base method.
+func (m *MockSecurityGroupService) ListAggregated(arg0 context.Context, arg1 *v10.ListAggregatedSecurityGroupsRequest, arg2 ...grpc.CallOption) (*v10.ListSecurityGroupsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAggregated", varargs...)
+	ret0, _ := ret[0].(*v10.ListSecurityGroupsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAggregated indicates an expected call of ListAggregated.
+func (mr *MockSecurityGroupServiceMockRecorder) ListAggregated(arg0, arg1 any, arg2 ...any) *MockSecurityGroupServiceListAggregatedCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAggregated", reflect.TypeOf((*MockSecurityGroupService)(nil).ListAggregated), varargs...)
+	return &MockSecurityGroupServiceListAggregatedCall{Call: call}
+}
+
+// MockSecurityGroupServiceListAggregatedCall wrap *gomock.Call
+type MockSecurityGroupServiceListAggregatedCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockSecurityGroupServiceListAggregatedCall) Return(arg0 *v10.ListSecurityGroupsResponse, arg1 error) *MockSecurityGroupServiceListAggregatedCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockSecurityGroupServiceListAggregatedCall) Do(f func(context.Context, *v10.ListAggregatedSecurityGroupsRequest, ...grpc.CallOption) (*v10.ListSecurityGroupsResponse, error)) *MockSecurityGroupServiceListAggregatedCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockSecurityGroupServiceListAggregatedCall) DoAndReturn(f func(context.Context, *v10.ListAggregatedSecurityGroupsRequest, ...grpc.CallOption) (*v10.ListSecurityGroupsResponse, error)) *MockSecurityGroupServiceListAggregatedCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListByNetwork mocks base method.
 func (m *MockSecurityGroupService) ListByNetwork(arg0 context.Context, arg1 *v10.ListSecurityGroupsByNetworkRequest, arg2 ...grpc.CallOption) (*v10.ListSecurityGroupsResponse, error) {
 	m.ctrl.T.Helper()

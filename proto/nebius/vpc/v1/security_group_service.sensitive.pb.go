@@ -11,6 +11,9 @@ package v1
 // func (x *ListSecurityGroupsRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListSecurityGroupsRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *ListAggregatedSecurityGroupsRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListAggregatedSecurityGroupsRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ListSecurityGroupsByNetworkRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListSecurityGroupsByNetworkRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 

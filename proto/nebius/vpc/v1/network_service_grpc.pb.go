@@ -20,13 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	NetworkService_Get_FullMethodName           = "/nebius.vpc.v1.NetworkService/Get"
-	NetworkService_GetByName_FullMethodName     = "/nebius.vpc.v1.NetworkService/GetByName"
-	NetworkService_List_FullMethodName          = "/nebius.vpc.v1.NetworkService/List"
-	NetworkService_Create_FullMethodName        = "/nebius.vpc.v1.NetworkService/Create"
-	NetworkService_CreateDefault_FullMethodName = "/nebius.vpc.v1.NetworkService/CreateDefault"
-	NetworkService_Update_FullMethodName        = "/nebius.vpc.v1.NetworkService/Update"
-	NetworkService_Delete_FullMethodName        = "/nebius.vpc.v1.NetworkService/Delete"
+	NetworkService_Get_FullMethodName            = "/nebius.vpc.v1.NetworkService/Get"
+	NetworkService_GetByName_FullMethodName      = "/nebius.vpc.v1.NetworkService/GetByName"
+	NetworkService_List_FullMethodName           = "/nebius.vpc.v1.NetworkService/List"
+	NetworkService_ListAggregated_FullMethodName = "/nebius.vpc.v1.NetworkService/ListAggregated"
+	NetworkService_Create_FullMethodName         = "/nebius.vpc.v1.NetworkService/Create"
+	NetworkService_CreateDefault_FullMethodName  = "/nebius.vpc.v1.NetworkService/CreateDefault"
+	NetworkService_Update_FullMethodName         = "/nebius.vpc.v1.NetworkService/Update"
+	NetworkService_Delete_FullMethodName         = "/nebius.vpc.v1.NetworkService/Delete"
 )
 
 // NetworkServiceClient is the client API for NetworkService service.
@@ -39,6 +40,8 @@ type NetworkServiceClient interface {
 	GetByName(ctx context.Context, in *GetNetworkByNameRequest, opts ...grpc.CallOption) (*Network, error)
 	// Lists networks within a specified parent.
 	List(ctx context.Context, in *ListNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error)
+	// Lists networks across regions for the specified parent.
+	ListAggregated(ctx context.Context, in *ListAggregatedNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error)
 	// Creates a new network with the specified configuration.
 	Create(ctx context.Context, in *CreateNetworkRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	// Creates a default network, subnet, pools, and route table for a specified project.
@@ -79,6 +82,15 @@ func (c *networkServiceClient) GetByName(ctx context.Context, in *GetNetworkByNa
 func (c *networkServiceClient) List(ctx context.Context, in *ListNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error) {
 	out := new(ListNetworksResponse)
 	err := c.cc.Invoke(ctx, NetworkService_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServiceClient) ListAggregated(ctx context.Context, in *ListAggregatedNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error) {
+	out := new(ListNetworksResponse)
+	err := c.cc.Invoke(ctx, NetworkService_ListAggregated_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,6 +143,8 @@ type NetworkServiceServer interface {
 	GetByName(context.Context, *GetNetworkByNameRequest) (*Network, error)
 	// Lists networks within a specified parent.
 	List(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error)
+	// Lists networks across regions for the specified parent.
+	ListAggregated(context.Context, *ListAggregatedNetworksRequest) (*ListNetworksResponse, error)
 	// Creates a new network with the specified configuration.
 	Create(context.Context, *CreateNetworkRequest) (*v1.Operation, error)
 	// Creates a default network, subnet, pools, and route table for a specified project.
@@ -154,6 +168,9 @@ func (UnimplementedNetworkServiceServer) GetByName(context.Context, *GetNetworkB
 }
 func (UnimplementedNetworkServiceServer) List(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedNetworkServiceServer) ListAggregated(context.Context, *ListAggregatedNetworksRequest) (*ListNetworksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAggregated not implemented")
 }
 func (UnimplementedNetworkServiceServer) Create(context.Context, *CreateNetworkRequest) (*v1.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -229,6 +246,24 @@ func _NetworkService_List_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NetworkServiceServer).List(ctx, req.(*ListNetworksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkService_ListAggregated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAggregatedNetworksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServiceServer).ListAggregated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NetworkService_ListAggregated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServiceServer).ListAggregated(ctx, req.(*ListAggregatedNetworksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -323,6 +358,10 @@ var NetworkService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _NetworkService_List_Handler,
+		},
+		{
+			MethodName: "ListAggregated",
+			Handler:    _NetworkService_ListAggregated_Handler,
 		},
 		{
 			MethodName: "Create",

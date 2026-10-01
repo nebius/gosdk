@@ -20,14 +20,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AllocationService_Get_FullMethodName          = "/nebius.vpc.v1.AllocationService/Get"
-	AllocationService_GetByName_FullMethodName    = "/nebius.vpc.v1.AllocationService/GetByName"
-	AllocationService_List_FullMethodName         = "/nebius.vpc.v1.AllocationService/List"
-	AllocationService_ListByPool_FullMethodName   = "/nebius.vpc.v1.AllocationService/ListByPool"
-	AllocationService_ListBySubnet_FullMethodName = "/nebius.vpc.v1.AllocationService/ListBySubnet"
-	AllocationService_Create_FullMethodName       = "/nebius.vpc.v1.AllocationService/Create"
-	AllocationService_Update_FullMethodName       = "/nebius.vpc.v1.AllocationService/Update"
-	AllocationService_Delete_FullMethodName       = "/nebius.vpc.v1.AllocationService/Delete"
+	AllocationService_Get_FullMethodName            = "/nebius.vpc.v1.AllocationService/Get"
+	AllocationService_GetByName_FullMethodName      = "/nebius.vpc.v1.AllocationService/GetByName"
+	AllocationService_List_FullMethodName           = "/nebius.vpc.v1.AllocationService/List"
+	AllocationService_ListAggregated_FullMethodName = "/nebius.vpc.v1.AllocationService/ListAggregated"
+	AllocationService_ListByPool_FullMethodName     = "/nebius.vpc.v1.AllocationService/ListByPool"
+	AllocationService_ListBySubnet_FullMethodName   = "/nebius.vpc.v1.AllocationService/ListBySubnet"
+	AllocationService_Create_FullMethodName         = "/nebius.vpc.v1.AllocationService/Create"
+	AllocationService_Update_FullMethodName         = "/nebius.vpc.v1.AllocationService/Update"
+	AllocationService_Delete_FullMethodName         = "/nebius.vpc.v1.AllocationService/Delete"
 )
 
 // AllocationServiceClient is the client API for AllocationService service.
@@ -40,6 +41,8 @@ type AllocationServiceClient interface {
 	GetByName(ctx context.Context, in *GetAllocationByNameRequest, opts ...grpc.CallOption) (*Allocation, error)
 	// Lists allocations within a specified parent.
 	List(ctx context.Context, in *ListAllocationsRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
+	// Lists allocations across regions for the specified parent.
+	ListAggregated(ctx context.Context, in *ListAggregatedAllocationsRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
 	// Lists allocations from a specified pool.
 	ListByPool(ctx context.Context, in *ListAllocationsByPoolRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error)
 	// Lists allocations available to a specified subnet, including unassigned allocations from compatible pools.
@@ -81,6 +84,15 @@ func (c *allocationServiceClient) GetByName(ctx context.Context, in *GetAllocati
 func (c *allocationServiceClient) List(ctx context.Context, in *ListAllocationsRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error) {
 	out := new(ListAllocationsResponse)
 	err := c.cc.Invoke(ctx, AllocationService_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *allocationServiceClient) ListAggregated(ctx context.Context, in *ListAggregatedAllocationsRequest, opts ...grpc.CallOption) (*ListAllocationsResponse, error) {
+	out := new(ListAllocationsResponse)
+	err := c.cc.Invoke(ctx, AllocationService_ListAggregated_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -142,6 +154,8 @@ type AllocationServiceServer interface {
 	GetByName(context.Context, *GetAllocationByNameRequest) (*Allocation, error)
 	// Lists allocations within a specified parent.
 	List(context.Context, *ListAllocationsRequest) (*ListAllocationsResponse, error)
+	// Lists allocations across regions for the specified parent.
+	ListAggregated(context.Context, *ListAggregatedAllocationsRequest) (*ListAllocationsResponse, error)
 	// Lists allocations from a specified pool.
 	ListByPool(context.Context, *ListAllocationsByPoolRequest) (*ListAllocationsResponse, error)
 	// Lists allocations available to a specified subnet, including unassigned allocations from compatible pools.
@@ -166,6 +180,9 @@ func (UnimplementedAllocationServiceServer) GetByName(context.Context, *GetAlloc
 }
 func (UnimplementedAllocationServiceServer) List(context.Context, *ListAllocationsRequest) (*ListAllocationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedAllocationServiceServer) ListAggregated(context.Context, *ListAggregatedAllocationsRequest) (*ListAllocationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAggregated not implemented")
 }
 func (UnimplementedAllocationServiceServer) ListByPool(context.Context, *ListAllocationsByPoolRequest) (*ListAllocationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByPool not implemented")
@@ -244,6 +261,24 @@ func _AllocationService_List_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AllocationServiceServer).List(ctx, req.(*ListAllocationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AllocationService_ListAggregated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAggregatedAllocationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AllocationServiceServer).ListAggregated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AllocationService_ListAggregated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AllocationServiceServer).ListAggregated(ctx, req.(*ListAggregatedAllocationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -356,6 +391,10 @@ var AllocationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _AllocationService_List_Handler,
+		},
+		{
+			MethodName: "ListAggregated",
+			Handler:    _AllocationService_ListAggregated_Handler,
 		},
 		{
 			MethodName: "ListByPool",

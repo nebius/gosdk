@@ -31,6 +31,7 @@ type RouteTableService interface {
 	GetByName(context.Context, *v1.GetRouteTableByNameRequest, ...grpc.CallOption) (*v1.RouteTable, error)
 	List(context.Context, *v1.ListRouteTablesRequest, ...grpc.CallOption) (*v1.ListRouteTablesResponse, error)
 	Filter(context.Context, *v1.ListRouteTablesRequest, ...grpc.CallOption) iter.Seq2[*v1.RouteTable, error]
+	ListAggregated(context.Context, *v1.ListAggregatedRouteTablesRequest, ...grpc.CallOption) (*v1.ListRouteTablesResponse, error)
 	ListByNetwork(context.Context, *v1.ListRouteTablesByNetworkRequest, ...grpc.CallOption) (*v1.ListRouteTablesResponse, error)
 	Create(context.Context, *v1.CreateRouteTableRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdateRouteTableRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -145,6 +146,35 @@ func (s routeTableService) Filter(ctx context.Context, request *v1.ListRouteTabl
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s routeTableService) ListAggregated(ctx context.Context, request *v1.ListAggregatedRouteTablesRequest, opts ...grpc.CallOption) (
+	*v1.ListRouteTablesResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, RouteTableServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewRouteTableServiceClient(con).ListAggregated(ctx, request, opts...)
 }
 
 func (s routeTableService) ListByNetwork(ctx context.Context, request *v1.ListRouteTablesByNetworkRequest, opts ...grpc.CallOption) (

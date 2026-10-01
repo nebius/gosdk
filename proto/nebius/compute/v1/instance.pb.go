@@ -848,7 +848,8 @@ type AttachedDiskSpec struct {
 	//	*AttachedDiskSpec_ExistingDisk
 	//	*AttachedDiskSpec_ManagedDisk
 	Type isAttachedDiskSpec_Type `protobuf_oneof:"type"`
-	// Specifies the user-defined identifier, allowing to use '/dev/disk/by-id/virtio-{device_id}' as a device path in mount command.
+	// Specifies the user-defined device identifier.
+	// Use `/dev/disk/by-id/virtio-{device_id}` as the device path in a mount command.
 	DeviceId      string `protobuf:"bytes,3,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

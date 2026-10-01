@@ -11,6 +11,9 @@ package v1
 // func (x *ListSubnetsRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListSubnetsRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *ListAggregatedSubnetsRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListAggregatedSubnetsRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ListSubnetsByNetworkRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListSubnetsByNetworkRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 

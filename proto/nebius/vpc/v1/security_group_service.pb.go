@@ -186,6 +186,66 @@ func (x *ListSecurityGroupsRequest) GetPageToken() string {
 	return ""
 }
 
+type ListAggregatedSecurityGroupsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAggregatedSecurityGroupsRequest) Reset() {
+	*x = ListAggregatedSecurityGroupsRequest{}
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAggregatedSecurityGroupsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAggregatedSecurityGroupsRequest) ProtoMessage() {}
+
+func (x *ListAggregatedSecurityGroupsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAggregatedSecurityGroupsRequest.ProtoReflect.Descriptor instead.
+func (*ListAggregatedSecurityGroupsRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListAggregatedSecurityGroupsRequest) GetParentId() string {
+	if x != nil {
+		return x.ParentId
+	}
+	return ""
+}
+
+func (x *ListAggregatedSecurityGroupsRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListAggregatedSecurityGroupsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
 type ListSecurityGroupsByNetworkRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID of the network.
@@ -200,7 +260,7 @@ type ListSecurityGroupsByNetworkRequest struct {
 
 func (x *ListSecurityGroupsByNetworkRequest) Reset() {
 	*x = ListSecurityGroupsByNetworkRequest{}
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -212,7 +272,7 @@ func (x *ListSecurityGroupsByNetworkRequest) String() string {
 func (*ListSecurityGroupsByNetworkRequest) ProtoMessage() {}
 
 func (x *ListSecurityGroupsByNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +285,7 @@ func (x *ListSecurityGroupsByNetworkRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use ListSecurityGroupsByNetworkRequest.ProtoReflect.Descriptor instead.
 func (*ListSecurityGroupsByNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListSecurityGroupsByNetworkRequest) GetNetworkId() string {
@@ -259,7 +319,7 @@ type ListSecurityGroupsResponse struct {
 
 func (x *ListSecurityGroupsResponse) Reset() {
 	*x = ListSecurityGroupsResponse{}
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -271,7 +331,7 @@ func (x *ListSecurityGroupsResponse) String() string {
 func (*ListSecurityGroupsResponse) ProtoMessage() {}
 
 func (x *ListSecurityGroupsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,7 +344,7 @@ func (x *ListSecurityGroupsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSecurityGroupsResponse.ProtoReflect.Descriptor instead.
 func (*ListSecurityGroupsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListSecurityGroupsResponse) GetItems() []*SecurityGroup {
@@ -313,7 +373,7 @@ type CreateSecurityGroupRequest struct {
 
 func (x *CreateSecurityGroupRequest) Reset() {
 	*x = CreateSecurityGroupRequest{}
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -325,7 +385,7 @@ func (x *CreateSecurityGroupRequest) String() string {
 func (*CreateSecurityGroupRequest) ProtoMessage() {}
 
 func (x *CreateSecurityGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -338,7 +398,7 @@ func (x *CreateSecurityGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSecurityGroupRequest.ProtoReflect.Descriptor instead.
 func (*CreateSecurityGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateSecurityGroupRequest) GetMetadata() *v1.ResourceMetadata {
@@ -367,7 +427,7 @@ type UpdateSecurityGroupRequest struct {
 
 func (x *UpdateSecurityGroupRequest) Reset() {
 	*x = UpdateSecurityGroupRequest{}
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +439,7 @@ func (x *UpdateSecurityGroupRequest) String() string {
 func (*UpdateSecurityGroupRequest) ProtoMessage() {}
 
 func (x *UpdateSecurityGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +452,7 @@ func (x *UpdateSecurityGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSecurityGroupRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSecurityGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateSecurityGroupRequest) GetMetadata() *v1.ResourceMetadata {
@@ -419,7 +479,7 @@ type DeleteSecurityGroupRequest struct {
 
 func (x *DeleteSecurityGroupRequest) Reset() {
 	*x = DeleteSecurityGroupRequest{}
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +491,7 @@ func (x *DeleteSecurityGroupRequest) String() string {
 func (*DeleteSecurityGroupRequest) ProtoMessage() {}
 
 func (x *DeleteSecurityGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_security_group_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +504,7 @@ func (x *DeleteSecurityGroupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSecurityGroupRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSecurityGroupRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{7}
+	return file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteSecurityGroupRequest) GetId() string {
@@ -471,6 +531,12 @@ const file_nebius_vpc_v1_security_group_service_proto_rawDesc = "" +
 	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x92\x01\n" +
+	"#ListAggregatedSecurityGroupsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
+	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x96\x01\n" +
 	"\"ListSecurityGroupsByNetworkRequest\x124\n" +
 	"\n" +
@@ -493,11 +559,12 @@ const file_nebius_vpc_v1_security_group_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.vpc.v1.SecurityGroupSpecR\x04spec\"I\n" +
 	"\x1aDeleteSecurityGroupRequest\x12+\n" +
 	"\x02id\x18\x01 \x01(\tB\x1b\xbaH\x03\xc8\x01\x01\xe2J\x12\n" +
-	"\x10vpcsecuritygroupR\x02id2\x86\x05\n" +
+	"\x10vpcsecuritygroupR\x02id2\xf7\x05\n" +
 	"\x14SecurityGroupService\x12K\n" +
 	"\x03Get\x12&.nebius.vpc.v1.GetSecurityGroupRequest\x1a\x1c.nebius.vpc.v1.SecurityGroup\x12W\n" +
 	"\tGetByName\x12,.nebius.vpc.v1.GetSecurityGroupByNameRequest\x1a\x1c.nebius.vpc.v1.SecurityGroup\x12[\n" +
-	"\x04List\x12(.nebius.vpc.v1.ListSecurityGroupsRequest\x1a).nebius.vpc.v1.ListSecurityGroupsResponse\x12m\n" +
+	"\x04List\x12(.nebius.vpc.v1.ListSecurityGroupsRequest\x1a).nebius.vpc.v1.ListSecurityGroupsResponse\x12o\n" +
+	"\x0eListAggregated\x122.nebius.vpc.v1.ListAggregatedSecurityGroupsRequest\x1a).nebius.vpc.v1.ListSecurityGroupsResponse\x12m\n" +
 	"\rListByNetwork\x121.nebius.vpc.v1.ListSecurityGroupsByNetworkRequest\x1a).nebius.vpc.v1.ListSecurityGroupsResponse\x12P\n" +
 	"\x06Create\x12).nebius.vpc.v1.CreateSecurityGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12P\n" +
 	"\x06Update\x12).nebius.vpc.v1.UpdateSecurityGroupRequest\x1a\x1b.nebius.common.v1.Operation\x12P\n" +
@@ -516,43 +583,46 @@ func file_nebius_vpc_v1_security_group_service_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1_security_group_service_proto_rawDescData
 }
 
-var file_nebius_vpc_v1_security_group_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_vpc_v1_security_group_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_vpc_v1_security_group_service_proto_goTypes = []any{
-	(*GetSecurityGroupRequest)(nil),            // 0: nebius.vpc.v1.GetSecurityGroupRequest
-	(*GetSecurityGroupByNameRequest)(nil),      // 1: nebius.vpc.v1.GetSecurityGroupByNameRequest
-	(*ListSecurityGroupsRequest)(nil),          // 2: nebius.vpc.v1.ListSecurityGroupsRequest
-	(*ListSecurityGroupsByNetworkRequest)(nil), // 3: nebius.vpc.v1.ListSecurityGroupsByNetworkRequest
-	(*ListSecurityGroupsResponse)(nil),         // 4: nebius.vpc.v1.ListSecurityGroupsResponse
-	(*CreateSecurityGroupRequest)(nil),         // 5: nebius.vpc.v1.CreateSecurityGroupRequest
-	(*UpdateSecurityGroupRequest)(nil),         // 6: nebius.vpc.v1.UpdateSecurityGroupRequest
-	(*DeleteSecurityGroupRequest)(nil),         // 7: nebius.vpc.v1.DeleteSecurityGroupRequest
-	(*SecurityGroup)(nil),                      // 8: nebius.vpc.v1.SecurityGroup
-	(*v1.ResourceMetadata)(nil),                // 9: nebius.common.v1.ResourceMetadata
-	(*SecurityGroupSpec)(nil),                  // 10: nebius.vpc.v1.SecurityGroupSpec
-	(*v1.Operation)(nil),                       // 11: nebius.common.v1.Operation
+	(*GetSecurityGroupRequest)(nil),             // 0: nebius.vpc.v1.GetSecurityGroupRequest
+	(*GetSecurityGroupByNameRequest)(nil),       // 1: nebius.vpc.v1.GetSecurityGroupByNameRequest
+	(*ListSecurityGroupsRequest)(nil),           // 2: nebius.vpc.v1.ListSecurityGroupsRequest
+	(*ListAggregatedSecurityGroupsRequest)(nil), // 3: nebius.vpc.v1.ListAggregatedSecurityGroupsRequest
+	(*ListSecurityGroupsByNetworkRequest)(nil),  // 4: nebius.vpc.v1.ListSecurityGroupsByNetworkRequest
+	(*ListSecurityGroupsResponse)(nil),          // 5: nebius.vpc.v1.ListSecurityGroupsResponse
+	(*CreateSecurityGroupRequest)(nil),          // 6: nebius.vpc.v1.CreateSecurityGroupRequest
+	(*UpdateSecurityGroupRequest)(nil),          // 7: nebius.vpc.v1.UpdateSecurityGroupRequest
+	(*DeleteSecurityGroupRequest)(nil),          // 8: nebius.vpc.v1.DeleteSecurityGroupRequest
+	(*SecurityGroup)(nil),                       // 9: nebius.vpc.v1.SecurityGroup
+	(*v1.ResourceMetadata)(nil),                 // 10: nebius.common.v1.ResourceMetadata
+	(*SecurityGroupSpec)(nil),                   // 11: nebius.vpc.v1.SecurityGroupSpec
+	(*v1.Operation)(nil),                        // 12: nebius.common.v1.Operation
 }
 var file_nebius_vpc_v1_security_group_service_proto_depIdxs = []int32{
-	8,  // 0: nebius.vpc.v1.ListSecurityGroupsResponse.items:type_name -> nebius.vpc.v1.SecurityGroup
-	9,  // 1: nebius.vpc.v1.CreateSecurityGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 2: nebius.vpc.v1.CreateSecurityGroupRequest.spec:type_name -> nebius.vpc.v1.SecurityGroupSpec
-	9,  // 3: nebius.vpc.v1.UpdateSecurityGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 4: nebius.vpc.v1.UpdateSecurityGroupRequest.spec:type_name -> nebius.vpc.v1.SecurityGroupSpec
+	9,  // 0: nebius.vpc.v1.ListSecurityGroupsResponse.items:type_name -> nebius.vpc.v1.SecurityGroup
+	10, // 1: nebius.vpc.v1.CreateSecurityGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 2: nebius.vpc.v1.CreateSecurityGroupRequest.spec:type_name -> nebius.vpc.v1.SecurityGroupSpec
+	10, // 3: nebius.vpc.v1.UpdateSecurityGroupRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 4: nebius.vpc.v1.UpdateSecurityGroupRequest.spec:type_name -> nebius.vpc.v1.SecurityGroupSpec
 	0,  // 5: nebius.vpc.v1.SecurityGroupService.Get:input_type -> nebius.vpc.v1.GetSecurityGroupRequest
 	1,  // 6: nebius.vpc.v1.SecurityGroupService.GetByName:input_type -> nebius.vpc.v1.GetSecurityGroupByNameRequest
 	2,  // 7: nebius.vpc.v1.SecurityGroupService.List:input_type -> nebius.vpc.v1.ListSecurityGroupsRequest
-	3,  // 8: nebius.vpc.v1.SecurityGroupService.ListByNetwork:input_type -> nebius.vpc.v1.ListSecurityGroupsByNetworkRequest
-	5,  // 9: nebius.vpc.v1.SecurityGroupService.Create:input_type -> nebius.vpc.v1.CreateSecurityGroupRequest
-	6,  // 10: nebius.vpc.v1.SecurityGroupService.Update:input_type -> nebius.vpc.v1.UpdateSecurityGroupRequest
-	7,  // 11: nebius.vpc.v1.SecurityGroupService.Delete:input_type -> nebius.vpc.v1.DeleteSecurityGroupRequest
-	8,  // 12: nebius.vpc.v1.SecurityGroupService.Get:output_type -> nebius.vpc.v1.SecurityGroup
-	8,  // 13: nebius.vpc.v1.SecurityGroupService.GetByName:output_type -> nebius.vpc.v1.SecurityGroup
-	4,  // 14: nebius.vpc.v1.SecurityGroupService.List:output_type -> nebius.vpc.v1.ListSecurityGroupsResponse
-	4,  // 15: nebius.vpc.v1.SecurityGroupService.ListByNetwork:output_type -> nebius.vpc.v1.ListSecurityGroupsResponse
-	11, // 16: nebius.vpc.v1.SecurityGroupService.Create:output_type -> nebius.common.v1.Operation
-	11, // 17: nebius.vpc.v1.SecurityGroupService.Update:output_type -> nebius.common.v1.Operation
-	11, // 18: nebius.vpc.v1.SecurityGroupService.Delete:output_type -> nebius.common.v1.Operation
-	12, // [12:19] is the sub-list for method output_type
-	5,  // [5:12] is the sub-list for method input_type
+	3,  // 8: nebius.vpc.v1.SecurityGroupService.ListAggregated:input_type -> nebius.vpc.v1.ListAggregatedSecurityGroupsRequest
+	4,  // 9: nebius.vpc.v1.SecurityGroupService.ListByNetwork:input_type -> nebius.vpc.v1.ListSecurityGroupsByNetworkRequest
+	6,  // 10: nebius.vpc.v1.SecurityGroupService.Create:input_type -> nebius.vpc.v1.CreateSecurityGroupRequest
+	7,  // 11: nebius.vpc.v1.SecurityGroupService.Update:input_type -> nebius.vpc.v1.UpdateSecurityGroupRequest
+	8,  // 12: nebius.vpc.v1.SecurityGroupService.Delete:input_type -> nebius.vpc.v1.DeleteSecurityGroupRequest
+	9,  // 13: nebius.vpc.v1.SecurityGroupService.Get:output_type -> nebius.vpc.v1.SecurityGroup
+	9,  // 14: nebius.vpc.v1.SecurityGroupService.GetByName:output_type -> nebius.vpc.v1.SecurityGroup
+	5,  // 15: nebius.vpc.v1.SecurityGroupService.List:output_type -> nebius.vpc.v1.ListSecurityGroupsResponse
+	5,  // 16: nebius.vpc.v1.SecurityGroupService.ListAggregated:output_type -> nebius.vpc.v1.ListSecurityGroupsResponse
+	5,  // 17: nebius.vpc.v1.SecurityGroupService.ListByNetwork:output_type -> nebius.vpc.v1.ListSecurityGroupsResponse
+	12, // 18: nebius.vpc.v1.SecurityGroupService.Create:output_type -> nebius.common.v1.Operation
+	12, // 19: nebius.vpc.v1.SecurityGroupService.Update:output_type -> nebius.common.v1.Operation
+	12, // 20: nebius.vpc.v1.SecurityGroupService.Delete:output_type -> nebius.common.v1.Operation
+	13, // [13:21] is the sub-list for method output_type
+	5,  // [5:13] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -570,7 +640,7 @@ func file_nebius_vpc_v1_security_group_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_security_group_service_proto_rawDesc), len(file_nebius_vpc_v1_security_group_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

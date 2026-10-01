@@ -186,6 +186,66 @@ func (x *ListNetworksRequest) GetPageToken() string {
 	return ""
 }
 
+type ListAggregatedNetworksRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAggregatedNetworksRequest) Reset() {
+	*x = ListAggregatedNetworksRequest{}
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAggregatedNetworksRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAggregatedNetworksRequest) ProtoMessage() {}
+
+func (x *ListAggregatedNetworksRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAggregatedNetworksRequest.ProtoReflect.Descriptor instead.
+func (*ListAggregatedNetworksRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListAggregatedNetworksRequest) GetParentId() string {
+	if x != nil {
+		return x.ParentId
+	}
+	return ""
+}
+
+func (x *ListAggregatedNetworksRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListAggregatedNetworksRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
 type ListNetworksResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Network             `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -196,7 +256,7 @@ type ListNetworksResponse struct {
 
 func (x *ListNetworksResponse) Reset() {
 	*x = ListNetworksResponse{}
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -208,7 +268,7 @@ func (x *ListNetworksResponse) String() string {
 func (*ListNetworksResponse) ProtoMessage() {}
 
 func (x *ListNetworksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -221,7 +281,7 @@ func (x *ListNetworksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNetworksResponse.ProtoReflect.Descriptor instead.
 func (*ListNetworksResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListNetworksResponse) GetItems() []*Network {
@@ -250,7 +310,7 @@ type CreateNetworkRequest struct {
 
 func (x *CreateNetworkRequest) Reset() {
 	*x = CreateNetworkRequest{}
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -262,7 +322,7 @@ func (x *CreateNetworkRequest) String() string {
 func (*CreateNetworkRequest) ProtoMessage() {}
 
 func (x *CreateNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -275,7 +335,7 @@ func (x *CreateNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateNetworkRequest.ProtoReflect.Descriptor instead.
 func (*CreateNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CreateNetworkRequest) GetMetadata() *v1.ResourceMetadata {
@@ -302,7 +362,7 @@ type CreateDefaultNetworkRequest struct {
 
 func (x *CreateDefaultNetworkRequest) Reset() {
 	*x = CreateDefaultNetworkRequest{}
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -314,7 +374,7 @@ func (x *CreateDefaultNetworkRequest) String() string {
 func (*CreateDefaultNetworkRequest) ProtoMessage() {}
 
 func (x *CreateDefaultNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -327,7 +387,7 @@ func (x *CreateDefaultNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateDefaultNetworkRequest.ProtoReflect.Descriptor instead.
 func (*CreateDefaultNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateDefaultNetworkRequest) GetMetadata() *v1.ResourceMetadata {
@@ -349,7 +409,7 @@ type UpdateNetworkRequest struct {
 
 func (x *UpdateNetworkRequest) Reset() {
 	*x = UpdateNetworkRequest{}
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -361,7 +421,7 @@ func (x *UpdateNetworkRequest) String() string {
 func (*UpdateNetworkRequest) ProtoMessage() {}
 
 func (x *UpdateNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -374,7 +434,7 @@ func (x *UpdateNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateNetworkRequest.ProtoReflect.Descriptor instead.
 func (*UpdateNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateNetworkRequest) GetMetadata() *v1.ResourceMetadata {
@@ -401,7 +461,7 @@ type DeleteNetworkRequest struct {
 
 func (x *DeleteNetworkRequest) Reset() {
 	*x = DeleteNetworkRequest{}
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -413,7 +473,7 @@ func (x *DeleteNetworkRequest) String() string {
 func (*DeleteNetworkRequest) ProtoMessage() {}
 
 func (x *DeleteNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_network_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -426,7 +486,7 @@ func (x *DeleteNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteNetworkRequest.ProtoReflect.Descriptor instead.
 func (*DeleteNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{7}
+	return file_nebius_vpc_v1_network_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteNetworkRequest) GetId() string {
@@ -454,6 +514,12 @@ const file_nebius_vpc_v1_network_service_proto_rawDesc = "" +
 	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x8c\x01\n" +
+	"\x1dListAggregatedNetworksRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
+	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"l\n" +
 	"\x14ListNetworksResponse\x12,\n" +
 	"\x05items\x18\x01 \x03(\v2\x16.nebius.vpc.v1.NetworkR\x05items\x12&\n" +
@@ -472,11 +538,12 @@ const file_nebius_vpc_v1_network_service_proto_rawDesc = "" +
 	"\x14DeleteNetworkRequest\x12%\n" +
 	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
 	"\n" +
-	"vpcnetworkR\x02id2\xb5\x04\n" +
+	"vpcnetworkR\x02id2\x9a\x05\n" +
 	"\x0eNetworkService\x12?\n" +
 	"\x03Get\x12 .nebius.vpc.v1.GetNetworkRequest\x1a\x16.nebius.vpc.v1.Network\x12K\n" +
 	"\tGetByName\x12&.nebius.vpc.v1.GetNetworkByNameRequest\x1a\x16.nebius.vpc.v1.Network\x12O\n" +
-	"\x04List\x12\".nebius.vpc.v1.ListNetworksRequest\x1a#.nebius.vpc.v1.ListNetworksResponse\x12J\n" +
+	"\x04List\x12\".nebius.vpc.v1.ListNetworksRequest\x1a#.nebius.vpc.v1.ListNetworksResponse\x12c\n" +
+	"\x0eListAggregated\x12,.nebius.vpc.v1.ListAggregatedNetworksRequest\x1a#.nebius.vpc.v1.ListNetworksResponse\x12J\n" +
 	"\x06Create\x12#.nebius.vpc.v1.CreateNetworkRequest\x1a\x1b.nebius.common.v1.Operation\x12X\n" +
 	"\rCreateDefault\x12*.nebius.vpc.v1.CreateDefaultNetworkRequest\x1a\x1b.nebius.common.v1.Operation\x12J\n" +
 	"\x06Update\x12#.nebius.vpc.v1.UpdateNetworkRequest\x1a\x1b.nebius.common.v1.Operation\x12J\n" +
@@ -495,44 +562,47 @@ func file_nebius_vpc_v1_network_service_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1_network_service_proto_rawDescData
 }
 
-var file_nebius_vpc_v1_network_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_vpc_v1_network_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_vpc_v1_network_service_proto_goTypes = []any{
-	(*GetNetworkRequest)(nil),           // 0: nebius.vpc.v1.GetNetworkRequest
-	(*GetNetworkByNameRequest)(nil),     // 1: nebius.vpc.v1.GetNetworkByNameRequest
-	(*ListNetworksRequest)(nil),         // 2: nebius.vpc.v1.ListNetworksRequest
-	(*ListNetworksResponse)(nil),        // 3: nebius.vpc.v1.ListNetworksResponse
-	(*CreateNetworkRequest)(nil),        // 4: nebius.vpc.v1.CreateNetworkRequest
-	(*CreateDefaultNetworkRequest)(nil), // 5: nebius.vpc.v1.CreateDefaultNetworkRequest
-	(*UpdateNetworkRequest)(nil),        // 6: nebius.vpc.v1.UpdateNetworkRequest
-	(*DeleteNetworkRequest)(nil),        // 7: nebius.vpc.v1.DeleteNetworkRequest
-	(*Network)(nil),                     // 8: nebius.vpc.v1.Network
-	(*v1.ResourceMetadata)(nil),         // 9: nebius.common.v1.ResourceMetadata
-	(*NetworkSpec)(nil),                 // 10: nebius.vpc.v1.NetworkSpec
-	(*v1.Operation)(nil),                // 11: nebius.common.v1.Operation
+	(*GetNetworkRequest)(nil),             // 0: nebius.vpc.v1.GetNetworkRequest
+	(*GetNetworkByNameRequest)(nil),       // 1: nebius.vpc.v1.GetNetworkByNameRequest
+	(*ListNetworksRequest)(nil),           // 2: nebius.vpc.v1.ListNetworksRequest
+	(*ListAggregatedNetworksRequest)(nil), // 3: nebius.vpc.v1.ListAggregatedNetworksRequest
+	(*ListNetworksResponse)(nil),          // 4: nebius.vpc.v1.ListNetworksResponse
+	(*CreateNetworkRequest)(nil),          // 5: nebius.vpc.v1.CreateNetworkRequest
+	(*CreateDefaultNetworkRequest)(nil),   // 6: nebius.vpc.v1.CreateDefaultNetworkRequest
+	(*UpdateNetworkRequest)(nil),          // 7: nebius.vpc.v1.UpdateNetworkRequest
+	(*DeleteNetworkRequest)(nil),          // 8: nebius.vpc.v1.DeleteNetworkRequest
+	(*Network)(nil),                       // 9: nebius.vpc.v1.Network
+	(*v1.ResourceMetadata)(nil),           // 10: nebius.common.v1.ResourceMetadata
+	(*NetworkSpec)(nil),                   // 11: nebius.vpc.v1.NetworkSpec
+	(*v1.Operation)(nil),                  // 12: nebius.common.v1.Operation
 }
 var file_nebius_vpc_v1_network_service_proto_depIdxs = []int32{
-	8,  // 0: nebius.vpc.v1.ListNetworksResponse.items:type_name -> nebius.vpc.v1.Network
-	9,  // 1: nebius.vpc.v1.CreateNetworkRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 2: nebius.vpc.v1.CreateNetworkRequest.spec:type_name -> nebius.vpc.v1.NetworkSpec
-	9,  // 3: nebius.vpc.v1.CreateDefaultNetworkRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	9,  // 4: nebius.vpc.v1.UpdateNetworkRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 5: nebius.vpc.v1.UpdateNetworkRequest.spec:type_name -> nebius.vpc.v1.NetworkSpec
+	9,  // 0: nebius.vpc.v1.ListNetworksResponse.items:type_name -> nebius.vpc.v1.Network
+	10, // 1: nebius.vpc.v1.CreateNetworkRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 2: nebius.vpc.v1.CreateNetworkRequest.spec:type_name -> nebius.vpc.v1.NetworkSpec
+	10, // 3: nebius.vpc.v1.CreateDefaultNetworkRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	10, // 4: nebius.vpc.v1.UpdateNetworkRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 5: nebius.vpc.v1.UpdateNetworkRequest.spec:type_name -> nebius.vpc.v1.NetworkSpec
 	0,  // 6: nebius.vpc.v1.NetworkService.Get:input_type -> nebius.vpc.v1.GetNetworkRequest
 	1,  // 7: nebius.vpc.v1.NetworkService.GetByName:input_type -> nebius.vpc.v1.GetNetworkByNameRequest
 	2,  // 8: nebius.vpc.v1.NetworkService.List:input_type -> nebius.vpc.v1.ListNetworksRequest
-	4,  // 9: nebius.vpc.v1.NetworkService.Create:input_type -> nebius.vpc.v1.CreateNetworkRequest
-	5,  // 10: nebius.vpc.v1.NetworkService.CreateDefault:input_type -> nebius.vpc.v1.CreateDefaultNetworkRequest
-	6,  // 11: nebius.vpc.v1.NetworkService.Update:input_type -> nebius.vpc.v1.UpdateNetworkRequest
-	7,  // 12: nebius.vpc.v1.NetworkService.Delete:input_type -> nebius.vpc.v1.DeleteNetworkRequest
-	8,  // 13: nebius.vpc.v1.NetworkService.Get:output_type -> nebius.vpc.v1.Network
-	8,  // 14: nebius.vpc.v1.NetworkService.GetByName:output_type -> nebius.vpc.v1.Network
-	3,  // 15: nebius.vpc.v1.NetworkService.List:output_type -> nebius.vpc.v1.ListNetworksResponse
-	11, // 16: nebius.vpc.v1.NetworkService.Create:output_type -> nebius.common.v1.Operation
-	11, // 17: nebius.vpc.v1.NetworkService.CreateDefault:output_type -> nebius.common.v1.Operation
-	11, // 18: nebius.vpc.v1.NetworkService.Update:output_type -> nebius.common.v1.Operation
-	11, // 19: nebius.vpc.v1.NetworkService.Delete:output_type -> nebius.common.v1.Operation
-	13, // [13:20] is the sub-list for method output_type
-	6,  // [6:13] is the sub-list for method input_type
+	3,  // 9: nebius.vpc.v1.NetworkService.ListAggregated:input_type -> nebius.vpc.v1.ListAggregatedNetworksRequest
+	5,  // 10: nebius.vpc.v1.NetworkService.Create:input_type -> nebius.vpc.v1.CreateNetworkRequest
+	6,  // 11: nebius.vpc.v1.NetworkService.CreateDefault:input_type -> nebius.vpc.v1.CreateDefaultNetworkRequest
+	7,  // 12: nebius.vpc.v1.NetworkService.Update:input_type -> nebius.vpc.v1.UpdateNetworkRequest
+	8,  // 13: nebius.vpc.v1.NetworkService.Delete:input_type -> nebius.vpc.v1.DeleteNetworkRequest
+	9,  // 14: nebius.vpc.v1.NetworkService.Get:output_type -> nebius.vpc.v1.Network
+	9,  // 15: nebius.vpc.v1.NetworkService.GetByName:output_type -> nebius.vpc.v1.Network
+	4,  // 16: nebius.vpc.v1.NetworkService.List:output_type -> nebius.vpc.v1.ListNetworksResponse
+	4,  // 17: nebius.vpc.v1.NetworkService.ListAggregated:output_type -> nebius.vpc.v1.ListNetworksResponse
+	12, // 18: nebius.vpc.v1.NetworkService.Create:output_type -> nebius.common.v1.Operation
+	12, // 19: nebius.vpc.v1.NetworkService.CreateDefault:output_type -> nebius.common.v1.Operation
+	12, // 20: nebius.vpc.v1.NetworkService.Update:output_type -> nebius.common.v1.Operation
+	12, // 21: nebius.vpc.v1.NetworkService.Delete:output_type -> nebius.common.v1.Operation
+	14, // [14:22] is the sub-list for method output_type
+	6,  // [6:14] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
@@ -550,7 +620,7 @@ func file_nebius_vpc_v1_network_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_network_service_proto_rawDesc), len(file_nebius_vpc_v1_network_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

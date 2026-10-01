@@ -351,6 +351,50 @@ func (c *MockAllocationServiceListCall) DoAndReturn(f func(context.Context, *v10
 	return c
 }
 
+// ListAggregated mocks base method.
+func (m *MockAllocationService) ListAggregated(arg0 context.Context, arg1 *v10.ListAggregatedAllocationsRequest, arg2 ...grpc.CallOption) (*v10.ListAllocationsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAggregated", varargs...)
+	ret0, _ := ret[0].(*v10.ListAllocationsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAggregated indicates an expected call of ListAggregated.
+func (mr *MockAllocationServiceMockRecorder) ListAggregated(arg0, arg1 any, arg2 ...any) *MockAllocationServiceListAggregatedCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAggregated", reflect.TypeOf((*MockAllocationService)(nil).ListAggregated), varargs...)
+	return &MockAllocationServiceListAggregatedCall{Call: call}
+}
+
+// MockAllocationServiceListAggregatedCall wrap *gomock.Call
+type MockAllocationServiceListAggregatedCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockAllocationServiceListAggregatedCall) Return(arg0 *v10.ListAllocationsResponse, arg1 error) *MockAllocationServiceListAggregatedCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockAllocationServiceListAggregatedCall) Do(f func(context.Context, *v10.ListAggregatedAllocationsRequest, ...grpc.CallOption) (*v10.ListAllocationsResponse, error)) *MockAllocationServiceListAggregatedCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockAllocationServiceListAggregatedCall) DoAndReturn(f func(context.Context, *v10.ListAggregatedAllocationsRequest, ...grpc.CallOption) (*v10.ListAllocationsResponse, error)) *MockAllocationServiceListAggregatedCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListByPool mocks base method.
 func (m *MockAllocationService) ListByPool(arg0 context.Context, arg1 *v10.ListAllocationsByPoolRequest, arg2 ...grpc.CallOption) (*v10.ListAllocationsResponse, error) {
 	m.ctrl.T.Helper()

@@ -31,6 +31,7 @@ type NetworkService interface {
 	GetByName(context.Context, *v1.GetNetworkByNameRequest, ...grpc.CallOption) (*v1.Network, error)
 	List(context.Context, *v1.ListNetworksRequest, ...grpc.CallOption) (*v1.ListNetworksResponse, error)
 	Filter(context.Context, *v1.ListNetworksRequest, ...grpc.CallOption) iter.Seq2[*v1.Network, error]
+	ListAggregated(context.Context, *v1.ListAggregatedNetworksRequest, ...grpc.CallOption) (*v1.ListNetworksResponse, error)
 	Create(context.Context, *v1.CreateNetworkRequest, ...grpc.CallOption) (operations.Operation, error)
 	CreateDefault(context.Context, *v1.CreateDefaultNetworkRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdateNetworkRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -145,6 +146,35 @@ func (s networkService) Filter(ctx context.Context, request *v1.ListNetworksRequ
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s networkService) ListAggregated(ctx context.Context, request *v1.ListAggregatedNetworksRequest, opts ...grpc.CallOption) (
+	*v1.ListNetworksResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewNetworkServiceClient(con).ListAggregated(ctx, request, opts...)
 }
 
 func (s networkService) Create(ctx context.Context, request *v1.CreateNetworkRequest, opts ...grpc.CallOption) (

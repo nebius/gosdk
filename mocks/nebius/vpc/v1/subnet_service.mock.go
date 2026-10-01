@@ -351,6 +351,50 @@ func (c *MockSubnetServiceListCall) DoAndReturn(f func(context.Context, *v10.Lis
 	return c
 }
 
+// ListAggregated mocks base method.
+func (m *MockSubnetService) ListAggregated(arg0 context.Context, arg1 *v10.ListAggregatedSubnetsRequest, arg2 ...grpc.CallOption) (*v10.ListSubnetsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAggregated", varargs...)
+	ret0, _ := ret[0].(*v10.ListSubnetsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAggregated indicates an expected call of ListAggregated.
+func (mr *MockSubnetServiceMockRecorder) ListAggregated(arg0, arg1 any, arg2 ...any) *MockSubnetServiceListAggregatedCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAggregated", reflect.TypeOf((*MockSubnetService)(nil).ListAggregated), varargs...)
+	return &MockSubnetServiceListAggregatedCall{Call: call}
+}
+
+// MockSubnetServiceListAggregatedCall wrap *gomock.Call
+type MockSubnetServiceListAggregatedCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockSubnetServiceListAggregatedCall) Return(arg0 *v10.ListSubnetsResponse, arg1 error) *MockSubnetServiceListAggregatedCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockSubnetServiceListAggregatedCall) Do(f func(context.Context, *v10.ListAggregatedSubnetsRequest, ...grpc.CallOption) (*v10.ListSubnetsResponse, error)) *MockSubnetServiceListAggregatedCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockSubnetServiceListAggregatedCall) DoAndReturn(f func(context.Context, *v10.ListAggregatedSubnetsRequest, ...grpc.CallOption) (*v10.ListSubnetsResponse, error)) *MockSubnetServiceListAggregatedCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListByNetwork mocks base method.
 func (m *MockSubnetService) ListByNetwork(arg0 context.Context, arg1 *v10.ListSubnetsByNetworkRequest, arg2 ...grpc.CallOption) (*v10.ListSubnetsResponse, error) {
 	m.ctrl.T.Helper()

@@ -31,6 +31,7 @@ type PoolService interface {
 	GetByName(context.Context, *v1.GetPoolByNameRequest, ...grpc.CallOption) (*v1.Pool, error)
 	List(context.Context, *v1.ListPoolsRequest, ...grpc.CallOption) (*v1.ListPoolsResponse, error)
 	Filter(context.Context, *v1.ListPoolsRequest, ...grpc.CallOption) iter.Seq2[*v1.Pool, error]
+	ListAggregated(context.Context, *v1.ListAggregatedPoolsRequest, ...grpc.CallOption) (*v1.ListPoolsResponse, error)
 	ListBySourcePool(context.Context, *v1.ListPoolsBySourcePoolRequest, ...grpc.CallOption) (*v1.ListPoolsResponse, error)
 	Create(context.Context, *v1.CreatePoolRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdatePoolRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -145,6 +146,35 @@ func (s poolService) Filter(ctx context.Context, request *v1.ListPoolsRequest, o
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s poolService) ListAggregated(ctx context.Context, request *v1.ListAggregatedPoolsRequest, opts ...grpc.CallOption) (
+	*v1.ListPoolsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, PoolServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewPoolServiceClient(con).ListAggregated(ctx, request, opts...)
 }
 
 func (s poolService) ListBySourcePool(ctx context.Context, request *v1.ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (

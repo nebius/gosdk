@@ -20,13 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SecurityGroupService_Get_FullMethodName           = "/nebius.vpc.v1.SecurityGroupService/Get"
-	SecurityGroupService_GetByName_FullMethodName     = "/nebius.vpc.v1.SecurityGroupService/GetByName"
-	SecurityGroupService_List_FullMethodName          = "/nebius.vpc.v1.SecurityGroupService/List"
-	SecurityGroupService_ListByNetwork_FullMethodName = "/nebius.vpc.v1.SecurityGroupService/ListByNetwork"
-	SecurityGroupService_Create_FullMethodName        = "/nebius.vpc.v1.SecurityGroupService/Create"
-	SecurityGroupService_Update_FullMethodName        = "/nebius.vpc.v1.SecurityGroupService/Update"
-	SecurityGroupService_Delete_FullMethodName        = "/nebius.vpc.v1.SecurityGroupService/Delete"
+	SecurityGroupService_Get_FullMethodName            = "/nebius.vpc.v1.SecurityGroupService/Get"
+	SecurityGroupService_GetByName_FullMethodName      = "/nebius.vpc.v1.SecurityGroupService/GetByName"
+	SecurityGroupService_List_FullMethodName           = "/nebius.vpc.v1.SecurityGroupService/List"
+	SecurityGroupService_ListAggregated_FullMethodName = "/nebius.vpc.v1.SecurityGroupService/ListAggregated"
+	SecurityGroupService_ListByNetwork_FullMethodName  = "/nebius.vpc.v1.SecurityGroupService/ListByNetwork"
+	SecurityGroupService_Create_FullMethodName         = "/nebius.vpc.v1.SecurityGroupService/Create"
+	SecurityGroupService_Update_FullMethodName         = "/nebius.vpc.v1.SecurityGroupService/Update"
+	SecurityGroupService_Delete_FullMethodName         = "/nebius.vpc.v1.SecurityGroupService/Delete"
 )
 
 // SecurityGroupServiceClient is the client API for SecurityGroupService service.
@@ -39,6 +40,8 @@ type SecurityGroupServiceClient interface {
 	GetByName(ctx context.Context, in *GetSecurityGroupByNameRequest, opts ...grpc.CallOption) (*SecurityGroup, error)
 	// Lists security groups within a specified parent.
 	List(ctx context.Context, in *ListSecurityGroupsRequest, opts ...grpc.CallOption) (*ListSecurityGroupsResponse, error)
+	// Lists security groups across regions for the specified parent.
+	ListAggregated(ctx context.Context, in *ListAggregatedSecurityGroupsRequest, opts ...grpc.CallOption) (*ListSecurityGroupsResponse, error)
 	// Lists security groups in a specified network.
 	ListByNetwork(ctx context.Context, in *ListSecurityGroupsByNetworkRequest, opts ...grpc.CallOption) (*ListSecurityGroupsResponse, error)
 	// Creates a new security group with the specified configuration.
@@ -78,6 +81,15 @@ func (c *securityGroupServiceClient) GetByName(ctx context.Context, in *GetSecur
 func (c *securityGroupServiceClient) List(ctx context.Context, in *ListSecurityGroupsRequest, opts ...grpc.CallOption) (*ListSecurityGroupsResponse, error) {
 	out := new(ListSecurityGroupsResponse)
 	err := c.cc.Invoke(ctx, SecurityGroupService_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *securityGroupServiceClient) ListAggregated(ctx context.Context, in *ListAggregatedSecurityGroupsRequest, opts ...grpc.CallOption) (*ListSecurityGroupsResponse, error) {
+	out := new(ListSecurityGroupsResponse)
+	err := c.cc.Invoke(ctx, SecurityGroupService_ListAggregated_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,6 +142,8 @@ type SecurityGroupServiceServer interface {
 	GetByName(context.Context, *GetSecurityGroupByNameRequest) (*SecurityGroup, error)
 	// Lists security groups within a specified parent.
 	List(context.Context, *ListSecurityGroupsRequest) (*ListSecurityGroupsResponse, error)
+	// Lists security groups across regions for the specified parent.
+	ListAggregated(context.Context, *ListAggregatedSecurityGroupsRequest) (*ListSecurityGroupsResponse, error)
 	// Lists security groups in a specified network.
 	ListByNetwork(context.Context, *ListSecurityGroupsByNetworkRequest) (*ListSecurityGroupsResponse, error)
 	// Creates a new security group with the specified configuration.
@@ -152,6 +166,9 @@ func (UnimplementedSecurityGroupServiceServer) GetByName(context.Context, *GetSe
 }
 func (UnimplementedSecurityGroupServiceServer) List(context.Context, *ListSecurityGroupsRequest) (*ListSecurityGroupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedSecurityGroupServiceServer) ListAggregated(context.Context, *ListAggregatedSecurityGroupsRequest) (*ListSecurityGroupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAggregated not implemented")
 }
 func (UnimplementedSecurityGroupServiceServer) ListByNetwork(context.Context, *ListSecurityGroupsByNetworkRequest) (*ListSecurityGroupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByNetwork not implemented")
@@ -227,6 +244,24 @@ func _SecurityGroupService_List_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SecurityGroupServiceServer).List(ctx, req.(*ListSecurityGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SecurityGroupService_ListAggregated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAggregatedSecurityGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecurityGroupServiceServer).ListAggregated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SecurityGroupService_ListAggregated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecurityGroupServiceServer).ListAggregated(ctx, req.(*ListAggregatedSecurityGroupsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -321,6 +356,10 @@ var SecurityGroupService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _SecurityGroupService_List_Handler,
+		},
+		{
+			MethodName: "ListAggregated",
+			Handler:    _SecurityGroupService_ListAggregated_Handler,
 		},
 		{
 			MethodName: "ListByNetwork",
