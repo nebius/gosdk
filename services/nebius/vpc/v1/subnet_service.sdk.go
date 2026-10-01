@@ -31,6 +31,7 @@ type SubnetService interface {
 	GetByName(context.Context, *v1.GetSubnetByNameRequest, ...grpc.CallOption) (*v1.Subnet, error)
 	List(context.Context, *v1.ListSubnetsRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)
 	Filter(context.Context, *v1.ListSubnetsRequest, ...grpc.CallOption) iter.Seq2[*v1.Subnet, error]
+	ListAggregated(context.Context, *v1.ListAggregatedSubnetsRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)
 	ListByNetwork(context.Context, *v1.ListSubnetsByNetworkRequest, ...grpc.CallOption) (*v1.ListSubnetsResponse, error)
 	Create(context.Context, *v1.CreateSubnetRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdateSubnetRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -145,6 +146,35 @@ func (s subnetService) Filter(ctx context.Context, request *v1.ListSubnetsReques
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s subnetService) ListAggregated(ctx context.Context, request *v1.ListAggregatedSubnetsRequest, opts ...grpc.CallOption) (
+	*v1.ListSubnetsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, SubnetServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewSubnetServiceClient(con).ListAggregated(ctx, request, opts...)
 }
 
 func (s subnetService) ListByNetwork(ctx context.Context, request *v1.ListSubnetsByNetworkRequest, opts ...grpc.CallOption) (

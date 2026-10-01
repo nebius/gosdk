@@ -25,7 +25,7 @@ const (
 
 type GetTenantUserAccountRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // tenant user account id like 'tenantuseraccount-{region}someuniquesuffix'
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Tenant user account ID, such as `tenantuseraccount-{region}someuniquesuffix`.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

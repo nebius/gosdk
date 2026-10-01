@@ -24,7 +24,7 @@ const (
 
 type GetTenantUserAccountWithAttributesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // tenant user account id like 'tenantuseraccount-{region}someuniquesuffix'
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Tenant user account ID, such as `tenantuseraccount-{region}someuniquesuffix`.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,7 +68,7 @@ func (x *GetTenantUserAccountWithAttributesRequest) GetId() string {
 
 type ListTenantUserAccountsWithAttributesRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Represents the tenant ID like 'tenant-{region}someuniquesuffix'
+	// Represents the tenant ID, such as `tenant-{region}someuniquesuffix`.
 	ParentId string `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	// Specifies the maximum number of items to return in the response.
 	// Default value: 10

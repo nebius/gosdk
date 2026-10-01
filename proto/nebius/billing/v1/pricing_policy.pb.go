@@ -29,12 +29,14 @@ type PricingPolicyStatus_State int32
 const (
 	PricingPolicyStatus_STATE_UNSPECIFIED PricingPolicyStatus_State = 0
 	// Not ready yet; a VM referencing the policy gets a retryable error.
+	// The state can last while a market price change is applied to the segment.
 	PricingPolicyStatus_STATE_CREATING PricingPolicyStatus_State = 1
 	// Ready; whether VMs may start is `scheduling_state`.
 	PricingPolicyStatus_STATE_ACTIVE PricingPolicyStatus_State = 2
 	// Being deleted; does not accept new VMs.
 	PricingPolicyStatus_STATE_DELETING PricingPolicyStatus_State = 3
 	// The bid is being changed; scheduling is blocked until the change lands.
+	// The state can last while a market price change is applied to the segment.
 	PricingPolicyStatus_STATE_UPDATING PricingPolicyStatus_State = 4
 )
 
@@ -89,8 +91,8 @@ const (
 	PricingPolicyStatus_SCHEDULING_STATE_UNSPECIFIED PricingPolicyStatus_SchedulingState = 0
 	// New VMs may start.
 	PricingPolicyStatus_SCHEDULING_STATE_ALLOWED PricingPolicyStatus_SchedulingState = 1
-	// The max_price limit is below the current market price; VM creation succeeds once
-	// the price falls to it.
+	// The max_price limit is below the market price in force or below a market price
+	// that is being applied; VM creation succeeds once the price falls to it.
 	PricingPolicyStatus_SCHEDULING_STATE_BLOCKED PricingPolicyStatus_SchedulingState = 2
 )
 

@@ -11,6 +11,9 @@ package v1
 // func (x *ListRouteTablesRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListRouteTablesRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *ListAggregatedRouteTablesRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ListAggregatedRouteTablesRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ListRouteTablesByNetworkRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListRouteTablesByNetworkRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 

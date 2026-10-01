@@ -395,6 +395,50 @@ func (c *MockNetworkServiceListCall) DoAndReturn(f func(context.Context, *v10.Li
 	return c
 }
 
+// ListAggregated mocks base method.
+func (m *MockNetworkService) ListAggregated(arg0 context.Context, arg1 *v10.ListAggregatedNetworksRequest, arg2 ...grpc.CallOption) (*v10.ListNetworksResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAggregated", varargs...)
+	ret0, _ := ret[0].(*v10.ListNetworksResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAggregated indicates an expected call of ListAggregated.
+func (mr *MockNetworkServiceMockRecorder) ListAggregated(arg0, arg1 any, arg2 ...any) *MockNetworkServiceListAggregatedCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAggregated", reflect.TypeOf((*MockNetworkService)(nil).ListAggregated), varargs...)
+	return &MockNetworkServiceListAggregatedCall{Call: call}
+}
+
+// MockNetworkServiceListAggregatedCall wrap *gomock.Call
+type MockNetworkServiceListAggregatedCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNetworkServiceListAggregatedCall) Return(arg0 *v10.ListNetworksResponse, arg1 error) *MockNetworkServiceListAggregatedCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNetworkServiceListAggregatedCall) Do(f func(context.Context, *v10.ListAggregatedNetworksRequest, ...grpc.CallOption) (*v10.ListNetworksResponse, error)) *MockNetworkServiceListAggregatedCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNetworkServiceListAggregatedCall) DoAndReturn(f func(context.Context, *v10.ListAggregatedNetworksRequest, ...grpc.CallOption) (*v10.ListNetworksResponse, error)) *MockNetworkServiceListAggregatedCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListOperations mocks base method.
 func (m *MockNetworkService) ListOperations(arg0 context.Context, arg1 *v1.ListOperationsRequest, arg2 ...grpc.CallOption) (*v1.ListOperationsResponse, error) {
 	m.ctrl.T.Helper()

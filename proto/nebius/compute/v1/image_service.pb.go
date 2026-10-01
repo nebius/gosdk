@@ -71,7 +71,7 @@ func (x *GetImageRequest) GetId() string {
 type GetImageLatestByFamilyRequest struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
 	ImageFamily string                 `protobuf:"bytes,1,opt,name=image_family,json=imageFamily,proto3" json:"image_family,omitempty"`
-	// default 'project-{region}public-images'
+	// The default is `project-{region}public-images`.
 	ParentId      string `protobuf:"bytes,2,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

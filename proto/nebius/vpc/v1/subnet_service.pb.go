@@ -186,6 +186,66 @@ func (x *ListSubnetsRequest) GetPageToken() string {
 	return ""
 }
 
+type ListAggregatedSubnetsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAggregatedSubnetsRequest) Reset() {
+	*x = ListAggregatedSubnetsRequest{}
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAggregatedSubnetsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAggregatedSubnetsRequest) ProtoMessage() {}
+
+func (x *ListAggregatedSubnetsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAggregatedSubnetsRequest.ProtoReflect.Descriptor instead.
+func (*ListAggregatedSubnetsRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListAggregatedSubnetsRequest) GetParentId() string {
+	if x != nil {
+		return x.ParentId
+	}
+	return ""
+}
+
+func (x *ListAggregatedSubnetsRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListAggregatedSubnetsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
 type ListSubnetsByNetworkRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID of the network.
@@ -200,7 +260,7 @@ type ListSubnetsByNetworkRequest struct {
 
 func (x *ListSubnetsByNetworkRequest) Reset() {
 	*x = ListSubnetsByNetworkRequest{}
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -212,7 +272,7 @@ func (x *ListSubnetsByNetworkRequest) String() string {
 func (*ListSubnetsByNetworkRequest) ProtoMessage() {}
 
 func (x *ListSubnetsByNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +285,7 @@ func (x *ListSubnetsByNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSubnetsByNetworkRequest.ProtoReflect.Descriptor instead.
 func (*ListSubnetsByNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListSubnetsByNetworkRequest) GetNetworkId() string {
@@ -259,7 +319,7 @@ type ListSubnetsResponse struct {
 
 func (x *ListSubnetsResponse) Reset() {
 	*x = ListSubnetsResponse{}
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -271,7 +331,7 @@ func (x *ListSubnetsResponse) String() string {
 func (*ListSubnetsResponse) ProtoMessage() {}
 
 func (x *ListSubnetsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,7 +344,7 @@ func (x *ListSubnetsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSubnetsResponse.ProtoReflect.Descriptor instead.
 func (*ListSubnetsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListSubnetsResponse) GetItems() []*Subnet {
@@ -313,7 +373,7 @@ type CreateSubnetRequest struct {
 
 func (x *CreateSubnetRequest) Reset() {
 	*x = CreateSubnetRequest{}
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -325,7 +385,7 @@ func (x *CreateSubnetRequest) String() string {
 func (*CreateSubnetRequest) ProtoMessage() {}
 
 func (x *CreateSubnetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -338,7 +398,7 @@ func (x *CreateSubnetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSubnetRequest.ProtoReflect.Descriptor instead.
 func (*CreateSubnetRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateSubnetRequest) GetMetadata() *v1.ResourceMetadata {
@@ -367,7 +427,7 @@ type UpdateSubnetRequest struct {
 
 func (x *UpdateSubnetRequest) Reset() {
 	*x = UpdateSubnetRequest{}
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +439,7 @@ func (x *UpdateSubnetRequest) String() string {
 func (*UpdateSubnetRequest) ProtoMessage() {}
 
 func (x *UpdateSubnetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +452,7 @@ func (x *UpdateSubnetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSubnetRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSubnetRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateSubnetRequest) GetMetadata() *v1.ResourceMetadata {
@@ -419,7 +479,7 @@ type DeleteSubnetRequest struct {
 
 func (x *DeleteSubnetRequest) Reset() {
 	*x = DeleteSubnetRequest{}
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +491,7 @@ func (x *DeleteSubnetRequest) String() string {
 func (*DeleteSubnetRequest) ProtoMessage() {}
 
 func (x *DeleteSubnetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_subnet_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +504,7 @@ func (x *DeleteSubnetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSubnetRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSubnetRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{7}
+	return file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteSubnetRequest) GetId() string {
@@ -471,6 +531,12 @@ const file_nebius_vpc_v1_subnet_service_proto_rawDesc = "" +
 	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x8b\x01\n" +
+	"\x1cListAggregatedSubnetsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
+	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x8f\x01\n" +
 	"\x1bListSubnetsByNetworkRequest\x124\n" +
 	"\n" +
@@ -493,11 +559,12 @@ const file_nebius_vpc_v1_subnet_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2\x19.nebius.vpc.v1.SubnetSpecR\x04spec\"5\n" +
 	"\x13DeleteSubnetRequest\x12\x1e\n" +
 	"\x02id\x18\x01 \x01(\tB\x0e\xe2J\v\n" +
-	"\tvpcsubnetR\x02id2\xb2\x04\n" +
+	"\tvpcsubnetR\x02id2\x95\x05\n" +
 	"\rSubnetService\x12=\n" +
 	"\x03Get\x12\x1f.nebius.vpc.v1.GetSubnetRequest\x1a\x15.nebius.vpc.v1.Subnet\x12I\n" +
 	"\tGetByName\x12%.nebius.vpc.v1.GetSubnetByNameRequest\x1a\x15.nebius.vpc.v1.Subnet\x12M\n" +
-	"\x04List\x12!.nebius.vpc.v1.ListSubnetsRequest\x1a\".nebius.vpc.v1.ListSubnetsResponse\x12_\n" +
+	"\x04List\x12!.nebius.vpc.v1.ListSubnetsRequest\x1a\".nebius.vpc.v1.ListSubnetsResponse\x12a\n" +
+	"\x0eListAggregated\x12+.nebius.vpc.v1.ListAggregatedSubnetsRequest\x1a\".nebius.vpc.v1.ListSubnetsResponse\x12_\n" +
 	"\rListByNetwork\x12*.nebius.vpc.v1.ListSubnetsByNetworkRequest\x1a\".nebius.vpc.v1.ListSubnetsResponse\x12I\n" +
 	"\x06Create\x12\".nebius.vpc.v1.CreateSubnetRequest\x1a\x1b.nebius.common.v1.Operation\x12I\n" +
 	"\x06Update\x12\".nebius.vpc.v1.UpdateSubnetRequest\x1a\x1b.nebius.common.v1.Operation\x12I\n" +
@@ -516,43 +583,46 @@ func file_nebius_vpc_v1_subnet_service_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1_subnet_service_proto_rawDescData
 }
 
-var file_nebius_vpc_v1_subnet_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_vpc_v1_subnet_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_vpc_v1_subnet_service_proto_goTypes = []any{
-	(*GetSubnetRequest)(nil),            // 0: nebius.vpc.v1.GetSubnetRequest
-	(*GetSubnetByNameRequest)(nil),      // 1: nebius.vpc.v1.GetSubnetByNameRequest
-	(*ListSubnetsRequest)(nil),          // 2: nebius.vpc.v1.ListSubnetsRequest
-	(*ListSubnetsByNetworkRequest)(nil), // 3: nebius.vpc.v1.ListSubnetsByNetworkRequest
-	(*ListSubnetsResponse)(nil),         // 4: nebius.vpc.v1.ListSubnetsResponse
-	(*CreateSubnetRequest)(nil),         // 5: nebius.vpc.v1.CreateSubnetRequest
-	(*UpdateSubnetRequest)(nil),         // 6: nebius.vpc.v1.UpdateSubnetRequest
-	(*DeleteSubnetRequest)(nil),         // 7: nebius.vpc.v1.DeleteSubnetRequest
-	(*Subnet)(nil),                      // 8: nebius.vpc.v1.Subnet
-	(*v1.ResourceMetadata)(nil),         // 9: nebius.common.v1.ResourceMetadata
-	(*SubnetSpec)(nil),                  // 10: nebius.vpc.v1.SubnetSpec
-	(*v1.Operation)(nil),                // 11: nebius.common.v1.Operation
+	(*GetSubnetRequest)(nil),             // 0: nebius.vpc.v1.GetSubnetRequest
+	(*GetSubnetByNameRequest)(nil),       // 1: nebius.vpc.v1.GetSubnetByNameRequest
+	(*ListSubnetsRequest)(nil),           // 2: nebius.vpc.v1.ListSubnetsRequest
+	(*ListAggregatedSubnetsRequest)(nil), // 3: nebius.vpc.v1.ListAggregatedSubnetsRequest
+	(*ListSubnetsByNetworkRequest)(nil),  // 4: nebius.vpc.v1.ListSubnetsByNetworkRequest
+	(*ListSubnetsResponse)(nil),          // 5: nebius.vpc.v1.ListSubnetsResponse
+	(*CreateSubnetRequest)(nil),          // 6: nebius.vpc.v1.CreateSubnetRequest
+	(*UpdateSubnetRequest)(nil),          // 7: nebius.vpc.v1.UpdateSubnetRequest
+	(*DeleteSubnetRequest)(nil),          // 8: nebius.vpc.v1.DeleteSubnetRequest
+	(*Subnet)(nil),                       // 9: nebius.vpc.v1.Subnet
+	(*v1.ResourceMetadata)(nil),          // 10: nebius.common.v1.ResourceMetadata
+	(*SubnetSpec)(nil),                   // 11: nebius.vpc.v1.SubnetSpec
+	(*v1.Operation)(nil),                 // 12: nebius.common.v1.Operation
 }
 var file_nebius_vpc_v1_subnet_service_proto_depIdxs = []int32{
-	8,  // 0: nebius.vpc.v1.ListSubnetsResponse.items:type_name -> nebius.vpc.v1.Subnet
-	9,  // 1: nebius.vpc.v1.CreateSubnetRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 2: nebius.vpc.v1.CreateSubnetRequest.spec:type_name -> nebius.vpc.v1.SubnetSpec
-	9,  // 3: nebius.vpc.v1.UpdateSubnetRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 4: nebius.vpc.v1.UpdateSubnetRequest.spec:type_name -> nebius.vpc.v1.SubnetSpec
+	9,  // 0: nebius.vpc.v1.ListSubnetsResponse.items:type_name -> nebius.vpc.v1.Subnet
+	10, // 1: nebius.vpc.v1.CreateSubnetRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 2: nebius.vpc.v1.CreateSubnetRequest.spec:type_name -> nebius.vpc.v1.SubnetSpec
+	10, // 3: nebius.vpc.v1.UpdateSubnetRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 4: nebius.vpc.v1.UpdateSubnetRequest.spec:type_name -> nebius.vpc.v1.SubnetSpec
 	0,  // 5: nebius.vpc.v1.SubnetService.Get:input_type -> nebius.vpc.v1.GetSubnetRequest
 	1,  // 6: nebius.vpc.v1.SubnetService.GetByName:input_type -> nebius.vpc.v1.GetSubnetByNameRequest
 	2,  // 7: nebius.vpc.v1.SubnetService.List:input_type -> nebius.vpc.v1.ListSubnetsRequest
-	3,  // 8: nebius.vpc.v1.SubnetService.ListByNetwork:input_type -> nebius.vpc.v1.ListSubnetsByNetworkRequest
-	5,  // 9: nebius.vpc.v1.SubnetService.Create:input_type -> nebius.vpc.v1.CreateSubnetRequest
-	6,  // 10: nebius.vpc.v1.SubnetService.Update:input_type -> nebius.vpc.v1.UpdateSubnetRequest
-	7,  // 11: nebius.vpc.v1.SubnetService.Delete:input_type -> nebius.vpc.v1.DeleteSubnetRequest
-	8,  // 12: nebius.vpc.v1.SubnetService.Get:output_type -> nebius.vpc.v1.Subnet
-	8,  // 13: nebius.vpc.v1.SubnetService.GetByName:output_type -> nebius.vpc.v1.Subnet
-	4,  // 14: nebius.vpc.v1.SubnetService.List:output_type -> nebius.vpc.v1.ListSubnetsResponse
-	4,  // 15: nebius.vpc.v1.SubnetService.ListByNetwork:output_type -> nebius.vpc.v1.ListSubnetsResponse
-	11, // 16: nebius.vpc.v1.SubnetService.Create:output_type -> nebius.common.v1.Operation
-	11, // 17: nebius.vpc.v1.SubnetService.Update:output_type -> nebius.common.v1.Operation
-	11, // 18: nebius.vpc.v1.SubnetService.Delete:output_type -> nebius.common.v1.Operation
-	12, // [12:19] is the sub-list for method output_type
-	5,  // [5:12] is the sub-list for method input_type
+	3,  // 8: nebius.vpc.v1.SubnetService.ListAggregated:input_type -> nebius.vpc.v1.ListAggregatedSubnetsRequest
+	4,  // 9: nebius.vpc.v1.SubnetService.ListByNetwork:input_type -> nebius.vpc.v1.ListSubnetsByNetworkRequest
+	6,  // 10: nebius.vpc.v1.SubnetService.Create:input_type -> nebius.vpc.v1.CreateSubnetRequest
+	7,  // 11: nebius.vpc.v1.SubnetService.Update:input_type -> nebius.vpc.v1.UpdateSubnetRequest
+	8,  // 12: nebius.vpc.v1.SubnetService.Delete:input_type -> nebius.vpc.v1.DeleteSubnetRequest
+	9,  // 13: nebius.vpc.v1.SubnetService.Get:output_type -> nebius.vpc.v1.Subnet
+	9,  // 14: nebius.vpc.v1.SubnetService.GetByName:output_type -> nebius.vpc.v1.Subnet
+	5,  // 15: nebius.vpc.v1.SubnetService.List:output_type -> nebius.vpc.v1.ListSubnetsResponse
+	5,  // 16: nebius.vpc.v1.SubnetService.ListAggregated:output_type -> nebius.vpc.v1.ListSubnetsResponse
+	5,  // 17: nebius.vpc.v1.SubnetService.ListByNetwork:output_type -> nebius.vpc.v1.ListSubnetsResponse
+	12, // 18: nebius.vpc.v1.SubnetService.Create:output_type -> nebius.common.v1.Operation
+	12, // 19: nebius.vpc.v1.SubnetService.Update:output_type -> nebius.common.v1.Operation
+	12, // 20: nebius.vpc.v1.SubnetService.Delete:output_type -> nebius.common.v1.Operation
+	13, // [13:21] is the sub-list for method output_type
+	5,  // [5:13] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -570,7 +640,7 @@ func file_nebius_vpc_v1_subnet_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_subnet_service_proto_rawDesc), len(file_nebius_vpc_v1_subnet_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

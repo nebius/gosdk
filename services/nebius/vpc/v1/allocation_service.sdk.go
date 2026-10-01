@@ -31,6 +31,7 @@ type AllocationService interface {
 	GetByName(context.Context, *v1.GetAllocationByNameRequest, ...grpc.CallOption) (*v1.Allocation, error)
 	List(context.Context, *v1.ListAllocationsRequest, ...grpc.CallOption) (*v1.ListAllocationsResponse, error)
 	Filter(context.Context, *v1.ListAllocationsRequest, ...grpc.CallOption) iter.Seq2[*v1.Allocation, error]
+	ListAggregated(context.Context, *v1.ListAggregatedAllocationsRequest, ...grpc.CallOption) (*v1.ListAllocationsResponse, error)
 	ListByPool(context.Context, *v1.ListAllocationsByPoolRequest, ...grpc.CallOption) (*v1.ListAllocationsResponse, error)
 	ListBySubnet(context.Context, *v1.ListAllocationsBySubnetRequest, ...grpc.CallOption) (*v1.ListAllocationsResponse, error)
 	Create(context.Context, *v1.CreateAllocationRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -146,6 +147,35 @@ func (s allocationService) Filter(ctx context.Context, request *v1.ListAllocatio
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s allocationService) ListAggregated(ctx context.Context, request *v1.ListAggregatedAllocationsRequest, opts ...grpc.CallOption) (
+	*v1.ListAllocationsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, AllocationServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewAllocationServiceClient(con).ListAggregated(ctx, request, opts...)
 }
 
 func (s allocationService) ListByPool(ctx context.Context, request *v1.ListAllocationsByPoolRequest, opts ...grpc.CallOption) (

@@ -23,6 +23,7 @@ const (
 	PoolService_Get_FullMethodName              = "/nebius.vpc.v1.PoolService/Get"
 	PoolService_GetByName_FullMethodName        = "/nebius.vpc.v1.PoolService/GetByName"
 	PoolService_List_FullMethodName             = "/nebius.vpc.v1.PoolService/List"
+	PoolService_ListAggregated_FullMethodName   = "/nebius.vpc.v1.PoolService/ListAggregated"
 	PoolService_ListBySourcePool_FullMethodName = "/nebius.vpc.v1.PoolService/ListBySourcePool"
 	PoolService_Create_FullMethodName           = "/nebius.vpc.v1.PoolService/Create"
 	PoolService_Update_FullMethodName           = "/nebius.vpc.v1.PoolService/Update"
@@ -39,6 +40,8 @@ type PoolServiceClient interface {
 	GetByName(ctx context.Context, in *GetPoolByNameRequest, opts ...grpc.CallOption) (*Pool, error)
 	// Lists pools within a specified parent.
 	List(ctx context.Context, in *ListPoolsRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
+	// Lists pools across regions for the specified parent.
+	ListAggregated(ctx context.Context, in *ListAggregatedPoolsRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
 	// Lists pools that use a specified pool as their source.
 	ListBySourcePool(ctx context.Context, in *ListPoolsBySourcePoolRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error)
 	// Creates a new pool with the specified configuration.
@@ -78,6 +81,15 @@ func (c *poolServiceClient) GetByName(ctx context.Context, in *GetPoolByNameRequ
 func (c *poolServiceClient) List(ctx context.Context, in *ListPoolsRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error) {
 	out := new(ListPoolsResponse)
 	err := c.cc.Invoke(ctx, PoolService_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *poolServiceClient) ListAggregated(ctx context.Context, in *ListAggregatedPoolsRequest, opts ...grpc.CallOption) (*ListPoolsResponse, error) {
+	out := new(ListPoolsResponse)
+	err := c.cc.Invoke(ctx, PoolService_ListAggregated_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,6 +142,8 @@ type PoolServiceServer interface {
 	GetByName(context.Context, *GetPoolByNameRequest) (*Pool, error)
 	// Lists pools within a specified parent.
 	List(context.Context, *ListPoolsRequest) (*ListPoolsResponse, error)
+	// Lists pools across regions for the specified parent.
+	ListAggregated(context.Context, *ListAggregatedPoolsRequest) (*ListPoolsResponse, error)
 	// Lists pools that use a specified pool as their source.
 	ListBySourcePool(context.Context, *ListPoolsBySourcePoolRequest) (*ListPoolsResponse, error)
 	// Creates a new pool with the specified configuration.
@@ -152,6 +166,9 @@ func (UnimplementedPoolServiceServer) GetByName(context.Context, *GetPoolByNameR
 }
 func (UnimplementedPoolServiceServer) List(context.Context, *ListPoolsRequest) (*ListPoolsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedPoolServiceServer) ListAggregated(context.Context, *ListAggregatedPoolsRequest) (*ListPoolsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAggregated not implemented")
 }
 func (UnimplementedPoolServiceServer) ListBySourcePool(context.Context, *ListPoolsBySourcePoolRequest) (*ListPoolsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBySourcePool not implemented")
@@ -227,6 +244,24 @@ func _PoolService_List_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PoolServiceServer).List(ctx, req.(*ListPoolsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PoolService_ListAggregated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAggregatedPoolsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PoolServiceServer).ListAggregated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PoolService_ListAggregated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PoolServiceServer).ListAggregated(ctx, req.(*ListAggregatedPoolsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -321,6 +356,10 @@ var PoolService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _PoolService_List_Handler,
+		},
+		{
+			MethodName: "ListAggregated",
+			Handler:    _PoolService_ListAggregated_Handler,
 		},
 		{
 			MethodName: "ListBySourcePool",

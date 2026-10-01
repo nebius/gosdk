@@ -351,6 +351,50 @@ func (c *MockRouteTableServiceListCall) DoAndReturn(f func(context.Context, *v10
 	return c
 }
 
+// ListAggregated mocks base method.
+func (m *MockRouteTableService) ListAggregated(arg0 context.Context, arg1 *v10.ListAggregatedRouteTablesRequest, arg2 ...grpc.CallOption) (*v10.ListRouteTablesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAggregated", varargs...)
+	ret0, _ := ret[0].(*v10.ListRouteTablesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAggregated indicates an expected call of ListAggregated.
+func (mr *MockRouteTableServiceMockRecorder) ListAggregated(arg0, arg1 any, arg2 ...any) *MockRouteTableServiceListAggregatedCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAggregated", reflect.TypeOf((*MockRouteTableService)(nil).ListAggregated), varargs...)
+	return &MockRouteTableServiceListAggregatedCall{Call: call}
+}
+
+// MockRouteTableServiceListAggregatedCall wrap *gomock.Call
+type MockRouteTableServiceListAggregatedCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockRouteTableServiceListAggregatedCall) Return(arg0 *v10.ListRouteTablesResponse, arg1 error) *MockRouteTableServiceListAggregatedCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockRouteTableServiceListAggregatedCall) Do(f func(context.Context, *v10.ListAggregatedRouteTablesRequest, ...grpc.CallOption) (*v10.ListRouteTablesResponse, error)) *MockRouteTableServiceListAggregatedCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockRouteTableServiceListAggregatedCall) DoAndReturn(f func(context.Context, *v10.ListAggregatedRouteTablesRequest, ...grpc.CallOption) (*v10.ListRouteTablesResponse, error)) *MockRouteTableServiceListAggregatedCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListByNetwork mocks base method.
 func (m *MockRouteTableService) ListByNetwork(arg0 context.Context, arg1 *v10.ListRouteTablesByNetworkRequest, arg2 ...grpc.CallOption) (*v10.ListRouteTablesResponse, error) {
 	m.ctrl.T.Helper()

@@ -31,6 +31,7 @@ type SecurityGroupService interface {
 	GetByName(context.Context, *v1.GetSecurityGroupByNameRequest, ...grpc.CallOption) (*v1.SecurityGroup, error)
 	List(context.Context, *v1.ListSecurityGroupsRequest, ...grpc.CallOption) (*v1.ListSecurityGroupsResponse, error)
 	Filter(context.Context, *v1.ListSecurityGroupsRequest, ...grpc.CallOption) iter.Seq2[*v1.SecurityGroup, error]
+	ListAggregated(context.Context, *v1.ListAggregatedSecurityGroupsRequest, ...grpc.CallOption) (*v1.ListSecurityGroupsResponse, error)
 	ListByNetwork(context.Context, *v1.ListSecurityGroupsByNetworkRequest, ...grpc.CallOption) (*v1.ListSecurityGroupsResponse, error)
 	Create(context.Context, *v1.CreateSecurityGroupRequest, ...grpc.CallOption) (operations.Operation, error)
 	Update(context.Context, *v1.UpdateSecurityGroupRequest, ...grpc.CallOption) (operations.Operation, error)
@@ -145,6 +146,35 @@ func (s securityGroupService) Filter(ctx context.Context, request *v1.ListSecuri
 			req.PageToken = res.GetNextPageToken()
 		}
 	}
+}
+
+func (s securityGroupService) ListAggregated(ctx context.Context, request *v1.ListAggregatedSecurityGroupsRequest, opts ...grpc.CallOption) (
+	*v1.ListSecurityGroupsResponse,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, SecurityGroupServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewSecurityGroupServiceClient(con).ListAggregated(ctx, request, opts...)
 }
 
 func (s securityGroupService) ListByNetwork(ctx context.Context, request *v1.ListSecurityGroupsByNetworkRequest, opts ...grpc.CallOption) (

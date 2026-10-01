@@ -351,6 +351,50 @@ func (c *MockPoolServiceListCall) DoAndReturn(f func(context.Context, *v10.ListP
 	return c
 }
 
+// ListAggregated mocks base method.
+func (m *MockPoolService) ListAggregated(arg0 context.Context, arg1 *v10.ListAggregatedPoolsRequest, arg2 ...grpc.CallOption) (*v10.ListPoolsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAggregated", varargs...)
+	ret0, _ := ret[0].(*v10.ListPoolsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAggregated indicates an expected call of ListAggregated.
+func (mr *MockPoolServiceMockRecorder) ListAggregated(arg0, arg1 any, arg2 ...any) *MockPoolServiceListAggregatedCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAggregated", reflect.TypeOf((*MockPoolService)(nil).ListAggregated), varargs...)
+	return &MockPoolServiceListAggregatedCall{Call: call}
+}
+
+// MockPoolServiceListAggregatedCall wrap *gomock.Call
+type MockPoolServiceListAggregatedCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockPoolServiceListAggregatedCall) Return(arg0 *v10.ListPoolsResponse, arg1 error) *MockPoolServiceListAggregatedCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockPoolServiceListAggregatedCall) Do(f func(context.Context, *v10.ListAggregatedPoolsRequest, ...grpc.CallOption) (*v10.ListPoolsResponse, error)) *MockPoolServiceListAggregatedCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockPoolServiceListAggregatedCall) DoAndReturn(f func(context.Context, *v10.ListAggregatedPoolsRequest, ...grpc.CallOption) (*v10.ListPoolsResponse, error)) *MockPoolServiceListAggregatedCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // ListBySourcePool mocks base method.
 func (m *MockPoolService) ListBySourcePool(arg0 context.Context, arg1 *v10.ListPoolsBySourcePoolRequest, arg2 ...grpc.CallOption) (*v10.ListPoolsResponse, error) {
 	m.ctrl.T.Helper()

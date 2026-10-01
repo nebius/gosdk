@@ -186,6 +186,66 @@ func (x *ListRouteTablesRequest) GetPageToken() string {
 	return ""
 }
 
+type ListAggregatedRouteTablesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAggregatedRouteTablesRequest) Reset() {
+	*x = ListAggregatedRouteTablesRequest{}
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAggregatedRouteTablesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAggregatedRouteTablesRequest) ProtoMessage() {}
+
+func (x *ListAggregatedRouteTablesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAggregatedRouteTablesRequest.ProtoReflect.Descriptor instead.
+func (*ListAggregatedRouteTablesRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListAggregatedRouteTablesRequest) GetParentId() string {
+	if x != nil {
+		return x.ParentId
+	}
+	return ""
+}
+
+func (x *ListAggregatedRouteTablesRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListAggregatedRouteTablesRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
 type ListRouteTablesByNetworkRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID of the network.
@@ -200,7 +260,7 @@ type ListRouteTablesByNetworkRequest struct {
 
 func (x *ListRouteTablesByNetworkRequest) Reset() {
 	*x = ListRouteTablesByNetworkRequest{}
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -212,7 +272,7 @@ func (x *ListRouteTablesByNetworkRequest) String() string {
 func (*ListRouteTablesByNetworkRequest) ProtoMessage() {}
 
 func (x *ListRouteTablesByNetworkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +285,7 @@ func (x *ListRouteTablesByNetworkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRouteTablesByNetworkRequest.ProtoReflect.Descriptor instead.
 func (*ListRouteTablesByNetworkRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListRouteTablesByNetworkRequest) GetNetworkId() string {
@@ -259,7 +319,7 @@ type ListRouteTablesResponse struct {
 
 func (x *ListRouteTablesResponse) Reset() {
 	*x = ListRouteTablesResponse{}
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -271,7 +331,7 @@ func (x *ListRouteTablesResponse) String() string {
 func (*ListRouteTablesResponse) ProtoMessage() {}
 
 func (x *ListRouteTablesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,7 +344,7 @@ func (x *ListRouteTablesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRouteTablesResponse.ProtoReflect.Descriptor instead.
 func (*ListRouteTablesResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListRouteTablesResponse) GetItems() []*RouteTable {
@@ -313,7 +373,7 @@ type CreateRouteTableRequest struct {
 
 func (x *CreateRouteTableRequest) Reset() {
 	*x = CreateRouteTableRequest{}
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -325,7 +385,7 @@ func (x *CreateRouteTableRequest) String() string {
 func (*CreateRouteTableRequest) ProtoMessage() {}
 
 func (x *CreateRouteTableRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -338,7 +398,7 @@ func (x *CreateRouteTableRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRouteTableRequest.ProtoReflect.Descriptor instead.
 func (*CreateRouteTableRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateRouteTableRequest) GetMetadata() *v1.ResourceMetadata {
@@ -367,7 +427,7 @@ type UpdateRouteTableRequest struct {
 
 func (x *UpdateRouteTableRequest) Reset() {
 	*x = UpdateRouteTableRequest{}
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +439,7 @@ func (x *UpdateRouteTableRequest) String() string {
 func (*UpdateRouteTableRequest) ProtoMessage() {}
 
 func (x *UpdateRouteTableRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +452,7 @@ func (x *UpdateRouteTableRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRouteTableRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRouteTableRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateRouteTableRequest) GetMetadata() *v1.ResourceMetadata {
@@ -419,7 +479,7 @@ type DeleteRouteTableRequest struct {
 
 func (x *DeleteRouteTableRequest) Reset() {
 	*x = DeleteRouteTableRequest{}
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +491,7 @@ func (x *DeleteRouteTableRequest) String() string {
 func (*DeleteRouteTableRequest) ProtoMessage() {}
 
 func (x *DeleteRouteTableRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_route_table_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +504,7 @@ func (x *DeleteRouteTableRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRouteTableRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRouteTableRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{7}
+	return file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteRouteTableRequest) GetId() string {
@@ -471,6 +531,12 @@ const file_nebius_vpc_v1_route_table_service_proto_rawDesc = "" +
 	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x8f\x01\n" +
+	" ListAggregatedRouteTablesRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
+	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x93\x01\n" +
 	"\x1fListRouteTablesByNetworkRequest\x124\n" +
 	"\n" +
@@ -493,11 +559,12 @@ const file_nebius_vpc_v1_route_table_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.vpc.v1.RouteTableSpecR\x04spec\"C\n" +
 	"\x17DeleteRouteTableRequest\x12(\n" +
 	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
-	"\rvpcroutetableR\x02id2\xe2\x04\n" +
+	"\rvpcroutetableR\x02id2\xcd\x05\n" +
 	"\x11RouteTableService\x12E\n" +
 	"\x03Get\x12#.nebius.vpc.v1.GetRouteTableRequest\x1a\x19.nebius.vpc.v1.RouteTable\x12Q\n" +
 	"\tGetByName\x12).nebius.vpc.v1.GetRouteTableByNameRequest\x1a\x19.nebius.vpc.v1.RouteTable\x12U\n" +
-	"\x04List\x12%.nebius.vpc.v1.ListRouteTablesRequest\x1a&.nebius.vpc.v1.ListRouteTablesResponse\x12g\n" +
+	"\x04List\x12%.nebius.vpc.v1.ListRouteTablesRequest\x1a&.nebius.vpc.v1.ListRouteTablesResponse\x12i\n" +
+	"\x0eListAggregated\x12/.nebius.vpc.v1.ListAggregatedRouteTablesRequest\x1a&.nebius.vpc.v1.ListRouteTablesResponse\x12g\n" +
 	"\rListByNetwork\x12..nebius.vpc.v1.ListRouteTablesByNetworkRequest\x1a&.nebius.vpc.v1.ListRouteTablesResponse\x12M\n" +
 	"\x06Create\x12&.nebius.vpc.v1.CreateRouteTableRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
 	"\x06Update\x12&.nebius.vpc.v1.UpdateRouteTableRequest\x1a\x1b.nebius.common.v1.Operation\x12M\n" +
@@ -516,43 +583,46 @@ func file_nebius_vpc_v1_route_table_service_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1_route_table_service_proto_rawDescData
 }
 
-var file_nebius_vpc_v1_route_table_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_vpc_v1_route_table_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_vpc_v1_route_table_service_proto_goTypes = []any{
-	(*GetRouteTableRequest)(nil),            // 0: nebius.vpc.v1.GetRouteTableRequest
-	(*GetRouteTableByNameRequest)(nil),      // 1: nebius.vpc.v1.GetRouteTableByNameRequest
-	(*ListRouteTablesRequest)(nil),          // 2: nebius.vpc.v1.ListRouteTablesRequest
-	(*ListRouteTablesByNetworkRequest)(nil), // 3: nebius.vpc.v1.ListRouteTablesByNetworkRequest
-	(*ListRouteTablesResponse)(nil),         // 4: nebius.vpc.v1.ListRouteTablesResponse
-	(*CreateRouteTableRequest)(nil),         // 5: nebius.vpc.v1.CreateRouteTableRequest
-	(*UpdateRouteTableRequest)(nil),         // 6: nebius.vpc.v1.UpdateRouteTableRequest
-	(*DeleteRouteTableRequest)(nil),         // 7: nebius.vpc.v1.DeleteRouteTableRequest
-	(*RouteTable)(nil),                      // 8: nebius.vpc.v1.RouteTable
-	(*v1.ResourceMetadata)(nil),             // 9: nebius.common.v1.ResourceMetadata
-	(*RouteTableSpec)(nil),                  // 10: nebius.vpc.v1.RouteTableSpec
-	(*v1.Operation)(nil),                    // 11: nebius.common.v1.Operation
+	(*GetRouteTableRequest)(nil),             // 0: nebius.vpc.v1.GetRouteTableRequest
+	(*GetRouteTableByNameRequest)(nil),       // 1: nebius.vpc.v1.GetRouteTableByNameRequest
+	(*ListRouteTablesRequest)(nil),           // 2: nebius.vpc.v1.ListRouteTablesRequest
+	(*ListAggregatedRouteTablesRequest)(nil), // 3: nebius.vpc.v1.ListAggregatedRouteTablesRequest
+	(*ListRouteTablesByNetworkRequest)(nil),  // 4: nebius.vpc.v1.ListRouteTablesByNetworkRequest
+	(*ListRouteTablesResponse)(nil),          // 5: nebius.vpc.v1.ListRouteTablesResponse
+	(*CreateRouteTableRequest)(nil),          // 6: nebius.vpc.v1.CreateRouteTableRequest
+	(*UpdateRouteTableRequest)(nil),          // 7: nebius.vpc.v1.UpdateRouteTableRequest
+	(*DeleteRouteTableRequest)(nil),          // 8: nebius.vpc.v1.DeleteRouteTableRequest
+	(*RouteTable)(nil),                       // 9: nebius.vpc.v1.RouteTable
+	(*v1.ResourceMetadata)(nil),              // 10: nebius.common.v1.ResourceMetadata
+	(*RouteTableSpec)(nil),                   // 11: nebius.vpc.v1.RouteTableSpec
+	(*v1.Operation)(nil),                     // 12: nebius.common.v1.Operation
 }
 var file_nebius_vpc_v1_route_table_service_proto_depIdxs = []int32{
-	8,  // 0: nebius.vpc.v1.ListRouteTablesResponse.items:type_name -> nebius.vpc.v1.RouteTable
-	9,  // 1: nebius.vpc.v1.CreateRouteTableRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 2: nebius.vpc.v1.CreateRouteTableRequest.spec:type_name -> nebius.vpc.v1.RouteTableSpec
-	9,  // 3: nebius.vpc.v1.UpdateRouteTableRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 4: nebius.vpc.v1.UpdateRouteTableRequest.spec:type_name -> nebius.vpc.v1.RouteTableSpec
+	9,  // 0: nebius.vpc.v1.ListRouteTablesResponse.items:type_name -> nebius.vpc.v1.RouteTable
+	10, // 1: nebius.vpc.v1.CreateRouteTableRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 2: nebius.vpc.v1.CreateRouteTableRequest.spec:type_name -> nebius.vpc.v1.RouteTableSpec
+	10, // 3: nebius.vpc.v1.UpdateRouteTableRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 4: nebius.vpc.v1.UpdateRouteTableRequest.spec:type_name -> nebius.vpc.v1.RouteTableSpec
 	0,  // 5: nebius.vpc.v1.RouteTableService.Get:input_type -> nebius.vpc.v1.GetRouteTableRequest
 	1,  // 6: nebius.vpc.v1.RouteTableService.GetByName:input_type -> nebius.vpc.v1.GetRouteTableByNameRequest
 	2,  // 7: nebius.vpc.v1.RouteTableService.List:input_type -> nebius.vpc.v1.ListRouteTablesRequest
-	3,  // 8: nebius.vpc.v1.RouteTableService.ListByNetwork:input_type -> nebius.vpc.v1.ListRouteTablesByNetworkRequest
-	5,  // 9: nebius.vpc.v1.RouteTableService.Create:input_type -> nebius.vpc.v1.CreateRouteTableRequest
-	6,  // 10: nebius.vpc.v1.RouteTableService.Update:input_type -> nebius.vpc.v1.UpdateRouteTableRequest
-	7,  // 11: nebius.vpc.v1.RouteTableService.Delete:input_type -> nebius.vpc.v1.DeleteRouteTableRequest
-	8,  // 12: nebius.vpc.v1.RouteTableService.Get:output_type -> nebius.vpc.v1.RouteTable
-	8,  // 13: nebius.vpc.v1.RouteTableService.GetByName:output_type -> nebius.vpc.v1.RouteTable
-	4,  // 14: nebius.vpc.v1.RouteTableService.List:output_type -> nebius.vpc.v1.ListRouteTablesResponse
-	4,  // 15: nebius.vpc.v1.RouteTableService.ListByNetwork:output_type -> nebius.vpc.v1.ListRouteTablesResponse
-	11, // 16: nebius.vpc.v1.RouteTableService.Create:output_type -> nebius.common.v1.Operation
-	11, // 17: nebius.vpc.v1.RouteTableService.Update:output_type -> nebius.common.v1.Operation
-	11, // 18: nebius.vpc.v1.RouteTableService.Delete:output_type -> nebius.common.v1.Operation
-	12, // [12:19] is the sub-list for method output_type
-	5,  // [5:12] is the sub-list for method input_type
+	3,  // 8: nebius.vpc.v1.RouteTableService.ListAggregated:input_type -> nebius.vpc.v1.ListAggregatedRouteTablesRequest
+	4,  // 9: nebius.vpc.v1.RouteTableService.ListByNetwork:input_type -> nebius.vpc.v1.ListRouteTablesByNetworkRequest
+	6,  // 10: nebius.vpc.v1.RouteTableService.Create:input_type -> nebius.vpc.v1.CreateRouteTableRequest
+	7,  // 11: nebius.vpc.v1.RouteTableService.Update:input_type -> nebius.vpc.v1.UpdateRouteTableRequest
+	8,  // 12: nebius.vpc.v1.RouteTableService.Delete:input_type -> nebius.vpc.v1.DeleteRouteTableRequest
+	9,  // 13: nebius.vpc.v1.RouteTableService.Get:output_type -> nebius.vpc.v1.RouteTable
+	9,  // 14: nebius.vpc.v1.RouteTableService.GetByName:output_type -> nebius.vpc.v1.RouteTable
+	5,  // 15: nebius.vpc.v1.RouteTableService.List:output_type -> nebius.vpc.v1.ListRouteTablesResponse
+	5,  // 16: nebius.vpc.v1.RouteTableService.ListAggregated:output_type -> nebius.vpc.v1.ListRouteTablesResponse
+	5,  // 17: nebius.vpc.v1.RouteTableService.ListByNetwork:output_type -> nebius.vpc.v1.ListRouteTablesResponse
+	12, // 18: nebius.vpc.v1.RouteTableService.Create:output_type -> nebius.common.v1.Operation
+	12, // 19: nebius.vpc.v1.RouteTableService.Update:output_type -> nebius.common.v1.Operation
+	12, // 20: nebius.vpc.v1.RouteTableService.Delete:output_type -> nebius.common.v1.Operation
+	13, // [13:21] is the sub-list for method output_type
+	5,  // [5:13] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -570,7 +640,7 @@ func file_nebius_vpc_v1_route_table_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_route_table_service_proto_rawDesc), len(file_nebius_vpc_v1_route_table_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

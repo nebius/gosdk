@@ -20,13 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	RouteTableService_Get_FullMethodName           = "/nebius.vpc.v1.RouteTableService/Get"
-	RouteTableService_GetByName_FullMethodName     = "/nebius.vpc.v1.RouteTableService/GetByName"
-	RouteTableService_List_FullMethodName          = "/nebius.vpc.v1.RouteTableService/List"
-	RouteTableService_ListByNetwork_FullMethodName = "/nebius.vpc.v1.RouteTableService/ListByNetwork"
-	RouteTableService_Create_FullMethodName        = "/nebius.vpc.v1.RouteTableService/Create"
-	RouteTableService_Update_FullMethodName        = "/nebius.vpc.v1.RouteTableService/Update"
-	RouteTableService_Delete_FullMethodName        = "/nebius.vpc.v1.RouteTableService/Delete"
+	RouteTableService_Get_FullMethodName            = "/nebius.vpc.v1.RouteTableService/Get"
+	RouteTableService_GetByName_FullMethodName      = "/nebius.vpc.v1.RouteTableService/GetByName"
+	RouteTableService_List_FullMethodName           = "/nebius.vpc.v1.RouteTableService/List"
+	RouteTableService_ListAggregated_FullMethodName = "/nebius.vpc.v1.RouteTableService/ListAggregated"
+	RouteTableService_ListByNetwork_FullMethodName  = "/nebius.vpc.v1.RouteTableService/ListByNetwork"
+	RouteTableService_Create_FullMethodName         = "/nebius.vpc.v1.RouteTableService/Create"
+	RouteTableService_Update_FullMethodName         = "/nebius.vpc.v1.RouteTableService/Update"
+	RouteTableService_Delete_FullMethodName         = "/nebius.vpc.v1.RouteTableService/Delete"
 )
 
 // RouteTableServiceClient is the client API for RouteTableService service.
@@ -39,6 +40,8 @@ type RouteTableServiceClient interface {
 	GetByName(ctx context.Context, in *GetRouteTableByNameRequest, opts ...grpc.CallOption) (*RouteTable, error)
 	// Lists route tables within a specified parent.
 	List(ctx context.Context, in *ListRouteTablesRequest, opts ...grpc.CallOption) (*ListRouteTablesResponse, error)
+	// Lists route tables across regions for the specified parent.
+	ListAggregated(ctx context.Context, in *ListAggregatedRouteTablesRequest, opts ...grpc.CallOption) (*ListRouteTablesResponse, error)
 	// Lists route tables that belong to a specified network.
 	ListByNetwork(ctx context.Context, in *ListRouteTablesByNetworkRequest, opts ...grpc.CallOption) (*ListRouteTablesResponse, error)
 	// Creates a new route table with the specified configuration.
@@ -78,6 +81,15 @@ func (c *routeTableServiceClient) GetByName(ctx context.Context, in *GetRouteTab
 func (c *routeTableServiceClient) List(ctx context.Context, in *ListRouteTablesRequest, opts ...grpc.CallOption) (*ListRouteTablesResponse, error) {
 	out := new(ListRouteTablesResponse)
 	err := c.cc.Invoke(ctx, RouteTableService_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *routeTableServiceClient) ListAggregated(ctx context.Context, in *ListAggregatedRouteTablesRequest, opts ...grpc.CallOption) (*ListRouteTablesResponse, error) {
+	out := new(ListRouteTablesResponse)
+	err := c.cc.Invoke(ctx, RouteTableService_ListAggregated_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,6 +142,8 @@ type RouteTableServiceServer interface {
 	GetByName(context.Context, *GetRouteTableByNameRequest) (*RouteTable, error)
 	// Lists route tables within a specified parent.
 	List(context.Context, *ListRouteTablesRequest) (*ListRouteTablesResponse, error)
+	// Lists route tables across regions for the specified parent.
+	ListAggregated(context.Context, *ListAggregatedRouteTablesRequest) (*ListRouteTablesResponse, error)
 	// Lists route tables that belong to a specified network.
 	ListByNetwork(context.Context, *ListRouteTablesByNetworkRequest) (*ListRouteTablesResponse, error)
 	// Creates a new route table with the specified configuration.
@@ -152,6 +166,9 @@ func (UnimplementedRouteTableServiceServer) GetByName(context.Context, *GetRoute
 }
 func (UnimplementedRouteTableServiceServer) List(context.Context, *ListRouteTablesRequest) (*ListRouteTablesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRouteTableServiceServer) ListAggregated(context.Context, *ListAggregatedRouteTablesRequest) (*ListRouteTablesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAggregated not implemented")
 }
 func (UnimplementedRouteTableServiceServer) ListByNetwork(context.Context, *ListRouteTablesByNetworkRequest) (*ListRouteTablesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByNetwork not implemented")
@@ -227,6 +244,24 @@ func _RouteTableService_List_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RouteTableServiceServer).List(ctx, req.(*ListRouteTablesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RouteTableService_ListAggregated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAggregatedRouteTablesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RouteTableServiceServer).ListAggregated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RouteTableService_ListAggregated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RouteTableServiceServer).ListAggregated(ctx, req.(*ListAggregatedRouteTablesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -321,6 +356,10 @@ var RouteTableService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _RouteTableService_List_Handler,
+		},
+		{
+			MethodName: "ListAggregated",
+			Handler:    _RouteTableService_ListAggregated_Handler,
 		},
 		{
 			MethodName: "ListByNetwork",

@@ -20,13 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SubnetService_Get_FullMethodName           = "/nebius.vpc.v1.SubnetService/Get"
-	SubnetService_GetByName_FullMethodName     = "/nebius.vpc.v1.SubnetService/GetByName"
-	SubnetService_List_FullMethodName          = "/nebius.vpc.v1.SubnetService/List"
-	SubnetService_ListByNetwork_FullMethodName = "/nebius.vpc.v1.SubnetService/ListByNetwork"
-	SubnetService_Create_FullMethodName        = "/nebius.vpc.v1.SubnetService/Create"
-	SubnetService_Update_FullMethodName        = "/nebius.vpc.v1.SubnetService/Update"
-	SubnetService_Delete_FullMethodName        = "/nebius.vpc.v1.SubnetService/Delete"
+	SubnetService_Get_FullMethodName            = "/nebius.vpc.v1.SubnetService/Get"
+	SubnetService_GetByName_FullMethodName      = "/nebius.vpc.v1.SubnetService/GetByName"
+	SubnetService_List_FullMethodName           = "/nebius.vpc.v1.SubnetService/List"
+	SubnetService_ListAggregated_FullMethodName = "/nebius.vpc.v1.SubnetService/ListAggregated"
+	SubnetService_ListByNetwork_FullMethodName  = "/nebius.vpc.v1.SubnetService/ListByNetwork"
+	SubnetService_Create_FullMethodName         = "/nebius.vpc.v1.SubnetService/Create"
+	SubnetService_Update_FullMethodName         = "/nebius.vpc.v1.SubnetService/Update"
+	SubnetService_Delete_FullMethodName         = "/nebius.vpc.v1.SubnetService/Delete"
 )
 
 // SubnetServiceClient is the client API for SubnetService service.
@@ -39,6 +40,8 @@ type SubnetServiceClient interface {
 	GetByName(ctx context.Context, in *GetSubnetByNameRequest, opts ...grpc.CallOption) (*Subnet, error)
 	// Lists subnets within a specified parent.
 	List(ctx context.Context, in *ListSubnetsRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error)
+	// Lists subnets across regions for the specified parent.
+	ListAggregated(ctx context.Context, in *ListAggregatedSubnetsRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error)
 	// Lists subnets that belong to a specified network.
 	ListByNetwork(ctx context.Context, in *ListSubnetsByNetworkRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error)
 	// Creates a new subnet with the specified configuration.
@@ -78,6 +81,15 @@ func (c *subnetServiceClient) GetByName(ctx context.Context, in *GetSubnetByName
 func (c *subnetServiceClient) List(ctx context.Context, in *ListSubnetsRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error) {
 	out := new(ListSubnetsResponse)
 	err := c.cc.Invoke(ctx, SubnetService_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *subnetServiceClient) ListAggregated(ctx context.Context, in *ListAggregatedSubnetsRequest, opts ...grpc.CallOption) (*ListSubnetsResponse, error) {
+	out := new(ListSubnetsResponse)
+	err := c.cc.Invoke(ctx, SubnetService_ListAggregated_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,6 +142,8 @@ type SubnetServiceServer interface {
 	GetByName(context.Context, *GetSubnetByNameRequest) (*Subnet, error)
 	// Lists subnets within a specified parent.
 	List(context.Context, *ListSubnetsRequest) (*ListSubnetsResponse, error)
+	// Lists subnets across regions for the specified parent.
+	ListAggregated(context.Context, *ListAggregatedSubnetsRequest) (*ListSubnetsResponse, error)
 	// Lists subnets that belong to a specified network.
 	ListByNetwork(context.Context, *ListSubnetsByNetworkRequest) (*ListSubnetsResponse, error)
 	// Creates a new subnet with the specified configuration.
@@ -152,6 +166,9 @@ func (UnimplementedSubnetServiceServer) GetByName(context.Context, *GetSubnetByN
 }
 func (UnimplementedSubnetServiceServer) List(context.Context, *ListSubnetsRequest) (*ListSubnetsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedSubnetServiceServer) ListAggregated(context.Context, *ListAggregatedSubnetsRequest) (*ListSubnetsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAggregated not implemented")
 }
 func (UnimplementedSubnetServiceServer) ListByNetwork(context.Context, *ListSubnetsByNetworkRequest) (*ListSubnetsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByNetwork not implemented")
@@ -227,6 +244,24 @@ func _SubnetService_List_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SubnetServiceServer).List(ctx, req.(*ListSubnetsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubnetService_ListAggregated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAggregatedSubnetsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubnetServiceServer).ListAggregated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubnetService_ListAggregated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubnetServiceServer).ListAggregated(ctx, req.(*ListAggregatedSubnetsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -321,6 +356,10 @@ var SubnetService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _SubnetService_List_Handler,
+		},
+		{
+			MethodName: "ListAggregated",
+			Handler:    _SubnetService_ListAggregated_Handler,
 		},
 		{
 			MethodName: "ListByNetwork",

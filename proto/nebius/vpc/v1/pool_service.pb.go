@@ -186,6 +186,66 @@ func (x *ListPoolsRequest) GetPageToken() string {
 	return ""
 }
 
+type ListAggregatedPoolsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ParentId      string                 `protobuf:"bytes,1,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
+	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAggregatedPoolsRequest) Reset() {
+	*x = ListAggregatedPoolsRequest{}
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAggregatedPoolsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAggregatedPoolsRequest) ProtoMessage() {}
+
+func (x *ListAggregatedPoolsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAggregatedPoolsRequest.ProtoReflect.Descriptor instead.
+func (*ListAggregatedPoolsRequest) Descriptor() ([]byte, []int) {
+	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListAggregatedPoolsRequest) GetParentId() string {
+	if x != nil {
+		return x.ParentId
+	}
+	return ""
+}
+
+func (x *ListAggregatedPoolsRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListAggregatedPoolsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
 type ListPoolsBySourcePoolRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID of the source pool.
@@ -200,7 +260,7 @@ type ListPoolsBySourcePoolRequest struct {
 
 func (x *ListPoolsBySourcePoolRequest) Reset() {
 	*x = ListPoolsBySourcePoolRequest{}
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -212,7 +272,7 @@ func (x *ListPoolsBySourcePoolRequest) String() string {
 func (*ListPoolsBySourcePoolRequest) ProtoMessage() {}
 
 func (x *ListPoolsBySourcePoolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[3]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +285,7 @@ func (x *ListPoolsBySourcePoolRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPoolsBySourcePoolRequest.ProtoReflect.Descriptor instead.
 func (*ListPoolsBySourcePoolRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{3}
+	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListPoolsBySourcePoolRequest) GetPoolId() string {
@@ -259,7 +319,7 @@ type ListPoolsResponse struct {
 
 func (x *ListPoolsResponse) Reset() {
 	*x = ListPoolsResponse{}
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -271,7 +331,7 @@ func (x *ListPoolsResponse) String() string {
 func (*ListPoolsResponse) ProtoMessage() {}
 
 func (x *ListPoolsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[4]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,7 +344,7 @@ func (x *ListPoolsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPoolsResponse.ProtoReflect.Descriptor instead.
 func (*ListPoolsResponse) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{4}
+	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListPoolsResponse) GetItems() []*Pool {
@@ -313,7 +373,7 @@ type CreatePoolRequest struct {
 
 func (x *CreatePoolRequest) Reset() {
 	*x = CreatePoolRequest{}
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -325,7 +385,7 @@ func (x *CreatePoolRequest) String() string {
 func (*CreatePoolRequest) ProtoMessage() {}
 
 func (x *CreatePoolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[5]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -338,7 +398,7 @@ func (x *CreatePoolRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePoolRequest.ProtoReflect.Descriptor instead.
 func (*CreatePoolRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{5}
+	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreatePoolRequest) GetMetadata() *v1.ResourceMetadata {
@@ -367,7 +427,7 @@ type UpdatePoolRequest struct {
 
 func (x *UpdatePoolRequest) Reset() {
 	*x = UpdatePoolRequest{}
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +439,7 @@ func (x *UpdatePoolRequest) String() string {
 func (*UpdatePoolRequest) ProtoMessage() {}
 
 func (x *UpdatePoolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[6]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +452,7 @@ func (x *UpdatePoolRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePoolRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePoolRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{6}
+	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdatePoolRequest) GetMetadata() *v1.ResourceMetadata {
@@ -419,7 +479,7 @@ type DeletePoolRequest struct {
 
 func (x *DeletePoolRequest) Reset() {
 	*x = DeletePoolRequest{}
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +491,7 @@ func (x *DeletePoolRequest) String() string {
 func (*DeletePoolRequest) ProtoMessage() {}
 
 func (x *DeletePoolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[7]
+	mi := &file_nebius_vpc_v1_pool_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +504,7 @@ func (x *DeletePoolRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePoolRequest.ProtoReflect.Descriptor instead.
 func (*DeletePoolRequest) Descriptor() ([]byte, []int) {
-	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{7}
+	return file_nebius_vpc_v1_pool_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeletePoolRequest) GetId() string {
@@ -471,6 +531,12 @@ const file_nebius_vpc_v1_pool_service_proto_rawDesc = "" +
 	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x89\x01\n" +
+	"\x1aListAggregatedPoolsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
+	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x87\x01\n" +
 	"\x1cListPoolsBySourcePoolRequest\x12+\n" +
 	"\apool_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
@@ -491,11 +557,12 @@ const file_nebius_vpc_v1_pool_service_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v2\x17.nebius.vpc.v1.PoolSpecR\x04spec\"7\n" +
 	"\x11DeletePoolRequest\x12\"\n" +
 	"\x02id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
-	"\avpcpoolR\x02id2\xa0\x04\n" +
+	"\avpcpoolR\x02id2\xff\x04\n" +
 	"\vPoolService\x129\n" +
 	"\x03Get\x12\x1d.nebius.vpc.v1.GetPoolRequest\x1a\x13.nebius.vpc.v1.Pool\x12E\n" +
 	"\tGetByName\x12#.nebius.vpc.v1.GetPoolByNameRequest\x1a\x13.nebius.vpc.v1.Pool\x12I\n" +
-	"\x04List\x12\x1f.nebius.vpc.v1.ListPoolsRequest\x1a .nebius.vpc.v1.ListPoolsResponse\x12a\n" +
+	"\x04List\x12\x1f.nebius.vpc.v1.ListPoolsRequest\x1a .nebius.vpc.v1.ListPoolsResponse\x12]\n" +
+	"\x0eListAggregated\x12).nebius.vpc.v1.ListAggregatedPoolsRequest\x1a .nebius.vpc.v1.ListPoolsResponse\x12a\n" +
 	"\x10ListBySourcePool\x12+.nebius.vpc.v1.ListPoolsBySourcePoolRequest\x1a .nebius.vpc.v1.ListPoolsResponse\x12G\n" +
 	"\x06Create\x12 .nebius.vpc.v1.CreatePoolRequest\x1a\x1b.nebius.common.v1.Operation\x12G\n" +
 	"\x06Update\x12 .nebius.vpc.v1.UpdatePoolRequest\x1a\x1b.nebius.common.v1.Operation\x12G\n" +
@@ -514,43 +581,46 @@ func file_nebius_vpc_v1_pool_service_proto_rawDescGZIP() []byte {
 	return file_nebius_vpc_v1_pool_service_proto_rawDescData
 }
 
-var file_nebius_vpc_v1_pool_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_nebius_vpc_v1_pool_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_nebius_vpc_v1_pool_service_proto_goTypes = []any{
 	(*GetPoolRequest)(nil),               // 0: nebius.vpc.v1.GetPoolRequest
 	(*GetPoolByNameRequest)(nil),         // 1: nebius.vpc.v1.GetPoolByNameRequest
 	(*ListPoolsRequest)(nil),             // 2: nebius.vpc.v1.ListPoolsRequest
-	(*ListPoolsBySourcePoolRequest)(nil), // 3: nebius.vpc.v1.ListPoolsBySourcePoolRequest
-	(*ListPoolsResponse)(nil),            // 4: nebius.vpc.v1.ListPoolsResponse
-	(*CreatePoolRequest)(nil),            // 5: nebius.vpc.v1.CreatePoolRequest
-	(*UpdatePoolRequest)(nil),            // 6: nebius.vpc.v1.UpdatePoolRequest
-	(*DeletePoolRequest)(nil),            // 7: nebius.vpc.v1.DeletePoolRequest
-	(*Pool)(nil),                         // 8: nebius.vpc.v1.Pool
-	(*v1.ResourceMetadata)(nil),          // 9: nebius.common.v1.ResourceMetadata
-	(*PoolSpec)(nil),                     // 10: nebius.vpc.v1.PoolSpec
-	(*v1.Operation)(nil),                 // 11: nebius.common.v1.Operation
+	(*ListAggregatedPoolsRequest)(nil),   // 3: nebius.vpc.v1.ListAggregatedPoolsRequest
+	(*ListPoolsBySourcePoolRequest)(nil), // 4: nebius.vpc.v1.ListPoolsBySourcePoolRequest
+	(*ListPoolsResponse)(nil),            // 5: nebius.vpc.v1.ListPoolsResponse
+	(*CreatePoolRequest)(nil),            // 6: nebius.vpc.v1.CreatePoolRequest
+	(*UpdatePoolRequest)(nil),            // 7: nebius.vpc.v1.UpdatePoolRequest
+	(*DeletePoolRequest)(nil),            // 8: nebius.vpc.v1.DeletePoolRequest
+	(*Pool)(nil),                         // 9: nebius.vpc.v1.Pool
+	(*v1.ResourceMetadata)(nil),          // 10: nebius.common.v1.ResourceMetadata
+	(*PoolSpec)(nil),                     // 11: nebius.vpc.v1.PoolSpec
+	(*v1.Operation)(nil),                 // 12: nebius.common.v1.Operation
 }
 var file_nebius_vpc_v1_pool_service_proto_depIdxs = []int32{
-	8,  // 0: nebius.vpc.v1.ListPoolsResponse.items:type_name -> nebius.vpc.v1.Pool
-	9,  // 1: nebius.vpc.v1.CreatePoolRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 2: nebius.vpc.v1.CreatePoolRequest.spec:type_name -> nebius.vpc.v1.PoolSpec
-	9,  // 3: nebius.vpc.v1.UpdatePoolRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	10, // 4: nebius.vpc.v1.UpdatePoolRequest.spec:type_name -> nebius.vpc.v1.PoolSpec
+	9,  // 0: nebius.vpc.v1.ListPoolsResponse.items:type_name -> nebius.vpc.v1.Pool
+	10, // 1: nebius.vpc.v1.CreatePoolRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 2: nebius.vpc.v1.CreatePoolRequest.spec:type_name -> nebius.vpc.v1.PoolSpec
+	10, // 3: nebius.vpc.v1.UpdatePoolRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	11, // 4: nebius.vpc.v1.UpdatePoolRequest.spec:type_name -> nebius.vpc.v1.PoolSpec
 	0,  // 5: nebius.vpc.v1.PoolService.Get:input_type -> nebius.vpc.v1.GetPoolRequest
 	1,  // 6: nebius.vpc.v1.PoolService.GetByName:input_type -> nebius.vpc.v1.GetPoolByNameRequest
 	2,  // 7: nebius.vpc.v1.PoolService.List:input_type -> nebius.vpc.v1.ListPoolsRequest
-	3,  // 8: nebius.vpc.v1.PoolService.ListBySourcePool:input_type -> nebius.vpc.v1.ListPoolsBySourcePoolRequest
-	5,  // 9: nebius.vpc.v1.PoolService.Create:input_type -> nebius.vpc.v1.CreatePoolRequest
-	6,  // 10: nebius.vpc.v1.PoolService.Update:input_type -> nebius.vpc.v1.UpdatePoolRequest
-	7,  // 11: nebius.vpc.v1.PoolService.Delete:input_type -> nebius.vpc.v1.DeletePoolRequest
-	8,  // 12: nebius.vpc.v1.PoolService.Get:output_type -> nebius.vpc.v1.Pool
-	8,  // 13: nebius.vpc.v1.PoolService.GetByName:output_type -> nebius.vpc.v1.Pool
-	4,  // 14: nebius.vpc.v1.PoolService.List:output_type -> nebius.vpc.v1.ListPoolsResponse
-	4,  // 15: nebius.vpc.v1.PoolService.ListBySourcePool:output_type -> nebius.vpc.v1.ListPoolsResponse
-	11, // 16: nebius.vpc.v1.PoolService.Create:output_type -> nebius.common.v1.Operation
-	11, // 17: nebius.vpc.v1.PoolService.Update:output_type -> nebius.common.v1.Operation
-	11, // 18: nebius.vpc.v1.PoolService.Delete:output_type -> nebius.common.v1.Operation
-	12, // [12:19] is the sub-list for method output_type
-	5,  // [5:12] is the sub-list for method input_type
+	3,  // 8: nebius.vpc.v1.PoolService.ListAggregated:input_type -> nebius.vpc.v1.ListAggregatedPoolsRequest
+	4,  // 9: nebius.vpc.v1.PoolService.ListBySourcePool:input_type -> nebius.vpc.v1.ListPoolsBySourcePoolRequest
+	6,  // 10: nebius.vpc.v1.PoolService.Create:input_type -> nebius.vpc.v1.CreatePoolRequest
+	7,  // 11: nebius.vpc.v1.PoolService.Update:input_type -> nebius.vpc.v1.UpdatePoolRequest
+	8,  // 12: nebius.vpc.v1.PoolService.Delete:input_type -> nebius.vpc.v1.DeletePoolRequest
+	9,  // 13: nebius.vpc.v1.PoolService.Get:output_type -> nebius.vpc.v1.Pool
+	9,  // 14: nebius.vpc.v1.PoolService.GetByName:output_type -> nebius.vpc.v1.Pool
+	5,  // 15: nebius.vpc.v1.PoolService.List:output_type -> nebius.vpc.v1.ListPoolsResponse
+	5,  // 16: nebius.vpc.v1.PoolService.ListAggregated:output_type -> nebius.vpc.v1.ListPoolsResponse
+	5,  // 17: nebius.vpc.v1.PoolService.ListBySourcePool:output_type -> nebius.vpc.v1.ListPoolsResponse
+	12, // 18: nebius.vpc.v1.PoolService.Create:output_type -> nebius.common.v1.Operation
+	12, // 19: nebius.vpc.v1.PoolService.Update:output_type -> nebius.common.v1.Operation
+	12, // 20: nebius.vpc.v1.PoolService.Delete:output_type -> nebius.common.v1.Operation
+	13, // [13:21] is the sub-list for method output_type
+	5,  // [5:13] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -568,7 +638,7 @@ func file_nebius_vpc_v1_pool_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_vpc_v1_pool_service_proto_rawDesc), len(file_nebius_vpc_v1_pool_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
