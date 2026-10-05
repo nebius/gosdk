@@ -387,13 +387,13 @@ type JobSpec struct {
 	Volumes []*JobSpec_VolumeMount `protobuf:"bytes,7,rep,name=volumes,proto3" json:"volumes,omitempty"`
 	// Registry credentials for private Docker registry.
 	RegistryCredentials *JobSpec_RegistryCredentials `protobuf:"bytes,10,opt,name=registry_credentials,json=registryCredentials,proto3" json:"registry_credentials,omitempty"`
-	// Compute platform that the job will be run on.
+	// Compute platform for the job.
 	Platform string `protobuf:"bytes,20,opt,name=platform,proto3" json:"platform,omitempty"`
-	// Compute preset that the job will be run on.
+	// Compute preset for the job.
 	Preset string `protobuf:"bytes,21,opt,name=preset,proto3" json:"preset,omitempty"`
 	// Shared memory size in bytes for the job's container.
 	ShmSizeBytes int64 `protobuf:"varint,22,opt,name=shm_size_bytes,json=shmSizeBytes,proto3" json:"shm_size_bytes,omitempty"`
-	// Disk spec for the main disk of the job.
+	// Main disk for the job.
 	Disk *JobSpec_DiskSpec `protobuf:"bytes,23,opt,name=disk,proto3" json:"disk,omitempty"`
 	// Subnet ID where the job will be deployed.
 	// If omitted, the service uses the project's default subnet in the workload region.
@@ -976,8 +976,8 @@ type JobSpec_VolumeMount struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Source of the volume mount.
 	//
-	// Can be a name or an ID of Nebius Storage bucket or filesystem,
-	// or an S3 URI (e.g. "s3://bucket-name") when using external S3 storage.
+	// Use a Nebius Storage bucket ID or Compute filesystem ID for managed storage.
+	// Use an S3 URI (e.g. "s3://bucket-name") with s3_config for external S3 storage.
 	Source string `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`
 	// Path inside the source volume.
 	//
@@ -1551,7 +1551,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x03Job\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xf4\x1b\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xdc\x1b\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1562,11 +1562,11 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"workingDir\x12;\n" +
 	"\avolumes\x18\a \x03(\v2!.nebius.ai.v1.JobSpec.VolumeMountR\avolumes\x12\\\n" +
 	"\x14registry_credentials\x18\n" +
-	" \x01(\v2).nebius.ai.v1.JobSpec.RegistryCredentialsR\x13registryCredentials\x12\"\n" +
-	"\bplatform\x18\x14 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bplatform\x12\x1e\n" +
-	"\x06preset\x18\x15 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06preset\x12-\n" +
-	"\x0eshm_size_bytes\x18\x16 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\fshmSizeBytes\x12:\n" +
-	"\x04disk\x18\x17 \x01(\v2\x1e.nebius.ai.v1.JobSpec.DiskSpecB\x06\xbaH\x03\xc8\x01\x01R\x04disk\x12+\n" +
+	" \x01(\v2).nebius.ai.v1.JobSpec.RegistryCredentialsR\x13registryCredentials\x12\x1a\n" +
+	"\bplatform\x18\x14 \x01(\tR\bplatform\x12\x16\n" +
+	"\x06preset\x18\x15 \x01(\tR\x06preset\x12-\n" +
+	"\x0eshm_size_bytes\x18\x16 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\fshmSizeBytes\x122\n" +
+	"\x04disk\x18\x17 \x01(\v2\x1e.nebius.ai.v1.JobSpec.DiskSpecR\x04disk\x12+\n" +
 	"\tsubnet_id\x18\x18 \x01(\tB\x0e\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x12\x1b\n" +
 	"\tpublic_ip\x18\x19 \x01(\bR\bpublicIp\x12.\n" +
