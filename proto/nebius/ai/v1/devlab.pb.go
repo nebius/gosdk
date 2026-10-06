@@ -1560,7 +1560,7 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x06Devlab\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2\x18.nebius.ai.v1.DevlabSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x128\n" +
-	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\x892\n" +
+	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\xfd1\n" +
 	"\n" +
 	"DevlabSpec\x12\x1a\n" +
 	"\x05image\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x05image\x12g\n" +
@@ -1572,11 +1572,9 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"workingDir\x12D\n" +
 	"\avolumes\x18\a \x03(\v2$.nebius.ai.v1.DevlabSpec.VolumeMountB\x04\xbaJ\x01\x02R\avolumes\x12e\n" +
 	"\x14registry_credentials\x18\n" +
-	" \x01(\v2,.nebius.ai.v1.DevlabSpec.RegistryCredentialsB\x04\xbaJ\x01\x02R\x13registryCredentials\x12&\n" +
-	"\bplatform\x18\x14 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\bplatform\x12\"\n" +
-	"\x06preset\x18\x15 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x06preset\x121\n" +
+	" \x01(\v2,.nebius.ai.v1.DevlabSpec.RegistryCredentialsB\x04\xbaJ\x01\x02R\x13registryCredentials\x12 \n" +
+	"\bplatform\x18\x14 \x01(\tB\x04\xbaJ\x01\x02R\bplatform\x12\x1c\n" +
+	"\x06preset\x18\x15 \x01(\tB\x04\xbaJ\x01\x02R\x06preset\x121\n" +
 	"\x0eshm_size_bytes\x18\x16 \x01(\x03B\v\xbaH\x04\"\x02(\x00\xbaJ\x01\x02R\fshmSizeBytes\x12A\n" +
 	"\x04disk\x18\x17 \x01(\v2!.nebius.ai.v1.DevlabSpec.DiskSpecB\n" +
 	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04disk\x12/\n" +
