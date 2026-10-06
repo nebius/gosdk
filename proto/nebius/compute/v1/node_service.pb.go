@@ -189,9 +189,10 @@ var File_nebius_compute_v1_node_service_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_node_service_proto_rawDesc = "" +
 	"\n" +
-	"$nebius/compute/v1/node_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\"\xf1\x02\n" +
-	"\x17NodeSetUnhealthyRequest\x12'\n" +
-	"\vinstance_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"$nebius/compute/v1/node_service.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\"\x85\x03\n" +
+	"\x17NodeSetUnhealthyRequest\x12;\n" +
+	"\vinstance_id\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xe2J\x11\n" +
+	"\x0fcomputeinstanceR\n" +
 	"instanceId\x12n\n" +
 	"\x11health_check_info\x18\x02 \x01(\v2:.nebius.compute.v1.NodeSetUnhealthyRequest.HealthCheckInfoB\x06\xbaH\x03\xc8\x01\x01R\x0fhealthCheckInfo\x12\x17\n" +
 	"\adry_run\x18\x03 \x01(\bR\x06dryRun\x1a\xa3\x01\n" +
