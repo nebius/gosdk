@@ -27,6 +27,7 @@ type FederationTokener struct {
 var _ NamedTokener = (*FederationTokener)(nil)
 var _ MetricsSetter = (*FederationTokener)(nil)
 var _ TypedTokener = (*FederationTokener)(nil)
+var _ AcquisitionBudgetProvider = (*FederationTokener)(nil)
 
 func NewFederationTokener(
 	clientID string,
@@ -122,6 +123,12 @@ func (f *FederationTokener) BearerToken(ctx context.Context) (BearerToken, error
 
 func (f *FederationTokener) HandleError(context.Context, BearerToken, error) error {
 	return nil
+}
+
+// AcquisitionBudget reports the login timeout. A non-positive timeout is
+// reported as is: the login fails at once, and a cache must not extend it.
+func (f *FederationTokener) AcquisitionBudget() (time.Duration, bool) {
+	return f.authTimeout, true
 }
 
 func (f *FederationTokener) Name() string {

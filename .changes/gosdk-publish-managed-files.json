@@ -1,9 +1,11 @@
 {
   "files": [
+    "auth/acquisition_budget.go",
     "auth/async_tokener.go",
     "auth/authenticator.go",
     "auth/bearer.go",
     "auth/cache.go",
+    "auth/cache_budget_test.go",
     "auth/cache_context_test.go",
     "auth/exchangable.go",
     "auth/federated_credentials.go",
@@ -818,6 +820,8 @@
     "services/nebius/compute/v1/nvlinstancegroup_service.sdk.go",
     "services/nebius/compute/v1/platform_service.sdk.go",
     "services/nebius/compute/v1/sdk.go",
+    "services/nebius/compute/v2.go",
+    "services/nebius/compute/v2/sdk.go",
     "services/nebius/connect.go",
     "services/nebius/connect/sdk.go",
     "services/nebius/connect/v1.go",

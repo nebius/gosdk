@@ -90,6 +90,7 @@ type InstrumentedBearerTokener struct {
 var _ BearerTokener = (*InstrumentedBearerTokener)(nil)
 var _ MetricsSetter = (*InstrumentedBearerTokener)(nil)
 var _ Wrapper = (*InstrumentedBearerTokener)(nil)
+var _ AcquisitionBudgetProvider = (*InstrumentedBearerTokener)(nil)
 
 func NewInstrumentedBearerTokener(tokener BearerTokener) *InstrumentedBearerTokener {
 	return &InstrumentedBearerTokener{tokener: tokener}
@@ -153,6 +154,14 @@ func (t *InstrumentedBearerTokener) Unwrap() BearerTokener {
 		return nil
 	}
 	return t.tokener
+}
+
+// AcquisitionBudget forwards the budget of the wrapped tokener.
+func (t *InstrumentedBearerTokener) AcquisitionBudget() (time.Duration, bool) {
+	if t == nil {
+		return 0, false
+	}
+	return forwardAcquisitionBudget(t.tokener)
 }
 
 // AuthenticatorFromBearerTokener is an [Authenticator] that uses a [BearerTokener]
