@@ -405,8 +405,9 @@ type JobSpec struct {
 	// Whether to use a preemptible VM for the job.
 	// Preemptible VMs are cheaper but can be stopped by the platform at any time.
 	Preemptible bool `protobuf:"varint,27,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
-	// Pricing model for the VM. Must match the preemptible flag: on_demand for non-preemptible VMs,
-	// follows_spot_price or spot_pricing_policy for preemptible VMs.
+	// Pricing model for the VM. Must match the preemptible flag.
+	// Preemptible VMs require follows_spot_price or spot_pricing_policy.
+	// Regular VMs use on_demand or omit this field.
 	PricingModel *PricingModelSpec `protobuf:"bytes,28,opt,name=pricing_model,json=pricingModel,proto3" json:"pricing_model,omitempty"`
 	// Restart attempts for the job.
 	RestartAttempts int64 `protobuf:"varint,30,opt,name=restart_attempts,json=restartAttempts,proto3" json:"restart_attempts,omitempty"`
@@ -1551,7 +1552,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x03Job\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xdc\x1b\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\x93\x1c\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1640,8 +1641,8 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\x81\x02\xbaH\xfd\x01\x1a\xfa\x01\n" +
-	"!pricing_model_matches_preemptible\x12mpricing_model.on_demand requires preemptible to be false; other pricing models require preemptible to be true\x1af!has(this.pricing_model) || (has(this.pricing_model.on_demand) ? !this.preemptible : this.preemptible)\"\xc7\x04\n" +
+	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\xb8\x02\xbaH\xb4\x02\x1a\xb1\x02\n" +
+	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptible\"\xc7\x04\n" +
 	"\tJobStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12=\n" +

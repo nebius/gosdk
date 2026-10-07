@@ -789,6 +789,12 @@ func (f *RenewableFileCachedTokener) Unwrap() BearerTokener {
 	return f.tokener
 }
 
+// AcquisitionBudget forwards the budget of the wrapped tokener. The file cache
+// passes the caller context through, so it adds no bound of its own.
+func (f *RenewableFileCachedTokener) AcquisitionBudget() (time.Duration, bool) {
+	return forwardAcquisitionBudget(f.tokener)
+}
+
 func (f *RenewableFileCachedTokener) initCache(ctx context.Context) error {
 	if f.cache != nil {
 		return nil
@@ -947,6 +953,7 @@ type AsynchronouslyRenewableFileCachedTokener struct {
 
 var _ MetricsSetter = (*AsynchronouslyRenewableFileCachedTokener)(nil)
 var _ Wrapper = (*AsynchronouslyRenewableFileCachedTokener)(nil)
+var _ AcquisitionBudgetProvider = (*AsynchronouslyRenewableFileCachedTokener)(nil)
 
 const (
 	retryTimeout = 1 * time.Second // default retry timeout
@@ -1073,6 +1080,12 @@ func (f *AsynchronouslyRenewableFileCachedTokener) Name() string {
 
 func (f *AsynchronouslyRenewableFileCachedTokener) Unwrap() BearerTokener {
 	return f.tokener
+}
+
+// AcquisitionBudget forwards the budget of the wrapped tokener. The file cache
+// passes the caller context through, so it adds no bound of its own.
+func (f *AsynchronouslyRenewableFileCachedTokener) AcquisitionBudget() (time.Duration, bool) {
+	return forwardAcquisitionBudget(f.tokener)
 }
 
 func (f *AsynchronouslyRenewableFileCachedTokener) BearerToken(

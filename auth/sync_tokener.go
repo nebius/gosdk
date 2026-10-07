@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 
 	"github.com/gofrs/flock"
 
@@ -28,6 +29,7 @@ type InAppSyncTokener struct {
 var _ BearerTokener = (*InAppSyncTokener)(nil)
 var _ Wrapper = (*InAppSyncTokener)(nil)
 var _ MetricsSetter = (*InAppSyncTokener)(nil)
+var _ AcquisitionBudgetProvider = (*InAppSyncTokener)(nil)
 
 // NewInAppSyncTokener returns a decorated [BearerTokener] that synchronizes
 // requests to [BearerTokener.BearerToken] within a single process.
@@ -47,6 +49,11 @@ func (t *InAppSyncTokener) LogValue() slog.Value {
 
 func (t *InAppSyncTokener) Unwrap() BearerTokener {
 	return t.tokener
+}
+
+// AcquisitionBudget forwards the budget of the wrapped tokener.
+func (t *InAppSyncTokener) AcquisitionBudget() (time.Duration, bool) {
+	return forwardAcquisitionBudget(t.tokener)
 }
 
 func (t *InAppSyncTokener) SetMetrics(metrics Metrics) {
@@ -81,6 +88,7 @@ type MultiprocessSyncTokener struct {
 var _ BearerTokener = (*MultiprocessSyncTokener)(nil)
 var _ Wrapper = (*MultiprocessSyncTokener)(nil)
 var _ MetricsSetter = (*MultiprocessSyncTokener)(nil)
+var _ AcquisitionBudgetProvider = (*MultiprocessSyncTokener)(nil)
 
 // NewMultiprocessSyncTokener returns a decorated [BearerTokener] that synchronizes
 // requests to [BearerTokener.BearerToken] across multiple processes using
@@ -110,6 +118,11 @@ func (t *MultiprocessSyncTokener) LogValue() slog.Value {
 
 func (t *MultiprocessSyncTokener) Unwrap() BearerTokener {
 	return t.tokener
+}
+
+// AcquisitionBudget forwards the budget of the wrapped tokener.
+func (t *MultiprocessSyncTokener) AcquisitionBudget() (time.Duration, bool) {
+	return forwardAcquisitionBudget(t.tokener)
 }
 
 func (t *MultiprocessSyncTokener) SetMetrics(metrics Metrics) {

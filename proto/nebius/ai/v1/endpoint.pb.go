@@ -387,8 +387,9 @@ type EndpointSpec struct {
 	// Whether to use a preemptible VM for the endpoint.
 	// Preemptible VMs are cheaper but can be stopped by the platform at any time.
 	Preemptible bool `protobuf:"varint,27,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
-	// Pricing model for the VM. Must match the preemptible flag: on_demand for non-preemptible VMs,
-	// follows_spot_price or spot_pricing_policy for preemptible VMs.
+	// Pricing model for the VM. Must match the preemptible flag.
+	// Preemptible VMs require follows_spot_price or spot_pricing_policy.
+	// Regular VMs use on_demand or omit this field.
 	PricingModel *PricingModelSpec `protobuf:"bytes,28,opt,name=pricing_model,json=pricingModel,proto3" json:"pricing_model,omitempty"`
 	// Authentication token needed to access the endpoint.
 	//
@@ -1523,7 +1524,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xc4\x1e\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xfb\x1e\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1613,8 +1614,8 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\xfd\x03\xbaH\xf9\x03\x1a\xfa\x01\n" +
-	"!pricing_model_matches_preemptible\x12mpricing_model.on_demand requires preemptible to be false; other pricing models require preemptible to be true\x1af!has(this.pricing_model) || (has(this.pricing_model.on_demand) ? !this.preemptible : this.preemptible)\x1a\xf9\x01\n" +
+	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\xb4\x04\xbaH\xb0\x04\x1a\xb1\x02\n" +
+	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptible\x1a\xf9\x01\n" +
 	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xc4\x03\n" +
 	"\x0eEndpointStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +

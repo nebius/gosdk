@@ -16,7 +16,9 @@ import (
 // CachedServiceTokener is a [BearerTokener] decorator that enhances its functionality
 // with [BearerToken] caching and automatic background refresh to ensure that token is always valid.
 // Callers can cancel their wait independently. Shared acquisition preserves the first
-// caller's context values and uses WithCachedTokenerAcquireTimeout instead of its deadline.
+// caller's context values and uses an acquisition budget instead of its deadline.
+// The acquisition continues within that budget after every caller has left.
+// See [WithCachedTokenerAcquireTimeout] for the budget.
 //
 // Recommended parameters from the IAM team:
 //   - lifetime: 0.9 of token lifespan (90% of the token lifespan)
@@ -44,6 +46,7 @@ type CachedServiceTokener struct {
 var _ BearerTokener = (*CachedServiceTokener)(nil)
 var _ MetricsSetter = (*CachedServiceTokener)(nil)
 var _ Wrapper = (*CachedServiceTokener)(nil)
+var _ AcquisitionBudgetProvider = (*CachedServiceTokener)(nil)
 
 const (
 	// Recommended by the IAM team: refresh after 90% of the token lifetime.
@@ -54,7 +57,8 @@ const (
 	defaultCachedTokenerRetryMultiplier = 1.5
 	// Recommended by the IAM team: cap retry delay at 1 minute.
 	defaultCachedTokenerMaxRetry = time.Minute
-	// Match the Python SDK token refresh request timeout.
+	// Match the Python SDK token refresh request timeout. This is the budget for
+	// a tokener that reports no budget of its own.
 	defaultCachedTokenerAcquireTimeout = 5 * time.Second
 )
 
@@ -101,8 +105,11 @@ func WithCachedTokenerMaxRetry(maxRetry time.Duration) Option {
 }
 
 // WithCachedTokenerAcquireTimeout bounds each shared token acquisition independently
-// of caller deadlines. Non-positive values use the default of 5 seconds.
-// Use a longer timeout for interactive federation login.
+// of caller deadlines. A positive value is the budget for every acquisition.
+// A non-positive value selects the automatic budget: the positive budget that the
+// wrapped tokener reports through [AcquisitionBudgetProvider], or 5 seconds.
+// A custom chain that needs a longer acquisition must report a budget or set
+// this option.
 func WithCachedTokenerAcquireTimeout(timeout time.Duration) Option {
 	return CachedTokenerOptionFunc(func(c *CachedServiceTokener) {
 		c.acquireTimeout = timeout
@@ -137,9 +144,6 @@ func NewCachedTokener(tokener BearerTokener, opts ...Option) *CachedServiceToken
 	}
 	if c.maxRetry <= 0 {
 		c.maxRetry = defaultCachedTokenerMaxRetry
-	}
-	if c.acquireTimeout <= 0 {
-		c.acquireTimeout = defaultCachedTokenerAcquireTimeout
 	}
 	if c.logger == nil {
 		c.logger = slog.New(slog.DiscardHandler)
@@ -330,7 +334,7 @@ func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool
 			}
 		}
 		// A caller can stop waiting without canceling acquisition for other callers.
-		acquireCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), c.acquireTimeout)
+		acquireCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), c.acquireBudget())
 		defer cancel()
 
 		start := c.now()
@@ -359,6 +363,26 @@ func (c *CachedServiceTokener) requestToken(ctx context.Context, background bool
 		}
 		return result.Val.(BearerToken), nil //nolint:errcheck // ok to panic
 	}
+}
+
+// acquireBudget returns the timeout for one shared acquisition. An explicit
+// WithCachedTokenerAcquireTimeout wins. Otherwise the cache asks its tokener
+// through [AcquisitionBudgetProvider] and uses a positive budget. Any other
+// tokener gets the default. The budget is computed on each acquisition, so
+// options applied to the chain after construction take effect.
+func (c *CachedServiceTokener) acquireBudget() time.Duration {
+	if c.acquireTimeout > 0 {
+		return c.acquireTimeout
+	}
+	if budget, ok := forwardAcquisitionBudget(c.tokener); ok && budget > 0 {
+		return budget
+	}
+	return defaultCachedTokenerAcquireTimeout
+}
+
+// AcquisitionBudget reports the budget that bounds one acquisition of this cache.
+func (c *CachedServiceTokener) AcquisitionBudget() (time.Duration, bool) {
+	return c.acquireBudget(), true
 }
 
 func (c *CachedServiceTokener) recordRequestError(ctx context.Context, background bool, start time.Time) {
@@ -429,6 +453,7 @@ type CachedBearerTokener struct {
 var _ BearerTokener = (*CachedBearerTokener)(nil)
 var _ MetricsSetter = (*CachedBearerTokener)(nil)
 var _ Wrapper = (*CachedBearerTokener)(nil)
+var _ AcquisitionBudgetProvider = (*CachedBearerTokener)(nil)
 
 // NewCachedBearerTokener returns a decorated [BearerTokener] that caches the [BearerToken].
 func NewCachedBearerTokener(tokener BearerTokener) *CachedBearerTokener {
@@ -450,6 +475,12 @@ func (c *CachedBearerTokener) LogValue() slog.Value {
 
 func (c *CachedBearerTokener) Unwrap() BearerTokener {
 	return c.tokener
+}
+
+// AcquisitionBudget forwards the budget of the wrapped tokener. This cache
+// passes the caller context through, so it adds no bound of its own.
+func (c *CachedBearerTokener) AcquisitionBudget() (time.Duration, bool) {
+	return forwardAcquisitionBudget(c.tokener)
 }
 
 func (c *CachedBearerTokener) SetMetrics(metrics Metrics) {

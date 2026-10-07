@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"time"
 
 	"github.com/nebius/gosdk/internal/logging"
 )
@@ -36,6 +37,7 @@ type NameWrapper struct {
 var _ NamedTokener = (*NameWrapper)(nil)
 var _ TypedTokener = (*NameWrapper)(nil)
 var _ MetricsSetter = (*NameWrapper)(nil)
+var _ AcquisitionBudgetProvider = (*NameWrapper)(nil)
 
 func NewNameWrapper(name string, tokener BearerTokener) *NameWrapper {
 	return NewTypedNameWrapper(name, "", tokener)
@@ -95,6 +97,11 @@ func (n *NameWrapper) SetMetrics(metrics Metrics) {
 
 func (n *NameWrapper) Unwrap() BearerTokener {
 	return n.tokener
+}
+
+// AcquisitionBudget forwards the budget of the wrapped tokener.
+func (n *NameWrapper) AcquisitionBudget() (time.Duration, bool) {
+	return forwardAcquisitionBudget(n.tokener)
 }
 
 func NameOfTokener(tokener BearerTokener) (string, bool) {

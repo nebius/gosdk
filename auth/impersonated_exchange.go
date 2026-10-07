@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"math"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -18,6 +19,10 @@ const (
 	tokenExchangeAccessTokenType       = "urn:ietf:params:oauth:token-type:access_token"         //nolint:gosec // OAuth token type URN, not a credential.
 	tokenExchangeGrantType             = "urn:ietf:params:oauth:grant-type:token-exchange"       //nolint:gosec // OAuth grant type URN, not a credential.
 	tokenExchangeSubjectIdentifierType = "urn:nebius:params:oauth:token-type:subject_identifier" //nolint:gosec // OAuth token type URN, not a credential.
+
+	// impersonationExchangeAllowance is the time for the token exchange RPC after
+	// the actor token is available. It equals the default cache acquisition budget.
+	impersonationExchangeAllowance = 5 * time.Second
 )
 
 // ExchangeImpersonatedBearerTokener creates a service account token by calling
@@ -34,6 +39,7 @@ type ExchangeImpersonatedBearerTokener struct {
 var _ BearerTokener = (*ExchangeImpersonatedBearerTokener)(nil)
 var _ MetricsSetter = (*ExchangeImpersonatedBearerTokener)(nil)
 var _ TypedTokener = (*ExchangeImpersonatedBearerTokener)(nil)
+var _ AcquisitionBudgetProvider = (*ExchangeImpersonatedBearerTokener)(nil)
 
 func NewExchangeImpersonatedBearerTokener(
 	serviceAccountID string,
@@ -143,4 +149,18 @@ func (t *ExchangeImpersonatedBearerTokener) request(actorToken string) *iampb.Ex
 
 func (t *ExchangeImpersonatedBearerTokener) HandleError(context.Context, BearerToken, error) error {
 	return nil
+}
+
+// AcquisitionBudget composes the budget of the actor tokener with the exchange
+// allowance. It reports no budget when the actor tokener has none or when that
+// budget is not positive, so a login that fails at once is not extended.
+func (t *ExchangeImpersonatedBearerTokener) AcquisitionBudget() (time.Duration, bool) {
+	actor, ok := forwardAcquisitionBudget(t.tokener)
+	if !ok || actor <= 0 {
+		return 0, false
+	}
+	if actor > math.MaxInt64-impersonationExchangeAllowance {
+		return math.MaxInt64, true
+	}
+	return actor + impersonationExchangeAllowance, true
 }
