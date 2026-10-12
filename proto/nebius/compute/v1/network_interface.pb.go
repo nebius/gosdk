@@ -657,9 +657,9 @@ var File_nebius_compute_v1_network_interface_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_network_interface_proto_rawDesc = "" +
 	"\n" +
-	")nebius/compute/v1/network_interface.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xaa\x03\n" +
-	"\x14NetworkInterfaceSpec\x125\n" +
-	"\tsubnet_id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\v\n" +
+	")nebius/compute/v1/network_interface.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\"\xa4\x03\n" +
+	"\x14NetworkInterfaceSpec\x12/\n" +
+	"\tsubnet_id\x18\x01 \x01(\tB\x12\xbaJ\x01\x02\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x12:\n" +
 	"\x04name\x18\x02 \x01(\tB&\xbaH\x1f\xc8\x01\x01r\x1a\x10\x01\x18<2\x14^[0-9a-z][0-9a-z-]*$\xbaJ\x01\x02R\x04name\x12H\n" +
 	"\n" +

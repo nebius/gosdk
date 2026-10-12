@@ -118,13 +118,13 @@ func (s clusterService) List(ctx context.Context, request *v1alpha1.ListClusters
 ) {
 	if request.GetParentId() == "" {
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				request.ParentId = parentID
 			}
 		}
 		if request.GetParentId() == "" {
 			if tenantID := s.sdk.TenantID(); tenantID != "" {
-				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 					request.ParentId = tenantID
 				}
 			}
@@ -172,7 +172,7 @@ func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClus
 ) {
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -182,7 +182,7 @@ func (s clusterService) Create(ctx context.Context, request *v1alpha1.CreateClus
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -255,7 +255,7 @@ func (s clusterService) Restore(ctx context.Context, request *v1alpha1.RestoreCl
 ) {
 	if request.GetMetadata().GetParentId() == "" {
 		if tenantID := s.sdk.TenantID(); tenantID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(tenantID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}
@@ -265,7 +265,7 @@ func (s clusterService) Restore(ctx context.Context, request *v1alpha1.RestoreCl
 			}
 		}
 		if parentID := s.sdk.ParentID(); parentID != "" {
-			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, []string{"project"}) {
 				md := request.GetMetadata()
 				if md == nil {
 					md = &v1.ResourceMetadata{}

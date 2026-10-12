@@ -322,9 +322,10 @@ const file_nebius_msp_postgresql_v1alpha1_backup_service_proto_rawDesc = "" +
 	"cluster_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
 	"\n" +
 	"postgresqlR\tclusterId\x12#\n" +
-	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\"9\n" +
-	"\x12ListBackupsRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\"S\n" +
+	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\"Q\n" +
+	"\x12ListBackupsRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentIdJ\x04\b\x02\x10\x03J\x04\b\x03\x10\x04\"S\n" +
 	"\x1bListBackupsByClusterRequest\x124\n" +
 	"\n" +
 	"cluster_id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
