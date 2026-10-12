@@ -586,20 +586,21 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
 	"\n" +
 	"postgresqlR\x02id\x12#\n" +
-	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\"v\n" +
-	"\x13ListClustersRequest\x12#\n" +
-	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1b\n" +
+	"\tbackup_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\"\x82\x01\n" +
+	"\x13ListClustersRequest\x12/\n" +
+	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
+	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"\x83\x01\n" +
 	"\x14ListClustersResponse\x12C\n" +
 	"\bclusters\x18\x01 \x03(\v2'.nebius.msp.postgresql.v1alpha1.ClusterR\bclusters\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa7\x01\n" +
-	"\x14CreateClusterRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12G\n" +
-	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xd1\x02\n" +
-	"\x15RestoreClusterRequest\x12F\n" +
-	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12G\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xb3\x01\n" +
+	"\x14CreateClusterRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12G\n" +
+	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xdd\x02\n" +
+	"\x15RestoreClusterRequest\x12R\n" +
+	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x12G\n" +
 	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12#\n" +
 	"\tbackup_id\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bbackupId\x12A\n" +
 	"\x11source_cluster_id\x18\x04 \x01(\tB\x15\xbaH\x03\xc8\x01\x01\xe2J\f\n" +
