@@ -303,9 +303,10 @@ const file_nebius_logging_v1_log_export_service_proto_rawDesc = "" +
 	"*nebius/logging/v1/log_export_service.proto\x12\x11nebius.logging.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x18nebius/annotations.proto\x1a nebius/common/v1/operation.proto\x1a\"nebius/logging/v1/log_export.proto\"y\n" +
 	"\x11ExportLogsRequest\x12?\n" +
 	"\x06params\x18\x01 \x01(\v2\x1f.nebius.logging.v1.ExportParamsB\x06\xbaH\x03\xc8\x01\x01R\x06params\x12#\n" +
-	"\tparent_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\"Q\n" +
-	"\x17CancelExportLogsRequest\x126\n" +
-	"\x13export_operation_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x11exportOperationId\"\xac\x01\n" +
+	"\tparent_id\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\"a\n" +
+	"\x17CancelExportLogsRequest\x12F\n" +
+	"\x13export_operation_id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
+	"\voplogexportR\x11exportOperationId\"\xac\x01\n" +
 	"\x12ListExportsRequest\x12#\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bparentId\x12\x1d\n" +
 	"\n" +
@@ -314,9 +315,10 @@ const file_nebius_logging_v1_log_export_service_proto_rawDesc = "" +
 	"\border_by\x18\x04 \x01(\x0e2\x1a.nebius.logging.v1.OrderByR\aorderBy\"x\n" +
 	"\x13ListExportsResponse\x129\n" +
 	"\aexports\x18\x01 \x03(\v2\x1f.nebius.logging.v1.ExportStatusR\aexports\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"N\n" +
-	"\x14GetExportInfoRequest\x126\n" +
-	"\x13export_operation_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x11exportOperationId2\x82\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"^\n" +
+	"\x14GetExportInfoRequest\x12F\n" +
+	"\x13export_operation_id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
+	"\voplogexportR\x11exportOperationId2\x82\x03\n" +
 	"\x10LogExportService\x12O\n" +
 	"\n" +
 	"ExportLogs\x12$.nebius.logging.v1.ExportLogsRequest\x1a\x1b.nebius.common.v1.Operation\x12Y\n" +
