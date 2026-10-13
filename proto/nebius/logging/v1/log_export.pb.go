@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/nebius/gosdk/proto/nebius"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -565,7 +566,7 @@ var File_nebius_logging_v1_log_export_proto protoreflect.FileDescriptor
 
 const file_nebius_logging_v1_log_export_proto_rawDesc = "" +
 	"\n" +
-	"\"nebius/logging/v1/log_export.proto\x12\x11nebius.logging.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a nebius/common/v1/operation.proto\"j\n" +
+	"\"nebius/logging/v1/log_export.proto\x12\x11nebius.logging.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a nebius/common/v1/operation.proto\"j\n" +
 	"\fExportStatus\x129\n" +
 	"\toperation\x18\x01 \x01(\v2\x1b.nebius.common.v1.OperationR\toperation\x12\x1f\n" +
 	"\vresult_path\x18\x02 \x03(\tR\n" +
@@ -581,9 +582,10 @@ const file_nebius_logging_v1_log_export_proto_rawDesc = "" +
 	"\x06format\x18\x03 \x01(\x0e2#.nebius.logging.v1.LogsExportFormatB\x06\xbaH\x03\xc8\x01\x01R\x06format\"Z\n" +
 	"\x1fNebiusObjectStorageBucketByName\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x1b\n" +
-	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xb0\x01\n" +
-	"\x1eNebiusObjectStorageDestination\x12\x10\n" +
-	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x12M\n" +
+	"\tparent_id\x18\x02 \x01(\tR\bparentId\"\xc4\x01\n" +
+	"\x1eNebiusObjectStorageDestination\x12$\n" +
+	"\x02id\x18\x01 \x01(\tB\x12\xe2J\x0f\n" +
+	"\rstoragebucketH\x00R\x02id\x12M\n" +
 	"\aby_name\x18\x02 \x01(\v22.nebius.logging.v1.NebiusObjectStorageBucketByNameH\x00R\x06byName\x12#\n" +
 	"\robject_prefix\x18\x03 \x01(\tR\fobjectPrefixB\b\n" +
 	"\x06bucket\"\xcf\x01\n" +
