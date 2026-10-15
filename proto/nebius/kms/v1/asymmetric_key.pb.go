@@ -81,7 +81,7 @@ func (AsymmetricAlgorithm) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_kms_v1_asymmetric_key_proto_rawDescGZIP(), []int{0}
 }
 
-// An asymmetric KMS key that may contain several versions of the cryptographic material.
+// An asymmetric KMS key that contains at most one key pair.
 type AsymmetricKey struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	Metadata *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
@@ -201,7 +201,7 @@ func (x *AsymmetricKeySpec) GetAlgorithm() AsymmetricAlgorithm {
 
 type AsymmetricKeyStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// State (ACTIVE, SCHEDULED_FOR_DELETION)
+	// State (ACTIVE, SCHEDULED_FOR_DELETION).
 	State KeyState `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.kms.v1.KeyState" json:"state,omitempty"`
 	// Time when the key was scheduled for deletion.
 	DeletedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`

@@ -13,7 +13,7 @@ import (
 	"github.com/nebius/gosdk/constants"
 )
 
-const maxIMDSResponseBodyBytes = 64 << 10
+const maxIMDSErrorResponseBytes = 64 << 10
 
 type Token struct {
 	AccessToken string    `json:"access_token"`
@@ -217,14 +217,18 @@ func (t *IMDSTokenizer) imdsErrorResponse(
 	start time.Time,
 	attempt int,
 ) error {
-	body, readErr := readLimitedIMDSResponseBody(resp.Body)
+	body, readErr := io.ReadAll(io.LimitReader(resp.Body, maxIMDSErrorResponseBytes+1))
+	_, drainErr := io.Copy(io.Discard, resp.Body)
 	closeErr := resp.Body.Close()
 	t.metrics.tokenAcquireError(ctx, t, time.Since(start), attempt+1)
-	if readErr != nil {
-		if closeErr != nil {
-			readErr = errors.Join(readErr, fmt.Errorf("close IMDS error response body: %w", closeErr))
-		}
-		return fmt.Errorf("read IMDS error response body: %w", readErr)
+	if readErr != nil || drainErr != nil {
+		t.logger.WarnContext(
+			ctx,
+			"failed to read IMDS error response body",
+			slog.Any("error", errors.Join(readErr, drainErr)),
+			slog.Int("attempt", attempt+1),
+			slog.Int("status_code", resp.StatusCode),
+		)
 	}
 	if closeErr != nil {
 		t.logger.WarnContext(
@@ -235,7 +239,14 @@ func (t *IMDSTokenizer) imdsErrorResponse(
 			slog.Int("status_code", resp.StatusCode),
 		)
 	}
-	return fmt.Errorf("IMDS token request failed: %s: %s", resp.Status, string(body))
+	if readErr != nil {
+		return fmt.Errorf("IMDS token request failed: HTTP %d; could not read response body", resp.StatusCode)
+	}
+	bodyText := string(body)
+	if len(body) > maxIMDSErrorResponseBytes {
+		bodyText = string(body[:maxIMDSErrorResponseBytes]) + "... (truncated)"
+	}
+	return fmt.Errorf("IMDS token request failed: HTTP %d: %s", resp.StatusCode, bodyText)
 }
 
 func (t *IMDSTokenizer) closeRetryableIMDSResponseBody(ctx context.Context, resp *http.Response, attempt int) {
@@ -260,25 +271,6 @@ func (t *IMDSTokenizer) waitBeforeRetry(ctx context.Context, start time.Time, at
 	case <-time.After(backoff):
 		return nil
 	}
-}
-
-func readLimitedIMDSResponseBody(body io.Reader) ([]byte, error) {
-	data, err := io.ReadAll(io.LimitReader(body, maxIMDSResponseBodyBytes+1))
-	if err != nil {
-		return nil, err
-	}
-	if len(data) <= maxIMDSResponseBodyBytes {
-		return data, nil
-	}
-	data = data[:maxIMDSResponseBodyBytes]
-	// Keep the diagnostic body bounded, but drain the rest so net/http can reuse the connection.
-	if _, copyErr := io.Copy(io.Discard, body); copyErr != nil {
-		return nil, copyErr
-	}
-	return append(data, fmt.Appendf(nil,
-		"\n... IMDS response body truncated after %d bytes",
-		maxIMDSResponseBodyBytes,
-	)...), nil
 }
 
 func shouldRetryIMDS(statusCode int) bool {

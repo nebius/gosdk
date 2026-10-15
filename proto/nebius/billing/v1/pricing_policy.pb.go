@@ -35,7 +35,8 @@ const (
 	PricingPolicyStatus_STATE_ACTIVE PricingPolicyStatus_State = 2
 	// Being deleted; does not accept new VMs.
 	PricingPolicyStatus_STATE_DELETING PricingPolicyStatus_State = 3
-	// The bid is being changed; scheduling is blocked until the change lands.
+	// The max_price is being changed; scheduling is blocked until the change
+	// is applied.
 	// The state can last while a market price change is applied to the segment.
 	PricingPolicyStatus_STATE_UPDATING PricingPolicyStatus_State = 4
 )
@@ -137,7 +138,7 @@ func (PricingPolicyStatus_SchedulingState) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_billing_v1_pricing_policy_proto_rawDescGZIP(), []int{6, 1}
 }
 
-// How preemptible VMs are priced: a standing per-GPU bid for one (region, platform).
+// How preemptible VMs are priced: a per-GPU maximum price for one (region, platform).
 // One policy backs any number of VMs, referenced by id from the preemptible spec.
 // A VM without a policy is a price-taker and pays the market price.
 type PricingPolicy struct {
@@ -431,14 +432,14 @@ type isPricingMethod_Versions interface {
 }
 
 type PricingMethod_MaxPriceV1 struct {
-	// Auction bid: the per-GPU `max_price` ranks the policy's VMs for
-	// scheduling and preemption.
+	// Maximum price: the per-GPU `max_price` sets the priority of the policy's
+	// VMs for scheduling and preemption.
 	MaxPriceV1 *MaxPriceV1 `protobuf:"bytes,1,opt,name=max_price_v1,json=maxPriceV1,proto3,oneof"`
 }
 
 func (*PricingMethod_MaxPriceV1) isPricingMethod_Versions() {}
 
-// Auction-bid pricing.
+// Pricing with a per-GPU maximum price.
 type MaxPriceV1 struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Per-GPU hourly limit in USD, decimal string 3 digits precision. Example: "3.515".
