@@ -30,6 +30,7 @@ const (
 	KeyState_ACTIVE KeyState = 1
 	// Key is scheduled for deletion.
 	KeyState_SCHEDULED_FOR_DELETION KeyState = 2
+	KeyState_PENDING_IMPORT         KeyState = 3
 )
 
 // Enum value maps for KeyState.
@@ -38,11 +39,13 @@ var (
 		0: "KEY_STATE_UNSPECIFIED",
 		1: "ACTIVE",
 		2: "SCHEDULED_FOR_DELETION",
+		3: "PENDING_IMPORT",
 	}
 	KeyState_value = map[string]int32{
 		"KEY_STATE_UNSPECIFIED":  0,
 		"ACTIVE":                 1,
 		"SCHEDULED_FOR_DELETION": 2,
+		"PENDING_IMPORT":         3,
 	}
 )
 
@@ -77,12 +80,13 @@ var File_nebius_kms_v1_key_state_proto protoreflect.FileDescriptor
 
 const file_nebius_kms_v1_key_state_proto_rawDesc = "" +
 	"\n" +
-	"\x1dnebius/kms/v1/key_state.proto\x12\rnebius.kms.v1*M\n" +
+	"\x1dnebius/kms/v1/key_state.proto\x12\rnebius.kms.v1*a\n" +
 	"\bKeyState\x12\x19\n" +
 	"\x15KEY_STATE_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +
 	"\x06ACTIVE\x10\x01\x12\x1a\n" +
-	"\x16SCHEDULED_FOR_DELETION\x10\x02BT\n" +
+	"\x16SCHEDULED_FOR_DELETION\x10\x02\x12\x12\n" +
+	"\x0ePENDING_IMPORT\x10\x03BT\n" +
 	"\x14ai.nebius.pub.kms.v1B\rKeyStateProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/kms/v1b\x06proto3"
 
 var (

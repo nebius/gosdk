@@ -32,7 +32,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PricingPolicyServiceClient interface {
-	// Creates a pricing policy. A bid outside the allowed price range fails
+	// Creates a pricing policy. A max_price outside the allowed price range fails
 	// with OUT_OF_RANGE; below the current market price it is accepted but the
 	// policy starts SCHEDULING_STATE_BLOCKED. Policies per tenant are
 	// quota-limited (RESOURCE_EXHAUSTED past the limit).
@@ -41,7 +41,7 @@ type PricingPolicyServiceClient interface {
 	Get(ctx context.Context, in *GetPricingPolicyRequest, opts ...grpc.CallOption) (*PricingPolicy, error)
 	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*PricingPolicy, error)
 	List(ctx context.Context, in *ListPricingPoliciesRequest, opts ...grpc.CallOption) (*ListPricingPoliciesResponse, error)
-	// Updates a pricing policy. `metadata.name` may change any time; the bid in
+	// Updates a pricing policy. `metadata.name` may change any time; the max_price in
 	// `spec.pricing.max_price_v1` only while `status.running_vm_count` is 0
 	// (FAILED_PRECONDITION otherwise). Other spec fields are immutable
 	// (INVALID_ARGUMENT).
@@ -117,7 +117,7 @@ func (c *pricingPolicyServiceClient) Delete(ctx context.Context, in *DeletePrici
 // All implementations should embed UnimplementedPricingPolicyServiceServer
 // for forward compatibility
 type PricingPolicyServiceServer interface {
-	// Creates a pricing policy. A bid outside the allowed price range fails
+	// Creates a pricing policy. A max_price outside the allowed price range fails
 	// with OUT_OF_RANGE; below the current market price it is accepted but the
 	// policy starts SCHEDULING_STATE_BLOCKED. Policies per tenant are
 	// quota-limited (RESOURCE_EXHAUSTED past the limit).
@@ -126,7 +126,7 @@ type PricingPolicyServiceServer interface {
 	Get(context.Context, *GetPricingPolicyRequest) (*PricingPolicy, error)
 	GetByName(context.Context, *v1.GetByNameRequest) (*PricingPolicy, error)
 	List(context.Context, *ListPricingPoliciesRequest) (*ListPricingPoliciesResponse, error)
-	// Updates a pricing policy. `metadata.name` may change any time; the bid in
+	// Updates a pricing policy. `metadata.name` may change any time; the max_price in
 	// `spec.pricing.max_price_v1` only while `status.running_vm_count` is 0
 	// (FAILED_PRECONDITION otherwise). Other spec fields are immutable
 	// (INVALID_ARGUMENT).
