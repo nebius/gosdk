@@ -10,3 +10,6 @@ package v1
 
 // func (x *BucketStatus) Sanitize()            // is not generated as no sensitive fields found
 // func (x *BucketStatus) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *LastAccessConfiguration) Sanitize()            // is not generated as no sensitive fields found
+// func (x *LastAccessConfiguration) LogValue() slog.Value // is not generated as no sensitive fields found
