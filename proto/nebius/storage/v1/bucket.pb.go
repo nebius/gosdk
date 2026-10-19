@@ -242,6 +242,121 @@ func (BucketStatus_BucketType) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_storage_v1_bucket_proto_rawDescGZIP(), []int{2, 2}
 }
 
+type LastAccessConfiguration_Condition_Type int32
+
+const (
+	LastAccessConfiguration_Condition_TYPE_UNSPECIFIED LastAccessConfiguration_Condition_Type = 0
+	// If an include type condition is the first condition that the request match, the request will be included in
+	// `days_since_last_access` calculation.
+	LastAccessConfiguration_Condition_INCLUDE LastAccessConfiguration_Condition_Type = 1
+	// If an exclude type condition is the first condition that the request match, the request will be ignored in `days_since_last_access`
+	// calculation.
+	LastAccessConfiguration_Condition_EXCLUDE LastAccessConfiguration_Condition_Type = 2
+)
+
+// Enum value maps for LastAccessConfiguration_Condition_Type.
+var (
+	LastAccessConfiguration_Condition_Type_name = map[int32]string{
+		0: "TYPE_UNSPECIFIED",
+		1: "INCLUDE",
+		2: "EXCLUDE",
+	}
+	LastAccessConfiguration_Condition_Type_value = map[string]int32{
+		"TYPE_UNSPECIFIED": 0,
+		"INCLUDE":          1,
+		"EXCLUDE":          2,
+	}
+)
+
+func (x LastAccessConfiguration_Condition_Type) Enum() *LastAccessConfiguration_Condition_Type {
+	p := new(LastAccessConfiguration_Condition_Type)
+	*p = x
+	return p
+}
+
+func (x LastAccessConfiguration_Condition_Type) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LastAccessConfiguration_Condition_Type) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_storage_v1_bucket_proto_enumTypes[4].Descriptor()
+}
+
+func (LastAccessConfiguration_Condition_Type) Type() protoreflect.EnumType {
+	return &file_nebius_storage_v1_bucket_proto_enumTypes[4]
+}
+
+func (x LastAccessConfiguration_Condition_Type) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LastAccessConfiguration_Condition_Type.Descriptor instead.
+func (LastAccessConfiguration_Condition_Type) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_proto_rawDescGZIP(), []int{3, 0, 0}
+}
+
+type LastAccessConfiguration_Condition_Method int32
+
+const (
+	LastAccessConfiguration_Condition_METHOD_UNSPECIFIED LastAccessConfiguration_Condition_Method = 0
+	LastAccessConfiguration_Condition_GET_OBJECT         LastAccessConfiguration_Condition_Method = 1
+	LastAccessConfiguration_Condition_HEAD_OBJECT        LastAccessConfiguration_Condition_Method = 2
+	LastAccessConfiguration_Condition_GET_OBJECT_TAGGING LastAccessConfiguration_Condition_Method = 3
+	// Copy object method reads the source object.
+	// We account for those operations as source object accesses when calculating `days_since_last_access` for source object.
+	LastAccessConfiguration_Condition_COPY_OBJECT LastAccessConfiguration_Condition_Method = 4
+	// Upload part copy method reads the source object.
+	// We account for those operations as source object accesses when calculating `days_since_last_access` for source object.
+	LastAccessConfiguration_Condition_UPLOAD_PART_COPY LastAccessConfiguration_Condition_Method = 5
+)
+
+// Enum value maps for LastAccessConfiguration_Condition_Method.
+var (
+	LastAccessConfiguration_Condition_Method_name = map[int32]string{
+		0: "METHOD_UNSPECIFIED",
+		1: "GET_OBJECT",
+		2: "HEAD_OBJECT",
+		3: "GET_OBJECT_TAGGING",
+		4: "COPY_OBJECT",
+		5: "UPLOAD_PART_COPY",
+	}
+	LastAccessConfiguration_Condition_Method_value = map[string]int32{
+		"METHOD_UNSPECIFIED": 0,
+		"GET_OBJECT":         1,
+		"HEAD_OBJECT":        2,
+		"GET_OBJECT_TAGGING": 3,
+		"COPY_OBJECT":        4,
+		"UPLOAD_PART_COPY":   5,
+	}
+)
+
+func (x LastAccessConfiguration_Condition_Method) Enum() *LastAccessConfiguration_Condition_Method {
+	p := new(LastAccessConfiguration_Condition_Method)
+	*p = x
+	return p
+}
+
+func (x LastAccessConfiguration_Condition_Method) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LastAccessConfiguration_Condition_Method) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_storage_v1_bucket_proto_enumTypes[5].Descriptor()
+}
+
+func (LastAccessConfiguration_Condition_Method) Type() protoreflect.EnumType {
+	return &file_nebius_storage_v1_bucket_proto_enumTypes[5]
+}
+
+func (x LastAccessConfiguration_Condition_Method) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LastAccessConfiguration_Condition_Method.Descriptor instead.
+func (LastAccessConfiguration_Condition_Method) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_proto_rawDescGZIP(), []int{3, 0, 1}
+}
+
 type Bucket struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Metadata      *v1.ResourceMetadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
@@ -331,7 +446,11 @@ type BucketSpec struct {
 	// Types that are valid to be assigned to BucketType:
 	//
 	//	*BucketSpec_FilesystemBucket
-	BucketType    isBucketSpec_BucketType `protobuf_oneof:"bucket_type"`
+	BucketType isBucketSpec_BucketType `protobuf_oneof:"bucket_type"`
+	// Specifies which requests are included in Last Access tracking, if Last Access tracking is enabled.
+	// It does not itself enable Last Access tracking.
+	// A non-empty `last_access` overrides `lifecycle_configuration.last_access_filter`.
+	LastAccess    *LastAccessConfiguration `protobuf:"bytes,15,opt,name=last_access,json=lastAccess,proto3" json:"last_access,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -434,6 +553,13 @@ func (x *BucketSpec) GetFilesystemBucket() *BucketSpec_FilesystemBucketType {
 		if x, ok := x.BucketType.(*BucketSpec_FilesystemBucket); ok {
 			return x.FilesystemBucket
 		}
+	}
+	return nil
+}
+
+func (x *BucketSpec) GetLastAccess() *LastAccessConfiguration {
+	if x != nil {
+		return x.LastAccess
 	}
 	return nil
 }
@@ -575,6 +701,55 @@ func (x *BucketStatus) GetBucketType() BucketStatus_BucketType {
 	return BucketStatus_BUCKET_TYPE_UNSPECIFIED
 }
 
+// Specifies which requests are included in Last Access tracking.
+type LastAccessConfiguration struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// A request is included in Last Access tracking if:
+	// - The first condition matching the request has `INCLUDE` type.
+	// OR
+	// - The request doesn't match any conditions
+	Conditions    []*LastAccessConfiguration_Condition `protobuf:"bytes,1,rep,name=conditions,proto3" json:"conditions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LastAccessConfiguration) Reset() {
+	*x = LastAccessConfiguration{}
+	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LastAccessConfiguration) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LastAccessConfiguration) ProtoMessage() {}
+
+func (x *LastAccessConfiguration) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LastAccessConfiguration.ProtoReflect.Descriptor instead.
+func (*LastAccessConfiguration) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *LastAccessConfiguration) GetConditions() []*LastAccessConfiguration_Condition {
+	if x != nil {
+		return x.Conditions
+	}
+	return nil
+}
+
 type BucketSpec_FilesystemBucketType struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Identifier of filesystem to be exposed via Object Storage API.
@@ -603,7 +778,7 @@ type BucketSpec_FilesystemBucketType struct {
 
 func (x *BucketSpec_FilesystemBucketType) Reset() {
 	*x = BucketSpec_FilesystemBucketType{}
-	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[3]
+	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -615,7 +790,7 @@ func (x *BucketSpec_FilesystemBucketType) String() string {
 func (*BucketSpec_FilesystemBucketType) ProtoMessage() {}
 
 func (x *BucketSpec_FilesystemBucketType) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[3]
+	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -673,6 +848,71 @@ func (x *BucketSpec_FilesystemBucketType) GetDirectoryMode() string {
 	return ""
 }
 
+// Specifies conditions to include or exclude request from Last Access tracking.
+type LastAccessConfiguration_Condition struct {
+	state protoimpl.MessageState                 `protogen:"open.v1"`
+	Type  LastAccessConfiguration_Condition_Type `protobuf:"varint,1,opt,name=type,proto3,enum=nebius.storage.v1.LastAccessConfiguration_Condition_Type" json:"type,omitempty"`
+	// The s3 methods to match.
+	// An empty list matches all methods
+	Methods []LastAccessConfiguration_Condition_Method `protobuf:"varint,2,rep,packed,name=methods,proto3,enum=nebius.storage.v1.LastAccessConfiguration_Condition_Method" json:"methods,omitempty"`
+	// User agents to match. Condition is satisfied if the request's user agent contains any of these substrings.
+	// An empty list matches all user agents.
+	UserAgents    []string `protobuf:"bytes,3,rep,name=user_agents,json=userAgents,proto3" json:"user_agents,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LastAccessConfiguration_Condition) Reset() {
+	*x = LastAccessConfiguration_Condition{}
+	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LastAccessConfiguration_Condition) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LastAccessConfiguration_Condition) ProtoMessage() {}
+
+func (x *LastAccessConfiguration_Condition) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_storage_v1_bucket_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LastAccessConfiguration_Condition.ProtoReflect.Descriptor instead.
+func (*LastAccessConfiguration_Condition) Descriptor() ([]byte, []int) {
+	return file_nebius_storage_v1_bucket_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *LastAccessConfiguration_Condition) GetType() LastAccessConfiguration_Condition_Type {
+	if x != nil {
+		return x.Type
+	}
+	return LastAccessConfiguration_Condition_TYPE_UNSPECIFIED
+}
+
+func (x *LastAccessConfiguration_Condition) GetMethods() []LastAccessConfiguration_Condition_Method {
+	if x != nil {
+		return x.Methods
+	}
+	return nil
+}
+
+func (x *LastAccessConfiguration_Condition) GetUserAgents() []string {
+	if x != nil {
+		return x.UserAgents
+	}
+	return nil
+}
+
 var File_nebius_storage_v1_bucket_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
@@ -681,7 +921,7 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x06Bucket\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\x91\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.storage.v1.BucketStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x03\"\xde\n" +
 	"\n" +
 	"\n" +
 	"BucketSpec\x12V\n" +
@@ -693,7 +933,9 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x13force_storage_class\x18\v \x01(\bR\x11forceStorageClass\x12b\n" +
 	"\x14object_audit_logging\x18\f \x01(\x0e20.nebius.storage.v1.BucketSpec.ObjectAuditLoggingR\x12objectAuditLogging\x12D\n" +
 	"\rbucket_policy\x18\r \x01(\v2\x1f.nebius.storage.v1.BucketPolicyR\fbucketPolicy\x12a\n" +
-	"\x11filesystem_bucket\x18\x1e \x01(\v22.nebius.storage.v1.BucketSpec.FilesystemBucketTypeH\x00R\x10filesystemBucket\x1a\xcd\x03\n" +
+	"\x11filesystem_bucket\x18\x1e \x01(\v22.nebius.storage.v1.BucketSpec.FilesystemBucketTypeH\x00R\x10filesystemBucket\x12K\n" +
+	"\vlast_access\x18\x0f \x01(\v2*.nebius.storage.v1.LastAccessConfigurationR\n" +
+	"lastAccess\x1a\xcd\x03\n" +
 	"\x14FilesystemBucketType\x12E\n" +
 	"\rfilesystem_id\x18\x01 \x01(\tB \xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\x13\n" +
 	"\x11computefilesystemR\ffilesystemId\x12\"\n" +
@@ -742,7 +984,31 @@ const file_nebius_storage_v1_bucket_proto_rawDesc = "" +
 	"\x17BUCKET_TYPE_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aREGULAR\x10\x01\x12\x0e\n" +
 	"\n" +
-	"FILESYSTEM\x10\x02BZ\n" +
+	"FILESYSTEM\x10\x02\"\xac\x04\n" +
+	"\x17LastAccessConfiguration\x12^\n" +
+	"\n" +
+	"conditions\x18\x01 \x03(\v24.nebius.storage.v1.LastAccessConfiguration.ConditionB\b\xbaH\x05\x92\x01\x02\x10\n" +
+	"R\n" +
+	"conditions\x1a\xb0\x03\n" +
+	"\tCondition\x12U\n" +
+	"\x04type\x18\x01 \x01(\x0e29.nebius.storage.v1.LastAccessConfiguration.Condition.TypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12_\n" +
+	"\amethods\x18\x02 \x03(\x0e2;.nebius.storage.v1.LastAccessConfiguration.Condition.MethodB\b\xbaH\x05\x92\x01\x02\x10\n" +
+	"R\amethods\x120\n" +
+	"\vuser_agents\x18\x03 \x03(\tB\x0f\xbaH\f\x92\x01\t\x10\n" +
+	"\"\x05r\x03\x18\xc8\x01R\n" +
+	"userAgents\"6\n" +
+	"\x04Type\x12\x14\n" +
+	"\x10TYPE_UNSPECIFIED\x10\x00\x12\v\n" +
+	"\aINCLUDE\x10\x01\x12\v\n" +
+	"\aEXCLUDE\x10\x02\"\x80\x01\n" +
+	"\x06Method\x12\x16\n" +
+	"\x12METHOD_UNSPECIFIED\x10\x00\x12\x0e\n" +
+	"\n" +
+	"GET_OBJECT\x10\x01\x12\x0f\n" +
+	"\vHEAD_OBJECT\x10\x02\x12\x16\n" +
+	"\x12GET_OBJECT_TAGGING\x10\x03\x12\x0f\n" +
+	"\vCOPY_OBJECT\x10\x04\x12\x14\n" +
+	"\x10UPLOAD_PART_COPY\x10\x05BZ\n" +
 	"\x18ai.nebius.pub.storage.v1B\vBucketProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/storage/v1b\x06proto3"
 
 var (
@@ -757,50 +1023,58 @@ func file_nebius_storage_v1_bucket_proto_rawDescGZIP() []byte {
 	return file_nebius_storage_v1_bucket_proto_rawDescData
 }
 
-var file_nebius_storage_v1_bucket_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_nebius_storage_v1_bucket_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_nebius_storage_v1_bucket_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_nebius_storage_v1_bucket_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_nebius_storage_v1_bucket_proto_goTypes = []any{
-	(BucketSpec_ObjectAuditLogging)(0),      // 0: nebius.storage.v1.BucketSpec.ObjectAuditLogging
-	(BucketStatus_State)(0),                 // 1: nebius.storage.v1.BucketStatus.State
-	(BucketStatus_SuspensionState)(0),       // 2: nebius.storage.v1.BucketStatus.SuspensionState
-	(BucketStatus_BucketType)(0),            // 3: nebius.storage.v1.BucketStatus.BucketType
-	(*Bucket)(nil),                          // 4: nebius.storage.v1.Bucket
-	(*BucketSpec)(nil),                      // 5: nebius.storage.v1.BucketSpec
-	(*BucketStatus)(nil),                    // 6: nebius.storage.v1.BucketStatus
-	(*BucketSpec_FilesystemBucketType)(nil), // 7: nebius.storage.v1.BucketSpec.FilesystemBucketType
-	(*v1.ResourceMetadata)(nil),             // 8: nebius.common.v1.ResourceMetadata
-	(VersioningPolicy)(0),                   // 9: nebius.storage.v1.VersioningPolicy
-	(*LifecycleConfiguration)(nil),          // 10: nebius.storage.v1.LifecycleConfiguration
-	(*CORSConfiguration)(nil),               // 11: nebius.storage.v1.CORSConfiguration
-	(StorageClass)(0),                       // 12: nebius.storage.v1.StorageClass
-	(*BucketPolicy)(nil),                    // 13: nebius.storage.v1.BucketPolicy
-	(*BucketCounters)(nil),                  // 14: nebius.storage.v1.BucketCounters
-	(*timestamppb.Timestamp)(nil),           // 15: google.protobuf.Timestamp
-	(*InsecureEndpoint)(nil),                // 16: nebius.storage.v1.InsecureEndpoint
+	(BucketSpec_ObjectAuditLogging)(0),            // 0: nebius.storage.v1.BucketSpec.ObjectAuditLogging
+	(BucketStatus_State)(0),                       // 1: nebius.storage.v1.BucketStatus.State
+	(BucketStatus_SuspensionState)(0),             // 2: nebius.storage.v1.BucketStatus.SuspensionState
+	(BucketStatus_BucketType)(0),                  // 3: nebius.storage.v1.BucketStatus.BucketType
+	(LastAccessConfiguration_Condition_Type)(0),   // 4: nebius.storage.v1.LastAccessConfiguration.Condition.Type
+	(LastAccessConfiguration_Condition_Method)(0), // 5: nebius.storage.v1.LastAccessConfiguration.Condition.Method
+	(*Bucket)(nil),                                // 6: nebius.storage.v1.Bucket
+	(*BucketSpec)(nil),                            // 7: nebius.storage.v1.BucketSpec
+	(*BucketStatus)(nil),                          // 8: nebius.storage.v1.BucketStatus
+	(*LastAccessConfiguration)(nil),               // 9: nebius.storage.v1.LastAccessConfiguration
+	(*BucketSpec_FilesystemBucketType)(nil),       // 10: nebius.storage.v1.BucketSpec.FilesystemBucketType
+	(*LastAccessConfiguration_Condition)(nil),     // 11: nebius.storage.v1.LastAccessConfiguration.Condition
+	(*v1.ResourceMetadata)(nil),                   // 12: nebius.common.v1.ResourceMetadata
+	(VersioningPolicy)(0),                         // 13: nebius.storage.v1.VersioningPolicy
+	(*LifecycleConfiguration)(nil),                // 14: nebius.storage.v1.LifecycleConfiguration
+	(*CORSConfiguration)(nil),                     // 15: nebius.storage.v1.CORSConfiguration
+	(StorageClass)(0),                             // 16: nebius.storage.v1.StorageClass
+	(*BucketPolicy)(nil),                          // 17: nebius.storage.v1.BucketPolicy
+	(*BucketCounters)(nil),                        // 18: nebius.storage.v1.BucketCounters
+	(*timestamppb.Timestamp)(nil),                 // 19: google.protobuf.Timestamp
+	(*InsecureEndpoint)(nil),                      // 20: nebius.storage.v1.InsecureEndpoint
 }
 var file_nebius_storage_v1_bucket_proto_depIdxs = []int32{
-	8,  // 0: nebius.storage.v1.Bucket.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	5,  // 1: nebius.storage.v1.Bucket.spec:type_name -> nebius.storage.v1.BucketSpec
-	6,  // 2: nebius.storage.v1.Bucket.status:type_name -> nebius.storage.v1.BucketStatus
-	9,  // 3: nebius.storage.v1.BucketSpec.versioning_policy:type_name -> nebius.storage.v1.VersioningPolicy
-	10, // 4: nebius.storage.v1.BucketSpec.lifecycle_configuration:type_name -> nebius.storage.v1.LifecycleConfiguration
-	11, // 5: nebius.storage.v1.BucketSpec.cors:type_name -> nebius.storage.v1.CORSConfiguration
-	12, // 6: nebius.storage.v1.BucketSpec.default_storage_class:type_name -> nebius.storage.v1.StorageClass
+	12, // 0: nebius.storage.v1.Bucket.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	7,  // 1: nebius.storage.v1.Bucket.spec:type_name -> nebius.storage.v1.BucketSpec
+	8,  // 2: nebius.storage.v1.Bucket.status:type_name -> nebius.storage.v1.BucketStatus
+	13, // 3: nebius.storage.v1.BucketSpec.versioning_policy:type_name -> nebius.storage.v1.VersioningPolicy
+	14, // 4: nebius.storage.v1.BucketSpec.lifecycle_configuration:type_name -> nebius.storage.v1.LifecycleConfiguration
+	15, // 5: nebius.storage.v1.BucketSpec.cors:type_name -> nebius.storage.v1.CORSConfiguration
+	16, // 6: nebius.storage.v1.BucketSpec.default_storage_class:type_name -> nebius.storage.v1.StorageClass
 	0,  // 7: nebius.storage.v1.BucketSpec.object_audit_logging:type_name -> nebius.storage.v1.BucketSpec.ObjectAuditLogging
-	13, // 8: nebius.storage.v1.BucketSpec.bucket_policy:type_name -> nebius.storage.v1.BucketPolicy
-	7,  // 9: nebius.storage.v1.BucketSpec.filesystem_bucket:type_name -> nebius.storage.v1.BucketSpec.FilesystemBucketType
-	14, // 10: nebius.storage.v1.BucketStatus.counters:type_name -> nebius.storage.v1.BucketCounters
-	1,  // 11: nebius.storage.v1.BucketStatus.state:type_name -> nebius.storage.v1.BucketStatus.State
-	2,  // 12: nebius.storage.v1.BucketStatus.suspension_state:type_name -> nebius.storage.v1.BucketStatus.SuspensionState
-	15, // 13: nebius.storage.v1.BucketStatus.deleted_at:type_name -> google.protobuf.Timestamp
-	15, // 14: nebius.storage.v1.BucketStatus.purge_at:type_name -> google.protobuf.Timestamp
-	16, // 15: nebius.storage.v1.BucketStatus.insecure_endpoint:type_name -> nebius.storage.v1.InsecureEndpoint
-	3,  // 16: nebius.storage.v1.BucketStatus.bucket_type:type_name -> nebius.storage.v1.BucketStatus.BucketType
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	17, // 8: nebius.storage.v1.BucketSpec.bucket_policy:type_name -> nebius.storage.v1.BucketPolicy
+	10, // 9: nebius.storage.v1.BucketSpec.filesystem_bucket:type_name -> nebius.storage.v1.BucketSpec.FilesystemBucketType
+	9,  // 10: nebius.storage.v1.BucketSpec.last_access:type_name -> nebius.storage.v1.LastAccessConfiguration
+	18, // 11: nebius.storage.v1.BucketStatus.counters:type_name -> nebius.storage.v1.BucketCounters
+	1,  // 12: nebius.storage.v1.BucketStatus.state:type_name -> nebius.storage.v1.BucketStatus.State
+	2,  // 13: nebius.storage.v1.BucketStatus.suspension_state:type_name -> nebius.storage.v1.BucketStatus.SuspensionState
+	19, // 14: nebius.storage.v1.BucketStatus.deleted_at:type_name -> google.protobuf.Timestamp
+	19, // 15: nebius.storage.v1.BucketStatus.purge_at:type_name -> google.protobuf.Timestamp
+	20, // 16: nebius.storage.v1.BucketStatus.insecure_endpoint:type_name -> nebius.storage.v1.InsecureEndpoint
+	3,  // 17: nebius.storage.v1.BucketStatus.bucket_type:type_name -> nebius.storage.v1.BucketStatus.BucketType
+	11, // 18: nebius.storage.v1.LastAccessConfiguration.conditions:type_name -> nebius.storage.v1.LastAccessConfiguration.Condition
+	4,  // 19: nebius.storage.v1.LastAccessConfiguration.Condition.type:type_name -> nebius.storage.v1.LastAccessConfiguration.Condition.Type
+	5,  // 20: nebius.storage.v1.LastAccessConfiguration.Condition.methods:type_name -> nebius.storage.v1.LastAccessConfiguration.Condition.Method
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_nebius_storage_v1_bucket_proto_init() }
@@ -822,8 +1096,8 @@ func file_nebius_storage_v1_bucket_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_storage_v1_bucket_proto_rawDesc), len(file_nebius_storage_v1_bucket_proto_rawDesc)),
-			NumEnums:      4,
-			NumMessages:   4,
+			NumEnums:      6,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
