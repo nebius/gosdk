@@ -87,7 +87,8 @@ type ListVmAppTemplatesRequest struct {
 	// Returns only global templates when true. The service ignores parent_id in this mode.
 	// Global catalog reads require authentication but do not require a resource permission.
 	GlobalOnly bool `protobuf:"varint,7,opt,name=global_only,json=globalOnly,proto3" json:"global_only,omitempty"`
-	// The template kind: "covm" or "devlab". The default is "covm".
+	// The template kind filter: "devlab" or legacy "covm".
+	// An empty value selects legacy "covm" templates.
 	Kind          string `protobuf:"bytes,1000,opt,name=kind,proto3" json:"kind,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
