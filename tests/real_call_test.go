@@ -5,9 +5,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/nebius/gosdk"
 	computepb "github.com/nebius/gosdk/proto/nebius/compute/v1"
+	"github.com/nebius/gosdk/serviceerror"
 )
 
 func TestRealCall_WithoutCreds(t *testing.T) {
@@ -22,7 +25,10 @@ func TestRealCall_WithoutCreds(t *testing.T) {
 	})
 
 	diskService := sdk.Services().Compute().V1().Disk()
-	_, err = diskService.List(ctx, &computepb.ListDisksRequest{ParentId: "fake-e00id"})
+	_, err = diskService.List(ctx, &computepb.ListDisksRequest{ParentId: "project-e00aaaaaaaaaaaaaaa"})
 	require.Error(t, err)
-	require.Regexp(t, "^rpc error: code = Unauthenticated desc = .+ request = [-a-zA-Z0-9]+$", err.Error())
+	require.Equal(t, codes.Unauthenticated, status.Code(err))
+	var serviceErr *serviceerror.Error
+	require.ErrorAs(t, err, &serviceErr)
+	require.NotEmpty(t, serviceErr.RequestID)
 }
