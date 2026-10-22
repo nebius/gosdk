@@ -217,7 +217,9 @@ type VmAppTemplateSpec struct {
 	//
 	//	*VmAppTemplateSpec_ContainerTemplate
 	Definition isVmAppTemplateSpec_Definition `protobuf_oneof:"definition"`
-	// The template kind: "covm" or "devlab". The default is "covm".
+	// The template kind: "devlab" or legacy "covm".
+	// An empty value represents the legacy "covm" kind.
+	// New templates must use "devlab".
 	Kind          string `protobuf:"bytes,1000,opt,name=kind,proto3" json:"kind,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

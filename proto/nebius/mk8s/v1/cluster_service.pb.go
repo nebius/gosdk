@@ -78,9 +78,10 @@ func (x *CreateClusterRequest) GetSpec() *ClusterSpec {
 }
 
 type GetClusterRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	ResourceVersion string                 `protobuf:"bytes,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Deprecated: Marked as deprecated in nebius/mk8s/v1/cluster_service.proto.
+	ResourceVersion string `protobuf:"bytes,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -122,6 +123,7 @@ func (x *GetClusterRequest) GetId() string {
 	return ""
 }
 
+// Deprecated: Marked as deprecated in nebius/mk8s/v1/cluster_service.proto.
 func (x *GetClusterRequest) GetResourceVersion() string {
 	if x != nil {
 		return x.ResourceVersion
@@ -506,11 +508,11 @@ const file_nebius_mk8s_v1_cluster_service_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x80\x03\xbaH\xf0\x02\xba\x01\x81\x02\n" +
 	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1arsize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_]*)?[A-Za-z0-9])?$')\xba\x01e\n" +
 	"\x12metadata_parent_id\x123'parent_id' must be no more than 63 characters long\x1a\x1asize(this.parent_id) <= 63\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x127\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.mk8s.v1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"f\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.mk8s.v1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\x9c\x01\n" +
 	"\x11GetClusterRequest\x12&\n" +
 	"\x02id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
-	"\vmk8sclusterR\x02id\x12)\n" +
-	"\x10resource_version\x18\x02 \x01(\tR\x0fresourceVersion\"\x82\x01\n" +
+	"\vmk8sclusterR\x02id\x12_\n" +
+	"\x10resource_version\x18\x02 \x01(\tB4\xd2J/\x12-This field is ignored. Omit it from requests.\x18\x01R\x0fresourceVersion\"\x82\x01\n" +
 	"\x13ListClustersRequest\x12/\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
 	"\aprojectR\bparentId\x12\x1b\n" +

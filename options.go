@@ -122,6 +122,11 @@ func WithUserAgentPrefix(prefix string) Option {
 // retries will be set with three attempts, 1/3 of timeout per retry attempt,
 // no cooldown or backoff, and with a custom retry function that takes into
 // account the API-specific retry information.
+// Server streams use a separate timeout for each attempt. The context deadline also bounds the stream.
+// The default attempt timeout is 20 seconds and includes all responses in that stream.
+// Set retry.WithPerRetryTimeout(0) for long-lived streams without an attempt limit.
+// Retries stop after the first delivered server-stream response.
+// Client and bidirectional streams must disable retries.
 // It is advised to set backoff and overall timeout (using [WithTimeout])
 // depending on your request and usage.
 func WithRetryOptions(opts ...retry.CallOption) Option {

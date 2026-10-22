@@ -294,9 +294,10 @@ func (x *CreateNodeGroupRequest) GetSpec() *NodeGroupSpec {
 }
 
 type GetNodeGroupRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	ResourceVersion string                 `protobuf:"bytes,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Deprecated: Marked as deprecated in nebius/mk8s/v1/node_group_service.proto.
+	ResourceVersion string `protobuf:"bytes,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -338,6 +339,7 @@ func (x *GetNodeGroupRequest) GetId() string {
 	return ""
 }
 
+// Deprecated: Marked as deprecated in nebius/mk8s/v1/node_group_service.proto.
 func (x *GetNodeGroupRequest) GetResourceVersion() string {
 	if x != nil {
 		return x.ResourceVersion
@@ -772,11 +774,11 @@ const file_nebius_mk8s_v1_node_group_service_proto_rawDesc = "" +
 	"\x16CreateNodeGroupRequest\x12\xde\x02\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x9d\x02\xbaH\x89\x02\xba\x01\x82\x02\n" +
 	"\rmetadata_name\x12|'name' must be 1 to 63 characters long and use only letters, digits, '-', or '_', starting and ending with a letter or digit\x1assize(this.name) >= 1 && size(this.name) <= 63 && this.name.matches('^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$')\xc8\x01\x01\xe2J\r\x12\vmk8sclusterR\bmetadata\x129\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"j\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.mk8s.v1.NodeGroupSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\"\xa0\x01\n" +
 	"\x13GetNodeGroupRequest\x12(\n" +
 	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
-	"\rmk8snodegroupR\x02id\x12)\n" +
-	"\x10resource_version\x18\x02 \x01(\tR\x0fresourceVersion\"\x88\x01\n" +
+	"\rmk8snodegroupR\x02id\x12_\n" +
+	"\x10resource_version\x18\x02 \x01(\tB4\xd2J/\x12-This field is ignored. Omit it from requests.\x18\x01R\x0fresourceVersion\"\x88\x01\n" +
 	"\x15ListNodeGroupsRequest\x123\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x16\xbaH\x03\xc8\x01\x01\xe2J\r\n" +
 	"\vmk8sclusterR\bparentId\x12\x1b\n" +

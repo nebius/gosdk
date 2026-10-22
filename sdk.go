@@ -384,7 +384,7 @@ func New(ctx context.Context, opts ...Option) (*SDK, error) { //nolint:funlen
 			),
 		))
 		dialOpts = append(dialOpts, grpc.WithChainStreamInterceptor(
-			retry.StreamClientInterceptor(
+			conn.StreamClientRetryInterceptor(
 				retryOptsFull...,
 			),
 		))
