@@ -388,8 +388,10 @@ type JobSpec struct {
 	// Registry credentials for private Docker registry.
 	RegistryCredentials *JobSpec_RegistryCredentials `protobuf:"bytes,10,opt,name=registry_credentials,json=registryCredentials,proto3" json:"registry_credentials,omitempty"`
 	// Compute platform for the job.
+	// Reads return the saved platform for an immediate offer-based job.
 	Platform string `protobuf:"bytes,20,opt,name=platform,proto3" json:"platform,omitempty"`
 	// Compute preset for the job.
+	// Reads return the saved preset for an immediate offer-based job.
 	Preset string `protobuf:"bytes,21,opt,name=preset,proto3" json:"preset,omitempty"`
 	// Shared memory size in bytes for the job's container.
 	ShmSizeBytes int64 `protobuf:"varint,22,opt,name=shm_size_bytes,json=shmSizeBytes,proto3" json:"shm_size_bytes,omitempty"`

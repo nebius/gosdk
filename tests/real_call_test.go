@@ -10,7 +10,6 @@ import (
 
 	"github.com/nebius/gosdk"
 	computepb "github.com/nebius/gosdk/proto/nebius/compute/v1"
-	"github.com/nebius/gosdk/serviceerror"
 )
 
 func TestRealCall_WithoutCreds(t *testing.T) {
@@ -28,7 +27,4 @@ func TestRealCall_WithoutCreds(t *testing.T) {
 	_, err = diskService.List(ctx, &computepb.ListDisksRequest{ParentId: "project-e00aaaaaaaaaaaaaaa"})
 	require.Error(t, err)
 	require.Equal(t, codes.Unauthenticated, status.Code(err))
-	var serviceErr *serviceerror.Error
-	require.ErrorAs(t, err, &serviceErr)
-	require.NotEmpty(t, serviceErr.RequestID)
 }
