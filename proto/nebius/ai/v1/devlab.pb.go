@@ -384,8 +384,10 @@ type DevlabSpec struct {
 	// Registry credentials for private Docker registry.
 	RegistryCredentials *DevlabSpec_RegistryCredentials `protobuf:"bytes,10,opt,name=registry_credentials,json=registryCredentials,proto3" json:"registry_credentials,omitempty"`
 	// Compute platform that the Devlab will be run on.
+	// Reads return the saved platform for an offer-based Devlab.
 	Platform string `protobuf:"bytes,20,opt,name=platform,proto3" json:"platform,omitempty"`
 	// Compute preset that the Devlab will be run on.
+	// Reads return the saved preset for an offer-based Devlab.
 	Preset string `protobuf:"bytes,21,opt,name=preset,proto3" json:"preset,omitempty"`
 	// Shared memory size in bytes for the Devlab's container.
 	ShmSizeBytes int64 `protobuf:"varint,22,opt,name=shm_size_bytes,json=shmSizeBytes,proto3" json:"shm_size_bytes,omitempty"`
