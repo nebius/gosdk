@@ -83,32 +83,27 @@ func rmFrom2MapsRecursive(
 		return nil, nil
 	}
 	var innerErr error
-	initMap.Range(
-		func(mk protoreflect.MapKey, initVal protoreflect.Value) bool {
-			if modVal := modMap.Get(mk); modVal.IsValid() {
-				innerMask, err := rmFrom2MessagesRecursive(
-					initVal.Message(), modVal.Message(), recursion, options,
-				)
-				if err != nil {
-					innerErr = fmt.Errorf(
-						"%s[%s]: %w", desc.Name(), mk.String(), err,
-					)
-					return false
-				}
-				if innerMask != nil && !innerMask.IsEmpty() {
-					key, err := mapKeyToFieldKey(mk)
-					if err != nil {
-						innerErr = fmt.Errorf(
-							"%s[%s]: %w", desc.Name(), mk.String(), err,
-						)
-						return false
-					}
-					ret.FieldParts[key] = innerMask
-				}
-			}
+	initMap.Range(func(mk protoreflect.MapKey, initVal protoreflect.Value) bool {
+		modVal := modMap.Get(mk)
+		if !modVal.IsValid() {
 			return true
-		},
-	)
+		}
+		innerMask, err := rmFrom2MessagesRecursive(initVal.Message(), modVal.Message(), recursion, options)
+		if err != nil {
+			innerErr = fmt.Errorf("%s[%s]: %w", desc.Name(), mk.String(), err)
+			return false
+		}
+		if innerMask == nil || innerMask.IsEmpty() {
+			return true
+		}
+		key, err := mapKeyToFieldKey(mk)
+		if err != nil {
+			innerErr = fmt.Errorf("%s[%s]: %w", desc.Name(), mk.String(), err)
+			return false
+		}
+		ret.FieldParts[key] = innerMask
+		return true
+	})
 	if innerErr != nil {
 		return nil, innerErr
 	}
