@@ -486,8 +486,8 @@ type RuleIngress struct {
 	SourceSecurityGroupId string `protobuf:"bytes,1,opt,name=source_security_group_id,json=sourceSecurityGroupId,proto3" json:"source_security_group_id,omitempty"`
 	// CIDR blocks as the source.
 	// Optional. Empty list means any address.
-	// Must be a valid IPv4
-	// Maximum of 8 CIDRs can be specified.
+	// Each value must be a valid IPv4 CIDR.
+	// Specify at most 8 CIDRs.
 	SourceCidrs []string `protobuf:"bytes,2,rep,name=source_cidrs,json=sourceCidrs,proto3" json:"source_cidrs,omitempty"`
 	// List of destination ports to which the rule applies.
 	// Optional. Empty list means any port.
@@ -556,8 +556,8 @@ type RuleEgress struct {
 	DestinationSecurityGroupId string `protobuf:"bytes,1,opt,name=destination_security_group_id,json=destinationSecurityGroupId,proto3" json:"destination_security_group_id,omitempty"`
 	// CIDR blocks as the destination.
 	// Optional. Empty list means any address.
-	// Must be a valid IPv4.
-	// Maximum of 8 CIDRs can be specified.
+	// Each value must be a valid IPv4 CIDR.
+	// Specify at most 8 CIDRs.
 	DestinationCidrs []string `protobuf:"bytes,2,rep,name=destination_cidrs,json=destinationCidrs,proto3" json:"destination_cidrs,omitempty"`
 	// List of ports to which the rule applies.
 	// Optional. Empty list means any port.
