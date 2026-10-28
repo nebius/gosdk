@@ -283,11 +283,11 @@ var File_nebius_iam_v1_auth_public_key_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v1_auth_public_key_proto_rawDesc = "" +
 	"\n" +
-	"#nebius/iam/v1/auth_public_key.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1anebius/iam/v1/access.proto\"\xdd\x01\n" +
+	"#nebius/iam/v1/auth_public_key.proto\x12\rnebius.iam.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1anebius/iam/v1/access.proto\"\xd7\x01\n" +
 	"\rAuthPublicKey\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12<\n" +
 	"\x04spec\x18\x02 \x01(\v2 .nebius.iam.v1.AuthPublicKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12@\n" +
-	"\x06status\x18\x03 \x01(\v2\".nebius.iam.v1.AuthPublicKeyStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02\"\xc8\x01\n" +
+	"\x06status\x18\x03 \x01(\v2\".nebius.iam.v1.AuthPublicKeyStatusB\x04\xbaJ\x01\x05R\x06status\"\xc8\x01\n" +
 	"\x11AuthPublicKeySpec\x126\n" +
 	"\aaccount\x18\x01 \x01(\v2\x16.nebius.iam.v1.AccountB\x04\xbaJ\x01\x02R\aaccount\x12?\n" +
 	"\n" +
