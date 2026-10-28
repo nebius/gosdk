@@ -366,11 +366,11 @@ var File_nebius_iam_v2_access_key_proto protoreflect.FileDescriptor
 
 const file_nebius_iam_v2_access_key_proto_rawDesc = "" +
 	"\n" +
-	"\x1enebius/iam/v2/access_key.proto\x12\rnebius.iam.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1anebius/iam/v1/access.proto\"\xd1\x01\n" +
+	"\x1enebius/iam/v2/access_key.proto\x12\rnebius.iam.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a\x1anebius/iam/v1/access.proto\"\xcb\x01\n" +
 	"\tAccessKey\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x128\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1c.nebius.iam.v2.AccessKeySpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12<\n" +
-	"\x06status\x18\x03 \x01(\v2\x1e.nebius.iam.v2.AccessKeyStatusB\x04\xbaJ\x01\x05R\x06status:\x04\xbaJ\x01\x02\"\x85\x02\n" +
+	"\x06status\x18\x03 \x01(\v2\x1e.nebius.iam.v2.AccessKeyStatusB\x04\xbaJ\x01\x05R\x06status\"\x85\x02\n" +
 	"\rAccessKeySpec\x126\n" +
 	"\aaccount\x18\x01 \x01(\v2\x16.nebius.iam.v1.AccountB\x04\xbaJ\x01\x02R\aaccount\x12?\n" +
 	"\n" +
