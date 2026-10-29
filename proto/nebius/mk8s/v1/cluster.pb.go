@@ -197,6 +197,7 @@ type ControlPlaneSpec struct {
 	// Option for patch version update will be added later.
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Nebius VPC Subnet ID where control plane instances will be located.
+	// If it isn't specified default network of the parent container will be used.
 	// Also will be default NodeGroup subnet.
 	SubnetId string `protobuf:"bytes,2,opt,name=subnet_id,json=subnetId,proto3" json:"subnet_id,omitempty"`
 	// Specification of endpoints of cluster control plane.
@@ -764,10 +765,10 @@ const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"\x06status\x18\x03 \x01(\v2\x1d.nebius.mk8s.v1.ClusterStatusR\x06status\"\xa0\x01\n" +
 	"\vClusterSpec\x12M\n" +
 	"\rcontrol_plane\x18\x02 \x01(\v2 .nebius.mk8s.v1.ControlPlaneSpecB\x06\xbaH\x03\xc8\x01\x01R\fcontrolPlane\x12B\n" +
-	"\fkube_network\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.KubeNetworkSpecR\vkubeNetwork\"\xfc\x02\n" +
+	"\fkube_network\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.KubeNetworkSpecR\vkubeNetwork\"\xf7\x02\n" +
 	"\x10ControlPlaneSpec\x12,\n" +
-	"\aversion\x18\x01 \x01(\tB\x12\xbaH\x0fr\r2\v|^\\d\\.\\d\\d$R\aversion\x125\n" +
-	"\tsubnet_id\x18\x02 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\v\n" +
+	"\aversion\x18\x01 \x01(\tB\x12\xbaH\x0fr\r2\v|^\\d\\.\\d\\d$R\aversion\x120\n" +
+	"\tsubnet_id\x18\x02 \x01(\tB\x13\xbaJ\x02\a\x02\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x12G\n" +
 	"\tendpoints\x18\x03 \x01(\v2).nebius.mk8s.v1.ControlPlaneEndpointsSpecR\tendpoints\x127\n" +
 	"\x11etcd_cluster_size\x18\x04 \x01(\x03B\v\xbaH\b\"\x060\x000\x010\x03R\x0fetcdClusterSize\x12B\n" +
