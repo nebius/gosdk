@@ -293,7 +293,7 @@ func (*VmAppTemplateSpec_ContainerTemplate) isVmAppTemplateSpec_Definition() {}
 type ContainerTemplateDefinition struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
 	Description string                 `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
-	// The URL of the template icon.
+	// The template icon URL for light mode and clients without theme support.
 	IconUrl string `protobuf:"bytes,2,opt,name=icon_url,json=iconUrl,proto3" json:"icon_url,omitempty"`
 	// The inputs that configure the template.
 	Inputs []*TemplateInput `protobuf:"bytes,3,rep,name=inputs,proto3" json:"inputs,omitempty"`
@@ -304,6 +304,8 @@ type ContainerTemplateDefinition struct {
 	SupportedPlatforms []*SupportedPlatform `protobuf:"bytes,5,rep,name=supported_platforms,json=supportedPlatforms,proto3" json:"supported_platforms,omitempty"`
 	// The substitutions to apply when their conditions match.
 	Substitutions []*ContainerTemplateDefinition_Substitution `protobuf:"bytes,6,rep,name=substitutions,proto3" json:"substitutions,omitempty"`
+	// The template icon URL for dark mode. Use icon_url when this value is empty.
+	DarkIconUrl   string `protobuf:"bytes,7,opt,name=dark_icon_url,json=darkIconUrl,proto3" json:"dark_icon_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -378,6 +380,13 @@ func (x *ContainerTemplateDefinition) GetSubstitutions() []*ContainerTemplateDef
 		return x.Substitutions
 	}
 	return nil
+}
+
+func (x *ContainerTemplateDefinition) GetDarkIconUrl() string {
+	if x != nil {
+		return x.DarkIconUrl
+	}
+	return ""
 }
 
 type TemplateInput struct {
@@ -623,7 +632,7 @@ func (*TemplateInput_ServiceAccountMirrorInput_) isTemplateInput_Input() {}
 type VmAppTemplateStatus struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
 	Description string                 `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
-	// The URL of the template icon.
+	// The template icon URL for light mode and clients without theme support.
 	IconUrl string `protobuf:"bytes,2,opt,name=icon_url,json=iconUrl,proto3" json:"icon_url,omitempty"`
 	// The fields that accept values for this template.
 	InputFields []*TemplateInputField `protobuf:"bytes,3,rep,name=input_fields,json=inputFields,proto3" json:"input_fields,omitempty"`
@@ -631,7 +640,9 @@ type VmAppTemplateStatus struct {
 	// If empty, the VM app template is supported on all platforms.
 	SupportedPlatforms []*SupportedPlatform `protobuf:"bytes,4,rep,name=supported_platforms,json=supportedPlatforms,proto3" json:"supported_platforms,omitempty"`
 	// Categories that the template belongs to.
-	Categories    []string `protobuf:"bytes,5,rep,name=categories,proto3" json:"categories,omitempty"`
+	Categories []string `protobuf:"bytes,5,rep,name=categories,proto3" json:"categories,omitempty"`
+	// The template icon URL for dark mode. Use icon_url when this value is empty.
+	DarkIconUrl   string `protobuf:"bytes,6,opt,name=dark_icon_url,json=darkIconUrl,proto3" json:"dark_icon_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -699,6 +710,13 @@ func (x *VmAppTemplateStatus) GetCategories() []string {
 		return x.Categories
 	}
 	return nil
+}
+
+func (x *VmAppTemplateStatus) GetDarkIconUrl() string {
+	if x != nil {
+		return x.DarkIconUrl
+	}
+	return ""
 }
 
 type TemplateInputField struct {
@@ -2189,7 +2207,7 @@ const file_nebius_applications_v1alpha1_vmapp_template_proto_rawDesc = "" +
 	"\x12container_template\x18\x01 \x01(\v29.nebius.applications.v1alpha1.ContainerTemplateDefinitionH\x00R\x11containerTemplate\x12\x19\n" +
 	"\x04kind\x18\xe8\a \x01(\tB\x04\xbaJ\x01\aR\x04kindB\f\n" +
 	"\n" +
-	"definition\"\xad\x10\n" +
+	"definition\"\xd1\x10\n" +
 	"\x1bContainerTemplateDefinition\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x19\n" +
 	"\bicon_url\x18\x02 \x01(\tR\aiconUrl\x12C\n" +
@@ -2198,7 +2216,8 @@ const file_nebius_applications_v1alpha1_vmapp_template_proto_rawDesc = "" +
 	"containers\x18\x04 \x03(\v21.nebius.applications.v1alpha1.ContainerDefinitionR\n" +
 	"containers\x12`\n" +
 	"\x13supported_platforms\x18\x05 \x03(\v2/.nebius.applications.v1alpha1.SupportedPlatformR\x12supportedPlatforms\x12l\n" +
-	"\rsubstitutions\x18\x06 \x03(\v2F.nebius.applications.v1alpha1.ContainerTemplateDefinition.SubstitutionR\rsubstitutions\x1a\xac\x02\n" +
+	"\rsubstitutions\x18\x06 \x03(\v2F.nebius.applications.v1alpha1.ContainerTemplateDefinition.SubstitutionR\rsubstitutions\x12\"\n" +
+	"\rdark_icon_url\x18\a \x01(\tR\vdarkIconUrl\x1a\xac\x02\n" +
 	"\fSubstitution\x12-\n" +
 	"\x0econtainer_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\rcontainerName\x12o\n" +
 	"\n" +
@@ -2330,7 +2349,7 @@ const file_nebius_applications_v1alpha1_vmapp_template_proto_rawDesc = "" +
 	"\tsensitive\x18\x04 \x01(\bR\tsensitive\x1a=\n" +
 	"\x19ServiceAccountMirrorInput\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescriptionB\x0e\n" +
-	"\x05input\x12\x05\xbaH\x02\b\x01\"\xa9\x02\n" +
+	"\x05input\x12\x05\xbaH\x02\b\x01\"\xcd\x02\n" +
 	"\x13VmAppTemplateStatus\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x19\n" +
 	"\bicon_url\x18\x02 \x01(\tR\aiconUrl\x12S\n" +
@@ -2338,7 +2357,8 @@ const file_nebius_applications_v1alpha1_vmapp_template_proto_rawDesc = "" +
 	"\x13supported_platforms\x18\x04 \x03(\v2/.nebius.applications.v1alpha1.SupportedPlatformR\x12supportedPlatforms\x12\x1e\n" +
 	"\n" +
 	"categories\x18\x05 \x03(\tR\n" +
-	"categories\"\xe8\x02\n" +
+	"categories\x12\"\n" +
+	"\rdark_icon_url\x18\x06 \x01(\tR\vdarkIconUrl\"\xe8\x02\n" +
 	"\x12TemplateInputField\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12Q\n" +
 	"\x04type\x18\x02 \x01(\x0e25.nebius.applications.v1alpha1.TemplateInputField.TypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12\x12\n" +
