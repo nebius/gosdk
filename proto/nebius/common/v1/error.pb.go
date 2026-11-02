@@ -1100,7 +1100,9 @@ type QuotaFailure_Violation struct {
 	// Maximum permissible value.
 	Limit string `protobuf:"bytes,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	// Requested value.
-	Requested     string `protobuf:"bytes,4,opt,name=requested,proto3" json:"requested,omitempty"`
+	Requested string `protobuf:"bytes,4,opt,name=requested,proto3" json:"requested,omitempty"`
+	// Region for the violation, if known. E.g. "eu-north1".
+	Region        string `protobuf:"bytes,10,opt,name=region,proto3" json:"region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1159,6 +1161,13 @@ func (x *QuotaFailure_Violation) GetLimit() string {
 func (x *QuotaFailure_Violation) GetRequested() string {
 	if x != nil {
 		return x.Requested
+	}
+	return ""
+}
+
+func (x *QuotaFailure_Violation) GetRegion() string {
+	if x != nil {
+		return x.Region
 	}
 	return ""
 }
@@ -1303,16 +1312,18 @@ const file_nebius_common_v1_error_proto_rawDesc = "" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12\x19\n" +
 	"\btrace_id\x18\x02 \x01(\tR\atraceId\"/\n" +
 	"\x0fTooManyRequests\x12\x1c\n" +
-	"\tviolation\x18\x01 \x01(\tR\tviolation\"\xc9\x01\n" +
+	"\tviolation\x18\x01 \x01(\tR\tviolation\"\xe2\x01\n" +
 	"\fQuotaFailure\x12H\n" +
 	"\n" +
 	"violations\x18\x01 \x03(\v2(.nebius.common.v1.QuotaFailure.ViolationR\n" +
-	"violations\x1ao\n" +
+	"violations\x1a\x87\x01\n" +
 	"\tViolation\x12\x14\n" +
 	"\x05quota\x18\x01 \x01(\tR\x05quota\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\tR\x05limit\x12\x1c\n" +
-	"\trequested\x18\x04 \x01(\tR\trequested\"\xce\x01\n" +
+	"\trequested\x18\x04 \x01(\tR\trequested\x12\x16\n" +
+	"\x06region\x18\n" +
+	" \x01(\tR\x06region\"\xce\x01\n" +
 	"\x12NotEnoughResources\x12N\n" +
 	"\n" +
 	"violations\x18\x01 \x03(\v2..nebius.common.v1.NotEnoughResources.ViolationR\n" +

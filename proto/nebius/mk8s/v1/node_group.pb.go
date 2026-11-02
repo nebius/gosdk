@@ -288,6 +288,59 @@ func (NodeGroupStatus_State) EnumDescriptor() ([]byte, []int) {
 	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{27, 0}
 }
 
+// Image pull modes for SOCI Snapshotter
+type ContainerRuntime_SOCIPullMode int32
+
+const (
+	// Uses the default containerd pull.
+	ContainerRuntime_SOCI_PULL_MODE_UNSPECIFIED ContainerRuntime_SOCIPullMode = 0
+	// Uses SOCI Snapshotter to fetch image layers on demand.
+	ContainerRuntime_LAZY ContainerRuntime_SOCIPullMode = 1
+	// Uses SOCI Snapshotter to download and unpack image layers in parallel.
+	ContainerRuntime_PARALLEL ContainerRuntime_SOCIPullMode = 2
+)
+
+// Enum value maps for ContainerRuntime_SOCIPullMode.
+var (
+	ContainerRuntime_SOCIPullMode_name = map[int32]string{
+		0: "SOCI_PULL_MODE_UNSPECIFIED",
+		1: "LAZY",
+		2: "PARALLEL",
+	}
+	ContainerRuntime_SOCIPullMode_value = map[string]int32{
+		"SOCI_PULL_MODE_UNSPECIFIED": 0,
+		"LAZY":                       1,
+		"PARALLEL":                   2,
+	}
+)
+
+func (x ContainerRuntime_SOCIPullMode) Enum() *ContainerRuntime_SOCIPullMode {
+	p := new(ContainerRuntime_SOCIPullMode)
+	*p = x
+	return p
+}
+
+func (x ContainerRuntime_SOCIPullMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ContainerRuntime_SOCIPullMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_nebius_mk8s_v1_node_group_proto_enumTypes[5].Descriptor()
+}
+
+func (ContainerRuntime_SOCIPullMode) Type() protoreflect.EnumType {
+	return &file_nebius_mk8s_v1_node_group_proto_enumTypes[5]
+}
+
+func (x ContainerRuntime_SOCIPullMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ContainerRuntime_SOCIPullMode.Descriptor instead.
+func (ContainerRuntime_SOCIPullMode) EnumDescriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{28, 0}
+}
+
 // NodeGroup represents Kubernetes node pool - set of worker machines having the same configuration.
 // A Node is a Nebius Compute Instance created in Cluster.metadata.parent_id container, running kubelet
 // that registers in Kubernetes API and a Node object created.
@@ -536,9 +589,11 @@ type NodeTemplate struct {
 	//	*NodeTemplate_OnDemand
 	//	*NodeTemplate_FollowsSpotPrice
 	//	*NodeTemplate_SpotPricingPolicy
-	PricingModel  isNodeTemplate_PricingModel `protobuf_oneof:"pricing_model"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	PricingModel isNodeTemplate_PricingModel `protobuf_oneof:"pricing_model"`
+	// Configures container runtime for the node group.
+	ContainerRuntime *ContainerRuntime `protobuf:"bytes,24,opt,name=container_runtime,json=containerRuntime,proto3" json:"container_runtime,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *NodeTemplate) Reset() {
@@ -720,6 +775,13 @@ func (x *NodeTemplate) GetSpotPricingPolicy() *SpotPricingPolicySpec {
 		if x, ok := x.PricingModel.(*NodeTemplate_SpotPricingPolicy); ok {
 			return x.SpotPricingPolicy
 		}
+	}
+	return nil
+}
+
+func (x *NodeTemplate) GetContainerRuntime() *ContainerRuntime {
+	if x != nil {
+		return x.ContainerRuntime
 	}
 	return nil
 }
@@ -2300,6 +2362,52 @@ func (x *NodeGroupStatus) GetReconciling() bool {
 	return false
 }
 
+// Configures container runtime for the node group.
+type ContainerRuntime struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Uses SOCI Snapshotter to pull images.
+	SociPullMode  ContainerRuntime_SOCIPullMode `protobuf:"varint,1,opt,name=soci_pull_mode,json=sociPullMode,proto3,enum=nebius.mk8s.v1.ContainerRuntime_SOCIPullMode" json:"soci_pull_mode,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ContainerRuntime) Reset() {
+	*x = ContainerRuntime{}
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ContainerRuntime) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ContainerRuntime) ProtoMessage() {}
+
+func (x *ContainerRuntime) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_node_group_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ContainerRuntime.ProtoReflect.Descriptor instead.
+func (*ContainerRuntime) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_node_group_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *ContainerRuntime) GetSociPullMode() ContainerRuntime_SOCIPullMode {
+	if x != nil {
+		return x.SociPullMode
+	}
+	return ContainerRuntime_SOCI_PULL_MODE_UNSPECIFIED
+}
+
 var File_nebius_mk8s_v1_node_group_proto protoreflect.FileDescriptor
 
 const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
@@ -2320,8 +2428,7 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"autoRepair:\xd0\x03\xbaH\xcc\x03\x1a\x94\x01\n" +
 	"\"node_group_spec.nvlink_autoscaling\x127autoscaling cannot be used for a node group with NVLink\x1a5!(has(this.template.nvlink) && has(this.autoscaling))\x1a\xb2\x02\n" +
 	" node_group_spec.nvlink_max_surge\x120max_surge must be 0 for a node group with NVLink\x1a\xdb\x01!has(this.template.nvlink) || !has(this.strategy.max_surge) || (has(this.strategy.max_surge.count) && this.strategy.max_surge.count == 0) || (has(this.strategy.max_surge.percent) && this.strategy.max_surge.percent == 0)B\r\n" +
-	"\x04size\x12\x05\xbaH\x02\b\x01\"\xe4\n" +
-	"\n" +
+	"\x04size\x12\x05\xbaH\x02\b\x01\"\xb3\v\n" +
 	"\fNodeTemplate\x12@\n" +
 	"\bmetadata\x18\x01 \x01(\v2$.nebius.mk8s.v1.NodeMetadataTemplateR\bmetadata\x12;\n" +
 	"\x06taints\x18\x02 \x03(\v2\x19.nebius.mk8s.v1.NodeTaintB\b\xbaH\x05\x92\x01\x02\x10dR\x06taints\x12C\n" +
@@ -2347,7 +2454,8 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\xd8\x01\x01\"\x05\x18\x80\x02(\bR\amaxPods\x12A\n" +
 	"\ton_demand\x18\x15 \x01(\v2\x1c.nebius.mk8s.v1.OnDemandSpecB\x04\xbaJ\x01\x06H\x00R\bonDemand\x12Z\n" +
 	"\x12follows_spot_price\x18\x16 \x01(\v2$.nebius.mk8s.v1.FollowsSpotPriceSpecB\x04\xbaJ\x01\x06H\x00R\x10followsSpotPrice\x12W\n" +
-	"\x13spot_pricing_policy\x18\x17 \x01(\v2%.nebius.mk8s.v1.SpotPricingPolicySpecH\x00R\x11spotPricingPolicyB\x0f\n" +
+	"\x13spot_pricing_policy\x18\x17 \x01(\v2%.nebius.mk8s.v1.SpotPricingPolicySpecH\x00R\x11spotPricingPolicy\x12M\n" +
+	"\x11container_runtime\x18\x18 \x01(\v2 .nebius.mk8s.v1.ContainerRuntimeR\x10containerRuntimeB\x0f\n" +
 	"\rpricing_model\"w\n" +
 	"\n" +
 	"NVLinkSpec\x12U\n" +
@@ -2467,7 +2575,13 @@ const file_nebius_mk8s_v1_node_group_proto_rawDesc = "" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fPROVISIONING\x10\x01\x12\v\n" +
 	"\aRUNNING\x10\x02\x12\f\n" +
-	"\bDELETING\x10\x03*U\n" +
+	"\bDELETING\x10\x03\"\xaf\x01\n" +
+	"\x10ContainerRuntime\x12S\n" +
+	"\x0esoci_pull_mode\x18\x01 \x01(\x0e2-.nebius.mk8s.v1.ContainerRuntime.SOCIPullModeR\fsociPullMode\"F\n" +
+	"\fSOCIPullMode\x12\x1e\n" +
+	"\x1aSOCI_PULL_MODE_UNSPECIFIED\x10\x00\x12\b\n" +
+	"\x04LAZY\x10\x01\x12\f\n" +
+	"\bPARALLEL\x10\x02*U\n" +
 	"\x0fConditionStatus\x12 \n" +
 	"\x1cCONDITION_STATUS_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04TRUE\x10\x01\x12\t\n" +
@@ -2487,98 +2601,102 @@ func file_nebius_mk8s_v1_node_group_proto_rawDescGZIP() []byte {
 	return file_nebius_mk8s_v1_node_group_proto_rawDescData
 }
 
-var file_nebius_mk8s_v1_node_group_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_nebius_mk8s_v1_node_group_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_nebius_mk8s_v1_node_group_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_nebius_mk8s_v1_node_group_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
 var file_nebius_mk8s_v1_node_group_proto_goTypes = []any{
 	(ConditionStatus)(0),                   // 0: nebius.mk8s.v1.ConditionStatus
 	(AttachedFilesystemSpec_AttachMode)(0), // 1: nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
 	(NodeTaint_Effect)(0),                  // 2: nebius.mk8s.v1.NodeTaint.Effect
 	(ReservationPolicy_Policy)(0),          // 3: nebius.mk8s.v1.ReservationPolicy.Policy
 	(NodeGroupStatus_State)(0),             // 4: nebius.mk8s.v1.NodeGroupStatus.State
-	(*NodeGroup)(nil),                      // 5: nebius.mk8s.v1.NodeGroup
-	(*NodeGroupSpec)(nil),                  // 6: nebius.mk8s.v1.NodeGroupSpec
-	(*NodeTemplate)(nil),                   // 7: nebius.mk8s.v1.NodeTemplate
-	(*NVLinkSpec)(nil),                     // 8: nebius.mk8s.v1.NVLinkSpec
-	(*NodeMetadataTemplate)(nil),           // 9: nebius.mk8s.v1.NodeMetadataTemplate
-	(*GpuSettings)(nil),                    // 10: nebius.mk8s.v1.GpuSettings
-	(*GpuClusterSpec)(nil),                 // 11: nebius.mk8s.v1.GpuClusterSpec
-	(*NetworkInterfaceTemplate)(nil),       // 12: nebius.mk8s.v1.NetworkInterfaceTemplate
-	(*PublicIPAddress)(nil),                // 13: nebius.mk8s.v1.PublicIPAddress
-	(*SecurityGroup)(nil),                  // 14: nebius.mk8s.v1.SecurityGroup
-	(*AttachedFilesystemSpec)(nil),         // 15: nebius.mk8s.v1.AttachedFilesystemSpec
-	(*ExistingFilesystem)(nil),             // 16: nebius.mk8s.v1.ExistingFilesystem
-	(*NodeGroupAutoscalingSpec)(nil),       // 17: nebius.mk8s.v1.NodeGroupAutoscalingSpec
-	(*InstanceMetadataTemplate)(nil),       // 18: nebius.mk8s.v1.InstanceMetadataTemplate
-	(*NodeTaint)(nil),                      // 19: nebius.mk8s.v1.NodeTaint
-	(*NodeGroupDeploymentStrategy)(nil),    // 20: nebius.mk8s.v1.NodeGroupDeploymentStrategy
-	(*PercentOrCount)(nil),                 // 21: nebius.mk8s.v1.PercentOrCount
-	(*NodeGroupAutoRepairSpec)(nil),        // 22: nebius.mk8s.v1.NodeGroupAutoRepairSpec
-	(*NodeAutoRepairCondition)(nil),        // 23: nebius.mk8s.v1.NodeAutoRepairCondition
-	(*PreemptibleSpec)(nil),                // 24: nebius.mk8s.v1.PreemptibleSpec
-	(*OnDemandSpec)(nil),                   // 25: nebius.mk8s.v1.OnDemandSpec
-	(*FollowsSpotPriceSpec)(nil),           // 26: nebius.mk8s.v1.FollowsSpotPriceSpec
-	(*SpotPricingPolicySpec)(nil),          // 27: nebius.mk8s.v1.SpotPricingPolicySpec
-	(*ReservationPolicy)(nil),              // 28: nebius.mk8s.v1.ReservationPolicy
-	(*LocalDisksSpec)(nil),                 // 29: nebius.mk8s.v1.LocalDisksSpec
-	(*PassthroughGroupRequest)(nil),        // 30: nebius.mk8s.v1.PassthroughGroupRequest
-	(*LocalDisksSpecConfig)(nil),           // 31: nebius.mk8s.v1.LocalDisksSpecConfig
-	(*NodeGroupStatus)(nil),                // 32: nebius.mk8s.v1.NodeGroupStatus
-	nil,                                    // 33: nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
-	nil,                                    // 34: nebius.mk8s.v1.InstanceMetadataTemplate.LabelsEntry
-	(*v1.ResourceMetadata)(nil),            // 35: nebius.common.v1.ResourceMetadata
-	(*ResourcesSpec)(nil),                  // 36: nebius.mk8s.v1.ResourcesSpec
-	(*DiskSpec)(nil),                       // 37: nebius.mk8s.v1.DiskSpec
-	(*durationpb.Duration)(nil),            // 38: google.protobuf.Duration
-	(*v1.RecurrentResourceEvent)(nil),      // 39: nebius.common.v1.RecurrentResourceEvent
+	(ContainerRuntime_SOCIPullMode)(0),     // 5: nebius.mk8s.v1.ContainerRuntime.SOCIPullMode
+	(*NodeGroup)(nil),                      // 6: nebius.mk8s.v1.NodeGroup
+	(*NodeGroupSpec)(nil),                  // 7: nebius.mk8s.v1.NodeGroupSpec
+	(*NodeTemplate)(nil),                   // 8: nebius.mk8s.v1.NodeTemplate
+	(*NVLinkSpec)(nil),                     // 9: nebius.mk8s.v1.NVLinkSpec
+	(*NodeMetadataTemplate)(nil),           // 10: nebius.mk8s.v1.NodeMetadataTemplate
+	(*GpuSettings)(nil),                    // 11: nebius.mk8s.v1.GpuSettings
+	(*GpuClusterSpec)(nil),                 // 12: nebius.mk8s.v1.GpuClusterSpec
+	(*NetworkInterfaceTemplate)(nil),       // 13: nebius.mk8s.v1.NetworkInterfaceTemplate
+	(*PublicIPAddress)(nil),                // 14: nebius.mk8s.v1.PublicIPAddress
+	(*SecurityGroup)(nil),                  // 15: nebius.mk8s.v1.SecurityGroup
+	(*AttachedFilesystemSpec)(nil),         // 16: nebius.mk8s.v1.AttachedFilesystemSpec
+	(*ExistingFilesystem)(nil),             // 17: nebius.mk8s.v1.ExistingFilesystem
+	(*NodeGroupAutoscalingSpec)(nil),       // 18: nebius.mk8s.v1.NodeGroupAutoscalingSpec
+	(*InstanceMetadataTemplate)(nil),       // 19: nebius.mk8s.v1.InstanceMetadataTemplate
+	(*NodeTaint)(nil),                      // 20: nebius.mk8s.v1.NodeTaint
+	(*NodeGroupDeploymentStrategy)(nil),    // 21: nebius.mk8s.v1.NodeGroupDeploymentStrategy
+	(*PercentOrCount)(nil),                 // 22: nebius.mk8s.v1.PercentOrCount
+	(*NodeGroupAutoRepairSpec)(nil),        // 23: nebius.mk8s.v1.NodeGroupAutoRepairSpec
+	(*NodeAutoRepairCondition)(nil),        // 24: nebius.mk8s.v1.NodeAutoRepairCondition
+	(*PreemptibleSpec)(nil),                // 25: nebius.mk8s.v1.PreemptibleSpec
+	(*OnDemandSpec)(nil),                   // 26: nebius.mk8s.v1.OnDemandSpec
+	(*FollowsSpotPriceSpec)(nil),           // 27: nebius.mk8s.v1.FollowsSpotPriceSpec
+	(*SpotPricingPolicySpec)(nil),          // 28: nebius.mk8s.v1.SpotPricingPolicySpec
+	(*ReservationPolicy)(nil),              // 29: nebius.mk8s.v1.ReservationPolicy
+	(*LocalDisksSpec)(nil),                 // 30: nebius.mk8s.v1.LocalDisksSpec
+	(*PassthroughGroupRequest)(nil),        // 31: nebius.mk8s.v1.PassthroughGroupRequest
+	(*LocalDisksSpecConfig)(nil),           // 32: nebius.mk8s.v1.LocalDisksSpecConfig
+	(*NodeGroupStatus)(nil),                // 33: nebius.mk8s.v1.NodeGroupStatus
+	(*ContainerRuntime)(nil),               // 34: nebius.mk8s.v1.ContainerRuntime
+	nil,                                    // 35: nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
+	nil,                                    // 36: nebius.mk8s.v1.InstanceMetadataTemplate.LabelsEntry
+	(*v1.ResourceMetadata)(nil),            // 37: nebius.common.v1.ResourceMetadata
+	(*ResourcesSpec)(nil),                  // 38: nebius.mk8s.v1.ResourcesSpec
+	(*DiskSpec)(nil),                       // 39: nebius.mk8s.v1.DiskSpec
+	(*durationpb.Duration)(nil),            // 40: google.protobuf.Duration
+	(*v1.RecurrentResourceEvent)(nil),      // 41: nebius.common.v1.RecurrentResourceEvent
 }
 var file_nebius_mk8s_v1_node_group_proto_depIdxs = []int32{
-	35, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
-	6,  // 1: nebius.mk8s.v1.NodeGroup.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
-	32, // 2: nebius.mk8s.v1.NodeGroup.status:type_name -> nebius.mk8s.v1.NodeGroupStatus
-	17, // 3: nebius.mk8s.v1.NodeGroupSpec.autoscaling:type_name -> nebius.mk8s.v1.NodeGroupAutoscalingSpec
-	7,  // 4: nebius.mk8s.v1.NodeGroupSpec.template:type_name -> nebius.mk8s.v1.NodeTemplate
-	20, // 5: nebius.mk8s.v1.NodeGroupSpec.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
-	22, // 6: nebius.mk8s.v1.NodeGroupSpec.auto_repair:type_name -> nebius.mk8s.v1.NodeGroupAutoRepairSpec
-	9,  // 7: nebius.mk8s.v1.NodeTemplate.metadata:type_name -> nebius.mk8s.v1.NodeMetadataTemplate
-	19, // 8: nebius.mk8s.v1.NodeTemplate.taints:type_name -> nebius.mk8s.v1.NodeTaint
-	36, // 9: nebius.mk8s.v1.NodeTemplate.resources:type_name -> nebius.mk8s.v1.ResourcesSpec
-	37, // 10: nebius.mk8s.v1.NodeTemplate.boot_disk:type_name -> nebius.mk8s.v1.DiskSpec
-	10, // 11: nebius.mk8s.v1.NodeTemplate.gpu_settings:type_name -> nebius.mk8s.v1.GpuSettings
-	11, // 12: nebius.mk8s.v1.NodeTemplate.gpu_cluster:type_name -> nebius.mk8s.v1.GpuClusterSpec
-	12, // 13: nebius.mk8s.v1.NodeTemplate.network_interfaces:type_name -> nebius.mk8s.v1.NetworkInterfaceTemplate
-	15, // 14: nebius.mk8s.v1.NodeTemplate.filesystems:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec
-	18, // 15: nebius.mk8s.v1.NodeTemplate.instance_metadata:type_name -> nebius.mk8s.v1.InstanceMetadataTemplate
-	24, // 16: nebius.mk8s.v1.NodeTemplate.preemptible:type_name -> nebius.mk8s.v1.PreemptibleSpec
-	8,  // 17: nebius.mk8s.v1.NodeTemplate.nvlink:type_name -> nebius.mk8s.v1.NVLinkSpec
-	28, // 18: nebius.mk8s.v1.NodeTemplate.reservation_policy:type_name -> nebius.mk8s.v1.ReservationPolicy
-	29, // 19: nebius.mk8s.v1.NodeTemplate.local_disks:type_name -> nebius.mk8s.v1.LocalDisksSpec
-	25, // 20: nebius.mk8s.v1.NodeTemplate.on_demand:type_name -> nebius.mk8s.v1.OnDemandSpec
-	26, // 21: nebius.mk8s.v1.NodeTemplate.follows_spot_price:type_name -> nebius.mk8s.v1.FollowsSpotPriceSpec
-	27, // 22: nebius.mk8s.v1.NodeTemplate.spot_pricing_policy:type_name -> nebius.mk8s.v1.SpotPricingPolicySpec
-	33, // 23: nebius.mk8s.v1.NodeMetadataTemplate.labels:type_name -> nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
-	13, // 24: nebius.mk8s.v1.NetworkInterfaceTemplate.public_ip_address:type_name -> nebius.mk8s.v1.PublicIPAddress
-	14, // 25: nebius.mk8s.v1.NetworkInterfaceTemplate.security_groups:type_name -> nebius.mk8s.v1.SecurityGroup
-	1,  // 26: nebius.mk8s.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
-	16, // 27: nebius.mk8s.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.mk8s.v1.ExistingFilesystem
-	34, // 28: nebius.mk8s.v1.InstanceMetadataTemplate.labels:type_name -> nebius.mk8s.v1.InstanceMetadataTemplate.LabelsEntry
-	2,  // 29: nebius.mk8s.v1.NodeTaint.effect:type_name -> nebius.mk8s.v1.NodeTaint.Effect
-	21, // 30: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_unavailable:type_name -> nebius.mk8s.v1.PercentOrCount
-	21, // 31: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_surge:type_name -> nebius.mk8s.v1.PercentOrCount
-	38, // 32: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
-	23, // 33: nebius.mk8s.v1.NodeGroupAutoRepairSpec.conditions:type_name -> nebius.mk8s.v1.NodeAutoRepairCondition
-	0,  // 34: nebius.mk8s.v1.NodeAutoRepairCondition.status:type_name -> nebius.mk8s.v1.ConditionStatus
-	38, // 35: nebius.mk8s.v1.NodeAutoRepairCondition.timeout:type_name -> google.protobuf.Duration
-	3,  // 36: nebius.mk8s.v1.ReservationPolicy.policy:type_name -> nebius.mk8s.v1.ReservationPolicy.Policy
-	30, // 37: nebius.mk8s.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.mk8s.v1.PassthroughGroupRequest
-	31, // 38: nebius.mk8s.v1.LocalDisksSpec.config:type_name -> nebius.mk8s.v1.LocalDisksSpecConfig
-	4,  // 39: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
-	39, // 40: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
-	20, // 41: nebius.mk8s.v1.NodeGroupStatus.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
-	42, // [42:42] is the sub-list for method output_type
-	42, // [42:42] is the sub-list for method input_type
-	42, // [42:42] is the sub-list for extension type_name
-	42, // [42:42] is the sub-list for extension extendee
-	0,  // [0:42] is the sub-list for field type_name
+	37, // 0: nebius.mk8s.v1.NodeGroup.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	7,  // 1: nebius.mk8s.v1.NodeGroup.spec:type_name -> nebius.mk8s.v1.NodeGroupSpec
+	33, // 2: nebius.mk8s.v1.NodeGroup.status:type_name -> nebius.mk8s.v1.NodeGroupStatus
+	18, // 3: nebius.mk8s.v1.NodeGroupSpec.autoscaling:type_name -> nebius.mk8s.v1.NodeGroupAutoscalingSpec
+	8,  // 4: nebius.mk8s.v1.NodeGroupSpec.template:type_name -> nebius.mk8s.v1.NodeTemplate
+	21, // 5: nebius.mk8s.v1.NodeGroupSpec.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
+	23, // 6: nebius.mk8s.v1.NodeGroupSpec.auto_repair:type_name -> nebius.mk8s.v1.NodeGroupAutoRepairSpec
+	10, // 7: nebius.mk8s.v1.NodeTemplate.metadata:type_name -> nebius.mk8s.v1.NodeMetadataTemplate
+	20, // 8: nebius.mk8s.v1.NodeTemplate.taints:type_name -> nebius.mk8s.v1.NodeTaint
+	38, // 9: nebius.mk8s.v1.NodeTemplate.resources:type_name -> nebius.mk8s.v1.ResourcesSpec
+	39, // 10: nebius.mk8s.v1.NodeTemplate.boot_disk:type_name -> nebius.mk8s.v1.DiskSpec
+	11, // 11: nebius.mk8s.v1.NodeTemplate.gpu_settings:type_name -> nebius.mk8s.v1.GpuSettings
+	12, // 12: nebius.mk8s.v1.NodeTemplate.gpu_cluster:type_name -> nebius.mk8s.v1.GpuClusterSpec
+	13, // 13: nebius.mk8s.v1.NodeTemplate.network_interfaces:type_name -> nebius.mk8s.v1.NetworkInterfaceTemplate
+	16, // 14: nebius.mk8s.v1.NodeTemplate.filesystems:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec
+	19, // 15: nebius.mk8s.v1.NodeTemplate.instance_metadata:type_name -> nebius.mk8s.v1.InstanceMetadataTemplate
+	25, // 16: nebius.mk8s.v1.NodeTemplate.preemptible:type_name -> nebius.mk8s.v1.PreemptibleSpec
+	9,  // 17: nebius.mk8s.v1.NodeTemplate.nvlink:type_name -> nebius.mk8s.v1.NVLinkSpec
+	29, // 18: nebius.mk8s.v1.NodeTemplate.reservation_policy:type_name -> nebius.mk8s.v1.ReservationPolicy
+	30, // 19: nebius.mk8s.v1.NodeTemplate.local_disks:type_name -> nebius.mk8s.v1.LocalDisksSpec
+	26, // 20: nebius.mk8s.v1.NodeTemplate.on_demand:type_name -> nebius.mk8s.v1.OnDemandSpec
+	27, // 21: nebius.mk8s.v1.NodeTemplate.follows_spot_price:type_name -> nebius.mk8s.v1.FollowsSpotPriceSpec
+	28, // 22: nebius.mk8s.v1.NodeTemplate.spot_pricing_policy:type_name -> nebius.mk8s.v1.SpotPricingPolicySpec
+	34, // 23: nebius.mk8s.v1.NodeTemplate.container_runtime:type_name -> nebius.mk8s.v1.ContainerRuntime
+	35, // 24: nebius.mk8s.v1.NodeMetadataTemplate.labels:type_name -> nebius.mk8s.v1.NodeMetadataTemplate.LabelsEntry
+	14, // 25: nebius.mk8s.v1.NetworkInterfaceTemplate.public_ip_address:type_name -> nebius.mk8s.v1.PublicIPAddress
+	15, // 26: nebius.mk8s.v1.NetworkInterfaceTemplate.security_groups:type_name -> nebius.mk8s.v1.SecurityGroup
+	1,  // 27: nebius.mk8s.v1.AttachedFilesystemSpec.attach_mode:type_name -> nebius.mk8s.v1.AttachedFilesystemSpec.AttachMode
+	17, // 28: nebius.mk8s.v1.AttachedFilesystemSpec.existing_filesystem:type_name -> nebius.mk8s.v1.ExistingFilesystem
+	36, // 29: nebius.mk8s.v1.InstanceMetadataTemplate.labels:type_name -> nebius.mk8s.v1.InstanceMetadataTemplate.LabelsEntry
+	2,  // 30: nebius.mk8s.v1.NodeTaint.effect:type_name -> nebius.mk8s.v1.NodeTaint.Effect
+	22, // 31: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_unavailable:type_name -> nebius.mk8s.v1.PercentOrCount
+	22, // 32: nebius.mk8s.v1.NodeGroupDeploymentStrategy.max_surge:type_name -> nebius.mk8s.v1.PercentOrCount
+	40, // 33: nebius.mk8s.v1.NodeGroupDeploymentStrategy.drain_timeout:type_name -> google.protobuf.Duration
+	24, // 34: nebius.mk8s.v1.NodeGroupAutoRepairSpec.conditions:type_name -> nebius.mk8s.v1.NodeAutoRepairCondition
+	0,  // 35: nebius.mk8s.v1.NodeAutoRepairCondition.status:type_name -> nebius.mk8s.v1.ConditionStatus
+	40, // 36: nebius.mk8s.v1.NodeAutoRepairCondition.timeout:type_name -> google.protobuf.Duration
+	3,  // 37: nebius.mk8s.v1.ReservationPolicy.policy:type_name -> nebius.mk8s.v1.ReservationPolicy.Policy
+	31, // 38: nebius.mk8s.v1.LocalDisksSpec.passthrough_group:type_name -> nebius.mk8s.v1.PassthroughGroupRequest
+	32, // 39: nebius.mk8s.v1.LocalDisksSpec.config:type_name -> nebius.mk8s.v1.LocalDisksSpecConfig
+	4,  // 40: nebius.mk8s.v1.NodeGroupStatus.state:type_name -> nebius.mk8s.v1.NodeGroupStatus.State
+	41, // 41: nebius.mk8s.v1.NodeGroupStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
+	21, // 42: nebius.mk8s.v1.NodeGroupStatus.strategy:type_name -> nebius.mk8s.v1.NodeGroupDeploymentStrategy
+	5,  // 43: nebius.mk8s.v1.ContainerRuntime.soci_pull_mode:type_name -> nebius.mk8s.v1.ContainerRuntime.SOCIPullMode
+	44, // [44:44] is the sub-list for method output_type
+	44, // [44:44] is the sub-list for method input_type
+	44, // [44:44] is the sub-list for extension type_name
+	44, // [44:44] is the sub-list for extension extendee
+	0,  // [0:44] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_node_group_proto_init() }
@@ -2622,8 +2740,8 @@ func file_nebius_mk8s_v1_node_group_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1_node_group_proto_rawDesc), len(file_nebius_mk8s_v1_node_group_proto_rawDesc)),
-			NumEnums:      5,
-			NumMessages:   30,
+			NumEnums:      6,
+			NumMessages:   31,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
