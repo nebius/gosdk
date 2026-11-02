@@ -274,3 +274,6 @@ func (*wrapperNodeGroupStatus) ProtoMessage() {}
 func (w *wrapperNodeGroupStatus) ProtoReflect() protoreflect.Message {
 	return (*NodeGroupStatus)(w).ProtoReflect()
 }
+
+// func (x *ContainerRuntime) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ContainerRuntime) LogValue() slog.Value // is not generated as no sensitive fields found
