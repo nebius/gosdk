@@ -53,12 +53,12 @@ type ProgressTracker struct {
 	// MAY be absent if unknown.
 	WorkDone *ProgressTracker_WorkDone `protobuf:"bytes,10,opt,name=work_done,json=workDone,proto3" json:"work_done,omitempty"`
 	// Detailed information about the task steps that are currently running or have been finished.
-	//   - For a completed task, the step list MUST either be empty or contain finished steps only.
-	//   - For a running task, the step list MAY be empty if the task consists of a single step or no detailed information is available.
-	//     A non-empty step list MUST include all currently running steps and MAY include some or all finished steps.
-	//   - Service SHOULD provide both running and finished steps if the task has around 10-20 steps, and provide only running steps otherwise.
-	//     Service MUST consistently choose either the "running steps only" or the "running + finished steps" behavior.
-	//   - The UI, CLI etc. MAY choose not to display all steps provided by the service.
+	// - For a completed task, the step list MUST either be empty or contain finished steps only.
+	// - For a running task, the step list MAY be empty if the task consists of a single step or no detailed information is available.
+	//   A non-empty step list MUST include all currently running steps and MAY include some or all finished steps.
+	// - Service SHOULD provide both running and finished steps if the task has around 10-20 steps, and provide only running steps otherwise.
+	//   Service MUST consistently choose either the "running steps only" or the "running + finished steps" behavior.
+	// - The UI, CLI etc. MAY choose not to display all steps provided by the service.
 	Steps         []*ProgressTracker_Step `protobuf:"bytes,20,rep,name=steps,proto3" json:"steps,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

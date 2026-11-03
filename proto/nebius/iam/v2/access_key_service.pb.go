@@ -822,10 +822,11 @@ const file_nebius_iam_v2_access_key_service_proto_rawDesc = "" +
 	"\x06secret\x18\x02 \x01(\tB\x03\xc0J\x01R\x06secret\"p\n" +
 	"\x16ListAccessKeysResponse\x12.\n" +
 	"\x05items\x18\x01 \x03(\v2\x18.nebius.iam.v2.AccessKeyR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x86\t\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xd1\t\n" +
 	"\x10AccessKeyService\x12L\n" +
 	"\x06Create\x12%.nebius.iam.v2.CreateAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12C\n" +
-	"\x03Get\x12\".nebius.iam.v2.GetAccessKeyRequest\x1a\x18.nebius.iam.v2.AccessKey\x12`\n" +
+	"\x03Get\x12\".nebius.iam.v2.GetAccessKeyRequest\x1a\x18.nebius.iam.v2.AccessKey\x12I\n" +
+	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x18.nebius.iam.v2.AccessKey\x12`\n" +
 	"\tGetSecret\x12(.nebius.iam.v2.GetAccessKeySecretRequest\x1a).nebius.iam.v2.GetAccessKeySecretResponse\x12S\n" +
 	"\x04List\x12$.nebius.iam.v2.ListAccessKeysRequest\x1a%.nebius.iam.v2.ListAccessKeysResponse\x12L\n" +
 	"\x06Update\x12%.nebius.iam.v2.UpdateAccessKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12L\n" +
@@ -875,7 +876,8 @@ var file_nebius_iam_v2_access_key_service_proto_goTypes = []any{
 	(*AccessKeySpec)(nil),                     // 16: nebius.iam.v2.AccessKeySpec
 	(*v11.Account)(nil),                       // 17: nebius.iam.v1.Account
 	(*AccessKey)(nil),                         // 18: nebius.iam.v2.AccessKey
-	(*v1.Operation)(nil),                      // 19: nebius.common.v1.Operation
+	(*v1.GetByNameRequest)(nil),               // 19: nebius.common.v1.GetByNameRequest
+	(*v1.Operation)(nil),                      // 20: nebius.common.v1.Operation
 }
 var file_nebius_iam_v2_access_key_service_proto_depIdxs = []int32{
 	15, // 0: nebius.iam.v2.CreateAccessKeyRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -886,32 +888,34 @@ var file_nebius_iam_v2_access_key_service_proto_depIdxs = []int32{
 	18, // 5: nebius.iam.v2.ListAccessKeysResponse.items:type_name -> nebius.iam.v2.AccessKey
 	0,  // 6: nebius.iam.v2.AccessKeyService.Create:input_type -> nebius.iam.v2.CreateAccessKeyRequest
 	1,  // 7: nebius.iam.v2.AccessKeyService.Get:input_type -> nebius.iam.v2.GetAccessKeyRequest
-	2,  // 8: nebius.iam.v2.AccessKeyService.GetSecret:input_type -> nebius.iam.v2.GetAccessKeySecretRequest
-	4,  // 9: nebius.iam.v2.AccessKeyService.List:input_type -> nebius.iam.v2.ListAccessKeysRequest
-	6,  // 10: nebius.iam.v2.AccessKeyService.Update:input_type -> nebius.iam.v2.UpdateAccessKeyRequest
-	11, // 11: nebius.iam.v2.AccessKeyService.Delete:input_type -> nebius.iam.v2.DeleteAccessKeyRequest
-	7,  // 12: nebius.iam.v2.AccessKeyService.Activate:input_type -> nebius.iam.v2.ActivateAccessKeyRequest
-	8,  // 13: nebius.iam.v2.AccessKeyService.Deactivate:input_type -> nebius.iam.v2.DeactivateAccessKeyRequest
-	5,  // 14: nebius.iam.v2.AccessKeyService.ListByAccount:input_type -> nebius.iam.v2.ListAccessKeysByAccountRequest
-	3,  // 15: nebius.iam.v2.AccessKeyService.GetByAwsId:input_type -> nebius.iam.v2.GetAccessKeyByAwsIdRequest
-	12, // 16: nebius.iam.v2.AccessKeyService.DeleteByAwsId:input_type -> nebius.iam.v2.DeleteAccessKeyByAwsIdRequest
-	9,  // 17: nebius.iam.v2.AccessKeyService.ActivateByAwsId:input_type -> nebius.iam.v2.ActivateAccessKeyByAwsIdRequest
-	10, // 18: nebius.iam.v2.AccessKeyService.DeactivateByAwsId:input_type -> nebius.iam.v2.DeactivateAccessKeyByAwsIdRequest
-	19, // 19: nebius.iam.v2.AccessKeyService.Create:output_type -> nebius.common.v1.Operation
-	18, // 20: nebius.iam.v2.AccessKeyService.Get:output_type -> nebius.iam.v2.AccessKey
-	13, // 21: nebius.iam.v2.AccessKeyService.GetSecret:output_type -> nebius.iam.v2.GetAccessKeySecretResponse
-	14, // 22: nebius.iam.v2.AccessKeyService.List:output_type -> nebius.iam.v2.ListAccessKeysResponse
-	19, // 23: nebius.iam.v2.AccessKeyService.Update:output_type -> nebius.common.v1.Operation
-	19, // 24: nebius.iam.v2.AccessKeyService.Delete:output_type -> nebius.common.v1.Operation
-	19, // 25: nebius.iam.v2.AccessKeyService.Activate:output_type -> nebius.common.v1.Operation
-	19, // 26: nebius.iam.v2.AccessKeyService.Deactivate:output_type -> nebius.common.v1.Operation
-	14, // 27: nebius.iam.v2.AccessKeyService.ListByAccount:output_type -> nebius.iam.v2.ListAccessKeysResponse
-	18, // 28: nebius.iam.v2.AccessKeyService.GetByAwsId:output_type -> nebius.iam.v2.AccessKey
-	19, // 29: nebius.iam.v2.AccessKeyService.DeleteByAwsId:output_type -> nebius.common.v1.Operation
-	19, // 30: nebius.iam.v2.AccessKeyService.ActivateByAwsId:output_type -> nebius.common.v1.Operation
-	19, // 31: nebius.iam.v2.AccessKeyService.DeactivateByAwsId:output_type -> nebius.common.v1.Operation
-	19, // [19:32] is the sub-list for method output_type
-	6,  // [6:19] is the sub-list for method input_type
+	19, // 8: nebius.iam.v2.AccessKeyService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	2,  // 9: nebius.iam.v2.AccessKeyService.GetSecret:input_type -> nebius.iam.v2.GetAccessKeySecretRequest
+	4,  // 10: nebius.iam.v2.AccessKeyService.List:input_type -> nebius.iam.v2.ListAccessKeysRequest
+	6,  // 11: nebius.iam.v2.AccessKeyService.Update:input_type -> nebius.iam.v2.UpdateAccessKeyRequest
+	11, // 12: nebius.iam.v2.AccessKeyService.Delete:input_type -> nebius.iam.v2.DeleteAccessKeyRequest
+	7,  // 13: nebius.iam.v2.AccessKeyService.Activate:input_type -> nebius.iam.v2.ActivateAccessKeyRequest
+	8,  // 14: nebius.iam.v2.AccessKeyService.Deactivate:input_type -> nebius.iam.v2.DeactivateAccessKeyRequest
+	5,  // 15: nebius.iam.v2.AccessKeyService.ListByAccount:input_type -> nebius.iam.v2.ListAccessKeysByAccountRequest
+	3,  // 16: nebius.iam.v2.AccessKeyService.GetByAwsId:input_type -> nebius.iam.v2.GetAccessKeyByAwsIdRequest
+	12, // 17: nebius.iam.v2.AccessKeyService.DeleteByAwsId:input_type -> nebius.iam.v2.DeleteAccessKeyByAwsIdRequest
+	9,  // 18: nebius.iam.v2.AccessKeyService.ActivateByAwsId:input_type -> nebius.iam.v2.ActivateAccessKeyByAwsIdRequest
+	10, // 19: nebius.iam.v2.AccessKeyService.DeactivateByAwsId:input_type -> nebius.iam.v2.DeactivateAccessKeyByAwsIdRequest
+	20, // 20: nebius.iam.v2.AccessKeyService.Create:output_type -> nebius.common.v1.Operation
+	18, // 21: nebius.iam.v2.AccessKeyService.Get:output_type -> nebius.iam.v2.AccessKey
+	18, // 22: nebius.iam.v2.AccessKeyService.GetByName:output_type -> nebius.iam.v2.AccessKey
+	13, // 23: nebius.iam.v2.AccessKeyService.GetSecret:output_type -> nebius.iam.v2.GetAccessKeySecretResponse
+	14, // 24: nebius.iam.v2.AccessKeyService.List:output_type -> nebius.iam.v2.ListAccessKeysResponse
+	20, // 25: nebius.iam.v2.AccessKeyService.Update:output_type -> nebius.common.v1.Operation
+	20, // 26: nebius.iam.v2.AccessKeyService.Delete:output_type -> nebius.common.v1.Operation
+	20, // 27: nebius.iam.v2.AccessKeyService.Activate:output_type -> nebius.common.v1.Operation
+	20, // 28: nebius.iam.v2.AccessKeyService.Deactivate:output_type -> nebius.common.v1.Operation
+	14, // 29: nebius.iam.v2.AccessKeyService.ListByAccount:output_type -> nebius.iam.v2.ListAccessKeysResponse
+	18, // 30: nebius.iam.v2.AccessKeyService.GetByAwsId:output_type -> nebius.iam.v2.AccessKey
+	20, // 31: nebius.iam.v2.AccessKeyService.DeleteByAwsId:output_type -> nebius.common.v1.Operation
+	20, // 32: nebius.iam.v2.AccessKeyService.ActivateByAwsId:output_type -> nebius.common.v1.Operation
+	20, // 33: nebius.iam.v2.AccessKeyService.DeactivateByAwsId:output_type -> nebius.common.v1.Operation
+	20, // [20:34] is the sub-list for method output_type
+	6,  // [6:20] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name

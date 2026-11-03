@@ -470,30 +470,27 @@ type NodeTemplate struct {
 	// Supported platform / k8s version /  OS / driver presets combinations
 	// - gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm, cpu-e1, cpu-e2, cpu-d3:
 	//   - drivers_preset: ""
-	//   - k8s: 1.30 → "ubuntu22.04"
-	//   - k8s: 1.31 → "ubuntu22.04" (default), "ubuntu24.04"
-	//
+	//     - k8s: 1.30 → "ubuntu22.04"
+	//     - k8s: 1.31 → "ubuntu22.04" (default), "ubuntu24.04"
 	// - gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm:
 	//   - drivers_preset: "cuda12" (CUDA 12.4)
-	//   - k8s: 1.30, 1.31 → "ubuntu22.04"
+	//     - k8s: 1.30, 1.31 → "ubuntu22.04"
 	//   - drivers_preset: "cuda12.4"
-	//   - k8s: 1.31 → "ubuntu22.04"
+	//     - k8s: 1.31 → "ubuntu22.04"
 	//   - drivers_preset: "cuda12.8"
-	//   - k8s: 1.31 → "ubuntu24.04"
-	//
+	//     - k8s: 1.31 → "ubuntu24.04"
 	// - gpu-b200-sxm:
 	//   - drivers_preset: ""
-	//   - k8s: 1.30, 1.31 → "ubuntu24.04"
+	//     - k8s: 1.30, 1.31 → "ubuntu24.04"
 	//   - drivers_preset: "cuda12" (CUDA 12.8)
-	//   - k8s: 1.30, 1.31 → "ubuntu24.04"
+	//     - k8s: 1.30, 1.31 → "ubuntu24.04"
 	//   - drivers_preset: "cuda12.8"
-	//   - k8s: 1.31 → "ubuntu24.04"
-	//
+	//     - k8s: 1.31 → "ubuntu24.04"
 	// - gpu-b200-sxm-a:
 	//   - drivers_preset: ""
-	//   - k8s: 1.31 → "ubuntu24.04"
+	//     - k8s: 1.31 → "ubuntu24.04"
 	//   - drivers_preset: "cuda12.8"
-	//   - k8s: 1.31 → "ubuntu24.04"
+	//     - k8s: 1.31 → "ubuntu24.04"
 	//
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	Os string `protobuf:"bytes,16,opt,name=os,proto3" json:"os,omitempty"`
@@ -711,10 +708,8 @@ type GpuSettings struct {
 	// - gpu-l40s-a, gpu-l40s-d, gpu-h100-sxm, gpu-h200-sxm:
 	//   - k8s: 1.30 → "cuda12" (CUDA 12.4)
 	//   - k8s: 1.31 → "cuda12" (CUDA 12.4), "cuda12.4", "cuda12.8"
-	//
 	// - gpu-b200-sxm:
 	//   - k8s: 1.31 → "cuda12" (CUDA 12.8), "cuda12.8"
-	//
 	// - gpu-b200-sxm-a:
 	//   - k8s: 1.31 → "cuda12.8"
 	//

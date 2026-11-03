@@ -458,6 +458,8 @@ type SubnetStatus struct {
 	// Information about the route table associated with this subnet.
 	// Can be either a custom route table or the network's default route table.
 	RouteTable *SubnetAssociatedRouteTable `protobuf:"bytes,5,opt,name=route_table,json=routeTable,proto3" json:"route_table,omitempty"`
+	// Indicates whether this is the network's default subnet.
+	Default bool `protobuf:"varint,7,opt,name=default,proto3" json:"default,omitempty"`
 	// Private IPv4 pools available for allocations in this subnet.
 	Ipv4PrivatePools []*SubnetStatusPool `protobuf:"bytes,8,rep,name=ipv4_private_pools,json=ipv4PrivatePools,proto3" json:"ipv4_private_pools,omitempty"`
 	// Public IPv4 pools available for allocations in this subnet.
@@ -524,6 +526,13 @@ func (x *SubnetStatus) GetRouteTable() *SubnetAssociatedRouteTable {
 		return x.RouteTable
 	}
 	return nil
+}
+
+func (x *SubnetStatus) GetDefault() bool {
+	if x != nil {
+		return x.Default
+	}
+	return false
 }
 
 func (x *SubnetStatus) GetIpv4PrivatePools() []*SubnetStatusPool {
@@ -685,7 +694,7 @@ const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
 	"\x0fstring.ip_empty\x12/value is empty, which is not a valid IP address\x1a\n" +
 	"this != ''\xc8\x01\x01R\x04cidr\x12<\n" +
 	"\x05state\x18\x02 \x01(\x0e2 .nebius.vpc.v1.AddressBlockStateB\x04\xbaJ\x01\aR\x05state\x126\n" +
-	"\x0fmax_mask_length\x18\x03 \x01(\x03B\x0e\xbaH\a\"\x05\x18\x80\x01(\x00\xbaJ\x01\aR\rmaxMaskLength\"\xc7\x04\n" +
+	"\x0fmax_mask_length\x18\x03 \x01(\x03B\x0e\xbaH\a\"\x05\x18\x80\x01(\x00\xbaJ\x01\aR\rmaxMaskLength\"\xe1\x04\n" +
 	"\fSubnetStatus\x127\n" +
 	"\x05state\x18\x01 \x01(\x0e2!.nebius.vpc.v1.SubnetStatus.StateR\x05state\x12h\n" +
 	"\x12ipv4_private_cidrs\x18\x02 \x03(\tB:\xd2J5\n" +
@@ -695,7 +704,8 @@ const file_nebius_vpc_v1_subnet_proto_rawDesc = "" +
 	"\n" +
 	"2027-02-01\x12&Use `ipv4_public_pools.cidrs` instead.\x18\x01R\x0fipv4PublicCidrs\x12J\n" +
 	"\vroute_table\x18\x05 \x01(\v2).nebius.vpc.v1.SubnetAssociatedRouteTableR\n" +
-	"routeTable\x12M\n" +
+	"routeTable\x12\x18\n" +
+	"\adefault\x18\a \x01(\bR\adefault\x12M\n" +
 	"\x12ipv4_private_pools\x18\b \x03(\v2\x1f.nebius.vpc.v1.SubnetStatusPoolR\x10ipv4PrivatePools\x12K\n" +
 	"\x11ipv4_public_pools\x18\t \x03(\v2\x1f.nebius.vpc.v1.SubnetStatusPoolR\x0fipv4PublicPools\"E\n" +
 	"\x05State\x12\x15\n" +

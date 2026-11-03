@@ -536,10 +536,11 @@ const file_nebius_iam_v1_auth_public_key_service_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"w\n" +
 	"\x19ListAuthPublicKeyResponse\x122\n" +
 	"\x05items\x18\x01 \x03(\v2\x1c.nebius.iam.v1.AuthPublicKeyR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xdd\x05\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xac\x06\n" +
 	"\x14AuthPublicKeyService\x12P\n" +
 	"\x06Create\x12).nebius.iam.v1.CreateAuthPublicKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12K\n" +
-	"\x03Get\x12&.nebius.iam.v1.GetAuthPublicKeyRequest\x1a\x1c.nebius.iam.v1.AuthPublicKey\x12Y\n" +
+	"\x03Get\x12&.nebius.iam.v1.GetAuthPublicKeyRequest\x1a\x1c.nebius.iam.v1.AuthPublicKey\x12M\n" +
+	"\tGetByName\x12\".nebius.common.v1.GetByNameRequest\x1a\x1c.nebius.iam.v1.AuthPublicKey\x12Y\n" +
 	"\x04List\x12'.nebius.iam.v1.ListAuthPublicKeyRequest\x1a(.nebius.iam.v1.ListAuthPublicKeyResponse\x12k\n" +
 	"\rListByAccount\x120.nebius.iam.v1.ListAuthPublicKeyByAccountRequest\x1a(.nebius.iam.v1.ListAuthPublicKeyResponse\x12P\n" +
 	"\x06Update\x12).nebius.iam.v1.UpdateAuthPublicKeyRequest\x1a\x1b.nebius.common.v1.Operation\x12T\n" +
@@ -577,7 +578,8 @@ var file_nebius_iam_v1_auth_public_key_service_proto_goTypes = []any{
 	(*AuthPublicKeySpec)(nil),                 // 10: nebius.iam.v1.AuthPublicKeySpec
 	(*Account)(nil),                           // 11: nebius.iam.v1.Account
 	(*AuthPublicKey)(nil),                     // 12: nebius.iam.v1.AuthPublicKey
-	(*v1.Operation)(nil),                      // 13: nebius.common.v1.Operation
+	(*v1.GetByNameRequest)(nil),               // 13: nebius.common.v1.GetByNameRequest
+	(*v1.Operation)(nil),                      // 14: nebius.common.v1.Operation
 }
 var file_nebius_iam_v1_auth_public_key_service_proto_depIdxs = []int32{
 	9,  // 0: nebius.iam.v1.CreateAuthPublicKeyRequest.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -588,22 +590,24 @@ var file_nebius_iam_v1_auth_public_key_service_proto_depIdxs = []int32{
 	12, // 5: nebius.iam.v1.ListAuthPublicKeyResponse.items:type_name -> nebius.iam.v1.AuthPublicKey
 	0,  // 6: nebius.iam.v1.AuthPublicKeyService.Create:input_type -> nebius.iam.v1.CreateAuthPublicKeyRequest
 	1,  // 7: nebius.iam.v1.AuthPublicKeyService.Get:input_type -> nebius.iam.v1.GetAuthPublicKeyRequest
-	2,  // 8: nebius.iam.v1.AuthPublicKeyService.List:input_type -> nebius.iam.v1.ListAuthPublicKeyRequest
-	3,  // 9: nebius.iam.v1.AuthPublicKeyService.ListByAccount:input_type -> nebius.iam.v1.ListAuthPublicKeyByAccountRequest
-	4,  // 10: nebius.iam.v1.AuthPublicKeyService.Update:input_type -> nebius.iam.v1.UpdateAuthPublicKeyRequest
-	5,  // 11: nebius.iam.v1.AuthPublicKeyService.Activate:input_type -> nebius.iam.v1.ActivateAuthPublicKeyRequest
-	6,  // 12: nebius.iam.v1.AuthPublicKeyService.Deactivate:input_type -> nebius.iam.v1.DeactivateAuthPublicKeyRequest
-	7,  // 13: nebius.iam.v1.AuthPublicKeyService.Delete:input_type -> nebius.iam.v1.DeleteAuthPublicKeyRequest
-	13, // 14: nebius.iam.v1.AuthPublicKeyService.Create:output_type -> nebius.common.v1.Operation
-	12, // 15: nebius.iam.v1.AuthPublicKeyService.Get:output_type -> nebius.iam.v1.AuthPublicKey
-	8,  // 16: nebius.iam.v1.AuthPublicKeyService.List:output_type -> nebius.iam.v1.ListAuthPublicKeyResponse
-	8,  // 17: nebius.iam.v1.AuthPublicKeyService.ListByAccount:output_type -> nebius.iam.v1.ListAuthPublicKeyResponse
-	13, // 18: nebius.iam.v1.AuthPublicKeyService.Update:output_type -> nebius.common.v1.Operation
-	13, // 19: nebius.iam.v1.AuthPublicKeyService.Activate:output_type -> nebius.common.v1.Operation
-	13, // 20: nebius.iam.v1.AuthPublicKeyService.Deactivate:output_type -> nebius.common.v1.Operation
-	13, // 21: nebius.iam.v1.AuthPublicKeyService.Delete:output_type -> nebius.common.v1.Operation
-	14, // [14:22] is the sub-list for method output_type
-	6,  // [6:14] is the sub-list for method input_type
+	13, // 8: nebius.iam.v1.AuthPublicKeyService.GetByName:input_type -> nebius.common.v1.GetByNameRequest
+	2,  // 9: nebius.iam.v1.AuthPublicKeyService.List:input_type -> nebius.iam.v1.ListAuthPublicKeyRequest
+	3,  // 10: nebius.iam.v1.AuthPublicKeyService.ListByAccount:input_type -> nebius.iam.v1.ListAuthPublicKeyByAccountRequest
+	4,  // 11: nebius.iam.v1.AuthPublicKeyService.Update:input_type -> nebius.iam.v1.UpdateAuthPublicKeyRequest
+	5,  // 12: nebius.iam.v1.AuthPublicKeyService.Activate:input_type -> nebius.iam.v1.ActivateAuthPublicKeyRequest
+	6,  // 13: nebius.iam.v1.AuthPublicKeyService.Deactivate:input_type -> nebius.iam.v1.DeactivateAuthPublicKeyRequest
+	7,  // 14: nebius.iam.v1.AuthPublicKeyService.Delete:input_type -> nebius.iam.v1.DeleteAuthPublicKeyRequest
+	14, // 15: nebius.iam.v1.AuthPublicKeyService.Create:output_type -> nebius.common.v1.Operation
+	12, // 16: nebius.iam.v1.AuthPublicKeyService.Get:output_type -> nebius.iam.v1.AuthPublicKey
+	12, // 17: nebius.iam.v1.AuthPublicKeyService.GetByName:output_type -> nebius.iam.v1.AuthPublicKey
+	8,  // 18: nebius.iam.v1.AuthPublicKeyService.List:output_type -> nebius.iam.v1.ListAuthPublicKeyResponse
+	8,  // 19: nebius.iam.v1.AuthPublicKeyService.ListByAccount:output_type -> nebius.iam.v1.ListAuthPublicKeyResponse
+	14, // 20: nebius.iam.v1.AuthPublicKeyService.Update:output_type -> nebius.common.v1.Operation
+	14, // 21: nebius.iam.v1.AuthPublicKeyService.Activate:output_type -> nebius.common.v1.Operation
+	14, // 22: nebius.iam.v1.AuthPublicKeyService.Deactivate:output_type -> nebius.common.v1.Operation
+	14, // 23: nebius.iam.v1.AuthPublicKeyService.Delete:output_type -> nebius.common.v1.Operation
+	15, // [15:24] is the sub-list for method output_type
+	6,  // [6:15] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name

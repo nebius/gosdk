@@ -29,6 +29,7 @@ const AuthPublicKeyServiceID conn.ServiceID = "nebius.iam.v1.AuthPublicKeyServic
 type AuthPublicKeyService interface {
 	Create(context.Context, *v1.CreateAuthPublicKeyRequest, ...grpc.CallOption) (operations.Operation, error)
 	Get(context.Context, *v1.GetAuthPublicKeyRequest, ...grpc.CallOption) (*v1.AuthPublicKey, error)
+	GetByName(context.Context, *v11.GetByNameRequest, ...grpc.CallOption) (*v1.AuthPublicKey, error)
 	List(context.Context, *v1.ListAuthPublicKeyRequest, ...grpc.CallOption) (*v1.ListAuthPublicKeyResponse, error)
 	Filter(context.Context, *v1.ListAuthPublicKeyRequest, ...grpc.CallOption) iter.Seq2[*v1.AuthPublicKey, error]
 	ListByAccount(context.Context, *v1.ListAuthPublicKeyByAccountRequest, ...grpc.CallOption) (*v1.ListAuthPublicKeyResponse, error)
@@ -104,6 +105,35 @@ func (s authPublicKeyService) Get(ctx context.Context, request *v1.GetAuthPublic
 		return nil, err
 	}
 	return v1.NewAuthPublicKeyServiceClient(con).Get(ctx, request, opts...)
+}
+
+func (s authPublicKeyService) GetByName(ctx context.Context, request *v11.GetByNameRequest, opts ...grpc.CallOption) (
+	*v1.AuthPublicKey,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, AuthPublicKeyServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewAuthPublicKeyServiceClient(con).GetByName(ctx, request, opts...)
 }
 
 func (s authPublicKeyService) List(ctx context.Context, request *v1.ListAuthPublicKeyRequest, opts ...grpc.CallOption) (

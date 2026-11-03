@@ -345,9 +345,9 @@ type GetRecordRequest struct {
 	// Record ID
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// Optional: expected record version (`metadata.resource_version`)
-	//   - If specified, the requested version will be returned if possible
-	//     (if the version has changed, you will get a `FAILED_PRECONDITION` error)
-	//   - If not specified or set to `0`, the latest version will be returned
+	// - If specified, the requested version will be returned if possible
+	//   (if the version has changed, you will get a `FAILED_PRECONDITION` error)
+	// - If not specified or set to `0`, the latest version will be returned
 	ResourceVersion int64 `protobuf:"varint,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -580,9 +580,9 @@ func (x *CreateRecordRequest) GetSpec() *RecordSpec {
 type UpdateRecordRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Metadata for the DNS record being updated
-	//   - The only required field is `metadata.id`, which must be set to the ID of the DNS record being updated
-	//   - You may also set the expected DNS record version (`metadata.resource_version`), which ensures that only the requested version is
-	//     updated (and a `FAILED_PRECONDITION` error is returned on version mismatch)
+	// - The only required field is `metadata.id`, which must be set to the ID of the DNS record being updated
+	// - You may also set the expected DNS record version (`metadata.resource_version`), which ensures that only the requested version is
+	//   updated (and a `FAILED_PRECONDITION` error is returned on version mismatch)
 	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// New specification for the DNS record
 	Spec          *RecordSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`

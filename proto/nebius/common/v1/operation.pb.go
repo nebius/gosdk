@@ -60,8 +60,8 @@ type Operation struct {
 	// - If [status.code] != OK, the operation has failed or has been cancelled.
 	//   - [status.message] will contain a user-readable and actionable error message.
 	//   - [status.details] will contain additional diagnostic information in the form of [ServiceError] from nebius/common/v1/error.proto
-	//   - [status.code] must belong to an Operation-compatible subset of GRPC codes:
-	//     OK, CANCELLED, PERMISSION_DENIED, RESOURCE_EXHAUSTED, FAILED_PRECONDITION, ABORTED, INTERNAL
+	// - [status.code] must belong to an Operation-compatible subset of GRPC codes:
+	//   OK, CANCELLED, PERMISSION_DENIED, RESOURCE_EXHAUSTED, FAILED_PRECONDITION, ABORTED, INTERNAL
 	Status *status.Status `protobuf:"bytes,10,opt,name=status,proto3" json:"status,omitempty"`
 	// Information about this operation's progress, if this operation tracks its progress.
 	// If the operation tracks its progress, `progress_tracker` MUST be present both while
