@@ -28,16 +28,16 @@ type TenantUserAccountStatus_State int32
 
 const (
 	TenantUserAccountStatus_STATE_UNSPECIFIED TenantUserAccountStatus_State = 0
-	//   - in case of ordinary tenant user account a corresponding user can log into the system and use granted tenant resources
-	//   - in case of invited tenant user account once the invitation is accepted a corresponding user can start using granted resources
-	//     immediately
+	// - in case of ordinary tenant user account a corresponding user can log into the system and use granted tenant resources
+	// - in case of invited tenant user account once the invitation is accepted a corresponding user can start using granted resources
+	//   immediately
 	TenantUserAccountStatus_ACTIVE TenantUserAccountStatus_State = 1
 	// unused
 	TenantUserAccountStatus_INACTIVE TenantUserAccountStatus_State = 2
-	//   - in case of ordinary tenant user account a corresponding user can log into the system but cannot be authorized to use tenant
-	//     resources
-	//   - in case of invited tenant user account once the invitation is accepted a corresponding user cannot start using granted resources
-	//     until is unblocked
+	// - in case of ordinary tenant user account a corresponding user can log into the system but cannot be authorized to use tenant
+	//   resources
+	// - in case of invited tenant user account once the invitation is accepted a corresponding user cannot start using granted resources
+	//   until is unblocked
 	TenantUserAccountStatus_BLOCKED TenantUserAccountStatus_State = 3
 )
 

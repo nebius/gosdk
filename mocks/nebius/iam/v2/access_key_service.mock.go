@@ -483,6 +483,50 @@ func (c *MockAccessKeyServiceGetByAwsIdCall) DoAndReturn(f func(context.Context,
 	return c
 }
 
+// GetByName mocks base method.
+func (m *MockAccessKeyService) GetByName(arg0 context.Context, arg1 *v1.GetByNameRequest, arg2 ...grpc.CallOption) (*v2.AccessKey, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetByName", varargs...)
+	ret0, _ := ret[0].(*v2.AccessKey)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByName indicates an expected call of GetByName.
+func (mr *MockAccessKeyServiceMockRecorder) GetByName(arg0, arg1 any, arg2 ...any) *MockAccessKeyServiceGetByNameCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByName", reflect.TypeOf((*MockAccessKeyService)(nil).GetByName), varargs...)
+	return &MockAccessKeyServiceGetByNameCall{Call: call}
+}
+
+// MockAccessKeyServiceGetByNameCall wrap *gomock.Call
+type MockAccessKeyServiceGetByNameCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockAccessKeyServiceGetByNameCall) Return(arg0 *v2.AccessKey, arg1 error) *MockAccessKeyServiceGetByNameCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockAccessKeyServiceGetByNameCall) Do(f func(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v2.AccessKey, error)) *MockAccessKeyServiceGetByNameCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockAccessKeyServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v2.AccessKey, error)) *MockAccessKeyServiceGetByNameCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // GetOperation mocks base method.
 func (m *MockAccessKeyService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()

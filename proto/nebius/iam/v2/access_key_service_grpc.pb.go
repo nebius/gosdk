@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	AccessKeyService_Create_FullMethodName            = "/nebius.iam.v2.AccessKeyService/Create"
 	AccessKeyService_Get_FullMethodName               = "/nebius.iam.v2.AccessKeyService/Get"
+	AccessKeyService_GetByName_FullMethodName         = "/nebius.iam.v2.AccessKeyService/GetByName"
 	AccessKeyService_GetSecret_FullMethodName         = "/nebius.iam.v2.AccessKeyService/GetSecret"
 	AccessKeyService_List_FullMethodName              = "/nebius.iam.v2.AccessKeyService/List"
 	AccessKeyService_Update_FullMethodName            = "/nebius.iam.v2.AccessKeyService/Update"
@@ -41,6 +42,7 @@ const (
 type AccessKeyServiceClient interface {
 	Create(ctx context.Context, in *CreateAccessKeyRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Get(ctx context.Context, in *GetAccessKeyRequest, opts ...grpc.CallOption) (*AccessKey, error)
+	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*AccessKey, error)
 	GetSecret(ctx context.Context, in *GetAccessKeySecretRequest, opts ...grpc.CallOption) (*GetAccessKeySecretResponse, error)
 	List(ctx context.Context, in *ListAccessKeysRequest, opts ...grpc.CallOption) (*ListAccessKeysResponse, error)
 	Update(ctx context.Context, in *UpdateAccessKeyRequest, opts ...grpc.CallOption) (*v1.Operation, error)
@@ -74,6 +76,15 @@ func (c *accessKeyServiceClient) Create(ctx context.Context, in *CreateAccessKey
 func (c *accessKeyServiceClient) Get(ctx context.Context, in *GetAccessKeyRequest, opts ...grpc.CallOption) (*AccessKey, error) {
 	out := new(AccessKey)
 	err := c.cc.Invoke(ctx, AccessKeyService_Get_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accessKeyServiceClient) GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*AccessKey, error) {
+	out := new(AccessKey)
+	err := c.cc.Invoke(ctx, AccessKeyService_GetByName_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -185,6 +196,7 @@ func (c *accessKeyServiceClient) DeactivateByAwsId(ctx context.Context, in *Deac
 type AccessKeyServiceServer interface {
 	Create(context.Context, *CreateAccessKeyRequest) (*v1.Operation, error)
 	Get(context.Context, *GetAccessKeyRequest) (*AccessKey, error)
+	GetByName(context.Context, *v1.GetByNameRequest) (*AccessKey, error)
 	GetSecret(context.Context, *GetAccessKeySecretRequest) (*GetAccessKeySecretResponse, error)
 	List(context.Context, *ListAccessKeysRequest) (*ListAccessKeysResponse, error)
 	Update(context.Context, *UpdateAccessKeyRequest) (*v1.Operation, error)
@@ -207,6 +219,9 @@ func (UnimplementedAccessKeyServiceServer) Create(context.Context, *CreateAccess
 }
 func (UnimplementedAccessKeyServiceServer) Get(context.Context, *GetAccessKeyRequest) (*AccessKey, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedAccessKeyServiceServer) GetByName(context.Context, *v1.GetByNameRequest) (*AccessKey, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
 }
 func (UnimplementedAccessKeyServiceServer) GetSecret(context.Context, *GetAccessKeySecretRequest) (*GetAccessKeySecretResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSecret not implemented")
@@ -285,6 +300,24 @@ func _AccessKeyService_Get_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccessKeyServiceServer).Get(ctx, req.(*GetAccessKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccessKeyService_GetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.GetByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccessKeyServiceServer).GetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccessKeyService_GetByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccessKeyServiceServer).GetByName(ctx, req.(*v1.GetByNameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -501,6 +534,10 @@ var AccessKeyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _AccessKeyService_Get_Handler,
+		},
+		{
+			MethodName: "GetByName",
+			Handler:    _AccessKeyService_GetByName_Handler,
 		},
 		{
 			MethodName: "GetSecret",

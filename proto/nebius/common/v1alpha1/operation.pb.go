@@ -70,13 +70,13 @@ type Operation struct {
 	// Deprecated: The entire proto file nebius/common/v1alpha1/operation.proto is marked as deprecated.
 	ResourceId string `protobuf:"bytes,7,opt,name=resource_id,json=resourceId,proto3" json:"resource_id,omitempty"`
 	// Snapshot of the resource at the moment this operation started.
-	//   - [resource.spec] and [resource.metadata] reflect the desired resource state at the moment
-	//     this operation started.
-	//     E.g., in an Update operation it will be the *updated* resource spec and metadata,
-	//     in a Create operation it will be the spec and metadata *of the resource being created*,
-	//     and so on.
-	//   - [resource.status] reflects the status of the resource at the moment this operation started.
-	//     This is a snapshot, call the `<Resource>Service/Get` to get current status of the resource.
+	// - [resource.spec] and [resource.metadata] reflect the desired resource state at the moment
+	//   this operation started.
+	//   E.g., in an Update operation it will be the *updated* resource spec and metadata,
+	//   in a Create operation it will be the spec and metadata *of the resource being created*,
+	//   and so on.
+	// - [resource.status] reflects the status of the resource at the moment this operation started.
+	//   This is a snapshot, call the `<Resource>Service/Get` to get current status of the resource.
 	//
 	// The [resource] field MUST never be updated *after* this operation has started.
 	//
@@ -103,8 +103,8 @@ type Operation struct {
 	//   - [status.message] will contain a user-readable and actionable error message.
 	//   - [status.details] will contain additional diagnostic information in the form of
 	//     [ServiceError] from ../error/v1alpha1/error.proto
-	//   - [status.code] must belong to an Operation-compatible subset of GRPC codes:
-	//     OK, CANCELLED, PERMISSION_DENIED, RESOURCE_EXHAUSTED, FAILED_PRECONDITION, ABORTED, INTERNAL
+	// - [status.code] must belong to an Operation-compatible subset of GRPC codes:
+	//   OK, CANCELLED, PERMISSION_DENIED, RESOURCE_EXHAUSTED, FAILED_PRECONDITION, ABORTED, INTERNAL
 	//
 	// Deprecated: The entire proto file nebius/common/v1alpha1/operation.proto is marked as deprecated.
 	Status        *status.Status `protobuf:"bytes,10,opt,name=status,proto3" json:"status,omitempty"`

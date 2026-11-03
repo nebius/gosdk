@@ -432,10 +432,10 @@ type InstanceSpec struct {
 	// Common source of failure is a host failure, but it can be any other failure.
 	// Instance undergoing a guest shutdown (poweroff, etc.) will be subject to recovery policy, meaning that it could
 	// be restarted and billed accordingly. Stop instance via API or UI to stop it to avoid recovering.
-	//   - If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.
-	//   - If set to FAIL, instance will be stopped and not restarted.
-	//   - If set to ALWAYS, keep retrying recovery indefinitely until the instance is recovered. Available only for instances in
-	//     nvlinstancegroup
+	// - If set to RECOVER, instance will be restarted, if possible. It could be restarted on the same host or on another host.
+	// - If set to FAIL, instance will be stopped and not restarted.
+	// - If set to ALWAYS, keep retrying recovery indefinitely until the instance is recovered. Available only for instances in
+	//   nvlinstancegroup
 	RecoveryPolicy InstanceRecoveryPolicy `protobuf:"varint,15,opt,name=recovery_policy,json=recoveryPolicy,proto3,enum=nebius.compute.v1.InstanceRecoveryPolicy" json:"recovery_policy,omitempty"`
 	// Set this field to create a preemptible VM, or omit it to create a regular VM.
 	// For details, see https://docs.nebius.com/compute/virtual-machines/preemptible
@@ -935,13 +935,13 @@ type AttachedDiskSpec_ExistingDisk struct {
 	// - The disk is preserved when the instance is deleted (it will be detached).
 	//
 	// Switching to a managed disk:
-	//   - To delete the disk together with the instance, switch to ManagedDisk in the instance spec.
-	//   - For the switch, `ManagedDisk.name` MUST match the current disk `name`
-	//     (see DiskService.Get for the disk referenced by `ExistingDisk.id`).
-	//   - When converting an ExistingDisk to a ManagedDisk, you must provide `ManagedDisk.name` and `ManagedDisk.spec`
-	//     exactly as they are currently defined in the disk resource.
-	//     Obtain the current values via `DiskService.Get` and copy them verbatim.
-	//     If `ManagedDisk.spec` differs from the current disk spec, the instance update will fail.
+	// - To delete the disk together with the instance, switch to ManagedDisk in the instance spec.
+	// - For the switch, `ManagedDisk.name` MUST match the current disk `name`
+	//   (see DiskService.Get for the disk referenced by `ExistingDisk.id`).
+	// - When converting an ExistingDisk to a ManagedDisk, you must provide `ManagedDisk.name` and `ManagedDisk.spec`
+	//   exactly as they are currently defined in the disk resource.
+	//   Obtain the current values via `DiskService.Get` and copy them verbatim.
+	//   If `ManagedDisk.spec` differs from the current disk spec, the instance update will fail.
 	ExistingDisk *ExistingDisk `protobuf:"bytes,2,opt,name=existing_disk,json=existingDisk,proto3,oneof"`
 }
 
@@ -961,23 +961,23 @@ type AttachedDiskSpec_ManagedDisk struct {
 	// - During updates, disks are matched by `name`.
 	//
 	// Renaming and data loss:
-	//   - Changing the disk `name` triggers disk replacement (create a new disk and delete the old one),
-	//     which causes data loss.
-	//   - To rename a managed disk safely:
-	//     1) switch it to ExistingDisk in the instance spec, and
-	//     2) update/rename it via DiskService.
+	// - Changing the disk `name` triggers disk replacement (create a new disk and delete the old one),
+	//   which causes data loss.
+	// - To rename a managed disk safely:
+	//   1) switch it to ExistingDisk in the instance spec, and
+	//   2) update/rename it via DiskService.
 	//
 	// Conflicts:
-	//   - Instance create/update fails if there is already a disk with the same `name`.
-	//     as requested by any ManagedDisk.
+	// - Instance create/update fails if there is already a disk with the same `name`.
+	//   as requested by any ManagedDisk.
 	//
 	// Finding the disk ID:
-	//   - The disk ID is available in `instance.status.disk_attachments` after it is created.
-	//     Use `DiskAttachmentStatus.name` to find the desired disk which matches `name`.
+	// - The disk ID is available in `instance.status.disk_attachments` after it is created.
+	//   Use `DiskAttachmentStatus.name` to find the desired disk which matches `name`.
 	//
 	// Switching to an existing (non-managed) disk:
-	//   - To preserve the disk after instance deletion, switch it to ExistingDisk in the instance spec,
-	//     use the disk ID from `instance.status.disk_attachments`.
+	// - To preserve the disk after instance deletion, switch it to ExistingDisk in the instance spec,
+	//   use the disk ID from `instance.status.disk_attachments`.
 	//
 	// Deletion protection:
 	// - Switching ExistingDisk to ManagedDisk fails if `Disk.spec.deletion_protection` is enabled.
@@ -1352,9 +1352,9 @@ type DiskAttachmentStatus struct {
 	// from the instance specification.
 	//
 	// Consistency:
-	//   - For ManagedDisk, this value is derived from the instance spec (ManagedDisk.name).
-	//   - For ExistingDisk, this value is derived from the disk resource name and may lag behind
-	//     in case of renaming. It is updated asynchronously and is eventually consistent.
+	// - For ManagedDisk, this value is derived from the instance spec (ManagedDisk.name).
+	// - For ExistingDisk, this value is derived from the disk resource name and may lag behind
+	//   in case of renaming. It is updated asynchronously and is eventually consistent.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// Indicates whether this attachment is managed by the instance lifecycle.
 	// If true, the disk is expected to be deleted when the instance is deleted.

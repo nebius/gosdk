@@ -346,9 +346,9 @@ type GetZoneRequest struct {
 	// Zone ID
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// Optional: expected zone version (`metadata.resource_version`)
-	//   - If specified, the requested version will be returned if possible (if the version has changed, you will get a `FAILED_PRECONDITION`
-	//     error)
-	//   - If not specified or set to `0`, the latest zone version will be returned
+	// - If specified, the requested version will be returned if possible (if the version has changed, you will get a `FAILED_PRECONDITION`
+	//   error)
+	// - If not specified or set to `0`, the latest zone version will be returned
 	ResourceVersion int64 `protobuf:"varint,2,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -581,9 +581,9 @@ func (x *CreateZoneRequest) GetSpec() *ZoneSpec {
 type UpdateZoneRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Metadata for the DNS zone being updated
-	//   - The only required field is `metadata.id`, which must be set to the ID of the DNS zone being updated
-	//   - You may also set the expected DNS zone version (`metadata.resource_version`), which ensures that only the requested version is
-	//     updated (and a `FAILED_PRECONDITION` error is returned on version mismatch)
+	// - The only required field is `metadata.id`, which must be set to the ID of the DNS zone being updated
+	// - You may also set the expected DNS zone version (`metadata.resource_version`), which ensures that only the requested version is
+	//   updated (and a `FAILED_PRECONDITION` error is returned on version mismatch)
 	Metadata *v1.ResourceMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// New specification for the DNS zone
 	Spec          *ZoneSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`

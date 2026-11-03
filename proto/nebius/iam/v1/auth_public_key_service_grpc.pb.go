@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	AuthPublicKeyService_Create_FullMethodName        = "/nebius.iam.v1.AuthPublicKeyService/Create"
 	AuthPublicKeyService_Get_FullMethodName           = "/nebius.iam.v1.AuthPublicKeyService/Get"
+	AuthPublicKeyService_GetByName_FullMethodName     = "/nebius.iam.v1.AuthPublicKeyService/GetByName"
 	AuthPublicKeyService_List_FullMethodName          = "/nebius.iam.v1.AuthPublicKeyService/List"
 	AuthPublicKeyService_ListByAccount_FullMethodName = "/nebius.iam.v1.AuthPublicKeyService/ListByAccount"
 	AuthPublicKeyService_Update_FullMethodName        = "/nebius.iam.v1.AuthPublicKeyService/Update"
@@ -36,6 +37,7 @@ const (
 type AuthPublicKeyServiceClient interface {
 	Create(ctx context.Context, in *CreateAuthPublicKeyRequest, opts ...grpc.CallOption) (*v1.Operation, error)
 	Get(ctx context.Context, in *GetAuthPublicKeyRequest, opts ...grpc.CallOption) (*AuthPublicKey, error)
+	GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*AuthPublicKey, error)
 	List(ctx context.Context, in *ListAuthPublicKeyRequest, opts ...grpc.CallOption) (*ListAuthPublicKeyResponse, error)
 	ListByAccount(ctx context.Context, in *ListAuthPublicKeyByAccountRequest, opts ...grpc.CallOption) (*ListAuthPublicKeyResponse, error)
 	Update(ctx context.Context, in *UpdateAuthPublicKeyRequest, opts ...grpc.CallOption) (*v1.Operation, error)
@@ -64,6 +66,15 @@ func (c *authPublicKeyServiceClient) Create(ctx context.Context, in *CreateAuthP
 func (c *authPublicKeyServiceClient) Get(ctx context.Context, in *GetAuthPublicKeyRequest, opts ...grpc.CallOption) (*AuthPublicKey, error) {
 	out := new(AuthPublicKey)
 	err := c.cc.Invoke(ctx, AuthPublicKeyService_Get_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authPublicKeyServiceClient) GetByName(ctx context.Context, in *v1.GetByNameRequest, opts ...grpc.CallOption) (*AuthPublicKey, error) {
+	out := new(AuthPublicKey)
+	err := c.cc.Invoke(ctx, AuthPublicKeyService_GetByName_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,6 +141,7 @@ func (c *authPublicKeyServiceClient) Delete(ctx context.Context, in *DeleteAuthP
 type AuthPublicKeyServiceServer interface {
 	Create(context.Context, *CreateAuthPublicKeyRequest) (*v1.Operation, error)
 	Get(context.Context, *GetAuthPublicKeyRequest) (*AuthPublicKey, error)
+	GetByName(context.Context, *v1.GetByNameRequest) (*AuthPublicKey, error)
 	List(context.Context, *ListAuthPublicKeyRequest) (*ListAuthPublicKeyResponse, error)
 	ListByAccount(context.Context, *ListAuthPublicKeyByAccountRequest) (*ListAuthPublicKeyResponse, error)
 	Update(context.Context, *UpdateAuthPublicKeyRequest) (*v1.Operation, error)
@@ -147,6 +159,9 @@ func (UnimplementedAuthPublicKeyServiceServer) Create(context.Context, *CreateAu
 }
 func (UnimplementedAuthPublicKeyServiceServer) Get(context.Context, *GetAuthPublicKeyRequest) (*AuthPublicKey, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedAuthPublicKeyServiceServer) GetByName(context.Context, *v1.GetByNameRequest) (*AuthPublicKey, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
 }
 func (UnimplementedAuthPublicKeyServiceServer) List(context.Context, *ListAuthPublicKeyRequest) (*ListAuthPublicKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
@@ -210,6 +225,24 @@ func _AuthPublicKeyService_Get_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthPublicKeyServiceServer).Get(ctx, req.(*GetAuthPublicKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthPublicKeyService_GetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.GetByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthPublicKeyServiceServer).GetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthPublicKeyService_GetByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthPublicKeyServiceServer).GetByName(ctx, req.(*v1.GetByNameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -336,6 +369,10 @@ var AuthPublicKeyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _AuthPublicKeyService_Get_Handler,
+		},
+		{
+			MethodName: "GetByName",
+			Handler:    _AuthPublicKeyService_GetByName_Handler,
 		},
 		{
 			MethodName: "List",

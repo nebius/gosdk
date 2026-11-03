@@ -307,6 +307,50 @@ func (c *MockAuthPublicKeyServiceGetCall) DoAndReturn(f func(context.Context, *v
 	return c
 }
 
+// GetByName mocks base method.
+func (m *MockAuthPublicKeyService) GetByName(arg0 context.Context, arg1 *v1.GetByNameRequest, arg2 ...grpc.CallOption) (*v10.AuthPublicKey, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetByName", varargs...)
+	ret0, _ := ret[0].(*v10.AuthPublicKey)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByName indicates an expected call of GetByName.
+func (mr *MockAuthPublicKeyServiceMockRecorder) GetByName(arg0, arg1 any, arg2 ...any) *MockAuthPublicKeyServiceGetByNameCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByName", reflect.TypeOf((*MockAuthPublicKeyService)(nil).GetByName), varargs...)
+	return &MockAuthPublicKeyServiceGetByNameCall{Call: call}
+}
+
+// MockAuthPublicKeyServiceGetByNameCall wrap *gomock.Call
+type MockAuthPublicKeyServiceGetByNameCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockAuthPublicKeyServiceGetByNameCall) Return(arg0 *v10.AuthPublicKey, arg1 error) *MockAuthPublicKeyServiceGetByNameCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockAuthPublicKeyServiceGetByNameCall) Do(f func(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v10.AuthPublicKey, error)) *MockAuthPublicKeyServiceGetByNameCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockAuthPublicKeyServiceGetByNameCall) DoAndReturn(f func(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v10.AuthPublicKey, error)) *MockAuthPublicKeyServiceGetByNameCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // GetOperation mocks base method.
 func (m *MockAuthPublicKeyService) GetOperation(arg0 context.Context, arg1 *v1.GetOperationRequest, arg2 ...grpc.CallOption) (operations.Operation, error) {
 	m.ctrl.T.Helper()

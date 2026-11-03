@@ -420,9 +420,9 @@ func (x *Bucket) GetStatus() *BucketStatus {
 type BucketSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Supports transitions:
-	//   - disabled -> enabled
-	//   - disabled -> suspended
-	//   - enabled <-> suspended
+	//  * disabled -> enabled
+	//  * disabled -> suspended
+	//  * enabled <-> suspended
 	VersioningPolicy VersioningPolicy `protobuf:"varint,2,opt,name=versioning_policy,json=versioningPolicy,proto3,enum=nebius.storage.v1.VersioningPolicy" json:"versioning_policy,omitempty"`
 	// Maximum bucket size.
 	// Zero means unlimited.

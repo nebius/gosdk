@@ -339,6 +339,8 @@ type NetworkStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Current state of the network.
 	State NetworkStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.vpc.v1.NetworkStatus_State" json:"state,omitempty"`
+	// Indicates whether this is the project's default network.
+	Default bool `protobuf:"varint,4,opt,name=default,proto3" json:"default,omitempty"`
 	// ID of the network's default route table.
 	DefaultRouteTableId string `protobuf:"bytes,5,opt,name=default_route_table_id,json=defaultRouteTableId,proto3" json:"default_route_table_id,omitempty"`
 	unknownFields       protoimpl.UnknownFields
@@ -382,6 +384,13 @@ func (x *NetworkStatus) GetState() NetworkStatus_State {
 	return NetworkStatus_STATE_UNSPECIFIED
 }
 
+func (x *NetworkStatus) GetDefault() bool {
+	if x != nil {
+		return x.Default
+	}
+	return false
+}
+
 func (x *NetworkStatus) GetDefaultRouteTableId() string {
 	if x != nil {
 		return x.DefaultRouteTableId
@@ -407,9 +416,10 @@ const file_nebius_vpc_v1_network_proto_rawDesc = "" +
 	"\x05pools\x18\x01 \x03(\v2\x1a.nebius.vpc.v1.NetworkPoolR\x05pools\"1\n" +
 	"\vNetworkPool\x12\"\n" +
 	"\x02id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
-	"\avpcpoolR\x02id\"\xd9\x01\n" +
+	"\avpcpoolR\x02id\"\xf3\x01\n" +
 	"\rNetworkStatus\x128\n" +
-	"\x05state\x18\x01 \x01(\x0e2\".nebius.vpc.v1.NetworkStatus.StateR\x05state\x12G\n" +
+	"\x05state\x18\x01 \x01(\x0e2\".nebius.vpc.v1.NetworkStatus.StateR\x05state\x12\x18\n" +
+	"\adefault\x18\x04 \x01(\bR\adefault\x12G\n" +
 	"\x16default_route_table_id\x18\x05 \x01(\tB\x12\xe2J\x0f\n" +
 	"\rvpcroutetableR\x13defaultRouteTableId\"E\n" +
 	"\x05State\x12\x15\n" +

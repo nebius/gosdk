@@ -29,6 +29,7 @@ const AccessKeyServiceID conn.ServiceID = "nebius.iam.v2.AccessKeyService"
 type AccessKeyService interface {
 	Create(context.Context, *v2.CreateAccessKeyRequest, ...grpc.CallOption) (operations.Operation, error)
 	Get(context.Context, *v2.GetAccessKeyRequest, ...grpc.CallOption) (*v2.AccessKey, error)
+	GetByName(context.Context, *v1.GetByNameRequest, ...grpc.CallOption) (*v2.AccessKey, error)
 	GetSecret(context.Context, *v2.GetAccessKeySecretRequest, ...grpc.CallOption) (*v2.GetAccessKeySecretResponse, error)
 	List(context.Context, *v2.ListAccessKeysRequest, ...grpc.CallOption) (*v2.ListAccessKeysResponse, error)
 	Filter(context.Context, *v2.ListAccessKeysRequest, ...grpc.CallOption) iter.Seq2[*v2.AccessKey, error]
@@ -109,6 +110,35 @@ func (s accessKeyService) Get(ctx context.Context, request *v2.GetAccessKeyReque
 		return nil, err
 	}
 	return v2.NewAccessKeyServiceClient(con).Get(ctx, request, opts...)
+}
+
+func (s accessKeyService) GetByName(ctx context.Context, request *v1.GetByNameRequest, opts ...grpc.CallOption) (
+	*v2.AccessKey,
+	error,
+) {
+	if request.GetParentId() == "" {
+		if parentID := s.sdk.ParentID(); parentID != "" {
+			if check_nid.IsNIDAllowedForAutoFill(parentID, nil) {
+				request.ParentId = parentID
+			}
+		}
+		if request.GetParentId() == "" {
+			if tenantID := s.sdk.TenantID(); tenantID != "" {
+				if check_nid.IsNIDAllowedForAutoFill(tenantID, nil) {
+					request.ParentId = tenantID
+				}
+			}
+		}
+	}
+	address, err := s.sdk.Resolve(ctx, AccessKeyServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v2.NewAccessKeyServiceClient(con).GetByName(ctx, request, opts...)
 }
 
 func (s accessKeyService) GetSecret(ctx context.Context, request *v2.GetAccessKeySecretRequest, opts ...grpc.CallOption) (

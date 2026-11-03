@@ -238,7 +238,9 @@ type NetworkStatus struct {
 	// Current state of the network.
 	State NetworkStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.vpc.v1alpha1.NetworkStatus_State" json:"state,omitempty"`
 	// Scope ID of all pools
-	ScopeId       string `protobuf:"bytes,2,opt,name=scope_id,json=scopeId,proto3" json:"scope_id,omitempty"`
+	ScopeId string `protobuf:"bytes,2,opt,name=scope_id,json=scopeId,proto3" json:"scope_id,omitempty"`
+	// Indicates whether this is the project's default network.
+	Default       bool `protobuf:"varint,3,opt,name=default,proto3" json:"default,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -287,6 +289,13 @@ func (x *NetworkStatus) GetScopeId() string {
 	return ""
 }
 
+func (x *NetworkStatus) GetDefault() bool {
+	if x != nil {
+		return x.Default
+	}
+	return false
+}
+
 var File_nebius_vpc_v1alpha1_network_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_network_proto_rawDesc = "" +
@@ -300,12 +309,13 @@ const file_nebius_vpc_v1alpha1_network_proto_rawDesc = "" +
 	"\x05pools\x18\x01 \x03(\v2 .nebius.vpc.v1alpha1.NetworkPoolR\x05pools\":\n" +
 	"\vNetworkPool\x12+\n" +
 	"\apool_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
-	"\avpcpoolR\x06poolId\"\xc0\x01\n" +
+	"\avpcpoolR\x06poolId\"\xda\x01\n" +
 	"\rNetworkStatus\x12>\n" +
 	"\x05state\x18\x01 \x01(\x0e2(.nebius.vpc.v1alpha1.NetworkStatus.StateR\x05state\x12(\n" +
 	"\bscope_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bvpcscopeR\ascopeId\"E\n" +
+	"\bvpcscopeR\ascopeId\x12\x18\n" +
+	"\adefault\x18\x03 \x01(\bR\adefault\"E\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +

@@ -409,7 +409,9 @@ type SubnetStatus struct {
 	// Current state of the subnet.
 	State SubnetStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.vpc.v1alpha1.SubnetStatus_State" json:"state,omitempty"`
 	// CIDR blocks.
-	Ipv4Cidrs     []string `protobuf:"bytes,2,rep,name=ipv4_cidrs,json=ipv4Cidrs,proto3" json:"ipv4_cidrs,omitempty"`
+	Ipv4Cidrs []string `protobuf:"bytes,2,rep,name=ipv4_cidrs,json=ipv4Cidrs,proto3" json:"ipv4_cidrs,omitempty"`
+	// Indicates whether this is the network's default subnet.
+	Default       bool `protobuf:"varint,4,opt,name=default,proto3" json:"default,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -458,6 +460,13 @@ func (x *SubnetStatus) GetIpv4Cidrs() []string {
 	return nil
 }
 
+func (x *SubnetStatus) GetDefault() bool {
+	if x != nil {
+		return x.Default
+	}
+	return false
+}
+
 var File_nebius_vpc_v1alpha1_subnet_proto protoreflect.FileDescriptor
 
 const file_nebius_vpc_v1alpha1_subnet_proto_rawDesc = "" +
@@ -492,11 +501,12 @@ const file_nebius_vpc_v1alpha1_subnet_proto_rawDesc = "" +
 	"this != ''\xc8\x01\x01R\x04cidr\x12@\n" +
 	"\x05state\x18\x02 \x01(\x0e2\".nebius.vpc.v1alpha1.PoolCidrStateB\x06\xbaH\x03\xc8\x01\x01R\x05state\x120\n" +
 	"\fallowed_mask\x18\x03 \x01(\x03B\r\xbaH\n" +
-	"\xc8\x01\x01\"\x05\x18\x80\x01(\x00R\vallowedMask\"\xb3\x01\n" +
+	"\xc8\x01\x01\"\x05\x18\x80\x01(\x00R\vallowedMask\"\xcd\x01\n" +
 	"\fSubnetStatus\x12=\n" +
 	"\x05state\x18\x01 \x01(\x0e2'.nebius.vpc.v1alpha1.SubnetStatus.StateR\x05state\x12\x1d\n" +
 	"\n" +
-	"ipv4_cidrs\x18\x02 \x03(\tR\tipv4Cidrs\"E\n" +
+	"ipv4_cidrs\x18\x02 \x03(\tR\tipv4Cidrs\x12\x18\n" +
+	"\adefault\x18\x04 \x01(\bR\adefault\"E\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bCREATING\x10\x01\x12\t\n" +
