@@ -29,6 +29,7 @@ const NetworkServiceID conn.ServiceID = "nebius.vpc.v1.NetworkService"
 type NetworkService interface {
 	Get(context.Context, *v1.GetNetworkRequest, ...grpc.CallOption) (*v1.Network, error)
 	GetByName(context.Context, *v1.GetNetworkByNameRequest, ...grpc.CallOption) (*v1.Network, error)
+	GetDefault(context.Context, *v1.GetDefaultNetworkRequest, ...grpc.CallOption) (*v1.GetDefaultNetworkResponse, error)
 	List(context.Context, *v1.ListNetworksRequest, ...grpc.CallOption) (*v1.ListNetworksResponse, error)
 	Filter(context.Context, *v1.ListNetworksRequest, ...grpc.CallOption) iter.Seq2[*v1.Network, error]
 	ListAggregated(context.Context, *v1.ListAggregatedNetworksRequest, ...grpc.CallOption) (*v1.ListNetworksResponse, error)
@@ -92,6 +93,21 @@ func (s networkService) GetByName(ctx context.Context, request *v1.GetNetworkByN
 		return nil, err
 	}
 	return v1.NewNetworkServiceClient(con).GetByName(ctx, request, opts...)
+}
+
+func (s networkService) GetDefault(ctx context.Context, request *v1.GetDefaultNetworkRequest, opts ...grpc.CallOption) (
+	*v1.GetDefaultNetworkResponse,
+	error,
+) {
+	address, err := s.sdk.Resolve(ctx, NetworkServiceID)
+	if err != nil {
+		return nil, err
+	}
+	con, err := s.sdk.Dial(ctx, address)
+	if err != nil {
+		return nil, err
+	}
+	return v1.NewNetworkServiceClient(con).GetDefault(ctx, request, opts...)
 }
 
 func (s networkService) List(ctx context.Context, request *v1.ListNetworksRequest, opts ...grpc.CallOption) (

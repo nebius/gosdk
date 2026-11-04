@@ -73,7 +73,7 @@ func (x ClusterStatus_State) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ClusterStatus_State.Descriptor instead.
 func (ClusterStatus_State) EnumDescriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{8, 0}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{15, 0}
 }
 
 type Cluster struct {
@@ -217,9 +217,11 @@ type ControlPlaneSpec struct {
 	// Please note that there is no feature parity between Karpenter node pools and
 	// public node groups.
 	// By default cluster will be created without it.
-	Karpenter     *Karpenter `protobuf:"bytes,6,opt,name=karpenter,proto3" json:"karpenter,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Karpenter *Karpenter `protobuf:"bytes,6,opt,name=karpenter,proto3" json:"karpenter,omitempty"`
+	// Configures customer JWT authentication. Requires Kubernetes 1.34 and a compatible control-plane infra version.
+	Authentication *AuthenticationSpec `protobuf:"bytes,7,opt,name=authentication,proto3" json:"authentication,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ControlPlaneSpec) Reset() {
@@ -294,6 +296,454 @@ func (x *ControlPlaneSpec) GetKarpenter() *Karpenter {
 	return nil
 }
 
+func (x *ControlPlaneSpec) GetAuthentication() *AuthenticationSpec {
+	if x != nil {
+		return x.Authentication
+	}
+	return nil
+}
+
+type AuthenticationSpec struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Configures OIDC providers for Kubernetes user authentication.
+	Oidc          []*OIDCProvider `protobuf:"bytes,1,rep,name=oidc,proto3" json:"oidc,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthenticationSpec) Reset() {
+	*x = AuthenticationSpec{}
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthenticationSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthenticationSpec) ProtoMessage() {}
+
+func (x *AuthenticationSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthenticationSpec.ProtoReflect.Descriptor instead.
+func (*AuthenticationSpec) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AuthenticationSpec) GetOidc() []*OIDCProvider {
+	if x != nil {
+		return x.Oidc
+	}
+	return nil
+}
+
+type OIDCProvider struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifies this provider within the cluster configuration.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Defines the issuer for accepted tokens.
+	Issuer *OIDCIssuer `protobuf:"bytes,2,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	// Maps token claims to Kubernetes user attributes.
+	ClaimMappings *ClaimMappings `protobuf:"bytes,3,opt,name=claim_mappings,json=claimMappings,proto3" json:"claim_mappings,omitempty"`
+	// Validates token claims before Kubernetes authenticates the user.
+	ClaimValidationRules []*ClaimValidationRule `protobuf:"bytes,4,rep,name=claim_validation_rules,json=claimValidationRules,proto3" json:"claim_validation_rules,omitempty"`
+	// Validates the mapped Kubernetes user information.
+	UserValidationRules []*CELValidationRule `protobuf:"bytes,5,rep,name=user_validation_rules,json=userValidationRules,proto3" json:"user_validation_rules,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *OIDCProvider) Reset() {
+	*x = OIDCProvider{}
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OIDCProvider) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OIDCProvider) ProtoMessage() {}
+
+func (x *OIDCProvider) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OIDCProvider.ProtoReflect.Descriptor instead.
+func (*OIDCProvider) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *OIDCProvider) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *OIDCProvider) GetIssuer() *OIDCIssuer {
+	if x != nil {
+		return x.Issuer
+	}
+	return nil
+}
+
+func (x *OIDCProvider) GetClaimMappings() *ClaimMappings {
+	if x != nil {
+		return x.ClaimMappings
+	}
+	return nil
+}
+
+func (x *OIDCProvider) GetClaimValidationRules() []*ClaimValidationRule {
+	if x != nil {
+		return x.ClaimValidationRules
+	}
+	return nil
+}
+
+func (x *OIDCProvider) GetUserValidationRules() []*CELValidationRule {
+	if x != nil {
+		return x.UserValidationRules
+	}
+	return nil
+}
+
+type OIDCIssuer struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifies the issuer and must match the token `iss` claim.
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	// Lists the token audiences that this issuer accepts, for example, `["kubernetes", "dashboard"]`.
+	Audiences []string `protobuf:"bytes,2,rep,name=audiences,proto3" json:"audiences,omitempty"`
+	// Overrides the OpenID discovery URL. An empty value uses the issuer's standard discovery URL.
+	DiscoveryUrl string `protobuf:"bytes,3,opt,name=discovery_url,json=discoveryUrl,proto3" json:"discovery_url,omitempty"`
+	// PEM CA bundle for discovery and JWKS. Omission uses system trust.
+	CertificateAuthority string `protobuf:"bytes,4,opt,name=certificate_authority,json=certificateAuthority,proto3" json:"certificate_authority,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *OIDCIssuer) Reset() {
+	*x = OIDCIssuer{}
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OIDCIssuer) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OIDCIssuer) ProtoMessage() {}
+
+func (x *OIDCIssuer) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OIDCIssuer.ProtoReflect.Descriptor instead.
+func (*OIDCIssuer) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *OIDCIssuer) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *OIDCIssuer) GetAudiences() []string {
+	if x != nil {
+		return x.Audiences
+	}
+	return nil
+}
+
+func (x *OIDCIssuer) GetDiscoveryUrl() string {
+	if x != nil {
+		return x.DiscoveryUrl
+	}
+	return ""
+}
+
+func (x *OIDCIssuer) GetCertificateAuthority() string {
+	if x != nil {
+		return x.CertificateAuthority
+	}
+	return ""
+}
+
+type ClaimMappings struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Maps token claims to the Kubernetes username.
+	Username *PrefixedClaimMapping `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	// Maps token claims to Kubernetes groups. Omission disables group mapping.
+	Groups        *PrefixedClaimMapping `protobuf:"bytes,2,opt,name=groups,proto3" json:"groups,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClaimMappings) Reset() {
+	*x = ClaimMappings{}
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClaimMappings) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClaimMappings) ProtoMessage() {}
+
+func (x *ClaimMappings) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClaimMappings.ProtoReflect.Descriptor instead.
+func (*ClaimMappings) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ClaimMappings) GetUsername() *PrefixedClaimMapping {
+	if x != nil {
+		return x.Username
+	}
+	return nil
+}
+
+func (x *ClaimMappings) GetGroups() *PrefixedClaimMapping {
+	if x != nil {
+		return x.Groups
+	}
+	return nil
+}
+
+type PrefixedClaimMapping struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Names the token claim to map.
+	Claim string `protobuf:"bytes,1,opt,name=claim,proto3" json:"claim,omitempty"`
+	// Omission and an empty value disable prefixing for claims. Expressions require omission, including for an empty value.
+	Prefix *string `protobuf:"bytes,2,opt,name=prefix,proto3,oneof" json:"prefix,omitempty"`
+	// Maps token claims with a CEL expression.
+	Expression    string `protobuf:"bytes,3,opt,name=expression,proto3" json:"expression,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PrefixedClaimMapping) Reset() {
+	*x = PrefixedClaimMapping{}
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PrefixedClaimMapping) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrefixedClaimMapping) ProtoMessage() {}
+
+func (x *PrefixedClaimMapping) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PrefixedClaimMapping.ProtoReflect.Descriptor instead.
+func (*PrefixedClaimMapping) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *PrefixedClaimMapping) GetClaim() string {
+	if x != nil {
+		return x.Claim
+	}
+	return ""
+}
+
+func (x *PrefixedClaimMapping) GetPrefix() string {
+	if x != nil && x.Prefix != nil {
+		return *x.Prefix
+	}
+	return ""
+}
+
+func (x *PrefixedClaimMapping) GetExpression() string {
+	if x != nil {
+		return x.Expression
+	}
+	return ""
+}
+
+type ClaimValidationRule struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Names the token claim that must match required_value exactly.
+	Claim string `protobuf:"bytes,1,opt,name=claim,proto3" json:"claim,omitempty"`
+	// An omitted value matches an empty string, following upstream behavior.
+	RequiredValue string `protobuf:"bytes,2,opt,name=required_value,json=requiredValue,proto3" json:"required_value,omitempty"`
+	// Validates token claims with CEL. The expression must evaluate to true.
+	Expression string `protobuf:"bytes,3,opt,name=expression,proto3" json:"expression,omitempty"`
+	// Describes a failed CEL validation.
+	Message       string `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClaimValidationRule) Reset() {
+	*x = ClaimValidationRule{}
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClaimValidationRule) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClaimValidationRule) ProtoMessage() {}
+
+func (x *ClaimValidationRule) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClaimValidationRule.ProtoReflect.Descriptor instead.
+func (*ClaimValidationRule) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ClaimValidationRule) GetClaim() string {
+	if x != nil {
+		return x.Claim
+	}
+	return ""
+}
+
+func (x *ClaimValidationRule) GetRequiredValue() string {
+	if x != nil {
+		return x.RequiredValue
+	}
+	return ""
+}
+
+func (x *ClaimValidationRule) GetExpression() string {
+	if x != nil {
+		return x.Expression
+	}
+	return ""
+}
+
+func (x *ClaimValidationRule) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type CELValidationRule struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Validates the mapped Kubernetes user information with CEL.
+	Expression string `protobuf:"bytes,1,opt,name=expression,proto3" json:"expression,omitempty"`
+	// Describes a failed CEL validation.
+	Message       string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CELValidationRule) Reset() {
+	*x = CELValidationRule{}
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CELValidationRule) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CELValidationRule) ProtoMessage() {}
+
+func (x *CELValidationRule) ProtoReflect() protoreflect.Message {
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CELValidationRule.ProtoReflect.Descriptor instead.
+func (*CELValidationRule) Descriptor() ([]byte, []int) {
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *CELValidationRule) GetExpression() string {
+	if x != nil {
+		return x.Expression
+	}
+	return ""
+}
+
+func (x *CELValidationRule) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 type ControlPlaneEndpointsSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Public endpoint specification. When set, a public endpoint is created.
@@ -304,7 +754,7 @@ type ControlPlaneEndpointsSpec struct {
 
 func (x *ControlPlaneEndpointsSpec) Reset() {
 	*x = ControlPlaneEndpointsSpec{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[3]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -316,7 +766,7 @@ func (x *ControlPlaneEndpointsSpec) String() string {
 func (*ControlPlaneEndpointsSpec) ProtoMessage() {}
 
 func (x *ControlPlaneEndpointsSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[3]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +779,7 @@ func (x *ControlPlaneEndpointsSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPlaneEndpointsSpec.ProtoReflect.Descriptor instead.
 func (*ControlPlaneEndpointsSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{3}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ControlPlaneEndpointsSpec) GetPublicEndpoint() *PublicEndpointSpec {
@@ -351,7 +801,7 @@ type PublicEndpointSpec struct {
 
 func (x *PublicEndpointSpec) Reset() {
 	*x = PublicEndpointSpec{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[4]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -363,7 +813,7 @@ func (x *PublicEndpointSpec) String() string {
 func (*PublicEndpointSpec) ProtoMessage() {}
 
 func (x *PublicEndpointSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[4]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -376,7 +826,7 @@ func (x *PublicEndpointSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PublicEndpointSpec.ProtoReflect.Descriptor instead.
 func (*PublicEndpointSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{4}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *PublicEndpointSpec) GetAllowedCidrs() []string {
@@ -402,7 +852,7 @@ type KubeNetworkSpec struct {
 
 func (x *KubeNetworkSpec) Reset() {
 	*x = KubeNetworkSpec{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[5]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -414,7 +864,7 @@ func (x *KubeNetworkSpec) String() string {
 func (*KubeNetworkSpec) ProtoMessage() {}
 
 func (x *KubeNetworkSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[5]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -427,7 +877,7 @@ func (x *KubeNetworkSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KubeNetworkSpec.ProtoReflect.Descriptor instead.
 func (*KubeNetworkSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{5}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *KubeNetworkSpec) GetServiceCidrs() []string {
@@ -445,7 +895,7 @@ type AuditLogsSpec struct {
 
 func (x *AuditLogsSpec) Reset() {
 	*x = AuditLogsSpec{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[6]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -457,7 +907,7 @@ func (x *AuditLogsSpec) String() string {
 func (*AuditLogsSpec) ProtoMessage() {}
 
 func (x *AuditLogsSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[6]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -470,7 +920,7 @@ func (x *AuditLogsSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuditLogsSpec.ProtoReflect.Descriptor instead.
 func (*AuditLogsSpec) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{6}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{13}
 }
 
 type Karpenter struct {
@@ -481,7 +931,7 @@ type Karpenter struct {
 
 func (x *Karpenter) Reset() {
 	*x = Karpenter{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[7]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -493,7 +943,7 @@ func (x *Karpenter) String() string {
 func (*Karpenter) ProtoMessage() {}
 
 func (x *Karpenter) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[7]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -506,7 +956,7 @@ func (x *Karpenter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Karpenter.ProtoReflect.Descriptor instead.
 func (*Karpenter) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{7}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{14}
 }
 
 type ClusterStatus struct {
@@ -522,7 +972,7 @@ type ClusterStatus struct {
 
 func (x *ClusterStatus) Reset() {
 	*x = ClusterStatus{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[8]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -534,7 +984,7 @@ func (x *ClusterStatus) String() string {
 func (*ClusterStatus) ProtoMessage() {}
 
 func (x *ClusterStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[8]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -547,7 +997,7 @@ func (x *ClusterStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClusterStatus.ProtoReflect.Descriptor instead.
 func (*ClusterStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{8}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ClusterStatus) GetState() ClusterStatus_State {
@@ -596,7 +1046,7 @@ type ControlPlaneStatus struct {
 
 func (x *ControlPlaneStatus) Reset() {
 	*x = ControlPlaneStatus{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[9]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -608,7 +1058,7 @@ func (x *ControlPlaneStatus) String() string {
 func (*ControlPlaneStatus) ProtoMessage() {}
 
 func (x *ControlPlaneStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[9]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -621,7 +1071,7 @@ func (x *ControlPlaneStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPlaneStatus.ProtoReflect.Descriptor instead.
 func (*ControlPlaneStatus) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{9}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ControlPlaneStatus) GetVersion() string {
@@ -665,7 +1115,7 @@ type ControlPlaneStatusEndpoints struct {
 
 func (x *ControlPlaneStatusEndpoints) Reset() {
 	*x = ControlPlaneStatusEndpoints{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[10]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -677,7 +1127,7 @@ func (x *ControlPlaneStatusEndpoints) String() string {
 func (*ControlPlaneStatusEndpoints) ProtoMessage() {}
 
 func (x *ControlPlaneStatusEndpoints) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[10]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -690,7 +1140,7 @@ func (x *ControlPlaneStatusEndpoints) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPlaneStatusEndpoints.ProtoReflect.Descriptor instead.
 func (*ControlPlaneStatusEndpoints) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{10}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ControlPlaneStatusEndpoints) GetPublicEndpoint() string {
@@ -717,7 +1167,7 @@ type ControlPlaneStatusAuth struct {
 
 func (x *ControlPlaneStatusAuth) Reset() {
 	*x = ControlPlaneStatusAuth{}
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[11]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -729,7 +1179,7 @@ func (x *ControlPlaneStatusAuth) String() string {
 func (*ControlPlaneStatusAuth) ProtoMessage() {}
 
 func (x *ControlPlaneStatusAuth) ProtoReflect() protoreflect.Message {
-	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[11]
+	mi := &file_nebius_mk8s_v1_cluster_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -742,7 +1192,7 @@ func (x *ControlPlaneStatusAuth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPlaneStatusAuth.ProtoReflect.Descriptor instead.
 func (*ControlPlaneStatusAuth) Descriptor() ([]byte, []int) {
-	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{11}
+	return file_nebius_mk8s_v1_cluster_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ControlPlaneStatusAuth) GetClusterCaCertificate() string {
@@ -765,7 +1215,7 @@ const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"\x06status\x18\x03 \x01(\v2\x1d.nebius.mk8s.v1.ClusterStatusR\x06status\"\xa0\x01\n" +
 	"\vClusterSpec\x12M\n" +
 	"\rcontrol_plane\x18\x02 \x01(\v2 .nebius.mk8s.v1.ControlPlaneSpecB\x06\xbaH\x03\xc8\x01\x01R\fcontrolPlane\x12B\n" +
-	"\fkube_network\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.KubeNetworkSpecR\vkubeNetwork\"\xf7\x02\n" +
+	"\fkube_network\x18\x03 \x01(\v2\x1f.nebius.mk8s.v1.KubeNetworkSpecR\vkubeNetwork\"\xc3\x03\n" +
 	"\x10ControlPlaneSpec\x12,\n" +
 	"\aversion\x18\x01 \x01(\tB\x12\xbaH\x0fr\r2\v|^\\d\\.\\d\\d$R\aversion\x120\n" +
 	"\tsubnet_id\x18\x02 \x01(\tB\x13\xbaJ\x02\a\x02\xe2J\v\n" +
@@ -774,7 +1224,49 @@ const file_nebius_mk8s_v1_cluster_proto_rawDesc = "" +
 	"\x11etcd_cluster_size\x18\x04 \x01(\x03B\v\xbaH\b\"\x060\x000\x010\x03R\x0fetcdClusterSize\x12B\n" +
 	"\n" +
 	"audit_logs\x18\x05 \x01(\v2\x1d.nebius.mk8s.v1.AuditLogsSpecB\x04\xbaJ\x01\x06R\tauditLogs\x12=\n" +
-	"\tkarpenter\x18\x06 \x01(\v2\x19.nebius.mk8s.v1.KarpenterB\x04\xbaJ\x01\x06R\tkarpenter\"n\n" +
+	"\tkarpenter\x18\x06 \x01(\v2\x19.nebius.mk8s.v1.KarpenterB\x04\xbaJ\x01\x06R\tkarpenter\x12J\n" +
+	"\x0eauthentication\x18\a \x01(\v2\".nebius.mk8s.v1.AuthenticationSpecR\x0eauthentication\"P\n" +
+	"\x12AuthenticationSpec\x12:\n" +
+	"\x04oidc\x18\x01 \x03(\v2\x1c.nebius.mk8s.v1.OIDCProviderB\b\xbaH\x05\x92\x01\x02\x10@R\x04oidc\"\xe7\x02\n" +
+	"\fOIDCProvider\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12:\n" +
+	"\x06issuer\x18\x02 \x01(\v2\x1a.nebius.mk8s.v1.OIDCIssuerB\x06\xbaH\x03\xc8\x01\x01R\x06issuer\x12L\n" +
+	"\x0eclaim_mappings\x18\x03 \x01(\v2\x1d.nebius.mk8s.v1.ClaimMappingsB\x06\xbaH\x03\xc8\x01\x01R\rclaimMappings\x12Y\n" +
+	"\x16claim_validation_rules\x18\x04 \x03(\v2#.nebius.mk8s.v1.ClaimValidationRuleR\x14claimValidationRules\x12U\n" +
+	"\x15user_validation_rules\x18\x05 \x03(\v2!.nebius.mk8s.v1.CELValidationRuleR\x13userValidationRules\"\xb1\x01\n" +
+	"\n" +
+	"OIDCIssuer\x12\x19\n" +
+	"\x03url\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x03url\x12.\n" +
+	"\taudiences\x18\x02 \x03(\tB\x10\xbaH\r\x92\x01\n" +
+	"\b\x01\x18\x01\"\x04r\x02\x10\x01R\taudiences\x12#\n" +
+	"\rdiscovery_url\x18\x03 \x01(\tR\fdiscoveryUrl\x123\n" +
+	"\x15certificate_authority\x18\x04 \x01(\tR\x14certificateAuthority\"\x97\x01\n" +
+	"\rClaimMappings\x12H\n" +
+	"\busername\x18\x01 \x01(\v2$.nebius.mk8s.v1.PrefixedClaimMappingB\x06\xbaH\x03\xc8\x01\x01R\busername\x12<\n" +
+	"\x06groups\x18\x02 \x01(\v2$.nebius.mk8s.v1.PrefixedClaimMappingR\x06groups\"\xe1\x02\n" +
+	"\x14PrefixedClaimMapping\x12\x14\n" +
+	"\x05claim\x18\x01 \x01(\tR\x05claim\x12\x1b\n" +
+	"\x06prefix\x18\x02 \x01(\tH\x00R\x06prefix\x88\x01\x01\x12\x1e\n" +
+	"\n" +
+	"expression\x18\x03 \x01(\tR\n" +
+	"expression:\xea\x01\xbaH\xe6\x01\x1av\n" +
+	"\x1aclaim_expression_exclusive\x12)Configure either a claim or an expression\x1a-(this.claim != '') != (this.expression != '')\x1al\n" +
+	"\x1bexpression_prefix_exclusive\x12!An expression cannot use a prefix\x1a*this.expression == '' || !has(this.prefix)B\t\n" +
+	"\a_prefix\"\xdf\x03\n" +
+	"\x13ClaimValidationRule\x12\x14\n" +
+	"\x05claim\x18\x01 \x01(\tR\x05claim\x12%\n" +
+	"\x0erequired_value\x18\x02 \x01(\tR\rrequiredValue\x12\x1e\n" +
+	"\n" +
+	"expression\x18\x03 \x01(\tR\n" +
+	"expression\x12\x18\n" +
+	"\amessage\x18\x04 \x01(\tR\amessage:\xd0\x02\xbaH\xcc\x02\x1a\x81\x01\n" +
+	"\x15claim_validation_rule\x129Configure either an exact claim match or a CEL expression\x1a-(this.claim != '') != (this.expression != '')\x1a\xc5\x01\n" +
+	"\x17claim_validation_fields\x12HExact matches cannot use messages; expressions cannot use required_value\x1a`(this.claim == '' || this.message == '') && (this.expression == '' || this.required_value == '')\"V\n" +
+	"\x11CELValidationRule\x12'\n" +
+	"\n" +
+	"expression\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\n" +
+	"expression\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"n\n" +
 	"\x19ControlPlaneEndpointsSpec\x12Q\n" +
 	"\x0fpublic_endpoint\x18\x01 \x01(\v2\".nebius.mk8s.v1.PublicEndpointSpecB\x04\xbaJ\x01\x06R\x0epublicEndpoint\"\x8f\x02\n" +
 	"\x12PublicEndpointSpec\x12\xf8\x01\n" +
@@ -820,44 +1312,59 @@ func file_nebius_mk8s_v1_cluster_proto_rawDescGZIP() []byte {
 }
 
 var file_nebius_mk8s_v1_cluster_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nebius_mk8s_v1_cluster_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_nebius_mk8s_v1_cluster_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_nebius_mk8s_v1_cluster_proto_goTypes = []any{
 	(ClusterStatus_State)(0),            // 0: nebius.mk8s.v1.ClusterStatus.State
 	(*Cluster)(nil),                     // 1: nebius.mk8s.v1.Cluster
 	(*ClusterSpec)(nil),                 // 2: nebius.mk8s.v1.ClusterSpec
 	(*ControlPlaneSpec)(nil),            // 3: nebius.mk8s.v1.ControlPlaneSpec
-	(*ControlPlaneEndpointsSpec)(nil),   // 4: nebius.mk8s.v1.ControlPlaneEndpointsSpec
-	(*PublicEndpointSpec)(nil),          // 5: nebius.mk8s.v1.PublicEndpointSpec
-	(*KubeNetworkSpec)(nil),             // 6: nebius.mk8s.v1.KubeNetworkSpec
-	(*AuditLogsSpec)(nil),               // 7: nebius.mk8s.v1.AuditLogsSpec
-	(*Karpenter)(nil),                   // 8: nebius.mk8s.v1.Karpenter
-	(*ClusterStatus)(nil),               // 9: nebius.mk8s.v1.ClusterStatus
-	(*ControlPlaneStatus)(nil),          // 10: nebius.mk8s.v1.ControlPlaneStatus
-	(*ControlPlaneStatusEndpoints)(nil), // 11: nebius.mk8s.v1.ControlPlaneStatusEndpoints
-	(*ControlPlaneStatusAuth)(nil),      // 12: nebius.mk8s.v1.ControlPlaneStatusAuth
-	(*v1.ResourceMetadata)(nil),         // 13: nebius.common.v1.ResourceMetadata
-	(*v1.RecurrentResourceEvent)(nil),   // 14: nebius.common.v1.RecurrentResourceEvent
+	(*AuthenticationSpec)(nil),          // 4: nebius.mk8s.v1.AuthenticationSpec
+	(*OIDCProvider)(nil),                // 5: nebius.mk8s.v1.OIDCProvider
+	(*OIDCIssuer)(nil),                  // 6: nebius.mk8s.v1.OIDCIssuer
+	(*ClaimMappings)(nil),               // 7: nebius.mk8s.v1.ClaimMappings
+	(*PrefixedClaimMapping)(nil),        // 8: nebius.mk8s.v1.PrefixedClaimMapping
+	(*ClaimValidationRule)(nil),         // 9: nebius.mk8s.v1.ClaimValidationRule
+	(*CELValidationRule)(nil),           // 10: nebius.mk8s.v1.CELValidationRule
+	(*ControlPlaneEndpointsSpec)(nil),   // 11: nebius.mk8s.v1.ControlPlaneEndpointsSpec
+	(*PublicEndpointSpec)(nil),          // 12: nebius.mk8s.v1.PublicEndpointSpec
+	(*KubeNetworkSpec)(nil),             // 13: nebius.mk8s.v1.KubeNetworkSpec
+	(*AuditLogsSpec)(nil),               // 14: nebius.mk8s.v1.AuditLogsSpec
+	(*Karpenter)(nil),                   // 15: nebius.mk8s.v1.Karpenter
+	(*ClusterStatus)(nil),               // 16: nebius.mk8s.v1.ClusterStatus
+	(*ControlPlaneStatus)(nil),          // 17: nebius.mk8s.v1.ControlPlaneStatus
+	(*ControlPlaneStatusEndpoints)(nil), // 18: nebius.mk8s.v1.ControlPlaneStatusEndpoints
+	(*ControlPlaneStatusAuth)(nil),      // 19: nebius.mk8s.v1.ControlPlaneStatusAuth
+	(*v1.ResourceMetadata)(nil),         // 20: nebius.common.v1.ResourceMetadata
+	(*v1.RecurrentResourceEvent)(nil),   // 21: nebius.common.v1.RecurrentResourceEvent
 }
 var file_nebius_mk8s_v1_cluster_proto_depIdxs = []int32{
-	13, // 0: nebius.mk8s.v1.Cluster.metadata:type_name -> nebius.common.v1.ResourceMetadata
+	20, // 0: nebius.mk8s.v1.Cluster.metadata:type_name -> nebius.common.v1.ResourceMetadata
 	2,  // 1: nebius.mk8s.v1.Cluster.spec:type_name -> nebius.mk8s.v1.ClusterSpec
-	9,  // 2: nebius.mk8s.v1.Cluster.status:type_name -> nebius.mk8s.v1.ClusterStatus
+	16, // 2: nebius.mk8s.v1.Cluster.status:type_name -> nebius.mk8s.v1.ClusterStatus
 	3,  // 3: nebius.mk8s.v1.ClusterSpec.control_plane:type_name -> nebius.mk8s.v1.ControlPlaneSpec
-	6,  // 4: nebius.mk8s.v1.ClusterSpec.kube_network:type_name -> nebius.mk8s.v1.KubeNetworkSpec
-	4,  // 5: nebius.mk8s.v1.ControlPlaneSpec.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneEndpointsSpec
-	7,  // 6: nebius.mk8s.v1.ControlPlaneSpec.audit_logs:type_name -> nebius.mk8s.v1.AuditLogsSpec
-	8,  // 7: nebius.mk8s.v1.ControlPlaneSpec.karpenter:type_name -> nebius.mk8s.v1.Karpenter
-	5,  // 8: nebius.mk8s.v1.ControlPlaneEndpointsSpec.public_endpoint:type_name -> nebius.mk8s.v1.PublicEndpointSpec
-	0,  // 9: nebius.mk8s.v1.ClusterStatus.state:type_name -> nebius.mk8s.v1.ClusterStatus.State
-	10, // 10: nebius.mk8s.v1.ClusterStatus.control_plane:type_name -> nebius.mk8s.v1.ControlPlaneStatus
-	14, // 11: nebius.mk8s.v1.ClusterStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
-	11, // 12: nebius.mk8s.v1.ControlPlaneStatus.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneStatusEndpoints
-	12, // 13: nebius.mk8s.v1.ControlPlaneStatus.auth:type_name -> nebius.mk8s.v1.ControlPlaneStatusAuth
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	13, // 4: nebius.mk8s.v1.ClusterSpec.kube_network:type_name -> nebius.mk8s.v1.KubeNetworkSpec
+	11, // 5: nebius.mk8s.v1.ControlPlaneSpec.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneEndpointsSpec
+	14, // 6: nebius.mk8s.v1.ControlPlaneSpec.audit_logs:type_name -> nebius.mk8s.v1.AuditLogsSpec
+	15, // 7: nebius.mk8s.v1.ControlPlaneSpec.karpenter:type_name -> nebius.mk8s.v1.Karpenter
+	4,  // 8: nebius.mk8s.v1.ControlPlaneSpec.authentication:type_name -> nebius.mk8s.v1.AuthenticationSpec
+	5,  // 9: nebius.mk8s.v1.AuthenticationSpec.oidc:type_name -> nebius.mk8s.v1.OIDCProvider
+	6,  // 10: nebius.mk8s.v1.OIDCProvider.issuer:type_name -> nebius.mk8s.v1.OIDCIssuer
+	7,  // 11: nebius.mk8s.v1.OIDCProvider.claim_mappings:type_name -> nebius.mk8s.v1.ClaimMappings
+	9,  // 12: nebius.mk8s.v1.OIDCProvider.claim_validation_rules:type_name -> nebius.mk8s.v1.ClaimValidationRule
+	10, // 13: nebius.mk8s.v1.OIDCProvider.user_validation_rules:type_name -> nebius.mk8s.v1.CELValidationRule
+	8,  // 14: nebius.mk8s.v1.ClaimMappings.username:type_name -> nebius.mk8s.v1.PrefixedClaimMapping
+	8,  // 15: nebius.mk8s.v1.ClaimMappings.groups:type_name -> nebius.mk8s.v1.PrefixedClaimMapping
+	12, // 16: nebius.mk8s.v1.ControlPlaneEndpointsSpec.public_endpoint:type_name -> nebius.mk8s.v1.PublicEndpointSpec
+	0,  // 17: nebius.mk8s.v1.ClusterStatus.state:type_name -> nebius.mk8s.v1.ClusterStatus.State
+	17, // 18: nebius.mk8s.v1.ClusterStatus.control_plane:type_name -> nebius.mk8s.v1.ControlPlaneStatus
+	21, // 19: nebius.mk8s.v1.ClusterStatus.events:type_name -> nebius.common.v1.RecurrentResourceEvent
+	18, // 20: nebius.mk8s.v1.ControlPlaneStatus.endpoints:type_name -> nebius.mk8s.v1.ControlPlaneStatusEndpoints
+	19, // 21: nebius.mk8s.v1.ControlPlaneStatus.auth:type_name -> nebius.mk8s.v1.ControlPlaneStatusAuth
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_nebius_mk8s_v1_cluster_proto_init() }
@@ -865,13 +1372,14 @@ func file_nebius_mk8s_v1_cluster_proto_init() {
 	if File_nebius_mk8s_v1_cluster_proto != nil {
 		return
 	}
+	file_nebius_mk8s_v1_cluster_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nebius_mk8s_v1_cluster_proto_rawDesc), len(file_nebius_mk8s_v1_cluster_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   12,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

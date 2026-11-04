@@ -197,6 +197,7 @@ type ClusterSpec struct {
 	// Description of the PostgreSQL cluster.
 	Description string `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
 	// Network ID in which the cluster is created.
+	// If omitted through the public API, the project's default network is used or created.
 	NetworkId     string         `protobuf:"bytes,6,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
 	Config        *ConfigSpec    `protobuf:"bytes,3,opt,name=config,proto3" json:"config,omitempty"`
 	Bootstrap     *BootstrapSpec `protobuf:"bytes,4,opt,name=bootstrap,proto3" json:"bootstrap,omitempty"`
@@ -654,12 +655,11 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\x18POOLING_MODE_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aSESSION\x10\x01\x12\x0f\n" +
 	"\vTRANSACTION\x10\x02B\x10\n" +
-	"\x0e_max_pool_size\"\xd3\x02\n" +
+	"\x0e_max_pool_size\"\xce\x02\n" +
 	"\vClusterSpec\x12.\n" +
-	"\vdescription\x18\x01 \x01(\tB\f\xbaH\x05r\x03\x18\x80\x02\xbaJ\x01\x02R\vdescription\x12)\n" +
+	"\vdescription\x18\x01 \x01(\tB\f\xbaH\x05r\x03\x18\x80\x02\xbaJ\x01\x02R\vdescription\x12$\n" +
 	"\n" +
-	"network_id\x18\x06 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\tnetworkId\x12J\n" +
+	"network_id\x18\x06 \x01(\tB\x05\xbaJ\x02\x02\aR\tnetworkId\x12J\n" +
 	"\x06config\x18\x03 \x01(\v2*.nebius.msp.postgresql.v1alpha1.ConfigSpecB\x06\xbaH\x03\xc8\x01\x01R\x06config\x12S\n" +
 	"\tbootstrap\x18\x04 \x01(\v2-.nebius.msp.postgresql.v1alpha1.BootstrapSpecB\x06\xbaH\x03\xc8\x01\x01R\tbootstrap\x12H\n" +
 	"\x06backup\x18\x05 \x01(\v2*.nebius.msp.postgresql.v1alpha1.BackupSpecB\x04\xbaJ\x01\x02R\x06backup\"\xc1\x02\n" +

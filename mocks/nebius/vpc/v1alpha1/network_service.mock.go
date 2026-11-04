@@ -173,6 +173,50 @@ func (c *MockNetworkServiceGetByNameCall) DoAndReturn(f func(context.Context, *v
 	return c
 }
 
+// GetDefault mocks base method.
+func (m *MockNetworkService) GetDefault(arg0 context.Context, arg1 *v1alpha1.GetDefaultNetworkRequest, arg2 ...grpc.CallOption) (*v1alpha1.GetDefaultNetworkResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDefault", varargs...)
+	ret0, _ := ret[0].(*v1alpha1.GetDefaultNetworkResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDefault indicates an expected call of GetDefault.
+func (mr *MockNetworkServiceMockRecorder) GetDefault(arg0, arg1 any, arg2 ...any) *MockNetworkServiceGetDefaultCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefault", reflect.TypeOf((*MockNetworkService)(nil).GetDefault), varargs...)
+	return &MockNetworkServiceGetDefaultCall{Call: call}
+}
+
+// MockNetworkServiceGetDefaultCall wrap *gomock.Call
+type MockNetworkServiceGetDefaultCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockNetworkServiceGetDefaultCall) Return(arg0 *v1alpha1.GetDefaultNetworkResponse, arg1 error) *MockNetworkServiceGetDefaultCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockNetworkServiceGetDefaultCall) Do(f func(context.Context, *v1alpha1.GetDefaultNetworkRequest, ...grpc.CallOption) (*v1alpha1.GetDefaultNetworkResponse, error)) *MockNetworkServiceGetDefaultCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockNetworkServiceGetDefaultCall) DoAndReturn(f func(context.Context, *v1alpha1.GetDefaultNetworkRequest, ...grpc.CallOption) (*v1alpha1.GetDefaultNetworkResponse, error)) *MockNetworkServiceGetDefaultCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
 // List mocks base method.
 func (m *MockNetworkService) List(arg0 context.Context, arg1 *v1alpha1.ListNetworksRequest, arg2 ...grpc.CallOption) (*v1alpha1.ListNetworksResponse, error) {
 	m.ctrl.T.Helper()
