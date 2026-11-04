@@ -66,6 +66,27 @@ func (w *wrapperCluster) ProtoReflect() protoreflect.Message {
 // func (x *ControlPlaneSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ControlPlaneSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *AuthenticationSpec) Sanitize()            // is not generated as no sensitive fields found
+// func (x *AuthenticationSpec) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *OIDCProvider) Sanitize()            // is not generated as no sensitive fields found
+// func (x *OIDCProvider) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *OIDCIssuer) Sanitize()            // is not generated as no sensitive fields found
+// func (x *OIDCIssuer) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ClaimMappings) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ClaimMappings) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *PrefixedClaimMapping) Sanitize()            // is not generated as no sensitive fields found
+// func (x *PrefixedClaimMapping) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *ClaimValidationRule) Sanitize()            // is not generated as no sensitive fields found
+// func (x *ClaimValidationRule) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *CELValidationRule) Sanitize()            // is not generated as no sensitive fields found
+// func (x *CELValidationRule) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ControlPlaneEndpointsSpec) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ControlPlaneEndpointsSpec) LogValue() slog.Value // is not generated as no sensitive fields found
 

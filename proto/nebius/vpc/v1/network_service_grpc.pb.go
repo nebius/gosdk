@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	NetworkService_Get_FullMethodName            = "/nebius.vpc.v1.NetworkService/Get"
 	NetworkService_GetByName_FullMethodName      = "/nebius.vpc.v1.NetworkService/GetByName"
+	NetworkService_GetDefault_FullMethodName     = "/nebius.vpc.v1.NetworkService/GetDefault"
 	NetworkService_List_FullMethodName           = "/nebius.vpc.v1.NetworkService/List"
 	NetworkService_ListAggregated_FullMethodName = "/nebius.vpc.v1.NetworkService/ListAggregated"
 	NetworkService_Create_FullMethodName         = "/nebius.vpc.v1.NetworkService/Create"
@@ -38,6 +39,8 @@ type NetworkServiceClient interface {
 	Get(ctx context.Context, in *GetNetworkRequest, opts ...grpc.CallOption) (*Network, error)
 	// Retrieves a network by its name within a specified parent.
 	GetByName(ctx context.Context, in *GetNetworkByNameRequest, opts ...grpc.CallOption) (*Network, error)
+	// Retrieves the default network and its default subnet for a specified project.
+	GetDefault(ctx context.Context, in *GetDefaultNetworkRequest, opts ...grpc.CallOption) (*GetDefaultNetworkResponse, error)
 	// Lists networks within a specified parent.
 	List(ctx context.Context, in *ListNetworksRequest, opts ...grpc.CallOption) (*ListNetworksResponse, error)
 	// Lists networks across regions for the specified parent.
@@ -73,6 +76,15 @@ func (c *networkServiceClient) Get(ctx context.Context, in *GetNetworkRequest, o
 func (c *networkServiceClient) GetByName(ctx context.Context, in *GetNetworkByNameRequest, opts ...grpc.CallOption) (*Network, error) {
 	out := new(Network)
 	err := c.cc.Invoke(ctx, NetworkService_GetByName_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServiceClient) GetDefault(ctx context.Context, in *GetDefaultNetworkRequest, opts ...grpc.CallOption) (*GetDefaultNetworkResponse, error) {
+	out := new(GetDefaultNetworkResponse)
+	err := c.cc.Invoke(ctx, NetworkService_GetDefault_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -141,6 +153,8 @@ type NetworkServiceServer interface {
 	Get(context.Context, *GetNetworkRequest) (*Network, error)
 	// Retrieves a network by its name within a specified parent.
 	GetByName(context.Context, *GetNetworkByNameRequest) (*Network, error)
+	// Retrieves the default network and its default subnet for a specified project.
+	GetDefault(context.Context, *GetDefaultNetworkRequest) (*GetDefaultNetworkResponse, error)
 	// Lists networks within a specified parent.
 	List(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error)
 	// Lists networks across regions for the specified parent.
@@ -165,6 +179,9 @@ func (UnimplementedNetworkServiceServer) Get(context.Context, *GetNetworkRequest
 }
 func (UnimplementedNetworkServiceServer) GetByName(context.Context, *GetNetworkByNameRequest) (*Network, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
+}
+func (UnimplementedNetworkServiceServer) GetDefault(context.Context, *GetDefaultNetworkRequest) (*GetDefaultNetworkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDefault not implemented")
 }
 func (UnimplementedNetworkServiceServer) List(context.Context, *ListNetworksRequest) (*ListNetworksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
@@ -228,6 +245,24 @@ func _NetworkService_GetByName_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NetworkServiceServer).GetByName(ctx, req.(*GetNetworkByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkService_GetDefault_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDefaultNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServiceServer).GetDefault(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NetworkService_GetDefault_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServiceServer).GetDefault(ctx, req.(*GetDefaultNetworkRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -354,6 +389,10 @@ var NetworkService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByName",
 			Handler:    _NetworkService_GetByName_Handler,
+		},
+		{
+			MethodName: "GetDefault",
+			Handler:    _NetworkService_GetDefault_Handler,
 		},
 		{
 			MethodName: "List",

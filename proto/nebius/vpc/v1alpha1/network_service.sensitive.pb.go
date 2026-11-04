@@ -8,6 +8,12 @@ package v1alpha1
 // func (x *GetNetworkByNameRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *GetNetworkByNameRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
+// func (x *GetDefaultNetworkRequest) Sanitize()            // is not generated as no sensitive fields found
+// func (x *GetDefaultNetworkRequest) LogValue() slog.Value // is not generated as no sensitive fields found
+
+// func (x *GetDefaultNetworkResponse) Sanitize()            // is not generated as no sensitive fields found
+// func (x *GetDefaultNetworkResponse) LogValue() slog.Value // is not generated as no sensitive fields found
+
 // func (x *ListNetworksRequest) Sanitize()            // is not generated as no sensitive fields found
 // func (x *ListNetworksRequest) LogValue() slog.Value // is not generated as no sensitive fields found
 
