@@ -384,10 +384,10 @@ type DevlabSpec struct {
 	// Registry credentials for private Docker registry.
 	RegistryCredentials *DevlabSpec_RegistryCredentials `protobuf:"bytes,10,opt,name=registry_credentials,json=registryCredentials,proto3" json:"registry_credentials,omitempty"`
 	// Compute platform that the Devlab will be run on.
-	// Reads return the saved platform for an offer-based Devlab.
+	// Reads return the saved platform for a selector-based Devlab.
 	Platform string `protobuf:"bytes,20,opt,name=platform,proto3" json:"platform,omitempty"`
 	// Compute preset that the Devlab will be run on.
-	// Reads return the saved preset for an offer-based Devlab.
+	// Reads return the saved preset for a selector-based Devlab.
 	Preset string `protobuf:"bytes,21,opt,name=preset,proto3" json:"preset,omitempty"`
 	// Shared memory size in bytes for the Devlab's container.
 	ShmSizeBytes int64 `protobuf:"varint,22,opt,name=shm_size_bytes,json=shmSizeBytes,proto3" json:"shm_size_bytes,omitempty"`
@@ -1562,7 +1562,7 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x06Devlab\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2\x18.nebius.ai.v1.DevlabSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x128\n" +
-	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\xfd1\n" +
+	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\x8e2\n" +
 	"\n" +
 	"DevlabSpec\x12\x1a\n" +
 	"\x05image\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x05image\x12g\n" +
@@ -1579,8 +1579,8 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x06preset\x18\x15 \x01(\tB\x04\xbaJ\x01\x02R\x06preset\x121\n" +
 	"\x0eshm_size_bytes\x18\x16 \x01(\x03B\v\xbaH\x04\"\x02(\x00\xbaJ\x01\x02R\fshmSizeBytes\x12A\n" +
 	"\x04disk\x18\x17 \x01(\v2!.nebius.ai.v1.DevlabSpec.DiskSpecB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04disk\x12/\n" +
-	"\tsubnet_id\x18\x18 \x01(\tB\x12\xbaJ\x01\x02\xe2J\v\n" +
+	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x04disk\x120\n" +
+	"\tsubnet_id\x18\x18 \x01(\tB\x13\xbaJ\x02\x02\a\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x12!\n" +
 	"\tpublic_ip\x18\x19 \x01(\bB\x04\xbaJ\x01\x02R\bpublicIp\x124\n" +
 	"\x13ssh_authorized_keys\x18\x1a \x03(\tB\x04\xbaJ\x01\x02R\x11sshAuthorizedKeys\x12L\n" +
@@ -1666,7 +1666,7 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x1ftemplate_declares_primary_route\x12=primary_route is declared by the template and must not be set\x1a/!has(this.template) || !has(this.primary_route)\x1a\xdd\x01\n" +
 	"\x1dtemplate_owns_container_shape\x12Xcontainer_command, args and working_dir are declared by the template and must not be set\x1ab!has(this.template) || (this.container_command == '' && this.args == '' && this.working_dir == '')\x1a\xa2\x01\n" +
 	"(workspace_path_required_without_template\x12;workspace.container_path is required unless template is set\x1a9has(this.template) || this.workspace.container_path != ''\x1a\xf9\x01\n" +
-	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xc8\x03\n" +
+	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''J\x04\b#\x10$R\boffer_id\"\xc8\x03\n" +
 	"\fDevlabStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12@\n" +

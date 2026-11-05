@@ -11,6 +11,7 @@ package v1alpha1
 
 import (
 	context "context"
+	iter "iter"
 	reflect "reflect"
 
 	alphaops "github.com/nebius/gosdk/operations/alphaops"
@@ -127,6 +128,49 @@ func (c *MockBackupServiceDeleteCall) Do(f func(context.Context, *v1alpha10.Dele
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockBackupServiceDeleteCall) DoAndReturn(f func(context.Context, *v1alpha10.DeleteBackupRequest, ...grpc.CallOption) (*alphaops.Operation, error)) *MockBackupServiceDeleteCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Filter mocks base method.
+func (m *MockBackupService) Filter(arg0 context.Context, arg1 *v1alpha10.ListBackupsRequest, arg2 ...grpc.CallOption) iter.Seq2[*v1alpha10.Backup, error] {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Filter", varargs...)
+	ret0, _ := ret[0].(iter.Seq2[*v1alpha10.Backup, error])
+	return ret0
+}
+
+// Filter indicates an expected call of Filter.
+func (mr *MockBackupServiceMockRecorder) Filter(arg0, arg1 any, arg2 ...any) *MockBackupServiceFilterCall {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Filter", reflect.TypeOf((*MockBackupService)(nil).Filter), varargs...)
+	return &MockBackupServiceFilterCall{Call: call}
+}
+
+// MockBackupServiceFilterCall wrap *gomock.Call
+type MockBackupServiceFilterCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockBackupServiceFilterCall) Return(arg0 iter.Seq2[*v1alpha10.Backup, error]) *MockBackupServiceFilterCall {
+	c.Call = c.Call.Return(arg0)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockBackupServiceFilterCall) Do(f func(context.Context, *v1alpha10.ListBackupsRequest, ...grpc.CallOption) iter.Seq2[*v1alpha10.Backup, error]) *MockBackupServiceFilterCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockBackupServiceFilterCall) DoAndReturn(f func(context.Context, *v1alpha10.ListBackupsRequest, ...grpc.CallOption) iter.Seq2[*v1alpha10.Backup, error]) *MockBackupServiceFilterCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
