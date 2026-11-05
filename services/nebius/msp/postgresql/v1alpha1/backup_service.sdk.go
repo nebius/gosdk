@@ -11,6 +11,8 @@ import (
 	v1alpha11 "github.com/nebius/gosdk/proto/nebius/common/v1alpha1"
 	v1alpha1 "github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1"
 	grpc "google.golang.org/grpc"
+	proto "google.golang.org/protobuf/proto"
+	iter "iter"
 )
 
 func init() {
@@ -26,6 +28,7 @@ const BackupServiceID conn.ServiceID = "nebius.msp.postgresql.v1alpha1.BackupSer
 type BackupService interface {
 	Get(context.Context, *v1alpha1.GetBackupRequest, ...grpc.CallOption) (*v1alpha1.Backup, error)
 	List(context.Context, *v1alpha1.ListBackupsRequest, ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error)
+	Filter(context.Context, *v1alpha1.ListBackupsRequest, ...grpc.CallOption) iter.Seq2[*v1alpha1.Backup, error]
 	ListByCluster(context.Context, *v1alpha1.ListBackupsByClusterRequest, ...grpc.CallOption) (*v1alpha1.ListBackupsResponse, error)
 	Create(context.Context, *v1alpha1.CreateBackupRequest, ...grpc.CallOption) (*alphaops.Operation, error)
 	Delete(context.Context, *v1alpha1.DeleteBackupRequest, ...grpc.CallOption) (*alphaops.Operation, error)
@@ -85,6 +88,31 @@ func (s backupService) List(ctx context.Context, request *v1alpha1.ListBackupsRe
 		return nil, err
 	}
 	return v1alpha1.NewBackupServiceClient(con).List(ctx, request, opts...)
+}
+
+func (s backupService) Filter(ctx context.Context, request *v1alpha1.ListBackupsRequest, opts ...grpc.CallOption) iter.Seq2[*v1alpha1.Backup, error] {
+	req := proto.Clone(request).(*v1alpha1.ListBackupsRequest)
+	return func(yield func(*v1alpha1.Backup, error) bool) {
+		for {
+			res, err := s.List(ctx, req, opts...)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range res.GetBackups() {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if res.GetNextPageToken() == "" {
+				return
+			}
+
+			req.PageToken = res.GetNextPageToken()
+		}
+	}
 }
 
 func (s backupService) ListByCluster(ctx context.Context, request *v1alpha1.ListBackupsByClusterRequest, opts ...grpc.CallOption) (

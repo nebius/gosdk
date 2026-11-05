@@ -370,10 +370,10 @@ type EndpointSpec struct {
 	// Registry credentials for private Docker registry.
 	RegistryCredentials *EndpointSpec_RegistryCredentials `protobuf:"bytes,10,opt,name=registry_credentials,json=registryCredentials,proto3" json:"registry_credentials,omitempty"`
 	// Compute platform that the endpoint will be run on.
-	// Reads return the saved platform for an offer-based endpoint.
+	// Reads return the saved platform for a selector-based endpoint.
 	Platform string `protobuf:"bytes,20,opt,name=platform,proto3" json:"platform,omitempty"`
 	// Compute preset that the endpoint will be run on.
-	// Reads return the saved preset for an offer-based endpoint.
+	// Reads return the saved preset for a selector-based endpoint.
 	Preset string `protobuf:"bytes,21,opt,name=preset,proto3" json:"preset,omitempty"`
 	// Shared memory size in bytes for the endpoint's container.
 	ShmSizeBytes int64 `protobuf:"varint,22,opt,name=shm_size_bytes,json=shmSizeBytes,proto3" json:"shm_size_bytes,omitempty"`
@@ -1526,7 +1526,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xfb\x1e\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\x8f\x1f\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1541,8 +1541,8 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bplatform\x18\x14 \x01(\tR\bplatform\x12\x16\n" +
 	"\x06preset\x18\x15 \x01(\tR\x06preset\x12-\n" +
 	"\x0eshm_size_bytes\x18\x16 \x01(\x03B\a\xbaH\x04\"\x02(\x00R\fshmSizeBytes\x12?\n" +
-	"\x04disk\x18\x17 \x01(\v2#.nebius.ai.v1.EndpointSpec.DiskSpecB\x06\xbaH\x03\xc8\x01\x01R\x04disk\x12+\n" +
-	"\tsubnet_id\x18\x18 \x01(\tB\x0e\xe2J\v\n" +
+	"\x04disk\x18\x17 \x01(\v2#.nebius.ai.v1.EndpointSpec.DiskSpecB\x06\xbaH\x03\xc8\x01\x01R\x04disk\x12/\n" +
+	"\tsubnet_id\x18\x18 \x01(\tB\x12\xbaJ\x01\a\xe2J\v\n" +
 	"\tvpcsubnetR\bsubnetId\x12\x1b\n" +
 	"\tpublic_ip\x18\x19 \x01(\bR\bpublicIp\x12.\n" +
 	"\x13ssh_authorized_keys\x18\x1a \x03(\tR\x11sshAuthorizedKeys\x12 \n" +
@@ -1618,7 +1618,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
 	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\xb4\x04\xbaH\xb0\x04\x1a\xb1\x02\n" +
 	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptible\x1a\xf9\x01\n" +
-	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xc4\x03\n" +
+	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''J\x04\b\"\x10#R\boffer_id\"\xc4\x03\n" +
 	"\x0eEndpointStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12B\n" +
