@@ -206,7 +206,7 @@ type ImageSpec struct {
 	Source isImageSpec_Source `protobuf_oneof:"source"`
 	// CPU architecture supported by the image
 	CpuArchitecture ImageSpec_CPUArchitecture `protobuf:"varint,6,opt,name=cpu_architecture,json=cpuArchitecture,proto3,enum=nebius.compute.v1.ImageSpec_CPUArchitecture" json:"cpu_architecture,omitempty"`
-	// human readable name for image family
+	// human-readable name for image family
 	ImageFamilyHumanReadable string `protobuf:"bytes,7,opt,name=image_family_human_readable,json=imageFamilyHumanReadable,proto3" json:"image_family_human_readable,omitempty"`
 	// list of platforms where this image is recommended to use
 	RecommendedPlatforms []string `protobuf:"bytes,8,rep,name=recommended_platforms,json=recommendedPlatforms,proto3" json:"recommended_platforms,omitempty"`
