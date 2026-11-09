@@ -33,7 +33,7 @@ type Operation struct {
 	//
 	// Deprecated: The entire proto file nebius/common/v1alpha1/operation.proto is marked as deprecated.
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// Human readable description of the operation. 0-256 characters long.
+	// Human-readable description of the operation. 0-256 characters long.
 	//
 	// Deprecated: The entire proto file nebius/common/v1alpha1/operation.proto is marked as deprecated.
 	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`

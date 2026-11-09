@@ -411,7 +411,8 @@ type JobSpec struct {
 	// Preemptible VMs require follows_spot_price or spot_pricing_policy.
 	// Regular VMs use on_demand or omit this field.
 	PricingModel *PricingModelSpec `protobuf:"bytes,28,opt,name=pricing_model,json=pricingModel,proto3" json:"pricing_model,omitempty"`
-	// Restart attempts for the job.
+	// Container restart attempts on the same VM. Zero disables retries. -1 allows unlimited retries.
+	// Successful completion never triggers a restart. This field does not count VM preemptions.
 	RestartAttempts int64 `protobuf:"varint,30,opt,name=restart_attempts,json=restartAttempts,proto3" json:"restart_attempts,omitempty"`
 	// Job timeout.
 	Timeout *durationpb.Duration `protobuf:"bytes,31,opt,name=timeout,proto3" json:"timeout,omitempty"`

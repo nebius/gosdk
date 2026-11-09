@@ -31,7 +31,7 @@ type ResourceMetadata struct {
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// Identifier of the parent resource to which the resource belongs.
 	ParentId string `protobuf:"bytes,2,opt,name=parent_id,json=parentId,proto3" json:"parent_id,omitempty"`
-	// Human readable name for the resource.
+	// Human-readable name for the resource.
 	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	// Version of the resource for safe concurrent modifications and consistent reads.
 	// Positive and monotonically increases on each resource spec change (but *not* on each change of the
