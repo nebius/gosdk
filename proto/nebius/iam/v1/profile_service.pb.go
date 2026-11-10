@@ -415,11 +415,11 @@ var File_nebius_iam_v1_profile_service_proto protoreflect.FileDescriptor
 const file_nebius_iam_v1_profile_service_proto_rawDesc = "" +
 	"\n" +
 	"#nebius/iam/v1/profile_service.proto\x12\rnebius.iam.v1\x1a\x18nebius/annotations.proto\x1a#nebius/iam/v1/service_account.proto\x1a'nebius/iam/v1/tenant_user_account.proto\x1a nebius/iam/v1/user_account.proto\"\x13\n" +
-	"\x11GetProfileRequest\"\x90\x02\n" +
+	"\x11GetProfileRequest\"\x96\x02\n" +
 	"\x12GetProfileResponse\x12?\n" +
 	"\fuser_profile\x18\x01 \x01(\v2\x1a.nebius.iam.v1.UserProfileH\x00R\vuserProfile\x12^\n" +
-	"\x17service_account_profile\x18\x02 \x01(\v2$.nebius.iam.v1.ServiceAccountProfileH\x00R\x15serviceAccountProfile\x12N\n" +
-	"\x11anonymous_profile\x18\x03 \x01(\v2\x1f.nebius.iam.v1.AnonymousAccountH\x00R\x10anonymousProfileB\t\n" +
+	"\x17service_account_profile\x18\x02 \x01(\v2$.nebius.iam.v1.ServiceAccountProfileH\x00R\x15serviceAccountProfile\x12T\n" +
+	"\x11anonymous_profile\x18\x03 \x01(\v2\x1f.nebius.iam.v1.AnonymousAccountB\x04\xbaJ\x01\x06H\x00R\x10anonymousProfileB\t\n" +
 	"\aprofile\"\x96\x03\n" +
 	"\vUserProfile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12M\n" +
