@@ -190,7 +190,7 @@ var File_nebius_audit_v2_audit_event_proto protoreflect.FileDescriptor
 
 const file_nebius_audit_v2_audit_event_proto_rawDesc = "" +
 	"\n" +
-	"!nebius/audit/v2/audit_event.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a$nebius/audit/v2/authentication.proto\x1a#nebius/audit/v2/authorization.proto\x1a\x1dnebius/audit/v2/request.proto\x1a\x1enebius/audit/v2/resource.proto\x1a\x1enebius/audit/v2/response.proto\x1a\x1dnebius/audit/v2/service.proto\x1a\x1cnebius/audit/v2/status.proto\"\xcc\x05\n" +
+	"!nebius/audit/v2/audit_event.proto\x12\x0fnebius.audit.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a$nebius/audit/v2/authentication.proto\x1a#nebius/audit/v2/authorization.proto\x1a\x1dnebius/audit/v2/request.proto\x1a\x1enebius/audit/v2/resource.proto\x1a\x1enebius/audit/v2/response.proto\x1a\x1dnebius/audit/v2/service.proto\x1a\x1cnebius/audit/v2/status.proto\"\xb6\x05\n" +
 	"\n" +
 	"AuditEvent\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12\x1e\n" +
@@ -207,7 +207,7 @@ const file_nebius_audit_v2_audit_event_proto_rawDesc = "" +
 	"\bresource\x18\v \x01(\v2\x19.nebius.audit.v2.ResourceR\bresource\x122\n" +
 	"\arequest\x18\f \x01(\v2\x18.nebius.audit.v2.RequestR\arequest\x125\n" +
 	"\bresponse\x18\r \x01(\v2\x19.nebius.audit.v2.ResponseR\bresponse\x127\n" +
-	"\x06status\x18\x10 \x01(\x0e2\x17.nebius.audit.v2.StatusB\x06\xbaH\x03\xc8\x01\x01R\x06statusJ\x04\b\x11\x10\x12R\x0eproject_regionBZ\n" +
+	"\x06status\x18\x10 \x01(\x0e2\x17.nebius.audit.v2.StatusB\x06\xbaH\x03\xc8\x01\x01R\x06statusBZ\n" +
 	"\x16ai.nebius.pub.audit.v2B\x0fAuditEventProtoP\x01Z-github.com/nebius/gosdk/proto/nebius/audit/v2b\x06proto3"
 
 var (

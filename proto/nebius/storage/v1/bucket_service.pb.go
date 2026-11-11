@@ -719,39 +719,39 @@ var File_nebius_storage_v1_bucket_service_proto protoreflect.FileDescriptor
 
 const file_nebius_storage_v1_bucket_service_proto_rawDesc = "" +
 	"\n" +
-	"&nebius/storage/v1/bucket_service.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/storage/v1/bucket.proto\"B\n" +
+	"&nebius/storage/v1/bucket_service.proto\x12\x11nebius.storage.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a nebius/common/v1/operation.proto\x1a\x1enebius/storage/v1/bucket.proto\"<\n" +
 	"\x10GetBucketRequest\x12(\n" +
 	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
-	"\rstoragebucketR\x02idJ\x04\b\x02\x10\x03\"e\n" +
+	"\rstoragebucketR\x02id\"_\n" +
 	"\x16GetBucketByNameRequest\x12)\n" +
 	"\tparent_id\x18\x01 \x01(\tB\f\xe2J\t\n" +
 	"\aprojectR\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04nameJ\x04\b\x03\x10\x04\"\xa2\x01\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\xa2\x01\n" +
 	"\x13CreateBucketRequest\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x127\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecB\x04\xbaJ\x01\aR\x04spec\"\x9c\x01\n" +
 	"\x13UpdateBucketRequest\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
-	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecR\x04spec\"\xb6\x01\n" +
+	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.storage.v1.BucketSpecR\x04spec\"\xb0\x01\n" +
 	"\x13DeleteBucketRequest\x12(\n" +
 	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
 	"\rstoragebucketR\x02id\x127\n" +
 	"\bpurge_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\apurgeAt\x12-\n" +
 	"\x03ttl\x18\x04 \x01(\v2\x19.google.protobuf.DurationH\x00R\x03ttlB\a\n" +
-	"\x05purgeJ\x04\b\x02\x10\x03\">\n" +
+	"\x05purge\">\n" +
 	"\x12PurgeBucketRequest\x12(\n" +
 	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
 	"\rstoragebucketR\x02id\"A\n" +
 	"\x15UndeleteBucketRequest\x12(\n" +
 	"\x02id\x18\x01 \x01(\tB\x18\xbaH\x03\xc8\x01\x01\xe2J\x0f\n" +
-	"\rstoragebucketR\x02id\"\x9f\x01\n" +
+	"\rstoragebucketR\x02id\"\x99\x01\n" +
 	"\x12ListBucketsRequest\x12/\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
 	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x04 \x01(\tR\x06filterJ\x04\b\x05\x10\x06\"n\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter\"n\n" +
 	"\x13ListBucketsResponse\x12/\n" +
 	"\x05items\x18\x01 \x03(\v2\x19.nebius.storage.v1.BucketR\x05items\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xf4\x02\n" +

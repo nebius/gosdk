@@ -821,7 +821,7 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\x02id\x12\r\n" +
 	"\vcomputediskR\bmetadata\x12/\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1b.nebius.compute.v1.DiskSpecR\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x1d.nebius.compute.v1.DiskStatusR\x06status\"\x9f\x06\n" +
+	"\x06status\x18\x03 \x01(\v2\x1d.nebius.compute.v1.DiskStatusR\x06status\"\x93\x06\n" +
 	"\bDiskSpec\x12\x1f\n" +
 	"\n" +
 	"size_bytes\x18\x01 \x01(\x03H\x00R\tsizeBytes\x12'\n" +
@@ -846,8 +846,7 @@ const file_nebius_compute_v1_disk_proto_rawDesc = "" +
 	"\x1aNETWORK_SSD_NON_REPLICATED\x10\x03\x12\x15\n" +
 	"\x11NETWORK_SSD_IO_M3\x10\x04B\r\n" +
 	"\x04size\x12\x05\xbaH\x02\b\x01B\b\n" +
-	"\x06sourceJ\x04\b\a\x10\bJ\x04\b\t\x10\n" +
-	"\"i\n" +
+	"\x06source\"i\n" +
 	"\x11SourceImageFamily\x12)\n" +
 	"\fimage_family\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\vimageFamily\x12)\n" +
 	"\tparent_id\x18\x02 \x01(\tB\f\xe2J\t\n" +
