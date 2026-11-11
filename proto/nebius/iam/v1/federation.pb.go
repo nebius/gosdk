@@ -362,13 +362,13 @@ const file_nebius_iam_v1_federation_proto_rawDesc = "" +
 	"Federation\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x129\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1d.nebius.iam.v1.FederationSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12=\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.nebius.iam.v1.FederationStatusB\x04\xbaJ\x01\x05R\x06status\"\xdc\x02\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.nebius.iam.v1.FederationStatusB\x04\xbaJ\x01\x05R\x06status\"\xd6\x02\n" +
 	"\x0eFederationSpec\x12;\n" +
 	"\x1auser_account_auto_creation\x18\x01 \x01(\bR\x17userAccountAutoCreation\x12\xaf\x01\n" +
 	"\x06active\x18\x04 \x01(\bB\x96\x01\xd2J\x90\x01\x12\x8d\x01'active' field ignored. Use 'Activate/Deactivate' methods to manage federation state. A newly created federation is always active by default.\x18\x01R\x06active\x12B\n" +
 	"\rsaml_settings\x18\n" +
 	" \x01(\v2\x1b.nebius.iam.v1.SamlSettingsH\x00R\fsamlSettingsB\x11\n" +
-	"\bsettings\x12\x05\xbaH\x02\b\x01J\x04\b\x03\x10\x04\"g\n" +
+	"\bsettings\x12\x05\xbaH\x02\b\x01\"g\n" +
 	"\fSamlSettings\x12\x1d\n" +
 	"\n" +
 	"idp_issuer\x18\x01 \x01(\tR\tidpIssuer\x12\x17\n" +

@@ -672,7 +672,7 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\x12private_read_write\x18\x01 \x01(\tB\x04\xbaJ\x01\x05R\x10privateReadWrite\x120\n" +
 	"\x11private_read_only\x18\x02 \x01(\tB\x04\xbaJ\x01\x05R\x0fprivateReadOnly\x120\n" +
 	"\x11public_read_write\x18\x03 \x01(\tB\x04\xbaJ\x01\x05R\x0fpublicReadWrite\x12.\n" +
-	"\x10public_read_only\x18\x04 \x01(\tB\x04\xbaJ\x01\x05R\x0epublicReadOnly\"\x85\x03\n" +
+	"\x10public_read_only\x18\x04 \x01(\tB\x04\xbaJ\x01\x05R\x0epublicReadOnly\"\xff\x02\n" +
 	"\n" +
 	"ConfigSpec\x12$\n" +
 	"\aversion\x18\x01 \x01(\tB\n" +
@@ -681,7 +681,7 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\x14postgresql_config_16\x18\x04 \x01(\v29.nebius.msp.postgresql.v1alpha1.config.PostgresqlConfig16H\x00R\x12postgresqlConfig16\x12#\n" +
 	"\rpublic_access\x18\x05 \x01(\bR\fpublicAccess\x12P\n" +
 	"\btemplate\x18\a \x01(\v2,.nebius.msp.postgresql.v1alpha1.TemplateSpecB\x06\xbaH\x03\xc8\x01\x01R\btemplateB\b\n" +
-	"\x06configJ\x04\b\x03\x10\x04\"\x81\x06\n" +
+	"\x06config\"\x81\x06\n" +
 	"\rBootstrapSpec\x12\xde\x02\n" +
 	"\tuser_name\x18\x01 \x01(\tB\xc0\x02\xbaH\xb8\x02\xba\x01V\n" +
 	"\x14user_name.min_length\x12-User name must be at least 1 characters long.\x1a\x0fsize(this) >= 1\xba\x01R\n" +

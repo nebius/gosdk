@@ -1555,7 +1555,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x03Job\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xa7\x1c\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xfe\x1b\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1593,14 +1593,14 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x14PROTOCOL_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04HTTP\x10\x01\x12\a\n" +
 	"\x03TCP\x10\x02\x12\a\n" +
-	"\x03UDP\x10\x03\x1a\xd9\b\n" +
+	"\x03UDP\x10\x03\x1a\xcb\b\n" +
 	"\vVolumeMount\x12\x16\n" +
 	"\x06source\x18\x01 \x01(\tR\x06source\x12\x1f\n" +
 	"\vsource_path\x18\x02 \x01(\tR\n" +
 	"sourcePath\x12%\n" +
 	"\x0econtainer_path\x18\x03 \x01(\tR\rcontainerPath\x12B\n" +
 	"\x04mode\x18\x04 \x01(\x0e2&.nebius.ai.v1.JobSpec.VolumeMount.ModeB\x06\xbaH\x03\xc8\x01\x01R\x04mode\x12I\n" +
-	"\ts3_config\x18\x05 \x01(\v2*.nebius.ai.v1.JobSpec.VolumeMount.S3ConfigH\x00R\bs3Config\x1a\x8c\x06\n" +
+	"\ts3_config\x18\x05 \x01(\v2*.nebius.ai.v1.JobSpec.VolumeMount.S3ConfigH\x00R\bs3Config\x1a\xfe\x05\n" +
 	"\bS3Config\x12\"\n" +
 	"\bendpoint\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bendpoint\x12\x1e\n" +
 	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12\\\n" +
@@ -1619,7 +1619,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"\bmbsecverR\tversionId:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
 	"\x18mysterybox_secret_if_set\x122mysterybox_secret must set secret_id or version_id\x1aq!has(this.mysterybox_secret) || this.mysterybox_secret.secret_id != '' || this.mysterybox_secret.version_id != ''B\x06\n" +
-	"\x04authJ\x04\b\x02\x10\x03R\x06bucket\";\n" +
+	"\x04auth\";\n" +
 	"\x04Mode\x12\x14\n" +
 	"\x10MODE_UNSPECIFIED\x10\x00\x12\x0e\n" +
 	"\n" +
@@ -1636,7 +1636,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x19mysterybox_secret_version\x18\x03 \x01(\tR\x17mysteryboxSecretVersion\x1a\x80\x01\n" +
 	"\rFileInjection\x12B\n" +
 	"\x0econtainer_path\x18\x01 \x01(\tB\x1b\xbaH\x18\xc8\x01\x01r\x132\x11^/[^/]+(/[^/]+)*$R\rcontainerPath\x12+\n" +
-	"\acontent\x18\x02 \x01(\fB\x11\xbaH\v\xd8\x01\x01z\x06\x10\x01\x18\x80\x80\x04\xc0J\x01R\acontent\x1aw\n" +
+	"\acontent\x18\x02 \x01(\fB\x11\xbaH\v\xd8\x01\x01z\x06\x10\x01\x18\x80\x80\x04\xc0J\x01R\acontent\x1al\n" +
 	"\x13MysteryBoxSecretRef\x12'\n" +
 	"\tsecret_id\x18\x01 \x01(\tB\n" +
 	"\xe2J\a\n" +
@@ -1644,8 +1644,8 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionIdJ\x04\b\x03\x10\x04R\x03key:\xb8\x02\xbaH\xb4\x02\x1a\xb1\x02\n" +
-	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptibleJ\x04\b\"\x10#R\boffer_id\"\xc7\x04\n" +
+	"\bmbsecverR\tversionId:\xb8\x02\xbaH\xb4\x02\x1a\xb1\x02\n" +
+	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptible\"\xc7\x04\n" +
 	"\tJobStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12=\n" +

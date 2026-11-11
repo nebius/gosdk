@@ -286,11 +286,11 @@ const file_nebius_kms_v1_symmetric_key_proto_rawDesc = "" +
 	"\x05state\x18\x01 \x01(\x0e2\x17.nebius.kms.v1.KeyStateR\x05state\x129\n" +
 	"\n" +
 	"deleted_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt\x125\n" +
-	"\bpurge_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\apurgeAt*Y\n" +
+	"\bpurge_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\apurgeAt*S\n" +
 	"\x12SymmetricAlgorithm\x12#\n" +
 	"\x1fSYMMETRIC_ALGORITHM_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aAES_128\x10\x01\x12\v\n" +
-	"\aAES_256\x10\x03\"\x04\b\x02\x10\x02BX\n" +
+	"\aAES_256\x10\x03BX\n" +
 	"\x14ai.nebius.pub.kms.v1B\x11SymmetricKeyProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/kms/v1b\x06proto3"
 
 var (

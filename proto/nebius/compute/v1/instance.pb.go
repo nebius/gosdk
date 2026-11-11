@@ -1838,7 +1838,7 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\tREAD_ONLY\x10\x01\x12\x0e\n" +
 	"\n" +
 	"READ_WRITE\x10\x02B\r\n" +
-	"\x04type\x12\x05\xbaH\x02\b\x01\"\xe2\x05\n" +
+	"\x04type\x12\x05\xbaH\x02\b\x01\"\xdc\x05\n" +
 	"\x0eInstanceStatus\x12E\n" +
 	"\x05state\x18\x01 \x01(\x0e2/.nebius.compute.v1.InstanceStatus.InstanceStateR\x05state\x12X\n" +
 	"\x12network_interfaces\x18\x02 \x03(\v2).nebius.compute.v1.NetworkInterfaceStatusR\x11networkInterfaces\x12 \n" +
@@ -1861,7 +1861,7 @@ const file_nebius_compute_v1_instance_proto_rawDesc = "" +
 	"\aSTOPPED\x10\x06\x12\f\n" +
 	"\bDELETING\x10\a\x12\t\n" +
 	"\x05ERROR\x10\bB\x16\n" +
-	"\x14gpu_cluster_topologyJ\x04\b\x06\x10\a\"k\n" +
+	"\x14gpu_cluster_topology\"k\n" +
 	"\x14DiskAttachmentStatus\x12 \n" +
 	"\x02id\x18\x01 \x01(\tB\x10\xe2J\r\n" +
 	"\vcomputediskR\x02id\x12\x12\n" +

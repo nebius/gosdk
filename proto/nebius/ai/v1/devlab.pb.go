@@ -1562,7 +1562,7 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x06Devlab\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2\x18.nebius.ai.v1.DevlabSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x128\n" +
-	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\x8e2\n" +
+	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\xec1\n" +
 	"\n" +
 	"DevlabSpec\x12\x1a\n" +
 	"\x05image\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x05image\x12g\n" +
@@ -1632,11 +1632,10 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x13RegistryCredentials\x12P\n" +
 	"\x19mysterybox_secret_version\x18\x01 \x01(\tB\x14\xbaH\x04r\x02\x10\x01\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\x17mysteryboxSecretVersion\x1a\xa8\x03\n" +
+	"\bmbsecverR\x17mysteryboxSecretVersion\x1a\x96\x03\n" +
 	"\tWorkspace\x12F\n" +
 	"\x0econtainer_path\x18\x01 \x01(\tB\x1f\xbaH\x18\xd8\x01\x01r\x132\x11^/[^/]+(/[^/]+)*$\xbaJ\x01\x02R\rcontainerPath:\xc0\x02\xbaH\xbc\x02\x1a\xb9\x02\n" +
-	"\"container_path_has_no_dot_segments\x125container_path must not contain . or .. path segments\x1a\xdb\x01this.container_path != '/.' && this.container_path != '/..' && !this.container_path.contains('/./') && !this.container_path.contains('/../') && !this.container_path.endsWith('/.') && !this.container_path.endsWith('/..')J\x04\b\x02\x10\x03R\n" +
-	"size_bytes\x1aF\n" +
+	"\"container_path_has_no_dot_segments\x125container_path must not contain . or .. path segments\x1a\xdb\x01this.container_path != '/.' && this.container_path != '/..' && !this.container_path.contains('/./') && !this.container_path.contains('/../') && !this.container_path.endsWith('/.') && !this.container_path.endsWith('/..')\x1aF\n" +
 	"\fPrimaryRoute\x126\n" +
 	"\x0econtainer_port\x18\x01 \x01(\x05B\x0f\xbaH\b\x1a\x06\x18\xff\xff\x03(\x01\xbaJ\x01\x02R\rcontainerPort\x1a\xe6\x02\n" +
 	"\rFileInjection\x12\xa7\x02\n" +
@@ -1666,7 +1665,7 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x1ftemplate_declares_primary_route\x12=primary_route is declared by the template and must not be set\x1a/!has(this.template) || !has(this.primary_route)\x1a\xdd\x01\n" +
 	"\x1dtemplate_owns_container_shape\x12Xcontainer_command, args and working_dir are declared by the template and must not be set\x1ab!has(this.template) || (this.container_command == '' && this.args == '' && this.working_dir == '')\x1a\xa2\x01\n" +
 	"(workspace_path_required_without_template\x12;workspace.container_path is required unless template is set\x1a9has(this.template) || this.workspace.container_path != ''\x1a\xf9\x01\n" +
-	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''J\x04\b#\x10$R\boffer_id\"\xc8\x03\n" +
+	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xc8\x03\n" +
 	"\fDevlabStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12@\n" +

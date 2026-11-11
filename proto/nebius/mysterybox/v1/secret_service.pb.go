@@ -487,11 +487,11 @@ const file_nebius_mysterybox_v1_secret_service_proto_rawDesc = "" +
 	"\x10GetSecretRequest\x12 \n" +
 	"\x02id\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xe2J\a\n" +
 	"\x05mbsecR\x02id\x12=\n" +
-	"\x1bshow_scheduled_for_deletion\x18\x02 \x01(\bR\x18showScheduledForDeletion\"k\n" +
+	"\x1bshow_scheduled_for_deletion\x18\x02 \x01(\bR\x18showScheduledForDeletion\"e\n" +
 	"\x16GetSecretByNameRequest\x12/\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
 	"\aprojectR\bparentId\x12\x1a\n" +
-	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04nameJ\x04\b\x03\x10\x04\"\xcf\x01\n" +
+	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\"\xcf\x01\n" +
 	"\x12ListSecretsRequest\x12/\n" +
 	"\tparent_id\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\n" +
 	"\aprojectR\bparentId\x12*\n" +

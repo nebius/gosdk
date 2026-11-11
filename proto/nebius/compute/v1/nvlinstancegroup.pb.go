@@ -305,7 +305,7 @@ const file_nebius_compute_v1_nvlinstancegroup_proto_rawDesc = "" +
 	"\x14NVLInstanceGroupType\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05GB200\x10\x01\x12\t\n" +
-	"\x05GB300\x10\x02\"\xfe\x02\n" +
+	"\x05GB300\x10\x02\"\xf8\x02\n" +
 	"\x16NVLInstanceGroupStatus\x12V\n" +
 	"\tinstances\x18\x01 \x03(\v28.nebius.compute.v1.NVLInstanceGroupStatus.InstancesEntryR\tinstances\x12 \n" +
 	"\vreconciling\x18\x03 \x01(\bR\vreconciling\x1an\n" +
@@ -313,7 +313,7 @@ const file_nebius_compute_v1_nvlinstancegroup_proto_rawDesc = "" +
 	"\x0einstance_state\x18\x01 \x01(\x0e2/.nebius.compute.v1.InstanceStatus.InstanceStateB\x06\xbaH\x03\xc8\x01\x01R\rinstanceState\x1at\n" +
 	"\x0eInstancesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12L\n" +
-	"\x05value\x18\x02 \x01(\v26.nebius.compute.v1.NVLInstanceGroupStatus.InstanceInfoR\x05value:\x028\x01J\x04\b\x02\x10\x03Bd\n" +
+	"\x05value\x18\x02 \x01(\v26.nebius.compute.v1.NVLInstanceGroupStatus.InstanceInfoR\x05value:\x028\x01Bd\n" +
 	"\x18ai.nebius.pub.compute.v1B\x15NvlinstancegroupProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
 
 var (
