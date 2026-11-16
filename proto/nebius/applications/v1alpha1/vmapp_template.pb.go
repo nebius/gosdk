@@ -642,9 +642,13 @@ type VmAppTemplateStatus struct {
 	// Categories that the template belongs to.
 	Categories []string `protobuf:"bytes,5,rep,name=categories,proto3" json:"categories,omitempty"`
 	// The template icon URL for dark mode. Use icon_url when this value is empty.
-	DarkIconUrl   string `protobuf:"bytes,6,opt,name=dark_icon_url,json=darkIconUrl,proto3" json:"dark_icon_url,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	DarkIconUrl string `protobuf:"bytes,6,opt,name=dark_icon_url,json=darkIconUrl,proto3" json:"dark_icon_url,omitempty"`
+	// The minimum Devlab disk size in bytes, shared by the container and persistent workspace.
+	// If absent, the template does not declare a disk minimum.
+	// Model downloads and user data can require additional disk space.
+	MinDiskSizeBytes *int64 `protobuf:"varint,7,opt,name=min_disk_size_bytes,json=minDiskSizeBytes,proto3,oneof" json:"min_disk_size_bytes,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *VmAppTemplateStatus) Reset() {
@@ -717,6 +721,13 @@ func (x *VmAppTemplateStatus) GetDarkIconUrl() string {
 		return x.DarkIconUrl
 	}
 	return ""
+}
+
+func (x *VmAppTemplateStatus) GetMinDiskSizeBytes() int64 {
+	if x != nil && x.MinDiskSizeBytes != nil {
+		return *x.MinDiskSizeBytes
+	}
+	return 0
 }
 
 type TemplateInputField struct {
@@ -2349,7 +2360,7 @@ const file_nebius_applications_v1alpha1_vmapp_template_proto_rawDesc = "" +
 	"\tsensitive\x18\x04 \x01(\bR\tsensitive\x1a=\n" +
 	"\x19ServiceAccountMirrorInput\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescriptionB\x0e\n" +
-	"\x05input\x12\x05\xbaH\x02\b\x01\"\xcd\x02\n" +
+	"\x05input\x12\x05\xbaH\x02\b\x01\"\xa2\x03\n" +
 	"\x13VmAppTemplateStatus\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x19\n" +
 	"\bicon_url\x18\x02 \x01(\tR\aiconUrl\x12S\n" +
@@ -2358,7 +2369,9 @@ const file_nebius_applications_v1alpha1_vmapp_template_proto_rawDesc = "" +
 	"\n" +
 	"categories\x18\x05 \x03(\tR\n" +
 	"categories\x12\"\n" +
-	"\rdark_icon_url\x18\x06 \x01(\tR\vdarkIconUrl\"\xe8\x02\n" +
+	"\rdark_icon_url\x18\x06 \x01(\tR\vdarkIconUrl\x12;\n" +
+	"\x13min_disk_size_bytes\x18\a \x01(\x03B\a\xbaH\x04\"\x02(\x00H\x00R\x10minDiskSizeBytes\x88\x01\x01B\x16\n" +
+	"\x14_min_disk_size_bytes\"\xe8\x02\n" +
 	"\x12TemplateInputField\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\x12Q\n" +
 	"\x04type\x18\x02 \x01(\x0e25.nebius.applications.v1alpha1.TemplateInputField.TypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12\x12\n" +
@@ -2479,6 +2492,7 @@ func file_nebius_applications_v1alpha1_vmapp_template_proto_init() {
 		(*TemplateInput_DockerRegistryCredentialsInput_)(nil),
 		(*TemplateInput_ServiceAccountMirrorInput_)(nil),
 	}
+	file_nebius_applications_v1alpha1_vmapp_template_proto_msgTypes[4].OneofWrappers = []any{}
 	file_nebius_applications_v1alpha1_vmapp_template_proto_msgTypes[8].OneofWrappers = []any{}
 	file_nebius_applications_v1alpha1_vmapp_template_proto_msgTypes[9].OneofWrappers = []any{
 		(*ContainerTemplateDefinition_SubstitutionOperation_Remove)(nil),

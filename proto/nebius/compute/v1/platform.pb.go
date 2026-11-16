@@ -90,11 +90,9 @@ type PlatformSpec struct {
 	HumanReadableName      string                 `protobuf:"bytes,4,opt,name=human_readable_name,json=humanReadableName,proto3" json:"human_readable_name,omitempty"`
 	AllowPresetChange      bool                   `protobuf:"varint,5,opt,name=allow_preset_change,json=allowPresetChange,proto3" json:"allow_preset_change,omitempty"`
 	ShortHumanReadableName string                 `protobuf:"bytes,10,opt,name=short_human_readable_name,json=shortHumanReadableName,proto3" json:"short_human_readable_name,omitempty"`
-	// Deprecated: Marked as deprecated in nebius/compute/v1/platform.proto.
-	GpuMemoryGibibytes int32 `protobuf:"varint,11,opt,name=gpu_memory_gibibytes,json=gpuMemoryGibibytes,proto3" json:"gpu_memory_gibibytes,omitempty"`
-	GpuMemoryGigabytes int32 `protobuf:"varint,12,opt,name=gpu_memory_gigabytes,json=gpuMemoryGigabytes,proto3" json:"gpu_memory_gigabytes,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	GpuMemoryGigabytes     int32                  `protobuf:"varint,12,opt,name=gpu_memory_gigabytes,json=gpuMemoryGigabytes,proto3" json:"gpu_memory_gigabytes,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *PlatformSpec) Reset() {
@@ -160,14 +158,6 @@ func (x *PlatformSpec) GetShortHumanReadableName() string {
 		return x.ShortHumanReadableName
 	}
 	return ""
-}
-
-// Deprecated: Marked as deprecated in nebius/compute/v1/platform.proto.
-func (x *PlatformSpec) GetGpuMemoryGibibytes() int32 {
-	if x != nil {
-		return x.GpuMemoryGibibytes
-	}
-	return 0
 }
 
 func (x *PlatformSpec) GetGpuMemoryGigabytes() int32 {
@@ -242,10 +232,8 @@ type PresetResources struct {
 	VcpuCount       int32                  `protobuf:"varint,1,opt,name=vcpu_count,json=vcpuCount,proto3" json:"vcpu_count,omitempty"`
 	MemoryGibibytes int32                  `protobuf:"varint,3,opt,name=memory_gibibytes,json=memoryGibibytes,proto3" json:"memory_gibibytes,omitempty"`
 	GpuCount        int32                  `protobuf:"varint,4,opt,name=gpu_count,json=gpuCount,proto3" json:"gpu_count,omitempty"`
-	// Deprecated: Marked as deprecated in nebius/compute/v1/platform.proto.
-	GpuMemoryGibibytes int32 `protobuf:"varint,6,opt,name=gpu_memory_gibibytes,json=gpuMemoryGibibytes,proto3" json:"gpu_memory_gibibytes,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *PresetResources) Reset() {
@@ -295,14 +283,6 @@ func (x *PresetResources) GetMemoryGibibytes() int32 {
 func (x *PresetResources) GetGpuCount() int32 {
 	if x != nil {
 		return x.GpuCount
-	}
-	return 0
-}
-
-// Deprecated: Marked as deprecated in nebius/compute/v1/platform.proto.
-func (x *PresetResources) GetGpuMemoryGibibytes() int32 {
-	if x != nil {
-		return x.GpuMemoryGibibytes
 	}
 	return 0
 }
@@ -361,30 +341,24 @@ const file_nebius_compute_v1_platform_proto_rawDesc = "" +
 	"\x02id\x12\x11\n" +
 	"\x0fcomputeplatformR\bmetadata\x123\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1f.nebius.compute.v1.PlatformSpecR\x04spec\x12?\n" +
-	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.PlatformStatusB\x04\xbaJ\x01\x05R\x06status\"\xb0\x03\n" +
+	"\x06status\x18\x03 \x01(\v2!.nebius.compute.v1.PlatformStatusB\x04\xbaJ\x01\x05R\x06status\"\xc1\x02\n" +
 	"\fPlatformSpec\x123\n" +
 	"\apresets\x18\x01 \x03(\v2\x19.nebius.compute.v1.PresetR\apresets\x12/\n" +
 	"\x14gpu_count_quota_type\x18\x03 \x01(\tR\x11gpuCountQuotaType\x12.\n" +
 	"\x13human_readable_name\x18\x04 \x01(\tR\x11humanReadableName\x12.\n" +
 	"\x13allow_preset_change\x18\x05 \x01(\bR\x11allowPresetChange\x129\n" +
 	"\x19short_human_readable_name\x18\n" +
-	" \x01(\tR\x16shortHumanReadableName\x12m\n" +
-	"\x14gpu_memory_gibibytes\x18\v \x01(\x05B;\xd2J6\n" +
-	"\n" +
-	"2026-02-10\x12(Use field 'gpu_memory_gigabytes' instead\x18\x01R\x12gpuMemoryGibibytes\x120\n" +
+	" \x01(\tR\x16shortHumanReadableName\x120\n" +
 	"\x14gpu_memory_gigabytes\x18\f \x01(\x05R\x12gpuMemoryGigabytes\"\x90\x01\n" +
 	"\x06Preset\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12@\n" +
 	"\tresources\x18\x02 \x01(\v2\".nebius.compute.v1.PresetResourcesR\tresources\x120\n" +
-	"\x14allow_gpu_clustering\x18\x03 \x01(\bR\x12allowGpuClustering\"\xfb\x01\n" +
+	"\x14allow_gpu_clustering\x18\x03 \x01(\bR\x12allowGpuClustering\"~\n" +
 	"\x0fPresetResources\x12#\n" +
 	"\n" +
 	"vcpu_count\x18\x01 \x01(\x05B\x04\xbaJ\x01\x05R\tvcpuCount\x12)\n" +
 	"\x10memory_gibibytes\x18\x03 \x01(\x05R\x0fmemoryGibibytes\x12\x1b\n" +
-	"\tgpu_count\x18\x04 \x01(\x05R\bgpuCount\x12{\n" +
-	"\x14gpu_memory_gibibytes\x18\x06 \x01(\x05BI\xd2JD\n" +
-	"\n" +
-	"2026-01-10\x126Use field 'platform.spec.gpu_memory_gibibytes' instead\x18\x01R\x12gpuMemoryGibibytes\"J\n" +
+	"\tgpu_count\x18\x04 \x01(\x05R\bgpuCount\"J\n" +
 	"\x0ePlatformStatus\x128\n" +
 	"\x18allowed_for_preemptibles\x18\x03 \x01(\bR\x16allowedForPreemptiblesB\\\n" +
 	"\x18ai.nebius.pub.compute.v1B\rPlatformProtoP\x01Z/github.com/nebius/gosdk/proto/nebius/compute/v1b\x06proto3"
