@@ -267,10 +267,24 @@ func (l *lexer) tokenize() ([]token, error) {
 }
 
 // level represents a part of mask encapsed in braces.
+//
+// Starts, Ends and Active are sets: one mask occurs one time at most. Two
+// different masks never share a child. Thus, the size of each set is not more
+// than the number of masks in the result.
 type level struct {
 	Starts []*Mask // Starts is a list of mask starting nodes of this level.
 	Ends   []*Mask // Ends is a list of finished masks for this level.
 	Active []*Mask // Active is the current unfinished masks for this level.
+	// The depths are the maximum numbers of edges from the root to the
+	// masks in the corresponding sets. The root has depth zero.
+	startsDepth int
+	endsDepth   int
+	activeDepth int
+	// ended contains the masks of Ends.
+	ended map[*Mask]struct{}
+	// collectEnds is true when a key or a wildcard can extend the masks that
+	// this level finishes. Only then the level fills Ends.
+	collectEnds bool
 	// Prev is a reference to the previous level in the hierarchy.
 	Prev *level
 	// Pos is the position in the input where this level was created.
@@ -288,64 +302,128 @@ func newLevel() *level {
 }
 
 // AddKey adds a new field key to the unfinished masks in the current level.
-func (l *level) AddKey(k FieldKey) {
-	var mask *Mask
-	newActive := []*Mask{}
+// Each unfinished mask gets its own child.
+func (l *level) AddKey(k FieldKey) error {
+	if err := l.descend(); err != nil {
+		return err
+	}
+	newActive := make([]*Mask, 0, len(l.Active))
 	for _, a := range l.Active {
-		if m, ok := a.FieldParts[k]; ok {
-			newActive = append(newActive, m)
-		} else {
-			if mask == nil {
-				mask = New()
-				newActive = append(newActive, mask)
-			}
-			a.FieldParts[k] = mask
+		m, ok := a.FieldParts[k]
+		if !ok {
+			m = New()
+			a.FieldParts[k] = m
 		}
+		newActive = append(newActive, m)
 	}
 	l.Active = newActive
+	return nil
 }
 
 // AddAny adds a new wildcard to the unfinished masks in the current level.
-func (l *level) AddAny() {
-	var newMask *Mask
+// Each unfinished mask gets its own child.
+func (l *level) AddAny() error {
+	if err := l.descend(); err != nil {
+		return err
+	}
 	newActive := make([]*Mask, 0, len(l.Active))
 	for _, a := range l.Active {
-		if a.Any != nil {
-			newActive = append(newActive, a.Any)
-		} else {
-			if newMask == nil {
-				newMask = New()
-				newActive = append(newActive, newMask)
-			}
-			a.Any = newMask
+		if a.Any == nil {
+			a.Any = New()
 		}
+		newActive = append(newActive, a.Any)
 	}
 	l.Active = newActive
+	return nil
+}
+
+// descend checks the depth before a key or wildcard extends Active. Each
+// active mask gets a child one edge deeper, so only the maximum is needed.
+func (l *level) descend() error {
+	if len(l.Active) == 0 {
+		return nil
+	}
+	if l.activeDepth+1 >= recursionTooDeep {
+		return ErrRecursionTooDeep
+	}
+	l.activeDepth++
+	return nil
+}
+
+// finish moves the unfinished masks to Ends. Branches that end at the same
+// mask add it one time.
+func (l *level) finish() {
+	if !l.collectEnds {
+		return
+	}
+	if l.ended == nil {
+		l.ended = map[*Mask]struct{}{}
+	}
+	for _, a := range l.Active {
+		if _, ok := l.ended[a]; !ok {
+			l.ended[a] = struct{}{}
+			l.Ends = append(l.Ends, a)
+		}
+	}
+	l.endsDepth = max(l.endsDepth, l.activeDepth)
 }
 
 // NewMask finalizes current mask and creates a new one in the current level.
 func (l *level) NewMask() {
-	l.Ends = append(l.Ends, l.Active...)
+	l.finish()
 	l.Active = l.Starts
+	l.activeDepth = l.startsDepth
 }
 
 // PushLevel creates a new level as a child to a current, and returns it.
-// pos saves the position at which level was created.
-func (l *level) PushLevel(pos int) *level {
+// pos saves the position at which level was created. beforeDot tells that a
+// dot follows the closing brace of the new level.
+func (l *level) PushLevel(pos int, beforeDot bool) *level {
 	nl := newLevel()
 	nl.Pos = pos
 	nl.Prev = l
+	// The parent level gets the finished masks of the new level. Thus, the
+	// new level also collects them when the parent level does.
+	nl.collectEnds = beforeDot || l.collectEnds
 	nl.Starts = l.Active
 	nl.Active = l.Active
+	nl.startsDepth = l.activeDepth
+	nl.activeDepth = l.activeDepth
 	return nl
 }
 
 // PopLevel finalizes the level, updates the parent level with the new
-// unfinished masks and returns it.
+// unfinished masks and returns it. The parent level gets no masks when the
+// level does not collect them, because no token can use them.
 func (l *level) PopLevel() *level {
+	l.finish()
 	p := l.Prev
-	p.Active = append(l.Ends, l.Active...) //nolint:gocritic // append result not assigned to the same slice
+	p.Active = l.Ends
+	p.activeDepth = l.endsDepth
 	return p
+}
+
+// groupsBeforeDot finds the groups that a dot follows. It returns one value for
+// each token. The value is true for the opening brace of such a group.
+func groupsBeforeDot(tokens []token) []bool {
+	ret := make([]bool, len(tokens))
+	opened := []int{} // opened contains the indexes of the open braces.
+	for i, tok := range tokens {
+		switch tok.Type {
+		case tokenLBrace:
+			opened = append(opened, i)
+		case tokenRBrace:
+			if len(opened) == 0 {
+				// The parser reports the unmatched brace.
+				return ret
+			}
+			last := len(opened) - 1
+			ret[opened[last]] = i+1 < len(tokens) &&
+				tokens[i+1].Type == tokenDot
+			opened = opened[:last]
+		}
+	}
+	return ret
 }
 
 const (
@@ -358,9 +436,29 @@ const (
 	stateLevelStart
 )
 
+// parseStepsPerByte is the number of steps that [Parse] permits for each byte
+// of the input.
+const parseStepsPerByte = 8
+
+// ErrTooComplex is the cause of the error that [Parse] returns when a mask
+// needs more steps than [Parse] permits.
+var ErrTooComplex = errors.New("mask is too complex")
+
 // Parse parses the input mask string into a [Mask] object. It tokenizes the
 // input string, processes the tokens based on the [Mask Syntax], and constructs
 // the corresponding [Mask] structure representing the parsed mask.
+//
+// Parse limits its work, because a sequence of groups multiplies the number of
+// fields. For example, "(a,b).(c,d).(e,f)" contains 14 fields. Parse does one
+// step for each unfinished mask when it applies a key, a wildcard, a comma or a
+// closing brace. Parse permits 8 steps for each byte of the input. Above this
+// limit, Parse returns an [UnmarshalError] with the cause [ErrTooComplex]. The
+// number of fields in the result is thus not more than 8 times the length of
+// the input.
+//
+// The limit has no effect on a mask in which no dot follows a group. Such a
+// mask needs one step for each token at most. [Mask.Marshal] writes only such
+// masks.
 //
 // Parameters:
 //
@@ -373,7 +471,12 @@ const (
 //   - error - An error if there was any issue during parsing or tokenization.
 //
 // [Mask Syntax]: https://nebius.atlassian.net/wiki/spaces/NEWBIUS/pages/131367768/ResetMask+tech+design
-func Parse(mask string) (*Mask, error) { //nolint:funlen,gocognit
+func Parse(mask string) (*Mask, error) {
+	return parse(mask, parseStepsPerByte*int64(len(mask)))
+}
+
+// parse is [Parse] with an explicit limit for the number of steps.
+func parse(mask string, maxSteps int64) (*Mask, error) { //nolint:funlen,gocognit
 	if len(strings.TrimLeft(mask, spaceSet)) == 0 {
 		// Return an empty mask if the input string is empty.
 		return New(), nil
@@ -382,13 +485,29 @@ func Parse(mask string) (*Mask, error) { //nolint:funlen,gocognit
 	if err != nil {
 		return nil, fmt.Errorf("tokenizer failure: %w", err)
 	}
+	beforeDot := groupsBeforeDot(tokens)
 	lvl := newLevel()     // Create a new mask level.
 	root := lvl.Starts[0] // Get the root mask.
 	pos := 0              // Initialize position tracker.
 	state := stateKey     // Initialize state to expecting a field key.
+	steps := int64(0)     // Count the visits of the unfinished masks.
 
 	for pos < len(tokens) { // End the loop if the end of tokens is reached.
 		tok := tokens[pos] // Get the current token.
+		if state != stateLevelStart &&
+			tok.Type != tokenDot && tok.Type != tokenLBrace {
+			// All other tokens visit each unfinished mask. Count the visits
+			// before the level creates or collects masks.
+			steps += int64(len(lvl.Active))
+			if steps > maxSteps {
+				return nil, &UnmarshalError{
+					Input:    mask,
+					Position: tok.Pos,
+					Summary:  "cannot expand mask",
+					Cause:    ErrTooComplex,
+				}
+			}
+		}
 		switch state {
 		case stateLevelStart:
 			if tok.Type == tokenRBrace {
@@ -401,13 +520,13 @@ func Parse(mask string) (*Mask, error) { //nolint:funlen,gocognit
 		case stateKey:
 			switch tok.Type {
 			case tokenPlainKey:
-				lvl.AddKey(FieldKey(tok.Value))
+				err = lvl.AddKey(FieldKey(tok.Value))
 				state = stateSeparator
 			case tokenWildCard:
-				lvl.AddAny()
+				err = lvl.AddAny()
 				state = stateSeparator
 			case tokenLBrace:
-				lvl = lvl.PushLevel(tok.Pos)
+				lvl = lvl.PushLevel(tok.Pos, beforeDot[pos])
 				state = stateLevelStart
 			default:
 				return nil, &UnmarshalError{
@@ -416,6 +535,14 @@ func Parse(mask string) (*Mask, error) { //nolint:funlen,gocognit
 					Summary: fmt.Sprintf(
 						"unexpected token %s, expecting field or submask", tok,
 					),
+				}
+			}
+			if err != nil {
+				return nil, &UnmarshalError{
+					Input:    mask,
+					Position: tok.Pos,
+					Summary:  "cannot expand mask",
+					Cause:    err,
 				}
 			}
 		case stateSeparator:
@@ -462,7 +589,7 @@ func Parse(mask string) (*Mask, error) { //nolint:funlen,gocognit
 		return nil, errors.New("unexpected end of mask")
 	}
 
-	return root.Copy()
+	return root, nil
 }
 
 // ParseMust is a wrapper around [Parse] that panics if [Parse] fails.

@@ -1048,9 +1048,18 @@ type NodeGroupAutoscalingSpec struct {
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
 	MinNodeCount int64 `protobuf:"varint,1,opt,name=min_node_count,json=minNodeCount,proto3" json:"min_node_count,omitempty"`
 	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
-	MaxNodeCount  int64 `protobuf:"varint,2,opt,name=max_node_count,json=maxNodeCount,proto3" json:"max_node_count,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	MaxNodeCount int64 `protobuf:"varint,2,opt,name=max_node_count,json=maxNodeCount,proto3" json:"max_node_count,omitempty"`
+	// Initial number of nodes in the autoscaled node group. Defaults to `min_node_count`.
+	// At creation, the value must be between `min_node_count` and `max_node_count`, inclusive.
+	//
+	// Updating or clearing this field after creation has no effect.
+	// This also applies when switching an existing node group from a fixed size to autoscaling.
+	// Autoscaling starts from the current node count, subject to `min_node_count` and `max_node_count`.
+	//
+	// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+	InitialNodeCount *int64 `protobuf:"varint,3,opt,name=initial_node_count,json=initialNodeCount,proto3,oneof" json:"initial_node_count,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *NodeGroupAutoscalingSpec) Reset() {
@@ -1095,6 +1104,14 @@ func (x *NodeGroupAutoscalingSpec) GetMinNodeCount() int64 {
 func (x *NodeGroupAutoscalingSpec) GetMaxNodeCount() int64 {
 	if x != nil {
 		return x.MaxNodeCount
+	}
+	return 0
+}
+
+// Deprecated: The entire proto file nebius/mk8s/v1alpha1/node_group.proto is marked as deprecated.
+func (x *NodeGroupAutoscalingSpec) GetInitialNodeCount() int64 {
+	if x != nil && x.InitialNodeCount != nil {
+		return *x.InitialNodeCount
 	}
 	return 0
 }
@@ -1741,11 +1758,13 @@ const file_nebius_mk8s_v1alpha1_node_group_proto_rawDesc = "" +
 	"\x04type\x12\x05\xbaH\x02\b\x01\"B\n" +
 	"\x12ExistingFilesystem\x12,\n" +
 	"\x02id\x18\x01 \x01(\tB\x1c\xbaH\x03\xc8\x01\x01\xe2J\x13\n" +
-	"\x11computefilesystemR\x02id\"\x8f\x02\n" +
+	"\x11computefilesystemR\x02id\"\xe4\x02\n" +
 	"\x18NodeGroupAutoscalingSpec\x12/\n" +
 	"\x0emin_node_count\x18\x01 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00R\fminNodeCount\x12/\n" +
-	"\x0emax_node_count\x18\x02 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00R\fmaxNodeCount:\x90\x01\xbaH\x8c\x01\x1a\x89\x01\n" +
-	"!autoscaling.protovalidate.message\x128min_node_count must be less or equal than max_node_count\x1a*this.min_node_count <= this.max_node_count\"\x11\n" +
+	"\x0emax_node_count\x18\x02 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00R\fmaxNodeCount\x12<\n" +
+	"\x12initial_node_count\x18\x03 \x01(\x03B\t\xbaH\x06\"\x04\x18d(\x00H\x00R\x10initialNodeCount\x88\x01\x01:\x90\x01\xbaH\x8c\x01\x1a\x89\x01\n" +
+	"!autoscaling.protovalidate.message\x128min_node_count must be less or equal than max_node_count\x1a*this.min_node_count <= this.max_node_countB\x15\n" +
+	"\x13_initial_node_count\"\x11\n" +
 	"\x0fPreemptibleSpec\"\xe6\x01\n" +
 	"\tNodeTaint\x12\x18\n" +
 	"\x03key\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x03key\x12\x1c\n" +
@@ -1888,6 +1907,7 @@ func file_nebius_mk8s_v1alpha1_node_group_proto_init() {
 	file_nebius_mk8s_v1alpha1_node_group_proto_msgTypes[8].OneofWrappers = []any{
 		(*AttachedFilesystemSpec_ExistingFilesystem)(nil),
 	}
+	file_nebius_mk8s_v1alpha1_node_group_proto_msgTypes[10].OneofWrappers = []any{}
 	file_nebius_mk8s_v1alpha1_node_group_proto_msgTypes[14].OneofWrappers = []any{
 		(*PercentOrCount_Percent)(nil),
 		(*PercentOrCount_Count)(nil),

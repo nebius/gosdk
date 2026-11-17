@@ -131,6 +131,15 @@ func TestGetMaskFromIncomingContext(t *testing.T) {
 		_, err := GetMaskFromIncomingContext(ctx, "my-mask")
 		assert.EqualError(t, err, "failed parse mask 0: unclosed left brace at position 0 near \"⃞(\"")
 	})
+	t.Run("metadata is with too complex mask", func(t *testing.T) {
+		t.Parallel()
+		ctx := metadata.NewIncomingContext(context.Background(), metadata.MD{
+			"my-mask": []string{"a", strings.Repeat("(a,b).", 16) + "c"},
+		})
+		_, err := GetMaskFromIncomingContext(ctx, "my-mask")
+		assert.ErrorIs(t, err, mask.ErrTooComplex)
+		assert.ErrorContains(t, err, "failed parse mask 1: ")
+	})
 	t.Run("metadata is with one mask", func(t *testing.T) {
 		t.Parallel()
 		ctx := metadata.NewIncomingContext(context.Background(), metadata.MD{
