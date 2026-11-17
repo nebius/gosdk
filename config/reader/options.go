@@ -87,10 +87,15 @@ func WithCustomEndpoint(customEndpoint string) config.Option {
 	})
 }
 
+// WithoutEnvVars disables environment overrides for the profile, IAM token, and API endpoint.
+// Apply this option before the reader loads its configuration.
+// Later WithProfileEnv, WithTokenEnv, or WithEndpointEnv options can enable individual overrides again.
+// Other components can still read environment settings, such as keepalive, home paths, and AWS configuration.
 func WithoutEnvVars() config.Option {
 	return optionFunc(func(c *configReader) {
 		c.profileEnv = ""
 		c.tokenEnv = ""
+		c.endpointEnv = ""
 	})
 }
 

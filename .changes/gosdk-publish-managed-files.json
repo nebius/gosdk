@@ -40,6 +40,7 @@
     "config/reader/metadata_test.go",
     "config/reader/metrics.go",
     "config/reader/options.go",
+    "config/reader/options_test.go",
     "config/reader/reader.go",
     "config/reader/reader_test.go",
     "conn/conn.go",
