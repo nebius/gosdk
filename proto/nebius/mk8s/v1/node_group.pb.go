@@ -406,9 +406,11 @@ func (x *NodeGroup) GetStatus() *NodeGroupStatus {
 
 type NodeGroupSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Version is desired Kubernetes version of the cluster. For now only acceptable format is
-	// `<major>.<minor>` like "1.31". Option for patch version update will be added later.
-	// By default the cluster control plane `<major>.<minor>` version will be used.
+	// Desired Kubernetes version and optional node image version for the node group.
+	// Use `<major>.<minor>[-nebius-node.<image>]`, for example, "1.36" or "1.36-nebius-node.80".
+	// If this field is omitted, the Kubernetes version defaults to the cluster control plane version.
+	// If the image version suffix is omitted, the latest compatible node image version is selected on NodeGroup creation.
+	// To upgrade to the latest node image version later, use `NodeGroupService.Upgrade`.
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Types that are valid to be assigned to Size:
 	//
@@ -2255,9 +2257,10 @@ func (*LocalDisksSpecConfig_KubeletEphemeral) isLocalDisksSpecConfig_Type() {}
 type NodeGroupStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	State NodeGroupStatus_State  `protobuf:"varint,1,opt,name=state,proto3,enum=nebius.mk8s.v1.NodeGroupStatus_State" json:"state,omitempty"`
-	// Actual version of NodeGroup. Have format `<major>.<minor>.<patch>-nebius-node.<infra_version>` like "1.30.0-nebius-node.10".
-	// Where `<major>.<minor>.<patch>` is Kubernetes version and `<infra_version>` is version of Node infrastructure and configuration,
-	// which update may include bug fixes, security updates and new features depending on worker node configuration.
+	// Actual Kubernetes version and node image version of the node group.
+	// Format: `<major>.<minor>.<patch>-nebius-node.<image>`, for example, "1.36.3-nebius-node.80".
+	// `<major>.<minor>.<patch>` is the Kubernetes version, and `<image>` is the node image version.
+	// Node image updates can include bug fixes, security updates, and new features for the selected node configuration.
 	Version string `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	// Desired total number of nodes that should be in the node group.
 	// It is either `NodeGroupSpec.fixed_node_count` or arbitrary number between
