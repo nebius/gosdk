@@ -747,8 +747,8 @@ type isUpgradeNodeGroupRequest_UpgradeType interface {
 }
 
 type UpgradeNodeGroupRequest_LatestInfraVersion struct {
-	// Upgrades to the latest infra version, which includes latest supported kubernetes patch version. Kubernetes minor version remain the
-	// same.
+	// Upgrades to the latest node image version for the current Kubernetes minor version.
+	// This includes the latest supported Kubernetes patch version.
 	LatestInfraVersion *emptypb.Empty `protobuf:"bytes,2,opt,name=latest_infra_version,json=latestInfraVersion,proto3,oneof"`
 }
 
