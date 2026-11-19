@@ -470,11 +470,12 @@ const file_nebius_ai_v1_devlab_service_proto_rawDesc = "" +
 	"\aprojectR\bparentId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\xd5\x02\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\xb4\x04\n" +
 	"\x13CreateDevlabRequest\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2\x18.nebius.ai.v1.DevlabSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12\x17\n" +
-	"\adry_run\x18\x03 \x01(\bR\x06dryRun:\x9a\x01\xbaH\x96\x01\x1a\x93\x01\n" +
+	"\adry_run\x18\x03 \x01(\bR\x06dryRun:\xf9\x02\xbaH\xf5\x02\x1a\xdc\x01\n" +
+	"\x1bselector_hardware_exclusive\x129Devlabs cannot combine gpu or cpu with platform or preset\x1a\x81\x01!has(this.spec) || (size(this.spec.gpu) == 0 && size(this.spec.cpu) == 0) || (this.spec.platform == '' && this.spec.preset == '')\x1a\x93\x01\n" +
 	"\x1einjected_file_content_required\x12'injected file content must not be empty\x1aH!has(this.spec) || this.spec.injected_files.all(f, f.content.size() > 0)\"8\n" +
 	"\x13DeleteDevlabRequest\x12!\n" +
 	"\x02id\x18\x01 \x01(\tB\x11\xbaH\x03\xc8\x01\x01\xe2J\b\n" +

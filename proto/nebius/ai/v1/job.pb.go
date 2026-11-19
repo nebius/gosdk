@@ -420,6 +420,14 @@ type JobSpec struct {
 	// starts. Intended for configs, not datasets. Read methods return target
 	// paths. File content is returned only by Get with view SECRET.
 	InjectedFiles []*JobSpec_FileInjection `protobuf:"bytes,32,rep,name=injected_files,json=injectedFiles,proto3" json:"injected_files,omitempty"`
+	// GPU model and optional count, such as ["h100:8"]. An omitted count means one GPU.
+	// Mutually exclusive with cpu. Immediate jobs accept one entry and still require disk.
+	// Omit platform and preset in Create.
+	// Immediate reads include the saved platform and preset.
+	Gpu []string `protobuf:"bytes,35,rep,name=gpu,proto3" json:"gpu,omitempty"`
+	// CPU family and vCPU count, such as ["amd:16"]. Mutually exclusive with gpu.
+	// Immediate jobs accept one entry and still require disk. Omit platform and preset in Create. Immediate reads include them.
+	Cpu           []string `protobuf:"bytes,36,rep,name=cpu,proto3" json:"cpu,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -590,6 +598,20 @@ func (x *JobSpec) GetTimeout() *durationpb.Duration {
 func (x *JobSpec) GetInjectedFiles() []*JobSpec_FileInjection {
 	if x != nil {
 		return x.InjectedFiles
+	}
+	return nil
+}
+
+func (x *JobSpec) GetGpu() []string {
+	if x != nil {
+		return x.Gpu
+	}
+	return nil
+}
+
+func (x *JobSpec) GetCpu() []string {
+	if x != nil {
+		return x.Cpu
 	}
 	return nil
 }
@@ -1555,7 +1577,7 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\x03Job\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x121\n" +
 	"\x04spec\x18\x02 \x01(\v2\x15.nebius.ai.v1.JobSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x125\n" +
-	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xfe\x1b\n" +
+	"\x06status\x18\x03 \x01(\v2\x17.nebius.ai.v1.JobStatusB\x04\xbaJ\x01\x05R\x06status\"\xab\x1d\n" +
 	"\aJobSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12^\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2).nebius.ai.v1.JobSpec.EnvironmentVariableR\x14environmentVariables\x120\n" +
@@ -1579,7 +1601,9 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\rpricing_model\x18\x1c \x01(\v2\x1e.nebius.ai.v1.PricingModelSpecB\x04\xbaJ\x01\x02R\fpricingModel\x12;\n" +
 	"\x10restart_attempts\x18\x1e \x01(\x03B\x10\xbaH\r\"\v(\xff\xff\xff\xff\xff\xff\xff\xff\xff\x01R\x0frestartAttempts\x123\n" +
 	"\atimeout\x18\x1f \x01(\v2\x19.google.protobuf.DurationR\atimeout\x12P\n" +
-	"\x0einjected_files\x18  \x03(\v2#.nebius.ai.v1.JobSpec.FileInjectionB\x04\xbaJ\x01\x02R\rinjectedFiles\x1a\x8b\x03\n" +
+	"\x0einjected_files\x18  \x03(\v2#.nebius.ai.v1.JobSpec.FileInjectionB\x04\xbaJ\x01\x02R\rinjectedFiles\x12\"\n" +
+	"\x03gpu\x18# \x03(\tB\x10\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01\xbaJ\x01\x02R\x03gpu\x12\"\n" +
+	"\x03cpu\x18$ \x03(\tB\x10\xbaH\t\x92\x01\x06\"\x04r\x02\x10\x01\xbaJ\x01\x02R\x03cpu\x1a\x8b\x03\n" +
 	"\x13EnvironmentVariable\x126\n" +
 	"\x04name\x18\x01 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^[a-zA-Z_][a-zA-Z0-9_]*$R\x04name\x12\x19\n" +
 	"\x05value\x18\x02 \x01(\tB\x03\xc0J\x01R\x05value\x12V\n" +
@@ -1644,8 +1668,9 @@ const file_nebius_ai_v1_job_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionId:\xb8\x02\xbaH\xb4\x02\x1a\xb1\x02\n" +
-	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptible\"\xc7\x04\n" +
+	"\bmbsecverR\tversionId:\x9d\x03\xbaH\x99\x03\x1a\xb1\x02\n" +
+	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptible\x1ac\n" +
+	"\x1bhardware_selector_exclusive\x12\x18Select either gpu or cpu\x1a*size(this.gpu) == 0 || size(this.cpu) == 0\"\xc7\x04\n" +
 	"\tJobStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12=\n" +
