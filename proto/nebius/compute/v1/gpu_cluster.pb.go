@@ -7,7 +7,6 @@
 package v1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/nebius/gosdk/proto/nebius"
 	v1 "github.com/nebius/gosdk/proto/nebius/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -314,17 +313,16 @@ var File_nebius_compute_v1_gpu_cluster_proto protoreflect.FileDescriptor
 
 const file_nebius_compute_v1_gpu_cluster_proto_rawDesc = "" +
 	"\n" +
-	"#nebius/compute/v1/gpu_cluster.proto\x12\x11nebius.compute.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xea\x01\n" +
+	"#nebius/compute/v1/gpu_cluster.proto\x12\x11nebius.compute.v1\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\"\xea\x01\n" +
 	"\n" +
 	"GpuCluster\x12h\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB(\xe2J\t\x12\aproject\xeaJ\x19\n" +
 	"\x02id\x12\x13\n" +
 	"\x11computegpuclusterR\bmetadata\x125\n" +
 	"\x04spec\x18\x02 \x01(\v2!.nebius.compute.v1.GpuClusterSpecR\x04spec\x12;\n" +
-	"\x06status\x18\x03 \x01(\v2#.nebius.compute.v1.GpuClusterStatusR\x06status\"I\n" +
-	"\x0eGpuClusterSpec\x127\n" +
-	"\x11infiniband_fabric\x18\x01 \x01(\tB\n" +
-	"\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02R\x10infinibandFabric\"\xeb\x01\n" +
+	"\x06status\x18\x03 \x01(\v2#.nebius.compute.v1.GpuClusterStatusR\x06status\"C\n" +
+	"\x0eGpuClusterSpec\x121\n" +
+	"\x11infiniband_fabric\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x10infinibandFabric\"\xeb\x01\n" +
 	"\x10GpuClusterStatus\x122\n" +
 	"\tinstances\x18\x01 \x03(\tB\x14\xe2J\x11\n" +
 	"\x0fcomputeinstanceR\tinstances\x12 \n" +

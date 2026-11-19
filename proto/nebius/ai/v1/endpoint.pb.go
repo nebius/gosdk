@@ -408,6 +408,14 @@ type EndpointSpec struct {
 	// starts. Intended for configs, not datasets. Read methods return target
 	// paths. File content is returned only by Get with view SECRET.
 	InjectedFiles []*EndpointSpec_FileInjection `protobuf:"bytes,32,rep,name=injected_files,json=injectedFiles,proto3" json:"injected_files,omitempty"`
+	// GPU model and optional count, such as ["H100:8"]. An omitted count means one GPU.
+	// Endpoints accept one entry. Mutually exclusive with cpu. Omit platform and preset in Create.
+	// Reads include the saved platform and preset. The caller still selects the disk and pricing model.
+	Gpu []string `protobuf:"bytes,35,rep,name=gpu,proto3" json:"gpu,omitempty"`
+	// CPU family and vCPU count, such as ["amd:16"].
+	// Endpoints accept one entry. Mutually exclusive with gpu. Omit platform and preset in Create.
+	// Reads include the saved platform and preset. The caller still selects the disk and pricing model.
+	Cpu           []string `protobuf:"bytes,36,rep,name=cpu,proto3" json:"cpu,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -578,6 +586,20 @@ func (x *EndpointSpec) GetAuthTokenMysteryboxSecret() *EndpointSpec_MysteryBoxSe
 func (x *EndpointSpec) GetInjectedFiles() []*EndpointSpec_FileInjection {
 	if x != nil {
 		return x.InjectedFiles
+	}
+	return nil
+}
+
+func (x *EndpointSpec) GetGpu() []string {
+	if x != nil {
+		return x.Gpu
+	}
+	return nil
+}
+
+func (x *EndpointSpec) GetCpu() []string {
+	if x != nil {
+		return x.Cpu
 	}
 	return nil
 }
@@ -1526,7 +1548,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xe6\x1e\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xed!\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1551,7 +1573,9 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
 	"auth_token\x18\x1e \x01(\tB\x03\xc0J\x01R\tauthToken\x12o\n" +
 	"\x1cauth_token_mysterybox_secret\x18\x1f \x01(\v2..nebius.ai.v1.EndpointSpec.MysteryBoxSecretRefR\x19authTokenMysteryboxSecret\x12U\n" +
-	"\x0einjected_files\x18  \x03(\v2(.nebius.ai.v1.EndpointSpec.FileInjectionB\x04\xbaJ\x01\x02R\rinjectedFiles\x1a\x90\x03\n" +
+	"\x0einjected_files\x18  \x03(\v2(.nebius.ai.v1.EndpointSpec.FileInjectionB\x04\xbaJ\x01\x02R\rinjectedFiles\x12$\n" +
+	"\x03gpu\x18# \x03(\tB\x12\xbaH\v\x92\x01\b\x10\x01\"\x04r\x02\x10\x01\xbaJ\x01\x02R\x03gpu\x12$\n" +
+	"\x03cpu\x18$ \x03(\tB\x12\xbaH\v\x92\x01\b\x10\x01\"\x04r\x02\x10\x01\xbaJ\x01\x02R\x03cpu\x1a\x90\x03\n" +
 	"\x13EnvironmentVariable\x126\n" +
 	"\x04name\x18\x01 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^[a-zA-Z_][a-zA-Z0-9_]*$R\x04name\x12\x19\n" +
 	"\x05value\x18\x02 \x01(\tB\x03\xc0J\x01R\x05value\x12[\n" +
@@ -1616,9 +1640,12 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionId:\xb4\x04\xbaH\xb0\x04\x1a\xb1\x02\n" +
+	"\bmbsecverR\tversionId:\xef\x06\xbaH\xeb\x06\x1a\xb1\x02\n" +
 	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptible\x1a\xf9\x01\n" +
-	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xc4\x03\n" +
+	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\x1al\n" +
+	"\x11platform_required\x12\x14platform is required\x1aAsize(this.gpu) != 0 || size(this.cpu) != 0 || this.platform != ''\x1af\n" +
+	"\x0fpreset_required\x12\x12preset is required\x1a?size(this.gpu) != 0 || size(this.cpu) != 0 || this.preset != ''\x1ac\n" +
+	"\x1bhardware_selector_exclusive\x12\x18Select either gpu or cpu\x1a*size(this.gpu) == 0 || size(this.cpu) == 0\"\xc4\x03\n" +
 	"\x0eEndpointStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12B\n" +

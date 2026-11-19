@@ -429,8 +429,18 @@ type DevlabSpec struct {
 	// The proxy rejects requests without an `Authorization: Bearer <token>` header that contains the matching token.
 	// If absent, Serverless does not add this bearer-token check.
 	AuthTokenMysteryboxSecret *DevlabSpec_MysteryBoxSecretRef `protobuf:"bytes,34,opt,name=auth_token_mysterybox_secret,json=authTokenMysteryboxSecret,proto3" json:"auth_token_mysterybox_secret,omitempty"`
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
+	// GPU model and optional count, such as ["H100:8"]. An omitted count means one GPU.
+	// Devlabs accept one entry, including template-based Devlabs. Mutually exclusive with cpu.
+	// Omit platform and preset in Create. Reads include the saved platform and preset.
+	// The caller still selects the disk.
+	Gpu []string `protobuf:"bytes,36,rep,name=gpu,proto3" json:"gpu,omitempty"`
+	// CPU family and vCPU count, such as ["amd:16"].
+	// Devlabs accept one entry, including template-based Devlabs. Mutually exclusive with gpu.
+	// Omit platform and preset in Create. Reads include the saved platform and preset.
+	// The caller still selects the disk.
+	Cpu           []string `protobuf:"bytes,37,rep,name=cpu,proto3" json:"cpu,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DevlabSpec) Reset() {
@@ -599,6 +609,20 @@ func (x *DevlabSpec) GetInjectedFiles() []*DevlabSpec_FileInjection {
 func (x *DevlabSpec) GetAuthTokenMysteryboxSecret() *DevlabSpec_MysteryBoxSecretRef {
 	if x != nil {
 		return x.AuthTokenMysteryboxSecret
+	}
+	return nil
+}
+
+func (x *DevlabSpec) GetGpu() []string {
+	if x != nil {
+		return x.Gpu
+	}
+	return nil
+}
+
+func (x *DevlabSpec) GetCpu() []string {
+	if x != nil {
+		return x.Cpu
 	}
 	return nil
 }
@@ -1562,7 +1586,7 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x06Devlab\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x124\n" +
 	"\x04spec\x18\x02 \x01(\v2\x18.nebius.ai.v1.DevlabSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x128\n" +
-	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\xec1\n" +
+	"\x06status\x18\x03 \x01(\v2\x1a.nebius.ai.v1.DevlabStatusB\x04\xbaJ\x01\x05R\x06status\"\xf34\n" +
 	"\n" +
 	"DevlabSpec\x12\x1a\n" +
 	"\x05image\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x05image\x12g\n" +
@@ -1589,7 +1613,9 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\rprimary_route\x18\x1f \x01(\v2%.nebius.ai.v1.DevlabSpec.PrimaryRouteB\x04\xbaJ\x01\x02R\fprimaryRoute\x12D\n" +
 	"\btemplate\x18  \x01(\v2!.nebius.ai.v1.DevlabSpec.TemplateB\x05\xbaJ\x02\x04\x02R\btemplate\x12S\n" +
 	"\x0einjected_files\x18! \x03(\v2&.nebius.ai.v1.DevlabSpec.FileInjectionB\x04\xbaJ\x01\x02R\rinjectedFiles\x12s\n" +
-	"\x1cauth_token_mysterybox_secret\x18\" \x01(\v2,.nebius.ai.v1.DevlabSpec.MysteryBoxSecretRefB\x04\xbaJ\x01\x02R\x19authTokenMysteryboxSecret\x1a\xa9\x03\n" +
+	"\x1cauth_token_mysterybox_secret\x18\" \x01(\v2,.nebius.ai.v1.DevlabSpec.MysteryBoxSecretRefB\x04\xbaJ\x01\x02R\x19authTokenMysteryboxSecret\x12$\n" +
+	"\x03gpu\x18$ \x03(\tB\x12\xbaH\v\x92\x01\b\x10\x01\"\x04r\x02\x10\x01\xbaJ\x01\x02R\x03gpu\x12$\n" +
+	"\x03cpu\x18% \x03(\tB\x12\xbaH\v\x92\x01\b\x10\x01\"\x04r\x02\x10\x01\xbaJ\x01\x02R\x03cpu\x1a\xa9\x03\n" +
 	"\x13EnvironmentVariable\x126\n" +
 	"\x04name\x18\x01 \x01(\tB\"\xbaH\x1f\xc8\x01\x01r\x1a2\x18^[a-zA-Z_][a-zA-Z0-9_]*$R\x04name\x12\x1b\n" +
 	"\x05value\x18\x02 \x01(\tB\x03\xc0J\x01H\x00R\x05value\x12[\n" +
@@ -1656,7 +1682,7 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\n" +
 	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
 	"\n" +
-	"\bmbsecverR\tversionId:\xe1\r\xbaH\xdd\r\x1a\xe2\x01\n" +
+	"\bmbsecverR\tversionId:\x9c\x10\xbaH\x98\x10\x1a\xe2\x01\n" +
 	"\x1fprimary_route_matches_http_port\x12Cprimary_route.container_port must reference an HTTP port from ports\x1az!has(this.primary_route) || this.ports.exists(p, p.container_port == this.primary_route.container_port && p.protocol == 1)\x1a\xe3\x02\n" +
 	"%volume_paths_do_not_overlap_workspace\x12?volume container_path must not overlap workspace.container_path\x1a\xf8\x01this.workspace.container_path == '' || this.volumes.all(v, !(v.container_path == this.workspace.container_path || v.container_path.startsWith(this.workspace.container_path + '/') || this.workspace.container_path.startsWith(v.container_path + '/')))\x1as\n" +
 	"\x1fimage_required_without_template\x12(image is required unless template is set\x1a&has(this.template) || this.image != ''\x1ay\n" +
@@ -1665,7 +1691,10 @@ const file_nebius_ai_v1_devlab_proto_rawDesc = "" +
 	"\x1ftemplate_declares_primary_route\x12=primary_route is declared by the template and must not be set\x1a/!has(this.template) || !has(this.primary_route)\x1a\xdd\x01\n" +
 	"\x1dtemplate_owns_container_shape\x12Xcontainer_command, args and working_dir are declared by the template and must not be set\x1ab!has(this.template) || (this.container_command == '' && this.args == '' && this.working_dir == '')\x1a\xa2\x01\n" +
 	"(workspace_path_required_without_template\x12;workspace.container_path is required unless template is set\x1a9has(this.template) || this.workspace.container_path != ''\x1a\xf9\x01\n" +
-	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\"\xc8\x03\n" +
+	"#auth_token_mysterybox_secret_if_set\x12=auth_token_mysterybox_secret must set secret_id or version_id\x1a\x92\x01!has(this.auth_token_mysterybox_secret) || this.auth_token_mysterybox_secret.secret_id != '' || this.auth_token_mysterybox_secret.version_id != ''\x1al\n" +
+	"\x11platform_required\x12\x14platform is required\x1aAsize(this.gpu) != 0 || size(this.cpu) != 0 || this.platform != ''\x1af\n" +
+	"\x0fpreset_required\x12\x12preset is required\x1a?size(this.gpu) != 0 || size(this.cpu) != 0 || this.preset != ''\x1ac\n" +
+	"\x1bhardware_selector_exclusive\x12\x18Select either gpu or cpu\x1a*size(this.gpu) == 0 || size(this.cpu) == 0\"\xc8\x03\n" +
 	"\fDevlabStatus\x12+\n" +
 	"\x11private_endpoints\x18\x01 \x03(\tR\x10privateEndpoints\x12)\n" +
 	"\x10public_endpoints\x18\x02 \x03(\tR\x0fpublicEndpoints\x12@\n" +
