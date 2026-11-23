@@ -1138,6 +1138,7 @@ type EndpointSpec_RegistryCredentials struct {
 	// Registry username for private Docker registry.
 	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	// Registry password for private Docker registry.
+	// Get returns the password only with view SECRET.
 	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	// Secret version storing the registry credentials.
 	// Must have keys "REGISTRY_USERNAME" and "REGISTRY_PASSWORD".
@@ -1261,8 +1262,10 @@ func (x *EndpointSpec_FileInjection) GetContent() []byte {
 type EndpointSpec_MysteryBoxSecretRef struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// MysteryBox secret ID.
+	// If you omit it, the service sets it from version_id.
 	SecretId string `protobuf:"bytes,1,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
 	// MysteryBox secret version ID.
+	// If you omit it, the service sets the primary version of the secret at create time.
 	VersionId     string `protobuf:"bytes,2,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1407,7 +1410,7 @@ type isEndpointSpec_VolumeMount_S3Config_Auth interface {
 
 type EndpointSpec_VolumeMount_S3Config_Credentials struct {
 	// Inline S3 credentials.
-	// Unmasked values are returned only by Get with view SECRET.
+	// Get returns the values only with view SECRET.
 	Credentials *EndpointSpec_VolumeMount_S3Config_S3Credentials `protobuf:"bytes,4,opt,name=credentials,proto3,oneof"`
 }
 
@@ -1489,8 +1492,10 @@ func (x *EndpointSpec_VolumeMount_S3Config_S3Credentials) GetSessionToken() stri
 type EndpointSpec_VolumeMount_S3Config_MysteryBoxSecretRef struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// MysteryBox secret ID.
+	// If you omit it, the service sets it from version_id.
 	SecretId string `protobuf:"bytes,1,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
 	// MysteryBox secret version ID.
+	// If you omit it, the service sets the primary version of the secret at create time.
 	VersionId     string `protobuf:"bytes,2,opt,name=version_id,json=versionId,proto3" json:"version_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1548,7 +1553,7 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bEndpoint\x12R\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x12\xbaH\x03\xc8\x01\x01\xe2J\t\x12\aprojectR\bmetadata\x126\n" +
 	"\x04spec\x18\x02 \x01(\v2\x1a.nebius.ai.v1.EndpointSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12:\n" +
-	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\xed!\n" +
+	"\x06status\x18\x03 \x01(\v2\x1c.nebius.ai.v1.EndpointStatusB\x04\xbaJ\x01\x05R\x06status\"\x91\"\n" +
 	"\fEndpointSpec\x12\x1c\n" +
 	"\x05image\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05image\x12c\n" +
 	"\x15environment_variables\x18\x02 \x03(\v2..nebius.ai.v1.EndpointSpec.EnvironmentVariableR\x14environmentVariables\x125\n" +
@@ -1589,29 +1594,28 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\x14PROTOCOL_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04HTTP\x10\x01\x12\a\n" +
 	"\x03TCP\x10\x02\x12\a\n" +
-	"\x03UDP\x10\x03\x1a\xdf\b\n" +
+	"\x03UDP\x10\x03\x1a\xf3\b\n" +
 	"\vVolumeMount\x12\x16\n" +
 	"\x06source\x18\x01 \x01(\tR\x06source\x12\x1f\n" +
 	"\vsource_path\x18\x02 \x01(\tR\n" +
 	"sourcePath\x12%\n" +
 	"\x0econtainer_path\x18\x03 \x01(\tR\rcontainerPath\x12G\n" +
 	"\x04mode\x18\x04 \x01(\x0e2+.nebius.ai.v1.EndpointSpec.VolumeMount.ModeB\x06\xbaH\x03\xc8\x01\x01R\x04mode\x12N\n" +
-	"\ts3_config\x18\x05 \x01(\v2/.nebius.ai.v1.EndpointSpec.VolumeMount.S3ConfigH\x00R\bs3Config\x1a\x88\x06\n" +
+	"\ts3_config\x18\x05 \x01(\v2/.nebius.ai.v1.EndpointSpec.VolumeMount.S3ConfigH\x00R\bs3Config\x1a\x9c\x06\n" +
 	"\bS3Config\x12\"\n" +
 	"\bendpoint\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bendpoint\x12\x1e\n" +
 	"\x06region\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06region\x12a\n" +
 	"\vcredentials\x18\x04 \x01(\v2=.nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.S3CredentialsH\x00R\vcredentials\x12r\n" +
-	"\x11mysterybox_secret\x18\x05 \x01(\v2C.nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.MysteryBoxSecretRefH\x00R\x10mysteryboxSecret\x1a\x9f\x01\n" +
-	"\rS3Credentials\x12-\n" +
-	"\raccess_key_id\x18\x01 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\vaccessKeyId\x125\n" +
-	"\x11secret_access_key\x18\x02 \x01(\tB\t\xbaH\x03\xc8\x01\x01\xc0J\x01R\x0fsecretAccessKey\x12(\n" +
-	"\rsession_token\x18\x03 \x01(\tB\x03\xc0J\x01R\fsessionToken\x1al\n" +
-	"\x13MysteryBoxSecretRef\x12'\n" +
-	"\tsecret_id\x18\x01 \x01(\tB\n" +
-	"\xe2J\a\n" +
-	"\x05mbsecR\bsecretId\x12,\n" +
+	"\x11mysterybox_secret\x18\x05 \x01(\v2C.nebius.ai.v1.EndpointSpec.VolumeMount.S3Config.MysteryBoxSecretRefH\x00R\x10mysteryboxSecret\x1a\xab\x01\n" +
+	"\rS3Credentials\x121\n" +
+	"\raccess_key_id\x18\x01 \x01(\tB\r\xbaH\x03\xc8\x01\x01\xbaJ\x01\x04\xc0J\x01R\vaccessKeyId\x129\n" +
+	"\x11secret_access_key\x18\x02 \x01(\tB\r\xbaH\x03\xc8\x01\x01\xbaJ\x01\x04\xc0J\x01R\x0fsecretAccessKey\x12,\n" +
+	"\rsession_token\x18\x03 \x01(\tB\a\xbaJ\x01\x04\xc0J\x01R\fsessionToken\x1at\n" +
+	"\x13MysteryBoxSecretRef\x12+\n" +
+	"\tsecret_id\x18\x01 \x01(\tB\x0e\xbaJ\x01\a\xe2J\a\n" +
+	"\x05mbsecR\bsecretId\x120\n" +
 	"\n" +
-	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
+	"version_id\x18\x02 \x01(\tB\x11\xbaJ\x01\a\xe2J\n" +
 	"\n" +
 	"\bmbsecverR\tversionId:\xc8\x01\xbaH\xc4\x01\x1a\xc1\x01\n" +
 	"\x18mysterybox_secret_if_set\x122mysterybox_secret must set secret_id or version_id\x1aq!has(this.mysterybox_secret) || this.mysterybox_secret.secret_id != '' || this.mysterybox_secret.version_id != ''B\x06\n" +
@@ -1625,20 +1629,19 @@ const file_nebius_ai_v1_endpoint_proto_rawDesc = "" +
 	"\bDiskSpec\x12@\n" +
 	"\x04type\x18\x01 \x01(\x0e2$.nebius.compute.v1.DiskSpec.DiskTypeB\x06\xbaH\x03\xc8\x01\x01R\x04type\x12\x1d\n" +
 	"\n" +
-	"size_bytes\x18\x02 \x01(\x03R\tsizeBytes\x1a\x8e\x01\n" +
+	"size_bytes\x18\x02 \x01(\x03R\tsizeBytes\x1a\x92\x01\n" +
 	"\x13RegistryCredentials\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\x12\x1f\n" +
-	"\bpassword\x18\x02 \x01(\tB\x03\xc0J\x01R\bpassword\x12:\n" +
-	"\x19mysterybox_secret_version\x18\x03 \x01(\tR\x17mysteryboxSecretVersion\x1a\x80\x01\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12#\n" +
+	"\bpassword\x18\x02 \x01(\tB\a\xbaJ\x01\x04\xc0J\x01R\bpassword\x12:\n" +
+	"\x19mysterybox_secret_version\x18\x03 \x01(\tR\x17mysteryboxSecretVersion\x1a\x84\x01\n" +
 	"\rFileInjection\x12B\n" +
-	"\x0econtainer_path\x18\x01 \x01(\tB\x1b\xbaH\x18\xc8\x01\x01r\x132\x11^/[^/]+(/[^/]+)*$R\rcontainerPath\x12+\n" +
-	"\acontent\x18\x02 \x01(\fB\x11\xbaH\v\xd8\x01\x01z\x06\x10\x01\x18\x80\x80\x04\xc0J\x01R\acontent\x1al\n" +
-	"\x13MysteryBoxSecretRef\x12'\n" +
-	"\tsecret_id\x18\x01 \x01(\tB\n" +
-	"\xe2J\a\n" +
-	"\x05mbsecR\bsecretId\x12,\n" +
+	"\x0econtainer_path\x18\x01 \x01(\tB\x1b\xbaH\x18\xc8\x01\x01r\x132\x11^/[^/]+(/[^/]+)*$R\rcontainerPath\x12/\n" +
+	"\acontent\x18\x02 \x01(\fB\x15\xbaH\v\xd8\x01\x01z\x06\x10\x01\x18\x80\x80\x04\xbaJ\x01\x04\xc0J\x01R\acontent\x1at\n" +
+	"\x13MysteryBoxSecretRef\x12+\n" +
+	"\tsecret_id\x18\x01 \x01(\tB\x0e\xbaJ\x01\a\xe2J\a\n" +
+	"\x05mbsecR\bsecretId\x120\n" +
 	"\n" +
-	"version_id\x18\x02 \x01(\tB\r\xe2J\n" +
+	"version_id\x18\x02 \x01(\tB\x11\xbaJ\x01\a\xe2J\n" +
 	"\n" +
 	"\bmbsecverR\tversionId:\xef\x06\xbaH\xeb\x06\x1a\xb1\x02\n" +
 	"!pricing_model_matches_preemptible\x12\xb6\x01Select pricing_model.follows_spot_price or pricing_model.spot_pricing_policy for a preemptible workload. For a regular workload, select pricing_model.on_demand or omit pricing_model.\x1aS(has(this.pricing_model) && !has(this.pricing_model.on_demand)) == this.preemptible\x1a\xf9\x01\n" +

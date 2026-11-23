@@ -24,7 +24,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Controls whether injected-file content and unmasked inline S3 credential values are included.
+// Controls whether Get returns the secret values of the endpoint.
 type GetEndpointRequest_View int32
 
 const (
@@ -74,8 +74,8 @@ func (GetEndpointRequest_View) EnumDescriptor() ([]byte, []int) {
 type GetEndpointRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// SECRET includes injected-file content and unmasked inline S3 credentials and requires
-	// resource.aiendpoint.getSensitiveData.
+	// With SECRET, Get returns injected-file content, inline S3 credentials and the
+	// inline registry password. SECRET requires resource.aiendpoint.getSensitiveData.
 	View          GetEndpointRequest_View `protobuf:"varint,101,opt,name=view,proto3,enum=nebius.ai.v1.GetEndpointRequest_View" json:"view,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
