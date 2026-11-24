@@ -655,14 +655,14 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\x18POOLING_MODE_UNSPECIFIED\x10\x00\x12\v\n" +
 	"\aSESSION\x10\x01\x12\x0f\n" +
 	"\vTRANSACTION\x10\x02B\x10\n" +
-	"\x0e_max_pool_size\"\xce\x02\n" +
+	"\x0e_max_pool_size\"\xc8\x02\n" +
 	"\vClusterSpec\x12.\n" +
 	"\vdescription\x18\x01 \x01(\tB\f\xbaH\x05r\x03\x18\x80\x02\xbaJ\x01\x02R\vdescription\x12$\n" +
 	"\n" +
 	"network_id\x18\x06 \x01(\tB\x05\xbaJ\x02\x02\aR\tnetworkId\x12J\n" +
 	"\x06config\x18\x03 \x01(\v2*.nebius.msp.postgresql.v1alpha1.ConfigSpecB\x06\xbaH\x03\xc8\x01\x01R\x06config\x12S\n" +
-	"\tbootstrap\x18\x04 \x01(\v2-.nebius.msp.postgresql.v1alpha1.BootstrapSpecB\x06\xbaH\x03\xc8\x01\x01R\tbootstrap\x12H\n" +
-	"\x06backup\x18\x05 \x01(\v2*.nebius.msp.postgresql.v1alpha1.BackupSpecB\x04\xbaJ\x01\x02R\x06backup\"\xc1\x02\n" +
+	"\tbootstrap\x18\x04 \x01(\v2-.nebius.msp.postgresql.v1alpha1.BootstrapSpecB\x06\xbaH\x03\xc8\x01\x01R\tbootstrap\x12B\n" +
+	"\x06backup\x18\x05 \x01(\v2*.nebius.msp.postgresql.v1alpha1.BackupSpecR\x06backup\"\xc1\x02\n" +
 	"\rClusterStatus\x12>\n" +
 	"\x05phase\x18\x01 \x01(\x0e2(.nebius.msp.v1alpha1.ClusterStatus.PhaseR\x05phase\x12>\n" +
 	"\x05state\x18\x02 \x01(\x0e2(.nebius.msp.v1alpha1.ClusterStatus.StateR\x05state\x12R\n" +
@@ -691,11 +691,11 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\adb_name\x18\x03 \x01(\tB\xc6\x02\xbaH\xbe\x02\xba\x01X\n" +
 	"\x12db_name.min_length\x121Database name must be at least 1 characters long.\x1a\x0fsize(this) >= 1\xba\x01T\n" +
 	"\x12db_name.max_length\x12,Database name must not exceed 63 characters.\x1a\x10size(this) <= 63\xba\x01\x85\x01\n" +
-	"\x0fdb_name.pattern\x12DDatabase name must match the pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_-]*$'\x1a,this.matches('^[a-zA-Z0-9_][a-zA-Z0-9_-]*$')\xc8\x01\x01\xbaJ\x01\x02R\x06dbName\"g\n" +
+	"\x0fdb_name.pattern\x12DDatabase name must match the pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_-]*$'\x1a,this.matches('^[a-zA-Z0-9_][a-zA-Z0-9_-]*$')\xc8\x01\x01\xbaJ\x01\x02R\x06dbName\"s\n" +
 	"\n" +
-	"BackupSpec\x12.\n" +
-	"\x13backup_window_start\x18\x01 \x01(\tR\x11backupWindowStart\x12)\n" +
-	"\x10retention_policy\x18\x02 \x01(\tR\x0fretentionPolicyBu\n" +
+	"BackupSpec\x124\n" +
+	"\x13backup_window_start\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x11backupWindowStart\x12/\n" +
+	"\x10retention_policy\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\x0fretentionPolicyBu\n" +
 	"%ai.nebius.pub.msp.postgresql.v1alpha1B\fClusterProtoP\x01Z<github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1b\x06proto3"
 
 var (

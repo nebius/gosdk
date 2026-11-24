@@ -534,12 +534,12 @@ const file_nebius_audit_v2_audit_event_export_proto_rawDesc = "" +
 	"\x14AuditEventExportSpec\x12G\n" +
 	"\x06params\x18\x01 \x01(\v2'.nebius.audit.v2.AuditEventExportParamsB\x06\xbaH\x03\xc8\x01\x01R\x06params\x12e\n" +
 	"\x15nebius_object_storage\x18\x02 \x01(\v2/.nebius.audit.v2.NebiusObjectStorageDestinationH\x00R\x13nebiusObjectStorageB\x1b\n" +
-	"\x12export_destination\x12\x05\xbaH\x02\b\x01\"\x97\x01\n" +
+	"\x12export_destination\x12\x05\xbaH\x02\b\x01\"\xa1\x01\n" +
 	"\x1eNebiusObjectStorageDestination\x12#\n" +
-	"\robject_prefix\x18\x01 \x01(\tR\fobjectPrefix\x12?\n" +
-	"\fbucket_by_id\x18\x02 \x01(\v2\x1b.nebius.audit.v2.BucketByIdH\x00R\n" +
-	"bucketByIdB\x0f\n" +
-	"\x06bucket\x12\x05\xbaH\x02\b\x01\"$\n" +
+	"\robject_prefix\x18\x01 \x01(\tR\fobjectPrefix\x12E\n" +
+	"\fbucket_by_id\x18\x02 \x01(\v2\x1b.nebius.audit.v2.BucketByIdB\x04\xbaJ\x01\x02H\x00R\n" +
+	"bucketByIdB\x13\n" +
+	"\x06bucket\x12\t\xbaH\x02\b\x01\xbaJ\x01\x02\"$\n" +
 	"\n" +
 	"BucketById\x12\x16\n" +
 	"\x02id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x02id\"\xe4\x01\n" +
