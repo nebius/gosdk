@@ -33,8 +33,7 @@ type NodeServiceClient interface {
 	// 2. The existing VMs continue to work on the node, but after stop/start via
 	//    Compute API they most probably will be assigned to a different node.
 	//
-	// To use this rpc one needs to obtain `compute.node.setUnhealthy` permission
-	// for the VM's parent container. The permission is granted to the TSA inside the VM.
+	// The permission to use this RPC is granted to the technical service account inside the VM.
 	SetUnhealthy(ctx context.Context, in *NodeSetUnhealthyRequest, opts ...grpc.CallOption) (*NodeSetUnhealthyResponse, error)
 }
 
@@ -66,8 +65,7 @@ type NodeServiceServer interface {
 	// 2. The existing VMs continue to work on the node, but after stop/start via
 	//    Compute API they most probably will be assigned to a different node.
 	//
-	// To use this rpc one needs to obtain `compute.node.setUnhealthy` permission
-	// for the VM's parent container. The permission is granted to the TSA inside the VM.
+	// The permission to use this RPC is granted to the technical service account inside the VM.
 	SetUnhealthy(context.Context, *NodeSetUnhealthyRequest) (*NodeSetUnhealthyResponse, error)
 }
 
