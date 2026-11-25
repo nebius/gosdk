@@ -30,6 +30,10 @@ type SecurityGroupStatus_State int32
 const (
 	SecurityGroupStatus_STATE_UNSPECIFIED SecurityGroupStatus_State = 0 // Default state, unspecified.
 	SecurityGroupStatus_READY             SecurityGroupStatus_State = 2 // Security group is ready for use.
+	SecurityGroupStatus_CREATING          SecurityGroupStatus_State = 1 // Security group is being created.
+	SecurityGroupStatus_RECONCILING       SecurityGroupStatus_State = 3 // Security group is reconciling changes after it has been created.
+	SecurityGroupStatus_DELETING          SecurityGroupStatus_State = 4 // Security group is being deleted.
+	SecurityGroupStatus_FAILED            SecurityGroupStatus_State = 5 // Reconciliation stopped because of an error.
 )
 
 // Enum value maps for SecurityGroupStatus_State.
@@ -37,10 +41,18 @@ var (
 	SecurityGroupStatus_State_name = map[int32]string{
 		0: "STATE_UNSPECIFIED",
 		2: "READY",
+		1: "CREATING",
+		3: "RECONCILING",
+		4: "DELETING",
+		5: "FAILED",
 	}
 	SecurityGroupStatus_State_value = map[string]int32{
 		"STATE_UNSPECIFIED": 0,
 		"READY":             2,
+		"CREATING":          1,
+		"RECONCILING":       3,
+		"DELETING":          4,
+		"FAILED":            5,
 	}
 )
 
@@ -251,13 +263,18 @@ const file_nebius_vpc_v1_security_group_proto_rawDesc = "" +
 	"\n" +
 	"network_id\x18\x01 \x01(\tB\x19\xbaH\x03\xc8\x01\x01\xbaJ\x01\x02\xe2J\f\n" +
 	"\n" +
-	"vpcnetworkR\tnetworkId\"\x9a\x01\n" +
+	"vpcnetworkR\tnetworkId\"\xd3\x01\n" +
 	"\x13SecurityGroupStatus\x12>\n" +
 	"\x05state\x18\x01 \x01(\x0e2(.nebius.vpc.v1.SecurityGroupStatus.StateR\x05state\x12\x18\n" +
-	"\adefault\x18\x02 \x01(\bR\adefault\")\n" +
+	"\adefault\x18\x02 \x01(\bR\adefault\"b\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\t\n" +
-	"\x05READY\x10\x02BY\n" +
+	"\x05READY\x10\x02\x12\f\n" +
+	"\bCREATING\x10\x01\x12\x0f\n" +
+	"\vRECONCILING\x10\x03\x12\f\n" +
+	"\bDELETING\x10\x04\x12\n" +
+	"\n" +
+	"\x06FAILED\x10\x05BY\n" +
 	"\x14ai.nebius.pub.vpc.v1B\x12SecurityGroupProtoP\x01Z+github.com/nebius/gosdk/proto/nebius/vpc/v1b\x06proto3"
 
 var (
