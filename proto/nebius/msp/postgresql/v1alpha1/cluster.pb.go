@@ -15,6 +15,7 @@ import (
 	resource "github.com/nebius/gosdk/proto/nebius/msp/v1alpha1/resource"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -590,8 +591,14 @@ type BackupSpec struct {
 	BackupWindowStart string `protobuf:"bytes,1,opt,name=backup_window_start,json=backupWindowStart,proto3" json:"backup_window_start,omitempty"`
 	// Retention policy to be used for backups and WALs (i.e. '7d')
 	RetentionPolicy string `protobuf:"bytes,2,opt,name=retention_policy,json=retentionPolicy,proto3" json:"retention_policy,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Regions that receive copies of the backups. Example: "eu-west1".
+	// The list cannot contain the region of the cluster.
+	ReplicationRegions []string `protobuf:"bytes,3,rep,name=replication_regions,json=replicationRegions,proto3" json:"replication_regions,omitempty"`
+	// Time between two replication iterations.
+	// The minimum value is 1 minute. The default value is 15 minutes.
+	ReplicationInterval *durationpb.Duration `protobuf:"bytes,4,opt,name=replication_interval,json=replicationInterval,proto3" json:"replication_interval,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *BackupSpec) Reset() {
@@ -638,11 +645,25 @@ func (x *BackupSpec) GetRetentionPolicy() string {
 	return ""
 }
 
+func (x *BackupSpec) GetReplicationRegions() []string {
+	if x != nil {
+		return x.ReplicationRegions
+	}
+	return nil
+}
+
+func (x *BackupSpec) GetReplicationInterval() *durationpb.Duration {
+	if x != nil {
+		return x.ReplicationInterval
+	}
+	return nil
+}
+
 var File_nebius_msp_postgresql_v1alpha1_cluster_proto protoreflect.FileDescriptor
 
 const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\n" +
-	",nebius/msp/postgresql/v1alpha1/cluster.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a6nebius/msp/postgresql/v1alpha1/config/postgresql.proto\x1a-nebius/msp/postgresql/v1alpha1/template.proto\x1a!nebius/msp/v1alpha1/cluster.proto\x1a+nebius/msp/v1alpha1/resource/template.proto\"\xe7\x01\n" +
+	",nebius/msp/postgresql/v1alpha1/cluster.proto\x12\x1enebius.msp.postgresql.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x18nebius/annotations.proto\x1a\x1fnebius/common/v1/metadata.proto\x1a6nebius/msp/postgresql/v1alpha1/config/postgresql.proto\x1a-nebius/msp/postgresql/v1alpha1/template.proto\x1a!nebius/msp/v1alpha1/cluster.proto\x1a+nebius/msp/v1alpha1/resource/template.proto\"\xe7\x01\n" +
 	"\aCluster\x12F\n" +
 	"\bmetadata\x18\x01 \x01(\v2\".nebius.common.v1.ResourceMetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x12G\n" +
 	"\x04spec\x18\x02 \x01(\v2+.nebius.msp.postgresql.v1alpha1.ClusterSpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x12K\n" +
@@ -691,11 +712,14 @@ const file_nebius_msp_postgresql_v1alpha1_cluster_proto_rawDesc = "" +
 	"\adb_name\x18\x03 \x01(\tB\xc6\x02\xbaH\xbe\x02\xba\x01X\n" +
 	"\x12db_name.min_length\x121Database name must be at least 1 characters long.\x1a\x0fsize(this) >= 1\xba\x01T\n" +
 	"\x12db_name.max_length\x12,Database name must not exceed 63 characters.\x1a\x10size(this) <= 63\xba\x01\x85\x01\n" +
-	"\x0fdb_name.pattern\x12DDatabase name must match the pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_-]*$'\x1a,this.matches('^[a-zA-Z0-9_][a-zA-Z0-9_-]*$')\xc8\x01\x01\xbaJ\x01\x02R\x06dbName\"s\n" +
+	"\x0fdb_name.pattern\x12DDatabase name must match the pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_-]*$'\x1a,this.matches('^[a-zA-Z0-9_][a-zA-Z0-9_-]*$')\xc8\x01\x01\xbaJ\x01\x02R\x06dbName\"\x88\x02\n" +
 	"\n" +
 	"BackupSpec\x124\n" +
 	"\x13backup_window_start\x18\x01 \x01(\tB\x04\xbaJ\x01\x02R\x11backupWindowStart\x12/\n" +
-	"\x10retention_policy\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\x0fretentionPolicyBu\n" +
+	"\x10retention_policy\x18\x02 \x01(\tB\x04\xbaJ\x01\x02R\x0fretentionPolicy\x129\n" +
+	"\x13replication_regions\x18\x03 \x03(\tB\b\xbaH\x05\x92\x01\x02\x18\x01R\x12replicationRegions\x12X\n" +
+	"\x14replication_interval\x18\x04 \x01(\v2\x19.google.protobuf.DurationB\n" +
+	"\xbaH\a\xaa\x01\x042\x02\b<R\x13replicationIntervalBu\n" +
 	"%ai.nebius.pub.msp.postgresql.v1alpha1B\fClusterProtoP\x01Z<github.com/nebius/gosdk/proto/nebius/msp/postgresql/v1alpha1b\x06proto3"
 
 var (
@@ -728,6 +752,7 @@ var file_nebius_msp_postgresql_v1alpha1_cluster_proto_goTypes = []any{
 	(*resource.PresetDetails)(nil),          // 12: nebius.msp.v1alpha1.resource.PresetDetails
 	(*config.PostgresqlConfig16)(nil),       // 13: nebius.msp.postgresql.v1alpha1.config.PostgresqlConfig16
 	(*TemplateSpec)(nil),                    // 14: nebius.msp.postgresql.v1alpha1.TemplateSpec
+	(*durationpb.Duration)(nil),             // 15: google.protobuf.Duration
 }
 var file_nebius_msp_postgresql_v1alpha1_cluster_proto_depIdxs = []int32{
 	9,  // 0: nebius.msp.postgresql.v1alpha1.Cluster.metadata:type_name -> nebius.common.v1.ResourceMetadata
@@ -744,11 +769,12 @@ var file_nebius_msp_postgresql_v1alpha1_cluster_proto_depIdxs = []int32{
 	2,  // 11: nebius.msp.postgresql.v1alpha1.ConfigSpec.pooler_config:type_name -> nebius.msp.postgresql.v1alpha1.ConnectionPoolerConfig
 	13, // 12: nebius.msp.postgresql.v1alpha1.ConfigSpec.postgresql_config_16:type_name -> nebius.msp.postgresql.v1alpha1.config.PostgresqlConfig16
 	14, // 13: nebius.msp.postgresql.v1alpha1.ConfigSpec.template:type_name -> nebius.msp.postgresql.v1alpha1.TemplateSpec
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	15, // 14: nebius.msp.postgresql.v1alpha1.BackupSpec.replication_interval:type_name -> google.protobuf.Duration
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_nebius_msp_postgresql_v1alpha1_cluster_proto_init() }
